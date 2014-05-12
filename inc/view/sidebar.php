@@ -22,7 +22,7 @@
 <ul id="main-nav" class="open-active">
 
 <li class="active">
-	<a href="index.php">
+	<a href="<?php BASE_URL; ?>index.php">
 		<i class="fa fa-dashboard"></i>
 		Dashboard
 	</a>
@@ -208,31 +208,31 @@
 
 	<ul class="sub-nav">
 		<li>
-			<a href="./page-login.html">
+			<a href="<?php BASE_URL; ?>login.php">
 				<i class="fa fa-unlock"></i>
 				Login Basic
 			</a>
 		</li>
 		<li>
-			<a href="./page-login-social.html">
+			<a href="<?php BASE_URL; ?>page-login-social.html">
 				<i class="fa fa-unlock"></i>
 				Login Social
 			</a>
 		</li>
 		<li>
-			<a href="./page-404.html">
+			<a href="<?php BASE_URL; ?>page-404.html">
 				<i class="fa fa-ban"></i>
 				404 Error
 			</a>
 		</li>
 		<li>
-			<a href="./page-500.html">
+			<a href="<?php BASE_URL; ?>page-500.html">
 				<i class="fa fa-ban"></i>
 				500 Error
 			</a>
 		</li>
 		<li>
-			<a href="./page-blank.html">
+			<a href="<?php BASE_URL; ?>page-blank.html">
 				<i class="fa fa-file-text-o"></i>
 				Blank Page
 			</a>

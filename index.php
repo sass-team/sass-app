@@ -1,7 +1,7 @@
 
 <?php
 #starting the users session
-//session_start();
+session_start();
 require 'inc/config.php';
 require ROOT_PATH . 'inc/db.php';
 
