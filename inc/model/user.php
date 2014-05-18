@@ -1,34 +1,37 @@
-<?php
+<?php 
+/// Using Object Oriented Programming
+class Users {
+
+// connection to db.
+private $db;
+// constructor of this class
+public function __construct($database) {
+        $this->db = $database;
+    } // end __construct
+
+// gets user's information using the user's id.
 /**
- * Created by PhpStorm.
- * User: Riza
- * Date: 5/13/14
- * Time: 1:38 AM
- */
+*
+* small description -- one senteces. E.g. Qureis the the dtabase and returns all the data of users given his emial.
+* @param email the email of user
+* return an array with users data
+*/
+function get_data($email) {
 
-class User {
-	/**
-	 * Verifies email exists.
-	 * returns true if found; else false
-	 */
-	public function user_exists($username) {
-		$username = trim($username);
+    $query = $this->db->prepare("SELECT * FROM user
+                                    LEFT OUTER JOIN user_types ON user.user_types_id = user_types.id
+                                    LEFT OUTER JOIN major ON user.major_id = major.id
+                                    WHERE email = ?
+                                ");
+    $query->bindValue(1, $email);
 
-		$query = $this->db->prepare("SELECT COUNT(`id`) FROM `users` WHERE `username`= ?");
-		$query->bindValue(1, $username);
+    try {
+        $query->execute();
+        return $query->fetch();
+    } catch (PDOException $e) {
+        die($e->getMessage());
+    } // end try
+} // end function get_data
 
-		try {
-			$query->execute();
-			$rows = $query->fetchColumn();
-
-			if ($rows == 1) {
-				return true;
-			} else {
-				return false;
-			} // end else if
-
-		} catch (PDOException $e) {
-			die($e->getMessage());
-		} // end catch
-	} // end function user_exists
 }
+?>

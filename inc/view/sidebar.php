@@ -22,7 +22,7 @@
 <ul id="main-nav" class="open-active">
 
 <li class="active">
-	<a href="<?php BASE_URL; ?>index.php">
+	<a href="<?php echo BASE_URL; ?>index.php">
 		<i class="fa fa-dashboard"></i>
 		Dashboard
 	</a>
@@ -37,23 +37,25 @@
 
 	<ul class="sub-nav">
 		<li>
-			<a href="<?php BASE_URL; ?>page-profile.html">
+			<a href="<?php echo BASE_URL; ?>my_account/profile.php">
 				<i class="fa fa-user"></i>
 				Profile
 			</a>
 		</li>
 		<li>
-			<a href="<?php BASE_URL; ?>page-settings.html">
+			<a href="<?php echo BASE_URL; ?>my_account/profile-settings.php">
 				<i class="fa fa-cogs"></i>
 				Settings
 			</a>
 		</li>
+		<?php if($_SESSION["user_types_id"] == '3') { ?>
 		<li>
-			<a href="<?php BASE_URL; ?>page-calendar.html">
+			<a href="<?php echo BASE_URL; ?>page-calendar.html">
 				<i class="fa fa-calendar"></i>
 				My Schedule
 			</a>
 		</li>
+		<?php } ?>
 	</ul>
 
 </li>
@@ -208,31 +210,31 @@
 
 	<ul class="sub-nav">
 		<li>
-			<a href="<?php BASE_URL; ?>login.php">
+			<a href="<?php echo BASE_URL; ?>login.php">
 				<i class="fa fa-unlock"></i>
 				Login Basic
 			</a>
 		</li>
 		<li>
-			<a href="<?php BASE_URL; ?>page-login-social.html">
+			<a href="<?php echo BASE_URL; ?>page-login-social.html">
 				<i class="fa fa-unlock"></i>
 				Login Social
 			</a>
 		</li>
 		<li>
-			<a href="<?php BASE_URL; ?>page-404.html">
+			<a href="<?php echo BASE_URL; ?>page-404.html">
 				<i class="fa fa-ban"></i>
 				404 Error
 			</a>
 		</li>
 		<li>
-			<a href="<?php BASE_URL; ?>page-500.html">
+			<a href="<?php echo BASE_URL; ?>page-500.html">
 				<i class="fa fa-ban"></i>
 				500 Error
 			</a>
 		</li>
 		<li>
-			<a href="<?php BASE_URL; ?>page-blank.html">
+			<a href="<?php echo BASE_URL; ?>page-blank.html">
 				<i class="fa fa-file-text-o"></i>
 				Blank Page
 			</a>

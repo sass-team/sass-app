@@ -1,10 +1,8 @@
 
 <?php
-#starting the users session
-session_start();
 require 'inc/config.php';
-require ROOT_PATH . 'inc/db.php';
 
+$pageTitle = "Dashboard - SASS Management System";
 // viewers
 require ROOT_PATH . 'inc/view/header.php';
 require ROOT_PATH . 'inc/view/sidebar.php';

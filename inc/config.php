@@ -12,8 +12,8 @@ define("ROOT_PATH", $_SERVER["DOCUMENT_ROOT"] . "/SASS-MS/");
 
 // removed for safety reasons.
 
-define("DB_HOST", "127.0.1.1");
-define("DB_NAME", "sass-ms_db");
-define("DB_PORT", "3306"); // default port.
-define("DB_USER", "root");
-define("DB_PASS", "");
+define("DB_HOST","localhost");
+define("DB_NAME","sass-ms_db");
+define("DB_PORT","3306"); // default port.
+define("DB_USER","root");
+define("DB_PASS","");
