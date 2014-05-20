@@ -4,7 +4,7 @@
  * Created by PhpStorm.
  * Class for general info
  *    - Log In / Log Out Redirect functionalities
- * User: Rizart Dokollari
+ * User: Rizart Dokollari & Giorgos Skarlatos
  * Date: 5/20/14
  * Time: 12:52 AM
  */

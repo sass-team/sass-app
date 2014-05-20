@@ -48,7 +48,7 @@
 				Settings
 			</a>
 		</li>
-		<?php if($_SESSION["user_types_id"] == '3') { ?>
+		<?php if($user_type == 'tutor') { ?>
 		<li>
 			<a href="<?php echo BASE_URL; ?>page-calendar.html">
 				<i class="fa fa-calendar"></i>

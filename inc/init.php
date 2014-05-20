@@ -1,4 +1,7 @@
 <?php
+/**
+ *
+ */
 #starting the users session
 session_start();
 
