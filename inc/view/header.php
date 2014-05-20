@@ -1,15 +1,3 @@
-<?php
-session_start();
-/**
- * Created by PhpStorm.
- * User: Riza
- * Date: 5/12/14
- * Time: 11:51 PM
-
-*/
-require ROOT_PATH . 'inc/db.php';
-?>
-
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -62,21 +50,17 @@ require ROOT_PATH . 'inc/db.php';
 	</header> <!-- header -->
 
 	<nav id="top-bar" class="collapse top-bar-collapse">
-
-	<?php 
-          if(isset($_SESSION['email'])){
-    ?>
 		<ul class="nav navbar-nav pull-right">
 			<li class="dropdown">
 				<a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
 					<i class="fa fa-user"></i>
-					<?php echo "Welcome " . $_SESSION['email']; ?>
+					<?php echo "Welcome " . $first_name; ?>
 					<span class="caret"></span>
 				</a>
 
 				<ul class="dropdown-menu" role="menu">
 					<!-- "My schedule" choice is shown only to type tutor -->
-					<?php if($_SESSION["user_types_id"] == '3') { ?>					
+					<?php if($user_type == '3') { ?>
 					<li>
 						<a href="<?php echo BASE_URL; ?>page-calendar.html">
 							<i class="fa fa-calendar"></i>
@@ -94,6 +78,5 @@ require ROOT_PATH . 'inc/db.php';
 				</ul>
 			</li>
 		</ul>
-	<?php } ?>
 
 	</nav> <!-- /#top-bar -->

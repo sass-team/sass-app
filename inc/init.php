@@ -1,4 +1,7 @@
 <?php
+#starting the users session
+session_start();
+
 require "config.php";
 // identical to require; but php will include it only if it has not already been included
 require_once ROOT_PATH . 'inc/db.php';
