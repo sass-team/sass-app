@@ -28,7 +28,7 @@ require ROOT_PATH . 'inc/view/sidebar.php';
 						<div class="col-md-4 col-sm-5">
 
 							<div class="thumbnail">
-								<img src="<?php echo BASE_URL . $img_loc ?>" alt="Profile Picture"/>
+								<img src="<?php echo BASE_URL . $avatar_img_loc ?>" alt="Profile Picture"/>
 							</div>
 							<!-- /.thumbnail -->
 

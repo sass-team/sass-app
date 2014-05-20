@@ -96,12 +96,18 @@ class User {
 	 * @return mixed If
 	 */
 	function get_data($email) {
-		$query = "SELECT * FROM user
+		// this query return wrong id, of table user :( :( :( :( 3 FUCKING HOURS FUCKING BUG
+		$query = "SELECT  FROM user
 	      LEFT OUTER JOIN user_types ON user.user_types_id = user_types.id
 	      LEFT OUTER JOIN major ON user.major_id = major.id
 	      WHERE email = ?";
+
+		$query = "SELECT user.id, user.f_name, user.l_name, user.img_loc, user.date, user.profile_description, user.mobile, user_types.type, major.name FROM `sass-ms_db`.user
+						LEFT OUTER JOIN user_types ON user.user_types_id = user_types.id
+						LEFT OUTER JOIN major ON user.major_id = major.id
+					WHERE email = :email;";
 		$query = $this->db->prepare($query);
-		$query->bindValue(1, $email);
+		$query->bindValue(':email', $email, PDO::PARAM_INT);
 
 		try {
 			$query->execute();
@@ -111,12 +117,11 @@ class User {
 		} // end try
 	} // end function get_data
 
-	function update_profile($first_name, $last_name, $mobile_num, $description, $img_loc, $email) {
+	function update_profile_data($first_name, $last_name, $mobile_num, $description, $email) {
 		$first_name = trim($first_name);
 		$last_name = trim($last_name);
 		$mobile_num = trim($mobile_num);
 		$description = trim($description);
-		$img_loc = trim($img_loc);
 		$email = trim($email);
 
 		$is_profile_data_correct = $this->is_profile_data_correct($first_name, $last_name,
@@ -130,7 +135,7 @@ class User {
 					SET `f_name`= :first_name, `l_name`= :last_name, `mobile`= :mobile,
 						`profile_description`= :profile_description
 						WHERE `email`= :email";
-		echo $query;
+
 		try {
 			$query = $this->db->prepare($query);
 
@@ -170,6 +175,24 @@ class User {
 			return $errors;
 		}
 	}
+
+	public function update_avatar_img($avatar_img_loc, $user_id) {
+		try {
+
+			$query = "UPDATE `sass-ms_db`.`user` SET `img_loc`= :avatar_img WHERE `id`= :user_id";
+
+			$query = $this->db->prepare($query);
+			$query->bindParam(':avatar_img', $avatar_img_loc, PDO::PARAM_STR);
+			$query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+
+			$query->execute();
+			return true;
+		} catch (PDOException $e) {
+			die ($e->getMessage());
+		} // end try catch
+	}
+
+
 }
 
 ?>

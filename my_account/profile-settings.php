@@ -1,24 +1,59 @@
 <?php
+
 require "../inc/init.php";
 $general->logged_out_protect();
 
 $errors = array();
 
 if (isset($_POST['form_action_profile_settings'])) {
-	$update_result = $user->update_profile($_POST['first-name'], $_POST['last-name'],
-		$_POST['mobile'], $_POST['profile-description'], "/SASS-MS/img/avatars/author.jpg",
-		$user_email);
 
+	$update_result = $user->update_profile_data($_POST['first-name'], $_POST['last-name'],
+		$_POST['mobile'], $_POST['profile-description'], $user_email);
+
+	// decide if file upload needed.
+	$change_avatar_img = (file_exists($_FILES["fileupload-avatar"]['tmp_name']) &&
+		is_uploaded_file($_FILES["fileupload-avatar"]['tmp_name'])) ?
+		true : false;
+
+
+	// TODO: use OOP instead of procedural programming for file upload
+	if ($change_avatar_img === true) {
+
+		if ($_FILES['fileupload-avatar']['error'] == 1) {
+			$errors[] = "File size excdeed";
+		} else {
+			$uploaddir = ROOT_PATH . "img/avatars/";
+			$uploadfile = $uploaddir . basename($_FILES['fileupload-avatar']['name']);
+
+			$path = $_FILES['fileupload-avatar']['name'];
+			$ext = pathinfo($path, PATHINFO_EXTENSION);
+
+			if (move_uploaded_file($_FILES['fileupload-avatar']['tmp_name'], $uploadfile)) {
+				$img_web_loc = $uploaddir . "avatar_img_" . $user_id . "." . $ext;
+				rename($uploadfile, $img_web_loc);
+
+				$avatar_img_loc = "img/avatars/avatar_img_" . $user_id . "." . $ext;
+				if (true !== ($update_avatar_img_response = $user->update_avatar_img($avatar_img_loc, $user_id))) {
+					$errors[] = "Error storing img loc to database. Please try again later.";
+				}
+			} else {
+				$errors[] = "Error saving image. Please try again later";
+			}
+		}
+
+
+	}
 
 	if ($update_result !== true) {
-		$errors = $update_result;
+		$errors[] = $update_result;
 	} else {
-		header('Location: ' . BASE_URL . 'my_account/profile-settings.php');
-		exit();
+		//	header('Location: ' . BASE_URL . 'my_account/profile-settings.php');
+		//	exit();
 	}
+	var_dump($errors);
 }
 
-$page_title = "My Account - Profile";
+$page_title = "My Account - Settings";
 require ROOT_PATH . 'inc/view/header.php';
 require ROOT_PATH . 'inc/view/sidebar.php';
 
@@ -66,7 +101,7 @@ require ROOT_PATH . 'inc/view/sidebar.php';
 
 			<br/>
 
-			<form action="./profile-settings.php" class="form-horizontal" method="post">
+			<form action="./profile-settings.php" class="form-horizontal" method="post" enctype="multipart/form-data">
 
 				<?php
 				if (empty($errors) !== true) {
@@ -83,13 +118,14 @@ require ROOT_PATH . 'inc/view/sidebar.php';
 					<div class="col-md-7">
 						<div class="fileupload fileupload-new" data-provides="fileupload">
 							<div class="fileupload-new thumbnail" style="width: 180px; height: 180px;"><img
-									src="<?php echo BASE_URL . $img_loc ?>" alt="Profile Avatar"/></div>
+									src="<?php echo BASE_URL . $avatar_img_loc ?>" name="fileupload-avatar"
+									alt="Profile Avatar"/></div>
 							<div class="fileupload-preview fileupload-exists thumbnail"
 							     style="max-width: 200px; max-height: 200px; line-height: 20px;"></div>
 							<div>
 												<span class="btn btn-default btn-file"><span
-														class="fileupload-new">Select image</span><span class="fileupload-exists">Change</span><input
-														type="file"/></span>
+														class="fileupload-new">Select image</span><span class="fileupload-exists">
+														Change</span><input name="fileupload-avatar" type="file"/></span>
 								<a href="#" class="btn btn-default fileupload-exists" data-dismiss="fileupload">Remove</a>
 							</div>
 						</div>

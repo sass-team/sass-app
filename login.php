@@ -8,7 +8,7 @@ require_once ROOT_PATH . "inc/model/bcrypt.php";
 $bcrypt = new Bcrypt(12);
 
 ////////// generates hash key ///////////////////
-echo $bcrypt->genHash('your_password');
+echo $bcrypt->genHash('pass');
 
 // if there is an active log in process redirect to index.php; load page only if no
 // logged in user exists
