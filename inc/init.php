@@ -24,7 +24,7 @@ if ($general->logged_in() === true) {
 	// store the data used
 	$first_name = $user_data_array['f_name'];
 	$last_name = $user_data_array['l_name'];
-	$img_loc = $user_data_array['img']; //avatar
+	$img_loc = $user_data_array['img_loc']; //avatar
 	$profile_description = $user_data_array['profile_description']; //short description in profile page
 	$date_account_created = $user_data_array['date']; //date of account creation
 	$user_type = $user_data_array['type']; //if s/he is admin/secretary/tutor

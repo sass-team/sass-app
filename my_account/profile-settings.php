@@ -2,6 +2,22 @@
 require "../inc/init.php";
 $general->logged_out_protect();
 
+$errors = array();
+
+if (isset($_POST['form_action_profile_settings'])) {
+	$update_result = $user->update_profile($_POST['first-name'], $_POST['last-name'],
+		$_POST['mobile'], $_POST['profile-description'], "/SASS-MS/img/avatars/author.jpg",
+		$user_email);
+
+
+	if ($update_result !== true) {
+		$errors = $update_result;
+	} else {
+		header('Location: ' . BASE_URL . 'my_account/profile-settings.php');
+		exit();
+	}
+}
+
 $page_title = "My Account - Profile";
 require ROOT_PATH . 'inc/view/header.php';
 require ROOT_PATH . 'inc/view/sidebar.php';
@@ -50,9 +66,16 @@ require ROOT_PATH . 'inc/view/sidebar.php';
 
 			<br/>
 
-			<form action="./page-settings.html" class="form-horizontal">
+			<form action="./profile-settings.php" class="form-horizontal" method="post">
 
-
+				<?php
+				if (empty($errors) !== true) {
+					?>
+					<div class="alert alert-danger">
+						<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+						<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
+					</div>
+				<?php } ?>
 				<div class="form-group">
 
 					<label class="col-md-3">Avatar</label>
@@ -81,7 +104,7 @@ require ROOT_PATH . 'inc/view/sidebar.php';
 					<label class="col-md-3">Email</label>
 
 					<div class="col-md-7">
-						<input type="text" name="user-name" value="<?php echo $_SESSION['email']; ?>"
+						<input type="text" name="user-name" value="<?php echo $user_email; ?>"
 						       class="form-control" disabled/>
 					</div>
 					<!-- /.col -->
@@ -132,7 +155,7 @@ require ROOT_PATH . 'inc/view/sidebar.php';
 					<label class="col-md-3">Short Description</label>
 
 					<div class="col-md-7">
-						<textarea id="about-textarea" name="about-you" rows="6"
+						<textarea id="about-textarea" name="profile-description" rows="6"
 						          class="form-control"><?php echo $profile_description ?></textarea>
 					</div>
 					<!-- /.col -->
@@ -143,6 +166,8 @@ require ROOT_PATH . 'inc/view/sidebar.php';
 				<br/>
 
 				<div class="form-group">
+
+					<input type="hidden" name="form_action_profile_settings">
 
 					<div class="col-md-7 col-md-push-3">
 						<button type="submit" class="btn btn-primary">Save Changes</button>
@@ -167,7 +192,7 @@ require ROOT_PATH . 'inc/view/sidebar.php';
 
 			<br/>
 
-			<form action="./page-settings.html" class="form-horizontal">
+			<form action="./page-settings.php" class="form-horizontal">
 
 				<div class="form-group">
 

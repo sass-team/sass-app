@@ -111,6 +111,65 @@ class User {
 		} // end try
 	} // end function get_data
 
+	function update_profile($first_name, $last_name, $mobile_num, $description, $img_loc, $email) {
+		$first_name = trim($first_name);
+		$last_name = trim($last_name);
+		$mobile_num = trim($mobile_num);
+		$description = trim($description);
+		$img_loc = trim($img_loc);
+		$email = trim($email);
+
+		$is_profile_data_correct = $this->is_profile_data_correct($first_name, $last_name,
+			$mobile_num);
+
+		if ($is_profile_data_correct !== true) {
+			return $is_profile_data_correct; // the array of errors messages
+		}
+
+		$query = "UPDATE `sass-ms_db`.`user`
+					SET `f_name`= :first_name, `l_name`= :last_name, `mobile`= :mobile,
+						`profile_description`= :profile_description
+						WHERE `email`= :email";
+		echo $query;
+		try {
+			$query = $this->db->prepare($query);
+
+			$query->bindParam(':first_name', $first_name, PDO::PARAM_STR);
+			$query->bindParam(':last_name', $last_name, PDO::PARAM_STR);
+			$query->bindParam(':mobile', $mobile_num, PDO::PARAM_STR);
+			$query->bindParam(':profile_description', $description, PDO::PARAM_STR);
+			$query->bindParam(':email', $email, PDO::PARAM_STR);
+
+			$query->execute();
+
+			return true;
+		} catch (PDOException $pe) {
+			echo "Something terrible happened. Could not update database.";
+			exit();
+		}
+	}
+
+	function is_profile_data_correct($first_name, $last_name, $mobile_num) {
+		$errors = array();
+
+		if (!ctype_alpha($first_name)) {
+			$errors[] = 'First name may contain only letters.';
+		}
+
+		if (!ctype_alpha($last_name)) {
+			$errors[] = 'Last name may contain only letters.';
+		}
+
+		if (!preg_match('/^[0-9]{10}$/', $mobile_num)) {
+			$errors[] = 'Mobile number should contain only digits of total length 10';
+		}
+
+		if (empty($errors)) {
+			return true;
+		} else {
+			return $errors;
+		}
+	}
 }
 
 ?>
