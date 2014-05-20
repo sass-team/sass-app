@@ -1,14 +1,12 @@
 <?php
-// TODO: Add option to resend email if password forgot
-// TODO: sql make img of database to NOT NULL & refactor name to img_location
-// TODO: ask Giorgos whether was an important reason for putting php code inside html, when not needed (e.g. login error)
-
+// TODO: Add option-functionality to resend email if password forgot
+// TODO: sql make 'img' of database to NOT NULL & refactor name to 'img_location'
 require 'inc/init.php';
 
 // object needed for verifying the hashed password
 require_once ROOT_PATH . "inc/model/bcrypt.php";
 $bcrypt = new Bcrypt(12);
-echo $bcrypt->genHash('12');
+
 // if there is an active log in process redirect to index.php; load page only if no
 // logged in user exists
 $general->logged_in_protect();
