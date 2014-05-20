@@ -8,10 +8,6 @@ require ROOT_PATH . 'inc/view/header.php';
 require ROOT_PATH . 'inc/view/sidebar.php';
 
 ?>
-
-
-
-	
 	<div id="content">		
 		
 		<div id="content-header">

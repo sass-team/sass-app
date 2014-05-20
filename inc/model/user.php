@@ -20,7 +20,11 @@ class User {
 
 	/**
 	 * Verifies given credentials are correct. If login successfuly, returns true
-	 * else return the error message
+	 * else return the error message.
+	 *
+	 * Dependancies:
+	 * require_once ROOT_PATH . "inc/model/bcrypt.php";
+	 * $bcrypt = new Bcrypt(12);
 	 *
 	 * @param $email $email of user
 	 * @param $password $password of user
@@ -35,7 +39,7 @@ class User {
 			return 'Sorry that email doesn\'t exists.';
 		}
 		global $bcrypt; // global bcry variable
-		$query = "SELECT password, email FROM users WHERE email = :email";
+		$query = "SELECT password, email FROM user WHERE email = :email";
 		$query = $this->db->prepare($query);
 		$query->bindParam(':email', $email);
 
@@ -66,7 +70,7 @@ class User {
 	 */
 	public function email_exists($email) {
 		$email = trim($email);
-		$query = "SELECT COUNT(`id`) FROM `users` WHERE `email`= ?";
+		$query = "SELECT COUNT(`id`) FROM user WHERE `email`= ?";
 		$query = $this->db->prepare($query);
 		$query->bindValue(1, $email);
 

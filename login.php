@@ -1,7 +1,14 @@
 <?php
 // TODO: Add option to resend email if password forgot
+// TODO: sql make img of database to NOT NULL & refactor name to img_location
+// TODO: ask Giorgos whether was an important reason for putting php code inside html, when not needed (e.g. login error)
 
 require 'inc/init.php';
+
+// object needed for verifying the hashed password
+require_once ROOT_PATH . "inc/model/bcrypt.php";
+$bcrypt = new Bcrypt(12);
+echo $bcrypt->genHash('12');
 // if there is an active log in process redirect to index.php; load page only if no
 // logged in user exists
 $general->logged_in_protect();
@@ -33,32 +40,7 @@ is not filled, as to protect from robots/spam.
 
 		// if there is an active log in process redirect to index.php; load page only if no logged in user exists
 		$general->logged_in_protect();
-
 	}
-	/*
-	// Prepares SQL Query
-	$query = $db->prepare("SELECT * FROM user WHERE email = :email AND password = :password");
-	// bind paramenters, Named paramenters always start with colon(:)
-	$query->bindParam(':email', $email);
-	$query->bindParam(':password', $password);
-	// For Executing prepared statement we will use below function
-	$query->execute();
-	// Count no. of records
-	$count = $query->rowCount();
-	//just fetch. only gets one row. So no foreach loop needed :D
-	$row = $query->fetch();
-	// User Redirect Conditions will go here
-	if ($count == 1) {
-		//session to see if s/he is admin - secretary - tutor ( 1 - 2 - 3)
-		$_SESSION["user_types_id"] = $row["user_types_id"];
-		//session to see if there is an email logged in
-		$_SESSION['email'] = $email;
-
-		header("location:index.php");
-	} else {
-		echo "<script>alert('Wrong email or password!','_self')</script>";
-	}
-	*/
 }
 ?>
 <!DOCTYPE html>
@@ -139,12 +121,8 @@ is not filled, as to protect from robots/spam.
 			<?php
 			}
 			?>
-
 		</form>
-
-
 		<a href="javascript:;" class="btn btn-default">Forgot Password?</a>
-
 	</div>
 	<!-- /#login -->
 
