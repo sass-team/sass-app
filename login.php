@@ -1,29 +1,53 @@
 <?php
+// TODO: Add option to resend email if password forgot
+
 require 'inc/init.php';
-// if there is an active log in process redirect to index.php; load page only if no logged in user exists
+// if there is an active log in process redirect to index.php; load page only if no
+// logged in user exists
 $general->logged_in_protect();
-$pageTitle = "Log In";
+$page_title = "Log In";
+// holds an array with error messages
+$errors = array();
 ?>
 
 <!-- ************  IF THE LOG IN BUTTON IS SUBMITTED ************** -->
-<?php if (isset($_POST['login'])) {
+<!-- 1. It's preferred to create a hidden input for security purposes, as well verifying that this input or another dummy
+is not filled, as to protect from robots/spam.
+	2. It's preferred to have the php code on the beginning of the script and the view code afterwards. More neat & organized.-->
+<?php if (isset($_POST['hidden_submit_pressed'])) {
 
-// Define $myusername and $mypassword
-	$email = $_POST['login_email'];
-	$password = $_POST['login_password'];
+	$email = trim($_POST['login_email']);
+	$password = trim($_POST['login_password']);
 
-// We Will prepare SQL Query
-	$STM = $db->prepare("SELECT * FROM user WHERE email = :email AND password = :password");
-// bind paramenters, Named paramenters always start with colon(:)
-	$STM->bindParam(':email', $email);
-	$STM->bindParam(':password', $password);
-// For Executing prepared statement we will use below function
-	$STM->execute();
-// Count no. of records
-	$count = $STM->rowCount();
-//just fetch. only gets one row. So no foreach loop needed :D
-	$row = $STM->fetch();
-// User Redirect Conditions will go here
+	// check if credentials are correct
+	$login = $user->login($email, $password);
+
+	if ($login !== true) {
+		$errors[] = $login;
+	} else {
+
+		// destroying the old session id and creating a new one. protect from session fixation attack.
+		session_regenerate_id(true);
+		// The user's id is now set into the user's session  in the form of $_SESSION['id']
+		$_SESSION['email'] = $email;
+
+		// if there is an active log in process redirect to index.php; load page only if no logged in user exists
+		$general->logged_in_protect();
+
+	}
+	/*
+	// Prepares SQL Query
+	$query = $db->prepare("SELECT * FROM user WHERE email = :email AND password = :password");
+	// bind paramenters, Named paramenters always start with colon(:)
+	$query->bindParam(':email', $email);
+	$query->bindParam(':password', $password);
+	// For Executing prepared statement we will use below function
+	$query->execute();
+	// Count no. of records
+	$count = $query->rowCount();
+	//just fetch. only gets one row. So no foreach loop needed :D
+	$row = $query->fetch();
+	// User Redirect Conditions will go here
 	if ($count == 1) {
 		//session to see if s/he is admin - secretary - tutor ( 1 - 2 - 3)
 		$_SESSION["user_types_id"] = $row["user_types_id"];
@@ -34,6 +58,7 @@ $pageTitle = "Log In";
 	} else {
 		echo "<script>alert('Wrong email or password!','_self')</script>";
 	}
+	*/
 }
 ?>
 <!DOCTYPE html>
@@ -80,6 +105,7 @@ $pageTitle = "Log In";
 
 	<div id="login">
 
+
 		<h4>Welcome to SASS-Management System</h4>
 
 		<h5>Please sign in to get access.</h5>
@@ -98,11 +124,22 @@ $pageTitle = "Log In";
 			</div>
 
 			<div class="form-group">
-
+				<input type="hidden" name="hidden_submit_pressed">
 				<button type="submit" id="login-btn" name="login" class="btn btn-primary btn-block">Signin &nbsp; <i
 						class="fa fa-play-circle"></i></button>
 
 			</div>
+			<?php
+			if (empty($errors) === false) {
+				?>
+				<div class="alert alert-danger">
+					<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+					<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
+				</div>
+			<?php
+			}
+			?>
+
 		</form>
 
 

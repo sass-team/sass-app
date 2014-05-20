@@ -1,23 +1,30 @@
 <?php
-require_once(ROOT_PATH . "inc/model/user.php");
+require "config.php";
+// identical to require; but php will include it only if it has not already been included
+require_once ROOT_PATH . 'inc/db.php';
+require_once ROOT_PATH . "inc/model/user.php";
+require_once ROOT_PATH . "inc/model/general.php";
+
 
 $general = new General();
+// instantiate user class & connect to db.
+$user = new User($db);
 
 // retrieves data if a user is logged in
 if ($general->logged_in() === true) {
-// instantiate user class & connect to db.
-	$users = new User($db);
-
 	$user_email = $_SESSION['email']; // getting user's id from the session.
-	$user_data_array = $users->get_data($user_email); // getting all the data about the logged in user.
+	$user_data_array = $user->get_data($user_email); // getting all the data about the logged in user.
 
-	$f_name = $user_data_array['f_name'];
-	$l_name = $user_data_array['l_name'];
-	$img = $user_data_array['img']; //avatar
+	// store the data used
+	$first_name = $user_data_array['f_name'];
+	$last_name = $user_data_array['l_name'];
+	$img_loc = $user_data_array['img']; //avatar
 	$profile_description = $user_data_array['profile_description']; //short description in profile page
-	$date = $user_data_array['date']; //date of account creation
-	$type = $user_data_array['type']; //if s/he is admin/secretary/tutor
-	$mobile = $user_data_array['mobile'];
-	$major = $user_data_array['name']; //major of the tutor. in admin & secretary NO major (NULL)
+	$date_account_created = $user_data_array['date']; //date of account creation
+	$user_type = $user_data_array['type']; //if s/he is admin/secretary/tutor
+	$mobile_num = $user_data_array['mobile'];
+	$tutor_major = $user_data_array['name']; //major of the tutor. in admin & secretary NO major (NULL)
 }
+
+
 ?>

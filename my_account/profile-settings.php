@@ -70,7 +70,7 @@ require ROOT_PATH . 'inc/view/sidebar.php';
 
 				          		<div class="col-md-7">
 				          			<div class="fileupload fileupload-new" data-provides="fileupload">
-									  <div class="fileupload-new thumbnail" style="width: 180px; height: 180px;"><img src="<?php echo BASE_URL . $img ?>" alt="Profile Avatar" /></div>
+									  <div class="fileupload-new thumbnail" style="width: 180px; height: 180px;"><img src="<?php echo BASE_URL . $img_loc ?>" alt="Profile Avatar" /></div>
 									  <div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 200px; line-height: 20px;"></div>
 									  <div>
 									    <span class="btn btn-default btn-file"><span class="fileupload-new">Select image</span><span class="fileupload-exists">Change</span><input type="file" /></span>
@@ -96,7 +96,7 @@ require ROOT_PATH . 'inc/view/sidebar.php';
 				          		<label class="col-md-3">First Name</label>
 
 				          		<div class="col-md-7">
-				          			<input type="text" name="first-name" value="<?php echo $f_name; ?>" class="form-control" />
+				          			<input type="text" name="first-name" value="<?php echo $first_name; ?>" class="form-control" />
 				          		</div> <!-- /.col -->
 
 				          	</div> <!-- /.form-group -->
@@ -106,7 +106,7 @@ require ROOT_PATH . 'inc/view/sidebar.php';
 				          		<label class="col-md-3">Last Name</label>
 
 				          		<div class="col-md-7">
-				          			<input type="text" name="last-name" value="<?php echo $l_name; ?>" class="form-control" />
+				          			<input type="text" name="last-name" value="<?php echo $last_name; ?>" class="form-control" />
 				          		</div> <!-- /.col -->
 
 				          	</div> <!-- /.form-group -->
@@ -116,7 +116,7 @@ require ROOT_PATH . 'inc/view/sidebar.php';
 				          		<label class="col-md-3">Mobile</label>
 
 				          		<div class="col-md-7">
-				          			<input type="text" name="mobile" value="<?php echo $mobile; ?>" class="form-control" />
+				          			<input type="text" name="mobile" value="<?php echo $mobile_num; ?>" class="form-control" />
 				          		</div> <!-- /.col -->
 
 				          	</div> <!-- /.form-group -->

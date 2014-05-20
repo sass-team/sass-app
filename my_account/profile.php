@@ -34,7 +34,7 @@ require ROOT_PATH . 'inc/view/sidebar.php';
 						<div class="col-md-4 col-sm-5">
 
 							<div class="thumbnail">
-								<img src="<?php echo BASE_URL . $img ?>" alt="Profile Picture" />
+								<img src="<?php echo BASE_URL . $img_loc ?>" alt="Profile Picture" />
 							</div> <!-- /.thumbnail -->
 
 							<br />
@@ -44,9 +44,9 @@ require ROOT_PATH . 'inc/view/sidebar.php';
 
 						<div class="col-md-8 col-sm-7">
 
-							<h2><?php echo $f_name . " " . $l_name ?></h2>
+							<h2><?php echo $first_name . " " . $last_name ?></h2>
 
-							<h4>Position: <?php echo strtoupper($type) ?></h4>
+							<h4>Position: <?php echo strtoupper($user_type) ?></h4>
 
 							<hr />
 
@@ -61,9 +61,9 @@ require ROOT_PATH . 'inc/view/sidebar.php';
 
 							<ul class="icons-list">
 								<li><i class="icon-li fa fa-envelope"></i> <?php echo $_SESSION['email']; ?></li>
-								<li><i class="icon-li fa fa-phone"></i> <?php echo $mobile ?></li>
+								<li><i class="icon-li fa fa-phone"></i> <?php echo $mobile_num ?></li>
 							</ul>
-							Major: <strong><?php echo $major ?></strong>
+							Major: <strong><?php echo $tutor_major ?></strong>
 							<br />
 							<br />
 							<p><h3>Description</h3></p>
