@@ -57,7 +57,8 @@ class User {
 			}
 
 		} catch (PDOException $e) {
-			die($e->getMessage());
+			echo($e->getMessage());
+            exit();
 		}
 	}// end function login
 

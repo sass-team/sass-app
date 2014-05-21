@@ -47,8 +47,8 @@ if (isset($_POST['form_action_profile_settings'])) {
 	if ($update_result !== true) {
 		$errors[] = $update_result;
 	} else {
-		//	header('Location: ' . BASE_URL . 'my_account/profile-settings.php');
-		//	exit();
+        header('Location: ' . BASE_URL . 'my_account/profile-settings.php');
+        exit();
 	}
 	var_dump($errors);
 }
