@@ -6,59 +6,69 @@
  */
 class User {
 
-	// connection to db.
-	private $db;
+    // connection to db.
+    private $db;
 
-	/**
-	 * Constructor
-	 * @param $database
-	 */
-	public function __construct($database) {
-		$this->db = $database;
-	} // end __construct
+    // data of database for used in queries only
+    private $USER_TABLE = "general_user";
+    private $ID = "id";
+    private $FIRST_NAME = 'f_name';
+    private $LAST_NAME = 'l_name';
+    private $DATE = 'date';
+    private $USER_TYPES = 'user_types';
+    private $MOBILE = 'mobile';
+    ///////////////////////////////////////////////
+
+    /**
+     * Constructor
+     * @param $database
+     */
+    public function __construct($database) {
+        $this->db = $database;
+    } // end __construct
 
 
-	/**
-	 * Verifies given credentials are correct. If login successfuly, returns true
-	 * else return the error message.
-	 *
-	 * Dependancies:
-	 * require_once ROOT_PATH . "inc/model/bcrypt.php";
-	 * $bcrypt = new Bcrypt(12);
-	 *
-	 * @param $email $email of user
-	 * @param $password $password of user
-	 *
-	 * @return bool|string
-	 */
-	public function login($email, $password) {
+    /**
+     * Verifies given credentials are correct. If login successfuly, returns true
+     * else return the error message.
+     *
+     * Dependancies:
+     * require_once ROOT_PATH . "inc/model/bcrypt.php";
+     * $bcrypt = new Bcrypt(12);
+     *
+     * @param $email $email of user
+     * @param $password $password of user
+     *
+     * @return bool|string
+     */
+    public function login($email, $password) {
 
-		if (empty($email) === true || empty($password) === true) {
-			return 'Sorry, but we need both your email and password.';
-		} else if ($this->email_exists($email) === false) {
-			return 'Sorry that email doesn\'t exists.';
-		}
-		global $bcrypt; // global bcry variable
-		$query = "SELECT password, email FROM user WHERE email = :email";
-		$query = $this->db->prepare($query);
-		$query->bindParam(':email', $email);
+        if (empty($email) === true || empty($password) === true) {
+            return 'Sorry, but we need both your email and password.';
+        } else if ($this->email_exists($email) === false) {
+            return 'Sorry that email doesn\'t exists.';
+        }
+        global $bcrypt; // global bcry variable
+        $query = "SELECT password, email FROM " . DB_NAME . ".general_user WHERE email = :email";
+        $query = $this->db->prepare($query);
+        $query->bindParam(':email', $email);
 
-		try {
+        try {
 
-			$query->execute();
-			$data = $query->fetch();
-			$stored_password = $data['password'];
+            $query->execute();
+            $data = $query->fetch();
+            $stored_password = $data['password'];
 
-			// using the verify method to compare the password with the stored hashed password.
-			if ($bcrypt->verify($password, $stored_password) === true) {
-				return true;
-			} else {
-				return 'Sorry, that email/password is invalid';
-			}
+            // using the verify method to compare the password with the stored hashed password.
+            if ($bcrypt->verify($password, $stored_password) === true) {
+                return true;
+            } else {
+                return 'Sorry, that email/password is invalid';
+            }
 
-		} catch (PDOException $e) {
-			echo($e->getMessage());
-            exit();
+        } catch (PDOException $e) {
+            echo($e->getMessage());
+			exit();
 		}
 	}// end function login
 
@@ -71,7 +81,7 @@ class User {
 	 */
 	public function email_exists($email) {
 		$email = trim($email);
-		$query = "SELECT COUNT(`id`) FROM user WHERE `email`= ?";
+		$query = "SELECT COUNT(`id`) FROM " . DB_NAME . ".general_user WHERE `email`= ?";
 		$query = $this->db->prepare($query);
 		$query->bindValue(1, $email);
 
@@ -98,15 +108,18 @@ class User {
 	 */
 	function get_data($email) {
 		// this query return wrong id, of table user :( :( :( :( 3 FUCKING HOURS FUCKING BUG
-		$query = "SELECT  FROM user
+		$query = "SELECT FROM DB_NAME$this->USER_TABLE
 	      LEFT OUTER JOIN user_types ON user.user_types_id = user_types.id
 	      LEFT OUTER JOIN major ON user.major_id = major.id
 	      WHERE email = ?";
 
-		$query = "SELECT user.id, user.f_name, user.l_name, user.img_loc, user.date, user.profile_description, user.mobile, user_types.type, major.name FROM `sass-ms_db`.user
+		$query = "SELECT $this->USER_TABLE.$this->ID, $this->USER_TABLE.$this->FIRST_NAME, $this->USER_TABLE.$this->LAST_NAME, 
+					$this->USER_TABLE.img_loc, $this->USER_TABLE.$this->DATE, $this->USER_TABLE.profile_description,
+					$this->USER_TABLE.$this->MOBILE, $this->USER_TYPES.type, major.name FROM " . DB_NAME . ".general_user
 						LEFT OUTER JOIN user_types ON user.user_types_id = user_types.id
 						LEFT OUTER JOIN major ON user.major_id = major.id
 					WHERE email = :email;";
+
 		$query = $this->db->prepare($query);
 		$query->bindValue(':email', $email, PDO::PARAM_INT);
 
@@ -132,7 +145,7 @@ class User {
 			return $is_profile_data_correct; // the array of errors messages
 		}
 
-		$query = "UPDATE `sass-ms_db`.`user`
+		$query = "UPDATE " . DB_NAME . ".general_user
 					SET `f_name`= :first_name, `l_name`= :last_name, `mobile`= :mobile,
 						`profile_description`= :profile_description
 						WHERE `email`= :email";
@@ -180,7 +193,7 @@ class User {
 	public function update_avatar_img($avatar_img_loc, $user_id) {
 		try {
 
-			$query = "UPDATE `sass-ms_db`.`user` SET `img_loc`= :avatar_img WHERE `id`= :user_id";
+			$query = "UPDATE " . DB_NAME . ".general_user SET `img_loc`= :avatar_img WHERE `id`= :user_id";
 
 			$query = $this->db->prepare($query);
 			$query->bindParam(':avatar_img', $avatar_img_loc, PDO::PARAM_STR);

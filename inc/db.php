@@ -17,12 +17,51 @@ PDO function:
 *	@param  the user name
 *	@param
 */
-try { // connects to database
-	$db = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME .";port=" . DB_PORT,DB_USER,DB_PASS);
-	$db->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION); // CHANGE THE ERROR MODE, THROW AN EXCEPTION WHEN AN ERROR IS FOUND
-	$db->exec("SET NAMES 'utf8'");
-} catch (Exception $e) { // program ends if exception is found
-	echo "Could not connect to the database: <br>" . $e;
-	exit;
-} // end
+//try { // connects to database
+//   $db = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";port=" . DB_PORT, DB_USER, DB_PASS);
+//   $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // CHANGE THE ERROR MODE, THROW AN EXCEPTION WHEN AN ERROR IS FOUND
+//   $db->exec("SET NAMES 'utf8'");
+//} catch (Exception $e) { // program ends if exception is found
+//   echo "Could not connect to the database: <br>" . $e;
+//   exit;
+//} // end
+
+class Database
+{
+   private $dbConnection;
+
+   /**
+    * Constructor.
+    *
+    * Probably this exception should be emailed to programmers.
+    *
+    * @param $database
+    * @throws error message -- could not connect to database.
+    */
+   public function __construct() {
+      try { // connects to database
+         $this->setDbConnection(new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";port=" . DB_PORT, DB_USER, DB_PASS));
+         $this->getDbConnection()->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // CHANGE THE ERROR MODE, THROW AN EXCEPTION WHEN AN ERROR IS FOUND
+         $this->getDbConnection()->exec("SET NAMES 'utf8'");
+      } catch (PDOException $e) { // program ends if exception is found
+         throw new Exception("We could not connect to the database.");
+      } // end
+
+   }
+
+   /**
+    * @return \PDO
+    */
+   public function getDbConnection() {
+      return $this->dbConnection;
+   }
+
+   /**
+    * @param \PDO $db
+    */
+   public function setDbConnection($db) {
+      $this->dbConnection = $db;
+   } // end __construct
+}
+
 ?>
