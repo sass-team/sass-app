@@ -25,7 +25,7 @@ is not filled, as to protect from robots/spam.
    $password = trim($_POST['login_password']);
 
    try {
-      // check if credentials are correct
+      // check if credentials are correct. If they are not, an exception occurs.
       $user->login($email, $password);
       // destroying the old session id and creating a new one. protect from session fixation attack.
       session_regenerate_id(true);

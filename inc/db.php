@@ -29,32 +29,6 @@ PDO function:
 class DB
 {
 
-   // data of database for used in queries only
-   // user table
-   const USER_TABLE = 'user';
-   const USER_EMAIL = "email";
-   const USER_FIRST_NAME = 'f_name';
-   const USER_LAST_NAME = 'l_name';
-   const USER_DATE = 'date';
-   const USER_USER_TYPES = 'user_types';
-   const USER_PROFILE_DESCRIPTION = 'profile_description';
-   const USER_MOBILE = 'mobile';
-   const USER_PASSWORD = 'password';
-   const USER_USER_TYPE_ID = 'user_types_ID';
-   CONST USER_IMG_LOC = 'img_loc';
-   const USER_TYPES_ID = 'id';
-
-
-   //  user_types table
-   const USERTYPES_TABLE = 'user_types';
-   const USERTYPES_TYPE = 'type';
-   const USERTYPES_ID = 'id';
-
-   // major table
-   const MAJOR_TABLE = 'major';
-   const MAJOR_NAME = 'name';
-   ///////////////////////////////////////////////
-
    private $dbConnection;
 
    /**
