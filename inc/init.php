@@ -2,6 +2,8 @@
 /**
  *
  */
+ob_start();
+
 #starting the users session
 session_start();
 

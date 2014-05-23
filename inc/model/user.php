@@ -39,7 +39,7 @@ class User {
 		} else if ($this->email_exists($email) === false) {
 			throw new Exception('Sorry that email doesn\'t exists.');
 		}
-		$query = "SELECT password, email FROM `sass-ms_db`.user WHERE email = :email";
+		$query = "SELECT password, email FROM `" . DB_NAME . "`.user WHERE email = :email";
 		$query = $this->dbConnection->prepare($query);
 		$query->bindParam(':email', $email);
 
@@ -69,7 +69,7 @@ class User {
 	 */
 	public function email_exists($email) {
 		$email = trim($email);
-		$query = "SELECT COUNT(id) FROM `sass-ms_db`.user WHERE email = :email";
+		$query = "SELECT COUNT(id) FROM `" . DB_NAME . "`.user WHERE email = :email";
 
 		$query = $this->dbConnection->prepare($query);
 		$query->bindParam(':email', $email, PDO::PARAM_STR);
@@ -98,7 +98,7 @@ class User {
 	function get_data($email) {
 		$query = "SELECT user.id, user.`f_name`, user.`l_name`, user.`img_loc`,
 						user.date, user.`profile_description`, user.mobile, user_types.type, major.name
-					FROM `sass-ms_db`.user
+					FROM `" . DB_NAME . "`.user
 						LEFT OUTER JOIN user_types ON user.`user_types_id` = `user_types`.id
 						LEFT OUTER JOIN major ON user.major_id = major.id
 					WHERE email = :email";

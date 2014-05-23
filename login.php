@@ -1,4 +1,5 @@
 <?php
+ob_start();
 // TODO: Add option-functionality to resend email if password forgot
 // TODO: sql make 'img' of database to NOT NULL & refactor name to 'img_location'
 require 'inc/init.php';
@@ -56,6 +57,7 @@ is not filled, as to protect from robots/spam.
    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
    <meta name="description" content="">
    <meta name="author" content=""/>
+	<link rel="shortcut icon" href="<?php echo BASE_URL; ?>img/logos/logo-login.png">
 
    <link rel="stylesheet"
          href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,800italic,400,600,800"
