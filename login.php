@@ -4,17 +4,14 @@
 require 'inc/init.php';
 
 // object needed for verifying the hashed password
-require_once ROOT_PATH . "inc/model/bcrypt.php";
-$bcrypt = new Bcrypt(12);
-
-////////// generates hash key ///////////////////
-//echo $bcrypt->genHash('pass');
+//require_once ROOT_PATH . "inc/model/bcrypt.php";
 
 // if there is an active log in process redirect to index.php; load page only if no
 // logged in user exists
 $general->logged_in_protect();
 $page_title = "Log In";
 // holds an array with error messages
+echo password_hash("pass", PASSWORD_DEFAULT);
 
 ?>
 
@@ -27,13 +24,9 @@ is not filled, as to protect from robots/spam.
    $email = trim($_POST['login_email']);
    $password = trim($_POST['login_password']);
 
-   // check if credentials are correct
-   $login = $user->login($email, $password);
-
-   if ($login !== true) {
-      $errors[] = $login;
-   } else {
-
+   try {
+      // check if credentials are correct
+      $user->login($email, $password);
       // destroying the old session id and creating a new one. protect from session fixation attack.
       session_regenerate_id(true);
       // The user's id is now set into the user's session  in the form of $_SESSION['id']
@@ -41,7 +34,10 @@ is not filled, as to protect from robots/spam.
 
       // if there is an active log in process redirect to index.php; load page only if no logged in user exists
       $general->logged_in_protect();
+   } catch (Exception $e) {
+      $errors[] = $e->getMessage();
    }
+
 }
 ?>
 <!DOCTYPE html>

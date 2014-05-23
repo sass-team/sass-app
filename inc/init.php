@@ -14,7 +14,7 @@ require_once ROOT_PATH . "inc/model/general.php";
 $errors = array();
 
 try {
-   $db = new Database();
+   $db = new DB();
    // instantiate user class & connect to db.
    $user = new User($db->getDbConnection());
 } catch (Exception $e) {
