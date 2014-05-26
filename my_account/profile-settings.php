@@ -3,6 +3,7 @@
 require "../inc/init.php";
 $general->logged_out_protect();
 
+
 $errors = array();
 
 if (isset($_POST['form_action_profile_settings'])) {
@@ -51,10 +52,9 @@ if (isset($_POST['form_action_profile_settings'])) {
    if ($update_result !== true) {
       $errors[] = $update_result;
    } else {
-      header('Location: ' . BASE_URL . 'my_account/profile-settings.php');
+      header('Location: ' . BASE_URL . 'my_account/profile-settings.php?success');
       exit();
    }
-   var_dump($errors);
 }
 
 $page_title = "My Account - Settings";
@@ -96,201 +96,206 @@ require ROOT_PATH . 'inc/view/sidebar.php';
 
 <div class="col-md-9 col-sm-8">
 
-   <div class="tab-content stacked-content">
-      <div class="tab-pane fade in active" id="profile-tab">
+<div class="tab-content stacked-content">
+   <div class="tab-pane fade in active" id="profile-tab">
 
-         <h3 class="">Edit Profile Settings</h3>
+      <h3 class="">Edit Profile Settings</h3>
 
-         <hr/>
+      <hr/>
 
-         <br/>
+      <br/>
 
-         <form action="./profile-settings.php" class="form-horizontal" method="post" enctype="multipart/form-data">
+      <form action="./profile-settings.php" class="form-horizontal" method="post" enctype="multipart/form-data">
 
-            <?php
-            if (empty($errors) !== true) {
-               ?>
-               <div class="alert alert-danger">
-                  <a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-                  <strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
-               </div>
-            <?php } ?>
-            <div class="form-group">
+         <?php
+         if (empty($errors) !== true) {
+            ?>
+            <div class="alert alert-danger">
+               <a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+               <strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
+            </div>
+         <?php } else if (isset($_GET['success'])) { ?>
+            <div class="alert alert-success">
+               <a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+               <strong>Well done!</strong> Successfully updated data.
+            </div>
+         <?php } ?>
+         <div class="form-group">
 
-               <label class="col-md-3">Avatar</label>
+            <label class="col-md-3">Avatar</label>
 
-               <div class="col-md-7">
-                  <div class="fileupload fileupload-new" data-provides="fileupload">
-                     <div class="fileupload-new thumbnail" style="width: 180px; height: 180px;"><img
-                           src="<?php echo BASE_URL . $avatar_img_loc ?>" name="fileupload-avatar"
-                           alt="Profile Avatar"/></div>
-                     <div class="fileupload-preview fileupload-exists thumbnail"
-                          style="max-width: 200px; max-height: 200px; line-height: 20px;"></div>
-                     <div>
+            <div class="col-md-7">
+               <div class="fileupload fileupload-new" data-provides="fileupload">
+                  <div class="fileupload-new thumbnail" style="width: 180px; height: 180px;"><img
+                        src="<?php echo BASE_URL . $avatar_img_loc ?>" name="fileupload-avatar"
+                        alt="Profile Avatar"/></div>
+                  <div class="fileupload-preview fileupload-exists thumbnail"
+                       style="max-width: 200px; max-height: 200px; line-height: 20px;"></div>
+                  <div>
 												<span class="btn btn-default btn-file"><span
                                           class="fileupload-new">Select image</span><span class="fileupload-exists">
 														Change</span><input name="fileupload-avatar" type="file"/></span>
-                        <a href="#" class="btn btn-default fileupload-exists" data-dismiss="fileupload">Remove</a>
-                     </div>
+                     <a href="#" class="btn btn-default fileupload-exists" data-dismiss="fileupload">Remove</a>
                   </div>
                </div>
-               <!-- /.col -->
-
             </div>
-            <!-- /.form-group -->
+            <!-- /.col -->
 
-            <div class="form-group">
+         </div>
+         <!-- /.form-group -->
 
-               <label class="col-md-3">Email</label>
+         <div class="form-group">
 
-               <div class="col-md-7">
-                  <input type="text" name="user-name" value="<?php echo $user_email; ?>"
-                         class="form-control" disabled/>
-               </div>
-               <!-- /.col -->
+            <label class="col-md-3">Email</label>
 
+            <div class="col-md-7">
+               <input type="text" name="user-name" value="<?php echo $user_email; ?>"
+                      class="form-control" disabled/>
             </div>
-            <!-- /.form-group -->
+            <!-- /.col -->
 
-            <div class="form-group">
+         </div>
+         <!-- /.form-group -->
 
-               <label class="col-md-3">First Name</label>
+         <div class="form-group">
 
-               <div class="col-md-7">
-                  <input type="text" name="first-name" value="<?php echo $first_name; ?>"
-                         class="form-control"/>
-               </div>
-               <!-- /.col -->
+            <label class="col-md-3">First Name</label>
 
+            <div class="col-md-7">
+               <input type="text" name="first-name" value="<?php echo $first_name; ?>"
+                      class="form-control"/>
             </div>
-            <!-- /.form-group -->
+            <!-- /.col -->
 
-            <div class="form-group">
+         </div>
+         <!-- /.form-group -->
 
-               <label class="col-md-3">Last Name</label>
+         <div class="form-group">
 
-               <div class="col-md-7">
-                  <input type="text" name="last-name" value="<?php echo $last_name; ?>"
-                         class="form-control"/>
-               </div>
-               <!-- /.col -->
+            <label class="col-md-3">Last Name</label>
 
+            <div class="col-md-7">
+               <input type="text" name="last-name" value="<?php echo $last_name; ?>"
+                      class="form-control"/>
             </div>
-            <!-- /.form-group -->
+            <!-- /.col -->
 
-            <div class="form-group">
+         </div>
+         <!-- /.form-group -->
 
-               <label class="col-md-3">Mobile</label>
+         <div class="form-group">
 
-               <div class="col-md-7">
-                  <input type="text" name="mobile" value="<?php echo $mobile_num; ?>" class="form-control"/>
-               </div>
-               <!-- /.col -->
+            <label class="col-md-3">Mobile</label>
 
+            <div class="col-md-7">
+               <input type="text" name="mobile" value="<?php echo $mobile_num; ?>" class="form-control"/>
             </div>
-            <!-- /.form-group -->
+            <!-- /.col -->
 
-            <div class="form-group">
+         </div>
+         <!-- /.form-group -->
 
-               <label class="col-md-3">Short Description</label>
+         <div class="form-group">
 
-               <div class="col-md-7">
-                  <textarea id="about-textarea" name="profile-description" rows="6"
-                            class="form-control"><?php echo $profile_description ?></textarea>
-               </div>
-               <!-- /.col -->
+            <label class="col-md-3">Short Description</label>
 
+            <div class="col-md-7">
+               <textarea id="about-textarea" name="profile-description" rows="6"
+                         class="form-control"><?php echo $profile_description ?></textarea>
             </div>
-            <!-- /.form-group -->
+            <!-- /.col -->
 
-            <br/>
-
-            <div class="form-group">
-
-               <input type="hidden" name="form_action_profile_settings">
-
-               <div class="col-md-7 col-md-push-3">
-                  <button type="submit" class="btn btn-primary">Save Changes</button>
-                  &nbsp;
-                  <button type="reset" class="btn btn-default">Cancel</button>
-               </div>
-               <!-- /.col -->
-
-            </div>
-            <!-- /.form-group -->
-
-         </form>
-
-
-      </div>
-      <div class="tab-pane fade" id="password-tab">
-
-         <h3 class="">Change Your Password</h3>
-
-         <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
-            Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes.</p>
+         </div>
+         <!-- /.form-group -->
 
          <br/>
 
-         <form action="./page-settings.php" class="form-horizontal">
+         <div class="form-group">
 
-            <div class="form-group">
+            <input type="hidden" name="form_action_profile_settings">
 
-               <label class="col-md-3">Old Password</label>
-
-               <div class="col-md-7">
-                  <input type="password" name="old-password" class="form-control"/>
-               </div>
-               <!-- /.col -->
-
+            <div class="col-md-7 col-md-push-3">
+               <button type="submit" class="btn btn-primary">Save Changes</button>
+               &nbsp;
+               <button type="reset" class="btn btn-default">Cancel</button>
             </div>
-            <!-- /.form-group -->
+            <!-- /.col -->
+
+         </div>
+         <!-- /.form-group -->
+
+      </form>
 
 
-            <hr/>
-
-
-            <div class="form-group">
-
-               <label class="col-md-3">New Password</label>
-
-               <div class="col-md-7">
-                  <input type="password" name="new-password-1" class="form-control"/>
-               </div>
-               <!-- /.col -->
-
-            </div>
-            <!-- /.form-group -->
-
-            <div class="form-group">
-
-               <label class="col-md-3">New Password Confirm</label>
-
-               <div class="col-md-7">
-                  <input type="password" name="new-password-2" class="form-control"/>
-               </div>
-               <!-- /.col -->
-
-            </div>
-            <!-- /.form-group -->
-
-            <br/>
-
-            <div class="form-group">
-
-               <div class="col-md-7 col-md-push-3">
-                  <button type="submit" class="btn btn-primary">Save Changes</button>
-                  &nbsp;
-                  <button type="reset" class="btn btn-default">Cancel</button>
-               </div>
-               <!-- /.col -->
-
-            </div>
-            <!-- /.form-group -->
-
-         </form>
-      </div>
    </div>
+   <div class="tab-pane fade" id="password-tab">
+
+      <h3 class="">Change Your Password</h3>
+
+      <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
+         Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes.</p>
+
+      <br/>
+
+      <form action="./page-settings.php" class="form-horizontal">
+
+         <div class="form-group">
+
+            <label class="col-md-3">Old Password</label>
+
+            <div class="col-md-7">
+               <input type="password" name="old-password" class="form-control"/>
+            </div>
+            <!-- /.col -->
+
+         </div>
+         <!-- /.form-group -->
+
+
+         <hr/>
+
+
+         <div class="form-group">
+
+            <label class="col-md-3">New Password</label>
+
+            <div class="col-md-7">
+               <input type="password" name="new-password-1" class="form-control"/>
+            </div>
+            <!-- /.col -->
+
+         </div>
+         <!-- /.form-group -->
+
+         <div class="form-group">
+
+            <label class="col-md-3">New Password Confirm</label>
+
+            <div class="col-md-7">
+               <input type="password" name="new-password-2" class="form-control"/>
+            </div>
+            <!-- /.col -->
+
+         </div>
+         <!-- /.form-group -->
+
+         <br/>
+
+         <div class="form-group">
+
+            <div class="col-md-7 col-md-push-3">
+               <button type="submit" class="btn btn-primary">Save Changes</button>
+               &nbsp;
+               <button type="reset" class="btn btn-default">Cancel</button>
+            </div>
+            <!-- /.col -->
+
+         </div>
+         <!-- /.form-group -->
+
+      </form>
+   </div>
+</div>
 
 </div>
 <!-- /.col -->
