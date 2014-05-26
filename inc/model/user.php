@@ -10,6 +10,7 @@ class User
    // connection to db.
    private $dbConnection;
 
+   private $email;
 
    /**
     * Constructor
@@ -57,7 +58,7 @@ class User
 
       } catch (PDOException $e) {
          // "Sorry could not connect to the database."
-         throw new Exception($e->getMessage());
+         throw new Exception("Sorry could not connect to the database.");
       }
    }// end function login
 
@@ -179,7 +180,6 @@ class User
       try {
 
          $query = "UPDATE " . DB_NAME . ".general_user SET `img_loc`= :avatar_img WHERE `id`= :user_id";
-
          $query = $this->dbConnection->prepare($query);
          $query->bindParam(':avatar_img', $avatar_img_loc, PDO::PARAM_STR);
          $query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
@@ -191,7 +191,35 @@ class User
       } // end try catch
    }
 
+   public function update_password($user_id, $old_password, $new_password_1, $new_password_2) {
 
+      $old_password_hashed = getHashedPassword($user_id);
+      if (!password_verify($old_password, $old_password_hashed)) {
+         throw new Exception("Sorry, the old password is incorrect.");
+      }
+
+      if ($new_password_1 !== $new_password_2) {
+         throw new Exception("There was a mismatch with the new passwords");
+      }
+   }
+
+
+   public function getHashedPassword($id) {
+      $query = "SELECT password FROM `" . DB_NAME . "`.user WHERE id = :id";
+      $query = $this->dbConnection->prepare($query);
+      $query->bindParam(':$id', $this->$email);
+
+      try {
+
+         $query->execute();
+         $data = $query->fetch();
+         $hash_password = $data['password'];
+         return $hash_password;
+      } catch (Exception $e) {
+         throw new Exception("Could not connect to database.");
+      }
+
+   }
 }
 
 ?>

@@ -11,8 +11,6 @@ require 'inc/init.php';
 // logged in user exists
 $general->logged_in_protect();
 $page_title = "Log In";
-// holds an array with error messages
-echo password_hash("pass", PASSWORD_DEFAULT);
 
 ?>
 

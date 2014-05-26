@@ -17,8 +17,6 @@ $errors = array();
 
 try {
    $db = new DB();
-   // instantiate user class & connect to db.
-   $user = new User($db->getDbConnection());
 } catch (Exception $e) {
    $errors[] = $e->getMessage();
 }
@@ -27,6 +25,9 @@ $general = new General();
 
 // retrieves data if a user is logged in
 if ($general->logged_in() === true) {
+   // instantiate user class & connect to db.
+   $user = new User($db->getDbConnection());
+
    $user_email = $_SESSION['email']; // getting user's id from the session.
    $user_data_array = $user->get_data($user_email); // getting all the data about the logged in user.
 

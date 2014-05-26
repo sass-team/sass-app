@@ -55,6 +55,13 @@ if (isset($_POST['form_action_profile_settings'])) {
       header('Location: ' . BASE_URL . 'my_account/profile-settings.php?success');
       exit();
    }
+} else if (isset($_POST['form_action_update_password'])) {
+
+   try {
+      $user->update_password($user_id, $_POST['old-password'], $_POST['new-password-1'], $_POST['new-password-2']);
+   } catch(Exception $e) {
+      $errors[] = $e->getMessage();
+   }
 }
 
 $page_title = "My Account - Settings";
@@ -232,12 +239,11 @@ require ROOT_PATH . 'inc/view/sidebar.php';
 
       <h3 class="">Change Your Password</h3>
 
-      <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
-         Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes.</p>
+      <p></p>
 
       <br/>
 
-      <form action="./page-settings.php" class="form-horizontal">
+      <form action="./profile-settings.php" class="form-horizontal" method="post">
 
          <div class="form-group">
 
@@ -285,6 +291,7 @@ require ROOT_PATH . 'inc/view/sidebar.php';
 
             <div class="col-md-7 col-md-push-3">
                <button type="submit" class="btn btn-primary">Save Changes</button>
+               <input type="hidden" name="form_action_update_password">
                &nbsp;
                <button type="reset" class="btn btn-default">Cancel</button>
             </div>
