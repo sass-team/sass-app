@@ -21,14 +21,14 @@
 
 <ul id="main-nav" class="open-active">
 
-<li class="active">
+<li class="<?php if ($section == "dashboard") {echo "active"; } ?>">
 	<a href="<?php echo BASE_URL; ?>index.php">
 		<i class="fa fa-dashboard"></i>
 		Dashboard
 	</a>
 </li>
 
-<li class="dropdown">
+<li class="dropdown <?php if ($section == "my_account") {echo "active"; } ?>">
 	<a href="javascript:;">
 		<i class="fa fa-file-text"></i>
 		My Account
@@ -59,7 +59,30 @@
 	</ul>
 
 </li>
+<?php if($user_type == 'admin') { ?>
+<li class="dropdown <?php if ($section == "manage_users") {echo "active"; } ?>">
+	<a href="javascript:;">
+		<i class="fa fa-tasks"></i>
+		Manage / View Users
+		<span class="caret"></span>
+	</a>
 
+	<ul class="sub-nav">
+		<li>
+			<a href="<?php echo BASE_URL; ?>manage_users/manage-users.php">
+				<i class="fa fa-edit"></i>
+				Manage Users
+			</a>
+		</li>
+		<li>
+			<a href="<?php echo BASE_URL; ?>manage_users/view-users.php">
+				<i class="fa fa-group"></i>
+				View Current Users
+			</a>
+		</li>
+	</ul>
+</li>
+<?php } ?>
 <li class="dropdown">
 	<a href="javascript:;">
 		<i class="fa fa-tasks"></i>
