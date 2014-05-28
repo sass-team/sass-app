@@ -21,14 +21,14 @@
 
 <ul id="main-nav" class="open-active">
 
-<li class="<?php if ($section == "dashboard") {echo "active"; } ?>">
+<li class="<?php if ($section == "dashboard") { echo "active"; } ?>">
 	<a href="<?php echo BASE_URL; ?>index.php">
 		<i class="fa fa-dashboard"></i>
 		Dashboard
 	</a>
 </li>
 
-<li class="dropdown <?php if ($section == "my_account") {echo "active"; } ?>">
+<li class="dropdown <?php if ($section == "my_account") { echo "active"; } ?>">
 	<a href="javascript:;">
 		<i class="fa fa-file-text"></i>
 		My Account

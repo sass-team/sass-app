@@ -4,6 +4,7 @@ $general->logged_out_protect();
 
 // viewers
 $page_title = "Dashboard - SASS Management System";
+$section = "dashboard";
 require ROOT_PATH . 'inc/view/header.php';
 require ROOT_PATH . 'inc/view/sidebar.php';
 

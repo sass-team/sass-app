@@ -70,6 +70,8 @@ if (isset($_POST['form_action_profile_settings'])) {
 }
 
 $page_title = "My Account - Settings";
+$section = "my_account";
+
 require ROOT_PATH . 'inc/view/header.php';
 require ROOT_PATH . 'inc/view/sidebar.php';
 
