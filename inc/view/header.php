@@ -16,6 +16,7 @@
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>css/font-awesome.min.css" type="text/css" />
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>css/bootstrap.min.css" type="text/css" />
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>js/libs/css/ui-lightness/jquery-ui-1.9.2.custom.css" type="text/css" />
+   <link rel="stylesheet" href="<?php echo BASE_URL; ?>js/plugins/icheck/skins/minimal/blue.css" type="text/css" />
 
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>js/plugins/fileupload/bootstrap-fileupload.css" type="text/css" />
 	

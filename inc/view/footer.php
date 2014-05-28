@@ -20,6 +20,9 @@
 <script src="<?php echo BASE_URL; ?>js/libs/jquery-ui-1.9.2.custom.min.js"></script>
 <script src="<?php echo BASE_URL; ?>js/libs/bootstrap.min.js"></script>
 
+
+<script src="<?php echo BASE_URL; ?>js/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="<?php echo BASE_URL; ?>js/plugins/datatables/DT_bootstrap.js"></script>
 <script src="<?php echo BASE_URL; ?>js/plugins/icheck/jquery.icheck.min.js"></script>
 <script src="<?php echo BASE_URL; ?>js/plugins/select2/select2.js"></script>
 <script src="<?php echo BASE_URL; ?>js/plugins/tableCheckable/jquery.tableCheckable.js"></script>
@@ -27,7 +30,6 @@
 <script src="<?php echo BASE_URL; ?>js/plugins/textarea-counter/jquery.textarea-counter.js"></script>
 
 
-<script src="<?php echo BASE_URL; ?>js/App.js"></script>
 
 <script src="<?php echo BASE_URL; ?>js/libs/raphael-2.1.2.min.js"></script>
 <script src="<?php echo BASE_URL; ?>js/plugins/morris/morris.min.js"></script>
@@ -41,6 +43,12 @@
 <script src="<?php echo BASE_URL; ?>js/demos/calendar.js"></script>
 
 <script src="<?php echo BASE_URL; ?>js/demos/dashboard.js"></script>
+
+
+<script src="<?php echo BASE_URL; ?>js/App.js"></script>
+
+
+
 
 </body>
 </html>
