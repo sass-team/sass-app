@@ -4,12 +4,22 @@
  * Class User will contain prototype for users; tutors, secretary and admin.
  * Log In, Log Out.
  */
-class User
+abstract class User
 {
 
    // connection to db.
    private $dbConnection;
 
+
+   private $id;
+   private $firstName;
+   private $lastName;
+   private $avatarImgLoc;
+   private $profileDescription;
+   private $dateAccountCreated;
+   private $userType;
+   private $mobileNum;
+   private $tutorMajor;
    private $email;
 
    /**
@@ -18,8 +28,7 @@ class User
     */
    public function __construct($dbConnection) {
       $this->dbConnection = $dbConnection;
-   } // end __construct
-
+   }
 
    /**
     * Verifies given credentials are correct. If login successfuly, returns true
@@ -60,7 +69,7 @@ class User
          // "Sorry could not connect to the database."
          throw new Exception("Sorry could not connect to the database.");
       }
-   }// end function login
+   } // end __construct
 
    /**
     * Verifies a user with given email exists.
@@ -89,15 +98,31 @@ class User
       } catch (PDOException $e) {
          die($e->getMessage());
       } // end catch
-   } // end function user_exists
+   }
 
+   // end function login
+
+   public function initData($email) {
+      $allUserData = $this->getAllData($email);
+      $this->setId($allUserData['id']);
+      $this->setFirstName($allUserData['f_name']);
+      $this->setLastName($allUserData['l_name']);
+      $this->setAvatarImgLoc($allUserData['img_loc']);
+      $this->setProfileDescription($allUserData['profile_description']);
+      $this->setDateAccountCreated($allUserData['date']);
+      $this->setMobileNum($allUserData['mobile']);
+
+      // initialize tutor/secretary/admin class depending on type.
+      $this->setUserType($allUserData['type']);
+      $this->setTutorMajor($allUserData['name']);
+   }
 
    /**
     * Returns all information of a user given his email.
     * @param $email $email of user
     * @return mixed If
     */
-   function get_data($email) {
+   function getAllData($email) {
       $query = "SELECT user.id, user.`f_name`, user.`l_name`, user.`img_loc`,
 						user.date, user.`profile_description`, user.mobile, user_types.type, major.name
 					FROM `" . DB_NAME . "`.user
@@ -114,7 +139,70 @@ class User
       } catch (PDOException $e) {
          die($e->getMessage());
       } // end try
+   } // end getAllData
+
+   /**
+    * @param mixed $id
+    */
+   private function setId($id) {
+      $this->id = $id;
    } // end function get_data
+
+   /**
+    * @param mixed $firstName
+    */
+   private function setFirstName($firstName) {
+      $this->firstName = $firstName;
+   }
+
+   /**
+    * @param mixed $lastName
+    */
+   private function setLastName($lastName) {
+      $this->lastName = $lastName;
+   }
+
+   /**
+    * @param mixed $avatarImgLoc
+    */
+   private function setAvatarImgLoc($avatarImgLoc) {
+      $this->avatarImgLoc = $avatarImgLoc;
+   }
+
+   /**
+    * @param mixed $profileDescription
+    */
+   private function setProfileDescription($profileDescription) {
+      $this->profileDescription = $profileDescription;
+   }
+
+   /**
+    * @param mixed $dateAccountCreated
+    */
+   private function setDateAccountCreated($dateAccountCreated) {
+      $this->dateAccountCreated = $dateAccountCreated;
+   }
+
+   /**
+    * @param mixed $mobileNum
+    */
+   private function setMobileNum($mobileNum) {
+      $this->mobileNum = $mobileNum;
+   }
+
+   /**
+    * @param mixed $userType
+    */
+   private function setUserType($userType) {
+      $this->userType = $userType;
+   }
+
+   /**
+    * @param mixed $tutorMajor
+    */
+   private function setTutorMajor($tutorMajor) {
+      $this->tutorMajor = $tutorMajor;
+   }
 
    function update_profile_data($first_name, $last_name, $mobile_num, $description, $email) {
       $first_name = trim($first_name);
@@ -203,7 +291,6 @@ class User
       }
    }
 
-
    public function getHashedPassword($id) {
       $query = "SELECT password FROM `" . DB_NAME . "`.user WHERE id = :id";
       $query = $this->dbConnection->prepare($query);
@@ -218,8 +305,101 @@ class User
       } catch (Exception $e) {
          throw new Exception("Could not connect to database.");
       }
-
    }
+
+   /**
+    * @return mixed
+    */
+   public function getAvatarImgLoc() {
+      return $this->avatarImgLoc;
+   }
+
+   /**
+    * @return mixed
+    */
+   public function getDateAccountCreated() {
+      return $this->dateAccountCreated;
+   }
+
+   /**
+    * @return mixed
+    */
+   public function getDbConnection() {
+      return $this->dbConnection;
+   }
+
+   /**
+    * @param mixed $dbConnection
+    */
+   public function setDbConnection($dbConnection) {
+      $this->dbConnection = $dbConnection;
+   }
+
+   /**
+    * @return mixed
+    */
+   public function getEmail() {
+      return $this->email;
+   }
+
+   /**
+    * @return mixed
+    */
+   public function getFirstName() {
+      return $this->firstName;
+   }
+
+   /**
+    * @return mixed
+    */
+   public function getId() {
+      return $this->id;
+   }
+
+   /**
+    * @return mixed
+    */
+   public function getLastName() {
+      return $this->lastName;
+   }
+
+   /**
+    * @return mixed
+    */
+   public function getMobileNum() {
+      return $this->mobileNum;
+   }
+
+   /**
+    * @return mixed
+    */
+   public function getProfileDescription() {
+      return $this->profileDescription;
+   }
+
+   /**
+    * @return mixed
+    */
+   public function getTutorMajor() {
+      return $this->tutorMajor;
+   }
+
+   /**
+    * @return mixed
+    */
+   public function getUserType() {
+      return $this->userType;
+   }
+
+   abstract protected function isAdmin();
+
+   /**
+    * @param mixed $email
+    */
+   private function setEmail($email) {
+      $this->email = $email;
+   }
+
 }
 
 ?>

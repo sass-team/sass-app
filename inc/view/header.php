@@ -56,7 +56,7 @@
 			<li class="dropdown">
 				<a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
 					<i class="fa fa-user"></i>
-					<?php echo "Welcome " . $first_name; ?>
+					<?php echo "Welcome " . $user->getFirstName(); ?>
 					<span class="caret"></span>
 				</a>
 

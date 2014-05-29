@@ -53,11 +53,11 @@ require ROOT_PATH . 'inc/view/sidebar.php';
       <th class="checkbox-column">
          <input type="checkbox" class="icheck-input">
       </th>
-      <th data-filterable="true" data-sortable="true" data-direction="desc">Rendering engine</th>
-      <th data-direction="asc" data-filterable="true" data-sortable="true">Browser</th>
-      <th data-filterable="true" data-sortable="true">Platform(s)</th>
-      <th data-filterable="false" class="hidden-xs hidden-sm">Engine version</th>
-      <th data-filterable="true" class="hidden-xs hidden-sm">CSS grade</th>
+      <th data-filterable="true" data-sortable="true" data-direction="desc">Name</th>
+      <th data-direction="asc" data-filterable="true" data-sortable="true">Email</th>
+      <th data-filterable="true" data-sortable="true">Position</th>
+      <th data-filterable="false" class="hidden-xs hidden-sm">Profile</th>
+      <th data-filterable="true" class="hidden-xs hidden-sm">Schedule</th>
    </tr>
    </thead>
    <tbody>
@@ -294,8 +294,8 @@ require ROOT_PATH . 'inc/view/sidebar.php';
    </div>
    <!-- /.col -->
 
-   </div>
-   <!-- /.wrapper -->
+   </div> <!-- #wrapper -->
+
 
 
 <?php include ROOT_PATH . "inc/view/footer.php"; ?>
