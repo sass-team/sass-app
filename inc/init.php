@@ -9,14 +9,17 @@ session_start();
 
 require "config.php";
 // identical to require; but php will include it only if it has not already been included
-require_once ROOT_PATH . 'inc/db.php';
+require_once ROOT_PATH . 'inc/DB.php';
 require_once ROOT_PATH . "inc/model/User.php";
+require_once ROOT_PATH . "inc/model/Users.php";
+require_once ROOT_PATH . "inc/model/Admin.php";
 require_once ROOT_PATH . "inc/model/General.php";
 
 $errors = array();
 
 try {
 	$db = new DB();
+	$users = new Users($db->getDbConnection());
 } catch (Exception $e) {
 	$errors[] = $e->getMessage();
 }
@@ -27,11 +30,16 @@ $general = new General();
 // TODO: CEHCK IF DB IS INITALIZED.
 if ($general->logged_in() === true) {
    // instantiate user class & connect to db.
-   $user = new Admin($db->getDbConnection());
 
-	$user_email = $_SESSION['email']; // getting user's id from the session.
+	$user_email = $_SESSION['email']; // getting user's id from the session.4
+	$userData = $users->getAllData($user_email);
+
+	var_dump($userData['type']);
+	if($userData['type'] == 'admin') {
+		$user = new Admin($userData);
+	}
+
 //	$user_data_array = $user->getAllData($user_email); // getting all the data about the logged in user.
-   $user->initData($user_email);
 	// store the data used
 //	$user_id = $user_data_array['id'];
 //	$first_name = $user_data_array['f_name'];

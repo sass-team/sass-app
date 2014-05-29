@@ -22,7 +22,7 @@ is not filled, as to protect from robots/spam.
 
    try {
       // check if credentials are correct. If they are not, an exception occurs.
-      $user->login($email, $password);
+      $users->login($email, $password);
       // destroying the old session id
       //and creating a new one. protect from session fixation attack.
       session_regenerate_id(true);

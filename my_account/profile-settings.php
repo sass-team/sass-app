@@ -9,8 +9,8 @@ $errors = array();
 if (isset($_POST['form_action_profile_settings'])) {
 
 	try {
-		$update_result = $user->update_profile_data($_POST['first-name'], $_POST['last-name'],
-			$_POST['mobile'], $_POST['profile-description'], $user_email);
+		$update_result = $users->update_profile_data($_POST['first-name'], $_POST['last-name'],
+			$_POST['mobile'], $_POST['profile-description'], $user->getEmail());
 
 	} catch (Exception $e) {
 		$errors[] = $e->getMessage();
@@ -34,11 +34,11 @@ if (isset($_POST['form_action_profile_settings'])) {
 			$ext = pathinfo($path, PATHINFO_EXTENSION);
 
 			if (move_uploaded_file($_FILES['fileupload-avatar']['tmp_name'], $uploadfile)) {
-				$img_web_loc = $uploaddir . "avatar_img_" . $user_id . "." . $ext;
+				$img_web_loc = $uploaddir . "avatar_img_" . $user->getId() . "." . $ext;
 				rename($uploadfile, $img_web_loc);
 
-				$avatar_img_loc = "img/avatars/avatar_img_" . $user_id . "." . $ext;
-				if (true !== ($update_avatar_img_response = $user->update_avatar_img($avatar_img_loc, $user_id))) {
+				$avatar_img_loc = "img/avatars/avatar_img_" . $user->getId() . "." . $ext;
+				if (true !== ($update_avatar_img_response = $users->update_avatar_img($user->getAvatarImgLoc(), $user->getId()))) {
 					$errors[] = "Error storing img loc to database. Please try again later.";
 				}
 			} else {
@@ -58,7 +58,7 @@ if (isset($_POST['form_action_profile_settings'])) {
 } else if (isset($_POST['form_action_update_password'])) {
 
 	try {
-		$user->update_password($user_id, $_POST['old-password'], $_POST['new-password-1'], $_POST['new-password-2']);
+		$users->update_password($user->getId(), $_POST['old-password'], $_POST['new-password-1'], $_POST['new-password-2']);
 	} catch (Exception $e) {
 		$errors[] = $e->getMessage();
 	}
@@ -141,7 +141,7 @@ require ROOT_PATH . 'inc/view/sidebar.php';
 				<div class="col-md-7">
 					<div class="fileupload fileupload-new" data-provides="fileupload">
 						<div class="fileupload-new thumbnail" style="width: 180px; height: 180px;"><img
-								src="<?php echo BASE_URL . $avatar_img_loc ?>" name="fileupload-avatar"
+								src="<?php echo BASE_URL . $user->getAvatarImgLoc() ?>" name="fileupload-avatar"
 								alt="Profile Avatar"/></div>
 						<div class="fileupload-preview fileupload-exists thumbnail"
 						     style="max-width: 200px; max-height: 200px; line-height: 20px;"></div>
@@ -163,7 +163,7 @@ require ROOT_PATH . 'inc/view/sidebar.php';
 				<label class="col-md-3">Email</label>
 
 				<div class="col-md-7">
-					<input type="text" name="user-name" value="<?php echo $user_email; ?>"
+					<input type="text" name="user-name" value="<?php echo $user->getEmail(); ?>"
 					       class="form-control" disabled/>
 				</div>
 				<!-- /.col -->
@@ -176,7 +176,7 @@ require ROOT_PATH . 'inc/view/sidebar.php';
 				<label class="col-md-3">First Name</label>
 
 				<div class="col-md-7">
-					<input type="text" name="first-name" value="<?php echo $first_name; ?>"
+					<input type="text" name="first-name" value="<?php echo $user->getFirstName(); ?>"
 					       class="form-control"/>
 				</div>
 				<!-- /.col -->
@@ -189,7 +189,7 @@ require ROOT_PATH . 'inc/view/sidebar.php';
 				<label class="col-md-3">Last Name</label>
 
 				<div class="col-md-7">
-					<input type="text" name="last-name" value="<?php echo $last_name; ?>"
+					<input type="text" name="last-name" value="<?php echo $user->getLastName(); ?>"
 					       class="form-control"/>
 				</div>
 				<!-- /.col -->
@@ -202,7 +202,7 @@ require ROOT_PATH . 'inc/view/sidebar.php';
 				<label class="col-md-3">Mobile</label>
 
 				<div class="col-md-7">
-					<input type="text" name="mobile" value="<?php echo $mobile_num; ?>" class="form-control"/>
+					<input type="text" name="mobile" value="<?php echo $user->getMobileNum(); ?>" class="form-control"/>
 				</div>
 				<!-- /.col -->
 
@@ -215,7 +215,7 @@ require ROOT_PATH . 'inc/view/sidebar.php';
 
 				<div class="col-md-7">
 					<textarea id="about-textarea" name="profile-description" rows="6"
-					          class="form-control"><?php echo $profile_description ?></textarea>
+					          class="form-control"><?php echo $user->getProfileDescription() ?></textarea>
 				</div>
 				<!-- /.col -->
 

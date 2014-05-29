@@ -48,7 +48,7 @@
 				Settings
 			</a>
 		</li>
-		<?php if($user_type == 'tutor') { ?>
+		<?php if($user->isTutor()) { ?>
 		<li>
 			<a href="<?php echo BASE_URL; ?>page-calendar.html">
 				<i class="fa fa-calendar"></i>

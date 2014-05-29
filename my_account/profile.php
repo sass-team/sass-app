@@ -29,7 +29,7 @@ require ROOT_PATH . 'inc/view/sidebar.php';
 						<div class="col-md-4 col-sm-5">
 
 							<div class="thumbnail">
-								<img src="<?php echo BASE_URL . $avatar_img_loc ?>" alt="Profile Picture"/>
+								<img src="<?php echo BASE_URL . $user->getAvatarImgLoc() ?>" alt="Profile Picture"/>
 							</div>
 							<!-- /.thumbnail -->
 
@@ -41,9 +41,9 @@ require ROOT_PATH . 'inc/view/sidebar.php';
 
 						<div class="col-md-8 col-sm-7">
 
-							<h2><?php echo $first_name . " " . $last_name ?></h2>
+							<h2><?php echo $user->getFirstName() . " " . $user->getLastName() ?></h2>
 
-							<h4>Position: <?php echo ucfirst($user_type) ?></h4>
+							<h4>Position: <?php echo ucfirst($user->getUserType()) ?></h4>
 
 							<hr/>
 
@@ -58,16 +58,16 @@ require ROOT_PATH . 'inc/view/sidebar.php';
 
 							<ul class="icons-list">
 								<li><i class="icon-li fa fa-envelope"></i> <?php echo $_SESSION['email']; ?></li>
-								<li><i class="icon-li fa fa-phone"></i> <?php echo $mobile_num ?></li>
+								<li><i class="icon-li fa fa-phone"></i> <?php echo $user->getMobileNum() ?></li>
 							</ul>
-							Major: <strong><?php echo $tutor_major ?></strong>
+							Major: <strong><?php echo $user->getTutorMajor() ?></strong>
 							<br/>
 							<br/>
 
 							<p>
 
 							<h3>Description</h3></p>
-							<p><?php echo $profile_description ?></p>
+							<p><?php echo $user->getProfileDescription() ?></p>
 
 							<hr/>
 
