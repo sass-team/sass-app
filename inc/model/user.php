@@ -181,6 +181,9 @@ abstract class User {
 	abstract protected function isAdmin();
 
 	abstract protected function isTutor();
+
+	abstract protected function isSecretary();
+
 }
 
 ?>

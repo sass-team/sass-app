@@ -59,7 +59,7 @@
 	</ul>
 
 </li>
-<?php if($user->isAdmin() === 'admin') { ?>
+<?php if($user->isAdmin()) { ?>
 <li class="dropdown <?php if ($section == "manage_users") {echo "active"; } ?>">
 	<a href="javascript:;">
 		<i class="fa fa-tasks"></i>

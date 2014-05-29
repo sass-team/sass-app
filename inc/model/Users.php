@@ -59,6 +59,20 @@ class Users {
 		}
 	} // end __construct
 
+	public function getAllUsers() {
+		$query = "SELECT * FROM `" . DB_NAME . "`.user
+						LEFT OUTER JOIN user_types ON user.`user_types_id` = `user_types`.id
+						LEFT OUTER JOIN major ON user.major_id = major.id";
+		$query = $this->getDbConnection()->prepare($query);
+		try {
+			$query->execute();
+			$rows = $query->fetchAll();
+
+			return $rows;
+		} catch (PDOException $e) {
+			throw new Exception("Something terrible happened. Could not update database.");
+		} // end catch
+	}
 	/**
 	 * Verifies a user with given email exists.
 	 * returns true if found; else false
@@ -70,7 +84,7 @@ class Users {
 		$email = trim($email);
 		$query = "SELECT COUNT(id) FROM `" . DB_NAME . "`.user WHERE email = :email";
 
-		$query = $this->dbConnection->prepare($query);
+		$query = $this->getDbConnection()->prepare($query);
 		$query->bindParam(':email', $email, PDO::PARAM_STR);
 
 		try {
@@ -84,7 +98,7 @@ class Users {
 			} // end else if
 
 		} catch (PDOException $e) {
-			die($e->getMessage());
+			throw new Exception("Something terrible happened. Could not update database.");
 		} // end catch
 	}
 
@@ -108,7 +122,7 @@ class Users {
 			$query->execute();
 			return $query->fetch();
 		} catch (PDOException $e) {
-			die($e->getMessage());
+			throw new Exception("Something terrible happened. Could not update database.");
 		} // end try
 	}
 
@@ -158,8 +172,8 @@ class Users {
 
 			return true;
 		} catch (PDOException $pe) {
-			//throw new Exception("Something terrible happened. Could not update database.");
-			throw new Exception($pe->getMessage());
+			throw new Exception("Something terrible happened. Could not update database.");
+			//throw new Exception($pe->getMessage());
 
 		}
 	}
@@ -199,7 +213,7 @@ class Users {
 			$query->execute();
 			return true;
 		} catch (PDOException $e) {
-			die ($e->getMessage());
+			throw new Exception("Something terrible happened. Could not update database.");
 		} // end try catch
 	}
 
