@@ -34,7 +34,6 @@ if ($general->logged_in() === true) {
 	$user_email = $_SESSION['email']; // getting user's id from the session.4
 	$userData = $users->getAllData($user_email);
 
-	var_dump($userData['type']);
 	if($userData['type'] == 'admin') {
 		$user = new Admin($userData);
 	}
