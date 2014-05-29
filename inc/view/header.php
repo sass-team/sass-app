@@ -69,7 +69,7 @@
 							&nbsp;&nbsp;My Schedule
 						</a>
 					</li>
-					<li class="divider"></li>
+					<li class="divider"></li>2
 					<?php } ?>
 					<li>
 						<a href="<?php echo BASE_URL; ?>logout.php">
