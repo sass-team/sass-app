@@ -109,7 +109,7 @@ if (isContinueBtnPressed()) {
 <div id="login-container">
 
 	<div id="logo">
-		<a href="<?php echo BASE_URL; ?>login.php">
+		<a href="<?php echo BASE_URL; ?>login">
 			<img src="<?php echo BASE_URL; ?>img/logos/logo-login.png" alt="Logo"/>
 		</a>
 	</div>

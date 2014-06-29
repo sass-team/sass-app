@@ -269,7 +269,7 @@ class Users {
 
 		try {
 			$query->execute();
-			mail($email, 'Recover Password', "Hello.\r\nSome one, hopefully you requested a password reset.\r\nPlease click the link below:\r\n\r\nvriskwergasia.com/recover.php?email=" . $email . "&gen_string=" . $generated_string . "\r\n\r\n We will generate a new password for you and send it back to your email.\r\n\r\n-- sass team");
+			mail($email, 'Recover Password', "Hello.\r\nSome one, hopefully you requested a password reset.\r\nPlease click the link below:\r\n\r\nhttp://sass.hol.es.localhost/login/recover.php?email=" . $email . "&gen_string=" . $generated_string . "\r\n\r\n We will generate a new password for you and send it back to your email.\r\n\r\n-- sass team");
 		} catch (PDOException $e) {
 			throw new Exception("We could not send your email. Please retry.");
 		}
@@ -280,7 +280,7 @@ class Users {
 		if ($generated_string == 0) {
 			return false;
 		} else {
-			$query = $this->getDbConnection()->prepare("SELECT COUNT(`id`) FROM `user` WHERE `email` = ? AND `gen_string` = ?");
+			$query = $this->getDbConnection()->prepare("SELECT COUNT(`id`) FROM `" . DB_NAME . "`.`user` WHERE `email` = ? AND `gen_string` = ?");
 			$query->bindValue(1, $email);
 			$query->bindValue(2, $generated_string);
 
@@ -288,29 +288,27 @@ class Users {
 				$query->execute();
 				$rows = $query->fetchColumn();
 
-				if ($rows == 1) { // if we find email/generated_string combo
+				if ($rows != 1) { // if we find email/generated_string combo
+					throw new Exception("Your email was not found. You can try to reset your password again.");
+				}
 					$charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 					$generated_password = substr(str_shuffle($charset), 0, 10);
-					$query = $this->db->prepare("UPDATE `" . DB_NAME . "`.`user` SET `gen_string` = 0 WHERE `email` = ?"); // set generated_string back to 0
+					$query = $this->getDbConnection()->prepare("UPDATE `" . DB_NAME . "`.`user` SET `gen_string` = 0 WHERE `email` = ?"); // set generated_string back to 0
 					$query->bindValue(1, $email);
 					$query->execute();
 
 					$new_password = password_hash($generated_password, PASSWORD_DEFAULT);
-					$query = "UPDATE `" . DB_NAME . "`.`user` SET `password`= :password WHERE `email`= :id";
+					$query = "UPDATE `" . DB_NAME . "`.`user` SET `password`= :password WHERE `email`= :email";
 					$query = $this->getDbConnection()->prepare($query);
-					$query->bindParam(':email', $new_password);
+					$query->bindParam(':email', $email);
 					$query->bindParam(':password', $new_password);
 
 					$query->execute();
 
 					#mail the user the new password.
-					mail($email, 'Your password', "Hello.\n\nYour your new password is: " . $generated_password . "\n\nPlease change your password once you have logged in using this password.\n\n-vriskwergasia team");
-
-				} else {
-					return false;
-				}
+					mail($email, 'Your password', "Hello.\n\nYour your new password is: " . $generated_password . "\n\nPlease change your password once you have logged in using this password.\n\n-sass team");
 			} catch (PDOException $e) {
-				throw new Exception("Could not connect to database. Please retry.");
+				throw new Exception("Could not connect to database. Please retry.:" . $e->getMessage());
 			}
 		}
 

@@ -38,8 +38,11 @@ if ($general->logged_in() === true) {
 	$user_email = $_SESSION['email']; // getting user's id from the session.4
 	$userData = $users->getAllData($user_email);
 
+	// TODO: add secretary role.
 	if($userData['type'] == 'admin') {
 		$user = new Admin($userData);
+	} else {
+		$user = new Tutor($userData);
 	}
 }
 ?>

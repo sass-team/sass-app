@@ -211,3 +211,50 @@
 [29-Jun-2014 21:01:04 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\confirm-password.php:0
 [29-Jun-2014 21:01:04 Europe/Paris] PHP   2. Users->confirm_recover() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\confirm-password.php:61
 [29-Jun-2014 21:01:04 Europe/Paris] PHP   3. mail() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php:272
+[29-Jun-2014 21:51:40 Europe/Paris] PHP Notice:  Undefined property: Users::$db in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php on line 296
+[29-Jun-2014 21:51:40 Europe/Paris] PHP Stack trace:
+[29-Jun-2014 21:51:40 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\recover.php:0
+[29-Jun-2014 21:51:40 Europe/Paris] PHP   2. Users->recover() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\recover.php:105
+[29-Jun-2014 21:51:40 Europe/Paris] PHP Fatal error:  Call to a member function prepare() on a non-object in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php on line 296
+[29-Jun-2014 21:51:40 Europe/Paris] PHP Stack trace:
+[29-Jun-2014 21:51:40 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\recover.php:0
+[29-Jun-2014 21:51:40 Europe/Paris] PHP   2. Users->recover() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\recover.php:105
+[29-Jun-2014 21:52:37 Europe/Paris] PHP Fatal error:  Uncaught exception 'Exception' with message 'Could not connect to database. Please retry.' in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php:311
+Stack trace:
+#0 C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\recover.php(105): Users->recover('r.dokollari@acg...', '53b06e48ed1480....')
+#1 {main}
+  thrown in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php on line 311
+[29-Jun-2014 21:54:49 Europe/Paris] PHP Fatal error:  Uncaught exception 'Exception' with message 'Could not connect to database. Please retry.' in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php:292
+Stack trace:
+#0 C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\recover.php(105): Users->recover('r.dokollari@acg...', '53b06e48ed1480....')
+#1 {main}
+  thrown in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php on line 292
+[29-Jun-2014 21:56:59 Europe/Paris] PHP Fatal error:  Uncaught exception 'Exception' with message 'Your email was not found. You can try to reset your password again.' in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php:292
+Stack trace:
+#0 C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\recover.php(105): Users->recover('r.dokollari@acg...', '53b06e48ed1480....')
+#1 {main}
+  thrown in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php on line 292
+[29-Jun-2014 22:11:57 Europe/Paris] PHP Notice:  Undefined variable: user in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\view\header.php on line 59
+[29-Jun-2014 22:11:57 Europe/Paris] PHP Stack trace:
+[29-Jun-2014 22:11:57 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
+[29-Jun-2014 22:11:57 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:8
+[29-Jun-2014 22:11:57 Europe/Paris] PHP Fatal error:  Call to a member function getFirstName() on a non-object in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\view\header.php on line 59
+[29-Jun-2014 22:11:57 Europe/Paris] PHP Stack trace:
+[29-Jun-2014 22:11:57 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
+[29-Jun-2014 22:11:57 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:8
+[29-Jun-2014 22:14:41 Europe/Paris] PHP Notice:  Undefined variable: user in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\view\header.php on line 59
+[29-Jun-2014 22:14:41 Europe/Paris] PHP Stack trace:
+[29-Jun-2014 22:14:41 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
+[29-Jun-2014 22:14:41 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:8
+[29-Jun-2014 22:14:41 Europe/Paris] PHP Fatal error:  Call to a member function getFirstName() on a non-object in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\view\header.php on line 59
+[29-Jun-2014 22:14:41 Europe/Paris] PHP Stack trace:
+[29-Jun-2014 22:14:41 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
+[29-Jun-2014 22:14:41 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:8
+[29-Jun-2014 22:15:20 Europe/Paris] PHP Notice:  Undefined variable: user in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\view\header.php on line 59
+[29-Jun-2014 22:15:20 Europe/Paris] PHP Stack trace:
+[29-Jun-2014 22:15:20 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
+[29-Jun-2014 22:15:20 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:8
+[29-Jun-2014 22:15:20 Europe/Paris] PHP Fatal error:  Call to a member function getFirstName() on a non-object in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\view\header.php on line 59
+[29-Jun-2014 22:15:20 Europe/Paris] PHP Stack trace:
+[29-Jun-2014 22:15:20 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
+[29-Jun-2014 22:15:20 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:8

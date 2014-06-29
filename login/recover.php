@@ -89,35 +89,42 @@ function isVerified() {
 <div id="login-container">
 
 	<div id="logo">
-		<a href="<?php echo BASE_URL; ?>login.php">
+		<a href="<?php echo BASE_URL; ?>login">
 			<img src="<?php echo BASE_URL; ?>img/logos/logo-login.png" alt="Logo"/>
 		</a>
 	</div>
 
-	<?php
-	if (isVerified()) {
-		?>
-		<h3>Thank you, we've send you a randomly generated password in your email.</h3>
-	<?php
-	} else if (isset ($_GET['email'], $_GET['gen_string']) === true) {
-		$email = trim($_GET['email']);
-		$string = trim($_GET['gen_string']);
-		if ($users->email_exists($email) === false || $users->recover($email, $string) === false) {
-			$errors[] = 'Sorry, something went wrong and we couldn\'t recover your password.';
-		} // end if
-		if (empty($errors) === false) {
-			echo '<p>' . implode('</p><p>', $errors) . '</p>';
-		} else {
-			#redirect the user to recover.php?success if recover() function does not return false.
-			header('Location: ' . BASE_URL . 'recover.php?success');
-			exit();
-		} // end else if
-	} else {
-		$general->logged_in_protect();
-		exit();
-	} // end else
-	?>
+	<div id="login">
+		<?php
+		if (isVerified()) {
+			?>
+			<h4>Thank you, we've send you a randomly generated password in your email.</h4>
+		<?php
+		} else if (isset ($_GET['email'], $_GET['gen_string']) === true) {
+			$email = trim($_GET['email']);
+			$string = trim($_GET['gen_string']);
 
+			try {
+				if ($users->email_exists($email) === false || $users->recover($email, $string) === false) {
+					$errors[] = 'Sorry, something went wrong and we couldn\'t recover your password.';
+				} // end if
+			} catch (Exception $e) {
+				$errors[] = $e->getMessage();
+			}
+
+			if (empty($errors) === false) {
+				echo '<p>' . implode('</p><p>', $errors) . '</p>';
+			} else {
+				#redirect the user to recover.php?success if recover() function does not return false.
+				header('Location: ' . BASE_URL . 'login/recover.php?success');
+				exit();
+			} // end else if
+		} else {
+			$general->logged_in_protect();
+			exit();
+		} // end else
+		?>
+	</div>
 </div>
 <!-- /#forgot-container -->
 
