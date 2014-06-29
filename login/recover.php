@@ -42,7 +42,12 @@ $general->logged_in_protect();
 $page_title = "Log In";
 
 
-
+/**
+ * @return bool
+ */
+function isVerified() {
+	return isset($_GET['success']) === true && empty ($_GET['success']);
+}
 
 ?>
 
@@ -108,7 +113,7 @@ $page_title = "Log In";
 			exit();
 		} // end else if
 	} else {
-		header('Location: ' . BASE_URL . 'index.php'); // If the required parameters are not there in the url. redirect to index.php
+		$general->logged_in_protect();
 		exit();
 	} // end else
 	?>

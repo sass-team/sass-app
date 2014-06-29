@@ -275,4 +275,64 @@ class Users {
 		}
 	} // end confirm_recover
 
+	public function recover($email, $generated_string) {
+	//  update_password($user_id, $old_password, $new_password_1, $new_password_2) {
+		if ($generated_string == 0) {
+			return false;
+		} else {
+			$query = $this->getDbConnection()->prepare("SELECT COUNT(`id`) FROM `user` WHERE `email` = ? AND `gen_string` = ?");
+			$query->bindValue(1, $email);
+			$query->bindValue(2, $generated_string);
+
+			try {
+				$query->execute();
+				$rows = $query->fetchColumn();
+
+				if ($rows == 1) { // if we find email/generated_string combo
+					$charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+					$generated_password = substr(str_shuffle($charset), 0, 10);
+					$query = $this->db->prepare("UPDATE `" . DB_NAME . "`.`user` SET `gen_string` = 0 WHERE `email` = ?"); // set generated_string back to 0
+					$query->bindValue(1, $email);
+					$query->execute();
+
+					$new_password = password_hash($generated_password, PASSWORD_DEFAULT);
+					$query = "UPDATE `" . DB_NAME . "`.`user` SET `password`= :password WHERE `email`= :id";
+					$query = $this->getDbConnection()->prepare($query);
+					$query->bindParam(':email', $new_password);
+					$query->bindParam(':password', $new_password);
+
+					$query->execute();
+
+					#mail the user the new password.
+					mail($email, 'Your password', "Hello.\n\nYour your new password is: " . $generated_password . "\n\nPlease change your password once you have logged in using this password.\n\n-vriskwergasia team");
+
+				} else {
+					return false;
+				}
+			} catch (PDOException $e) {
+				throw new Exception("Could not connect to database. Please retry.");
+			}
+		}
+
+		return true;
+	} // end recover
+
+	public function fetch_info($what, $field, $value) {
+		$allowed = array('id', 'username', 'f_name', 'l_name', 'email'); // I have only added few, but you can add more. However do not add 'password' even though the parameters will only be given by you and not the user, in our system.
+		if (!in_array($what, $allowed, true) || !in_array($field, $allowed, true)) {
+			throw new InvalidArgumentException;
+		} else {
+			$query = $this->db->prepare("SELECT $what FROM `users` WHERE $field = ?");
+			$query->bindValue(1, $value);
+
+			try {
+				$query->execute();
+			} catch (PDOException $e) {
+				die($e->getMessage());
+			}
+
+			return $query->fetchColumn();
+		}
+	} // end fetch_info
+
 } 
