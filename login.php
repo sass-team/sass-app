@@ -15,7 +15,21 @@ $page_title = "Log In";
 <!-- 1. It's preferred to create a hidden input for security purposes, as well verifying that this input or another dummy
 is not filled, as to protect from robots/spam.
 	2. It's preferred to have the php code on the beginning of the script and the view code afterwards. More neat & organized.-->
-<?php if (isset($_POST['hidden_submit_pressed'])) {
+<?php /**
+ * @return bool
+ */
+function isLoginBtnPressed() {
+	return isset($_POST['hidden_submit_pressed']) && empty($_POST['hidden_submit_pressed']);
+}
+
+/**
+ * @return bool
+ */
+function isForgotBtnPressed() {
+	return isset($_POST['hidden_forgot_pressed']) && empty($_POST['hidden_forgot_pressed']);
+}
+
+if (isLoginBtnPressed()) {
 
    $email = trim($_POST['login_email']);
    $password = trim($_POST['login_password']);
@@ -34,6 +48,7 @@ is not filled, as to protect from robots/spam.
    } catch (Exception $e) {
       $errors[] = $e->getMessage();
    }
+} else if(isForgotBtnPressed()) {
 
 }
 ?>
@@ -72,6 +87,48 @@ is not filled, as to protect from robots/spam.
 
 <body>
 
+<?php if(isForgotBtnPressed()) { ?>
+	<div id="login-container">
+
+		<div id="logo">
+			<a href="<?php echo BASE_URL; ?>login.php">
+				<img src="<?php echo BASE_URL; ?>img/logos/logo-login.png" alt="Logo"/>
+			</a>
+		</div>
+
+		<!-- /#forgot -->
+		<div id="login">
+			<h4>Please enter your acg email.</h4>
+			<form method="post" id="login-form" action="login.php" class="form">
+				<div class="form-group">
+					<label for="login-email">Email</label>
+					<input type="email" class="form-control" id="login-email" name="login_email" placeholder="Email">
+				</div>
+
+				<div class="form-group">
+					<input type="hidden" name="hidden_submit_pressed">
+					<button type="submit" id="login-btn" name="login" class="btn btn-primary btn-block">Continue <i
+							class="glyphicon glyphicon-envelope"></i></button>
+				</div>
+			</form>
+
+			<?php
+			if (empty($errors) === false) {
+				?>
+				<div class="alert alert-danger">
+					<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+					<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
+				</div>
+			<?php
+			}
+			?>
+		</div>
+		<!-- /#forgot -->
+
+	</div>
+	<!-- /#forgot-container -->
+
+<?php } else { ?>
 <div id="login-container">
 
    <div id="logo">
@@ -80,15 +137,11 @@ is not filled, as to protect from robots/spam.
       </a>
    </div>
 
-   <div id="login">
-
-
+	<!-- /#login -->
+	<div id="login">
       <h4>Welcome to SASS-Management System</h4>
-
       <h5>Please sign in to get access.</h5>
-
       <form method="post" id="login-form" action="login.php" class="form">
-
          <div class="form-group">
             <label for="login-email">Username</label>
             <input type="email" class="form-control" id="login-email" name="login_email" placeholder="Email">
@@ -104,9 +157,18 @@ is not filled, as to protect from robots/spam.
             <input type="hidden" name="hidden_submit_pressed">
             <button type="submit" id="login-btn" name="login" class="btn btn-primary btn-block">Signin &nbsp; <i
                   class="fa fa-play-circle"></i></button>
-
          </div>
-         <?php
+      </form>
+
+	   <form method="post" id="forgot-form" action="login.php" class="form">
+		   <div class="form-group text-center">
+			   <input type="hidden" name="hidden_forgot_pressed">
+			   <button type="submit" name="forgot" class="btn btn-default">
+				   Forgot Password?
+			   </button>
+		   </div>
+		</form>
+	   <?php
          if (empty($errors) === false) {
             ?>
             <div class="alert alert-danger">
@@ -116,14 +178,13 @@ is not filled, as to protect from robots/spam.
          <?php
          }
          ?>
-      </form>
-      <a href="javascript:;" class="btn btn-default">Forgot Password?</a>
    </div>
    <!-- /#login -->
 
 </div>
 <!-- /#login-container -->
 
+<?php } ?>
 <script src="<?php echo BASE_URL; ?>js/libs/jquery-1.9.1.min.js"></script>
 <script src="<?php echo BASE_URL; ?>js/libs/jquery-ui-1.9.2.custom.min.js"></script>
 <script src="<?php echo BASE_URL; ?>js/libs/bootstrap.min.js"></script>
