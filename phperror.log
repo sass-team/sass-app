@@ -122,3 +122,77 @@
 [29-Jun-2014 18:25:46 Europe/Paris] PHP Notice:  Undefined index: login_password in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login.php on line 35
 [29-Jun-2014 18:25:46 Europe/Paris] PHP Stack trace:
 [29-Jun-2014 18:25:46 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login.php:0
+[29-Jun-2014 18:27:32 Europe/Paris] PHP Notice:  Undefined index: login_password in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login.php on line 35
+[29-Jun-2014 18:27:32 Europe/Paris] PHP Stack trace:
+[29-Jun-2014 18:27:32 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login.php:0
+[29-Jun-2014 18:38:30 Europe/Paris] PHP Parse error:  syntax error, unexpected 'else' (T_ELSE) in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login.php on line 141
+[29-Jun-2014 18:48:57 Europe/Paris] PHP Warning:  require(inc/init.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\index.php on line 5
+[29-Jun-2014 18:48:57 Europe/Paris] PHP Stack trace:
+[29-Jun-2014 18:48:57 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\index.php:0
+[29-Jun-2014 18:48:57 Europe/Paris] PHP Fatal error:  require(): Failed opening required 'inc/init.php' (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\index.php on line 5
+[29-Jun-2014 18:48:57 Europe/Paris] PHP Stack trace:
+[29-Jun-2014 18:48:57 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\index.php:0
+[29-Jun-2014 19:02:35 Europe/Paris] PHP Parse error:  syntax error, unexpected '}' in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\index.php on line 150
+[29-Jun-2014 19:05:52 Europe/Paris] PHP Parse error:  syntax error, unexpected end of file in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php on line 78
+[29-Jun-2014 19:08:19 Europe/Paris] PHP Notice:  Use of undefined constant BASE_URL - assumed 'BASE_URL' in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php on line 49
+[29-Jun-2014 19:08:19 Europe/Paris] PHP Stack trace:
+[29-Jun-2014 19:08:19 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php:0
+[29-Jun-2014 19:08:19 Europe/Paris] PHP Notice:  Use of undefined constant BASE_URL - assumed 'BASE_URL' in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php on line 54
+[29-Jun-2014 19:08:19 Europe/Paris] PHP Stack trace:
+[29-Jun-2014 19:08:19 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php:0
+[29-Jun-2014 19:08:19 Europe/Paris] PHP Notice:  Use of undefined constant BASE_URL - assumed 'BASE_URL' in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php on line 55
+[29-Jun-2014 19:08:19 Europe/Paris] PHP Stack trace:
+[29-Jun-2014 19:08:19 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php:0
+[29-Jun-2014 19:08:19 Europe/Paris] PHP Notice:  Use of undefined constant BASE_URL - assumed 'BASE_URL' in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php on line 56
+[29-Jun-2014 19:08:19 Europe/Paris] PHP Stack trace:
+[29-Jun-2014 19:08:19 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php:0
+[29-Jun-2014 19:08:19 Europe/Paris] PHP Notice:  Use of undefined constant BASE_URL - assumed 'BASE_URL' in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php on line 59
+[29-Jun-2014 19:08:19 Europe/Paris] PHP Stack trace:
+[29-Jun-2014 19:08:19 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php:0
+[29-Jun-2014 19:08:19 Europe/Paris] PHP Notice:  Use of undefined constant BASE_URL - assumed 'BASE_URL' in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php on line 60
+[29-Jun-2014 19:08:19 Europe/Paris] PHP Stack trace:
+[29-Jun-2014 19:08:19 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php:0
+[29-Jun-2014 19:08:19 Europe/Paris] PHP Notice:  Use of undefined constant BASE_URL - assumed 'BASE_URL' in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php on line 62
+[29-Jun-2014 19:08:19 Europe/Paris] PHP Stack trace:
+[29-Jun-2014 19:08:19 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php:0
+[29-Jun-2014 19:08:19 Europe/Paris] PHP Notice:  Use of undefined constant BASE_URL - assumed 'BASE_URL' in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php on line 70
+[29-Jun-2014 19:08:19 Europe/Paris] PHP Stack trace:
+[29-Jun-2014 19:08:19 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php:0
+[29-Jun-2014 19:08:19 Europe/Paris] PHP Notice:  Use of undefined constant BASE_URL - assumed 'BASE_URL' in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php on line 71
+[29-Jun-2014 19:08:19 Europe/Paris] PHP Stack trace:
+[29-Jun-2014 19:08:19 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php:0
+[29-Jun-2014 19:08:19 Europe/Paris] PHP Notice:  Use of undefined constant BASE_URL - assumed 'BASE_URL' in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php on line 108
+[29-Jun-2014 19:08:19 Europe/Paris] PHP Stack trace:
+[29-Jun-2014 19:08:19 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php:0
+[29-Jun-2014 19:08:19 Europe/Paris] PHP Notice:  Use of undefined constant BASE_URL - assumed 'BASE_URL' in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php on line 109
+[29-Jun-2014 19:08:19 Europe/Paris] PHP Stack trace:
+[29-Jun-2014 19:08:19 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php:0
+[29-Jun-2014 19:08:19 Europe/Paris] PHP Notice:  Use of undefined constant BASE_URL - assumed 'BASE_URL' in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php on line 110
+[29-Jun-2014 19:08:19 Europe/Paris] PHP Stack trace:
+[29-Jun-2014 19:08:19 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php:0
+[29-Jun-2014 19:08:19 Europe/Paris] PHP Notice:  Use of undefined constant BASE_URL - assumed 'BASE_URL' in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php on line 112
+[29-Jun-2014 19:08:19 Europe/Paris] PHP Stack trace:
+[29-Jun-2014 19:08:19 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php:0
+[29-Jun-2014 19:08:19 Europe/Paris] PHP Notice:  Use of undefined constant BASE_URL - assumed 'BASE_URL' in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php on line 114
+[29-Jun-2014 19:08:19 Europe/Paris] PHP Stack trace:
+[29-Jun-2014 19:08:19 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php:0
+[29-Jun-2014 20:14:15 Europe/Paris] PHP Notice:  Undefined index: email in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php on line 55
+[29-Jun-2014 20:14:15 Europe/Paris] PHP Stack trace:
+[29-Jun-2014 20:14:15 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php:0
+[29-Jun-2014 20:14:15 Europe/Paris] PHP Warning:  implode(): Invalid arguments passed in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php on line 135
+[29-Jun-2014 20:14:15 Europe/Paris] PHP Stack trace:
+[29-Jun-2014 20:14:15 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php:0
+[29-Jun-2014 20:14:15 Europe/Paris] PHP   2. implode() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php:135
+[29-Jun-2014 20:14:47 Europe/Paris] PHP Warning:  implode(): Invalid arguments passed in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php on line 135
+[29-Jun-2014 20:14:47 Europe/Paris] PHP Stack trace:
+[29-Jun-2014 20:14:47 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php:0
+[29-Jun-2014 20:14:47 Europe/Paris] PHP   2. implode() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php:135
+[29-Jun-2014 20:15:04 Europe/Paris] PHP Warning:  implode(): Invalid arguments passed in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php on line 135
+[29-Jun-2014 20:15:04 Europe/Paris] PHP Stack trace:
+[29-Jun-2014 20:15:04 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php:0
+[29-Jun-2014 20:15:04 Europe/Paris] PHP   2. implode() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php:135
+[29-Jun-2014 20:17:02 Europe/Paris] PHP Warning:  mail(): Failed to connect to mailserver at &quot;localhost&quot; port 25, verify your &quot;SMTP&quot; and &quot;smtp_port&quot; setting in php.ini or use ini_set() in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php on line 272
+[29-Jun-2014 20:17:02 Europe/Paris] PHP Stack trace:
+[29-Jun-2014 20:17:02 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php:0
+[29-Jun-2014 20:17:02 Europe/Paris] PHP   2. Users->confirm_recover() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php:56
+[29-Jun-2014 20:17:02 Europe/Paris] PHP   3. mail() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php:272

@@ -2,7 +2,7 @@
 ob_start();
 // TODO: Add option-functionality to resend email if password forgot
 // TODO: sql make 'img' of database to NOT NULL & refactor name to 'img_location'
-require 'inc/init.php';
+require '../inc/init.php';
 
 // if there is an active log in process redirect to index.php; load page only if no
 // logged in user exists
@@ -48,8 +48,6 @@ if (isLoginBtnPressed()) {
    } catch (Exception $e) {
       $errors[] = $e->getMessage();
    }
-} else if(isForgotBtnPressed()) {
-
 }
 ?>
 <!DOCTYPE html>
@@ -87,52 +85,10 @@ if (isLoginBtnPressed()) {
 
 <body>
 
-<?php if(isForgotBtnPressed()) { ?>
-	<div id="login-container">
-
-		<div id="logo">
-			<a href="<?php echo BASE_URL; ?>login.php">
-				<img src="<?php echo BASE_URL; ?>img/logos/logo-login.png" alt="Logo"/>
-			</a>
-		</div>
-
-		<!-- /#forgot -->
-		<div id="login">
-			<h4>Please enter your acg email.</h4>
-			<form method="post" id="login-form" action="login.php" class="form">
-				<div class="form-group">
-					<label for="login-email">Email</label>
-					<input type="email" class="form-control" id="login-email" name="login_email" placeholder="Email">
-				</div>
-
-				<div class="form-group">
-					<input type="hidden" name="hidden_submit_pressed">
-					<button type="submit" id="login-btn" name="login" class="btn btn-primary btn-block">Continue <i
-							class="glyphicon glyphicon-envelope"></i></button>
-				</div>
-			</form>
-
-			<?php
-			if (empty($errors) === false) {
-				?>
-				<div class="alert alert-danger">
-					<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-					<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
-				</div>
-			<?php
-			}
-			?>
-		</div>
-		<!-- /#forgot -->
-
-	</div>
-	<!-- /#forgot-container -->
-
-<?php } else { ?>
 <div id="login-container">
 
    <div id="logo">
-      <a href="<?php echo BASE_URL; ?>login.php">
+      <a href="<?php echo BASE_URL; ?>login/">
          <img src="<?php echo BASE_URL; ?>img/logos/logo-login.png" alt="Logo"/>
       </a>
    </div>
@@ -141,7 +97,7 @@ if (isLoginBtnPressed()) {
 	<div id="login">
       <h4>Welcome to SASS-Management System</h4>
       <h5>Please sign in to get access.</h5>
-      <form method="post" id="login-form" action="login.php" class="form">
+      <form method="post" id="login-form" action="index.php" class="form">
          <div class="form-group">
             <label for="login-email">Username</label>
             <input type="email" class="form-control" id="login-email" name="login_email" placeholder="Email">
@@ -160,12 +116,12 @@ if (isLoginBtnPressed()) {
          </div>
       </form>
 
-	   <form method="post" id="forgot-form" action="login.php" class="form">
+	   <form method="post" id="forgot-form" action="index.php" class="form">
 		   <div class="form-group text-center">
 			   <input type="hidden" name="hidden_forgot_pressed">
-			   <button type="submit" name="forgot" class="btn btn-default">
+			   <a href="forgot-password.php" name="forgot" class="btn btn-default">
 				   Forgot Password?
-			   </button>
+			   </a>
 		   </div>
 		</form>
 	   <?php
@@ -184,7 +140,6 @@ if (isLoginBtnPressed()) {
 </div>
 <!-- /#login-container -->
 
-<?php } ?>
 <script src="<?php echo BASE_URL; ?>js/libs/jquery-1.9.1.min.js"></script>
 <script src="<?php echo BASE_URL; ?>js/libs/jquery-ui-1.9.2.custom.min.js"></script>
 <script src="<?php echo BASE_URL; ?>js/libs/bootstrap.min.js"></script>

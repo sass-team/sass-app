@@ -4,7 +4,7 @@ session_destroy();
 
 
 if(!isset($_SESSION['email'])) {
-	header("location:login.php");
+	header("location:index.php");
 }else {
-header("location:login.php"); }
+header("location:index.php"); }
 ?>

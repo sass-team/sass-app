@@ -33,7 +33,7 @@ class General {
 	#if not logged in then redirect to index.php
 	public function logged_out_protect() {
 		if ($this->logged_in() === false) {
-			header('Location: ' . BASE_URL . 'login.php');
+			header('Location: ' . BASE_URL . 'login/');
 			exit();
 		}
 	}

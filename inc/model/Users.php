@@ -258,5 +258,21 @@ class Users {
 		}
 	} // end getAllData
 
+	public function confirm_recover($email) {
+
+		$unique = uniqid('', true); // generate a unique string
+		$random = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 10); // generate a more random string
+		$generated_string = $unique . $random; // a random and unique string
+		$query = $this->getDbConnection()->prepare("UPDATE `user` SET `gen_string` = ? WHERE `email` = ?");
+		$query->bindValue(1, $generated_string);
+		$query->bindValue(2, $email);
+
+		try {
+			$query->execute();
+			mail($email, 'Recover Password', "Hello.\r\nSome one, hopefully you requested a password reset.\r\nPlease click the link below:\r\n\r\nvriskwergasia.com/recover.php?email=" . $email . "&gen_string=" . $generated_string . "\r\n\r\n We will generate a new password for you and send it back to your email.\r\n\r\n-- sass team");
+		} catch (PDOException $e) {
+			throw new Exception("We could not send your email. Please retry.");
+		}
+	} // end confirm_recover
 
 } 
