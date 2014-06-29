@@ -26,37 +26,41 @@
       <file leaf-file-name="index.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/login/index.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="47" column="1" selection-start="1704" selection-end="1771" vertical-scroll-proportion="-8.727273" vertical-offset="460" max-vertical-offset="3120">
+            <state line="112" column="47" selection-start="4075" selection-end="4075" vertical-scroll-proportion="-21.454546" vertical-offset="1060" max-vertical-offset="3120">
               <folding>
-                <marker date="1404061866188" expanded="true" signature="2051:2109" placeholder="..." />
+                <marker date="1404067691202" expanded="true" signature="2051:2109" placeholder="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="forgot-password.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/login/forgot-password.php">
+      <file leaf-file-name="confirm-password.php" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/login/confirm-password.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="55" column="22" selection-start="1858" selection-end="1858" vertical-scroll-proportion="-22.758621" vertical-offset="0" max-vertical-offset="2740">
-              <folding />
+            <state line="61" column="42" selection-start="2042" selection-end="2042" vertical-scroll-proportion="0.48603353" vertical-offset="785" max-vertical-offset="3720">
+              <folding>
+                <element signature="e#6#1160#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="confirm-recover.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/login/confirm-recover.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="105" column="34" selection-start="3616" selection-end="3616" vertical-scroll-proportion="-13.793103" vertical-offset="1260" max-vertical-offset="2300">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Users.php" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Users.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/inc/model/Users.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="275" column="27" selection-start="8357" selection-end="8357" vertical-scroll-proportion="0.8185941" vertical-offset="4778" max-vertical-offset="5660">
+            <state line="263" column="28" selection-start="7540" selection-end="7540" vertical-scroll-proportion="-16.62069" vertical-offset="4778" max-vertical-offset="5660">
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="recover.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/login/recover.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="44" column="0" selection-start="1604" selection-end="1604" vertical-scroll-proportion="-10.862069" vertical-offset="565" max-vertical-offset="2640">
+              <folding>
+                <element signature="e#6#1160#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -109,8 +113,11 @@
         <option value="$PROJECT_DIR$/inc/model/General.php" />
         <option value="$PROJECT_DIR$/login/index.php" />
         <option value="$PROJECT_DIR$/login/verify.php" />
-        <option value="$PROJECT_DIR$/login/forgot-password.php" />
         <option value="$PROJECT_DIR$/inc/model/Users.php" />
+        <option value="$PROJECT_DIR$/login/confirm-recover.php" />
+        <option value="$PROJECT_DIR$/login/forgot-password.php" />
+        <option value="$PROJECT_DIR$/login/recover.php" />
+        <option value="$PROJECT_DIR$/login/confirm-password.php" />
       </list>
     </option>
   </component>
@@ -372,11 +379,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/index.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="24" selection-start="423" selection-end="423" vertical-scroll-proportion="0.0" vertical-offset="17" max-vertical-offset="12342" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/inc/model/General.php">
       <provider selected="true" editor-type-id="text-editor">
         <state line="15" column="20" selection-start="288" selection-end="288" vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="765" />
@@ -647,33 +649,37 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/login/index.php">
+    <entry file="file://$PROJECT_DIR$/inc/model/Users.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="47" column="1" selection-start="1704" selection-end="1771" vertical-scroll-proportion="-8.727273" vertical-offset="460" max-vertical-offset="3120">
+        <state line="263" column="28" selection-start="7540" selection-end="7540" vertical-scroll-proportion="-16.62069" vertical-offset="4778" max-vertical-offset="5660">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/login/recover.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="44" column="0" selection-start="1604" selection-end="1604" vertical-scroll-proportion="-10.862069" vertical-offset="565" max-vertical-offset="2640">
           <folding>
-            <marker date="1404061866188" expanded="true" signature="2051:2109" placeholder="..." />
+            <element signature="e#6#1160#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/login/confirm-recover.php">
+    <entry file="file://$PROJECT_DIR$/login/index.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="105" column="34" selection-start="3616" selection-end="3616" vertical-scroll-proportion="-13.793103" vertical-offset="1260" max-vertical-offset="2300">
-          <folding />
+        <state line="112" column="47" selection-start="4075" selection-end="4075" vertical-scroll-proportion="-21.454546" vertical-offset="1060" max-vertical-offset="3120">
+          <folding>
+            <marker date="1404067691202" expanded="true" signature="2051:2109" placeholder="..." />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/login/forgot-password.php">
+    <entry file="file://$PROJECT_DIR$/login/confirm-password.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="55" column="22" selection-start="1858" selection-end="1858" vertical-scroll-proportion="-22.758621" vertical-offset="0" max-vertical-offset="2740">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/inc/model/Users.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="275" column="27" selection-start="8357" selection-end="8357" vertical-scroll-proportion="0.8185941" vertical-offset="4778" max-vertical-offset="5660">
-          <folding />
+        <state line="61" column="42" selection-start="2042" selection-end="2042" vertical-scroll-proportion="0.48603353" vertical-offset="785" max-vertical-offset="3720">
+          <folding>
+            <element signature="e#6#1160#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

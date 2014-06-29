@@ -42,12 +42,7 @@ $general->logged_in_protect();
 $page_title = "Log In";
 
 
-/**
- * @return bool
- */
-function isVerified() {
-	return isset($_GET['verified']) === true && empty ($_GET['verified']);
-}
+
 
 ?>
 

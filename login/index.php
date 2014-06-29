@@ -119,7 +119,7 @@ if (isLoginBtnPressed()) {
 	   <form method="post" id="forgot-form" action="index.php" class="form">
 		   <div class="form-group text-center">
 			   <input type="hidden" name="hidden_forgot_pressed">
-			   <a href="forgot-password.php" name="forgot" class="btn btn-default">
+			   <a href="confirm-password.php" name="forgot" class="btn btn-default">
 				   Forgot Password?
 			   </a>
 		   </div>

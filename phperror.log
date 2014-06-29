@@ -196,3 +196,18 @@
 [29-Jun-2014 20:17:02 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php:0
 [29-Jun-2014 20:17:02 Europe/Paris] PHP   2. Users->confirm_recover() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php:56
 [29-Jun-2014 20:17:02 Europe/Paris] PHP   3. mail() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php:272
+[29-Jun-2014 20:33:32 Europe/Paris] PHP Warning:  mail(): Failed to connect to mailserver at &quot;localhost&quot; port 25, verify your &quot;SMTP&quot; and &quot;smtp_port&quot; setting in php.ini or use ini_set() in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php on line 272
+[29-Jun-2014 20:33:32 Europe/Paris] PHP Stack trace:
+[29-Jun-2014 20:33:32 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php:0
+[29-Jun-2014 20:33:32 Europe/Paris] PHP   2. Users->confirm_recover() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\forgot-password.php:56
+[29-Jun-2014 20:33:32 Europe/Paris] PHP   3. mail() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php:272
+[29-Jun-2014 20:59:57 Europe/Paris] PHP Warning:  mail(): Failed to connect to mailserver at &quot;localhost&quot; port 25, verify your &quot;SMTP&quot; and &quot;smtp_port&quot; setting in php.ini or use ini_set() in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php on line 272
+[29-Jun-2014 20:59:57 Europe/Paris] PHP Stack trace:
+[29-Jun-2014 20:59:57 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\confirm-password.php:0
+[29-Jun-2014 20:59:57 Europe/Paris] PHP   2. Users->confirm_recover() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\confirm-password.php:61
+[29-Jun-2014 20:59:57 Europe/Paris] PHP   3. mail() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php:272
+[29-Jun-2014 21:01:04 Europe/Paris] PHP Warning:  mail(): Failed to connect to mailserver at &quot;localhost&quot; port 25, verify your &quot;SMTP&quot; and &quot;smtp_port&quot; setting in php.ini or use ini_set() in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php on line 272
+[29-Jun-2014 21:01:04 Europe/Paris] PHP Stack trace:
+[29-Jun-2014 21:01:04 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\confirm-password.php:0
+[29-Jun-2014 21:01:04 Europe/Paris] PHP   2. Users->confirm_recover() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\confirm-password.php:61
+[29-Jun-2014 21:01:04 Europe/Paris] PHP   3. mail() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php:272

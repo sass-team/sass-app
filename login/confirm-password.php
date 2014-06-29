@@ -48,13 +48,18 @@ function isContinueBtnPressed() {
 	return isset($_POST['hidden_forgot_continue']) && empty($_POST['hidden_forgot_continue']);
 }
 
+/**
+ * @return bool
+ */
+function isVerified() {
+	return isset($_GET['success']) === true && empty ($_GET['success']);
+}
+
 if (isContinueBtnPressed()) {
-
 	try {
-
 		if ($users->email_exists($_POST['email'])) {
 			$users->confirm_recover($_POST['email']);
-			header('Location:confirm-recover.php?success');
+			header('Location:confirm-password.php?success');
 			exit();
 		} else {
 			$errors[] = 'Sorry, that email doesn\'t exist.';
@@ -109,37 +114,59 @@ if (isContinueBtnPressed()) {
 		</a>
 	</div>
 
-	<!-- /#forgot -->
-	<div id="login">
-		<h4>Forgot your password?</h4>
-		<h5>Submit your email address and we'll send you a link to reset it.</h5>
+	<?php if (isVerified()) { ?>
 
-		<form method="post" id="login-form" action="forgot-password.php" class="form">
-			<div class="form-group">
-				<label for="login-email">Email</label>
-				<input required type="email" class="form-control" id="login-email" name="email" placeholder="Email">
-			</div>
+		<!-- /#forgot -->
+		<div id="login">
+			<h4>Thank you.</h4>
+			<h5>Please check your email to confirm your request for a new password.</h5>
 
-			<div class="form-group">
-				<input type="hidden" name="hidden_forgot_continue">
-				<button type="submit" id="login-btn" class="btn btn-primary btn-block">Continue <i
-						class="glyphicon glyphicon-envelope"></i></button>
-			</div>
-		</form>
-
-		<?php
-		if (empty($errors) === false) {
+			<?php
+			if (empty($errors) === false) {
+				?>
+				<div class="alert alert-danger">
+					<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+					<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
+				</div>
+			<?php
+			}
 			?>
-			<div class="alert alert-danger">
-				<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-				<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
-			</div>
-		<?php
-		}
-		?>
-	</div>
-	<!-- /#forgot -->
+		</div>
+		<!-- /#forgot -->
 
+	<?php } else { ?>
+		<!-- /#forgot -->
+		<div id="login">
+			<h4>Forgot your password?</h4>
+			<h5>Submit your email address and we'll send you a link to reset it.</h5>
+
+			<form method="post" id="login-form" action="confirm-password.php" class="form">
+				<div class="form-group">
+					<label for="login-email">Email</label>
+					<input required type="email" class="form-control" id="login-email" name="email" placeholder="Email">
+				</div>
+
+				<div class="form-group">
+					<input type="hidden" name="hidden_forgot_continue">
+					<button type="submit" id="login-btn" class="btn btn-primary btn-block">Continue <i
+							class="glyphicon glyphicon-envelope"></i></button>
+				</div>
+			</form>
+
+			<?php
+			if (empty($errors) === false) {
+				?>
+				<div class="alert alert-danger">
+					<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+					<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
+				</div>
+			<?php
+			}
+			?>
+		</div>
+		<!-- /#forgot -->
+
+	<?php } ?>
 </div>
 <!-- /#forgot-container -->
 
