@@ -112,7 +112,7 @@ function isVerified() {
 				$errors[] = $e->getMessage();
 			}
 
-			if (empty($errors) === false) {
+			if (isset($errors) && empty($errors) === false) {
 				echo '<p>' . implode('</p><p>', $errors) . '</p>';
 			} else {
 				#redirect the user to recover.php?success if recover() function does not return false.

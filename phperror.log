@@ -258,3 +258,17 @@ Stack trace:
 [29-Jun-2014 22:15:20 Europe/Paris] PHP Stack trace:
 [29-Jun-2014 22:15:20 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
 [29-Jun-2014 22:15:20 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:8
+[04-Jul-2014 12:33:31 Europe/Paris] PHP Warning:  mail(): Failed to connect to mailserver at &quot;localhost&quot; port 25, verify your &quot;SMTP&quot; and &quot;smtp_port&quot; setting in php.ini or use ini_set() in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php on line 272
+[04-Jul-2014 12:33:31 Europe/Paris] PHP Stack trace:
+[04-Jul-2014 12:33:31 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\confirm-password.php:0
+[04-Jul-2014 12:33:31 Europe/Paris] PHP   2. Users->confirm_recover() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\login\confirm-password.php:61
+[04-Jul-2014 12:33:31 Europe/Paris] PHP   3. mail() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php:272
+[04-Jul-2014 12:35:35 Europe/Paris] PHP Notice:  Undefined variable: update_result in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\my_account\profile-settings.php on line 52
+[04-Jul-2014 12:35:35 Europe/Paris] PHP Stack trace:
+[04-Jul-2014 12:35:35 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\my_account\profile-settings.php:0
+[04-Jul-2014 12:35:35 Europe/Paris] PHP Notice:  Undefined variable: update_result in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\my_account\profile-settings.php on line 53
+[04-Jul-2014 12:35:35 Europe/Paris] PHP Stack trace:
+[04-Jul-2014 12:35:35 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\my_account\profile-settings.php:0
+[04-Jul-2014 12:46:43 Europe/Paris] PHP Notice:  Undefined variable: update_result in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\my_account\profile-settings.php on line 50
+[04-Jul-2014 12:46:43 Europe/Paris] PHP Stack trace:
+[04-Jul-2014 12:46:43 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\my_account\profile-settings.php:0
