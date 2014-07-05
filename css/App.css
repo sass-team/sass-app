@@ -2763,13 +2763,18 @@ table.dataTable th:active {
   z-index: 21;
 }
 #header {
-  background: #222;
-  background-image: -webkit-gradient(linear, left 0%, left 100%, from(#3f3f3f), to(#222222));
-  background-image: -webkit-linear-gradient(top, #3f3f3f, 0%, #222222, 100%);
-  background-image: -moz-linear-gradient(top, #3f3f3f 0%, #222222 100%);
-  background-image: linear-gradient(to bottom, #3f3f3f 0%, #222222 100%);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff3f3f3f', endColorstr='#ff222222', GradientType=0);
+  background-image: -webkit-gradient(
+  linear,
+  right bottom,
+  left top,
+  color-stop(0, #000000),
+  color-stop(1, #E68585)
+);
+  background-image: -o-linear-gradient(left top, #000000 0%, #E68585 100%);
+  background-image: -moz-linear-gradient(left top, #000000 0%, #E68585 100%);
+  background-image: -webkit-linear-gradient(left top, #000000 0%, #E68585 100%);
+  background-image: -ms-linear-gradient(left top, #000000 0%, #E68585 100%);
+  background-image: linear-gradient(to left top, #000000 0%, #E68585 100%);
   width: 100%;
   height: 77px;
   border-bottom: 1px solid #000;
