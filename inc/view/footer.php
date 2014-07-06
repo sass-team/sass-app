@@ -25,6 +25,7 @@
 <script src="<?php echo BASE_URL; ?>js/plugins/datatables/DT_bootstrap.js"></script>
 <script src="<?php echo BASE_URL; ?>js/plugins/tableCheckable/jquery.tableCheckable.js"></script>
 <script src="<?php echo BASE_URL; ?>js/plugins/icheck/jquery.icheck.min.js"></script>
+<script src="<?php echo BASE_URL; ?>js/plugins/icheck/jquery.icheck.js"></script>
 <script src="<?php echo BASE_URL; ?>js/plugins/select2/select2.js"></script>
 <script src="<?php echo BASE_URL; ?>js/plugins/fileupload/bootstrap-fileupload.js"></script>
 <script src="<?php echo BASE_URL; ?>js/plugins/textarea-counter/jquery.textarea-counter.js"></script>
@@ -47,7 +48,7 @@
 
 <script src="<?php echo BASE_URL; ?>js/App.js"></script>
 
-
+<script src="<?php echo BASE_URL; ?>js/demos/form-extended.js"></script>
 
 
 </body>

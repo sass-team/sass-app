@@ -2,7 +2,7 @@
 require '../inc/init.php';
 $general->logged_out_protect();
 
-$page_title = "My Account - Profile";
+$page_title = "View Users";
 $section = "manage_users";
 $all_users = $users->getAllUsers();
 
