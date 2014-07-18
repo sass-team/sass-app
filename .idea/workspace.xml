@@ -110,7 +110,7 @@
       <file leaf-file-name="manage-users.php" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/manage_users/manage-users.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="196" column="52" selection-start="8179" selection-end="8179" vertical-scroll-proportion="4.379888" vertical-offset="0" max-vertical-offset="4600">
+            <state line="17" column="18" selection-start="495" selection-end="495" vertical-scroll-proportion="0.3912543" vertical-offset="0" max-vertical-offset="4900">
               <folding />
             </state>
           </provider>
@@ -119,7 +119,7 @@
       <file leaf-file-name="index.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/login/index.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="99" column="25" selection-start="3455" selection-end="3530" vertical-scroll-proportion="0.1724138" vertical-offset="1985" max-vertical-offset="3120">
+            <state line="33" column="16" selection-start="1077" selection-end="1081" vertical-scroll-proportion="-5.4545455" vertical-offset="360" max-vertical-offset="3120">
               <folding />
             </state>
           </provider>
@@ -694,7 +694,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/login/recover.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="110" column="31" selection-start="3749" selection-end="3749" vertical-scroll-proportion="0.414832" vertical-offset="1842" max-vertical-offset="2880" />
+        <state line="110" column="31" selection-start="3749" selection-end="3749" vertical-scroll-proportion="0.414832" vertical-offset="1842" max-vertical-offset="2880">
+          <folding>
+            <element signature="e#6#1160#0" expanded="true" />
+          </folding>
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/inc/model/User.php">
@@ -784,14 +788,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/login/index.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="99" column="25" selection-start="3455" selection-end="3530" vertical-scroll-proportion="0.1724138" vertical-offset="1985" max-vertical-offset="3120">
+        <state line="33" column="16" selection-start="1077" selection-end="1081" vertical-scroll-proportion="-5.4545455" vertical-offset="360" max-vertical-offset="3120">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/manage_users/manage-users.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="196" column="52" selection-start="8179" selection-end="8179" vertical-scroll-proportion="4.379888" vertical-offset="0" max-vertical-offset="4600">
+        <state line="17" column="18" selection-start="495" selection-end="495" vertical-scroll-proportion="0.3912543" vertical-offset="0" max-vertical-offset="4900">
           <folding />
         </state>
       </provider>

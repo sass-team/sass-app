@@ -7,7 +7,21 @@ $section = "manage_users";
 require ROOT_PATH . 'inc/view/header.php';
 require ROOT_PATH . 'inc/view/sidebar.php';
 
-var_dump($_POST);
+
+if (isSaveBttnPressed()) {
+	$firstName = trim($_POST['firstName']);
+	$lastName = trim($_POST['lastName']);
+	$email = trim($_POST['email']);
+	$userMajor = trim($_POST['userMajor']);
+	$teachingCourses = $_POST['teachingCourses'];
+	$userType = trim($_POST['userType']);
+	var_dump($_POST);
+}
+
+function isSaveBttnPressed() {
+	return isset($_POST['hidden_submit_pressed']) && empty($_POST['hidden_submit_pressed']);
+}
+
 ?>
 
 	<div id="content">
@@ -124,16 +138,16 @@ var_dump($_POST);
 			<div class="modal-content">
 				<form method="post" id="login-form" action="manage-users.php" class="form">
 
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h3 class="modal-title">Create User Form</h3>
-				</div>
-				<div class="modal-body">
-					<div class="portlet">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h3 class="modal-title">Create User Form</h3>
+					</div>
+					<div class="modal-body">
+						<div class="portlet">
 
-						<div class="portlet-content">
+							<div class="portlet-content">
 
-							<div class="row">
+								<div class="row">
 
 
 									<div class="col-sm-12">
@@ -145,17 +159,17 @@ var_dump($_POST);
 
 										<div class="form-group">
 											<label for="text-input">Last Name</label>
-											<input type="text" id="text-input" class="form-control">
+											<input type="text" id="text-input" name="lastName" class="form-control">
 										</div>
 
 										<div class="form-group">
 											<label for="text-input">Email</label>
-											<input type="email" id="text-input" class="form-control">
+											<input type="email" id="text-input" name="email" class="form-control">
 										</div>
 
 										<div class="form-group">
 											<label for="text-input">User Major</label>
-											<select id="s2_basic" class="form-control">
+											<select id="s2_basic" name="userMajor" class="form-control">
 
 												<option value="AK">IT</option>
 												<option value="HI">Accounting and Finance</option>
@@ -168,13 +182,13 @@ var_dump($_POST);
 
 										<div class="form-group">
 											<label for="text-input">Teaching Courses</label>
-											<select id="s2_multi_value" class="form-control" multiple>
+											<select id="s2_multi_value" name="teachingCourses[]" class="form-control" multiple>
 
-												<option value="AK">Introduction to Programming</option>
-												<option value="HI">Finite</option>
-												<option value="HI">Calculus</option>
-												<option value="HI">Accounting I</option>
-												<option value="HI">Managment Principles</option>
+												<option value="CS2188">CS 2188 Introduction to Programming</option>
+												<option value="MA1001">MA 1001 Finite Mathematics</option>
+												<option value="MA1105">MA 1105 Applied Calculus</option>
+												<option value="AF2006">AF 2006 Financial Accounting </option>
+												<option value="MG2003">MG 2003 Management Principles</option>
 
 											</select>
 										</div>
@@ -184,19 +198,19 @@ var_dump($_POST);
 										<div class="form-group">
 											<div class="radio">
 												<label>
-													<input type="radio" name="radio-2" class="" checked>
+													<input type="radio" name="userType" value="tutor" class="" checked>
 													Tutor
 												</label>
 											</div>
 											<div class="radio">
 												<label>
-													<input type="radio" name="radio-2" class="" data-required="true">
+													<input type="radio" name="userType" value="secretary" class="" data-required="true">
 													Secretary
 												</label>
 											</div>
 											<div class="radio">
 												<label>
-													<input type="radio" name="radio-2" class="" data-required="true">
+													<input type="radio" name="userType" value="admin" class="" data-required="true">
 													Admin
 												</label>
 											</div>
@@ -204,17 +218,18 @@ var_dump($_POST);
 										<!-- /.form-group -->
 
 									</div>
+								</div>
+
 							</div>
 
 						</div>
-
 					</div>
-				</div>
 
-				<div class="modal-footer">
-					<button type="button" class="btn btn-tertiary" data-dismiss="modal">Close</button>
-					<button type="submit" class="btn btn-primary">Save changes</button>
-				</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-tertiary" data-dismiss="modal">Close</button>
+						<input type="hidden" name="hidden_submit_pressed">
+						<button type="submit" class="btn btn-primary">Save changes</button>
+					</div>
 				</form>
 
 			</div>
