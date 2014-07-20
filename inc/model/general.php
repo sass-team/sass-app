@@ -30,7 +30,7 @@ class General {
 		return isset($_SESSION['email']) ? true : false;
 	}
 
-	#if not logged in then redirect to index.php
+	#if not logged in then redirect to edit.php
 	public function logged_out_protect() {
 		if ($this->logged_in() === false) {
 			header('Location: ' . BASE_URL . 'login/');

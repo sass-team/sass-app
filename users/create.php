@@ -2,7 +2,7 @@
 require '../inc/init.php';
 $general->logged_out_protect();
 
-$page_title = "Manage Users";
+$page_title = "Edit";
 $section = "users";
 require ROOT_PATH . 'inc/view/header.php';
 require ROOT_PATH . 'inc/view/sidebar.php';
@@ -27,14 +27,14 @@ function isSaveBttnPressed() {
 	<div id="content">
 
 		<div id="content-header">
-			<h1>Manage Users</h1>
+			<h1><?php echo $page_title . " - " . $section; ?></h1>
 		</div>
 		<!-- #content-header -->
 
 
 		<div id="content-container">
 
-			<h3 class="heading">Manage Users</h3>
+			<h3 class="heading"></h3>
 
 
 			<div class="row">
@@ -44,7 +44,7 @@ function isSaveBttnPressed() {
 					<ul id="myTab" class="nav nav-pills nav-stacked">
 						<li class="active"><a href="#add" data-toggle="tab"><i class="fa fa-plus"></i> &nbsp;&nbsp;Add
 								User</a></li>
-						<li><a href="#profile-3" data-toggle="tab"><i class="fa fa-user"></i> &nbsp;&nbsp;Profile</a></li>
+					<!--	<li><a href="#profile-3" data-toggle="tab"><i class="fa fa-user"></i> &nbsp;&nbsp;Profile</a></li>
 						<li class="dropdown">
 							<a href="javascript:;" id="myTabDrop3" class="dropdown-toggle" data-toggle="dropdown"><i
 									class="fa fa-chevron-sign-down"></i> &nbsp;&nbsp;Dropdown <b class="caret"></b></a>
@@ -53,6 +53,7 @@ function isSaveBttnPressed() {
 								<li><a href="#dropdown6" tabindex="-1" data-toggle="tab">@mdo</a></li>
 							</ul>
 						</li>
+						-->
 					</ul>
 
 				</div>
@@ -64,10 +65,10 @@ function isSaveBttnPressed() {
 						<div class="tab-pane fade in active" id="add">
 							<p>In this section admin is able to add a new user and fill out the appropriate fields. Only
 								necessary fields are required in order to create a new user. Users(tutors or secretaries) are
-								able to modify their profile once they are logged in.</p>
+								able to modify some of their profile data nce they are logged in.</p>
 
 							<p>
-								<a data-toggle="modal" href="#styledModal" class="btn btn-primary">Create a new user</a>
+								<a data-toggle="modal" id="bttn-styledModal" href="#styledModal" class="btn btn-primary">Create a new user</a>
 							</p>
 						</div>
 
@@ -136,7 +137,7 @@ function isSaveBttnPressed() {
 	<div id="styledModal" class="modal modal-styled fade">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<form method="post" id="login-form" action="manage.php" class="form">
+				<form method="post" id="login-form" action="create.php" class="form">
 
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -187,7 +188,7 @@ function isSaveBttnPressed() {
 												<option value="CS2188">CS 2188 Introduction to Programming</option>
 												<option value="MA1001">MA 1001 Finite Mathematics</option>
 												<option value="MA1105">MA 1105 Applied Calculus</option>
-												<option value="AF2006">AF 2006 Financial Accounting </option>
+												<option value="AF2006">AF 2006 Financial Accounting</option>
 												<option value="MG2003">MG 2003 Management Principles</option>
 
 											</select>
@@ -204,7 +205,8 @@ function isSaveBttnPressed() {
 											</div>
 											<div class="radio">
 												<label>
-													<input type="radio" name="userType" value="secretary" class="" data-required="true">
+													<input type="radio" name="userType" value="secretary" class=""
+													       data-required="true">
 													Secretary
 												</label>
 											</div>
@@ -237,4 +239,14 @@ function isSaveBttnPressed() {
 		</div>
 		<!-- /.modal-dialog -->
 	</div><!-- /.modal -->
+
+
 <?php include ROOT_PATH . "inc/view/footer.php"; ?>
+<script type="text/javascript">
+	jQuery(function() {
+		setTimeout(function() {
+			$("#bttn-styledModal").trigger("click");
+			//window.location.href = $href;
+		},10);
+	});
+</script>

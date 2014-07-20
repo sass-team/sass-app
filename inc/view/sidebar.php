@@ -11,24 +11,29 @@
 
 <div id="search">
 	<form>
-		<input class="form-control input-sm" type="text" name="search" placeholder="Search..." />
+		<input class="form-control input-sm" type="text" name="search" placeholder="Search..."/>
 
 		<button type="submit" id="search-btn" class="btn"><i class="fa fa-search"></i></button>
 	</form>
-</div> <!-- #search -->
+</div>
+<!-- #search -->
 
 <nav id="sidebar">
 
 <ul id="main-nav" class="open-active">
 
-<li class="<?php if ($section == "dashboard") { echo "active"; } ?>">
+<li class="<?php if ($section == "dashboard") {
+	echo "active";
+} ?>">
 	<a href="<?php echo BASE_URL; ?>index.php">
 		<i class="fa fa-dashboard"></i>
 		Dashboard
 	</a>
 </li>
 
-<li class="dropdown <?php if ($section == "account") { echo "active"; } ?>">
+<li class="dropdown <?php if ($section == "account") {
+	echo "active";
+} ?>">
 	<a href="javascript:;">
 		<i class="fa fa-file-text"></i>
 		Account
@@ -48,40 +53,42 @@
 				Settings
 			</a>
 		</li>
-		<?php if($user->isTutor()) { ?>
-		<li>
-			<a href="<?php echo BASE_URL; ?>page-calendar.html">
-				<i class="fa fa-calendar"></i>
-				My Schedule
-			</a>
-		</li>
+		<?php if ($user->isTutor()) { ?>
+			<li>
+				<a href="<?php echo BASE_URL; ?>page-calendar.html">
+					<i class="fa fa-calendar"></i>
+					My Schedule
+				</a>
+			</li>
 		<?php } ?>
 	</ul>
 
 </li>
-<?php if($user->isAdmin()) { ?>
-<li class="dropdown <?php if ($section == "users") {echo "active"; } ?>">
-	<a href="javascript:;">
-		<i class="fa fa-tasks"></i>
-		Users
-		<span class="caret"></span>
-	</a>
+<?php if ($user->isAdmin()) { ?>
+	<li class="dropdown <?php if ($section == "users") {
+		echo "active";
+	} ?>">
+		<a href="javascript:;">
+			<i class="fa fa-tasks"></i>
+			Users
+			<span class="caret"></span>
+		</a>
 
-	<ul class="sub-nav">
-		<li>
-			<a href="<?php echo BASE_URL; ?>users/manage.php">
-				<i class="fa fa-edit"></i>
-				Manage
-			</a>
-		</li>
-		<li>
-			<a href="<?php echo BASE_URL; ?>users">
-				<i class="fa fa-group"></i>
-				View
-			</a>
-		</li>
-	</ul>
-</li>
+		<ul class="sub-nav">
+			<li>
+				<a href="<?php echo BASE_URL; ?>users/create.php">
+					<i class="fa fa-edit"></i>
+					Create
+				</a>
+			</li>
+			<li>
+				<a href="<?php echo BASE_URL; ?>users/edit.php">
+					<i class="fa fa-group"></i>
+					Edit
+				</a>
+			</li>
+		</ul>
+	</li>
 <?php } ?>
 <li class="dropdown">
 	<a href="javascript:;">
@@ -267,6 +274,7 @@
 
 </ul>
 
-</nav> <!-- #sidebar -->
+</nav>
+<!-- #sidebar -->
 
 </div> <!-- /#sidebar-wrapper -->

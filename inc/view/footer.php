@@ -7,11 +7,18 @@
  */
 
 ?>
+<?php function auto_copyright($year = 'auto'){ ?>
+	<?php if(intval($year) == 'auto'){ $year = date('Y'); } ?>
+	<?php if(intval($year) == date('Y')){ echo intval($year); } ?>
+	<?php if(intval($year) < date('Y')){ echo intval($year) . ' - ' . date('Y'); } ?>
+	<?php if(intval($year) > date('Y')){ echo date('Y'); } ?>
+<?php } ?>
 
 <footer id="footer">
 	<ul class="nav pull-right">
 		<li>
-			Copyright &copy; 2013, Jumpstart Themes.
+			Copyright &copy; <?php auto_copyright('2014');  // 2010 - 2011 ?>, <a href="https://github.com/rdok">rdok</a> &amp; <a href="http://gr.linkedin.com/pub/georgios-skarlatos/70/461/123">geoif</a>
+
 		</li>
 	</ul>
 </footer>
@@ -31,7 +38,6 @@
 <script src="<?php echo BASE_URL; ?>js/plugins/textarea-counter/jquery.textarea-counter.js"></script>
 
 
-
 <script src="<?php echo BASE_URL; ?>js/libs/raphael-2.1.2.min.js"></script>
 <script src="<?php echo BASE_URL; ?>js/plugins/morris/morris.min.js"></script>
 
@@ -48,7 +54,7 @@
 
 <script src="<?php echo BASE_URL; ?>js/App.js"></script>
 
-<script src="<?php echo BASE_URL; ?>js/demos/form-extended.js"></script>
+<!--<script src="<?php echo BASE_URL; ?>js/demos/form-extended.js"></script> -->
 
 
 </body>
