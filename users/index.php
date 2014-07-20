@@ -3,7 +3,7 @@ require '../inc/init.php';
 $general->logged_out_protect();
 
 $page_title = "View Users";
-$section = "manage_users";
+$section = "users";
 $all_users = $users->getAllUsers();
 
 require ROOT_PATH . 'inc/view/header.php';

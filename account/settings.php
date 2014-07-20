@@ -47,7 +47,7 @@ if (isset($_POST['form_action_profile_settings'])) {
 	}
 
 	if (empty($errors) === true) {
-		header('Location: ' . BASE_URL . 'my_account/profile-settings.php?success');
+		header('Location: ' . BASE_URL . 'account/settings.php?success');
 		exit();
 	}
 } else if (isset($_POST['form_action_update_password'])) {
@@ -59,13 +59,13 @@ if (isset($_POST['form_action_profile_settings'])) {
 	}
 
 	if (empty($errors) === true) {
-		header('Location: ' . BASE_URL . 'my_account/profile-settings.php?success');
+		header('Location: ' . BASE_URL . 'account/settings.php?success');
 		exit();
 	}
 }
 
 $page_title = "My Account - Settings";
-$section = "my_account";
+$section = "account";
 
 require ROOT_PATH . 'inc/view/header.php';
 require ROOT_PATH . 'inc/view/sidebar.php';
@@ -114,7 +114,7 @@ require ROOT_PATH . 'inc/view/sidebar.php';
 
 		<br/>
 
-		<form action="./profile-settings.php" class="form-horizontal" method="post" enctype="multipart/form-data">
+		<form action="settings.php" class="form-horizontal" method="post" enctype="multipart/form-data">
 
 			<?php
 			if (empty($errors) !== true) {
@@ -245,7 +245,7 @@ require ROOT_PATH . 'inc/view/sidebar.php';
 
 		<br/>
 
-		<form action="./profile-settings.php" class="form-horizontal" method="post">
+		<form action="settings.php" class="form-horizontal" method="post">
 
 			<div class="form-group">
 

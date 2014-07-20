@@ -3,7 +3,7 @@ require '../inc/init.php';
 $general->logged_out_protect();
 
 $page_title = "Manage Users";
-$section = "manage_users";
+$section = "users";
 require ROOT_PATH . 'inc/view/header.php';
 require ROOT_PATH . 'inc/view/sidebar.php';
 
@@ -136,7 +136,7 @@ function isSaveBttnPressed() {
 	<div id="styledModal" class="modal modal-styled fade">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<form method="post" id="login-form" action="manage-users.php" class="form">
+				<form method="post" id="login-form" action="manage.php" class="form">
 
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>

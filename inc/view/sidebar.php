@@ -28,22 +28,22 @@
 	</a>
 </li>
 
-<li class="dropdown <?php if ($section == "my_account") { echo "active"; } ?>">
+<li class="dropdown <?php if ($section == "account") { echo "active"; } ?>">
 	<a href="javascript:;">
 		<i class="fa fa-file-text"></i>
-		My Account
+		Account
 		<span class="caret"></span>
 	</a>
 
 	<ul class="sub-nav">
 		<li>
-			<a href="<?php echo BASE_URL; ?>my_account/profile.php">
+			<a href="<?php echo BASE_URL; ?>account/profile.php">
 				<i class="fa fa-user"></i>
 				Profile
 			</a>
 		</li>
 		<li>
-			<a href="<?php echo BASE_URL; ?>my_account/profile-settings.php">
+			<a href="<?php echo BASE_URL; ?>account/settings.php">
 				<i class="fa fa-cogs"></i>
 				Settings
 			</a>
@@ -60,24 +60,24 @@
 
 </li>
 <?php if($user->isAdmin()) { ?>
-<li class="dropdown <?php if ($section == "manage_users") {echo "active"; } ?>">
+<li class="dropdown <?php if ($section == "users") {echo "active"; } ?>">
 	<a href="javascript:;">
 		<i class="fa fa-tasks"></i>
-		Manage / View Users
+		Users
 		<span class="caret"></span>
 	</a>
 
 	<ul class="sub-nav">
 		<li>
-			<a href="<?php echo BASE_URL; ?>manage_users/manage-users.php">
+			<a href="<?php echo BASE_URL; ?>users/manage.php">
 				<i class="fa fa-edit"></i>
-				Manage Users
+				Manage
 			</a>
 		</li>
 		<li>
-			<a href="<?php echo BASE_URL; ?>manage_users/view-users.php">
+			<a href="<?php echo BASE_URL; ?>users">
 				<i class="fa fa-group"></i>
-				View Current Users
+				View
 			</a>
 		</li>
 	</ul>

@@ -3,7 +3,7 @@ require '../inc/init.php';
 $general->logged_out_protect();
 
 $page_title = "My Account - Profile";
-$section = "my_account";
+$section = "account";
 require ROOT_PATH . 'inc/view/header.php';
 require ROOT_PATH . 'inc/view/sidebar.php';
 ?>
