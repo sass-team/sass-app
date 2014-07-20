@@ -26,5 +26,5 @@ git pull origin master
 - http://forum.wampserver.com/read.php?2,124482
 
 ## Gitflow  
-[Get Goind](https://github.com/nvie/gitflow)
+[Training](https://github.com/nvie/gitflow)
 ![Gitflow Diagram](http://nvie.com/img/2009/12/Screen-shot-2009-12-24-at-11.32.03.png "Visualize")
