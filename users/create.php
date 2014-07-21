@@ -2,9 +2,17 @@
 require '../inc/init.php';
 $general->logged_out_protect();
 
-$course_db = new Courses($db->getDbConnection());
-$courses = $course_db->getAll();
-$majors = array_unique(array_column($courses, 'Major'));
+try {
+	$course_db = new Courses($db->getDbConnection());
+	$courses = $course_db->getAll();
+	$majors = $course_db->getMajors();
+
+	//$majors = array_unique(array_column($courses, 'Major'));
+	//$majors_extensions = array_unique(array_column($courses, 'Extension'));
+} catch (Exception $e) {
+	$errors = $e->getMessage();
+}
+
 
 $page_title = "Edit";
 $section = "users";
@@ -227,13 +235,11 @@ function isSaveBttnPressed() {
 											<label for="user_major">User Major</label>
 										</h5>
 										<select id="user_major" name="user_major" class="form-control">
-
-											<option value="AK">IT</option>
-											<option value="HI">Accounting and Finance</option>
-											<option value="HI">Marketing</option>
-											<option value="HI">Management</option>
-											<option value="HI">CIS</option>
-
+											<?php
+											foreach ($majors as $major) {
+												include(ROOT_PATH . "inc/view/partials/majors-select-options-view.html.php");
+											}
+											?>
 										</select>
 									</div>
 

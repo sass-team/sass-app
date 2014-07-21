@@ -46,8 +46,24 @@ class Courses {
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
-		}catch(PDOException $e) {
+		} catch (PDOException $e) {
 			throw new Exception("Could not retrieve courses data from database.");
+		}
+	}
+
+	public function getMajors() {
+		$query =
+			"SELECT DISTINCT major.extension AS 'Extension', major.name AS 'Name'
+				FROM `sass-ms_db`.course, `" . DB_NAME . "`.major, `sass-ms_db`.major_has_courses
+				WHERE course.id = major_has_courses.course_id
+					AND major.id = major_has_courses.major_id";
+		try {
+			$query = $this->db->prepare($query);
+			$query->execute();
+
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			throw new Exception("Could not retrieve majors data from database.");
 		}
 	}
 } 
