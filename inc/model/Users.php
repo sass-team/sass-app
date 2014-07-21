@@ -112,7 +112,7 @@ class Users {
 						user.date, user.`profile_description`, user.mobile, user_types.type, major.name
 					FROM `" . DB_NAME . "`.user
 						LEFT OUTER JOIN user_types ON user.`user_types_id` = `user_types`.id
-						LEFT OUTER JOIN major ON user.major_id = major.id
+						LEFT OUTER JOIN major ON user.major_id1 = major.id
 					WHERE email = :email";
 
 		$query = $this->getDbConnection()->prepare($query);
@@ -122,7 +122,7 @@ class Users {
 			$query->execute();
 			return $query->fetch();
 		} catch (PDOException $e) {
-			throw new Exception("Something terrible happened. Could not update database.");
+			throw new Exception("Something terrible happened. Could not update database." . $e->getMessage());
 		} // end try
 	}
 

@@ -182,6 +182,36 @@ function isSaveBttnPressed() {
 									</div>
 
 									<div class="form-group">
+										<h5>
+											<i class="fa fa-check"></i>
+											Type of user
+										</h5>
+
+										<div class="radio" id="id_tutor_div">
+											<label>
+												<input type="radio" name="user_type" value="tutor" class="icheck-input"
+												       checked data-required="true">
+												Tutor
+											</label>
+										</div>
+										<div class="radio">
+											<label>
+												<input type="radio" name="user_type" value="secretary" class="icheck-input"
+												       data-required="true" >
+												Secretary
+											</label>
+										</div>
+										<div class="radio">
+											<label>
+												<input type="radio" name="user_type" value="admin" class="icheck-input"
+												       data-required="true">
+												Admin
+											</label>
+										</div>
+									</div>
+									<!-- /.form-group -->
+
+									<div class="form-group">
 
 										<h5>
 											<i class="fa fa-tasks"></i>
@@ -203,10 +233,10 @@ function isSaveBttnPressed() {
 
 										<h5>
 											<i class="fa fa-tasks"></i>
-											<label for="s2_multi_value">Teaching Courses</label>
+											<label for="teaching_courses_multi">Teaching Courses</label>
 										</h5>
 
-										<select id="s2_multi_value" name="teaching_courses[]" class="form-control" multiple>
+										<select id="teaching_courses_multi" name="teaching_courses[]" class="form-control" multiple>
 											<optgroup label="General Education">
 												<option value="WP1010">WP 1010 Introduction to Academic Writing</option>
 												<option value="WP1111">WP 1111 Academic Writing</option>
@@ -225,34 +255,6 @@ function isSaveBttnPressed() {
 										</select>
 									</div>
 
-									<h5>
-										<i class="fa fa-check"></i>
-										Type of user
-									</h5>
-
-									<div class="form-group">
-										<div class="radio">
-											<label>
-												<input type="radio" id="id_user_type" name="user_type" value="tutor" class=""
-												       checked>
-												Tutor
-											</label>
-										</div>
-										<div class="radio">
-											<label>
-												<input type="radio" name="user_type" value="secretary" class=""
-												       data-required="true">
-												Secretary
-											</label>
-										</div>
-										<div class="radio">
-											<label>
-												<input type="radio" name="user_type" value="admin" class="" data-required="true">
-												Admin
-											</label>
-										</div>
-									</div>
-									<!-- /.form-group -->
 
 								</div>
 							</div>
@@ -284,6 +286,8 @@ function isSaveBttnPressed() {
 			//window.location.href = $href;
 		}, 10);
 
+		$("#user_major").select2();
+
 		// TODO: add error messages
 
 		var validate = function (element, regex) {
@@ -304,5 +308,18 @@ function isSaveBttnPressed() {
 		$("#first_name").blur(function () {
 			validate(this, /^[a-zA-Z]{1,16}$/);
 		});
+
+
+		$('input[name=user_type').on('ifChecked', function (event) {
+			if($(this).val() === "tutor") {
+				$("#user_major").select2("enable", true);
+				$("#teaching_courses_multi").select2("enable", true);
+			} else {
+				$("#user_major").select2("enable", false);
+				$("#teaching_courses_multi").select2("enable", false);
+			}
+		});
 	});
+
+
 </script>

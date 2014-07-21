@@ -292,3 +292,92 @@ Stack trace:
 [21-Jul-2014 04:18:32 Europe/Paris] PHP Notice:  Undefined index: teachingCourses in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 16
 [21-Jul-2014 04:18:32 Europe/Paris] PHP Stack trace:
 [21-Jul-2014 04:18:32 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[21-Jul-2014 16:43:35 Europe/Paris] PHP Fatal error:  Uncaught exception 'Exception' with message 'Something terrible happened. Could not update database.' in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php:125
+Stack trace:
+#0 C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\init.php(39): Users->getAllData('r.dokollari@acg...')
+#1 C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php(2): require('C:\\Users\\Riza\\D...')
+#2 {main}
+  thrown in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php on line 125
+[21-Jul-2014 16:43:42 Europe/Paris] PHP Fatal error:  Uncaught exception 'Exception' with message 'Something terrible happened. Could not update database.' in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php:125
+Stack trace:
+#0 C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\init.php(39): Users->getAllData('r.dokollari@acg...')
+#1 C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php(2): require('C:\\Users\\Riza\\D...')
+#2 {main}
+  thrown in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php on line 125
+[21-Jul-2014 16:46:10 Europe/Paris] PHP Fatal error:  Uncaught exception 'Exception' with message 'Something terrible happened. Could not update database.' in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php:125
+Stack trace:
+#0 C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\init.php(39): Users->getAllData('r.dokollari@acg...')
+#1 C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php(2): require('C:\\Users\\Riza\\D...')
+#2 {main}
+  thrown in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php on line 125
+[21-Jul-2014 16:47:48 Europe/Paris] PHP Fatal error:  Uncaught exception 'Exception' with message 'Something terrible happened. Could not update database.' in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php:125
+Stack trace:
+#0 C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\init.php(39): Users->getAllData('r.dokollari@acg...')
+#1 C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php(2): require('C:\\Users\\Riza\\D...')
+#2 {main}
+  thrown in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php on line 125
+[21-Jul-2014 16:48:30 Europe/Paris] PHP Fatal error:  Uncaught exception 'Exception' with message 'Something terrible happened. Could not update database.' in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php:125
+Stack trace:
+#0 C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\init.php(39): Users->getAllData('r.dokollari@acg...')
+#1 C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php(2): require('C:\\Users\\Riza\\D...')
+#2 {main}
+  thrown in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php on line 125
+[21-Jul-2014 16:49:28 Europe/Paris] PHP Fatal error:  Uncaught exception 'Exception' with message 'Something terrible happened. Could not update database.: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'major.id1' in 'on clause'' in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php:125
+Stack trace:
+#0 C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\init.php(39): Users->getAllData('r.dokollari@acg...')
+#1 C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php(2): require('C:\\Users\\Riza\\D...')
+#2 {main}
+  thrown in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php on line 125
+[21-Jul-2014 16:51:25 Europe/Paris] PHP Fatal error:  Uncaught exception 'Exception' with message 'Something terrible happened. Could not update database.: ' in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php:126
+Stack trace:
+#0 C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\init.php(39): Users->getAllData('r.dokollari@acg...')
+#1 C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php(2): require('C:\\Users\\Riza\\D...')
+#2 {main}
+  thrown in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php on line 126
+[21-Jul-2014 16:51:43 Europe/Paris] PHP Fatal error:  Uncaught exception 'Exception' with message 'Something terrible happened. Could not update database.: ' in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php:127
+Stack trace:
+#0 C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\init.php(39): Users->getAllData('r.dokollari@acg...')
+#1 C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php(2): require('C:\\Users\\Riza\\D...')
+#2 {main}
+  thrown in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php on line 127
+[21-Jul-2014 16:51:46 Europe/Paris] PHP Fatal error:  Uncaught exception 'Exception' with message 'Something terrible happened. Could not update database.: ' in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php:127
+Stack trace:
+#0 C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\init.php(39): Users->getAllData('r.dokollari@acg...')
+#1 C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php(2): require('C:\\Users\\Riza\\D...')
+#2 {main}
+  thrown in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php on line 127
+[21-Jul-2014 16:52:06 Europe/Paris] PHP Fatal error:  Uncaught exception 'Exception' with message 'Something terrible happened. Could not update database.: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'OUTER JOIN major ON user.major_id2 = major.id
+					WHERE email = 'r.dokollari@a' at line 7' in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php:127
+Stack trace:
+#0 C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\init.php(39): Users->getAllData('r.dokollari@acg...')
+#1 C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php(2): require('C:\\Users\\Riza\\D...')
+#2 {main}
+  thrown in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php on line 127
+[21-Jul-2014 16:53:38 Europe/Paris] PHP Fatal error:  Uncaught exception 'Exception' with message 'Something terrible happened. Could not update database.' in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php:127
+Stack trace:
+#0 C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\init.php(39): Users->getAllData('r.dokollari@acg...')
+#1 C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php(2): require('C:\\Users\\Riza\\D...')
+#2 {main}
+  thrown in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php on line 127
+[21-Jul-2014 16:53:48 Europe/Paris] PHP Fatal error:  Uncaught exception 'Exception' with message 'Something terrible happened. Could not update database.SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'OUTER JOIN major ON user.major_id2 = major.id
+					WHERE email = 'r.dokollari@a' at line 7' in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php:127
+Stack trace:
+#0 C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\init.php(39): Users->getAllData('r.dokollari@acg...')
+#1 C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php(2): require('C:\\Users\\Riza\\D...')
+#2 {main}
+  thrown in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php on line 127
+[21-Jul-2014 16:55:44 Europe/Paris] PHP Fatal error:  Uncaught exception 'Exception' with message 'Something terrible happened. Could not update database.SQLSTATE[42000]: Syntax error or access violation: 1066 Not unique table/alias: 'major'' in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php:126
+Stack trace:
+#0 C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\init.php(39): Users->getAllData('r.dokollari@acg...')
+#1 C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php(2): require('C:\\Users\\Riza\\D...')
+#2 {main}
+  thrown in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php on line 126
+[21-Jul-2014 17:31:31 Europe/Paris] PHP Notice:  Undefined index: lastName in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 13
+[21-Jul-2014 17:31:31 Europe/Paris] PHP Stack trace:
+[21-Jul-2014 17:31:31 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[21-Jul-2014 17:31:31 Europe/Paris] PHP Notice:  Undefined index: teaching_courses in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 16
+[21-Jul-2014 17:31:31 Europe/Paris] PHP Stack trace:
+[21-Jul-2014 17:31:31 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[21-Jul-2014 18:53:42 Europe/Paris] PHP Notice:  Undefined index: lastName in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 13
+[21-Jul-2014 18:53:42 Europe/Paris] PHP Stack trace:
+[21-Jul-2014 18:53:42 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
