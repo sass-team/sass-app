@@ -9,12 +9,12 @@ require ROOT_PATH . 'inc/view/sidebar.php';
 
 
 if (isSaveBttnPressed()) {
-	$firstName = trim($_POST['firstName']);
-	$lastName = trim($_POST['lastName']);
+	$first_name = trim($_POST['first_name']);
+	$last_name = trim($_POST['lastName']);
 	$email = trim($_POST['email']);
-	$userMajor = trim($_POST['userMajor']);
-	$teachingCourses = $_POST['teachingCourses'];
-	$userType = trim($_POST['userType']);
+	$user_major = trim($_POST['user_major']);
+	$teaching_courses = $_POST['teaching_courses'];
+	$user_type = trim($_POST['user_type']);
 	var_dump($_POST);
 }
 
@@ -159,8 +159,8 @@ function isSaveBttnPressed() {
 											<i class="fa fa-edit"></i>
 											<label for="first_name">First Name</label>
 										</h5>
-										<input type="text" id="first_name" name="firstName" class="form-control"
-										       value="<?php if (isset($_POST['firstName'])) echo htmlentities($_POST['firstName']); ?>"
+										<input type="text" id="first_name" name="first_name" class="form-control"
+										       value="<?php if (isset($_POST['first_name'])) echo htmlentities($_POST['first_name']); ?>"
 										       autofocus="on">
 									</div>
 
@@ -169,8 +169,8 @@ function isSaveBttnPressed() {
 											<i class="fa fa-edit"></i>
 											<label for="last_name">Last Name</label>
 										</h5>
-										<input type="text" id="last_name" name="lastName" class="form-control"
-										       value="<?php if (isset($_POST['firstName'])) echo htmlentities($_POST['lastName']); ?>">
+										<input type="text" id="last_name" name="last_name" class="form-control"
+										       value="<?php if (isset($_POST['last_name'])) echo htmlentities($_POST['last_name']); ?>">
 									</div>
 
 									<div class="form-group">
@@ -206,7 +206,7 @@ function isSaveBttnPressed() {
 											<label for="s2_multi_value">Teaching Courses</label>
 										</h5>
 
-										<select id="s2_multi_value" name="teachingCourses[]" class="form-control" multiple>
+										<select id="s2_multi_value" name="teaching_courses[]" class="form-control" multiple>
 											<optgroup label="General Education">
 												<option value="WP1010">WP 1010 Introduction to Academic Writing</option>
 												<option value="WP1111">WP 1111 Academic Writing</option>
@@ -233,21 +233,21 @@ function isSaveBttnPressed() {
 									<div class="form-group">
 										<div class="radio">
 											<label>
-												<input type="radio" id="id_user_type" name="userType" value="tutor" class=""
+												<input type="radio" id="id_user_type" name="user_type" value="tutor" class=""
 												       checked>
 												Tutor
 											</label>
 										</div>
 										<div class="radio">
 											<label>
-												<input type="radio" name="userType" value="secretary" class=""
+												<input type="radio" name="user_type" value="secretary" class=""
 												       data-required="true">
 												Secretary
 											</label>
 										</div>
 										<div class="radio">
 											<label>
-												<input type="radio" name="userType" value="admin" class="" data-required="true">
+												<input type="radio" name="user_type" value="admin" class="" data-required="true">
 												Admin
 											</label>
 										</div>
@@ -283,5 +283,26 @@ function isSaveBttnPressed() {
 			$("#bttn-styledModal").trigger("click");
 			//window.location.href = $href;
 		}, 10);
+
+		// TODO: add error messages
+
+		var validate = function (element, regex) {
+			var str = $(element).val();
+			var $parent = $(element).parent();
+
+			if (regex.test(str)) {
+				$parent.attr('class', 'form-group has-success');
+			} else {
+				$parent.attr('class', 'form-group has-error');
+			}
+		};
+
+		$("#last_name").blur(function () {
+			validate(this, /^[a-zA-Z]{1,16}$/);
+		});
+
+		$("#first_name").blur(function () {
+			validate(this, /^[a-zA-Z]{1,16}$/);
+		});
 	});
 </script>
