@@ -16,6 +16,7 @@ require_once ROOT_PATH . "inc/model/Admin.php";
 require_once ROOT_PATH . "inc/model/Tutor.php";
 require_once ROOT_PATH . "inc/model/Secretary.php";
 require_once ROOT_PATH . "inc/model/General.php";
+require_once ROOT_PATH . "inc/model/Courses.php";
 
 $errors = array();
 

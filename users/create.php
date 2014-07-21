@@ -2,6 +2,10 @@
 require '../inc/init.php';
 $general->logged_out_protect();
 
+$course_db = new Courses($db->getDbConnection());
+$courses = $course_db->getAll();
+$majors = array_unique(array_column($courses, 'Major'));
+
 $page_title = "Edit";
 $section = "users";
 require ROOT_PATH . 'inc/view/header.php';
@@ -10,12 +14,11 @@ require ROOT_PATH . 'inc/view/sidebar.php';
 
 if (isSaveBttnPressed()) {
 	$first_name = trim($_POST['first_name']);
-	$last_name = trim($_POST['lastName']);
+	$last_name = trim($_POST['last_name']);
 	$email = trim($_POST['email']);
-	$user_major = trim($_POST['user_major']);
-	$teaching_courses = $_POST['teaching_courses'];
 	$user_type = trim($_POST['user_type']);
-	var_dump($_POST);
+	$user_major = trim($_POST['user_major']);
+	$teaching_courses[] = $_POST['teaching_courses'];
 }
 
 function isSaveBttnPressed() {
@@ -187,20 +190,26 @@ function isSaveBttnPressed() {
 											Type of user
 										</h5>
 
+
 										<div class="radio" id="id_tutor_div">
 											<label>
-												<input type="radio" name="user_type" value="tutor" class="icheck-input"
+												<input type="radio" name="user_type" id="id_input_user_type" value="tutor"
+												       class="icheck-input"
 												       checked data-required="true">
 												Tutor
 											</label>
+
 										</div>
+
+
 										<div class="radio">
 											<label>
 												<input type="radio" name="user_type" value="secretary" class="icheck-input"
-												       data-required="true" >
+												       data-required="true">
 												Secretary
 											</label>
 										</div>
+
 										<div class="radio">
 											<label>
 												<input type="radio" name="user_type" value="admin" class="icheck-input"
@@ -236,22 +245,15 @@ function isSaveBttnPressed() {
 											<label for="teaching_courses_multi">Teaching Courses</label>
 										</h5>
 
-										<select id="teaching_courses_multi" name="teaching_courses[]" class="form-control" multiple>
-											<optgroup label="General Education">
-												<option value="WP1010">WP 1010 Introduction to Academic Writing</option>
-												<option value="WP1111">WP 1111 Academic Writing</option>
-												<option value="WP1212">WP 1212 Academic Writing and Research</option>
-												<option value="SP2200">SP 2200 Presentation Skills</option>
-												<option value="EN2342">EN 2342 Professional Communication - Level 5</option>
-											</optgroup>
-											<optgroup label="Economics - Concentration">
-												<option value="EC2011">EC 2011 Economic History of Europe - Level 4</option>
-												<option value="EC2270">EC 2270 Managerial Economics - Level 5</option>
-												<option value="EC2271">EC 2271 Macroeconomic Theory and Policy - Level 5</option>
-												<option value="EC2573">EC 2573 Selected Topics in Microeconomic Theory - Level 5
-												</option>
-												<option value="EC2574">EC 2574 Advanced Macroeconomics - Level 5</option>
-											</optgroup>
+										<select id="teaching_courses_multi" name="teaching_courses[]" class="form-control"
+										        multiple>
+
+											<?php
+											foreach ($majors as $major) {
+												include(ROOT_PATH . "inc/view/partials/courses-select-options-view.html.php");
+											}
+											?>
+
 										</select>
 									</div>
 
@@ -289,7 +291,7 @@ function isSaveBttnPressed() {
 		$("#user_major").select2();
 
 		// TODO: add error messages
-
+		// TODO: add option for second major
 		var validate = function (element, regex) {
 			var str = $(element).val();
 			var $parent = $(element).parent();
@@ -311,7 +313,7 @@ function isSaveBttnPressed() {
 
 
 		$('input[name=user_type').on('ifChecked', function (event) {
-			if($(this).val() === "tutor") {
+			if ($(this).val() === "tutor") {
 				$("#user_major").select2("enable", true);
 				$("#teaching_courses_multi").select2("enable", true);
 			} else {
