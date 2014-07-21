@@ -7,22 +7,32 @@
  */
 
 ?>
-<?php function auto_copyright($year = 'auto'){ ?>
-	<?php if(intval($year) == 'auto'){ $year = date('Y'); } ?>
-	<?php if(intval($year) == date('Y')){ echo intval($year); } ?>
-	<?php if(intval($year) < date('Y')){ echo intval($year) . ' - ' . date('Y'); } ?>
-	<?php if(intval($year) > date('Y')){ echo date('Y'); } ?>
+<?php function auto_copyright($year = 'auto') { ?>
+	<?php if (intval($year) == 'auto') {
+		$year = date('Y');
+	} ?>
+	<?php if (intval($year) == date('Y')) {
+		echo intval($year);
+	} ?>
+	<?php if (intval($year) < date('Y')) {
+		echo intval($year) . ' - ' . date('Y');
+	} ?>
+	<?php if (intval($year) > date('Y')) {
+		echo date('Y');
+	} ?>
 <?php } ?>
 
 <footer id="footer">
 	<ul class="nav pull-right">
 		<li>
-			Copyright &copy; <?php auto_copyright('2014');  // 2010 - 2011 ?>, <a href="https://github.com/rdok">rdok</a> &amp; <a href="http://gr.linkedin.com/pub/georgios-skarlatos/70/461/123">geoif</a>
+			Copyright &copy; <?php auto_copyright('2014'); // 2010 - 2011 ?>, <a href="https://github.com/rdok">rdok</a>
+			&amp; <a href="http://gr.linkedin.com/pub/georgios-skarlatos/70/461/123">geoif</a>
 
 		</li>
 	</ul>
 </footer>
 
+<!-- TODO: load library only when needed. Currently loads no matter the page. -->
 <script src="<?php echo BASE_URL; ?>js/libs/jquery-1.9.1.min.js"></script>
 <script src="<?php echo BASE_URL; ?>js/libs/jquery-ui-1.9.2.custom.min.js"></script>
 <script src="<?php echo BASE_URL; ?>js/libs/bootstrap.min.js"></script>
@@ -31,9 +41,14 @@
 <script src="<?php echo BASE_URL; ?>js/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="<?php echo BASE_URL; ?>js/plugins/datatables/DT_bootstrap.js"></script>
 <script src="<?php echo BASE_URL; ?>js/plugins/tableCheckable/jquery.tableCheckable.js"></script>
-<script src="<?php echo BASE_URL; ?>js/plugins/icheck/jquery.icheck.min.js"></script>
 <script src="<?php echo BASE_URL; ?>js/plugins/icheck/jquery.icheck.js"></script>
+<script src="<?php echo BASE_URL; ?>js/plugins/icheck/jquery.icheck.min.js"></script>
+<script src="<?php echo BASE_URL; ?>js/plugins/datepicker/bootstrap-datepicker.js"></script>
+<script src="<?php echo BASE_URL; ?>js/plugins/timepicker/bootstrap-timepicker.js"></script>
+<script src="<?php echo BASE_URL; ?>js/plugins/simplecolorpicker/jquery.simplecolorpicker.js"></script>
+
 <script src="<?php echo BASE_URL; ?>js/plugins/select2/select2.js"></script>
+<script src="<?php echo BASE_URL; ?>js/plugins/autosize/jquery.autosize.min.js"></script>
 <script src="<?php echo BASE_URL; ?>js/plugins/fileupload/bootstrap-fileupload.js"></script>
 <script src="<?php echo BASE_URL; ?>js/plugins/textarea-counter/jquery.textarea-counter.js"></script>
 
@@ -54,7 +69,7 @@
 
 <script src="<?php echo BASE_URL; ?>js/App.js"></script>
 
-<!--<script src="<?php echo BASE_URL; ?>js/demos/form-extended.js"></script> -->
+<script src="<?php echo BASE_URL; ?>js/demos/form-extended.js"></script>
 
 
 </body>

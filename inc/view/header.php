@@ -12,16 +12,18 @@
 	<link rel="shortcut icon" href="<?php echo BASE_URL; ?>img/logos/logo-login.png">
 
 	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,800italic,400,600,800" type="text/css">
-
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>css/font-awesome.min.css" type="text/css" />
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>css/bootstrap.min.css" type="text/css" />
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>js/libs/css/ui-lightness/jquery-ui-1.9.2.custom.css" type="text/css" />
-   <link rel="stylesheet" href="<?php echo BASE_URL; ?>js/plugins/icheck/skins/minimal/blue.css" type="text/css" />
 
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>js/plugins/fileupload/bootstrap-fileupload.css" type="text/css" />
-	
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>js/plugins/icheck/skins/minimal/blue.css" type="text/css" />
+	<link rel="stylesheet" href="<?php echo BASE_URL; ?>js/plugins/datepicker/datepicker.css" type="text/css" />
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>js/plugins/select2/select2.css" type="text/css" />
+	<link rel="stylesheet" href="<?php echo BASE_URL; ?>js/plugins/simplecolorpicker/jquery.simplecolorpicker.css" type="text/css" />
+
+	<link rel="stylesheet" href="<?php echo BASE_URL; ?>js/plugins/timepicker/bootstrap-timepicker.css" type="text/css" />
+	<link rel="stylesheet" href="<?php echo BASE_URL; ?>js/plugins/fileupload/bootstrap-fileupload.css" type="text/css" />
+
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>js/plugins/fullcalendar/fullcalendar.css" type="text/css" />
 
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>css/App.css" type="text/css" />
