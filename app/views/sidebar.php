@@ -25,7 +25,7 @@
 <li class="<?php if ($section == "dashboard") {
 	echo "active";
 } ?>">
-	<a href="<?php echo BASE_URL; ?>index.php">
+	<a href="<?php echo BASE_URL; ?>">
 		<i class="fa fa-dashboard"></i>
 		Dashboard
 	</a>
@@ -42,13 +42,13 @@
 
 	<ul class="sub-nav">
 		<li>
-			<a href="<?php echo BASE_URL; ?>account/profile.php">
+			<a href="<?php echo BASE_URL; ?>account/profile">
 				<i class="fa fa-user"></i>
 				Profile
 			</a>
 		</li>
 		<li>
-			<a href="<?php echo BASE_URL; ?>account/settings.php">
+			<a href="<?php echo BASE_URL; ?>account/settings">
 				<i class="fa fa-cogs"></i>
 				Settings
 			</a>
@@ -76,13 +76,13 @@
 
 		<ul class="sub-nav">
 			<li>
-				<a href="<?php echo BASE_URL; ?>users/create.php">
+				<a href="<?php echo BASE_URL; ?>users/create">
 					<i class="fa fa-edit"></i>
 					Create
 				</a>
 			</li>
 			<li>
-				<a href="<?php echo BASE_URL; ?>users/edit.php">
+				<a href="<?php echo BASE_URL; ?>users/edit">
 					<i class="fa fa-group"></i>
 					Edit
 				</a>
@@ -240,7 +240,7 @@
 
 	<ul class="sub-nav">
 		<li>
-			<a href="<?php echo BASE_URL; ?>login.php">
+			<a href="<?php echo BASE_URL; ?>login">
 				<i class="fa fa-unlock"></i>
 				Login Basic
 			</a>

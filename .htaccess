@@ -4,9 +4,11 @@ RewriteEngine On
 # REQUEST_FILENAME: The full local filesystem path to the file or script matching the request
 # '-f' (is regular file)
 RewriteCond %{REQUEST_FILENAME} !-f
-# RewriteRule: Defines rules for the rewriting engine
-RewriteRule ^([^/]+)/$ $1.php
+#RewriteRule ^([^/]+)/$ $1.php
+
 RewriteRule ^([^/]+)/([^/]+)/$ /$1/$2.php
+
+
 RewriteCond %{REQUEST_FILENAME} !-f
 # '-d' (is directory)
 RewriteCond %{REQUEST_FILENAME} !-d

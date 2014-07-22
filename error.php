@@ -112,7 +112,7 @@ require "inc/app.php";
 							<li>
 								<i class="icon-li fa fa-check-square-o"></i>
 								Contact the <a
-									href="mailto:r.dokollari@gmail.com,G.Skarlatos@acg.edu?Subject=<?php echo $_SERVER['SERVER_NAME']; ?>&#58;%20Errors%20Specifics"
+									href="mailto:r.dokollari@gmail.com,G.Skarlatos@acg.edu?Subject=<?php echo $_SERVER['SERVER_NAME']; ?>&#58;%20Error%20Form"
 									target="_blank">Developers</a>.<strong> Please include:</strong>
 								<ol>
 									<li>url where the error occured.</li>
