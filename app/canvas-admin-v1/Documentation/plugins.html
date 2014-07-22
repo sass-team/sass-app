@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+	<title>
+		Plugins
+		
+		- 
+		
+		Canvas Admin Docs v1.0
+	</title>
+
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<!-- Font Awesome -->
+	<link href="./css/font-awesome.min.css" rel="stylesheet">
+
+	<!-- Bootstrap core CSS -->
+	<link href="./css/bootstrap.css" rel="stylesheet">
+
+	
+
+	<!-- Documentation core CSS -->
+	<link href="./css/docs.css" rel="stylesheet">
+
+
+	<link href="./js/plugins/snippet/jquery.snippet.min.css" rel="stylesheet">
+
+	
+
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+	  <script src="./js/libs/html5shiv.js"></script>
+	  <script src="./js/libs/respond.min.js"></script>
+	<![endif]-->
+
+	<!-- Favicons -->
+	<link rel="shortcut icon" href="./assets/ico/favicon.ico">
+
+</head>
+
+<body>
+  <a class="sr-only" href="#content">Skip navigation</a>
+
+  <!-- Docs master nav -->
+  <header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">
+    <div class="container">
+
+      <div class="navbar-header">
+        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+
+        <a href="./index.html" class="navbar-brand">Canvas Admin</a>
+      </div>
+      
+      <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+        <ul class="nav navbar-nav">
+          <li class="">
+          <a href="./getting-started.html">Getting started</a>
+          </li>
+          <li class="">
+          <a href="./components.html">Components</a>
+          </li>
+          <li class="active">
+          <a href="./plugins.html">Plugins</a>
+          </li>
+        </ul>
+
+        <ul class="nav navbar-nav pull-right">
+
+          <li>
+          <a href="../theme" target="_blank">
+          View Demo&nbsp;&nbsp;
+          <i class="icon-external-link"></i> 
+          </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Docs page layout -->
+  <div class="bs-header" id="content">
+    <div class="container">
+      <h1>Plugins</h1>
+    </div>
+  </div>
+
+  <div class="container bs-docs-container">
+    <div class="row">
+
+      <div id="sidebar" class="col-md-3">
+        <div class="bs-sidebar hidden-print affix-top" role="complementary">
+          <ul class="nav bs-sidenav">
+
+          </ul>
+        </div>
+      </div>
+
+      <div id="main" class="col-md-9" role="main">
+
+<section id="plugins-tables" data-title="Table Plugins" class="bs-docs-section">
+
+	<h1 class="section-header">Table Plugins</h1>
+
+	<div id="datatables-plugin" data-title="Data Tables Plugin" class="bs-docs-section-sub">
+
+		<h3>Data Tables Plugin</h3>
+
+		<p>DataTables is a plug-in for the jQuery Javascript library. It is a highly flexible tool, based upon the foundations of progressive enhancement, which will add advanced interaction controls to any HTML table.</p>
+
+		<p>
+			<a href="http://datatables.net/" class="bs-docs-external-link">
+				Data Tables Documentation
+			</a>
+		</p>
+
+		<hr />
+
+		<h4>CSS Includes</h4>
+
+		<pre class="">
+None</pre>
+
+		<br /><br />
+
+		<h4>JS Includes</h4>
+
+		<pre class="snip-html">
+&lt;script src="./js/plugins/datatables/jquery.dataTables.min.js"&gt;&lt;/script&gt;
+&lt;script src="./js/plugins/datatables/DT_bootstrap.js"&gt;&lt;/script&gt;
+</pre>
+
+	</div>
+
+
+	<div id="checkable-plugin" data-title="Table Checkable" class="bs-docs-section-sub">
+
+		<h3>Table Checkable</h3>
+
+		<p><span class="label label-danger">Important</span> To enable the checkable plugin, make sure you add the class <code>.table-checkable</code> to your <code>table</code> element.</p>
+
+		<p><span class="label label-danger">Important</span> Also, make sure you add the class <code>.checkbox-column</code> to each of your <code>th, th</code> elements that contain your checkboxes. This will likely be your very first column.</p>
+
+		<br>
+
+		<h4>Example HTML</h4>
+
+		<pre class="snip-html">
+&lt;table id="checkable-example" class="table table-bordered table-checkable"&gt;
+	&lt;thead&gt;
+		&lt;tr&gt;
+			&lt;th class="checkbox-column"&gt;&lt;input type="checkbox"&gt;&lt;/th&gt;
+			&lt;th&gt;Column&lt;/th&gt;
+		&lt;/tr&gt;
+	&lt;/thead&gt;
+
+	&lt;tbody&gt;
+		&lt;tr&gt;
+			&lt;td class="checkbox-column"&gt;&lt;input type="checkbox"&gt;&lt;/td&gt;
+			&lt;td&gt;Column Text&lt;/td&gt;
+		&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+</pre>
+
+		<br>
+
+		<h4>Example JS</h4>
+
+		<pre class="snip-js">
+$('#checkable-example').tableCheckable ();
+</pre>
+
+		<hr />
+
+		<h4>CSS Includes</h4>
+
+		<pre class="">
+None</pre>
+
+		<br /><br />
+
+		<h4>JS Includes</h4>
+
+		<pre class="snip-html">
+
+&lt;script src="./js/plugins/tableCheckable/jquery.tableCheckable.js"&gt;&lt;/script&gt;
+</pre>
+
+	</div>
+
+</section>
+<section id="plugins-charts" data-title="Charting Plugins" class="bs-docs-section">
+
+<h1 class="section-header">Charting Plugins</h1>
+
+<div id="flot" data-title="Flot Charts" class="bs-docs-section-sub">
+
+	<h3>Flot Charts</h3>
+
+	<p>Flot is a pure JavaScript plotting library for jQuery, with a focus on simple usage, attractive looks and interactive features.</p>
+
+	<p>
+		<a href="http://www.flotcharts.org/" class="bs-docs-external-link">
+			jQuery Flot Documentation
+		</a>
+	</p>
+
+	<hr />
+
+		<h4>CSS Includes</h4>
+
+		<pre class="">
+None</pre>
+
+		<br /><br />
+
+		<h4>JS Includes</h4>
+
+		<pre class="snip-html">
+&lt;script src="./js/plugins/flot/jquery.flot.js"&gt;&lt;/script&gt;
+&lt;script src="./js/plugins/flot/jquery.flot.orderBars.js"&gt;&lt;/script&gt;
+&lt;script src="./js/plugins/flot/jquery.flot.pie.js"&gt;&lt;/script&gt;
+&lt;script src="./js/plugins/flot/jquery.flot.stack.js"&gt;&lt;/script&gt;
+&lt;script src="./js/plugins/flot/jquery.flot.tooltip.min.js"&gt;&lt;/script&gt;
+&lt;script src="./js/plugins/flot/jquery.flot.resize.js"&gt;&lt;/script&gt;
+</pre>
+
+</div>
+
+<div id="morris" data-title="Morris Charts" class="bs-docs-section-sub">
+
+	<h3>Morris Charts</h3>
+
+	<p>Morris.js is the library that powers the graphs on http://howmanyleft.co.uk/. It's a very simple API for drawing line, bar, area and donut charts.</p>
+
+	<p>
+		<a href="http://www.oesmith.co.uk/morris.js/" class="bs-docs-external-link">
+			Morris.js Documentation
+		</a>
+	</p>
+
+	<hr />
+
+		<h4>CSS Includes</h4>
+
+		<pre class="">
+None</pre>
+
+		<br /><br />
+
+		<h4>JS Includes</h4>
+
+		<pre class="snip-html">
+&lt;script src="./js/libs/raphael-2.1.2.min.js"&gt;&lt;/script&gt;
+&lt;script src="./js/plugins/morris/morris.min.js"&gt;&lt;/script&gt;
+</pre>
+
+</div>
+
+</section>
+<section id="plugins-forms" data-title="Form Plugins" class="bs-docs-section">
+
+<h1 class="section-header">Form Plugins</h1>
+
+<div id="parsley" data-title="Parsley Validation" class="bs-docs-section-sub">
+
+	<h3>Parsley Validation</h3>
+
+	<p>Javascript forms validation. Powerful, UX aware & Dead simple.</p>
+
+	<p>
+		<a href="http://parsleyjs.org/documentation.html" class="bs-docs-external-link">
+			Parsley Documentation
+		</a>
+	</p>
+
+	<hr />
+
+		<h4>CSS Includes</h4>
+
+		<pre class="">
+None</pre>
+
+		<br /><br />
+
+		<h4>JS Includes</h4>
+
+		<pre class="snip-html">
+&lt;script src="./js/plugins/parsley/parsley.js"&gt;&lt;/script&gt;
+</pre>
+
+</div>
+
+<div id="icheck" data-title="iCheck" class="bs-docs-section-sub">
+
+	<h3>iCheck</h3>
+
+	<p>Super customized checkboxes and radio buttons for jQuery & Zepto</p>
+
+	<p>
+		<a href="http://damirfoy.com/iCheck/" class="bs-docs-external-link">
+			iCheck Documentation
+		</a>
+	</p>
+
+	<hr />
+
+		<h4>CSS Includes</h4>
+
+		<pre class="snip-html">
+&lt;link rel="stylesheet" href="./js/plugins/icheck/skins/minimal/blue.css" type="text/css" /&gt;</pre>
+
+		<br /><br />
+
+		<h4>JS Includes</h4>
+
+		<pre class="snip-html">
+&lt;script src="./js/plugins/icheck/jquery.icheck.js"&gt;&lt;/script&gt;
+</pre>
+
+</div>
+
+<div id="select2" data-title="Select 2" class="bs-docs-section-sub">
+
+	<h3>Select 2</h3>
+
+	<p>Select2 is a jQuery based replacement for select boxes. It supports searching, remote data sets, and infinite scrolling of results.</p>
+
+	<p>
+		<a href="http://ivaynberg.github.io/select2/" class="bs-docs-external-link">
+			Select 2 Documentation
+		</a>
+	</p>
+
+	<hr />
+
+		<h4>CSS Includes</h4>
+
+		<pre class="snip-html">
+&lt;link rel="stylesheet" href="./js/plugins/select2/select2.css" type="text/css" /&gt;</pre>
+
+		<br /><br />
+
+		<h4>JS Includes</h4>
+
+		<pre class="snip-html">
+&lt;script src="./js/plugins/select2/select2.js"&gt;&lt;/script&gt;
+</pre>
+
+</div>
+
+<div id="datepicker" data-title="Datepicker" class="bs-docs-section-sub">
+
+	<h3>Date Picker</h3>
+
+	<p>Bootstrap-datepicker provides a flexible datepicker widget in the Twitter bootstrap style.</p>
+
+	<p>
+		<a href="http://eternicode.github.io/bootstrap-datepicker/" class="bs-docs-external-link">
+			Bootstrap Datepicker Documentation
+		</a>
+	</p>
+
+	<hr />
+
+		<h4>CSS Includes</h4>
+
+		<pre class="snip-html">
+&lt;link rel="stylesheet" href="./js/plugins/datepicker/datepicker.css" type="text/css" /&gt;</pre>
+
+		<br /><br />
+
+		<h4>JS Includes</h4>
+
+		<pre class="snip-html">
+&lt;script src="./js/plugins/datepicker/bootstrap-datepicker.js"&gt;&lt;/script&gt;
+</pre>
+
+</div>
+
+<div id="timepicker" data-title="Timepicker" class="bs-docs-section-sub">
+
+	<h3>Time Picker</h3>
+
+	<p>This plugin allows you to easily select a time for a text input using your mouse or keyboards arrow keys.</p>
+
+	<p>
+		<a href="http://jdewit.github.io/bootstrap-timepicker/" class="bs-docs-external-link">
+			Bootstrap Timepicker Documentation
+		</a>
+	</p>
+
+	<hr />
+
+		<h4>CSS Includes</h4>
+
+		<pre class="snip-html">
+&lt;link rel="stylesheet" href="./js/plugins/timepicker/bootstrap-timepicker.css" type="text/css" /&gt;</pre>
+
+		<br /><br />
+
+		<h4>JS Includes</h4>
+
+		<pre class="snip-html">
+&lt;script src="./js/plugins/timepicker/bootstrap-timepicker.js"&gt;&lt;/script&gt;
+</pre>
+
+</div>
+
+<div id="colorpicker" data-title="Color Picker" class="bs-docs-section-sub">
+
+	<h3>Color Picker</h3>
+
+	<p>Yet another jQuery color picker. This plugin is unobtrusive and integrates well with Twitter Bootstrap (it works just fine without). The source code only requires jQuery and is about 200 lines of JavaScript and 100 lines of CSS.</p>
+
+	<p>
+		<a href="https://github.com/tkrotoff/jquery-simplecolorpicker" class="bs-docs-external-link">
+			Color Picker Documentation
+		</a>
+	</p>
+
+	<hr />
+
+		<h4>CSS Includes</h4>
+
+		<pre class="snip-html">
+&lt;link rel="stylesheet" href="./js/plugins/simplecolorpicker/jquery.simplecolorpicker.css" type="text/css" /&gt;</pre>
+
+		<br /><br />
+
+		<h4>JS Includes</h4>
+
+		<pre class="snip-html">
+&lt;script src="./js/plugins/simplecolorpicker/jquery.simplecolorpicker.js"&gt;&lt;/script&gt;
+</pre>
+
+</div>
+
+<div id="fileupload" data-title="File Upload" class="bs-docs-section-sub">
+
+	<h3>File Upload</h3>
+
+	<p>This file upload plugin allows you to create a visually appealing file or image upload widgets.</p>
+
+	<p>
+		<a href="http://jasny.github.io/bootstrap/javascript.html#fileupload" class="bs-docs-external-link">
+			File Upload Documentation
+		</a>
+	</p>
+
+	<hr />
+
+		<h4>CSS Includes</h4>
+
+		<pre class="snip-html">
+&lt;link rel="stylesheet" href="./js/plugins/fileupload/bootstrap-fileupload.css" type="text/css" /&gt;
+</pre>
+
+		<br /><br />
+
+		<h4>JS Includes</h4>
+
+		<pre class="snip-html">
+&lt;script src="./js/plugins/fileupload/bootstrap-fileupload.js"&gt;&lt;/script&gt;
+</pre>
+
+</div>
+
+<div id="textcounter" data-title="Textarea Counter" class="bs-docs-section-sub">
+
+	<h3>Textarea Counter</h3>
+
+	<p>This plugin allows you to set and limit user input by max characters within html textarea (it is only limited by characters other than words). It binds keyup, paste and drag events. The extra div is displayed under the textarea, which shows the current number of input characters and words.</p>
+
+	<p>
+		<a href="http://roy-jin.appspot.com/jsp/textareaCounter.jsp" class="bs-docs-external-link">
+			Textarea Counter Documentation
+		</a>
+	</p>
+
+	<hr />
+
+		<h4>CSS Includes</h4>
+
+		<pre class="">None
+</pre>
+
+		<br /><br />
+
+		<h4>JS Includes</h4>
+
+		<pre class="snip-html">
+&lt;script src="./js/plugins/textarea-counter/jquery.textarea-counter.js"&gt;&lt;/script&gt;
+</pre>
+
+</div>
+
+<div id="textautosize" data-title="Textarea Autosize" class="bs-docs-section-sub">
+
+	<h3>Textarea Autosize</h3>
+
+	<p>This is a plugin to automatically adjust textarea height.</p>
+
+	<p>
+		<a href="http://www.jacklmoore.com/autosize/" class="bs-docs-external-link">
+			Textarea Autosize Documentation
+		</a>
+	</p>
+
+	<hr />
+
+		<h4>CSS Includes</h4>
+
+		<pre class="">None
+</pre>
+
+		<br /><br />
+
+		<h4>JS Includes</h4>
+
+		<pre class="snip-html">
+&lt;script src="./js/plugins/autosize/jquery.autosize.min.js"&gt;&lt;/script&gt;
+</pre>
+
+</div>
+
+</section>
+<section id="plugins-calendar" data-title="Calendar Plugins" class="bs-docs-section">
+
+<h1 class="section-header">Calendar Plugins</h1>
+
+<p>FullCalendar is a jQuery plugin that provides a full-sized, drag & drop calendar. It uses AJAX to fetch events on-the-fly for each month and is easily configured to use your own feed format (an extension is provided for Google Calendar). It is visually customizable and exposes hooks for user-triggered events (like clicking or dragging an event). It is open source licensed under an MIT license.</p>
+
+<p>
+	<a href="http://arshaw.com/fullcalendar/" class="bs-docs-external-link">
+		Full Calendar Documentation
+	</a>
+</p>
+
+	<hr />
+
+		<h4>CSS Includes</h4>
+
+		<pre class="snip-html">
+&lt;link rel="stylesheet" href="./js/plugins/fullcalendar/fullcalendar.css" type="text/css" /&gt;
+</pre>
+
+		<br /><br />
+
+		<h4>JS Includes</h4>
+
+		<pre class="snip-html">
+&lt;script src="./js/plugins/fullcalendar/fullcalendar.min.js"&gt;&lt;/script&gt;
+</pre>
+
+</section>
+<section id="plugins-popup" data-title="Popup Plugins" class="bs-docs-section">
+
+<h1 class="section-header">Popup Plugins</h1>
+
+
+<div id="lightbox" data-title="Lightbox" class="bs-docs-section-sub">
+
+	<h3>Lightbox</h3>
+
+	<p>Magnific Popup is a responsive jQuery lightbox plugin that is focused on performance and providing best experience for users with any device (Zepto.js compatible).</p>
+
+	<p>
+		<a href="http://dimsemenov.com/plugins/magnific-popup/documentation.html" class="bs-docs-external-link">
+			Magnific Popup Documentation
+		</a>
+	</p>
+
+	<hr />
+
+		<h4>CSS Includes</h4>
+
+		<pre class="snip-html">
+&lt;link rel="stylesheet" href="./js/plugins/magnific/magnific-popup.css" type="text/css" /&gt;
+</pre>
+
+		<br /><br />
+
+		<h4>JS Includes</h4>
+
+		<pre class="snip-html">
+&lt;script src="./js/plugins/magnific/jquery.magnific-popup.min.js"&gt;&lt;/script&gt;
+</pre>
+
+</div>
+
+<div id="howl" data-title="Howl" class="bs-docs-section-sub">
+
+	<h3>Howl</h3>
+
+	<p>Howl is a clean CSS3 notification system for alerting users to site information, errors, warnings, and successes.</p>
+
+	<p>
+		<a href="http://jumpstartthemes.com/code/plugins/howl/" class="bs-docs-external-link">
+			Howl Documentation
+		</a>
+	</p>
+
+	<hr />
+
+		<h4>CSS Includes</h4>
+
+		<pre class="snip-html">
+None
+</pre>
+
+		<br /><br />
+
+		<h4>JS Includes</h4>
+
+		<pre class="snip-html">
+&lt;script src="./js/plugins/howl/howl.min.js"&gt;&lt;/script&gt;
+</pre>
+
+</div>
+
+</section>
+<section id="plugins-jqueryui" data-title="jQuery UI" class="bs-docs-section">
+
+<h1 class="section-header">jQuery UI</h1>
+
+<div id="jq-sliders" data-title="Sliders" class="bs-docs-section-sub">
+
+	<h3>Sliders</h3>
+	
+<p>The jQuery UI Slider plugin makes selected elements into sliders. There are various options such as multiple handles and ranges. The handle can be moved with the mouse or the arrow keys.</p>
+
+	<p>
+		<a href="http://jqueryui.com/slider/" class="bs-docs-external-link">
+			Slider Documentation
+		</a>
+	</p>
+
+	<hr />
+
+		<h4>CSS Includes</h4>
+
+		<pre class="snip-html">
+&lt;link rel="stylesheet" href="./js/libs/css/ui-lightness/jquery-ui-1.9.2.custom.css" type="text/css" /&gt;
+</pre>
+
+		<br /><br />
+
+		<h4>JS Includes</h4>
+
+		<pre class="snip-html">
+&lt;script src="./js/libs/jquery-ui-1.9.2.custom.min.js"&gt;&lt;/script&gt;
+</pre>
+
+</div>
+
+</section>
+
+      </div>
+
+    </div>
+  </div>
+
+    <!-- Footer
+  ================================================== -->
+  <footer class="bs-footer" role="contentinfo">
+    <div class="container">
+
+      
+      <p>Documentation licensed under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</p>
+    
+      <ul class="footer-links">
+        <li><a href="./index.html">Canvas Admin Docs v1.0</a></li>
+        <li class="muted">·</li>
+        <li><a href="http://jumpstartthemes.com">Jumpstart Themes</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <!-- JS and analytics only. -->
+  <!-- Bootstrap core JavaScript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="./js/libs/jquery-1.8.1.min.js"></script>
+  <script src="./js/libs/bootstrap.min.js"></script>
+  <script src="./js/libs/handlebars.js"></script>
+  <script src="./js/plugins/snippet/jquery.snippet.min.js"></script>
+  <script src="./js/docs.js"></script>
+
+  
+  <script id="bs-sidenav-tmpl" type="text/x-handlebars-template">    
+  {{#sections}}
+    <li>
+      <a href="{{id}}">
+      {{title}}
+
+      {{#if subsCount}}
+      <small class="bs-sidenav-sub-count">({{subsCount}})</small>
+      {{/if}}
+      </a>
+
+      <ul class="nav">
+        {{#subs}}
+        <li>
+          <a href="{{id}}">--&nbsp;&nbsp;{{title}}</a>
+        </li>
+        {{/subs}}
+      </ul>
+    </li>
+  {{/sections}}  
+  </script>
+  
+
+</body>
+
+</html>

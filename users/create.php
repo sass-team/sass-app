@@ -1,5 +1,5 @@
 <?php
-require '../inc/init.php';
+require '../app/init.php';
 $general->logged_out_protect();
 
 try {
@@ -18,8 +18,8 @@ function isLoginBtnPressed() {
 }
 $page_title = "Edit";
 $section = "users";
-require ROOT_PATH . 'inc/views/header.php';
-require ROOT_PATH . 'inc/views/sidebar.php';
+require ROOT_PATH . 'app/views/header.php';
+require ROOT_PATH . 'app/views/sidebar.php';
 
 
 if (isSaveBttnPressed()) {
@@ -158,7 +158,7 @@ function isSaveBttnPressed() {
 <div id="styledModal" class="modal modal-styled fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form method="post" id="create-form" action="create.php" class="form">
+			<form method="post" id="create-form" action="create" class="form">
 
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -193,7 +193,7 @@ function isSaveBttnPressed() {
 									<div class="form-group">
 										<h5>
 											<i class="fa fa-edit"></i>
-											<label for="first_name">First Name	<?php var_dump($_POST); ?></label>
+											<label for="first_name">First Name</label>
 										</h5>
 										<input type="text" id="first_name" name="first_name" class="form-control"
 										       value="<?php if (isset($_POST['first_name'])) echo htmlentities($_POST['first_name']); ?>"
@@ -262,7 +262,7 @@ function isSaveBttnPressed() {
 										<select id="user_major" name="user_major" class="form-control">
 											<?php
 											foreach ($majors as $major) {
-												include(ROOT_PATH . "inc/views/partials/majors-select-options-views.html.php");
+												include(ROOT_PATH . "app/views/partials/majors-select-options-views.html.php");
 											}
 											?>
 										</select>
@@ -281,7 +281,7 @@ function isSaveBttnPressed() {
 
 											<?php
 											foreach ($majors as $major) {
-												include(ROOT_PATH . "inc/views/partials/courses-select-options-views.html.php");
+												include(ROOT_PATH . "app/views/partials/courses-select-options-views.html.php");
 											}
 											?>
 
@@ -311,7 +311,7 @@ function isSaveBttnPressed() {
 </div><!-- /.modal -->
 
 
-<?php include ROOT_PATH . "inc/views/footer.php"; ?>
+<?php include ROOT_PATH . "app/views/footer.php"; ?>
 <script type="text/javascript">
 	jQuery(function () {
 		$("#create-form").submit(function (event) {

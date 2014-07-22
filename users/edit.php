@@ -1,20 +1,25 @@
 <?php
-require '../inc/init.php';
+require '../app/init.php';
 $general->logged_out_protect();
 
 $page_title = "View Users";
 $section = "users";
-$all_users = $users->getAllUsers();
 
-require ROOT_PATH . 'inc/views/header.php';
-require ROOT_PATH . 'inc/views/sidebar.php';
+try {
+	$all_users = $users->getAllUsers();
+} catch(Exception $e) {
+	$errors[] = $e->getMessage();
+}
+
+require ROOT_PATH . 'app/views/header.php';
+require ROOT_PATH . 'app/views/sidebar.php';
 ?>
 
 
 	<div id="content">
 
 		<div id="content-header">
-			<h1>Tables Advanced</h1>
+			<h1>All Users</h1>
 		</div>
 		<!-- #content-header -->
 
@@ -65,7 +70,7 @@ require ROOT_PATH . 'inc/views/sidebar.php';
 									<tbody>
 									<?php
 									foreach (array_reverse($all_users) as $currentUserData) {
-										include(ROOT_PATH . "inc/views/partials/user-table-data-views.html.php");
+										include(ROOT_PATH . "app/views/partials/user-table-data-views.html.php");
 									}
 									?>
 									</tbody>
@@ -99,4 +104,4 @@ require ROOT_PATH . 'inc/views/sidebar.php';
 
 
 
-<?php include ROOT_PATH . "inc/views/footer.php"; ?>
+<?php include ROOT_PATH . "app/views/footer.php"; ?>
