@@ -3053,3 +3053,95 @@ Stack trace:
 [22-Jul-2014 17:33:51 Europe/Paris] PHP Warning:  Invalid argument supplied for foreach() in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php on line 72
 [22-Jul-2014 17:33:51 Europe/Paris] PHP Stack trace:
 [22-Jul-2014 17:33:51 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php:0
+[22-Jul-2014 17:43:23 Europe/Paris] PHP Notice:  Undefined variable: all_users in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php on line 72
+[22-Jul-2014 17:43:23 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 17:43:23 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php:0
+[22-Jul-2014 17:43:23 Europe/Paris] PHP Warning:  array_reverse() expects parameter 1 to be array, null given in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php on line 72
+[22-Jul-2014 17:43:23 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 17:43:23 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php:0
+[22-Jul-2014 17:43:23 Europe/Paris] PHP   2. array_reverse() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php:72
+[22-Jul-2014 17:43:23 Europe/Paris] PHP Warning:  Invalid argument supplied for foreach() in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php on line 72
+[22-Jul-2014 17:43:23 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 17:43:23 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php:0
+[22-Jul-2014 17:45:05 Europe/Paris] PHP Notice:  Undefined variable: all_users in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php on line 76
+[22-Jul-2014 17:45:05 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 17:45:05 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php:0
+[22-Jul-2014 17:45:05 Europe/Paris] PHP Warning:  array_reverse() expects parameter 1 to be array, null given in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php on line 76
+[22-Jul-2014 17:45:05 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 17:45:05 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php:0
+[22-Jul-2014 17:45:05 Europe/Paris] PHP   2. array_reverse() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php:76
+[22-Jul-2014 17:45:05 Europe/Paris] PHP Warning:  Invalid argument supplied for foreach() in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php on line 76
+[22-Jul-2014 17:45:05 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 17:45:05 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php:0
+[22-Jul-2014 17:45:15 Europe/Paris] PHP Notice:  Undefined variable: all_users in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php on line 75
+[22-Jul-2014 17:45:15 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 17:45:15 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php:0
+[22-Jul-2014 17:45:15 Europe/Paris] PHP Warning:  array_reverse() expects parameter 1 to be array, null given in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php on line 75
+[22-Jul-2014 17:45:15 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 17:45:15 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php:0
+[22-Jul-2014 17:45:15 Europe/Paris] PHP   2. array_reverse() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php:75
+[22-Jul-2014 17:45:15 Europe/Paris] PHP Warning:  Invalid argument supplied for foreach() in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php on line 75
+[22-Jul-2014 17:45:15 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 17:45:15 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php:0
+[22-Jul-2014 17:45:23 Europe/Paris] PHP Notice:  Undefined variable: all_users in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php on line 75
+[22-Jul-2014 17:45:23 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 17:45:23 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php:0
+[22-Jul-2014 17:45:23 Europe/Paris] PHP Warning:  array_reverse() expects parameter 1 to be array, null given in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php on line 75
+[22-Jul-2014 17:45:23 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 17:45:23 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php:0
+[22-Jul-2014 17:45:23 Europe/Paris] PHP   2. array_reverse() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php:75
+[22-Jul-2014 17:45:23 Europe/Paris] PHP Warning:  Invalid argument supplied for foreach() in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php on line 75
+[22-Jul-2014 17:45:23 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 17:45:23 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php:0
+[22-Jul-2014 17:45:30 Europe/Paris] PHP Notice:  Undefined variable: all_users in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php on line 75
+[22-Jul-2014 17:45:30 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 17:45:30 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php:0
+[22-Jul-2014 17:45:30 Europe/Paris] PHP Warning:  array_reverse() expects parameter 1 to be array, null given in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php on line 75
+[22-Jul-2014 17:45:30 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 17:45:30 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php:0
+[22-Jul-2014 17:45:30 Europe/Paris] PHP   2. array_reverse() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php:75
+[22-Jul-2014 17:45:30 Europe/Paris] PHP Warning:  Invalid argument supplied for foreach() in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php on line 75
+[22-Jul-2014 17:45:30 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 17:45:30 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php:0
+[22-Jul-2014 17:47:02 Europe/Paris] PHP Notice:  Undefined variable: all_users in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php on line 80
+[22-Jul-2014 17:47:02 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 17:47:02 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php:0
+[22-Jul-2014 17:47:02 Europe/Paris] PHP Warning:  array_reverse() expects parameter 1 to be array, null given in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php on line 80
+[22-Jul-2014 17:47:02 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 17:47:02 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php:0
+[22-Jul-2014 17:47:02 Europe/Paris] PHP   2. array_reverse() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php:80
+[22-Jul-2014 17:47:02 Europe/Paris] PHP Warning:  Invalid argument supplied for foreach() in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php on line 80
+[22-Jul-2014 17:47:02 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 17:47:02 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php:0
+[22-Jul-2014 17:47:31 Europe/Paris] PHP Notice:  Undefined variable: all_users in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php on line 80
+[22-Jul-2014 17:47:31 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 17:47:31 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php:0
+[22-Jul-2014 17:47:31 Europe/Paris] PHP Warning:  array_reverse() expects parameter 1 to be array, null given in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php on line 80
+[22-Jul-2014 17:47:31 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 17:47:31 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php:0
+[22-Jul-2014 17:47:31 Europe/Paris] PHP   2. array_reverse() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php:80
+[22-Jul-2014 17:47:31 Europe/Paris] PHP Warning:  Invalid argument supplied for foreach() in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php on line 80
+[22-Jul-2014 17:47:31 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 17:47:31 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php:0
+[22-Jul-2014 17:49:27 Europe/Paris] PHP Notice:  Undefined variable: all_users in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php on line 82
+[22-Jul-2014 17:49:27 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 17:49:27 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php:0
+[22-Jul-2014 17:49:27 Europe/Paris] PHP Warning:  array_reverse() expects parameter 1 to be array, null given in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php on line 82
+[22-Jul-2014 17:49:27 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 17:49:27 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php:0
+[22-Jul-2014 17:49:27 Europe/Paris] PHP   2. array_reverse() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php:82
+[22-Jul-2014 17:49:27 Europe/Paris] PHP Warning:  Invalid argument supplied for foreach() in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php on line 82
+[22-Jul-2014 17:49:27 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 17:49:27 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php:0
+[22-Jul-2014 17:56:10 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/user-table-data-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php on line 83
+[22-Jul-2014 17:56:10 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 17:56:10 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php:0
+[22-Jul-2014 17:56:10 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/user-table-data-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php on line 83
+[22-Jul-2014 17:56:10 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 17:56:10 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php:0
+[22-Jul-2014 17:57:09 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/user-table-data-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php on line 83
+[22-Jul-2014 17:57:09 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 17:57:09 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php:0
+[22-Jul-2014 17:57:09 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/user-table-data-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php on line 83
+[22-Jul-2014 17:57:09 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 17:57:09 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php:0

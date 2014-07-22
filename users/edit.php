@@ -6,8 +6,8 @@ $page_title = "View Users";
 $section = "users";
 
 try {
-	$all_users = $users->getAllUsers();
-} catch(Exception $e) {
+	$all_users = $users->getAll();
+} catch (Exception $e) {
 	$errors[] = $e->getMessage();
 }
 
@@ -25,7 +25,15 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 
 		<div id="content-container">
-
+			<?php
+			if (empty($errors) === false) {
+				?>
+				<div class="alert alert-danger">
+					<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+					<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
+				</div>
+			<?php
+			} ?>
 			<div class="row">
 
 				<div class="col-md-12">
@@ -36,7 +44,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 							<h3>
 								<i class="fa fa-table"></i>
-								Kitchen Sink
+								Users
 							</h3>
 
 						</div>
@@ -68,11 +76,14 @@ require ROOT_PATH . 'app/views/sidebar.php';
 									</tr>
 									</thead>
 									<tbody>
+
 									<?php
-									foreach (array_reverse($all_users) as $currentUserData) {
-										include(ROOT_PATH . "app/views/partials/user-table-data-views.html.php");
-									}
-									?>
+									if (empty($errors) === true) {
+										foreach (array_reverse($all_users) as $currentUserData) {
+											include(ROOT_PATH . "app/views/partials/user-table-data-view.html.php");
+
+										}
+									} ?>
 									</tbody>
 								</table>
 							</div>

@@ -102,10 +102,10 @@ class Users {
 		$this->dbConnection = $dbConnection;
 	}
 
-	public function getAllUsers() {
+	public function getAll() {
+		// TODO: FIX QUERY TO NOT USER *, but rather specific columns instead. Safer & better performance
 		$query = "SELECT * FROM `" . DB_NAME . "`.user
-						LEFT OUTER JOIN user_types ON user.`user_types_id` = `user_types`.id
-						LEFT OUTER JOIN major ON user.major_id = major.id";
+						LEFT OUTER JOIN user_types ON user.`user_types_id` = `user_types`.id";
 		$query = $this->getDbConnection()->prepare($query);
 		try {
 			$query->execute();
@@ -113,7 +113,7 @@ class Users {
 
 			return $rows;
 		} catch (PDOException $e) {
-			throw new Exception("Something terrible happened. Could not update database.");
+			throw new Exception("Something terrible happened. Could not retrieve users data from database.: " . $e->getMessage());
 		} // end catch
 	}
 

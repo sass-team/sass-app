@@ -18,8 +18,8 @@ if ($currentUserData['type'] == 'admin') {
 	$tempUser = new Secretary($currentUserData);
 }
 
-$fName = $tempUser->getFirstName();
-$lName = $tempUser->getLastName();
+$first_name = $tempUser->getFirstName();
+$last_name = $tempUser->getLastName();
 $email = $tempUser->getEmail();
 $position = $tempUser->getUserType();
 ?>
@@ -27,7 +27,7 @@ $position = $tempUser->getUserType();
 	<td class="checkbox-column">
 		<input type="checkbox" class="icheck-input">
 	</td>
-	<td><?php echo $fName; ?></td>
+	<td><?php echo $first_name . " " . $last_name; ?></td>
 	<td><?php echo $email; ?></td>
 	<td><?php echo $position ?></td>
 	<?php // TODO: CREATE public page for profile. crate page to edit user data? ?>
