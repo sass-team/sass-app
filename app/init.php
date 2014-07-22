@@ -7,16 +7,16 @@ ob_start();
 #starting the users session
 session_start();
 
-require "app.php";
+require "config/app.php";
 // identical to require; but php will include it only if it has not already been included
-require_once ROOT_PATH . 'inc/app.php';
-require_once ROOT_PATH . "inc/models/User.php";
-require_once ROOT_PATH . "inc/models/Users.php";
-require_once ROOT_PATH . "inc/models/Admin.php";
-require_once ROOT_PATH . "inc/models/Tutor.php";
-require_once ROOT_PATH . "inc/models/Secretary.php";
-require_once ROOT_PATH . "inc/models/General.php";
-require_once ROOT_PATH . "inc/models/Courses.php";
+require_once ROOT_PATH . 'app/database/app.php';
+require_once ROOT_PATH . "app/models/User.php";
+require_once ROOT_PATH . "app/models/Users.php";
+require_once ROOT_PATH . "app/models/Admin.php";
+require_once ROOT_PATH . "app/models/Tutor.php";
+require_once ROOT_PATH . "app/models/Secretary.php";
+require_once ROOT_PATH . "app/models/General.php";
+require_once ROOT_PATH . "app/models/Courses.php";
 
 $errors = array();
 
@@ -44,8 +44,8 @@ try {
 } catch (Exception $e) {
 	$errors[] = $e->getMessage();
 	var_dump($errors);
-	//header('Location: ' . BASE_URL . 'error.php');
-	//exit();
+	header('Location: ' . BASE_URL . 'error.php');
+	exit();
 }
 
 

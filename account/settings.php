@@ -1,6 +1,6 @@
 <?php
 
-require "../inc/init.php";
+require "../app/init.php";
 $general->logged_out_protect();
 
 
@@ -67,8 +67,8 @@ if (isset($_POST['form_action_profile_settings'])) {
 $page_title = "My Account - Settings";
 $section = "account";
 
-require ROOT_PATH . 'inc/views/header.php';
-require ROOT_PATH . 'inc/views/sidebar.php';
+require ROOT_PATH . 'app/views/header.php';
+require ROOT_PATH . 'app/views/sidebar.php';
 
 ?>
 <div id="content">
@@ -323,4 +323,4 @@ require ROOT_PATH . 'inc/views/sidebar.php';
 
 </div> <!-- #wrapper -->
 
-<?php include ROOT_PATH . "inc/views/footer.php"; ?>
+<?php include ROOT_PATH . "app/views/footer.php"; ?>

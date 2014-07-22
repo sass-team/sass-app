@@ -2902,3 +2902,79 @@ Stack trace:
 [22-Jul-2014 15:00:14 Europe/Paris] PHP Fatal error:  require(): Failed opening required 'inc/init.php' (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php on line 2
 [22-Jul-2014 15:00:14 Europe/Paris] PHP Stack trace:
 [22-Jul-2014 15:00:14 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
+[22-Jul-2014 15:01:09 Europe/Paris] PHP Warning:  require(app.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\app\init.php on line 10
+[22-Jul-2014 15:01:09 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 15:01:09 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
+[22-Jul-2014 15:01:09 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:2
+[22-Jul-2014 15:01:09 Europe/Paris] PHP Fatal error:  require(): Failed opening required 'app.php' (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\app\init.php on line 10
+[22-Jul-2014 15:01:09 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 15:01:09 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
+[22-Jul-2014 15:01:09 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:2
+[22-Jul-2014 15:01:42 Europe/Paris] PHP Warning:  require(app.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\app\init.php on line 10
+[22-Jul-2014 15:01:42 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 15:01:42 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
+[22-Jul-2014 15:01:42 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:2
+[22-Jul-2014 15:01:42 Europe/Paris] PHP Fatal error:  require(): Failed opening required 'app.php' (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\app\init.php on line 10
+[22-Jul-2014 15:01:42 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 15:01:42 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
+[22-Jul-2014 15:01:42 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:2
+[22-Jul-2014 15:02:24 Europe/Paris] PHP Warning:  require_once(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/inc/app.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\app\init.php on line 12
+[22-Jul-2014 15:02:24 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 15:02:24 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
+[22-Jul-2014 15:02:24 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:2
+[22-Jul-2014 15:02:24 Europe/Paris] PHP Fatal error:  require_once(): Failed opening required 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/inc/app.php' (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\app\init.php on line 12
+[22-Jul-2014 15:02:24 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 15:02:24 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
+[22-Jul-2014 15:02:24 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:2
+[22-Jul-2014 15:03:20 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/inc/views/footer.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php on line 722
+[22-Jul-2014 15:03:20 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 15:03:20 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
+[22-Jul-2014 15:03:20 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/inc/views/footer.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php on line 722
+[22-Jul-2014 15:03:20 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 15:03:20 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
+[22-Jul-2014 15:03:59 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/inc/views/footer.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php on line 722
+[22-Jul-2014 15:03:59 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 15:03:59 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
+[22-Jul-2014 15:03:59 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/inc/views/footer.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php on line 722
+[22-Jul-2014 15:03:59 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 15:03:59 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
+[22-Jul-2014 15:07:06 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/inc/views/footer.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php on line 722
+[22-Jul-2014 15:07:06 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 15:07:06 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
+[22-Jul-2014 15:07:06 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/inc/views/footer.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php on line 722
+[22-Jul-2014 15:07:06 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 15:07:06 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
+[22-Jul-2014 15:07:55 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/inc/views/footer.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php on line 722
+[22-Jul-2014 15:07:55 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 15:07:55 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
+[22-Jul-2014 15:07:55 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/inc/views/footer.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php on line 722
+[22-Jul-2014 15:07:55 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 15:07:55 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
+[22-Jul-2014 15:10:17 Europe/Paris] PHP Warning:  require(../inc/init.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\account\profile.php on line 2
+[22-Jul-2014 15:10:17 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 15:10:17 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\account\profile.php:0
+[22-Jul-2014 15:10:17 Europe/Paris] PHP Fatal error:  require(): Failed opening required '../inc/init.php' (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\account\profile.php on line 2
+[22-Jul-2014 15:10:17 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 15:10:17 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\account\profile.php:0
+[22-Jul-2014 15:11:07 Europe/Paris] PHP Notice:  Undefined property: Admin::$tutorMajor in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\app\models\User.php on line 165
+[22-Jul-2014 15:11:07 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 15:11:07 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\account\profile.php:0
+[22-Jul-2014 15:11:07 Europe/Paris] PHP   2. User->getMajor() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\account\profile.php:63
+[22-Jul-2014 15:11:11 Europe/Paris] PHP Warning:  require(../inc/init.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\account\settings.php on line 3
+[22-Jul-2014 15:11:11 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 15:11:11 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\account\settings.php:0
+[22-Jul-2014 15:11:11 Europe/Paris] PHP Fatal error:  require(): Failed opening required '../inc/init.php' (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\account\settings.php on line 3
+[22-Jul-2014 15:11:11 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 15:11:11 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\account\settings.php:0
+[22-Jul-2014 15:23:28 Europe/Paris] PHP Notice:  Undefined property: Admin::$tutorMajor in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\app\models\User.php on line 165
+[22-Jul-2014 15:23:28 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 15:23:28 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\account\profile.php:0
+[22-Jul-2014 15:23:28 Europe/Paris] PHP   2. User->getMajor() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\account\profile.php:63
+[22-Jul-2014 15:23:50 Europe/Paris] PHP Notice:  Undefined property: Admin::$tutorMajor in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\app\models\User.php on line 165
+[22-Jul-2014 15:23:50 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 15:23:50 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\account\profile.php:0
+[22-Jul-2014 15:23:50 Europe/Paris] PHP   2. User->getMajor() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\account\profile.php:63
+[22-Jul-2014 15:24:51 Europe/Paris] PHP Notice:  Undefined property: Admin::$tutorMajor in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\app\models\User.php on line 165
+[22-Jul-2014 15:24:51 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 15:24:51 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\account\profile.php:0
+[22-Jul-2014 15:24:51 Europe/Paris] PHP   2. User->getMajor() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\account\profile.php:63

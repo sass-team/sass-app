@@ -1,11 +1,11 @@
 <?php
-require '../inc/init.php';
+require '../app/init.php';
 $general->logged_out_protect();
 
 $page_title = "My Account - Profile";
 $section = "account";
-require ROOT_PATH . 'inc/views/header.php';
-require ROOT_PATH . 'inc/views/sidebar.php';
+require ROOT_PATH . 'app/views/header.php';
+require ROOT_PATH . 'app/views/sidebar.php';
 ?>
 
 
@@ -29,7 +29,8 @@ require ROOT_PATH . 'inc/views/sidebar.php';
 						<div class="col-md-4 col-sm-5">
 
 							<div class="thumbnail">
-								<img src="<?php echo BASE_URL . $user->getAvatarImgLoc(); ?>" alt="Profile Picture"/>
+								<img src="<?php echo BASE_URL . "app/assets/" . $user->getAvatarImgLoc(); ?>"
+								     alt="Profile Picture"/>
 							</div>
 							<!-- /.thumbnail -->
 
@@ -60,13 +61,17 @@ require ROOT_PATH . 'inc/views/sidebar.php';
 								<li><i class="icon-li fa fa-envelope"></i> <?php echo $_SESSION['email']; ?></li>
 								<li><i class="icon-li fa fa-phone"></i> <?php echo $user->getMobileNum() ?></li>
 							</ul>
-							Major: <strong><?php echo $user->getMajor() ?></strong>
+							<?php if ($user->is_tutor()) { ?>
+
+								Major: <strong><?php echo $user->getMajor() ?></strong>
+
+							<?php } ?>
 							<br/>
 							<br/>
 
 							<p>
 
-							<h3>Description</h3></p>
+							<h3>About me</h3></p>
 							<p><?php echo $user->getProfileDescription() ?></p>
 
 							<hr/>
@@ -89,4 +94,4 @@ require ROOT_PATH . 'inc/views/sidebar.php';
 
 	</div> <!-- #wrapper -->
 
-<?php include ROOT_PATH . "inc/views/footer.php"; ?>
+<?php include ROOT_PATH . "app/views/footer.php"; ?>

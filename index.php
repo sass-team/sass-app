@@ -1,12 +1,12 @@
 <?php
-require 'inc/init.php';
+require 'app/init.php';
 $general->logged_out_protect();
 
 // viewers
 $page_title = "Dashboard - SASS Management System";
 $section = "dashboard";
-require ROOT_PATH . 'inc/views/header.php';
-require ROOT_PATH . 'inc/views/sidebar.php';
+require ROOT_PATH . 'app/views/header.php';
+require ROOT_PATH . 'app/views/sidebar.php';
 
 ?>
    <div id="content">
@@ -719,4 +719,4 @@ require ROOT_PATH . 'inc/views/sidebar.php';
    </div> <!-- #wrapper -->
 
 
-<?php include ROOT_PATH . "inc/views/footer.php"; ?>
+<?php include ROOT_PATH . "app/views/footer.php"; ?>
