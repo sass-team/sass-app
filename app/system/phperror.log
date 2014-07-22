@@ -3145,3 +3145,435 @@ Stack trace:
 [22-Jul-2014 17:57:09 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/user-table-data-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php on line 83
 [22-Jul-2014 17:57:09 Europe/Paris] PHP Stack trace:
 [22-Jul-2014 17:57:09 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\edit.php:0
+[22-Jul-2014 18:11:20 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:11:20 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:11:20 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:11:20 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:11:20 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:11:20 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:11:20 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:11:20 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:11:20 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:11:20 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:11:20 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:11:20 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:11:20 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:11:20 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:11:20 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:11:20 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:11:20 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:11:20 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:11:20 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:11:20 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:11:20 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:11:20 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:11:20 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:11:20 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:11:56 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:11:56 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:11:56 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:11:56 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:11:56 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:11:56 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:11:56 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:11:56 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:11:56 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:11:56 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:11:56 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:11:56 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:11:56 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:11:56 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:11:56 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:11:56 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:11:56 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:11:56 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:11:56 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:11:56 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:11:56 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:11:56 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:11:56 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:11:56 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:13:00 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:13:00 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:13:00 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:13:00 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:13:00 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:13:00 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:13:00 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:13:00 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:13:00 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:13:00 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:13:00 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:13:00 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:13:00 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:13:00 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:13:00 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:13:00 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:13:00 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:13:00 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:13:00 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:13:00 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:13:00 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:13:00 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:13:00 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:13:00 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:14:29 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:14:29 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:14:29 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:14:29 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:14:29 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:14:29 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:14:29 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:14:29 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:14:29 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:14:29 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:14:29 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:14:29 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:14:29 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:14:29 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:14:29 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:14:29 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:14:29 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:14:29 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:14:29 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:14:29 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:14:29 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:14:29 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:14:29 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:14:29 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:14:49 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:14:49 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:14:49 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:14:49 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:14:49 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:14:49 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:14:49 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:14:49 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:14:49 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:14:49 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:14:49 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:14:49 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:14:49 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:14:49 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:14:49 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:14:49 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:14:49 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:14:49 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:14:49 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:14:49 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:14:49 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:14:49 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:14:49 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:14:49 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:15:01 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:15:01 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:15:02 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:15:02 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:15:02 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:15:02 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:15:02 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:15:02 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:15:02 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:15:02 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:15:02 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:15:02 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:15:02 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:15:02 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:15:02 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:15:02 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:15:02 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:15:02 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:15:02 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:15:02 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:15:02 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:15:02 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:15:02 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:15:02 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:16:08 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:16:08 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:16:08 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:16:08 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:16:08 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:16:08 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:16:08 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:16:08 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:16:08 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:16:08 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:16:08 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:16:08 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:16:08 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:16:08 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:16:08 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:16:08 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:16:08 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:16:08 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:16:08 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:16:08 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:16:08 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:16:08 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:16:08 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:16:08 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:16:40 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:16:40 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:16:40 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:16:40 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:16:40 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:16:40 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:16:40 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:16:40 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:16:40 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:16:40 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:16:40 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:16:40 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:16:40 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:16:40 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:16:40 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:16:40 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:16:40 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:16:40 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:16:40 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:16:40 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:16:40 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:16:40 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:16:40 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:16:40 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:16:50 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:16:50 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:16:50 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:16:50 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:16:50 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:16:50 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:16:50 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:16:50 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:16:50 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:16:50 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:16:50 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:16:50 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:16:50 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:16:50 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:16:50 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:16:50 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:16:50 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:16:50 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:16:50 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:16:50 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:16:50 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:16:50 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:16:50 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:16:50 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:17:40 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:17:40 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:17:40 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:17:40 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:17:40 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:17:40 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:17:40 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:17:40 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:17:40 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:17:40 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:17:40 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:17:40 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:17:40 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:17:40 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:17:40 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:17:40 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:17:40 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:17:40 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:17:40 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:17:40 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:17:40 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:17:40 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:17:40 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:17:40 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:18:28 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:18:28 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:18:28 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:18:28 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:18:28 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:18:28 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:18:28 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:18:28 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:18:28 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:18:28 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:18:28 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:18:28 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:18:28 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:18:28 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:18:28 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:18:28 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:18:28 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:18:28 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:18:28 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:18:28 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:18:28 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:18:28 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:18:28 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:18:28 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:19:42 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:19:42 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:19:42 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:19:42 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:19:42 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:19:42 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:19:42 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:19:42 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:19:42 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:19:42 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:19:42 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:19:42 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:19:42 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:19:42 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:19:42 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:19:42 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:19:42 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:19:42 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:19:42 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:19:42 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:19:42 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:19:42 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:19:42 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:19:42 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:19:57 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:19:57 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:19:57 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:19:57 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:19:57 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:19:57 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:19:57 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:19:57 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:19:57 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:19:57 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:19:57 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:19:57 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:19:57 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:19:57 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:19:57 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:19:57 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:19:57 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:19:57 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:19:57 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:19:57 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:19:57 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:19:57 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:19:57 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:19:57 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:20:04 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:20:04 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:20:04 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:20:04 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:20:04 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:20:04 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:20:04 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:20:04 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:20:04 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:20:04 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:20:04 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:20:04 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:20:04 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:20:04 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:20:04 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:20:04 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:20:04 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:20:04 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:20:04 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:20:04 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:20:04 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:20:04 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:20:04 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:20:04 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:20:21 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:20:21 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:20:21 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:20:21 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:20:21 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:20:21 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:20:21 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:20:21 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:20:21 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:20:21 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:20:21 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:20:21 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:20:21 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:20:21 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:20:21 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:20:21 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:20:21 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:20:21 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:20:21 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:20:21 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:20:21 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:20:21 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:20:21 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:20:21 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:24:07 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:24:07 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:24:07 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:24:07 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:24:07 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:24:07 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:24:07 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:24:07 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:24:07 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:24:07 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/majors-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 265
+[22-Jul-2014 18:24:07 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:24:07 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:24:07 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:24:07 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:24:07 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:24:07 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:24:07 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:24:07 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:24:07 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:24:07 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:24:07 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:24:07 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 284
+[22-Jul-2014 18:24:07 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:24:07 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:24:42 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 283
+[22-Jul-2014 18:24:42 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:24:42 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:24:42 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 283
+[22-Jul-2014 18:24:42 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:24:42 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:24:42 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 283
+[22-Jul-2014 18:24:42 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:24:42 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:24:42 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 283
+[22-Jul-2014 18:24:42 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:24:42 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:25:27 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 283
+[22-Jul-2014 18:25:27 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:25:27 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:25:27 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 283
+[22-Jul-2014 18:25:27 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:25:27 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:25:27 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 283
+[22-Jul-2014 18:25:27 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:25:27 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:25:27 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 283
+[22-Jul-2014 18:25:27 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:25:27 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:26:20 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 283
+[22-Jul-2014 18:26:20 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:26:20 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:26:20 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 283
+[22-Jul-2014 18:26:20 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:26:20 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:26:20 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 283
+[22-Jul-2014 18:26:20 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:26:20 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:26:20 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 283
+[22-Jul-2014 18:26:20 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:26:20 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:39:45 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 283
+[22-Jul-2014 18:39:45 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:39:45 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:39:45 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 283
+[22-Jul-2014 18:39:45 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:39:45 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:39:45 Europe/Paris] PHP Warning:  include(C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 283
+[22-Jul-2014 18:39:45 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:39:45 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 18:39:45 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 283
+[22-Jul-2014 18:39:45 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 18:39:45 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0

@@ -158,7 +158,6 @@ class Users {
 					SET `f_name`= :first_name, `l_name`= :last_name, `mobile`= :mobile,
 						`profile_description`= :profile_description
 						WHERE `email`= :email";
-
 		try {
 			$query = $this->dbConnection->prepare($query);
 
@@ -319,7 +318,7 @@ class Users {
 		if (!in_array($what, $allowed, true) || !in_array($field, $allowed, true)) {
 			throw new InvalidArgumentException;
 		} else {
-			$query = $this->db->prepare("SELECT $what FROM `users` WHERE $field = ?");
+			$query = $this->db->prepare("SELECT $what FROM `" . DB_NAME . "`.users` WHERE $field = ?");
 			$query->bindValue(1, $value);
 
 			try {
@@ -337,17 +336,38 @@ class Users {
 		$this->validate_name($last_name);
 		$this->validate_email($email);
 		$this->validate_user_type($user_type);
-		$this->validate_user_major($user_major_ext);
-		$this->validate_teaching_course($teaching_courses);
+		//$this->validate_user_major($user_major_ext);
+		//$this->validate_teaching_course($teaching_courses);
+
+		try {
+			$query = "INSERT INTO `" . DB_NAME . "`.user (`email`, `f_name`, `l_name`, `user_types_id`)
+				VALUES(
+					'r.dokollari@acg.edu2' ,
+					'f_name2',
+					'l_name2',
+					(SELECT id as 'user_types_id' FROM user_types WHERE user_types.type='admin' )
+				)";
+			
+			$query = $this->getDbConnection()->prepare($query);
+			$query->bindParam(':email', $email, PDO::PARAM_STR);
+			$query->bindParam(':first_name', $first_name, PDO::PARAM_STR);
+			$query->bindParam(':last_name', $last_name, PDO::PARAM_STR);
+			$query->bindParam(':user_type', $user_type, PDO::PARAM_INT);
+			$query->execute();
+			return true;
+		} catch (Exception $e) {
+			throw new Exception("Could not insert user into database.");
+		}
+
 	}
 
 	/**
-	 * @param $first_name
+	 * @param $name
 	 * @throws Exception
 	 */
-	public function validate_name($first_name) {
-		if (!ctype_alnum($first_name)) {
-			throw new Exception("Please enter a first name containing alphanumeric characters of minimum length 1.");
+	public function validate_name($name) {
+		if (!preg_match('/^[A-Za-z]+$/', $name)) {
+			throw new Exception("Please enter a first/last name containing only letters of minimum length 1.");
 		}
 	}
 
@@ -356,7 +376,7 @@ class Users {
 		if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
 			throw new Exception("Please enter a valid email address");
 		} else if ($this->email_exists($email)) {
-			throw new Exception('That email already exists.');
+			throw new Exception('That email already exists. Please use another one.');
 		} // end else if
 	}
 
@@ -372,6 +392,9 @@ class Users {
 	}
 
 	public function validate_user_major($user_major_ext) {
+		if ($user_major_ext === "null") {
+			return true;
+		}
 		$query = "SELECT COUNT(1)  FROM `" . DB_NAME . "`.major WHERE major.extension=':extension'";
 		$query = $this->getDbConnection()->prepare($query);
 		$query->bindParam(':extension', $user_major_ext);
@@ -380,9 +403,15 @@ class Users {
 
 			$query->execute();
 			$data = $query->fetch();
-			return $data == '1' ? true : false;
 		} catch (Exception $e) {
 			throw new Exception("Could not connect to database.");
+		}
+
+		if ($data === 1) {
+			return true;
+		} else {
+			// TODO: sent email to developer relavant to this error.
+			throw new Exception("Either something went wrong with a database query, or you're trying to hack this app. In either case, the developers were just notified about this.");
 		}
 	}
 

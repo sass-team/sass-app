@@ -13,9 +13,10 @@ try {
 	$errors[] = $e->getMessage();
 }
 
-function isLoginBtnPressed() {
+function is_create_bttn_Pressed() {
 	return isset($_POST['hidden_submit_pressed']) && empty($_POST['hidden_submit_pressed']);
 }
+
 $page_title = "Edit";
 $section = "users";
 require ROOT_PATH . 'app/views/header.php';
@@ -154,11 +155,10 @@ function isSaveBttnPressed() {
 
 </div> <!-- #content -->
 
-
 <div id="styledModal" class="modal modal-styled fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form method="post" id="create-form" action="create" class="form">
+			<form method="post" id="create-form" action="." class="form">
 
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -171,10 +171,12 @@ function isSaveBttnPressed() {
 							?>
 							<div class="alert alert-danger">
 								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-								<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
+								<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
+
+								var_dump($_POST);?>
 							</div>
 						<?php
-						} else if (isLoginBtnPressed()) {
+						} else if (is_create_bttn_Pressed()) {
 							?>
 							<div class="alert alert-success">
 								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
@@ -197,7 +199,7 @@ function isSaveBttnPressed() {
 										</h5>
 										<input type="text" id="first_name" name="first_name" class="form-control"
 										       value="<?php if (isset($_POST['first_name'])) echo htmlentities($_POST['first_name']); ?>"
-										       autofocus="on">
+										       autofocus="on" required>
 									</div>
 
 									<div class="form-group">
@@ -206,7 +208,8 @@ function isSaveBttnPressed() {
 											<label for="last_name">Last Name</label>
 										</h5>
 										<input type="text" id="last_name" name="last_name" class="form-control"
-										       value="<?php if (isset($_POST['last_name'])) echo htmlentities($_POST['last_name']); ?>">
+										       value="<?php if (isset($_POST['last_name'])) echo htmlentities($_POST['last_name']); ?>"
+										       required>
 									</div>
 
 									<div class="form-group">
@@ -257,12 +260,12 @@ function isSaveBttnPressed() {
 
 										<h5>
 											<i class="fa fa-tasks"></i>
-											<label for="user_major">Major</label>
+											<label for="user_major">Tutor's Major</label>
 										</h5>
 										<select id="user_major" name="user_major" class="form-control">
-											<?php
-											foreach ($majors as $major) {
-												include(ROOT_PATH . "app/views/partials/majors-select-options-views.html.php");
+											<option value="null">I don&#39;t know.</option>
+											<?php foreach ($majors as $major) { ?>
+												<?php   include(ROOT_PATH . "app/views/partials/majors-select-options-view.html.php");
 											}
 											?>
 										</select>
@@ -273,7 +276,7 @@ function isSaveBttnPressed() {
 
 										<h5>
 											<i class="fa fa-tasks"></i>
-											<label for="teaching_courses_multi">Teaching Courses</label>
+											<label for="teaching_courses_multi">Tutor's Courses</label>
 										</h5>
 
 										<select id="teaching_courses_multi" name="teaching_courses[]" class="form-control"
@@ -281,7 +284,7 @@ function isSaveBttnPressed() {
 
 											<?php
 											foreach ($majors as $major) {
-												include(ROOT_PATH . "app/views/partials/courses-select-options-views.html.php");
+												include(ROOT_PATH . "app/views/partials/courses-select-options-view.html.php");
 											}
 											?>
 
@@ -300,7 +303,7 @@ function isSaveBttnPressed() {
 				<div class="modal-footer">
 					<button type="button" class="btn btn-tertiary" data-dismiss="modal">Close</button>
 					<input type="hidden" name="hidden_submit_pressed">
-					<button type="submit" class="btn btn-primary">Save changes</button>
+					<button type="submit" class="btn btn-primary">Create</button>
 				</div>
 			</form>
 
@@ -322,7 +325,7 @@ function isSaveBttnPressed() {
 //				alert("tutor");
 //			}
 			if (!error_last_name || !error_first_name) {
-				event.preventDefault();
+				//event.preventDefault();
 			}
 		});
 
@@ -336,6 +339,7 @@ function isSaveBttnPressed() {
 		// TODO: add error messages
 		// TODO: add option for second major
 		// TODO: check email ^ user major & course teaching are inputt if user is tutor type.
+		// TODO: hide major & courses & user type NOT tutor
 		var validate = function (element, regex) {
 			var str = $(element).val();
 			var $parent = $(element).parent();
