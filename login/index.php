@@ -100,13 +100,13 @@ if (isLoginBtnPressed()) {
       <form method="post" id="login-form" action="index.php" class="form">
          <div class="form-group">
             <label for="login-email">Username</label>
-            <input type="email" class="form-control" id="login-email" name="login_email" placeholder="Email">
+            <input type="email" class="form-control" id="login-email" name="login_email" placeholder="Email" required>
          </div>
 
          <div class="form-group">
             <label for="login-password">Password</label>
             <input type="password" class="form-control" id="login-password" name="login_password"
-                   placeholder="Password">
+                   placeholder="Password" required>
          </div>
 
          <div class="form-group">
@@ -149,3 +149,7 @@ if (isLoginBtnPressed()) {
 <script src=".<?php echo BASE_URL; ?>s/Login.js"></script>
 </body>
 </html>
+
+<?php
+//TODO: jquery: validate regex password. result less server requests.
+?>

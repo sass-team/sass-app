@@ -2,11 +2,12 @@
 
 /**
  * Created by PhpStorm.
- * User: Riza
+ * User: rdk
  * Date: 5/29/14
- * Time: 8:00 PM
+ * Time: 2:13 PM
  */
-class Tutor extends User {
+class Admin extends User {
+
 	/**
 	 * Constructor
 	 * @param $database
@@ -15,15 +16,15 @@ class Tutor extends User {
 		parent::__construct($allUserData);
 	}
 
-	public function isAdmin() {
-		return false;
-	}
-
-	public function isTutor() {
+	public function is_admin() {
 		return true;
 	}
 
-	public function isSecretary() {
+	public function is_tutor() {
+		return false;
+	}
+
+	public function is_secretary() {
 		return false;
 	}
 } 

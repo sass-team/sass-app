@@ -2638,3 +2638,267 @@ Stack trace:
 [22-Jul-2014 01:09:39 Europe/Paris] PHP Stack trace:
 [22-Jul-2014 01:09:39 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
 [22-Jul-2014 01:09:39 Europe/Paris] PHP   2. include() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:259
+[22-Jul-2014 01:16:12 Europe/Paris] PHP Notice:  Undefined index: user_major in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 28
+[22-Jul-2014 01:16:12 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:16:12 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:16:12 Europe/Paris] PHP Notice:  Undefined index: teaching_courses in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 29
+[22-Jul-2014 01:16:12 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:16:12 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:17:44 Europe/Paris] PHP Notice:  Undefined index: teaching_courses in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 29
+[22-Jul-2014 01:17:44 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:17:44 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:18:27 Europe/Paris] PHP Notice:  Undefined variable: majors in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 242
+[22-Jul-2014 01:18:27 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:18:27 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:18:27 Europe/Paris] PHP Warning:  Invalid argument supplied for foreach() in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 242
+[22-Jul-2014 01:18:27 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:18:27 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:18:27 Europe/Paris] PHP Notice:  Undefined variable: majors in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 261
+[22-Jul-2014 01:18:27 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:18:27 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:18:27 Europe/Paris] PHP Warning:  Invalid argument supplied for foreach() in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 261
+[22-Jul-2014 01:18:27 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:18:27 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:18:43 Europe/Paris] PHP Notice:  Undefined variable: majors in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 242
+[22-Jul-2014 01:18:43 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:18:43 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:18:43 Europe/Paris] PHP Warning:  Invalid argument supplied for foreach() in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 242
+[22-Jul-2014 01:18:43 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:18:43 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:18:43 Europe/Paris] PHP Notice:  Undefined variable: majors in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 261
+[22-Jul-2014 01:18:43 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:18:43 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:18:43 Europe/Paris] PHP Warning:  Invalid argument supplied for foreach() in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 261
+[22-Jul-2014 01:18:43 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:18:43 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:19:26 Europe/Paris] PHP Notice:  Undefined variable: majors in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 242
+[22-Jul-2014 01:19:26 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:19:26 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:19:26 Europe/Paris] PHP Warning:  Invalid argument supplied for foreach() in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 242
+[22-Jul-2014 01:19:26 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:19:26 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:19:26 Europe/Paris] PHP Notice:  Undefined variable: majors in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 261
+[22-Jul-2014 01:19:26 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:19:26 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:19:26 Europe/Paris] PHP Warning:  Invalid argument supplied for foreach() in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 261
+[22-Jul-2014 01:19:26 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:19:26 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:19:58 Europe/Paris] PHP Notice:  Undefined variable: majors in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 242
+[22-Jul-2014 01:19:58 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:19:58 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:19:58 Europe/Paris] PHP Warning:  Invalid argument supplied for foreach() in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 242
+[22-Jul-2014 01:19:58 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:19:58 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:19:58 Europe/Paris] PHP Notice:  Undefined variable: majors in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 261
+[22-Jul-2014 01:19:58 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:19:58 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:19:58 Europe/Paris] PHP Warning:  Invalid argument supplied for foreach() in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 261
+[22-Jul-2014 01:19:58 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:19:58 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:21:08 Europe/Paris] PHP Warning:  implode(): Invalid arguments passed in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 162
+[22-Jul-2014 01:21:08 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:21:08 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:21:08 Europe/Paris] PHP   2. implode() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:162
+[22-Jul-2014 01:21:08 Europe/Paris] PHP Notice:  Undefined variable: majors in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 242
+[22-Jul-2014 01:21:08 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:21:08 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:21:08 Europe/Paris] PHP Warning:  Invalid argument supplied for foreach() in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 242
+[22-Jul-2014 01:21:08 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:21:08 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:21:08 Europe/Paris] PHP Notice:  Undefined variable: majors in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 261
+[22-Jul-2014 01:21:08 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:21:08 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:21:08 Europe/Paris] PHP Warning:  Invalid argument supplied for foreach() in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 261
+[22-Jul-2014 01:21:08 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:21:08 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:21:49 Europe/Paris] PHP Warning:  implode(): Invalid arguments passed in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 165
+[22-Jul-2014 01:21:49 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:21:49 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:21:49 Europe/Paris] PHP   2. implode() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:165
+[22-Jul-2014 01:21:49 Europe/Paris] PHP Notice:  Undefined variable: majors in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 248
+[22-Jul-2014 01:21:49 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:21:49 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:21:49 Europe/Paris] PHP Warning:  Invalid argument supplied for foreach() in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 248
+[22-Jul-2014 01:21:49 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:21:49 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:21:49 Europe/Paris] PHP Notice:  Undefined variable: majors in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 267
+[22-Jul-2014 01:21:49 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:21:49 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:21:49 Europe/Paris] PHP Warning:  Invalid argument supplied for foreach() in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 267
+[22-Jul-2014 01:21:49 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:21:49 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:22:40 Europe/Paris] PHP Notice:  Undefined variable: majors in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 248
+[22-Jul-2014 01:22:40 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:22:40 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:22:40 Europe/Paris] PHP Warning:  Invalid argument supplied for foreach() in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 248
+[22-Jul-2014 01:22:40 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:22:40 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:22:40 Europe/Paris] PHP Notice:  Undefined variable: majors in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 267
+[22-Jul-2014 01:22:40 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:22:40 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:22:40 Europe/Paris] PHP Warning:  Invalid argument supplied for foreach() in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 267
+[22-Jul-2014 01:22:40 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:22:40 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:33:38 Europe/Paris] PHP Parse error:  syntax error, unexpected end of file in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 352
+[22-Jul-2014 01:33:51 Europe/Paris] PHP Notice:  Undefined index: teaching_courses in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 32
+[22-Jul-2014 01:33:51 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:33:51 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:37:15 Europe/Paris] PHP Notice:  Undefined index: teaching_courses in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 32
+[22-Jul-2014 01:37:15 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:37:15 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:42:12 Europe/Paris] PHP Notice:  Undefined index: teaching_courses in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 32
+[22-Jul-2014 01:42:12 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:42:12 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:43:09 Europe/Paris] PHP Notice:  Undefined index: teaching_courses in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 32
+[22-Jul-2014 01:43:09 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:43:09 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:45:47 Europe/Paris] PHP Notice:  Undefined index: teaching_courses in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 32
+[22-Jul-2014 01:45:47 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:45:47 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:45:51 Europe/Paris] PHP Notice:  Undefined index: teaching_courses in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 32
+[22-Jul-2014 01:45:51 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:45:51 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:46:18 Europe/Paris] PHP Notice:  Undefined index: teaching_courses in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 32
+[22-Jul-2014 01:46:18 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:46:18 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:56:00 Europe/Paris] PHP Notice:  Undefined index: teaching_courses in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 32
+[22-Jul-2014 01:56:00 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:56:00 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:58:25 Europe/Paris] PHP Notice:  Undefined index: teaching_courses in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 32
+[22-Jul-2014 01:58:25 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:58:25 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 01:58:57 Europe/Paris] PHP Notice:  Undefined index: teaching_courses in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 32
+[22-Jul-2014 01:58:57 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 01:58:57 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 02:53:31 Europe/Paris] PHP Notice:  Undefined index: teaching_courses in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 32
+[22-Jul-2014 02:53:31 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 02:53:31 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[22-Jul-2014 12:23:10 Europe/Paris] PHP Fatal error:  Uncaught exception 'Exception' with message 'Something terrible happened. Could not update database.SQLSTATE[42S22]: Column not found: 1054 Unknown column 'user.id' in 'field list'' in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php:140
+Stack trace:
+#0 C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\init.php(40): Users->getAllData('r.dokollari@acg...')
+#1 C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php(2): require('C:\\Users\\Riza\\D...')
+#2 {main}
+  thrown in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php on line 140
+[22-Jul-2014 12:23:12 Europe/Paris] PHP Fatal error:  Uncaught exception 'Exception' with message 'Something terrible happened. Could not update database.SQLSTATE[42S22]: Column not found: 1054 Unknown column 'user.id' in 'field list'' in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php:140
+Stack trace:
+#0 C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\init.php(40): Users->getAllData('r.dokollari@acg...')
+#1 C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php(2): require('C:\\Users\\Riza\\D...')
+#2 {main}
+  thrown in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php on line 140
+[22-Jul-2014 12:23:16 Europe/Paris] PHP Fatal error:  Uncaught exception 'Exception' with message 'Something terrible happened. Could not update database.SQLSTATE[42S22]: Column not found: 1054 Unknown column 'user.id' in 'field list'' in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php:140
+Stack trace:
+#0 C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\init.php(40): Users->getAllData('r.dokollari@acg...')
+#1 C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php(2): require('C:\\Users\\Riza\\D...')
+#2 {main}
+  thrown in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php on line 140
+[22-Jul-2014 12:24:41 Europe/Paris] PHP Fatal error:  Uncaught exception 'Exception' with message 'Something terrible happened. Could not update database.SQLSTATE[42S22]: Column not found: 1054 Unknown column 'user.id' in 'field list'' in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php:140
+Stack trace:
+#0 C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\init.php(46): Users->getAllData('r.dokollari@acg...')
+#1 C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php(2): require('C:\\Users\\Riza\\D...')
+#2 {main}
+  thrown in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\Users.php on line 140
+[22-Jul-2014 12:24:52 Europe/Paris] PHP Notice:  Undefined variable: userData in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\init.php on line 49
+[22-Jul-2014 12:24:52 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 12:24:52 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
+[22-Jul-2014 12:24:52 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:2
+[22-Jul-2014 12:24:52 Europe/Paris] PHP Notice:  Undefined variable: userData in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\init.php on line 52
+[22-Jul-2014 12:24:52 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 12:24:52 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
+[22-Jul-2014 12:24:52 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:2
+[22-Jul-2014 12:25:26 Europe/Paris] PHP Parse error:  syntax error, unexpected end of file in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\init.php on line 55
+[22-Jul-2014 12:25:26 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 12:25:26 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
+[22-Jul-2014 12:25:41 Europe/Paris] PHP Notice:  Undefined variable: user in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\view\header.php on line 80
+[22-Jul-2014 12:25:41 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 12:25:41 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
+[22-Jul-2014 12:25:41 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:8
+[22-Jul-2014 12:25:41 Europe/Paris] PHP Fatal error:  Call to a member function getFirstName() on a non-object in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\view\header.php on line 80
+[22-Jul-2014 12:25:41 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 12:25:41 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
+[22-Jul-2014 12:25:41 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:8
+[22-Jul-2014 12:27:22 Europe/Paris] PHP Notice:  Undefined variable: user in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\view\header.php on line 80
+[22-Jul-2014 12:27:22 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 12:27:22 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
+[22-Jul-2014 12:27:22 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:8
+[22-Jul-2014 12:27:22 Europe/Paris] PHP Fatal error:  Call to a member function getFirstName() on a non-object in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\view\header.php on line 80
+[22-Jul-2014 12:27:22 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 12:27:22 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
+[22-Jul-2014 12:27:22 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:8
+[22-Jul-2014 13:39:45 Europe/Paris] PHP Notice:  Undefined variable: section in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\view\sidebar.php on line 25
+[22-Jul-2014 13:39:45 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 13:39:45 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\error.php:0
+[22-Jul-2014 13:39:45 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\error.php:65
+[22-Jul-2014 13:39:45 Europe/Paris] PHP Notice:  Undefined variable: section in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\view\sidebar.php on line 34
+[22-Jul-2014 13:39:45 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 13:39:45 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\error.php:0
+[22-Jul-2014 13:39:45 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\error.php:65
+[22-Jul-2014 13:39:45 Europe/Paris] PHP Notice:  Undefined variable: user in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\view\sidebar.php on line 56
+[22-Jul-2014 13:39:45 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 13:39:45 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\error.php:0
+[22-Jul-2014 13:39:45 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\error.php:65
+[22-Jul-2014 13:39:45 Europe/Paris] PHP Fatal error:  Call to a member function isTutor() on a non-object in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\view\sidebar.php on line 56
+[22-Jul-2014 13:39:45 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 13:39:45 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\error.php:0
+[22-Jul-2014 13:39:45 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\error.php:65
+[22-Jul-2014 13:40:30 Europe/Paris] PHP Notice:  Undefined variable: user in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\view\sidebar.php on line 56
+[22-Jul-2014 13:40:30 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 13:40:30 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\error.php:0
+[22-Jul-2014 13:40:30 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\error.php:68
+[22-Jul-2014 13:40:30 Europe/Paris] PHP Fatal error:  Call to a member function isTutor() on a non-object in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\view\sidebar.php on line 56
+[22-Jul-2014 13:40:30 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 13:40:30 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\error.php:0
+[22-Jul-2014 13:40:30 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\error.php:68
+[22-Jul-2014 14:04:57 Europe/Paris] PHP Notice:  Undefined variable: user in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\view\header.php on line 80
+[22-Jul-2014 14:04:57 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 14:04:57 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
+[22-Jul-2014 14:04:57 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:8
+[22-Jul-2014 14:04:57 Europe/Paris] PHP Fatal error:  Call to a member function getFirstName() on a non-object in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\view\header.php on line 80
+[22-Jul-2014 14:04:57 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 14:04:57 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
+[22-Jul-2014 14:04:57 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:8
+[22-Jul-2014 14:05:50 Europe/Paris] PHP Notice:  Undefined variable: user in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\view\header.php on line 80
+[22-Jul-2014 14:05:50 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 14:05:50 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
+[22-Jul-2014 14:05:50 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:8
+[22-Jul-2014 14:05:50 Europe/Paris] PHP Fatal error:  Call to a member function getFirstName() on a non-object in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\view\header.php on line 80
+[22-Jul-2014 14:05:50 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 14:05:50 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
+[22-Jul-2014 14:05:50 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:8
+[22-Jul-2014 14:37:34 Europe/Paris] PHP Notice:  Undefined variable: user in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\view\header.php on line 80
+[22-Jul-2014 14:37:34 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 14:37:34 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
+[22-Jul-2014 14:37:34 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:8
+[22-Jul-2014 14:37:34 Europe/Paris] PHP Fatal error:  Call to a member function getFirstName() on a non-object in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\view\header.php on line 80
+[22-Jul-2014 14:37:34 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 14:37:34 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
+[22-Jul-2014 14:37:34 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:8
+[22-Jul-2014 14:38:05 Europe/Paris] PHP Fatal error:  Call to undefined method Admin::isTutor() in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\view\header.php on line 86
+[22-Jul-2014 14:38:05 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 14:38:05 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
+[22-Jul-2014 14:38:05 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:8
+[22-Jul-2014 14:39:18 Europe/Paris] PHP Fatal error:  Call to undefined method Admin::isTutor() in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\view\header.php on line 86
+[22-Jul-2014 14:39:18 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 14:39:18 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
+[22-Jul-2014 14:39:18 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:8
+[22-Jul-2014 14:42:46 Europe/Paris] PHP Fatal error:  Call to undefined method Admin::isTutor() in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\view\sidebar.php on line 56
+[22-Jul-2014 14:42:46 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 14:42:46 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
+[22-Jul-2014 14:42:46 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:9
+[22-Jul-2014 14:42:49 Europe/Paris] PHP Fatal error:  Call to undefined method Admin::isTutor() in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\view\sidebar.php on line 56
+[22-Jul-2014 14:42:49 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 14:42:49 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
+[22-Jul-2014 14:42:49 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:9
+[22-Jul-2014 14:47:45 Europe/Paris] PHP Notice:  Undefined property: Admin::$tutorMajor in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\User.php on line 165
+[22-Jul-2014 14:47:45 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 14:47:45 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\account\profile.php:0
+[22-Jul-2014 14:47:45 Europe/Paris] PHP   2. User->getMajor() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\account\profile.php:63
+[22-Jul-2014 14:51:54 Europe/Paris] PHP Notice:  Undefined property: Admin::$tutorMajor in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\inc\model\User.php on line 165
+[22-Jul-2014 14:51:54 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 14:51:54 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\account\profile.php:0
+[22-Jul-2014 14:51:54 Europe/Paris] PHP   2. User->getMajor() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\account\profile.php:63
+[22-Jul-2014 15:00:14 Europe/Paris] PHP Warning:  require(inc/init.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php on line 2
+[22-Jul-2014 15:00:14 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 15:00:14 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0
+[22-Jul-2014 15:00:14 Europe/Paris] PHP Fatal error:  require(): Failed opening required 'inc/init.php' (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php on line 2
+[22-Jul-2014 15:00:14 Europe/Paris] PHP Stack trace:
+[22-Jul-2014 15:00:14 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\index.php:0

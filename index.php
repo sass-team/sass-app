@@ -5,8 +5,8 @@ $general->logged_out_protect();
 // viewers
 $page_title = "Dashboard - SASS Management System";
 $section = "dashboard";
-require ROOT_PATH . 'inc/view/header.php';
-require ROOT_PATH . 'inc/view/sidebar.php';
+require ROOT_PATH . 'inc/views/header.php';
+require ROOT_PATH . 'inc/views/sidebar.php';
 
 ?>
    <div id="content">
@@ -719,4 +719,4 @@ require ROOT_PATH . 'inc/view/sidebar.php';
    </div> <!-- #wrapper -->
 
 
-<?php include ROOT_PATH . "inc/view/footer.php"; ?>
+<?php include ROOT_PATH . "inc/views/footer.php"; ?>

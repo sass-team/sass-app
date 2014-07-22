@@ -67,8 +67,8 @@ if (isset($_POST['form_action_profile_settings'])) {
 $page_title = "My Account - Settings";
 $section = "account";
 
-require ROOT_PATH . 'inc/view/header.php';
-require ROOT_PATH . 'inc/view/sidebar.php';
+require ROOT_PATH . 'inc/views/header.php';
+require ROOT_PATH . 'inc/views/sidebar.php';
 
 ?>
 <div id="content">
@@ -323,4 +323,4 @@ require ROOT_PATH . 'inc/view/sidebar.php';
 
 </div> <!-- #wrapper -->
 
-<?php include ROOT_PATH . "inc/view/footer.php"; ?>
+<?php include ROOT_PATH . "inc/views/footer.php"; ?>

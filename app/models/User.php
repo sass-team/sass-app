@@ -14,7 +14,6 @@ abstract class User {
 	private $dateAccountCreated;
 	private $userType;
 	private $mobileNum;
-	private $tutorMajor;
 	private $email;
 
 	/**
@@ -33,7 +32,7 @@ abstract class User {
 
 		// initialize tutor/secretary/admin class depending on type.
 		$this->setUserType($allUserData['type']);
-		$this->setTutorMajor($allUserData['name']);
+
 	}
 
 	/**
@@ -101,12 +100,7 @@ abstract class User {
 		$this->userType = $userType;
 	}
 
-	/**
-	 * @param mixed $tutorMajor
-	 */
-	private function setTutorMajor($tutorMajor) {
-		$this->tutorMajor = $tutorMajor;
-	}
+
 
 	/**
 	 * @return mixed
@@ -167,7 +161,7 @@ abstract class User {
 	/**
 	 * @return mixed
 	 */
-	public function getTutorMajor() {
+	public function getMajor() {
 		return $this->tutorMajor;
 	}
 
@@ -178,11 +172,11 @@ abstract class User {
 		return $this->userType;
 	}
 
-	abstract protected function isAdmin();
+	abstract protected function is_admin();
 
-	abstract protected function isTutor();
+	abstract protected function is_tutor();
 
-	abstract protected function isSecretary();
+	abstract protected function is_secretary();
 
 }
 

@@ -53,7 +53,7 @@
 				Settings
 			</a>
 		</li>
-		<?php if ($user->isTutor()) { ?>
+		<?php if ($user->is_tutor()) { ?>
 			<li>
 				<a href="<?php echo BASE_URL; ?>page-calendar.html">
 					<i class="fa fa-calendar"></i>
@@ -64,7 +64,7 @@
 	</ul>
 
 </li>
-<?php if ($user->isAdmin()) { ?>
+<?php if ($user->is_admin()) { ?>
 	<li class="dropdown <?php if ($section == "users") {
 		echo "active";
 	} ?>">

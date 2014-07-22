@@ -99,6 +99,7 @@ function isVerified() {
 		if (isVerified()) {
 			?>
 			<h4>Thank you, we've send you a randomly generated password in your email.</h4>
+			<h3><a href="<?php echo BASE_URL; ?>login">Log In</a></h3>
 		<?php
 		} else if (isset ($_GET['email'], $_GET['gen_string']) === true) {
 			$email = trim($_GET['email']);
@@ -137,3 +138,7 @@ function isVerified() {
 <script src=".<?php echo BASE_URL; ?>s/Login.js"></script>
 </body>
 </html>
+
+<?php
+// TODO: create UI to change password
+?>

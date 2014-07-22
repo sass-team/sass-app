@@ -23,7 +23,7 @@ class Users {
 	 * else return the error message.
 	 *
 	 * Dependancies:
-	 * require_once ROOT_PATH . "inc/model/bcrypt.php";
+	 * require_once ROOT_PATH . "inc/models/bcrypt.php";
 	 * $bcrypt = new Bcrypt(12);
 	 *
 	 * @param $email $email of user
@@ -50,29 +50,15 @@ class Users {
 
 			// using the verify method to compare the password with the stored hashed password.
 			if (!password_verify($password, $hash_password)) {
-				throw new Exception('Sorry, that email/password is invalid:');
+				throw new Exception('Sorry, that email/password is invalid.');
 			}
 
 		} catch (PDOException $e) {
 			// "Sorry could not connect to the database."
-			throw new Exception("Sorry could not connect to the database.");
+			throw new Exception("Sorry could not connect to the database: ");
 		}
 	} // end __construct
 
-	public function getAllUsers() {
-		$query = "SELECT * FROM `" . DB_NAME . "`.user
-						LEFT OUTER JOIN user_types ON user.`user_types_id` = `user_types`.id
-						LEFT OUTER JOIN major ON user.major_id = major.id";
-		$query = $this->getDbConnection()->prepare($query);
-		try {
-			$query->execute();
-			$rows = $query->fetchAll();
-
-			return $rows;
-		} catch (PDOException $e) {
-			throw new Exception("Something terrible happened. Could not update database.");
-		} // end catch
-	}
 	/**
 	 * Verifies a user with given email exists.
 	 * returns true if found; else false
@@ -103,30 +89,6 @@ class Users {
 	}
 
 	/**
-	 * Returns all information of a user given his email.
-	 * @param $email $email of user
-	 * @return mixed If
-	 */
-	function getAllData($email) {
-		$query = "SELECT user.email, user.id, user.`f_name`, user.`l_name`, user.`img_loc`,
-						user.date, user.`profile_description`, user.mobile, user_types.type, major.name
-					FROM `" . DB_NAME . "`.user
-						LEFT OUTER JOIN user_types ON user.`user_types_id` = `user_types`.id
-						LEFT OUTER JOIN major ON user.major_id1 = major.id
-					WHERE email = :email";
-
-		$query = $this->getDbConnection()->prepare($query);
-		$query->bindValue(':email', $email, PDO::PARAM_INT);
-
-		try {
-			$query->execute();
-			return $query->fetch();
-		} catch (PDOException $e) {
-			throw new Exception("Something terrible happened. Could not update database." . $e->getMessage());
-		} // end try
-	}
-
-	/**
 	 * @return mixed
 	 */
 	public function getDbConnection() {
@@ -138,6 +100,44 @@ class Users {
 	 */
 	public function setDbConnection($dbConnection) {
 		$this->dbConnection = $dbConnection;
+	}
+
+	public function getAllUsers() {
+		$query = "SELECT * FROM `" . DB_NAME . "`.user
+						LEFT OUTER JOIN user_types ON user.`user_types_id` = `user_types`.id
+						LEFT OUTER JOIN major ON user.major_id = major.id";
+		$query = $this->getDbConnection()->prepare($query);
+		try {
+			$query->execute();
+			$rows = $query->fetchAll();
+
+			return $rows;
+		} catch (PDOException $e) {
+			throw new Exception("Something terrible happened. Could not update database.");
+		} // end catch
+	}
+
+	/**
+	 * Returns all information of a user given his email.
+	 * @param $email $email of user
+	 * @return mixed If
+	 */
+	function getData($email) {
+		$query = "SELECT user.email, user.id, user.`f_name`, user.`l_name`, user.`img_loc`,
+						user.date, user.`profile_description`, user.mobile, user_types.type
+					FROM `" . DB_NAME . "`.user
+						LEFT OUTER JOIN user_types ON user.`user_types_id` = `user_types`.id
+					WHERE email = :email";
+
+		$query = $this->getDbConnection()->prepare($query);
+		$query->bindValue(':email', $email, PDO::PARAM_INT);
+
+		try {
+			$query->execute();
+			return $query->fetch();
+		} catch (PDOException $e) {
+			throw new Exception("Something terrible happened. Could not update database." . $e->getMessage());
+		} // end try
 	}
 
 	function update_profile_data($first_name, $last_name, $mobile_num, $description, $email) {
@@ -199,7 +199,6 @@ class Users {
 			return $errors;
 		}
 	}
-
 
 
 	public function update_avatar_img($avatar_img_loc, $user_id) {
@@ -269,14 +268,14 @@ class Users {
 
 		try {
 			$query->execute();
-			mail($email, 'Recover Password', "Hello.\r\nSome one, hopefully you requested a password reset.\r\nPlease click the link below:\r\n\r\nhttp://sass.hol.es.localhost/login/recover.php?email=" . $email . "&gen_string=" . $generated_string . "\r\n\r\n We will generate a new password for you and send it back to your email.\r\n\r\n-- sass team");
+			mail($email, 'Recover Password', "Hello.\r\nSome one, hopefully you requested a password reset.\r\nPlease click the link below:\r\n\r\n" . $_SERVER['SERVER_NAME'] . "/login/recover.php?email=" . $email . "&gen_string=" . $generated_string . "\r\n\r\n We will generate a new password for you and send it back to your email.\r\n\r\n-- sass team");
 		} catch (PDOException $e) {
 			throw new Exception("We could not send your email. Please retry.");
 		}
 	} // end confirm_recover
 
 	public function recover($email, $generated_string) {
-	//  update_password($user_id, $old_password, $new_password_1, $new_password_2) {
+		//  update_password($user_id, $old_password, $new_password_1, $new_password_2) {
 		if ($generated_string == 0) {
 			return false;
 		} else {
@@ -291,22 +290,22 @@ class Users {
 				if ($rows != 1) { // if we find email/generated_string combo
 					throw new Exception("Your email was not found. You can try to reset your password again.");
 				}
-					$charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-					$generated_password = substr(str_shuffle($charset), 0, 10);
-					$query = $this->getDbConnection()->prepare("UPDATE `" . DB_NAME . "`.`user` SET `gen_string` = 0 WHERE `email` = ?"); // set generated_string back to 0
-					$query->bindValue(1, $email);
-					$query->execute();
+				$charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+				$generated_password = substr(str_shuffle($charset), 0, 10);
+				$query = $this->getDbConnection()->prepare("UPDATE `" . DB_NAME . "`.`user` SET `gen_string` = 0 WHERE `email` = ?"); // set generated_string back to 0
+				$query->bindValue(1, $email);
+				$query->execute();
 
-					$new_password = password_hash($generated_password, PASSWORD_DEFAULT);
-					$query = "UPDATE `" . DB_NAME . "`.`user` SET `password`= :password WHERE `email`= :email";
-					$query = $this->getDbConnection()->prepare($query);
-					$query->bindParam(':email', $email);
-					$query->bindParam(':password', $new_password);
+				$new_password = password_hash($generated_password, PASSWORD_DEFAULT);
+				$query = "UPDATE `" . DB_NAME . "`.`user` SET `password`= :password WHERE `email`= :email";
+				$query = $this->getDbConnection()->prepare($query);
+				$query->bindParam(':email', $email);
+				$query->bindParam(':password', $new_password);
 
-					$query->execute();
+				$query->execute();
 
-					#mail the user the new password.
-					mail($email, 'Your password', "Hello.\n\nYour your new password is: " . $generated_password . "\n\nPlease change your password once you have logged in using this password.\n\n-sass team");
+				#mail the user the new password.
+				mail($email, 'Your password', "Hello.\n\nYour your new password is: " . $generated_password . "\n\nPlease change your password once you have logged in using this password.\n\n-sass team");
 			} catch (PDOException $e) {
 				throw new Exception("Could not connect to database. Please retry.:" . $e->getMessage());
 			}
@@ -333,4 +332,61 @@ class Users {
 		}
 	} // end fetch_info
 
+	public function register($first_name, $last_name, $email, $user_type, $user_major_ext, $teaching_courses) {
+		$this->validate_name($first_name);
+		$this->validate_name($last_name);
+		$this->validate_email($email);
+		$this->validate_user_type($user_type);
+		$this->validate_user_major($user_major_ext);
+		$this->validate_teaching_course($teaching_courses);
+	}
+
+	/**
+	 * @param $first_name
+	 * @throws Exception
+	 */
+	public function validate_name($first_name) {
+		if (!ctype_alnum($first_name)) {
+			throw new Exception("Please enter a first name containing alphanumeric characters of minimum length 1.");
+		}
+	}
+
+	public function validate_email($email) {
+		// TODO: validate using phpmailer.
+		if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
+			throw new Exception("Please enter a valid email address");
+		} else if ($this->email_exists($email)) {
+			throw new Exception('That email already exists.');
+		} // end else if
+	}
+
+	public function validate_user_type($user_type) {
+		switch ($user_type) {
+			case "tutor":
+			case "secretary":
+			case "admin":
+				return true;
+			default:
+				throw new Exception('Incorrect user type.');
+		}
+	}
+
+	public function validate_user_major($user_major_ext) {
+		$query = "SELECT COUNT(1)  FROM `" . DB_NAME . "`.major WHERE major.extension=':extension'";
+		$query = $this->getDbConnection()->prepare($query);
+		$query->bindParam(':extension', $user_major_ext);
+
+		try {
+
+			$query->execute();
+			$data = $query->fetch();
+			return $data == '1' ? true : false;
+		} catch (Exception $e) {
+			throw new Exception("Could not connect to database.");
+		}
+	}
+
+	public function validate_teaching_course($teaching_courses) {
+
+	}
 } 

@@ -4,8 +4,8 @@ $general->logged_out_protect();
 
 $page_title = "My Account - Profile";
 $section = "account";
-require ROOT_PATH . 'inc/view/header.php';
-require ROOT_PATH . 'inc/view/sidebar.php';
+require ROOT_PATH . 'inc/views/header.php';
+require ROOT_PATH . 'inc/views/sidebar.php';
 ?>
 
 
@@ -29,7 +29,7 @@ require ROOT_PATH . 'inc/view/sidebar.php';
 						<div class="col-md-4 col-sm-5">
 
 							<div class="thumbnail">
-								<img src="<?php echo BASE_URL . $user->getAvatarImgLoc() ?>" alt="Profile Picture"/>
+								<img src="<?php echo BASE_URL . $user->getAvatarImgLoc(); ?>" alt="Profile Picture"/>
 							</div>
 							<!-- /.thumbnail -->
 
@@ -41,7 +41,7 @@ require ROOT_PATH . 'inc/view/sidebar.php';
 
 						<div class="col-md-8 col-sm-7">
 
-							<h2><?php echo $user->getFirstName() . " " . $user->getLastName() ?></h2>
+							<h2><?php echo $user->getFirstName() . " " . $user->getLastName(); ?></h2>
 
 							<h4>Position: <?php echo ucfirst($user->getUserType()) ?></h4>
 
@@ -60,7 +60,7 @@ require ROOT_PATH . 'inc/view/sidebar.php';
 								<li><i class="icon-li fa fa-envelope"></i> <?php echo $_SESSION['email']; ?></li>
 								<li><i class="icon-li fa fa-phone"></i> <?php echo $user->getMobileNum() ?></li>
 							</ul>
-							Major: <strong><?php echo $user->getTutorMajor() ?></strong>
+							Major: <strong><?php echo $user->getMajor() ?></strong>
 							<br/>
 							<br/>
 
@@ -89,4 +89,4 @@ require ROOT_PATH . 'inc/view/sidebar.php';
 
 	</div> <!-- #wrapper -->
 
-<?php include ROOT_PATH . "inc/view/footer.php"; ?>
+<?php include ROOT_PATH . "inc/views/footer.php"; ?>

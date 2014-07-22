@@ -1,6 +1,6 @@
 <?php
 /**
- * This file displays a single user  in a table data view. It needs to receive
+ * This file displays a single user  in a table data views. It needs to receive
  * the following product details (as elements of an array named $jobs):
  *
  *

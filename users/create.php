@@ -10,14 +10,16 @@ try {
 	//$majors = array_unique(array_column($courses, 'Major'));
 	//$majors_extensions = array_unique(array_column($courses, 'Extension'));
 } catch (Exception $e) {
-	$errors = $e->getMessage();
+	$errors[] = $e->getMessage();
 }
 
-
+function isLoginBtnPressed() {
+	return isset($_POST['hidden_submit_pressed']) && empty($_POST['hidden_submit_pressed']);
+}
 $page_title = "Edit";
 $section = "users";
-require ROOT_PATH . 'inc/view/header.php';
-require ROOT_PATH . 'inc/view/sidebar.php';
+require ROOT_PATH . 'inc/views/header.php';
+require ROOT_PATH . 'inc/views/sidebar.php';
 
 
 if (isSaveBttnPressed()) {
@@ -25,8 +27,14 @@ if (isSaveBttnPressed()) {
 	$last_name = trim($_POST['last_name']);
 	$email = trim($_POST['email']);
 	$user_type = trim($_POST['user_type']);
-	$user_major = trim($_POST['user_major']);
-	$teaching_courses[] = $_POST['teaching_courses'];
+	$user_major_ext = trim($_POST['user_major']);
+	$teaching_courses[] = isset($_POST['teaching_courses']) ? $_POST['teaching_courses'] : "";
+
+	try {
+		$users->register($first_name, $last_name, $email, $user_type, $user_major_ext, $teaching_courses);
+	} catch (Exception $e) {
+		$errors[] = $e->getMessage();
+	}
 }
 
 function isSaveBttnPressed() {
@@ -39,6 +47,7 @@ function isSaveBttnPressed() {
 
 	<div id="content-header">
 		<h1><?php echo $page_title . " - " . $section; ?></h1>
+
 	</div>
 	<!-- #content-header -->
 
@@ -149,7 +158,7 @@ function isSaveBttnPressed() {
 <div id="styledModal" class="modal modal-styled fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form method="post" id="login-form" action="create.php" class="form">
+			<form method="post" id="create-form" action="create.php" class="form">
 
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -157,6 +166,22 @@ function isSaveBttnPressed() {
 				</div>
 				<div class="modal-body">
 					<div class="portlet">
+						<?php
+						if (empty($errors) === false) {
+							?>
+							<div class="alert alert-danger">
+								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+								<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
+							</div>
+						<?php
+						} else if (isLoginBtnPressed()) {
+							?>
+							<div class="alert alert-success">
+								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+								<strong>User successfully created!</strong> <br/>
+								An email is being sent to the email you just specified, with next steps to follow.
+							</div>
+						<?php } ?>
 
 						<div class="portlet-content">
 
@@ -168,7 +193,7 @@ function isSaveBttnPressed() {
 									<div class="form-group">
 										<h5>
 											<i class="fa fa-edit"></i>
-											<label for="first_name">First Name</label>
+											<label for="first_name">First Name	<?php var_dump($_POST); ?></label>
 										</h5>
 										<input type="text" id="first_name" name="first_name" class="form-control"
 										       value="<?php if (isset($_POST['first_name'])) echo htmlentities($_POST['first_name']); ?>"
@@ -188,14 +213,14 @@ function isSaveBttnPressed() {
 
 										<i class="fa fa-envelope"></i>
 										<label for="email">Email</label>
-										<input type="email" id="email" name="email" class="form-control"
+										<input type="email" required id="email" name="email" class="form-control"
 										       value="<?php if (isset($_POST['email'])) echo htmlentities($_POST['email']); ?>">
 									</div>
 
 									<div class="form-group">
 										<h5>
 											<i class="fa fa-check"></i>
-											Type of user
+											Type
 										</h5>
 
 
@@ -232,12 +257,12 @@ function isSaveBttnPressed() {
 
 										<h5>
 											<i class="fa fa-tasks"></i>
-											<label for="user_major">User Major</label>
+											<label for="user_major">Major</label>
 										</h5>
 										<select id="user_major" name="user_major" class="form-control">
 											<?php
 											foreach ($majors as $major) {
-												include(ROOT_PATH . "inc/view/partials/majors-select-options-view.html.php");
+												include(ROOT_PATH . "inc/views/partials/majors-select-options-views.html.php");
 											}
 											?>
 										</select>
@@ -256,7 +281,7 @@ function isSaveBttnPressed() {
 
 											<?php
 											foreach ($majors as $major) {
-												include(ROOT_PATH . "inc/view/partials/courses-select-options-view.html.php");
+												include(ROOT_PATH . "inc/views/partials/courses-select-options-views.html.php");
 											}
 											?>
 
@@ -286,9 +311,21 @@ function isSaveBttnPressed() {
 </div><!-- /.modal -->
 
 
-<?php include ROOT_PATH . "inc/view/footer.php"; ?>
+<?php include ROOT_PATH . "inc/views/footer.php"; ?>
 <script type="text/javascript">
 	jQuery(function () {
+		$("#create-form").submit(function (event) {
+			var error_last_name = validate($("#last_name"), /^[a-zA-Z]{1,16}$/);
+			var error_first_name = validate($("#first_name"), /^[a-zA-Z]{1,16}$/);
+
+//			if ($('input[name=user_type').val() === "tutor") {
+//				alert("tutor");
+//			}
+			if (!error_last_name || !error_first_name) {
+				event.preventDefault();
+			}
+		});
+
 		setTimeout(function () {
 			$("#bttn-styledModal").trigger("click");
 			//window.location.href = $href;
@@ -298,14 +335,17 @@ function isSaveBttnPressed() {
 
 		// TODO: add error messages
 		// TODO: add option for second major
+		// TODO: check email ^ user major & course teaching are inputt if user is tutor type.
 		var validate = function (element, regex) {
 			var str = $(element).val();
 			var $parent = $(element).parent();
 
 			if (regex.test(str)) {
 				$parent.attr('class', 'form-group has-success');
+				return true;
 			} else {
 				$parent.attr('class', 'form-group has-error');
+				return false;
 			}
 		};
 
@@ -327,6 +367,20 @@ function isSaveBttnPressed() {
 				$("#teaching_courses_multi").select2("enable", false);
 			}
 		});
+
+		$('input[name=iCheck]').each(function () {
+			var self = $(this),
+				label = self.next(),
+				label_text = label.text();
+
+			label.remove();
+			self.iCheck({
+				checkboxClass: 'icheckbox_line-red',
+				radioClass: 'iradio_line-red',
+				insert: '<div class="icheck_line-icon"></div>' + label_text
+			});
+		});
+
 	});
 
 

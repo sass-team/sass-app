@@ -6,8 +6,8 @@ $page_title = "View Users";
 $section = "users";
 $all_users = $users->getAllUsers();
 
-require ROOT_PATH . 'inc/view/header.php';
-require ROOT_PATH . 'inc/view/sidebar.php';
+require ROOT_PATH . 'inc/views/header.php';
+require ROOT_PATH . 'inc/views/sidebar.php';
 ?>
 
 
@@ -65,7 +65,7 @@ require ROOT_PATH . 'inc/view/sidebar.php';
 									<tbody>
 									<?php
 									foreach (array_reverse($all_users) as $currentUserData) {
-										include(ROOT_PATH . "inc/view/partials/user-table-data-view.html.php");
+										include(ROOT_PATH . "inc/views/partials/user-table-data-views.html.php");
 									}
 									?>
 									</tbody>
@@ -99,4 +99,4 @@ require ROOT_PATH . 'inc/view/sidebar.php';
 
 
 
-<?php include ROOT_PATH . "inc/view/footer.php"; ?>
+<?php include ROOT_PATH . "inc/views/footer.php"; ?>

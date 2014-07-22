@@ -62,8 +62,10 @@ class Courses {
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
-		} catch (PDOException $e) {
+		} catch (Exception $e) {
 			throw new Exception("Could not retrieve majors data from database.");
 		}
 	}
+
+
 } 

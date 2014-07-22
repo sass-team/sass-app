@@ -1368,7 +1368,7 @@ the specific language governing permissions and limitations under the Apache Lic
 
                 // if the first element is highlighted scroll all the way to the top,
                 // that way any unselectable headers above it will also be scrolled
-                // into view
+                // into views
 
                 results.scrollTop(0);
                 return;

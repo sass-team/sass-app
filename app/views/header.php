@@ -23,8 +23,15 @@
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>js/libs/css/ui-lightness/jquery-ui-1.9.2.custom.css"
 	      type="text/css"/>
 
+	<script src="<?php echo BASE_URL; ?>js/libs/jquery-1.9.1.min.js"></script>
+
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>js/plugins/icheck/skins/minimal/blue.css" type="text/css"/>
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>js/plugins/icheck/skins/square/green.css">
+	<link rel="stylesheet" href="<?php echo BASE_URL; ?>js/plugins/icheck/skins/square/red.css">
+
+	<script src="<?php echo BASE_URL; ?>js/plugins/icheck/jquery.icheck.js"></script>
+
+
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>js/plugins/datepicker/datepicker.css" type="text/css"/>
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>js/plugins/select2/select2.css" type="text/css"/>
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>js/plugins/simplecolorpicker/jquery.simplecolorpicker.css"
@@ -76,7 +83,7 @@
 
 				<ul class="dropdown-menu" role="menu">
 					<!-- "My schedule" choice is shown only to type tutor -->
-					<?php if ($user->isTutor()) { ?>
+					<?php if ($user->is_tutor()) { ?>
 						<li>
 							<a href="<?php echo BASE_URL; ?>page-calendar.html">
 								<i class="fa fa-calendar"></i>

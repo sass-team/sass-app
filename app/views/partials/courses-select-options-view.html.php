@@ -1,6 +1,6 @@
 <?php
 /**
- * Expects $major & $course
+ * Expects $major & $courses
  */
 ?>
 
