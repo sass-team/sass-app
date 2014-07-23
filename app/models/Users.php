@@ -342,12 +342,12 @@ class Users {
 		try {
 			$query = "INSERT INTO `" . DB_NAME . "`.user (`email`, `f_name`, `l_name`, `user_types_id`)
 				VALUES(
-					'r.dokollari@acg.edu2' ,
-					'f_name2',
-					'l_name2',
-					(SELECT id as 'user_types_id' FROM user_types WHERE user_types.type='admin' )
+					:email,
+					:first_name,
+					:last_name,
+					(SELECT id as 'user_types_id' FROM user_types WHERE user_types.type=:user_type )
 				)";
-			
+
 			$query = $this->getDbConnection()->prepare($query);
 			$query->bindParam(':email', $email, PDO::PARAM_STR);
 			$query->bindParam(':first_name', $first_name, PDO::PARAM_STR);

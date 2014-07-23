@@ -3577,3 +3577,9 @@ Stack trace:
 [22-Jul-2014 18:39:45 Europe/Paris] PHP Warning:  include(): Failed opening 'C:/Users/Riza/Desktop/software_engineering_workbench/SASS-MS/app/views/partials/courses-select-options-views.html.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php on line 283
 [22-Jul-2014 18:39:45 Europe/Paris] PHP Stack trace:
 [22-Jul-2014 18:39:45 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\create.php:0
+[23-Jul-2014 04:50:24 Europe/Athens] PHP Warning:  require(../PHPMailerAutoload.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\mail.php on line 45
+[23-Jul-2014 04:50:24 Europe/Athens] PHP Stack trace:
+[23-Jul-2014 04:50:24 Europe/Athens] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\mail.php:0
+[23-Jul-2014 04:50:24 Europe/Athens] PHP Fatal error:  require(): Failed opening required '../PHPMailerAutoload.php' (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\mail.php on line 45
+[23-Jul-2014 04:50:24 Europe/Athens] PHP Stack trace:
+[23-Jul-2014 04:50:24 Europe/Athens] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\mail.php:0
