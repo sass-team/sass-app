@@ -1,3 +1,14 @@
+<?php 
+date_default_timezone_set("Europe/Athens"); 
+
+$date_now = new DateTime("now");
+$date_release = new DateTime('7/23/2014 17:00'); // m/d/Y H:i
+$interval = date_diff($date_now, $date_release);
+
+
+
+?>
+
 <!DOCTYPE html>
 <html>
 	<head>
@@ -21,7 +32,8 @@
 		<div class="wrapper">
 			<img src="images/logo.png" alt="YourLogo" title="YourLogo"/>
 			<div class="hr"></div>
-			<h1>Web app is under upgrade</h1>
+			<h1>Web app is under upgrade:</h1>
+
 			<p>Due to the upgrade and maintenance process, our web app is not be available at the moment<strong> But, you can see our progress below:</strong></p>
 						
 			<section class="progress">
@@ -30,7 +42,8 @@
 				</div>
 				<article class="txt-launch-day-hat"></article>
 			</section>
-			
+						<h2>Time Until Done: <?php echo "Days: " . $interval->days . " Hours: " . $interval->h . " " . round(abs($date_release - $date_now) / 60,2) . " minutes" . " Seconds: " . $interval->i . " Full: " . $interval; ?></h2>
+
 			<div class="hr"></div>
 			<!--
 			<section class="mailing-list">

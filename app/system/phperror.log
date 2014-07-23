@@ -3583,3 +3583,36 @@ Stack trace:
 [23-Jul-2014 04:50:24 Europe/Athens] PHP Fatal error:  require(): Failed opening required '../PHPMailerAutoload.php' (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\mail.php on line 45
 [23-Jul-2014 04:50:24 Europe/Athens] PHP Stack trace:
 [23-Jul-2014 04:50:24 Europe/Athens] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\users\mail.php:0
+[23-Jul-2014 12:54:02 Europe/Paris] PHP Parse error:  syntax error, unexpected ';' in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\upgrade\index.php on line 2
+[23-Jul-2014 13:57:37 Europe/Athens] PHP Warning:  date() expects at least 1 parameter, 0 given in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\upgrade\index.php on line 3
+[23-Jul-2014 13:57:37 Europe/Athens] PHP Stack trace:
+[23-Jul-2014 13:57:37 Europe/Athens] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\upgrade\index.php:0
+[23-Jul-2014 13:57:37 Europe/Athens] PHP   2. date() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\upgrade\index.php:3
+[23-Jul-2014 13:58:46 Europe/Athens] PHP Notice:  Use of undefined constant interval - assumed 'interval' in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\upgrade\index.php on line 9
+[23-Jul-2014 13:58:46 Europe/Athens] PHP Stack trace:
+[23-Jul-2014 13:58:46 Europe/Athens] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\upgrade\index.php:0
+[23-Jul-2014 13:59:06 Europe/Athens] PHP Catchable fatal error:  Object of class DateInterval could not be converted to string in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\upgrade\index.php on line 9
+[23-Jul-2014 13:59:06 Europe/Athens] PHP Stack trace:
+[23-Jul-2014 13:59:06 Europe/Athens] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\upgrade\index.php:0
+[23-Jul-2014 14:13:46 Europe/Athens] PHP Notice:  Undefined property: DateInterval::$format in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\upgrade\index.php on line 35
+[23-Jul-2014 14:13:46 Europe/Athens] PHP Stack trace:
+[23-Jul-2014 14:13:46 Europe/Athens] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\upgrade\index.php:0
+[23-Jul-2014 13:21:38 Europe/Paris] PHP Parse error:  syntax error, unexpected '=' in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\upgrade\index.php on line 9
+[23-Jul-2014 14:30:51 Europe/Athens] PHP Notice:  Undefined variable: from_time in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\upgrade\index.php on line 45
+[23-Jul-2014 14:30:51 Europe/Athens] PHP Stack trace:
+[23-Jul-2014 14:30:51 Europe/Athens] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\upgrade\index.php:0
+[23-Jul-2014 14:30:51 Europe/Athens] PHP Notice:  Undefined variable: to_time in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\upgrade\index.php on line 45
+[23-Jul-2014 14:30:51 Europe/Athens] PHP Stack trace:
+[23-Jul-2014 14:30:51 Europe/Athens] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\upgrade\index.php:0
+[23-Jul-2014 14:30:51 Europe/Athens] PHP Catchable fatal error:  Object of class DateInterval could not be converted to string in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\upgrade\index.php on line 45
+[23-Jul-2014 14:30:51 Europe/Athens] PHP Stack trace:
+[23-Jul-2014 14:30:51 Europe/Athens] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\upgrade\index.php:0
+[23-Jul-2014 14:31:17 Europe/Athens] PHP Notice:  Object of class DateTime could not be converted to int in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\upgrade\index.php on line 45
+[23-Jul-2014 14:31:17 Europe/Athens] PHP Stack trace:
+[23-Jul-2014 14:31:17 Europe/Athens] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\upgrade\index.php:0
+[23-Jul-2014 14:31:17 Europe/Athens] PHP Notice:  Object of class DateTime could not be converted to int in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\upgrade\index.php on line 45
+[23-Jul-2014 14:31:17 Europe/Athens] PHP Stack trace:
+[23-Jul-2014 14:31:17 Europe/Athens] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\upgrade\index.php:0
+[23-Jul-2014 14:31:17 Europe/Athens] PHP Catchable fatal error:  Object of class DateInterval could not be converted to string in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\upgrade\index.php on line 45
+[23-Jul-2014 14:31:17 Europe/Athens] PHP Stack trace:
+[23-Jul-2014 14:31:17 Europe/Athens] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\upgrade\index.php:0
