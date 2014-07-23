@@ -4,7 +4,7 @@ session_destroy();
 
 
 if(!isset($_SESSION['email'])) {
-	header("location:index.php");
+	header("location:edit.php");
 }else {
-header("location:index.php"); }
+header("location:edit.php"); }
 ?>

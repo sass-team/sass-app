@@ -1,0 +1,17 @@
+# Enables or disables runtime rewriting engine
+RewriteEngine On
+# RewriteCond: Defines a condition under which rewriting will take place.
+# REQUEST_FILENAME: The full local filesystem path to the file or script matching the request
+# '-f' (is regular file)
+RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteRule ^([^/]+)/$ $1.php
+
+RewriteRule ^([^/]+)/([^/]+)/$ /$1/$2.php
+
+
+RewriteCond %{REQUEST_FILENAME} !-f
+# '-d' (is directory)
+RewriteCond %{REQUEST_FILENAME} !-d
+# The path component of the requested URI, such as "/index.html".
+RewriteCond %{REQUEST_URI} !(\.[a-zA-Z0-9]{1,5}|/)$
+RewriteRule (.*)$ /$1/ [R=301,L]
