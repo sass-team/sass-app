@@ -36,7 +36,7 @@ ob_start();
 // TODO: sql make 'img' of database to NOT NULL & refactor name to 'img_location'
 require '../inc/init.php';
 
-// if there is an active log in process redirect to index.php; load page only if no
+// if there is an active log in process redirect to edit.php; load page only if no
 // logged in user exists
 $general->logged_in_protect();
 $page_title = "Log In";
@@ -99,6 +99,7 @@ function isVerified() {
 		if (isVerified()) {
 			?>
 			<h4>Thank you, we've send you a randomly generated password in your email.</h4>
+			<h3><a href="<?php echo BASE_URL; ?>login">Log In</a></h3>
 		<?php
 		} else if (isset ($_GET['email'], $_GET['gen_string']) === true) {
 			$email = trim($_GET['email']);
@@ -137,3 +138,7 @@ function isVerified() {
 <script src=".<?php echo BASE_URL; ?>s/Login.js"></script>
 </body>
 </html>
+
+<?php
+// TODO: create UI to change password
+?>
