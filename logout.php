@@ -27,26 +27,13 @@
  * @since 6/29/14.
  */
 
-
-
+require 'app/init.php';
 // do not allow access to user that have not logged in.
 $general->logged_out_protect();
 $page_title = "Log Out";
 
-session_start();
 session_destroy();
 ?>
-
-
-?>
-<?php
-ob_start();
-// TODO: Add option-functionality to resend email if password forgot
-// TODO: sql make 'img' of database to NOT NULL & refactor name to 'img_location'
-require 'app/init.php';
-
-?>
-
 
 <!DOCTYPE html>
 <!--[if lt IE 7]>
@@ -96,7 +83,7 @@ require 'app/init.php';
         <h4>You've logged out.</h4>
         <h5></h5>
 
-        <a href="<?php echo BASE_URL; ?>" class="btn btn-primary btn-lg" role="button">Forgot something&nbsp;</a>
+        <a href="<?php echo BASE_URL; ?>" class="btn btn-primary btn-lg" role="button">Forgot something&#63;</a>
 
     </div>
 
