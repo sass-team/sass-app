@@ -245,7 +245,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 		<br/>
 
-		<form action="settings" class="form-horizontal" method="post">
+		<form action="." class="form-horizontal" method="post">
 
 			<div class="form-group">
 

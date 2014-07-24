@@ -161,7 +161,7 @@ abstract class User {
 	/**
 	 * @return mixed
 	 */
-	public function getMajor() {
+	public function getMajor1() {
 		return $this->tutorMajor;
 	}
 

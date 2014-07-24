@@ -29,7 +29,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 						<div class="col-md-4 col-sm-5">
 
 							<div class="thumbnail">
-								<img src="<?php echo BASE_URL . "app/assets/" . $user->getAvatarImgLoc(); ?>"
+								<img src="<?php echo BASE_URL . $user->getAvatarImgLoc(); ?>"
 								     alt="Profile Picture"/>
 							</div>
 							<!-- /.thumbnail -->
@@ -63,7 +63,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 							</ul>
 							<?php if ($user->is_tutor()) { ?>
 
-								Major: <strong><?php echo $user->getMajor() ?></strong>
+								Major: <strong><?php echo $user->getMajor1() ?></strong>
 
 							<?php } ?>
 							<br/>
