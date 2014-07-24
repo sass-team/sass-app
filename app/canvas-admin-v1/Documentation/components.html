@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+	<title>
+		Components
+		
+		- 
+		
+		Canvas Admin Docs v1.0
+	</title>
+
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<!-- Font Awesome -->
+	<link href="./css/font-awesome.min.css" rel="stylesheet">
+
+	<!-- Bootstrap core CSS -->
+	<link href="./css/bootstrap.css" rel="stylesheet">
+
+	
+
+	<!-- Documentation core CSS -->
+	<link href="./css/docs.css" rel="stylesheet">
+
+
+	<link href="./js/plugins/snippet/jquery.snippet.min.css" rel="stylesheet">
+
+	
+
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+	  <script src="./js/libs/html5shiv.js"></script>
+	  <script src="./js/libs/respond.min.js"></script>
+	<![endif]-->
+
+	<!-- Favicons -->
+	<link rel="shortcut icon" href="./assets/ico/favicon.ico">
+
+</head>
+
+<body>
+  <a class="sr-only" href="#content">Skip navigation</a>
+
+  <!-- Docs master nav -->
+  <header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">
+    <div class="container">
+
+      <div class="navbar-header">
+        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+
+        <a href="./index.html" class="navbar-brand">Canvas Admin</a>
+      </div>
+      
+      <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+        <ul class="nav navbar-nav">
+          <li class="">
+          <a href="./getting-started.html">Getting started</a>
+          </li>
+          <li class="active">
+          <a href="./components.html">Components</a>
+          </li>
+          <li class="">
+          <a href="./plugins.html">Plugins</a>
+          </li>
+        </ul>
+
+        <ul class="nav navbar-nav pull-right">
+
+          <li>
+          <a href="../theme" target="_blank">
+          View Demo&nbsp;&nbsp;
+          <i class="icon-external-link"></i> 
+          </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Docs page layout -->
+  <div class="bs-header" id="content">
+    <div class="container">
+      <h1>Components</h1>
+    </div>
+  </div>
+
+  <div class="container bs-docs-container">
+    <div class="row">
+
+      <div id="sidebar" class="col-md-3">
+        <div class="bs-sidebar hidden-print affix-top" role="complementary">
+          <ul class="nav bs-sidenav">
+
+          </ul>
+        </div>
+      </div>
+
+      <div id="main" class="col-md-9" role="main">
+
+<section id="components-icons-list" data-title="Icons List" class="bs-docs-section">
+
+<h1 class="section-header">Icons List</h1>
+
+<div id="example-icon-list" data-title="Example HTML" class="bs-docs-section-sub">
+
+	<h3>Example HTML</h3>
+
+	<p><span class="label label-danger">Important</span> &nbsp;&nbsp;Be sure that your <code>ul</code> has the class <code>.icons-list</code>. </p>
+	<p><span class="label label-danger">Important</span> &nbsp;&nbsp;Be sure that the icon for each item has the class <code>.icon-li</code> in the class list. </p>
+
+<pre class="snip-html">
+&lt;ul class="icons-list"&gt;
+	&lt;li&gt;
+		&lt;i class="icon-li fa fa-cloud"&gt;&lt;/i&gt;
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+	&lt;/li&gt;
+	&lt;li&gt;
+		&lt;i class="icon-li fa fa-tasks"&gt;&lt;/i&gt;
+		Vestibulum iaculis felis eu eros pellentesque placerat.
+	&lt;/li&gt;
+&lt;/ul&gt;
+</pre>
+
+<br />
+
+
+
+</div>
+
+<div id="size-icons-list" data-title="List Text Size" class="bs-docs-section-sub">
+
+<h3>Change Text Size of List</h3>
+
+<table class="table table-bordered">
+	
+	<thead>
+		
+		<tr>
+				
+			<th>Name</th>
+			<th>Class</th>
+
+		</tr>
+
+	</thead>
+
+	<tbody>
+		
+		<tr>			
+			<td>Small</td>
+			<td><code>.text-sm</code></td>
+		</tr>
+		
+		<tr>			
+			<td>Medium</td>
+			<td><code>.text-md</code></td>
+		</tr>
+		
+		<tr>			
+			<td>Large</td>
+			<td><code>.text-lg</code></td>
+		</tr>
+		
+		<tr>			
+			<td>X-Large</td>
+			<td><code>.text-xl</code></td>
+		</tr>
+
+
+	</tbody>
+
+</table>
+
+<br />
+
+<h4>Example HTML</h4>
+
+<pre class="snip-html">
+&lt;ul class="icons-list text-lg"&gt;
+</pre>
+
+</div>
+
+</section>
+<section id="components-font-awesome" data-title="Font Awesome" class="bs-docs-section">
+
+<h1 class="section-header">Font Awesome</h1>
+
+<p class="">Font Awesome gives you scalable vector icons that can instantly be customized — size, color, drop shadow, and anything that can be done with the power of CSS.</p>
+
+	<p>
+		<a href="http://fortawesome.github.io/Font-Awesome/" class="bs-docs-external-link">
+			Font Awesome Documentation
+		</a>
+	</p>
+
+</section>
+<section id="components-portlets" data-title="Portlets" class="bs-docs-section">
+
+<h1 class="section-header">Portlets</h1>
+
+<div id="portlet-example" data-title="Example" class="bs-docs-section-sub">
+
+	<h3>Portlet</h3>
+
+	<h4>Example HTML</h4>
+
+	<p>Below is the example html for a portlet container. Portlets will usually go directly inside of a Bootstrap column, but could really go anywhere.</p>
+
+<pre class="snip-html">
+
+&lt;div class="portlet"&gt;
+
+	&lt;div class="portlet-header"&gt;
+		&lt;h3&gt;
+			&lt;i class="icon-asterisk"&gt;&lt;/i&gt;
+			Portlet Title
+		&lt;/h3&gt;
+	&lt;/div&gt;
+
+	&lt;div class="portlet-content"&gt;
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+	&lt;/div&gt;
+
+&lt;/div&gt; &lt;!-- /.portlet --&gt;</pre>
+
+</div>
+
+<div id="portlet-tools" data-title="Tools" class="bs-docs-section-sub">
+
+	<h3>Portlet Tools</h3>
+
+
+	<p class="">Portlet tools can contain a variety of elements list below:</p>
+
+	<ul class="icons-list">
+		<li>
+			<i class="icon-li icon-double-angle-right"></i>
+			Regular Buttons</li>
+		<li>
+			<i class="icon-li icon-double-angle-right"></i>Dropdown Buttons</li>
+		<li>
+			<i class="icon-li icon-double-angle-right"></i>Split Buttons</li>
+		<li>
+			<i class="icon-li icon-double-angle-right"></i>Search Bar</li>
+		<li>
+			<i class="icon-li icon-double-angle-right"></i>Labels</li>
+		<li>
+			<i class="icon-li icon-double-angle-right"></i>Badges</li>
+		<li>
+			<i class="icon-li icon-double-angle-right"></i>Pill Tabs</li>
+		<li>
+			<i class="icon-li icon-double-angle-right"></i>Progress Bars</li>
+	</ul>
+
+	<a href="../theme/ui-portlets.html" class="bs-docs-external-link">View Live Portlet Tools</a>
+<br>
+<br>
+<br>
+
+	<h4>Example HTML</h4>
+
+	<pre class="snip-html">
+&lt;div class="portlet-header"&gt;
+	&lt;h3&gt;
+		&lt;i class="icon-asterisk"&gt;&lt;/i&gt;
+		Portlet Title
+	&lt;/h3&gt;
+
+	&lt;ul class="portlet-tools pull-right"&gt;
+		&lt;li&gt;
+			&lt;a href="javascript:;" class="btn btn-sm btn-primary"&gt;Action&lt;/a&gt;
+		&lt;/li&gt;
+	&lt;/ul&gt;
+&lt;/div&gt; &lt;!-- /.portlet-header --&gt;
+	</pre>
+
+
+
+
+
+</div>
+</section>
+<section id="components-pricing-tables" data-title="Pricing Tables" class="bs-docs-section">
+
+<h1 class="section-header">Pricing Tables</h1>
+
+<div id="pricing-layout" data-title="Layouts" class="bs-docs-section-sub">
+
+	<h3>Layouts</h3>
+
+	<p>The Pricing Tables component utilizes the Bootstrap grid for layouts.</p>
+
+<pre class="snip-html">
+&lt;div class="row"&gt;
+
+	&lt;div class="col-md-4"&gt;
+
+		&lt;div class="pricing-plan"&gt;&lt;/div&gt; &lt;!-- .pricing-plan --&gt;
+
+	&lt;/div&gt;
+
+&lt;/div&gt;
+</pre>
+
+</div>
+
+<div id="pricing-html" data-title="Example HTML" class="bs-docs-section-sub">
+
+	<h3>Example HTML</h3>
+
+	<p>An example <code>.pricing-plan</code> element that you can use within a grid column.</p>
+
+<pre class="snip-html">
+&lt;div class="pricing-plan"&gt;
+	
+	&lt;h3 class="pricing-title"&gt;Basic&lt;/h3&gt;
+	
+	&lt;p class="pricing-label"&gt;For blogs & small business&lt;/p&gt;   
+	
+	&lt;hr&gt;
+	
+	&lt;span class="pricing-price"&gt;
+		&lt;span class="pricing-amount"&gt;$29&lt;/span&gt; / month
+	&lt;/span&gt;
+	
+	&lt;hr&gt;
+	
+	&lt;ul class="pricing-details"&gt;	    			
+		&lt;li&gt;&lt;strong&gt;10&lt;/strong&gt; users&lt;/li&gt;
+		&lt;li&gt;&lt;strong&gt;50&lt;/strong&gt; projects&lt;/li&gt;	   
+		&lt;li&gt;&lt;strong&gt;50BG&lt;/strong&gt; of space&lt;/li&gt;	   
+		&lt;li&gt;&lt;strong&gt;10&lt;/strong&gt; email accounts&lt;/li&gt;	  	 	    				
+	&lt;/ul&gt;
+	
+	&lt;a href="javascript:;" class="btn btn-primary btn-lg"&gt;Choose plan&lt;/a&gt;
+	
+&lt;/div&gt; &lt;!-- /.pricing --&gt;
+
+</pre>
+
+<hr>
+
+	<h4>Details Popover</h4>
+
+	<p>An example of the informational popup is shown below. This can be added to your <code>ul.pricing-details</code> element.</p>
+
+<pre class="snip-html">
+&lt;li&gt;
+	&lt;span class="pricing-help" 
+			title="What's a user?" 
+			data-content="Lorem ipsum dolor sit amet, consectetuer adipiscing elit."&gt;
+		&lt;strong&gt;100&lt;/strong&gt; users
+	&lt;/span&gt;
+&lt;/li&gt;
+</pre>
+
+<hr>
+
+	<h4>Promoted Plan</h4>
+
+	<p>To create a promoted plan add the class <code>.promoted</code> to your <code>.pricing-plan</code> element. You may also want to add the <code>img</code> tag below to the top of your <code>.pricing</code> element to denote the best value. </p>
+
+<pre class="snip-html">
+&lt;div class="pricing-plan promoted"&gt;
+
+	&lt;img src="./img/pricing/label-yellow.png" class="pricing-best-value" alt="Best Label" /&gt;
+
+	&lt;!-- Pricing Details Go Here --&gt;
+
+&lt;/div&gt;
+</pre>
+
+</div>
+
+</section>
+<section id="components-thumbnail" data-title="Thumbnails" class="bs-docs-section">
+
+<h1 class="section-header">Thumbnails</h1>
+
+<div id="twbs-thumbnail" data-title="Bootstrap Docs" class="bs-docs-section-sub">
+
+	<h3>Bootstrap Docs</h3>
+
+	<p>
+		<a href="http://getbootstrap.com/components/#thumbnails" class="bs-docs-external-link">
+			Thumbnails Documentation
+		</a>
+	</p>
+
+</div>
+
+<div id="thumbnail-view" data-title="Image Hover" class="bs-docs-section-sub">
+
+	<h3>Image Hover</h3>
+
+	<p>Image Hover is an extension of Bootstrap's thumbnail element. It easily allows you to have an icon to denote a zoom option when hovering over an image.</p>
+
+<pre class="snip-html">
+&lt;div class="thumbnail-view"&gt;
+	&lt;a href="IMG_FULL_PATH" class="thumbnail-view-hover ui-lightbox"&gt;&lt;/a&gt;
+    &lt;img src="IMG_THUMBNAIL_PATH" style="width: 100%" alt="Gallery Image"&gt;
+&lt;/div&gt;
+</pre>
+
+</div>
+
+
+<div id="thumbnail-footer" data-title="Footer" class="bs-docs-section-sub">
+
+	<h3>Footer</h3>
+
+	<p>The thumbnail footer provides an easy way to display comments, likes, and dates using icons.</p>
+
+
+<pre class="snip-html">
+&lt;div class="thumbnail-footer"&gt;
+	&lt;div class="pull-left"&gt;
+    	&lt;a href="javascript:;"&gt;&lt;i class="icon-thumbs-up"&gt;&lt;/i&gt; 123&lt;/a&gt; 
+    	&lt;a href="javascript:;"&gt;&lt;i class="icon-thumbs-down"&gt;&lt;/i&gt; 29&lt;/a&gt;
+    &lt;/div&gt;
+
+    &lt;div class="pull-right"&gt;
+    	&lt;a href="javascript:;"&gt;&lt;i class="icon-time"&gt;&lt;/i&gt; 2 days ago&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</pre>
+
+</div>
+
+</section>
+<section id="components-accordion" data-title="Accordion" class="bs-docs-section">
+
+<h1 class="section-header">Accordion</h1>
+
+<div id="twbs-accordion" data-title="Bootstrap Docs" class="bs-docs-section-sub">
+
+	<h3 class="sub-header">Bootstrap Docs</h3>
+
+	<p>
+		<a href="http://getbootstrap.com/javascript/#collapse" class="bs-docs-external-link">
+			Accordion Documentation
+		</a>
+	</p>
+
+</div>
+
+
+<div id="theme-accordion" data-title="Styling" class="bs-docs-section-sub">
+
+<h3>Styling</h3>
+
+<p>To enable the enhanced styling of the default accordion, add the following class to the accordion container: <code>.accordion</code>.</p>
+
+<pre class="snip-html">
+&lt;div class="panel-group accordion"&gt;
+
+&lt;/div&gt;</pre>
+
+
+
+
+</div>
+
+</section>
+<section id="components-buttons" data-title="Buttons" class="bs-docs-section">
+
+<h1 class="section-header">Buttons</h1>
+
+<div id="twbs-buttons" data-title="Bootstrap Docs" class="bs-docs-section-sub">
+
+	<h3 class="sub-header">Bootstrap Docs</h3>
+
+	<p>
+		<a href="http://getbootstrap.com/css/#buttons" class="bs-docs-external-link">
+			Button Documentation
+		</a>
+	</p>
+
+</div>
+
+
+<div id="theme-buttons" data-title="Additional Classes" class="bs-docs-section-sub">
+
+
+<h3>Additional Classes</h3>
+
+<p>The following additional classes have been provided for this theme. They behave similar to the normal Bootstrap classes. </p>
+
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Class</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>Secondary</td>
+			<td><code>.btn-secondary</code></td>
+		</tr>
+		<tr>
+			<td>Tertiary</td>
+			<td><code>.btn-tertiary</code></td>
+		</tr>
+		<tr>
+			<td>Jumbo</td>
+			<td><code>.btn-jumbo</code></td>
+		</tr>
+	</tbody>
+</table>
+
+</div>
+
+</section>
+<section id="components-progress-bars" data-title="Progress Bars" class="bs-docs-section">
+
+<h1 class="section-header">Progress Bars</h1>
+
+<div id="twbs-progress" data-title="Bootstrap Docs" class="bs-docs-section-sub">
+
+	<h3 class="sub-header">Bootstrap Docs</h3>
+
+	<p>
+		<a href="http://getbootstrap.com/components/#progress" class="bs-docs-external-link">
+			Progress Bar Documentation
+		</a>
+	</p>
+
+</div>
+
+
+<div id="theme-progress" data-title="Additional Classes" class="bs-docs-section-sub">
+
+<h3>Additional Classes</h3>
+
+<p>The following additional classes have been provided for this theme. They behave similar to the normal Bootstrap classes. </p>
+
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Class</th>
+					</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>Secondary</td>
+			<td><code>.progress-bar-secondary</code></td>
+					</tr>
+		<tr>
+			<td>Tertiary</td>
+			<td><code>.progress-bar-tertiary</code></td>
+					</tr>
+	</tbody>
+</table>
+
+
+
+</div>
+
+</section>
+<section id="components-modals" data-title="Modal" class="bs-docs-section">
+
+<h1 class="section-header">Modal</h1>
+
+<div id="twbs-modal" data-title="Bootstrap Docs" class="bs-docs-section-sub">
+
+	<h3 class="sub-header">Bootstrap Docs</h3>
+
+	<p>
+		<a href="http://getbootstrap.com/javascript/#modals" class="bs-docs-external-link">
+			Modal Documentation
+		</a>
+	</p>
+
+</div>
+
+<div id="theme-modal" data-title="Styled Modal" class="bs-docs-section-sub">
+
+	<h3 class="sub-header">Styled Modal</h3>
+
+	<p>Add the class <code>.modal-styled</code> to your modal container to enable the new style. All other modal behavior will be the same.</p>
+
+	
+
+<pre class="snip-html">
+&lt;div class="modal modal-styled fade in"&gt;
+
+&lt;/div&gt;
+	</pre>
+
+</div>
+
+</section>
+<section id="components-social-feed" data-title="Social Feed" class="bs-docs-section">
+
+<h1 class="section-header">Social Feed</h1>
+
+<div id="feed-html" data-title="Example HTML" class="bs-docs-section-sub">
+
+<h3>Example HTML</h3>
+
+<p>An example of the <code>.feed-item</code> html shown below.</p>
+
+<pre class="snip-html">
+&lt;div class="feed-item"&gt;
+
+	&lt;div class="feed-icon"&gt;
+		&lt;i class="icon-lightbulb"&gt;&lt;/i&gt;
+	&lt;/div&gt; &lt;!-- /.feed-icon --&gt;
+
+	&lt;div class="feed-subject"&gt;
+		&lt;a href="javascript:;"&gt;Rod Howard&lt;/a&gt; shared an idea: &lt;a href="javascript:;"&gt;New Idea&lt;/a&gt;
+	&lt;/div&gt; &lt;!-- /.feed-subject --&gt;
+
+	&lt;div class="feed-content"&gt;
+		&lt;p&gt;
+			&lt;i class="icon-quote-left"&gt;&lt;/i&gt; 
+			Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi.
+		&lt;/p&gt;
+	&lt;/div&gt; &lt;!-- /.feed-content --&gt;
+
+	&lt;div class="feed-actions"&gt;
+		&lt;a href="javascript:;" class="pull-left"&gt;&lt;i class="icon-thumbs-up"&gt;&lt;/i&gt; 123&lt;/a&gt; 
+		&lt;a href="javascript:;" class="pull-left"&gt;&lt;i class="icon-comment-alt"&gt;&lt;/i&gt; 29&lt;/a&gt;
+
+		&lt;a href="javascript:;" class="pull-right"&gt;&lt;i class="icon-time"&gt;&lt;/i&gt; 2 days ago&lt;/a&gt;
+	&lt;/div&gt; &lt;!-- /.feed-actions --&gt;
+
+&lt;/div&gt; &lt;!-- /.feed-item --&gt;
+</pre>
+
+</div>
+
+
+
+
+<div id="feed-types" data-title="Feed Item Types" class="bs-docs-section-sub">
+
+	<h3>Feed Item Types</h3>
+
+	<p>Use feed item types of change the color of the <code>.feed-icon</code> for your post.</p>
+
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+				<th>Type</th>
+				<th>Class Name</th>
+				<th>Default Color</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<tr>
+				<td>Idea</td>
+				<td><code>.feed-item-idea</code></td>
+				<td><span class="label" style="background: #f0ad4e; font-size: 12px;">#f0ad4e</span></td>
+			</tr>
+			<tr>
+				<td>Image</td>
+				<td><code>.feed-item-image</code></td>
+				<td><span class="label" style="background: #888888; font-size: 12px;">#888888</span></td>
+			</tr>
+			<tr>
+				<td>File</td>
+				<td><code>.feed-item-file</code></td>
+				<td><span class="label" style="background: #e5412d; font-size: 12px;">#e5412d</span></td>
+			</tr>
+			<tr>
+				<td>Bookmark</td>
+				<td><code>.feed-item-bookmark</code></td>
+				<td><span class="label" style="background: #555555; font-size: 12px;">#555555</span></td>
+			</tr>
+			<tr>
+				<td>Question</td>
+				<td><code>.feed-item-question</code></td>
+				<td><span class="label" style="background: #428bca; font-size: 12px;">#428bca</span></td>
+			</tr>
+		</tbody>
+	</table>
+
+	<br />
+
+	<pre class="snip-html">
+&lt;div class="feed-item feed-item-idea"&gt;
+
+&lt;/div&gt;
+</pre>
+
+
+
+</div>
+
+
+</section>
+
+      </div>
+
+    </div>
+  </div>
+
+    <!-- Footer
+  ================================================== -->
+  <footer class="bs-footer" role="contentinfo">
+    <div class="container">
+
+      
+      <p>Documentation licensed under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</p>
+    
+      <ul class="footer-links">
+        <li><a href="./index.html">Canvas Admin Docs v1.0</a></li>
+        <li class="muted">·</li>
+        <li><a href="http://jumpstartthemes.com">Jumpstart Themes</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <!-- JS and analytics only. -->
+  <!-- Bootstrap core JavaScript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="./js/libs/jquery-1.8.1.min.js"></script>
+  <script src="./js/libs/bootstrap.min.js"></script>
+  <script src="./js/libs/handlebars.js"></script>
+  <script src="./js/plugins/snippet/jquery.snippet.min.js"></script>
+  <script src="./js/docs.js"></script>
+
+  
+  <script id="bs-sidenav-tmpl" type="text/x-handlebars-template">    
+  {{#sections}}
+    <li>
+      <a href="{{id}}">
+      {{title}}
+
+      {{#if subsCount}}
+      <small class="bs-sidenav-sub-count">({{subsCount}})</small>
+      {{/if}}
+      </a>
+
+      <ul class="nav">
+        {{#subs}}
+        <li>
+          <a href="{{id}}">--&nbsp;&nbsp;{{title}}</a>
+        </li>
+        {{/subs}}
+      </ul>
+    </li>
+  {{/sections}}  
+  </script>
+  
+
+</body>
+
+</html>
