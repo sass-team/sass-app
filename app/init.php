@@ -9,7 +9,7 @@ session_start();
 
 require "config/app.php";
 // identical to require; but php will include it only if it has not already been included
-require_once ROOT_PATH . 'app/database/app.php';
+require_once ROOT_PATH . 'app/config/database.php';
 require_once ROOT_PATH . "app/models/User.php";
 require_once ROOT_PATH . "app/models/Users.php";
 require_once ROOT_PATH . "app/models/Admin.php";
