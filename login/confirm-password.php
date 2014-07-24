@@ -33,7 +33,7 @@
 ob_start();
 // TODO: Add option-functionality to resend email if password forgot
 // TODO: sql make 'img' of database to NOT NULL & refactor name to 'img_location'
-require '../inc/init.php';
+require '../app/init.php';
 
 // if there is an active log in process redirect to edit.php; load page only if no
 // logged in user exists
@@ -88,20 +88,20 @@ if (isContinueBtnPressed()) {
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	<meta name="description" content="">
 	<meta name="author" content=""/>
-	<link rel="shortcut icon" href="<?php echo BASE_URL; ?>img/logos/logo-login.png">
+	<link rel="shortcut icon" href="<?php echo BASE_URL; ?>app/assets/img/logos/logo-login.png">
 
 	<link rel="stylesheet"
 	      href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,800italic,400,600,800"
 	      type="text/css">
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>css/font-awesome.min.css" type="text/css"/>
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>css/bootstrap.min.css" type="text/css"/>
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>js/libs/css/ui-lightness/jquery-ui-1.9.2.custom.css"
+	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/css/font-awesome.min.css" type="text/css"/>
+	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/css/bootstrap.min.css" type="text/css"/>
+	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/js/libs/css/ui-lightness/jquery-ui-1.9.2.custom.css"
 	      type="text/css"/>
 
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>css/App.css" type="text/css"/>
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>css/Login.css" type="text/css"/>
+	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/css/App.css" type="text/css"/>
+	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/css/Login.css" type="text/css"/>
 
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>css/custom.css" type="text/css"/>
+	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/css/custom.css" type="text/css"/>
 
 </head>
 
@@ -109,8 +109,8 @@ if (isContinueBtnPressed()) {
 <div id="login-container">
 
 	<div id="logo">
-		<a href="<?php echo BASE_URL; ?>login">
-			<img src="<?php echo BASE_URL; ?>img/logos/logo-login.png" alt="Logo"/>
+		<a href="<?php echo BASE_URL; ?>login.php">
+			<img src="<?php echo BASE_URL; ?>app/assets/img/logos/logo-login.png" alt="Logo"/>
 		</a>
 	</div>
 
@@ -170,12 +170,12 @@ if (isContinueBtnPressed()) {
 </div>
 <!-- /#forgot-container -->
 
-<script src="<?php echo BASE_URL; ?>js/libs/jquery-1.9.1.min.js"></script>
-<script src="<?php echo BASE_URL; ?>js/libs/jquery-ui-1.9.2.custom.min.js"></script>
-<script src="<?php echo BASE_URL; ?>js/libs/bootstrap.min.js"></script>
+<script src="<?php echo BASE_URL; ?>app/assets/js/libs/jquery-1.9.1.min.js"></script>
+<script src="<?php echo BASE_URL; ?>app/assets/js/libs/jquery-ui-1.9.2.custom.min.js"></script>
+<script src="<?php echo BASE_URL; ?>app/assets/js/libs/bootstrap.min.js"></script>
 
-<script src="<?php echo BASE_URL; ?>js/App.js"></script>
+<script src="<?php echo BASE_URL; ?>app/assets/js/App.js"></script>
 
-<script src=".<?php echo BASE_URL; ?>s/Login.js"></script>
+<script src=".<?php echo BASE_URL; ?>app/assets/s/Login.js"></script>
 </body>
 </html>
