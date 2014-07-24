@@ -7,7 +7,7 @@
  * Time: 8:00 PM
  */
 class Tutor extends User {
-	private $major;
+	private $major_1;
 	private $teaching_courses;
 
 	/**
@@ -16,14 +16,13 @@ class Tutor extends User {
 	 */
 	public function __construct($allUserData) {
 		parent::__construct($allUserData);
-		$this->set_majors();
 	}
 
 	/**
 	 * @param mixed $tutorMajor
 	 */
-	private function set_majors() {
-		$this->major = $tutorMajor;
+	private function set_majors($majors) {
+		$this->major_1 =array_values($majors)[0];
 	}
 
 	public function is_admin() {

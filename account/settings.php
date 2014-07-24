@@ -26,7 +26,7 @@ if (isset($_POST['form_action_profile_settings'])) {
 		if ($_FILES['fileupload-avatar']['error'] == 1) {
 			$errors[] = "File size exceeded";
 		} else {
-			$uploaddir = ROOT_PATH . "img/avatars/";
+			$uploaddir = ROOT_PATH . "app/assets/img/avatars/";
 			$uploadfile = $uploaddir . basename($_FILES['fileupload-avatar']['name']);
 
 			$path = $_FILES['fileupload-avatar']['name'];
@@ -36,7 +36,7 @@ if (isset($_POST['form_action_profile_settings'])) {
 				$img_web_loc = $uploaddir . "avatar_img_" . $user->getId() . "." . $ext;
 				rename($uploadfile, $img_web_loc);
 
-				$avatar_img_loc = "img/avatars/avatar_img_" . $user->getId() . "." . $ext;
+				$avatar_img_loc = "app/assets/img/avatars/avatar_img_" . $user->getId() . "." . $ext;
 				if (true !== ($update_avatar_img_response = $users->update_avatar_img($avatar_img_loc, $user->getId()))) {
 					$errors[] = "Error storing img loc to database. Please try again later.";
 				}
@@ -245,7 +245,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 		<br/>
 
-		<form action="settings" class="form-horizontal" method="post">
+		<form action="." class="form-horizontal" method="post">
 
 			<div class="form-group">
 

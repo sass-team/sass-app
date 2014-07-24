@@ -84,7 +84,7 @@ class Users {
 			} // end else if
 
 		} catch (PDOException $e) {
-			throw new Exception("Something terrible happened. Could not update database.");
+			throw new Exception("Something terrible happened. Could not access database.");
 		} // end catch
 	}
 
@@ -136,7 +136,7 @@ class Users {
 			$query->execute();
 			return $query->fetch();
 		} catch (PDOException $e) {
-			throw new Exception("Something terrible happened. Could not update database." . $e->getMessage());
+			throw new Exception("Something terrible happened. Could not retrieve database." . $e->getMessage());
 		} // end try
 	}
 
@@ -171,7 +171,7 @@ class Users {
 
 			return true;
 		} catch (PDOException $pe) {
-			throw new Exception("Something terrible happened. Could not update database.");
+			throw new Exception("Something terrible happened. Could not update profile." . $pe->getMessage());
 			//throw new Exception($pe->getMessage());
 
 		}
