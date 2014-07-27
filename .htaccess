@@ -1,1 +1,16 @@
-RewriteRule ^$ / [L]
+# Enables or disables runtime rewriting engine
+RewriteEngine On
+
+RewriteRule ^(/?login/(confirm-password|recover))/?$ $1.php
+RewriteRule ^(/?login/(confirm-password|recover))/success$ $1.php?success
+RewriteRule ^(/?logout)$ $1.php
+
+RewriteRule ^(/?account/(profile|settings))/?$ $1.php
+RewriteRule ^(/?account/settings)/success$ $1.php?success
+
+RewriteRule ^(users/(create|edit))/?$ $1.php
+
+#RewriteRule \.php$ error-404.php
+
+
+#RewriteRule ^$ /upgrade [L]
