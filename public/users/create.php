@@ -158,7 +158,7 @@ function isSaveBttnPressed() {
 <div id="styledModal" class="modal modal-styled fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form method="post" id="create-form" action="." class="form">
+			<form method="post" id="create-form" action="" class="form">
 
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
