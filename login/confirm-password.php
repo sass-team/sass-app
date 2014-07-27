@@ -59,7 +59,7 @@ if (isContinueBtnPressed()) {
 	try {
 		if ($users->email_exists($_POST['email'])) {
 			$users->confirm_recover($_POST['email']);
-			header('Location:confirm-password.php?success');
+			header('Location:confirm-password/success');
 			exit();
 		} else {
 			$errors[] = 'Sorry, that email doesn\'t exist.';
@@ -109,7 +109,7 @@ if (isContinueBtnPressed()) {
 <div id="login-container">
 
 	<div id="logo">
-		<a href="<?php echo BASE_URL; ?>login.php">
+		<a href="<?php echo BASE_URL; ?>login">
 			<img src="<?php echo BASE_URL; ?>app/assets/img/logos/logo-login.png" alt="Logo"/>
 		</a>
 	</div>
@@ -119,8 +119,18 @@ if (isContinueBtnPressed()) {
 		<!-- /#forgot -->
 		<div id="login">
 			<h4>Thank you.</h4>
+			<hr/>
+
 			<h5>Please check your email to confirm your request for a new password.</h5>
 
+			<hr/>
+
+			<div class="form-group text-center">
+				<input type="hidden" name="hidden_forgot_pressed">
+				<a href="<?php echo BASE_URL; ?>login" name="forgot" class="btn btn-default">
+					Log In
+				</a>
+			</div>
 			<?php
 			if (empty($errors) === false) {
 				?>
@@ -137,7 +147,7 @@ if (isContinueBtnPressed()) {
 	<?php } else { ?>
 		<!-- /#forgot -->
 		<div id="login">
-			<h4>Forgot your password?</h4>
+			<h4>Password Recovery</h4>
 			<h5>Submit your email address and we'll send you a link to reset it.</h5>
 
 			<form method="post" id="login-form" action="confirm-password.php" class="form">

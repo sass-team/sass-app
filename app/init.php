@@ -44,7 +44,7 @@ try {
 } catch (Exception $e) {
 	$errors[] = $e->getMessage();
 	var_dump($errors);
-	header('Location: ' . BASE_URL . 'error.php');
+	header('Location: ' . BASE_URL . 'error-500.php');
 	exit();
 }
 

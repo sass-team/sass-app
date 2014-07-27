@@ -93,7 +93,7 @@
 						<li class="divider"></li>2
 					<?php } ?>
 					<li>
-						<a href="<?php echo BASE_URL; ?>logout.php">
+						<a href="<?php echo BASE_URL; ?>logout">
 							<i class="fa fa-sign-out"></i>
 							&nbsp;&nbsp;Logout
 						</a>

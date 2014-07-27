@@ -96,8 +96,8 @@ if (isLoginBtnPressed()) {
 	<!-- /#login -->
 	<div id="login">
       <h4>Welcome to SASS-Management System</h4>
-      <h5>Please sign in to get access.</h5>
-      <form method="post" id="login-form" action="index.php" class="form">
+      <h5>Please log in to get access.</h5>
+      <form method="post" id="login-form" action="." class="form">
          <div class="form-group">
             <label for="login-email">Username</label>
             <input type="email" class="form-control" id="login-email" name="login_email" placeholder="Email" required>
@@ -111,19 +111,17 @@ if (isLoginBtnPressed()) {
 
          <div class="form-group">
             <input type="hidden" name="hidden_submit_pressed">
-            <button type="submit" id="login-btn" name="login" class="btn btn-primary btn-block">Signin &nbsp; <i
-                  class="fa fa-play-circle"></i></button>
+            <button type="submit" id="login-btn" name="login" class="btn btn-primary btn-block">Log In &nbsp; <i
+                  class="fa fa-sign-in"></i></button>
          </div>
       </form>
 
-	   <form method="post" id="forgot-form" action="index.php" class="form">
 		   <div class="form-group text-center">
 			   <input type="hidden" name="hidden_forgot_pressed">
-			   <a href="confirm-password.php" name="forgot" class="btn btn-default">
+			   <a href="confirm-password" name="forgot" class="btn btn-default">
 				   Forgot Password?
 			   </a>
 		   </div>
-		</form>
 	   <?php
          if (empty($errors) === false) {
             ?>
@@ -135,7 +133,7 @@ if (isLoginBtnPressed()) {
          }
          ?>
    </div>
-   <!-- /#login -->
+   <!-- /# -->
 
 </div>
 <!-- /#login-container -->
@@ -146,7 +144,7 @@ if (isLoginBtnPressed()) {
 
 <script src="<?php echo BASE_URL; ?>app/assets/js/App.js"></script>
 
-<script src=".<?php echo BASE_URL; ?>app/assets/Login.js"></script>
+<script src="<?php echo BASE_URL; ?>app/assets/js/Login.js"></script>
 </body>
 </html>
 

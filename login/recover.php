@@ -98,8 +98,12 @@ function isVerified() {
 		<?php
 		if (isVerified()) {
 			?>
-			<h4>Thank you, we've send you a randomly generated password in your email.</h4>
-			<h3><a href="<?php echo BASE_URL; ?>login">Log In</a></h3>
+			<h3>Thank you.</h3>
+			<hr/>
+			<h4>We have send you a randomly generated password in your email.</h4>
+			<hr/>
+			<a href="<?php echo BASE_URL; ?>" class="btn btn-primary" role="button">Back to Log In</a>
+
 		<?php
 		} else if (isset ($_GET['email'], $_GET['gen_string']) === true) {
 			$email = trim($_GET['email']);
@@ -117,7 +121,7 @@ function isVerified() {
 				echo '<p>' . implode('</p><p>', $errors) . '</p>';
 			} else {
 				#redirect the user to recover.php?success if recover() function does not return false.
-				header('Location: ' . BASE_URL . 'login/recover.php?success');
+				header('Location: ' . BASE_URL . 'login/recover/success');
 				exit();
 			} // end else if
 		} else {

@@ -83,7 +83,8 @@ session_destroy();
         <h4>You've logged out.</h4>
         <h5></h5>
 
-        <a href="<?php echo BASE_URL; ?>" class="btn btn-primary btn-lg" role="button">Forgot something&#63;</a>
+	    <hr/>
+        <a href="<?php echo BASE_URL; ?>" class="btn btn-primary" role="button">Forgot something&#63;</a>
 
     </div>
 
