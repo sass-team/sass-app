@@ -82,66 +82,149 @@ if (isLoginBtnPressed()) {
 
 		<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/css/custom.css" type="text/css"/>
 
+		<style type="text/css">
+			#wrap {
+				min-height: 100%;
+				height: auto !important;
+				margin: 0 auto -60px;
+			}
+
+			.video-section .pattern-overlay {
+				padding: 110px 0 32px;
+				min-height: 496px;
+				/* Incase of overlay problems just increase the min-height*/
+			}
+
+			.video-section h1, .video-section h3 {
+				text-align: center;
+				color: #fff;
+			}
+
+			.video-section h1 {
+				font-size: 110px;
+				font-family: 'Buenard', serif;
+				font-weight: bold;
+				text-transform: uppercase;
+				margin: 40px auto 0px;
+				text-shadow: 1px 1px 1px #000;
+				-webkit-text-shadow: 1px 1px 1px #000;
+				-moz-text-shadow: 1px 1px 1px #000;
+			}
+
+			.video-section h3 {
+				font-size: 25px;
+				font-weight: lighter;
+				margin: 0px auto 15px;
+			}
+
+			.video-section .buttonBar {
+				display: none;
+			}
+
+			.player {
+				font-size: 1px;
+			}
+
+		</style>
+
 	</head>
 
 	<body>
 
-	<div id="login-container">
+	<div id="wrap">
+		<div id="login-container">
 
-		<a href="<?php echo BASE_URL; ?>login/">
-			<div id="logo">
-				<img src="<?php echo BASE_URL; ?>app/assets/img/logos/logo-login.png" alt="Logo"/>
-			</div>
-		</a>
-
-
-		<!-- /#login -->
-		<div id="login">
-			<h4>Welcome to SASS-Management System</h4>
-			<h5>Please log in to get access.</h5>
-
-			<form method="post" id="login-form" action="" class="form">
-				<div class="form-group">
-					<label for="login-email">Username</label>
-					<input type="email" class="form-control" id="login-email" name="login_email" placeholder="Email"
-					       required>
+			<a href="<?php echo BASE_URL; ?>login/">
+				<div id="logo">
+					<img src="<?php echo BASE_URL; ?>app/assets/img/logos/logo-login.png" alt="Logo"/>
 				</div>
+			</a>
 
-				<div class="form-group">
-					<label for="login-password">Password</label>
-					<input type="password" class="form-control" id="login-password" name="login_password"
-					       placeholder="Password" required>
+
+			<!-- /#login -->
+			<div id="login">
+				<h4>Welcome to SASS-Management System</h4>
+				<h5>Please log in to get access.</h5>
+
+				<form method="post" id="login-form" action="" class="form">
+					<div class="form-group">
+						<label for="login-email">Username</label>
+						<input type="email" class="form-control" id="login-email" name="login_email" placeholder="Email"
+						       required>
+					</div>
+
+					<div class="form-group">
+						<label for="login-password">Password</label>
+						<input type="password" class="form-control" id="login-password" name="login_password"
+						       placeholder="Password" required>
+					</div>
+
+					<div class="form-group">
+						<input type="hidden" name="hidden_submit_pressed">
+						<button type="submit" id="login-btn" name="login" class="btn btn-primary btn-block">Log In &nbsp; <i
+								class="fa fa-sign-in"></i></button>
+					</div>
+				</form>
+
+				<div class="form-group text-center">
+					<input type="hidden" name="hidden_forgot_pressed">
+					<a href="confirm-password" name="forgot" class="btn btn-default">
+						Forgot Password?
+					</a>
 				</div>
-
-				<div class="form-group">
-					<input type="hidden" name="hidden_submit_pressed">
-					<button type="submit" id="login-btn" name="login" class="btn btn-primary btn-block">Log In &nbsp; <i
-							class="fa fa-sign-in"></i></button>
-				</div>
-			</form>
-
-			<div class="form-group text-center">
-				<input type="hidden" name="hidden_forgot_pressed">
-				<a href="confirm-password" name="forgot" class="btn btn-default">
-					Forgot Password?
-				</a>
-			</div>
-			<?php
-			if (empty($errors) === false) {
+				<?php
+				if (empty($errors) === false) {
+					?>
+					<div class="alert alert-danger">
+						<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+						<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
+					</div>
+				<?php
+				}
 				?>
-				<div class="alert alert-danger">
-					<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-					<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
-				</div>
-			<?php
-			}
-			?>
+			</div>
+			<!-- /# -->
+
 		</div>
-		<!-- /# -->
+		<!-- /#login-container -->
+
+		<footer id="footer" class="navbar navbar-fixed-bottom">
+			<ul class="nav pull-right">
+				<li>
+					Copyright &copy; <?php auto_copyright('2014'); // 2010 - 2011 ?>,
+					&#60;devs&#62;<a href="https://github.com/rdok" target="_blank">rdok</a> &#38;
+					<a href="http://gr.linkedin.com/pub/georgios-skarlatos/70/461/123" target="_blank">geoif</a>&#60;&#47;devs&#62;
+
+				</li>
+			</ul>
+		</footer>
+
+	<!--Video Section-->
+	<section class="content-section video-section">
+		<div class="pattern-overlay">
+			<a id="bgndVideo" class="player"
+			   data-property="{videoURL:'https://www.youtube.com/watch?v=qW5VeFdeYTU', quality:'large', autoPlay:true, mute:true, opacity:1, optimizeDisplay:true}">bg</a>
+		</div>
+	</section>
+	<!--Video Section Ends Here-->
+
+	<?php function auto_copyright($year = 'auto') { ?>
+		<?php if (intval($year) == 'auto') {
+			$year = date('Y');
+		} ?>
+		<?php if (intval($year) == date('Y')) {
+			echo intval($year);
+		} ?>
+		<?php if (intval($year) < date('Y')) {
+			echo intval($year) . ' - ' . date('Y');
+		} ?>
+		<?php if (intval($year) > date('Y')) {
+			echo date('Y');
+		} ?>
+	<?php } ?>
+
 
 	</div>
-	<!-- /#login-container -->
-
 	<script src="<?php echo BASE_URL; ?>app/assets/js/libs/jquery-1.9.1.min.js"></script>
 	<script src="<?php echo BASE_URL; ?>app/assets/js/libs/jquery-ui-1.9.2.custom.min.js"></script>
 	<script src="<?php echo BASE_URL; ?>app/assets/js/libs/bootstrap.min.js"></script>
@@ -149,6 +232,18 @@ if (isLoginBtnPressed()) {
 	<script src="<?php echo BASE_URL; ?>app/assets/js/App.js"></script>
 
 	<script src="<?php echo BASE_URL; ?>app/assets/js/Login.js"></script>
+
+	<!-- Warming Up -->
+	<link href='http://fonts.googleapis.com/css?family=Buenard:700' rel='stylesheet' type='text/css'>
+	<script src="http://pupunzi.com/mb.components/mb.YTPlayer/demo/inc/jquery.mb.YTPlayer.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+			setTimeout(function () {
+				$(".player").mb_YTPlayer();
+			}, 10);
+		});</script>
+
 	</body>
 	</html>
 

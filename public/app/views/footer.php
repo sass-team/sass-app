@@ -22,7 +22,7 @@
 	} ?>
 <?php } ?>
 
-<footer id="footer">
+<footer id="footer" class="navbar navbar-fixed-bottom">
 	<ul class="nav pull-right">
 		<li>
 			Copyright &copy; <?php auto_copyright('2014'); // 2010 - 2011 ?>, <a href="https://github.com/rdok">rdok</a>
@@ -31,6 +31,7 @@
 		</li>
 	</ul>
 </footer>
+</div>
 
 <!-- TODO: load library only when needed. Currently loads no matter the page. -->
 <script src="<?php echo BASE_URL; ?>app/assets/js/libs/jquery-1.9.1.min.js"></script>

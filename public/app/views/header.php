@@ -25,26 +25,39 @@
 
 	<script src="<?php echo BASE_URL; ?>app/assets/js/libs/jquery-1.9.1.min.js"></script>
 
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/js/plugins/icheck/skins/minimal/blue.css" type="text/css"/>
+	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/js/plugins/icheck/skins/minimal/blue.css"
+	      type="text/css"/>
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/js/plugins/icheck/skins/square/green.css">
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/js/plugins/icheck/skins/square/red.css">
 
 	<script src="<?php echo BASE_URL; ?>app/assets/js/plugins/icheck/jquery.icheck.js"></script>
 
 
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/js/plugins/datepicker/datepicker.css" type="text/css"/>
+	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/js/plugins/datepicker/datepicker.css"
+	      type="text/css"/>
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/js/plugins/select2/select2.css" type="text/css"/>
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/js/plugins/simplecolorpicker/jquery.simplecolorpicker.css"
+	<link rel="stylesheet"
+	      href="<?php echo BASE_URL; ?>app/assets/js/plugins/simplecolorpicker/jquery.simplecolorpicker.css"
 	      type="text/css"/>
 
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/js/plugins/timepicker/bootstrap-timepicker.css" type="text/css"/>
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/js/plugins/fileupload/bootstrap-fileupload.css" type="text/css"/>
+	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/js/plugins/timepicker/bootstrap-timepicker.css"
+	      type="text/css"/>
+	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/js/plugins/fileupload/bootstrap-fileupload.css"
+	      type="text/css"/>
 
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/js/plugins/fullcalendar/fullcalendar.css" type="text/css"/>
+	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/js/plugins/fullcalendar/fullcalendar.css"
+	      type="text/css"/>
 
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/css/App.css" type="text/css"/>
 
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/css/custom.css" type="text/css"/>
+	<style type="text/css">
+		#wrap {
+			min-height: 100%;
+			height: auto !important;
+			margin: 0 auto -60px;
+		}
+	</style>
 </head>
 
 <body>
