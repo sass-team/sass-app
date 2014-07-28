@@ -716,7 +716,5 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
    </div> <!-- #content -->
 
-   </div> <!-- #wrapper -->
-
 
 <?php include ROOT_PATH . "app/views/footer.php"; ?>
