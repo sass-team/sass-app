@@ -3616,3 +3616,4 @@ Stack trace:
 [23-Jul-2014 14:31:17 Europe/Athens] PHP Catchable fatal error:  Object of class DateInterval could not be converted to string in C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\upgrade\index.php on line 45
 [23-Jul-2014 14:31:17 Europe/Athens] PHP Stack trace:
 [23-Jul-2014 14:31:17 Europe/Athens] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\upgrade\index.php:0
+[28-Jul-2014 20:11:52 Europe/Paris] PHP Fatal error:  Cannot redeclare auto_copyright() (previously declared in C:\Users\Riza\Desktop\_\sass-ms\public\login\index.php:183) in C:\Users\Riza\Desktop\_\sass-ms\public\login\index.php on line 230
