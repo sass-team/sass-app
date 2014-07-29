@@ -9,7 +9,7 @@
 		<?php if ($course['Major'] === $major['Name']) { ?>
 			<option
 				value="<?php echo $course['Extension'] . $course['Code']; ?>">
-				<?php echo $course['Extension'] . " " . $course['Code'] . " " . $course['Name'] . " Level " . $course['Level']; ?></option>
+				<?php echo $course['Extension'] . " " . $course['Code'] . " " . $course['Name']; ?></option>
 		<?php
 		}
 	}?>

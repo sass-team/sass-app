@@ -3617,3 +3617,35 @@ Stack trace:
 [23-Jul-2014 14:31:17 Europe/Athens] PHP Stack trace:
 [23-Jul-2014 14:31:17 Europe/Athens] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\upgrade\index.php:0
 [28-Jul-2014 20:11:52 Europe/Paris] PHP Fatal error:  Cannot redeclare auto_copyright() (previously declared in C:\Users\Riza\Desktop\_\sass-ms\public\login\index.php:183) in C:\Users\Riza\Desktop\_\sass-ms\public\login\index.php on line 230
+[29-Jul-2014 22:23:00 Europe/Paris] PHP Notice:  Undefined variable: majors in C:\Users\Riza\Desktop\_\sass-ms\public\users\create.php on line 267
+[29-Jul-2014 22:23:00 Europe/Paris] PHP Stack trace:
+[29-Jul-2014 22:23:00 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\create.php:0
+[29-Jul-2014 22:23:00 Europe/Paris] PHP Warning:  Invalid argument supplied for foreach() in C:\Users\Riza\Desktop\_\sass-ms\public\users\create.php on line 267
+[29-Jul-2014 22:23:00 Europe/Paris] PHP Stack trace:
+[29-Jul-2014 22:23:00 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\create.php:0
+[29-Jul-2014 22:23:00 Europe/Paris] PHP Notice:  Undefined variable: majors in C:\Users\Riza\Desktop\_\sass-ms\public\users\create.php on line 286
+[29-Jul-2014 22:23:00 Europe/Paris] PHP Stack trace:
+[29-Jul-2014 22:23:00 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\create.php:0
+[29-Jul-2014 22:23:00 Europe/Paris] PHP Warning:  Invalid argument supplied for foreach() in C:\Users\Riza\Desktop\_\sass-ms\public\users\create.php on line 286
+[29-Jul-2014 22:23:00 Europe/Paris] PHP Stack trace:
+[29-Jul-2014 22:23:00 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\create.php:0
+[29-Jul-2014 22:25:21 Europe/Paris] PHP Notice:  Undefined index: Level in C:\Users\Riza\Desktop\_\sass-ms\public\app\views\partials\courses-select-options-view.html.php on line 12
+[29-Jul-2014 22:25:21 Europe/Paris] PHP Stack trace:
+[29-Jul-2014 22:25:21 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\create.php:0
+[29-Jul-2014 22:25:21 Europe/Paris] PHP   2. include() C:\Users\Riza\Desktop\_\sass-ms\public\users\create.php:287
+[29-Jul-2014 22:25:21 Europe/Paris] PHP Notice:  Undefined index: Level in C:\Users\Riza\Desktop\_\sass-ms\public\app\views\partials\courses-select-options-view.html.php on line 12
+[29-Jul-2014 22:25:21 Europe/Paris] PHP Stack trace:
+[29-Jul-2014 22:25:21 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\create.php:0
+[29-Jul-2014 22:25:21 Europe/Paris] PHP   2. include() C:\Users\Riza\Desktop\_\sass-ms\public\users\create.php:287
+[29-Jul-2014 22:25:21 Europe/Paris] PHP Notice:  Undefined index: Level in C:\Users\Riza\Desktop\_\sass-ms\public\app\views\partials\courses-select-options-view.html.php on line 12
+[29-Jul-2014 22:25:21 Europe/Paris] PHP Stack trace:
+[29-Jul-2014 22:25:21 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\create.php:0
+[29-Jul-2014 22:25:21 Europe/Paris] PHP   2. include() C:\Users\Riza\Desktop\_\sass-ms\public\users\create.php:287
+[29-Jul-2014 22:25:21 Europe/Paris] PHP Notice:  Undefined index: Level in C:\Users\Riza\Desktop\_\sass-ms\public\app\views\partials\courses-select-options-view.html.php on line 12
+[29-Jul-2014 22:25:21 Europe/Paris] PHP Stack trace:
+[29-Jul-2014 22:25:21 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\create.php:0
+[29-Jul-2014 22:25:21 Europe/Paris] PHP   2. include() C:\Users\Riza\Desktop\_\sass-ms\public\users\create.php:287
+[29-Jul-2014 22:25:21 Europe/Paris] PHP Notice:  Undefined index: Level in C:\Users\Riza\Desktop\_\sass-ms\public\app\views\partials\courses-select-options-view.html.php on line 12
+[29-Jul-2014 22:25:21 Europe/Paris] PHP Stack trace:
+[29-Jul-2014 22:25:21 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\create.php:0
+[29-Jul-2014 22:25:21 Europe/Paris] PHP   2. include() C:\Users\Riza\Desktop\_\sass-ms\public\users\create.php:287
