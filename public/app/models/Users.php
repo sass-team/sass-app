@@ -245,6 +245,25 @@ class Users {
 		}
 	}
 
+	public function add_new_password($user_email, $new_password_1, $new_password_2) {
+		if ($new_password_1 !== $new_password_2) {
+			throw new Exception("There was a mismatch with the new passwords");
+		}
+
+		try {
+			$new_password_hashed = password_hash($new_password_1, PASSWORD_DEFAULT);
+
+			$query = "UPDATE `" . DB_NAME . "`.`user` SET `password`= :password, `gen_string`='' WHERE `email`= :email";
+			$query = $this->getDbConnection()->prepare($query);
+			$query->bindParam(':email', $user_email);
+			$query->bindParam(':password', $new_password_hashed);
+
+			$query->execute();
+		} catch (Exception $e) {
+			throw new Exception("Could not connect to database.");
+		}
+	}
+
 	public function getHashedPassword($id) {
 		$query = "SELECT password FROM `" . DB_NAME . "`.user WHERE id = :id";
 		$query = $this->getDbConnection()->prepare($query);
@@ -272,7 +291,11 @@ class Users {
 
 		try {
 			$query->execute();
-			mail($email, 'Recover Password', "Hello.\r\nSome one, hopefully you requested a password reset.\r\nPlease click the link below:\r\n\r\nhttp://" . $_SERVER['SERVER_NAME'] . "/login/recover.php?email=" . $email . "&gen_string=" . $generated_string . "\r\n\r\n We will generate a new password for you and send it back to your email.\r\n\r\n-- sass team");
+			mail($email, 'Recover Password', "Hello.\r\nSome one, hopefully you requested a password reset.
+			\r\nPlease click the link below:
+			\r\n\r\nhttp://" . $_SERVER['SERVER_NAME'] . "/login/recover.php?email=" . $email . "&gen_string=" . $generated_string . "
+			\r\n\r\n You will be prompted to insert your new password.
+			\r\n\r\n-- sass team");
 		} catch (PDOException $e) {
 			throw new Exception("We could not send your email. Please retry.");
 		}
@@ -329,7 +352,8 @@ class Users {
 	 */
 	public function fetch_info($what, $field, $where, $value) {
 		// I have only added few, but you can add more. However do not add 'password' even though the parameters will only be given by you and not the user, in our system.
-		$allowed = array('id', 'username', 'f_name', 'l_name', 'email', 'COUNT(mobile)', 'mobile', 'user');
+		$allowed = array('id', 'username', 'f_name', 'l_name', 'email', 'COUNT(mobile)',
+			'mobile', 'user', 'gen_string', 'COUNT(gen_string)');
 		if (!in_array($what, $allowed, true) || !in_array($field, $allowed, true)) {
 			throw new InvalidArgumentException;
 		} else {
