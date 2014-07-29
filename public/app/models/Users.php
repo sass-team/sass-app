@@ -261,13 +261,13 @@ class Users {
 		$unique = uniqid('', true); // generate a unique string
 		$random = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 10); // generate a more random string
 		$generated_string = $unique . $random; // a random and unique string
-		$query = $this->getDbConnection()->prepare("UPDATE `user` SET `gen_string` = ? WHERE `email` = ?");
+		$query = $this->getDbConnection()->prepare("UPDATE `" . DB_NAME . "`.`user` SET `gen_string` = ? WHERE `email` = ?");
 		$query->bindValue(1, $generated_string);
 		$query->bindValue(2, $email);
 
 		try {
 			$query->execute();
-			mail($email, 'Recover Password', "Hello.\r\nSome one, hopefully you requested a password reset.\r\nPlease click the link below:\r\n\r\n" . $_SERVER['SERVER_NAME'] . "/login/recover.php?email=" . $email . "&gen_string=" . $generated_string . "\r\n\r\n We will generate a new password for you and send it back to your email.\r\n\r\n-- sass team");
+			mail($email, 'Recover Password', "Hello.\r\nSome one, hopefully you requested a password reset.\r\nPlease click the link below:\r\n\r\nhttp://" . $_SERVER['SERVER_NAME'] . "/login/recover.php?email=" . $email . "&gen_string=" . $generated_string . "\r\n\r\n We will generate a new password for you and send it back to your email.\r\n\r\n-- sass team");
 		} catch (PDOException $e) {
 			throw new Exception("We could not send your email. Please retry.");
 		}
