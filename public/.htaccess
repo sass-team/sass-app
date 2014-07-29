@@ -1,14 +1,15 @@
 # Enables or disables runtime rewriting engine
 RewriteEngine On
+RewriteBase /
 
-RewriteRule ^(/?login/(confirm-password|recover))/?$ $1.php
-RewriteRule ^(/?login/(confirm-password|recover))/success$ $1.php?success
-RewriteRule ^(/?logout)$ $1.php
+RewriteRule ^(/?login/(confirm-password|recover))/?$ $1.php [NC,L]
+RewriteRule ^(/?login/(confirm-password|recover))/success$ $1.php?success [NC,L]
+RewriteRule ^(/?logout)$ $1.php [NC,L]
 
-RewriteRule ^(/?account/(profile|settings))/?$ $1.php
-RewriteRule ^(/?account/settings)/success$ $1.php?success
+RewriteRule ^(/?account/(profile|settings))/?$ $1.php [NC,L]
+RewriteRule ^(/?account/settings)/success$ $1.php?success [NC,L]
 
-RewriteRule ^(users/(create|edit))/?$ $1.php
+RewriteRule ^(/?users/(create|edit))/?$ $1.php [NC,L]
 
 #RewriteRule \.php$ error-404.php <<<<<<< testing purposes only!!!!
 #RewriteRule \.php$ error-500.php <<<<<<< testing purposes only!!!!

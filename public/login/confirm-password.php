@@ -59,7 +59,7 @@ if (isContinueBtnPressed()) {
 	try {
 		if ($users->email_exists($_POST['email'])) {
 			$users->confirm_recover($_POST['email']);
-			header('Location:confirm-password/success');
+			header('Location: ' . BASE_URL . 'login/confirm-password/success');
 			exit();
 		} else {
 			$errors[] = 'Sorry, that email doesn\'t exist.';
