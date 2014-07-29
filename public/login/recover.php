@@ -45,103 +45,197 @@ $page_title = "Log In";
 /**
  * @return bool
  */
+function are_passwords_names_not_modified() {
+	return !isset($_POST['new-password-1']) || !isset($_POST['new-password-2']);
+}
+
+if (isUpdatePasswordBtnPressed()) {
+
+
+// The email link you clicked does not belong to any account.
+	//<br/>Make sure that you did not modified the link you retreived on your email.
+	try {
+		if (are_passwords_names_not_modified()) {
+			throw new Exception("The passwords you entered are incorrect. Please try again (make sure your caps lock is off).");
+		}
+
+		if (!is_url_contains_email_gen_string()) {
+			throw new Exception("It seems you've modified the email url we send you. Please click the original link to proceed.");
+		}
+
+		$new_password_1 = trim($_POST['new-password-1']);
+		$new_password_2 = trim($_POST['new-password-2']);
+		$email = $_GET['email'];
+		$gen_string = $_GET['gen_string'];
+		if ($users->email_exists($email) === false) {
+			throw new Exception('Sorry, we could not find your email on database. Are you sure you did not modifed the url we send you?');
+		}
+		if ($users->fetch_info('COUNT(gen_string)', 'user', 'gen_string', $gen_string) == 0) {
+			throw new Exception('Sorry, we could not find verify you account on database. Are you sure you did not modifed the url we send you?');
+		} // end if
+
+		$users->add_new_password($email, $new_password_1, $new_password_2);
+
+	} catch (Exception $e) {
+		$errors[] = $e->getMessage();
+	}
+
+	#redirect the user to recover.php?success if recover() function does not return false.
+	//header('Location: ' . BASE_URL . 'login/recover/success');
+	//exit();
+}
+
+
+function isUpdatePasswordBtnPressed() {
+	return isset($_POST['form_action_update_password']) && empty($_POST['form_action_update_password']);
+}
+
+/**
+ * @return bool
+ */
 function isVerified() {
 	return isset($_GET['success']) === true && empty ($_GET['success']);
+}
+
+/**
+ * @return bool
+ */
+function is_url_contains_email_gen_string() {
+	return isset ($_GET['email'], $_GET['gen_string']) === true;
 }
 
 ?>
 
 
-<!DOCTYPE html>
-<!--[if lt IE 7]>
-<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>
-<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>
-<html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!-->
-<html class="no-js"> <!--<![endif]-->
-<head>
+	<!DOCTYPE html>
+	<!--[if lt IE 7]>
+	<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+	<!--[if IE 7]>
+	<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+	<!--[if IE 8]>
+	<html class="no-js lt-ie9"> <![endif]-->
+	<!--[if gt IE 8]><!-->
+	<html class="no-js"> <!--<![endif]-->
+	<head>
 
-	<title>Login - Canvas Admin</title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-	<meta name="description" content="">
-	<meta name="author" content=""/>
-	<link rel="shortcut icon" href="<?php echo BASE_URL; ?>app/assets/img/logos/logo-login.png">
+		<title>Login - Canvas Admin</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta name="description" content="">
+		<meta name="author" content=""/>
+		<link rel="shortcut icon" href="<?php echo BASE_URL; ?>app/assets/img/logos/logo-login.png">
 
-	<link rel="stylesheet"
-	      href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,800italic,400,600,800"
-	      type="text/css">
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/css/font-awesome.min.css" type="text/css"/>
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/css/bootstrap.min.css" type="text/css"/>
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/js/libs/css/ui-lightness/jquery-ui-1.9.2.custom.css"
-	      type="text/css"/>
+		<link rel="stylesheet"
+		      href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,800italic,400,600,800"
+		      type="text/css">
+		<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/css/font-awesome.min.css" type="text/css"/>
+		<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/css/bootstrap.min.css" type="text/css"/>
+		<link rel="stylesheet"
+		      href="<?php echo BASE_URL; ?>app/assets/js/libs/css/ui-lightness/jquery-ui-1.9.2.custom.css"
+		      type="text/css"/>
 
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/css/App.css" type="text/css"/>
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/css/Login.css" type="text/css"/>
+		<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/css/App.css" type="text/css"/>
+		<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/css/Login.css" type="text/css"/>
 
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/css/custom.css" type="text/css"/>
+		<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/css/custom.css" type="text/css"/>
 
-</head>
+	</head>
 
-<body>
-<div id="login-container">
+	<body>
+	<div id="login-container">
 
-	<div id="logo">
-		<a href="<?php echo BASE_URL; ?>login">
-			<img src="<?php echo BASE_URL; ?>app/assets/img/logos/logo-login.png" alt="Logo"/>
-		</a>
-	</div>
+		<div id="logo">
+			<a href="<?php echo BASE_URL; ?>login">
+				<img src="<?php echo BASE_URL; ?>app/assets/img/logos/logo-login.png" alt="Logo"/>
+			</a>
+		</div>
 
-	<div id="login">
-		<?php
-		if (isVerified()) {
+		<div id="login">
+			<?php
+
+			if (is_url_contains_email_gen_string() || isUpdatePasswordBtnPressed()) {
 			?>
-			<h3>Thank you.</h3>
-			<hr/>
-			<h4>We have send you a randomly generated password in your email.</h4>
-			<hr/>
-			<a href="<?php echo BASE_URL; ?>" class="btn btn-primary" role="button">Back to Log In</a>
+			<form action="recover.php?email=<?php echo $_GET['email']; ?>&gen_string=<?php echo $_GET['gen_string']; ?>"
+			      class="form-horizontal" method="post">
+				<?php
+				if (empty($errors) === false) {
+					?>
+					<div class="alert alert-danger">
+						<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+						<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
+						<hr/>
+						We recommend to try to re-send a new link for reset password.
+					</div>
+				<?php
+				} else if (isUpdatePasswordBtnPressed()) {
+					?>
+					<div class="alert alert-success">
+						<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+						<strong>Well done!</strong> Successfully updated password.
+					</div>
 
-		<?php
-		} else if (isset ($_GET['email'], $_GET['gen_string']) === true) {
-			$email = trim($_GET['email']);
-			$string = trim($_GET['gen_string']);
+					<div class="form-group text-center">
+						<input type="hidden" name="hidden_forgot_pressed">
+						<a href="<?php echo BASE_URL; ?>" name="forgot" class="btn btn-default">
+							Back to Log In Page
+						</a>
+					</div>
+					<hr>
+				<?php } else { ?>
+					<hr>
+					<div class="form-group">
+						<label class="col-md-4">New Password</label>
 
-			try {
-				if ($users->email_exists($email) === false || $users->recover($email, $string) === false) {
-					$errors[] = 'Sorry, something went wrong and we couldn\'t recover your password.';
-				} // end if
-			} catch (Exception $e) {
-				$errors[] = $e->getMessage();
-			}
+						<div class="col-md-7">
+							<input type="password" name="new-password-1" class="form-control">
+						</div>
+						<!-- /.col -->
+					</div>
+					<!-- /.form-group -->
+					<div class="form-group">
+						<label class="col-md-4">New Password Confirm</label>
 
-			if (isset($errors) && empty($errors) === false) {
-				echo '<p>' . implode('</p><p>', $errors) . '</p>';
-			} else {
-				#redirect the user to recover.php?success if recover() function does not return false.
-				header('Location: ' . BASE_URL . 'login/recover/success');
-				exit();
-			} // end else if
-		} else {
-			$general->logged_in_protect();
-			exit();
-		} // end else
-		?>
+						<div class="col-md-7">
+							<input type="password" name="new-password-2" class="form-control">
+						</div>
+						<!-- /.col -->
+					</div>
+					<!-- /.form-group -->
+					<br>
+
+					<div class="form-group">
+						<div class="col-md-7 col-md-push-3">
+							<button type="submit" class="btn btn-primary">Update Password</button>
+							<input type="hidden" name="form_action_update_password" value="">
+							&nbsp;
+						</div>
+						<!-- /.col -->
+					</div>
+				<?php } ?>
+				<!-- /.form-group -->
+			</form>
+
+		</div>
+		<?php } else { ?>
+			<div class="alert alert-danger">
+				<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+				<strong>Oh snap!</strong> It seems you your url for reset your password is malformed
+				<hr/>
+				We recommend to try to re-send a new link for reset password.
+			</div>
+		<?php } ?>
 	</div>
-</div>
-<!-- /#forgot-container -->
+	<!-- /#forgot-container -->
 
-<script src="<?php echo BASE_URL; ?>app/assets/js/libs/jquery-1.9.1.min.js"></script>
-<script src="<?php echo BASE_URL; ?>app/assets/js/libs/jquery-ui-1.9.2.custom.min.js"></script>
-<script src="<?php echo BASE_URL; ?>app/assets/js/libs/bootstrap.min.js"></script>
+	<script src="<?php echo BASE_URL; ?>app/assets/js/libs/jquery-1.9.1.min.js"></script>
+	<script src="<?php echo BASE_URL; ?>app/assets/js/libs/jquery-ui-1.9.2.custom.min.js"></script>
+	<script src="<?php echo BASE_URL; ?>app/assets/js/libs/bootstrap.min.js"></script>
 
-<script src="<?php echo BASE_URL; ?>app/assets/js/App.js"></script>
+	<script src="<?php echo BASE_URL; ?>app/assets/js/App.js"></script>
 
-<script src=".<?php echo BASE_URL; ?>app/assets/s/Login.js"></script>
-</body>
-</html>
+	<script src="<?php echo BASE_URL; ?>app/assets/js/Login.js"></script>
+	</body>
+	</html>
 
 <?php
 // TODO: create UI to change password

@@ -35,7 +35,7 @@ class Courses {
 	} // end __construct
 
 	public function getAll() {
-		$query = "SELECT major.extension AS 'Extension', course.code AS 'Code', course.name AS  'Name', course.level AS 'Level', major.name AS 'Major'
+		$query = "SELECT major.extension AS 'Extension', course.code AS 'Code', course.name AS  'Name', major.name AS 'Major'
 						FROM `" . DB_NAME . "`.course, `" . DB_NAME . "`.major, `" . DB_NAME . "`.major_has_courses
 						WHERE course.id = major_has_courses.course_id
 							AND major.id = major_has_courses.major_id;

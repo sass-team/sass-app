@@ -124,13 +124,6 @@ if (isContinueBtnPressed()) {
 			<h5>Please check your email to confirm your request for a new password.</h5>
 
 			<hr/>
-
-			<div class="form-group text-center">
-				<input type="hidden" name="hidden_forgot_pressed">
-				<a href="<?php echo BASE_URL; ?>login" name="forgot" class="btn btn-default">
-					Log In
-				</a>
-			</div>
 			<?php
 			if (empty($errors) === false) {
 				?>

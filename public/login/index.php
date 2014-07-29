@@ -31,10 +31,20 @@ function isForgotBtnPressed() {
 
 if (isLoginBtnPressed()) {
 
-	$email = trim($_POST['login_email']);
-	$password = trim($_POST['login_password']);
-
 	try {
+		if (!isset($_POST['login_email'])) {
+			throw new Exception("The email you entered does not belong to any account.
+			<br/>You can login using any email associated with your account. Make sure that it is typed correctly.");
+		}
+
+		if (!isset($_POST['login_password'])) {
+			throw new Exception("The password you entered is incorrect. Please try again (make sure your caps lock is off)..");
+		}
+
+
+		$email = trim($_POST['login_email']);
+		$password = trim($_POST['login_password']);
+
 		// check if credentials are correct. If they are not, an exception occurs.
 		$users->login($email, $password);
 		// destroying the old session id
@@ -199,29 +209,29 @@ if (isLoginBtnPressed()) {
 			</ul>
 		</footer>
 
-	<!--Video Section-->
-	<section class="content-section video-section">
-		<div class="pattern-overlay">
-			<a id="bgndVideo" class="player"
-			   data-property="{videoURL:'https://www.youtube.com/watch?v=qW5VeFdeYTU', quality:'large', autoPlay:true, mute:true, opacity:1, optimizeDisplay:true, loop:true, vol:1, startAt:<?php echo rand(0, 600);?>, stopAt:710, realfullscreen:true}">bg</a>
-		</div>
-	</section>
-	<!--Video Section Ends Here-->
+		<!--Video Section-->
+		<section class="content-section video-section">
+			<div class="pattern-overlay">
+				<a id="bgndVideo" class="player"
+				   data-property="{videoURL:'https://www.youtube.com/watch?v=qW5VeFdeYTU', quality:'large', autoPlay:true, mute:true, opacity:1, optimizeDisplay:true, loop:true, vol:1, startAt:<?php echo rand(0, 600); ?>, stopAt:710, realfullscreen:true}">bg</a>
+			</div>
+		</section>
+		<!--Video Section Ends Here-->
 
-	<?php function auto_copyright($year = 'auto') { ?>
-		<?php if (intval($year) == 'auto') {
-			$year = date('Y');
-		} ?>
-		<?php if (intval($year) == date('Y')) {
-			echo intval($year);
-		} ?>
-		<?php if (intval($year) < date('Y')) {
-			echo intval($year) . ' - ' . date('Y');
-		} ?>
-		<?php if (intval($year) > date('Y')) {
-			echo date('Y');
-		} ?>
-	<?php } ?>
+		<?php function auto_copyright($year = 'auto') { ?>
+			<?php if (intval($year) == 'auto') {
+				$year = date('Y');
+			} ?>
+			<?php if (intval($year) == date('Y')) {
+				echo intval($year);
+			} ?>
+			<?php if (intval($year) < date('Y')) {
+				echo intval($year) . ' - ' . date('Y');
+			} ?>
+			<?php if (intval($year) > date('Y')) {
+				echo date('Y');
+			} ?>
+		<?php } ?>
 
 
 	</div>
