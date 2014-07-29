@@ -3617,3 +3617,84 @@ Stack trace:
 [23-Jul-2014 14:31:17 Europe/Athens] PHP Stack trace:
 [23-Jul-2014 14:31:17 Europe/Athens] PHP   1. {main}() C:\Users\Riza\Desktop\software_engineering_workbench\SASS-MS\upgrade\index.php:0
 [28-Jul-2014 20:11:52 Europe/Paris] PHP Fatal error:  Cannot redeclare auto_copyright() (previously declared in C:\Users\Riza\Desktop\_\sass-ms\public\login\index.php:183) in C:\Users\Riza\Desktop\_\sass-ms\public\login\index.php on line 230
+[29-Jul-2014 22:23:00 Europe/Paris] PHP Notice:  Undefined variable: majors in C:\Users\Riza\Desktop\_\sass-ms\public\users\create.php on line 267
+[29-Jul-2014 22:23:00 Europe/Paris] PHP Stack trace:
+[29-Jul-2014 22:23:00 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\create.php:0
+[29-Jul-2014 22:23:00 Europe/Paris] PHP Warning:  Invalid argument supplied for foreach() in C:\Users\Riza\Desktop\_\sass-ms\public\users\create.php on line 267
+[29-Jul-2014 22:23:00 Europe/Paris] PHP Stack trace:
+[29-Jul-2014 22:23:00 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\create.php:0
+[29-Jul-2014 22:23:00 Europe/Paris] PHP Notice:  Undefined variable: majors in C:\Users\Riza\Desktop\_\sass-ms\public\users\create.php on line 286
+[29-Jul-2014 22:23:00 Europe/Paris] PHP Stack trace:
+[29-Jul-2014 22:23:00 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\create.php:0
+[29-Jul-2014 22:23:00 Europe/Paris] PHP Warning:  Invalid argument supplied for foreach() in C:\Users\Riza\Desktop\_\sass-ms\public\users\create.php on line 286
+[29-Jul-2014 22:23:00 Europe/Paris] PHP Stack trace:
+[29-Jul-2014 22:23:00 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\create.php:0
+[29-Jul-2014 22:25:21 Europe/Paris] PHP Notice:  Undefined index: Level in C:\Users\Riza\Desktop\_\sass-ms\public\app\views\partials\courses-select-options-view.html.php on line 12
+[29-Jul-2014 22:25:21 Europe/Paris] PHP Stack trace:
+[29-Jul-2014 22:25:21 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\create.php:0
+[29-Jul-2014 22:25:21 Europe/Paris] PHP   2. include() C:\Users\Riza\Desktop\_\sass-ms\public\users\create.php:287
+[29-Jul-2014 22:25:21 Europe/Paris] PHP Notice:  Undefined index: Level in C:\Users\Riza\Desktop\_\sass-ms\public\app\views\partials\courses-select-options-view.html.php on line 12
+[29-Jul-2014 22:25:21 Europe/Paris] PHP Stack trace:
+[29-Jul-2014 22:25:21 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\create.php:0
+[29-Jul-2014 22:25:21 Europe/Paris] PHP   2. include() C:\Users\Riza\Desktop\_\sass-ms\public\users\create.php:287
+[29-Jul-2014 22:25:21 Europe/Paris] PHP Notice:  Undefined index: Level in C:\Users\Riza\Desktop\_\sass-ms\public\app\views\partials\courses-select-options-view.html.php on line 12
+[29-Jul-2014 22:25:21 Europe/Paris] PHP Stack trace:
+[29-Jul-2014 22:25:21 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\create.php:0
+[29-Jul-2014 22:25:21 Europe/Paris] PHP   2. include() C:\Users\Riza\Desktop\_\sass-ms\public\users\create.php:287
+[29-Jul-2014 22:25:21 Europe/Paris] PHP Notice:  Undefined index: Level in C:\Users\Riza\Desktop\_\sass-ms\public\app\views\partials\courses-select-options-view.html.php on line 12
+[29-Jul-2014 22:25:21 Europe/Paris] PHP Stack trace:
+[29-Jul-2014 22:25:21 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\create.php:0
+[29-Jul-2014 22:25:21 Europe/Paris] PHP   2. include() C:\Users\Riza\Desktop\_\sass-ms\public\users\create.php:287
+[29-Jul-2014 22:25:21 Europe/Paris] PHP Notice:  Undefined index: Level in C:\Users\Riza\Desktop\_\sass-ms\public\app\views\partials\courses-select-options-view.html.php on line 12
+[29-Jul-2014 22:25:21 Europe/Paris] PHP Stack trace:
+[29-Jul-2014 22:25:21 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\create.php:0
+[29-Jul-2014 22:25:21 Europe/Paris] PHP   2. include() C:\Users\Riza\Desktop\_\sass-ms\public\users\create.php:287
+[29-Jul-2014 22:55:59 Europe/Paris] PHP Fatal error:  Call to undefined function fetch_info() in C:\Users\Riza\Desktop\_\sass-ms\public\app\models\Users.php on line 157
+[29-Jul-2014 22:55:59 Europe/Paris] PHP Stack trace:
+[29-Jul-2014 22:55:59 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\account\settings.php:0
+[29-Jul-2014 22:55:59 Europe/Paris] PHP   2. Users->update_profile_data() C:\Users\Riza\Desktop\_\sass-ms\public\account\settings.php:13
+[29-Jul-2014 22:59:30 Europe/Paris] PHP Notice:  Undefined property: Users::$db in C:\Users\Riza\Desktop\_\sass-ms\public\app\models\Users.php on line 335
+[29-Jul-2014 22:59:30 Europe/Paris] PHP Stack trace:
+[29-Jul-2014 22:59:30 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\account\settings.php:0
+[29-Jul-2014 22:59:30 Europe/Paris] PHP   2. Users->update_profile_data() C:\Users\Riza\Desktop\_\sass-ms\public\account\settings.php:13
+[29-Jul-2014 22:59:30 Europe/Paris] PHP   3. Users->fetch_info() C:\Users\Riza\Desktop\_\sass-ms\public\app\models\Users.php:157
+[29-Jul-2014 22:59:30 Europe/Paris] PHP Fatal error:  Call to a member function prepare() on a non-object in C:\Users\Riza\Desktop\_\sass-ms\public\app\models\Users.php on line 335
+[29-Jul-2014 22:59:30 Europe/Paris] PHP Stack trace:
+[29-Jul-2014 22:59:30 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\account\settings.php:0
+[29-Jul-2014 22:59:30 Europe/Paris] PHP   2. Users->update_profile_data() C:\Users\Riza\Desktop\_\sass-ms\public\account\settings.php:13
+[29-Jul-2014 22:59:30 Europe/Paris] PHP   3. Users->fetch_info() C:\Users\Riza\Desktop\_\sass-ms\public\app\models\Users.php:157
+[29-Jul-2014 23:03:49 Europe/Paris] PHP Parse error:  syntax error, unexpected ')' in C:\Users\Riza\Desktop\_\sass-ms\public\app\models\Users.php on line 158
+[29-Jul-2014 23:03:49 Europe/Paris] PHP Stack trace:
+[29-Jul-2014 23:03:49 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\account\settings.php:0
+[29-Jul-2014 23:03:49 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\_\sass-ms\public\account\settings.php:3
+[30-Jul-2014 00:05:25 Europe/Paris] PHP Notice:  Undefined index: email in C:\Users\Riza\Desktop\_\sass-ms\public\login\recover.php on line 46
+[30-Jul-2014 00:05:25 Europe/Paris] PHP Stack trace:
+[30-Jul-2014 00:05:25 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\login\recover.php:0
+[30-Jul-2014 00:05:25 Europe/Paris] PHP Notice:  Undefined index: gen_string in C:\Users\Riza\Desktop\_\sass-ms\public\login\recover.php on line 47
+[30-Jul-2014 00:05:25 Europe/Paris] PHP Stack trace:
+[30-Jul-2014 00:05:25 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\login\recover.php:0
+[30-Jul-2014 00:06:03 Europe/Paris] PHP Notice:  Undefined index: email in C:\Users\Riza\Desktop\_\sass-ms\public\login\recover.php on line 46
+[30-Jul-2014 00:06:03 Europe/Paris] PHP Stack trace:
+[30-Jul-2014 00:06:03 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\login\recover.php:0
+[30-Jul-2014 00:06:03 Europe/Paris] PHP Notice:  Undefined index: gen_string in C:\Users\Riza\Desktop\_\sass-ms\public\login\recover.php on line 47
+[30-Jul-2014 00:06:03 Europe/Paris] PHP Stack trace:
+[30-Jul-2014 00:06:03 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\login\recover.php:0
+[30-Jul-2014 00:07:43 Europe/Paris] PHP Notice:  Undefined index: login_email in C:\Users\Riza\Desktop\_\sass-ms\public\login\index.php on line 34
+[30-Jul-2014 00:07:43 Europe/Paris] PHP Stack trace:
+[30-Jul-2014 00:07:43 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\login\index.php:0
+[30-Jul-2014 00:16:40 Europe/Paris] PHP Notice:  Undefined index: email in C:\Users\Riza\Desktop\_\sass-ms\public\login\recover.php on line 46
+[30-Jul-2014 00:16:40 Europe/Paris] PHP Stack trace:
+[30-Jul-2014 00:16:40 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\login\recover.php:0
+[30-Jul-2014 00:16:40 Europe/Paris] PHP Notice:  Undefined index: gen_string in C:\Users\Riza\Desktop\_\sass-ms\public\login\recover.php on line 47
+[30-Jul-2014 00:16:40 Europe/Paris] PHP Stack trace:
+[30-Jul-2014 00:16:40 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\login\recover.php:0
+[30-Jul-2014 00:29:29 Europe/Paris] PHP Fatal error:  Cannot use [] for reading in C:\Users\Riza\Desktop\_\sass-ms\public\login\recover.php on line 55
+[30-Jul-2014 00:29:31 Europe/Paris] PHP Fatal error:  Cannot use [] for reading in C:\Users\Riza\Desktop\_\sass-ms\public\login\recover.php on line 55
+[30-Jul-2014 00:38:47 Europe/Paris] PHP Notice:  Undefined index: get_string in C:\Users\Riza\Desktop\_\sass-ms\public\login\recover.php on line 156
+[30-Jul-2014 00:38:47 Europe/Paris] PHP Stack trace:
+[30-Jul-2014 00:38:47 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\login\recover.php:0
+[30-Jul-2014 00:39:30 Europe/Paris] PHP Notice:  Undefined variable: string in C:\Users\Riza\Desktop\_\sass-ms\public\login\recover.php on line 73
+[30-Jul-2014 00:39:30 Europe/Paris] PHP Stack trace:
+[30-Jul-2014 00:39:30 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\login\recover.php:0
+[30-Jul-2014 01:02:58 Europe/Paris] PHP Parse error:  syntax error, unexpected '}' in C:\Users\Riza\Desktop\_\sass-ms\public\login\recover.php on line 219
+[30-Jul-2014 01:04:28 Europe/Paris] PHP Parse error:  syntax error, unexpected end of file in C:\Users\Riza\Desktop\_\sass-ms\public\login\recover.php on line 234

@@ -10,7 +10,8 @@ RewriteRule ^(/?account/settings)/success$ $1.php?success
 
 RewriteRule ^(users/(create|edit))/?$ $1.php
 
-#RewriteRule \.php$ error-404.php
+#RewriteRule \.php$ error-404.php <<<<<<< testing purposes only!!!!
+#RewriteRule \.php$ error-500.php <<<<<<< testing purposes only!!!!
 
 
 #RewriteRule ^$ /upgrade [L]
