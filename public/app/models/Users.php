@@ -140,18 +140,23 @@ class Users {
 		} // end try
 	}
 
-	function update_profile_data($first_name, $last_name, $mobile_num, $description, $email) {
+	function update_profile_data($first_name, $last_name, $previous_mobile_num, $new_mobile_num, $description, $email) {
 		$first_name = trim($first_name);
 		$last_name = trim($last_name);
-		$mobile_num = trim($mobile_num);
+		$new_mobile_num = trim($new_mobile_num);
 		$description = trim($description);
 		$email = trim($email);
 
 		$is_profile_data_correct = $this->is_profile_data_correct($first_name, $last_name,
-			$mobile_num);
+			$new_mobile_num);
 
 		if ($is_profile_data_correct !== true) {
 			throw new Exception(implode("<br>", $is_profile_data_correct)); // the array of errors messages
+		}
+
+
+		if ($previous_mobile_num !== $new_mobile_num && $this->fetch_info('COUNT(mobile)', 'user', 'mobile', $new_mobile_num) != 0) {
+			throw new Exception("Mobile entered number already exists in database."); // the array of errors messages
 		}
 
 		$query = "UPDATE `" . DB_NAME . "`.user
@@ -163,7 +168,7 @@ class Users {
 
 			$query->bindParam(':first_name', $first_name, PDO::PARAM_STR);
 			$query->bindParam(':last_name', $last_name, PDO::PARAM_STR);
-			$query->bindParam(':mobile', $mobile_num, PDO::PARAM_INT);
+			$query->bindParam(':mobile', $new_mobile_num, PDO::PARAM_INT);
 			$query->bindParam(':profile_description', $description, PDO::PARAM_STR);
 			$query->bindParam(':email', $email, PDO::PARAM_STR);
 
@@ -313,21 +318,33 @@ class Users {
 		return true;
 	} // end recover
 
-	public function fetch_info($what, $field, $value) {
-		$allowed = array('id', 'username', 'f_name', 'l_name', 'email'); // I have only added few, but you can add more. However do not add 'password' even though the parameters will only be given by you and not the user, in our system.
+	/**
+	 * Returns a single column from the next row of a result set or FALSE if there are no more rows.
+	 *
+	 * @param $what
+	 * @param $field
+	 * @param $value
+	 * @return mixed
+	 * @throws InvalidArgumentException
+	 */
+	public function fetch_info($what, $field, $where, $value) {
+		// I have only added few, but you can add more. However do not add 'password' even though the parameters will only be given by you and not the user, in our system.
+		$allowed = array('id', 'username', 'f_name', 'l_name', 'email', 'COUNT(mobile)', 'mobile', 'user');
 		if (!in_array($what, $allowed, true) || !in_array($field, $allowed, true)) {
 			throw new InvalidArgumentException;
 		} else {
-			$query = $this->db->prepare("SELECT $what FROM `" . DB_NAME . "`.users` WHERE $field = ?");
-			$query->bindValue(1, $value);
+			$sql = "SELECT $what FROM `" . DB_NAME . "`.`" . $field . "` WHERE $where = ?";
+			$query = $this->dbConnection->prepare($sql);
+			$query->bindValue(1, $value, PDO::PARAM_INT);
 
 			try {
 				$query->execute();
+				return $query->fetchColumn();
+				//return $sql;
 			} catch (PDOException $e) {
-				die($e->getMessage());
+				throw new Exception($e->getMessage());
 			}
 
-			return $query->fetchColumn();
 		}
 	} // end fetch_info
 

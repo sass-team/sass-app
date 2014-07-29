@@ -10,7 +10,7 @@ if (isset($_POST['form_action_profile_settings'])) {
 
 	try {
 		$update_result = $users->update_profile_data($_POST['first-name'], $_POST['last-name'],
-			$_POST['mobile'], $_POST['profile-description'], $user->getEmail());
+			$user->getMobileNum(), $_POST['mobile'], $_POST['profile-description'], $user->getEmail());
 
 	} catch (Exception $e) {
 		$errors[] = $e->getMessage();
