@@ -1,2 +1,2 @@
 # This allows you to redirect your entire website to any other domain (temporary)
-#RewriteRule ^$ /upgrade [L]
+RewriteRule ^$ / [L]
