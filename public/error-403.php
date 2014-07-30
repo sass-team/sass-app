@@ -8,6 +8,7 @@
 <!--[if gt IE 8]><!-->
 <html class="no-js"> <!--<![endif]-->
 <head>
+
 	<base href="http://<?php echo $_SERVER['HTTP_HOST']; ?>">
 	<title>Internal Server Error</title>
 	<meta charset="utf-8">
@@ -35,7 +36,7 @@
 	<header id="header">
 
 		<h1 id="site-logo">
-			<a href="index.php">
+			<a href="/">
 				<img src="app/assets/img/logos/logo.png" alt="Site Logo"/>
 			</a>
 		</h1>
@@ -80,16 +81,19 @@
 					<div class="error-container">
 
 						<div class="error-code">
-							404
-						</div>
-						<!-- /.error-code -->
+							403
+						</div> <!-- /.error-code -->
 
 						<div class="error-details">
-							<h4>Oops, You're lost.</h4>
-
-							<p>We can not find the page you're looking for. Is there a typo in the url?
-								<!-- Or try the search bar below--></p>
-
+							<h1>Oops, You're not allowed here.</h1>
+							<p><!-- Or try the search bar below--></p>
+							<!-- Example row of columns -->
+							<div class="row">
+								<div class="col-md-12">
+									<p class="lead">A 403 error status indicates that you don't have permission to access the file or page. In general, web servers and websites have directories and files that are not open to the public web for security reasons.</p>
+								</div>
+								<div class="col-md-6"></div>
+							</div>
 							<!--<form action="./" class="form">
 								<div class="input-group">
 									<input type="text" class="form-control" placeholder="Search...">
@@ -101,17 +105,13 @@
 								</div><!-- /input-group -->
 
 							<!--</form>-->
-						</div>
-						<!-- /.error-details -->
+						</div> <!-- /.error-details -->
 
-					</div>
-					<!-- /.error -->
+					</div> <!-- /.error -->
 
-				</div>
-				<!-- /.col-md-12 -->
+				</div> <!-- /.col-md-12 -->
 
-			</div>
-			<!-- /.row -->
+			</div> <!-- /.row -->
 
 
 		</div>
