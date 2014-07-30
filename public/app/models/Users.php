@@ -245,7 +245,7 @@ class Users {
 		}
 	}
 
-	public function add_new_password($user_email, $new_password_1, $new_password_2) {
+	public function add_new_password($id, $new_password_1, $new_password_2) {
 		if ($new_password_1 !== $new_password_2) {
 			throw new Exception("There was a mismatch with the new passwords");
 		}
@@ -253,9 +253,9 @@ class Users {
 		try {
 			$new_password_hashed = password_hash($new_password_1, PASSWORD_DEFAULT);
 
-			$query = "UPDATE `" . DB_NAME . "`.`user` SET `password`= :password, `gen_string`='' WHERE `email`= :email";
+			$query = "UPDATE `" . DB_NAME . "`.`user` SET `password`= :password, `gen_string`='' WHERE `id`= :id";
 			$query = $this->getDbConnection()->prepare($query);
-			$query->bindParam(':email', $user_email);
+			$query->bindParam(':id', $id);
 			$query->bindParam(':password', $new_password_hashed);
 
 			$query->execute();
@@ -280,20 +280,20 @@ class Users {
 		}
 	} // end getAllData
 
-	public function confirm_recover($email) {
+	public function confirm_recover($email, $id) {
 
 		$unique = uniqid('', true); // generate a unique string
 		$random = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 10); // generate a more random string
 		$generated_string = $unique . $random; // a random and unique string
-		$query = $this->getDbConnection()->prepare("UPDATE `" . DB_NAME . "`.`user` SET `gen_string` = ? WHERE `email` = ?");
+		$query = $this->getDbConnection()->prepare("UPDATE `" . DB_NAME . "`.`user` SET `gen_string` = ? WHERE `id` = ?");
 		$query->bindValue(1, $generated_string);
-		$query->bindValue(2, $email);
+		$query->bindValue(2, $id);
 
 		try {
 			$query->execute();
 			mail($email, 'Recover Password', "Hello.\r\nSome one, hopefully you requested a password reset.
 			\r\nPlease click the link below:
-			\r\n\r\nhttp://" . $_SERVER['SERVER_NAME'] . "/login/recover.php?email=" . $email . "&gen_string=" . $generated_string . "
+			\r\n\r\nhttp://" . $_SERVER['SERVER_NAME'] . "/login/recover/" . $id . "/" . $generated_string . "
 			\r\n\r\n You will be prompted to insert your new password.
 			\r\n\r\n-- sass team");
 		} catch (PDOException $e) {
@@ -353,7 +353,7 @@ class Users {
 	public function fetch_info($what, $field, $where, $value) {
 		// I have only added few, but you can add more. However do not add 'password' even though the parameters will only be given by you and not the user, in our system.
 		$allowed = array('id', 'username', 'f_name', 'l_name', 'email', 'COUNT(mobile)',
-			'mobile', 'user', 'gen_string', 'COUNT(gen_string)');
+			'mobile', 'user', 'gen_string', 'COUNT(gen_string)', 'COUNT(id)');
 		if (!in_array($what, $allowed, true) || !in_array($field, $allowed, true)) {
 			throw new InvalidArgumentException;
 		} else {
