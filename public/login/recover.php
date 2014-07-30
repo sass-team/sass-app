@@ -65,16 +65,16 @@ if (isUpdatePasswordBtnPressed()) {
 
 		$new_password_1 = trim($_POST['new-password-1']);
 		$new_password_2 = trim($_POST['new-password-2']);
-		$email = $_GET['email'];
+		$id = $_GET['id'];
 		$gen_string = $_GET['gen_string'];
-		if ($users->email_exists($email) === false) {
-			throw new Exception('Sorry, we could not find your email on database. Are you sure you did not modifed the url we send you?');
+		if ($users->fetch_info('COUNT(id)', 'user', 'id', $id) === false) {
+			throw new Exception('Sorry, we could not find your account on database. Are you sure you did not modified the url we send you?');
 		}
 		if ($users->fetch_info('COUNT(gen_string)', 'user', 'gen_string', $gen_string) == 0) {
 			throw new Exception('Sorry, we could not find verify you account on database. Are you sure you did not modifed the url we send you?');
 		} // end if
 
-		$users->add_new_password($email, $new_password_1, $new_password_2);
+		$users->add_new_password($id, $new_password_1, $new_password_2);
 
 	} catch (Exception $e) {
 		$errors[] = $e->getMessage();
@@ -101,7 +101,7 @@ function isVerified() {
  * @return bool
  */
 function is_url_contains_email_gen_string() {
-	return isset ($_GET['email'], $_GET['gen_string']) === true;
+	return isset ($_GET['id'], $_GET['gen_string']) === true;
 }
 
 ?>
@@ -155,7 +155,7 @@ function is_url_contains_email_gen_string() {
 
 			if (is_url_contains_email_gen_string() || isUpdatePasswordBtnPressed()) {
 			?>
-			<form action="recover.php?email=<?php echo $_GET['email']; ?>&gen_string=<?php echo $_GET['gen_string']; ?>"
+			<form action="/login/recover/<?php echo $_GET['id']; ?>/<?php echo $_GET['gen_string']; ?>"
 			      class="form-horizontal" method="post">
 				<?php
 				if (empty($errors) === false) {

@@ -55,10 +55,13 @@ function isVerified() {
 	return isset($_GET['success']) === true && empty ($_GET['success']);
 }
 
+// $users->email_exists($_POST['email'])) {
 if (isContinueBtnPressed()) {
 	try {
-		if ($users->email_exists($_POST['email'])) {
-			$users->confirm_recover($_POST['email']);
+		$email = $_POST['email'];
+
+		if ($id = $users->fetch_info('id', 'user', 'email', $email) !== false) {
+			$users->confirm_recover($email, $id);
 			header('Location: ' . BASE_URL . 'login/confirm-password/success');
 			exit();
 		} else {
