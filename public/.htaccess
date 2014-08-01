@@ -8,6 +8,7 @@ RewriteRule ^account/settings/success$ /account/settings.php?success [L]
 RewriteRule ^login/confirm-password/success$ /login/confirm-password.php?success [L]
 RewriteRule ^login/confirm-password/success$ /login/confirm-password.php?success [L]
 RewriteRule ^login/recover/([^/]+)/([\w\.]+) /login/recover.php?id=$1&gen_string=$2 [L]
+RewriteRule ^(error\-[0-9]{3})$ /$1.php [L]
 
 
 #RewriteRule ^(/?login/(confirm-password|recover))/?$ $1.php [NC,L]
@@ -18,7 +19,8 @@ RewriteRule ^login/recover/([^/]+)/([\w\.]+) /login/recover.php?id=$1&gen_string
 #RewriteRule ^(/?account/settings)/success$ $1.php?success [NC,L]
 
 #RewriteRule ^(/?users/(create|edit))/?$ $1.php [NC,L]
-ErrorDocument 404 /error-404.php
-ErrorDocument 403 /error-403.php
+ErrorDocument 404 /error-404
+ErrorDocument 403 /error-403
+ErrorDocument 500 /error-500
 
 #RewriteRule ^$ /upgrade [L]
