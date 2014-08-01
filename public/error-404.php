@@ -9,7 +9,7 @@
 <html class="no-js"> <!--<![endif]-->
 <head>
 	<base href="http://<?php echo $_SERVER['HTTP_HOST']; ?>">
-	<title>Internal Server Error</title>
+	<title>File not found</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	<meta name="description" content="">
@@ -35,7 +35,7 @@
 	<header id="header">
 
 		<h1 id="site-logo">
-			<a href="index.php">
+			<a href="/">
 				<img src="app/assets/img/logos/logo.png" alt="Site Logo"/>
 			</a>
 		</h1>
@@ -65,7 +65,7 @@
 	<div id="content">
 
 		<div id="content-header">
-			<h1>Internal Server Error</h1>
+			<h1>File not found</h1>
 		</div>
 		<!-- #content-header -->
 

@@ -35,7 +35,7 @@
 <header id="header">
 
 	<h1 id="site-logo">
-		<a href="index.php">
+		<a href="/">
 			<img src="app/assets/img/logos/logo.png" alt="Site Logo"/>
 		</a>
 	</h1>

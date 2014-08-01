@@ -172,8 +172,7 @@ function isSaveBttnPressed() {
 							<div class="alert alert-danger">
 								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
 								<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
-
-								var_dump($_POST);?>
+								?>
 							</div>
 						<?php
 						} else if (is_create_bttn_Pressed()) {
