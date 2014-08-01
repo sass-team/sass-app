@@ -85,10 +85,14 @@
 						<!-- /.error-code -->
 
 						<div class="error-details">
-							<h4>Oops, You're lost.</h4>
+							<h3>Oops, You're lost.</h3>
 
 							<p>We can not find the page you're looking for. Is there a typo in the url?
 								<!-- Or try the search bar below--></p>
+
+							<p><a href="/" name="forgot" class="btn btn-default">
+									Back to Dashboard
+								</a></p>
 
 							<!--<form action="./" class="form">
 								<div class="input-group">
@@ -140,7 +144,7 @@
 	} ?>
 <?php } ?>
 
-<footer id="footer">
+<footer id="footer" class="navbar navbar-fixed-bottom">
 	<ul class="nav pull-right">
 		<li>
 			Copyright &copy; <?php auto_copyright('2014'); // 2010 - 2011 ?>, <a href="https://github.com/rdok">rdok</a>

@@ -10,7 +10,7 @@
 <head>
 
 	<base href="http://<?php echo $_SERVER['HTTP_HOST']; ?>">
-	<title>Internal Server Error</title>
+	<title>Forbidden </title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	<meta name="description" content="">
@@ -66,7 +66,7 @@
 	<div id="content">
 
 		<div id="content-header">
-			<h1>Internal Server Error</h1>
+			<h1>Forbidden</h1>
 		</div>
 		<!-- #content-header -->
 
@@ -85,12 +85,15 @@
 						</div> <!-- /.error-code -->
 
 						<div class="error-details">
-							<h1>Oops, You're not allowed here.</h1>
+							<h3>Oops, You're not allowed here.</h3>
 							<p><!-- Or try the search bar below--></p>
 							<!-- Example row of columns -->
 							<div class="row">
 								<div class="col-md-12">
-									<p class="lead">A 403 error status indicates that you don't have permission to access the file or page. In general, web servers and websites have directories and files that are not open to the public web for security reasons.</p>
+									<p>A 403 error status indicates that you don't have permission to access the file or page. In general, web servers and websites have directories and files that are not open to the public web for security reasons.</p>
+									<p><a href="/" name="forgot" class="btn btn-default">
+											Back to Dashboard
+										</a></p>
 								</div>
 								<div class="col-md-6"></div>
 							</div>
@@ -140,7 +143,7 @@
 	} ?>
 <?php } ?>
 
-<footer id="footer">
+<footer id="footer" class="navbar navbar-fixed-bottom">
 	<ul class="nav pull-right">
 		<li>
 			Copyright &copy; <?php auto_copyright('2014'); // 2010 - 2011 ?>, <a href="https://github.com/rdok">rdok</a>
