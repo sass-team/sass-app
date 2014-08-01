@@ -2770,11 +2770,11 @@ table.dataTable th:active {
   color-stop(0, #000000),
   color-stop(1, #E68585)
 );
-  background-image: -o-linear-gradient(left top, #000000 0%, #E68585 100%);
-  background-image: -moz-linear-gradient(left top, #000000 0%, #E68585 100%);
-  background-image: -webkit-linear-gradient(left top, #000000 0%, #E68585 100%);
-  background-image: -ms-linear-gradient(left top, #000000 0%, #E68585 100%);
-  background-image: linear-gradient(to left top, #000000 0%, #E68585 100%);
+  background-image: -o-linear-gradient(left top, #000000 0%, #cb555d 100%);
+  background-image: -moz-linear-gradient(left top, #000000 0%, #cb555d 100%);
+  background-image: -webkit-linear-gradient(left top, #000000 0%, #cb555d 100%);
+  background-image: -ms-linear-gradient(left top, #000000 0%, #cb555d 100%);
+  background-image: linear-gradient(to left top, #000000 0%, #cb555d 100%);
   width: 100%;
   height: 77px;
   border-bottom: 1px solid #000;
