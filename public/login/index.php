@@ -214,7 +214,7 @@ if (isLoginBtnPressed()) {
 		<section class="content-section video-section">
 			<div class="pattern-overlay">
 				<a id="bgndVideo" class="player"
-				   data-property="{videoURL:'https://www.youtube.com/watch?v=qW5VeFdeYTU', quality:'large', autoPlay:true, mute:true, opacity:1, optimizeDisplay:true, loop:true, vol:1, startAt:<?php echo rand(0, 600); ?>, stopAt:710, realfullscreen:true}">bg</a>
+				   data-property="{videoURL:'https://www.youtube.com/watch?v=qW5VeFdeYTU', quality:'large', autoPlay:true, mute:true, opacity:1, optimizeDisplay:true, loop:true, vol:1, realfullscreen:true}">bg</a>
 			</div>
 		</section>
 		<!--Video Section Ends Here-->
