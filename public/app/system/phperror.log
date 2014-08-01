@@ -3712,3 +3712,15 @@ Stack trace:
 [01-Aug-2014 04:47:45 Europe/Paris] PHP Stack trace:
 [01-Aug-2014 04:47:45 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:0
 [01-Aug-2014 04:47:45 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:2
+[01-Aug-2014 10:21:59 Europe/Paris] PHP Warning:  PDO::__construct(): php_network_getaddresses: getaddrinfo failed: No such host is known.  in C:\Users\Riza\Desktop\_\sass-ms\public\app\config\database.php on line 25
+[01-Aug-2014 10:21:59 Europe/Paris] PHP Stack trace:
+[01-Aug-2014 10:21:59 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:0
+[01-Aug-2014 10:21:59 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:2
+[01-Aug-2014 10:21:59 Europe/Paris] PHP   3. DB->__construct() C:\Users\Riza\Desktop\_\sass-ms\public\app\init.php:24
+[01-Aug-2014 10:21:59 Europe/Paris] PHP   4. PDO->__construct() C:\Users\Riza\Desktop\_\sass-ms\public\app\config\database.php:25
+[01-Aug-2014 10:22:00 Europe/Paris] PHP Warning:  PDO::__construct(): php_network_getaddresses: getaddrinfo failed: No such host is known.  in C:\Users\Riza\Desktop\_\sass-ms\public\app\config\database.php on line 25
+[01-Aug-2014 10:22:00 Europe/Paris] PHP Stack trace:
+[01-Aug-2014 10:22:00 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:0
+[01-Aug-2014 10:22:00 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:2
+[01-Aug-2014 10:22:00 Europe/Paris] PHP   3. DB->__construct() C:\Users\Riza\Desktop\_\sass-ms\public\app\init.php:24
+[01-Aug-2014 10:22:00 Europe/Paris] PHP   4. PDO->__construct() C:\Users\Riza\Desktop\_\sass-ms\public\app\config\database.php:25

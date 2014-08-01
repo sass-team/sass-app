@@ -298,7 +298,7 @@ class Users {
 		$email = trim($_POST["email"]);
 		$message = "We heard that you lost your SASS password. Sorry about that!<br/><br/>";
 		$message .= "But don't worry! You can use the following link within the next day to reset your password:<br/><br/>";
-		$message .= "http://" . $_SERVER['SERVER_NAME'] . "/login/recover/" . $id . "/" . $generated_string . "<br/><br/>";
+		$message .= "<a href='http://" . $_SERVER['SERVER_NAME'] . "/login/recover/" . $id . "/" . $generated_string . "' target='_blank' >Reset Password</a><br/><br/>";
 		$message .= "If you don&#39;t use this link within 24 hours, it will expire. To get a new password reset link, visit http://" . $_SERVER['SERVER_NAME'] . "/login/confirm-password <br/><br/>";
 		$message .= "Thanks,<br/>SASS Automatic System";
 
