@@ -9,7 +9,7 @@
 <html class="no-js"> <!--<![endif]-->
 <head>
 	<base href="http://<?php echo $_SERVER['HTTP_HOST']; ?>">
-	<title>Internal Server Error</title>
+	<title>File not found</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	<meta name="description" content="">
@@ -35,7 +35,7 @@
 	<header id="header">
 
 		<h1 id="site-logo">
-			<a href="index.php">
+			<a href="/">
 				<img src="app/assets/img/logos/logo.png" alt="Site Logo"/>
 			</a>
 		</h1>
@@ -65,7 +65,7 @@
 	<div id="content">
 
 		<div id="content-header">
-			<h1>Internal Server Error</h1>
+			<h1>File not found</h1>
 		</div>
 		<!-- #content-header -->
 
@@ -85,10 +85,14 @@
 						<!-- /.error-code -->
 
 						<div class="error-details">
-							<h4>Oops, You're lost.</h4>
+							<h3>Oops, You're lost.</h3>
 
 							<p>We can not find the page you're looking for. Is there a typo in the url?
 								<!-- Or try the search bar below--></p>
+
+							<p><a href="/" name="forgot" class="btn btn-default">
+									Back to Dashboard
+								</a></p>
 
 							<!--<form action="./" class="form">
 								<div class="input-group">
@@ -140,7 +144,7 @@
 	} ?>
 <?php } ?>
 
-<footer id="footer">
+<footer id="footer" class="navbar navbar-fixed-bottom">
 	<ul class="nav pull-right">
 		<li>
 			Copyright &copy; <?php auto_copyright('2014'); // 2010 - 2011 ?>, <a href="https://github.com/rdok">rdok</a>

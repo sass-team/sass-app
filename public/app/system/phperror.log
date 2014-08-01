@@ -3701,3 +3701,14 @@ Stack trace:
 [30-Jul-2014 17:40:34 Europe/Paris] PHP Notice:  Undefined index: emai in C:\Users\Riza\Desktop\_\sass-ms\public\login\confirm-password.php on line 61
 [30-Jul-2014 17:40:34 Europe/Paris] PHP Stack trace:
 [30-Jul-2014 17:40:34 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\login\confirm-password.php:0
+[01-Aug-2014 02:05:08 Europe/Paris] PHP Notice:  Undefined index: user_major in C:\Users\Riza\Desktop\_\sass-ms\public\users\create.php on line 31
+[01-Aug-2014 02:05:08 Europe/Paris] PHP Stack trace:
+[01-Aug-2014 02:05:08 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\create.php:0
+[01-Aug-2014 04:47:36 Europe/Paris] PHP Parse error:  syntax error, unexpected 'If' (T_IF) in C:\Users\Riza\Desktop\_\sass-ms\public\app\models\Users.php on line 302
+[01-Aug-2014 04:47:37 Europe/Paris] PHP Stack trace:
+[01-Aug-2014 04:47:37 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\logout.php:0
+[01-Aug-2014 04:47:37 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\_\sass-ms\public\logout.php:30
+[01-Aug-2014 04:47:45 Europe/Paris] PHP Parse error:  syntax error, unexpected 'If' (T_IF) in C:\Users\Riza\Desktop\_\sass-ms\public\app\models\Users.php on line 302
+[01-Aug-2014 04:47:45 Europe/Paris] PHP Stack trace:
+[01-Aug-2014 04:47:45 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:0
+[01-Aug-2014 04:47:45 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:2

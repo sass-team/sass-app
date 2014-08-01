@@ -76,7 +76,7 @@ if (isLoginBtnPressed()) {
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		<meta name="description" content="">
 		<meta name="author" content=""/>
-		<link rel="shortcut icon" href="<?php echo BASE_URL; ?>app/assets/img/logos/logo-login.png">
+		<link rel="shortcut icon" href="<?php echo BASE_URL; ?>app/assets/img/logos/favicon.ico">
 
 		<link rel="stylesheet"
 		      href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,800italic,400,600,800"
@@ -144,11 +144,12 @@ if (isLoginBtnPressed()) {
 	<div id="wrap">
 		<div id="login-container">
 
-			<a href="<?php echo BASE_URL; ?>login/">
-				<div id="logo">
+			<div id="logo">
+				<a href="<?php echo BASE_URL; ?>login/">
 					<img src="<?php echo BASE_URL; ?>app/assets/img/logos/logo-login.png" alt="Logo"/>
-				</div>
-			</a>
+				</a>
+
+			</div>
 
 
 			<!-- /#login -->

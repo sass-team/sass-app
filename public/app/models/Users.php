@@ -282,23 +282,53 @@ class Users {
 
 	public function confirm_recover($email, $id) {
 
-		$unique = uniqid('', true); // generate a unique string
-		$random = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 10); // generate a more random string
-		$generated_string = $unique . $random; // a random and unique string
-		$query = $this->getDbConnection()->prepare("UPDATE `" . DB_NAME . "`.`user` SET `gen_string` = ? WHERE `id` = ?");
-		$query->bindValue(1, $generated_string);
-		$query->bindValue(2, $id);
-
 		try {
+			$unique = uniqid('', true); // generate a unique string
+			$random = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 10); // generate a more random string
+			$generated_string = $unique . $random; // a random and unique string
+			$query = $this->getDbConnection()->prepare("UPDATE `" . DB_NAME . "`.`user` SET `gen_string` = ? WHERE `id` = ?");
+			$query->bindValue(1, $generated_string);
+			$query->bindValue(2, $id);
+
 			$query->execute();
-			mail($email, 'Recover Password', "Hello.\r\nSome one, hopefully you requested a password reset.
-			\r\nPlease click the link below:
-			\r\n\r\nhttp://" . $_SERVER['SERVER_NAME'] . "/login/recover/" . $id . "/" . $generated_string . "
-			\r\n\r\n You will be prompted to insert your new password.
-			\r\n\r\n-- sass team");
 		} catch (PDOException $e) {
 			throw new Exception("We could not send your email. Please retry.");
 		}
+
+		$email = trim($_POST["email"]);
+		$message = "We heard that you lost your SASS password. Sorry about that!<br/><br/>";
+		$message .= "But don't worry! You can use the following link within the next day to reset your password:<br/><br/>";
+		$message .= "http://" . $_SERVER['SERVER_NAME'] . "/login/recover/" . $id . "/" . $generated_string . "<br/><br/>";
+		$message .= "If you don&#39;t use this link within 24 hours, it will expire. To get a new password reset link, visit http://" . $_SERVER['SERVER_NAME'] . "/login/confirm-password <br/><br/>";
+		$message .= "Thanks,<br/>SASS Automatic System";
+
+		// mailer process
+		require_once(ROOT_PATH . "app/plugins/PHPMailer/class.phpmailer.php");
+		//Create a new PHPMailer instance
+		$mail = new PHPMailer();
+
+		$email_body = "";
+		$email_body = $message;
+
+		//Set who the message is to be sent from
+		$mail->setFrom($email, "no-reply@" . $_SERVER['SERVER_NAME']);
+		//Set who the message is to be sent to
+		$address = $email;
+		$mail->addAddress($address, "SASS Automatic System");
+		//Set the subject line
+		$mail->Subject = 'SASS | ' . 'Recovery System';
+		//Read an HTML message body from an external file, convert referenced images to embedded,
+		//convert HTML into a basic plain-text alternative body
+		$mail->msgHTML($email_body);
+		//Attach an image file
+		//$mail->addAttachment('images/phpmailer_mini.gif');
+
+		//send the message, check for errors
+		if ($mail->send()) { // successful mail sender
+			return true;
+		} else {
+			throw new Exception("There was a problem sending the email: " . $mail->ErrorInfo);
+		} // end else
 	} // end confirm_recover
 
 	public function recover($email, $generated_string) {

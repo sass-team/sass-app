@@ -182,6 +182,6 @@ if (isContinueBtnPressed()) {
 
 <script src="<?php echo BASE_URL; ?>app/assets/js/App.js"></script>
 
-<script src=".<?php echo BASE_URL; ?>app/assets/s/Login.js"></script>
+<script src="<?php echo BASE_URL; ?>app/assets/js/Login.js"></script>
 </body>
 </html>
