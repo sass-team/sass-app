@@ -40,46 +40,26 @@ $(function () {
 
 			events: [
 				{
-					title: 'All Day Event',
-					start: new Date(y, m, 1),
-					end: new Date (y, m, 2),
-					className: 'fc-red'
+					title: 'WP 1010 Introduction to Academic Writing - James Smith',
+                    start: new Date(y, m, d, 9, 30),
+                    end: new Date(y, m, d, 10, 0),
+                    allDay: false,
+                    className: 'fc-yellow'
 				},
 				{
-					title: 'Long Event',
-					start: new Date(y, m, d-5),
-					end: new Date(y, m, d-2),
-					className: 'fc-yellow'
+					title: 'WP 1111 Academic Writing - Lilly Potter',
+                    start: new Date(y, m, d, 9, 30),
+                    end: new Date(y, m, d, 10, 30),
+                    allDay: false,
+                    className: 'fc-grey'
 				},
 				{
-					id: 999,
-					title: 'Repeating Event',
-					start: new Date(y, m, d-3, 16, 0),
-					allDay: false,
-					className: 'fc-grey'
+                    title: 'WP 1212 Academic Writing and Research - Emma Brown',
+                    start: new Date(y, m, d, 11, 30),
+                    end: new Date(y, m, d, 12, 0),
+                    allDay: false,
+                    className: 'fc-grey'
 				},
-				{
-					id: 999,
-					title: 'Repeating Event',
-					start: new Date(y, m, d+1, 14, 0),
-					end: new Date(y, m, d+3, 14, 0),
-					allDay: false,
-					className: 'fc-charcoal'
-				},
-				{
-					title: 'Meeting',
-					start: new Date(y, m, d-13, 10, 30),
-					end: new Date (y,m,d-11, 10,30),
-					allDay: false,
-					className: 'fc-grey'
-				},
-				{
-					title: 'Lunch',
-					start: new Date(y, m, d, 12, 0),
-					end: new Date(y, m, d, 14, 0),
-					allDay: false,
-					className: 'fc-red'
-				}
 			]
 		});
 

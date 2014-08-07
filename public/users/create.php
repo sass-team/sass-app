@@ -314,6 +314,25 @@ function isSaveBttnPressed() {
 
 
 <?php include ROOT_PATH . "app/views/footer.php"; ?>
+</div>
+</body>
+</html>
+
+<?php include ROOT_PATH . "app/views/assets/footer_common.php"; ?>
+
+<script src="<?php echo BASE_URL; ?>app/assets/js/plugins/select2/select2.js"></script>
+<script src="<?php echo BASE_URL; ?>app/assets/js/plugins/icheck/jquery.icheck.js"></script>
+
+<script src="<?php echo BASE_URL; ?>app/assets/js/plugins/datepicker/bootstrap-datepicker.js"></script>
+<script src="<?php echo BASE_URL; ?>app/assets/js/plugins/timepicker/bootstrap-timepicker.js"></script>
+<script src="<?php echo BASE_URL; ?>app/assets/js/plugins/simplecolorpicker/jquery.simplecolorpicker.js"></script>
+<script src="<?php echo BASE_URL; ?>app/assets/js/plugins/textarea-counter/jquery.textarea-counter.js"></script>
+<script src="<?php echo BASE_URL; ?>app/assets/js/plugins/autosize/jquery.autosize.min.js"></script>
+<script src="<?php echo BASE_URL; ?>app/assets/js/demos/form-extended.js"></script>
+
+
+
+
 <script type="text/javascript">
 	jQuery(function () {
 		$("#create-form").submit(function (event) {

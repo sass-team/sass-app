@@ -1,0 +1,19 @@
+.dashboard-stat.primary,  .dashboard-stat.primary:active {
+    background-color: #3fa67a;
+}
+
+.dashboard-stat.primary:hover {
+    background-color: #1fa67a;
+}
+
+.dashboard-stat.primary i, .dashboard-stat.primary:hover i, .dashboard-stat.primary:active i {
+    color: #008351;
+}
+
+/*.dashboard-stat.primary i, .dashboard-stat.primary:hover i, .dashboard-stat.primary:active i {*/
+    /*color: #dd301b;*/
+/*}*/
+
+/*.dashboard-stat i, .dashboard-stat:hover i, .dashboard-stat:active i, .dashboard-stat:focus i {*/
+    /*color: #e4e4e4;*/
+/*}*/

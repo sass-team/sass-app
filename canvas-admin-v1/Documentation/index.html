@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Meta, title, CSS, favicons, etc. -->
+    	<title>
+		
+		
+		Canvas Admin Docs v1.0
+	</title>
+
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<!-- Font Awesome -->
+	<link href="./css/font-awesome.min.css" rel="stylesheet">
+
+	<!-- Bootstrap core CSS -->
+	<link href="./css/bootstrap.css" rel="stylesheet">
+
+	
+
+	<!-- Documentation core CSS -->
+	<link href="./css/docs.css" rel="stylesheet">
+
+
+	<link href="./js/plugins/snippet/jquery.snippet.min.css" rel="stylesheet">
+
+	
+
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+	  <script src="./js/libs/html5shiv.js"></script>
+	  <script src="./js/libs/respond.min.js"></script>
+	<![endif]-->
+
+	<!-- Favicons -->
+	<link rel="shortcut icon" href="./assets/ico/favicon.ico">
+
+    
+
+  </head>
+  <body class="bs-docs-home">
+    <a class="sr-only" href="#content">Skip to main content</a>
+
+    <!-- Docs master nav -->
+      <!-- Docs master nav -->
+  <header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">
+    <div class="container">
+
+      <div class="navbar-header">
+        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+
+        <a href="./index.html" class="navbar-brand">Canvas Admin</a>
+      </div>
+      
+      <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+        <ul class="nav navbar-nav">
+          <li class="">
+          <a href="./getting-started.html">Getting started</a>
+          </li>
+          <li class="">
+          <a href="./components.html">Components</a>
+          </li>
+          <li class="">
+          <a href="./plugins.html">Plugins</a>
+          </li>
+        </ul>
+
+        <ul class="nav navbar-nav pull-right">
+
+          <li>
+          <a href="../theme" target="_blank">
+          View Demo&nbsp;&nbsp;
+          <i class="icon-external-link"></i> 
+          </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+    <!-- Page content of course! -->
+    <main class="bs-masthead" id="content" role="main">
+  <div class="container">
+    <h1>Canvas Admin Docs</h1>
+    <p class="lead">Responsive admin dashboard template powered with Twitter Bootstrap Framework for admin and backend applications.</p>
+    <br />
+    <p>
+      <a href="./getting-started.html" class="btn btn-tertiary btn-jumbo">
+        Getting Started &nbsp;&nbsp;<i class="icon-double-angle-right"></i>
+      </a>
+      &nbsp;&nbsp;&nbsp;
+      <a href="../theme" class="btn btn-secondary btn-jumbo" target="_blank">
+        View Demo &nbsp;&nbsp;<i class="icon-external-link"></i>
+      </a>
+    </p>
+  </div>
+</main>
+
+    <!-- JS and analytics only. -->
+      <!-- Footer
+  ================================================== -->
+  <footer class="bs-footer" role="contentinfo">
+    <div class="container">
+
+      
+      <p>Documentation licensed under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</p>
+    
+      <ul class="footer-links">
+        <li><a href="./index.html">Canvas Admin Docs v1.0</a></li>
+        <li class="muted">·</li>
+        <li><a href="http://jumpstartthemes.com">Jumpstart Themes</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <!-- JS and analytics only. -->
+  <!-- Bootstrap core JavaScript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="./js/libs/jquery-1.8.1.min.js"></script>
+  <script src="./js/libs/bootstrap.min.js"></script>
+  <script src="./js/libs/handlebars.js"></script>
+  <script src="./js/plugins/snippet/jquery.snippet.min.js"></script>
+  <script src="./js/docs.js"></script>
+
+  
+  <script id="bs-sidenav-tmpl" type="text/x-handlebars-template">    
+  {{#sections}}
+    <li>
+      <a href="{{id}}">
+      {{title}}
+
+      {{#if subsCount}}
+      <small class="bs-sidenav-sub-count">({{subsCount}})</small>
+      {{/if}}
+      </a>
+
+      <ul class="nav">
+        {{#subs}}
+        <li>
+          <a href="{{id}}">--&nbsp;&nbsp;{{title}}</a>
+        </li>
+        {{/subs}}
+      </ul>
+    </li>
+  {{/sections}}  
+  </script>
+  
+
+</body>
+
+</html>
