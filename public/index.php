@@ -2,6 +2,7 @@
 require 'app/init.php';
 $general->logged_out_protect();
 
+
 // viewers
 $page_title = "Dashboard - SASS Management System";
 $section = "dashboard";
