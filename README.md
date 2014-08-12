@@ -25,7 +25,7 @@ git pull origin develop
 
 ## Changing Branches
 ```
-// retrieve what data are on server
+// retrieve info about data origin/server
 git pull
 // show remote(server) branches
 git branch -r
