@@ -57,6 +57,7 @@ git merge UI-courses-create
 // from branch UI-courses-create, you push it to server.
 ```
 git push origin UI-courses-create
+```
 
 #### Delete branch of this new feature
 ```
