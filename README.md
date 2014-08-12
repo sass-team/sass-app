@@ -32,6 +32,10 @@ git branch -r
 git branch
 // show both local and server branches
 git branch -a
+// change to branch develop
+git checkout develop
+// change to branch master
+git checkout master
 ```
 
 # Wamp - Virtual Host
