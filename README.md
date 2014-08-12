@@ -9,7 +9,7 @@ What is version control, and why should you care? Version control is a system th
 ## Set up Git
 [Installi git for Windows](https://confluence.atlassian.com/display/BITBUCKET/Set+up+Git+and+Mercurial#SetupGitandMercurial-Step1.InstallGitforWindows)
 
-## Initilizing & retrieving repo
+## Initilizing & retrieving origin & develop
 
 At an empty folder using cmd:
 ```
@@ -19,6 +19,7 @@ git init
 git remote add origin master git@bitbucket.org:geoif_rdok/sass-ms.git
 // retrieve files from bitbucket repo
 git pull origin master
+git pull origin develop
 ```
 [Official Guide](https://confluence.atlassian.com/display/BITBUCKET/Import+code+from+an+existing+project)
 
