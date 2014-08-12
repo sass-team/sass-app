@@ -23,7 +23,8 @@ git pull origin develop
 ```
 [Official Guide](https://confluence.atlassian.com/display/BITBUCKET/Import+code+from+an+existing+project)
 ## Synchronize local with origin/server 
-```// retrieve files from bitbucket repo
+```
+// retrieve files from bitbucket repo
 git pull origin master
 git pull origin develop
 ```
