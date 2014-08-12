@@ -27,6 +27,11 @@ git pull origin develop
 // retrieve files from bitbucket repo
 git pull origin master
 git pull origin develop
+// if you want to push work on server/origin
+git push origin develop
+git push origin your-feature-name
+// CAREFUL: production server -- changes are automated to server. Make sure everything/feature works as intended, and database credentials are correct.
+git push origin master
 ```
 
 ## Changing Branches
