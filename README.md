@@ -23,6 +23,7 @@ git pull origin master
 [Official Guide](https://confluence.atlassian.com/display/BITBUCKET/Import+code+from+an+existing+project)
 
 ## Changing Branches
+```
 // retrieve what data are on server
 git pull
 // show remote(server) branches
@@ -31,7 +32,7 @@ git branch -r
 git branch
 // show both local and server branches
 git branch -a
-
+```
 
 # Wamp - Virtual Host
 - http://forum.wampserver.com/read.php?2,124482
