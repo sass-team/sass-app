@@ -39,6 +39,7 @@ git checkout master
 ```
 
 ## Start work on new feature
+#### Start new feature and finish it.
 ```
 // you are in develop  branch, and want to start working on a NEW feature: UI-courses-create
 git checkout -b UI-courses-create
@@ -49,9 +50,25 @@ git commit -m "Create UI for creating course."
 git checkout develop
 git merge UI-courses-create
 // now the branch develop contains this new feature, and can continue to work.
-// if you didn't finish this feature, and still working on it, and want to be tested from partners:
+``` 
+
+#### Start new feature but don't finish.
+// follow all previous steps then:
 // from branch UI-courses-create, you push it to server.
+```
 git push origin UI-courses-create
+
+#### Delete branch of this new feature
+```
+// after finishing a feature, you might want to delete the branch for less/clear/easily/ branch management
+// delete local branch
+git branch -D UI-courses-create
+// delete servers/origin branch UI-courses-create
+git push origin --delete UI-courses-create
+// verifiy branch is deleted on local pc.
+git branch
+// verify branch is delted on server/origin
+git branch -r
 ```
 
 # Wamp - Virtual Host
