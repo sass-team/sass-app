@@ -38,6 +38,22 @@ git checkout develop
 git checkout master
 ```
 
+## Start work on new feature
+```
+// you are in develop  branch, and want to start working on a NEW feature: UI-courses-create
+git checkout -b UI-courses-create
+// you do some work on it. bla bla. finish work.
+git add --all
+git commit -m "Create UI for creating course."
+// since you finished working on this feature/major work/no plans to work in near future/your partner to check it out: you want to merge those changes back to develop
+git checkout develop
+git merge UI-courses-create
+// now the branch develop contains this new feature, and can continue to work.
+// if you didn't finish this feature, and still working on it, and want to be tested from partners:
+// from branch UI-courses-create, you push it to server.
+git push origin UI-courses-create
+```
+
 # Wamp - Virtual Host
 - http://forum.wampserver.com/read.php?2,124482
 
