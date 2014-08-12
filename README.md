@@ -50,4 +50,6 @@ git checkout master
 http://www.toolheap.com/test-mail-server-tool/
 >Test Mail Server Tool is a full featured mail (SMTP) server emulation to test mail sending capabilities of a web or desktop application or to preview messages before they are actually sent.  
 
-Just install the above app. Run "Test Mail Server Tool". Allow to connect to internet if prompted.
+Just install the above app. Run "Test Mail Server Tool". Allow to connect to internet if prompted.  
+
+# [ssh](https://help.github.com/articles/generating-ssh-keys)
