@@ -9,7 +9,7 @@ What is version control, and why should you care? Version control is a system th
 ## Set up Git
 [Installi git for Windows](https://confluence.atlassian.com/display/BITBUCKET/Set+up+Git+and+Mercurial#SetupGitandMercurial-Step1.InstallGitforWindows)
 
-## Initilizing & retrieving repo
+## Initilizing repo
 
 At an empty folder using cmd:
 ```
@@ -19,12 +19,24 @@ git init
 git remote add origin master git@bitbucket.org:geoif_rdok/sass-ms.git
 // retrieve files from bitbucket repo
 git pull origin master
+git pull origin develop
 ```
 [Official Guide](https://confluence.atlassian.com/display/BITBUCKET/Import+code+from+an+existing+project)
+## Synchronize local with origin/server 
+```
+// retrieve files from bitbucket repo
+git pull origin master
+git pull origin develop
+// if you want to push work on server/origin
+git push origin develop
+git push origin your-feature-name
+// CAREFUL: production server -- changes are automated to server. Make sure everything/feature works as intended, and database credentials are correct.
+git push origin master
+```
 
 ## Changing Branches
 ```
-// retrieve what data are on server
+// retrieve info about data origin/server
 git pull
 // show remote(server) branches
 git branch -r
@@ -36,6 +48,40 @@ git branch -a
 git checkout develop
 // change to branch master
 git checkout master
+```
+
+## Start work on new feature
+#### Start new feature and finish it.
+```
+// you are in develop  branch, and want to start working on a NEW feature: UI-courses-create
+git checkout -b UI-courses-create
+// you do some work on it. bla bla. finish work.
+git add --all
+git commit -m "Create UI for creating course."
+// since you finished working on this feature/major work/no plans to work in near future/your partner to check it out: you want to merge those changes back to develop
+git checkout develop
+git merge UI-courses-create
+// now the branch develop contains this new feature, and can continue to work.
+``` 
+
+#### Start new feature but don't finish.
+// follow all previous steps then:
+// from branch UI-courses-create, you push it to server.
+```
+git push origin UI-courses-create
+```
+
+#### Delete branch of this new feature
+```
+// after finishing a feature, you might want to delete the branch for less/clear/easily/ branch management
+// delete local branch
+git branch -D UI-courses-create
+// delete servers/origin branch UI-courses-create
+git push origin --delete UI-courses-create
+// verifiy branch is deleted on local pc.
+git branch
+// verify branch is delted on server/origin
+git branch -r
 ```
 
 # Wamp - Virtual Host
