@@ -51,7 +51,7 @@ git checkout master
 ```
 
 ## Delete Branches
-````
+```
 // after finishing a feature, you might want to delete the branch for less/clear/easily/ branch management
 // delete local branch
 git branch -D feature/UI-courses-create
