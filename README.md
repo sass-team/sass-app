@@ -52,8 +52,10 @@ git checkout master
 
 ## Merge  Branches  
 // We want to merge feature/branch_one with feature/branche_two. We do work on feature/branch_one.  After commiting all work on branch_one:
+```
 git checkout feature/branche_two // usually " feature/branche_two" is "develop" branch.
 git merge feature/branch_one
+```
 // now the branch develop contains this new feature, and can continue to work.
 
 
