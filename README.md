@@ -51,6 +51,7 @@ git checkout master
 ```
 
 ## Delete Branches
+````
 // after finishing a feature, you might want to delete the branch for less/clear/easily/ branch management
 // delete local branch
 git branch -D feature/UI-courses-create
@@ -60,6 +61,7 @@ git push origin --delete feature/UI-courses-create
 git branch
 // verify branch is delted on server/origin
 git branch -r
+``` 
 
 ## Merge  Branches  
 // We want to merge feature/branch_one with feature/branche_two. We do work on feature/branch_one.  After commiting all work on branch_one:
