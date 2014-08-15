@@ -67,10 +67,27 @@ if (isset($_POST['form_action_profile_settings'])) {
 $page_title = "My Account - Settings";
 $section = "account";
 
-require ROOT_PATH . 'app/views/head.php';
-require ROOT_PATH . 'app/views/sidebar.php';
-
 ?>
+
+
+<!DOCTYPE html>
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js"> <!--<![endif]-->
+<?php require ROOT_PATH . 'app/views/head.php'; ?>
+<body>
+<div id="wrapper">
+	<?php
+	require ROOT_PATH . 'app/views/header.php';
+	require ROOT_PATH . 'app/views/sidebar.php';
+	?>
+
+
 <div id="content">
 
 <div id="content-header">
@@ -114,7 +131,8 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 		<br/>
 
-		<form action="<?php echo BASE_URL; ?>account/settings" class="form-horizontal" method="post" enctype="multipart/form-data">
+		<form action="<?php echo BASE_URL; ?>account/settings" class="form-horizontal" method="post"
+		      enctype="multipart/form-data">
 
 			<?php
 			if (empty($errors) !== true) {
@@ -321,7 +339,8 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <!-- #content -->
 
 
-</div> <!-- #wrapper -->
+</div>
+<!-- #wrapper -->
 
 <?php include ROOT_PATH . "app/views/footer.php"; ?>
 </div>

@@ -20,7 +20,12 @@ $section = "dashboard";
 <?php require ROOT_PATH . 'app/views/head.php'; ?>
 <body>
 <div id="wrapper">
-<?php require ROOT_PATH . 'app/views/header.php'; ?>
+	<?php
+	require ROOT_PATH . 'app/views/header.php';
+	require ROOT_PATH . 'app/views/sidebar.php';
+	?>
+
+
 <div id="content">
 
 <div id="content-header">

@@ -17,11 +17,6 @@ function is_create_bttn_Pressed() {
 	return isset($_POST['hidden_submit_pressed']) && empty($_POST['hidden_submit_pressed']);
 }
 
-$page_title = "Edit";
-$section = "users";
-require ROOT_PATH . 'app/views/head.php';
-require ROOT_PATH . 'app/views/sidebar.php';
-
 
 if (isSaveBttnPressed()) {
 	$first_name = trim($_POST['first_name']);
@@ -41,8 +36,28 @@ if (isSaveBttnPressed()) {
 function isSaveBttnPressed() {
 	return isset($_POST['hidden_submit_pressed']) && empty($_POST['hidden_submit_pressed']);
 }
-
+$page_title = "Edit";
+$section = "users";
 ?>
+
+
+<!DOCTYPE html>
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js"> <!--<![endif]-->
+<?php require ROOT_PATH . 'app/views/head.php'; ?>
+<body>
+<div id="wrapper">
+	<?php
+	require ROOT_PATH . 'app/views/header.php';
+	require ROOT_PATH . 'app/views/sidebar.php';
+	?>
+
 
 <div id="content">
 
@@ -153,7 +168,8 @@ function isSaveBttnPressed() {
 	</div>
 	<!-- /#content-container -->
 
-</div> <!-- #content -->
+</div>
+<!-- #content -->
 
 <div id="styledModal" class="modal modal-styled fade">
 	<div class="modal-dialog">
@@ -310,7 +326,8 @@ function isSaveBttnPressed() {
 		<!-- /.modal-content -->
 	</div>
 	<!-- /.modal-dialog -->
-</div><!-- /.modal -->
+</div>
+<!-- /.modal -->
 
 
 <?php include ROOT_PATH . "app/views/footer.php"; ?>
@@ -329,8 +346,6 @@ function isSaveBttnPressed() {
 <script src="<?php echo BASE_URL; ?>app/assets/js/plugins/textarea-counter/jquery.textarea-counter.js"></script>
 <script src="<?php echo BASE_URL; ?>app/assets/js/plugins/autosize/jquery.autosize.min.js"></script>
 <script src="<?php echo BASE_URL; ?>app/assets/js/demos/form-extended.js"></script>
-
-
 
 
 <script type="text/javascript">
