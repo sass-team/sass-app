@@ -22,15 +22,15 @@ $first_name = $tempUser->getFirstName();
 $last_name = $tempUser->getLastName();
 $email = $tempUser->getEmail();
 $position = $tempUser->getUserType();
+$mobile = $tempUser->getMobileNum();
 ?>
 <tr>
-	<td class="checkbox-column">
-		<input type="checkbox" class="icheck-input">
-	</td>
 	<td><?php echo $first_name . " " . $last_name; ?></td>
 	<td><?php echo $email; ?></td>
 	<td><?php echo $position ?></td>
+	<td><?php echo $mobile ?></td>
 	<?php // TODO: CREATE public page for profile. crate page to edit user data? ?>
 	<td class="hidden-xs hidden-sm">Link</td>
 	<td class="hidden-xs hidden-sm">Link</td>
+	<td class="hidden-xs hidden-sm"><center><a href="#"><i class="fa fa-edit fa-lg"></i></a></center></td>
 </tr>

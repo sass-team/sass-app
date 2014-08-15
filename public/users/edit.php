@@ -65,14 +65,13 @@ require ROOT_PATH . 'app/views/sidebar.php';
 									>
 									<thead>
 									<tr>
-										<th class="checkbox-column">
-											<input type="checkbox" class="icheck-input">
-										</th>
 										<th data-filterable="true" data-sortable="true" data-direction="desc">Name</th>
-										<th data-direction="asc" data-filterable="true" data-sortable="true">Email</th>
+										<th data-direction="asc" data-filterable="true" data-sortable="false">Email</th>
 										<th data-filterable="true" data-sortable="true">Position</th>
+										<th data-filterable="true" data-sortable="false">Mobile</th>
 										<th data-filterable="false" class="hidden-xs hidden-sm">Profile</th>
 										<th data-filterable="false" class="hidden-xs hidden-sm">Schedule</th>
+										<th data-filterable="false" class="hidden-xs hidden-sm">Edit User</th>
 									</tr>
 									</thead>
 									<tbody>
@@ -107,15 +106,17 @@ require ROOT_PATH . 'app/views/sidebar.php';
 		</div>
 		<!-- /#content-container -->
 
-
 	</div>
 	<!-- /.col -->
 
 	</div> <!-- #wrapper -->
 
 <?php include ROOT_PATH . "app/views/footer.php"; ?>
-</div>
+<?php include ROOT_PATH . "app/views/assets/footer_common.php"; ?>
+
+<script src="<?php echo BASE_URL; ?>app/assets/js/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="<?php echo BASE_URL; ?>app/assets/js/plugins/datatables/DT_bootstrap.js"></script>
+
 </body>
 </html>
 
-<?php include ROOT_PATH . "app/views/assets/footer_common.php"; ?>

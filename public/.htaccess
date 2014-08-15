@@ -2,7 +2,7 @@
 RewriteEngine On
 RewriteBase /
 
-RewriteRule ^([a-z]+)/([a-z\-]+)$ /$1/$2.php [L]
+RewriteRule ^([a-z\-]+)/([a-z\-]+)$ /$1/$2.php [L]
 RewriteRule ^([a-z]+)$ /$1.php [L]
 RewriteRule ^account/settings/success$ /account/settings.php?success [L]
 RewriteRule ^login/confirm-password/success$ /login/confirm-password.php?success [L]

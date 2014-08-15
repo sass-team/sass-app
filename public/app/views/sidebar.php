@@ -90,7 +90,33 @@
 		</ul>
 	</li>
 <?php } ?>
-<li class="dropdown"></li>
+
+<?php if ($user->is_admin()) { ?>
+	<li class="dropdown <?php if ($section == "courses-majors") {
+		echo "active";
+	} ?>">
+		<a href="javascript:;">
+			<i class="fa fa-list-alt"></i>
+			Courses &amp; Majors
+			<span class="caret"></span>
+		</a>
+
+		<ul class="sub-nav">
+			<li>
+				<a href="<?php echo BASE_URL; ?>courses-majors/courses">
+					<i class="fa fa-table"></i>
+					Courses
+				</a>
+			</li>
+			<li>
+				<a href="<?php echo BASE_URL; ?>courses-majors/majors">
+					<i class="fa fa-table"></i>
+					Majors
+				</a>
+			</li>
+		</ul>
+	</li>
+<?php } ?>
 
 <li class="dropdown"></li>
 
