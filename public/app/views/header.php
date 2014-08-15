@@ -1,64 +1,35 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]>
-<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>
-<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>
-<html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!-->
-<html class="no-js"> <!--<![endif]-->
-<head>
-	<title><?php echo $page_title; ?></title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-	<meta name="description" content="">
-	<meta name="author" content=""/>
-	<link rel="shortcut icon" href="<?php echo BASE_URL; ?>app/assets/img/logos/favicon.ico">
+<?php
+/**
+ * The MIT License (MIT)
+ *
+ * Copyright (c) <year> <copyright holders>
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 
-	<link rel="stylesheet"
-	      href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,800italic,400,600,800"
-	      type="text/css">
-	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-	<!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+/**
+ * @author Rizart Dokollari
+ * @since 8/15/14.
+ */
 
-	<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.0/themes/smoothness/jquery-ui.css"/>
+?>
 
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/js/plugins/icheck/skins/minimal/blue.css"
-	      type="text/css"/>
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/js/plugins/icheck/skins/square/green.css">
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/js/plugins/icheck/skins/square/red.css">
-
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/js/plugins/datepicker/datepicker.css"
-	      type="text/css"/>
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/js/plugins/select2/select2.css" type="text/css"/>
-	<link rel="stylesheet"
-	      href="<?php echo BASE_URL; ?>app/assets/js/plugins/simplecolorpicker/jquery.simplecolorpicker.css"
-	      type="text/css"/>
-
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/js/plugins/timepicker/bootstrap-timepicker.css"
-	      type="text/css"/>
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/js/plugins/fileupload/bootstrap-fileupload.css"
-	      type="text/css"/>
-
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/js/plugins/fullcalendar/fullcalendar.css"
-	      type="text/css"/>
-
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/css/App.css" type="text/css"/>
-
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/css/custom.css" type="text/css"/>
-	<style type="text/css">
-		#wrap {
-			min-height: 100%;
-			height: auto !important;
-			margin: 0 auto -60px;
-		}
-	</style>
-</head>
-
-<body>
-
-<div id="wrapper">
 
 	<header id="header">
 

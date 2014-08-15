@@ -2,14 +2,25 @@
 require 'app/init.php';
 $general->logged_out_protect();
 
-
 // viewers
 $page_title = "Dashboard - SASS Management System";
 $section = "dashboard";
-require ROOT_PATH . 'app/views/header.php';
-require ROOT_PATH . 'app/views/sidebar.php';
-
 ?>
+
+
+<!DOCTYPE html>
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js"> <!--<![endif]-->
+<?php require ROOT_PATH . 'app/views/head.php'; ?>
+<body>
+<div id="wrapper">
+<?php require ROOT_PATH . 'app/views/header.php'; ?>
 <div id="content">
 
 <div id="content-header">
@@ -586,11 +597,14 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <!-- /#content-container -->
 
 
-</div> <!-- #content -->
+</div>
+<!-- #content -->
 
 
 <?php include ROOT_PATH . "app/views/footer.php"; ?>
 </div>
+<!-- #wrapper<!-- #content -->
+
 </body>
 </html>
 

@@ -67,7 +67,7 @@ if (isset($_POST['form_action_profile_settings'])) {
 $page_title = "My Account - Settings";
 $section = "account";
 
-require ROOT_PATH . 'app/views/header.php';
+require ROOT_PATH . 'app/views/head.php';
 require ROOT_PATH . 'app/views/sidebar.php';
 
 ?>

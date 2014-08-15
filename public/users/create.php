@@ -19,7 +19,7 @@ function is_create_bttn_Pressed() {
 
 $page_title = "Edit";
 $section = "users";
-require ROOT_PATH . 'app/views/header.php';
+require ROOT_PATH . 'app/views/head.php';
 require ROOT_PATH . 'app/views/sidebar.php';
 
 

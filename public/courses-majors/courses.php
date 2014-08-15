@@ -11,6 +11,6 @@ try {
 	$errors[] = $e->getMessage();
 }
 
-require ROOT_PATH . 'app/views/header.php';
+require ROOT_PATH . 'app/views/head.php';
 require ROOT_PATH . 'app/views/sidebar.php';
 ?>

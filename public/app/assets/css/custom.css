@@ -1,4 +1,4 @@
-.dashboard-stat.primary,  .dashboard-stat.primary:active {
+.dashboard-stat.primary, .dashboard-stat.primary:active {
     background-color: #3fa67a;
 }
 
@@ -10,10 +10,6 @@
     color: #008351;
 }
 
-/*.dashboard-stat.primary i, .dashboard-stat.primary:hover i, .dashboard-stat.primary:active i {*/
-    /*color: #dd301b;*/
-/*}*/
-
-/*.dashboard-stat i, .dashboard-stat:hover i, .dashboard-stat:active i, .dashboard-stat:focus i {*/
-    /*color: #e4e4e4;*/
-/*}*/
+#back-to-top {
+    bottom: 60px;
+}

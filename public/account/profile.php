@@ -4,7 +4,7 @@ $general->logged_out_protect();
 
 $page_title = "My Account - Profile";
 $section = "account";
-require ROOT_PATH . 'app/views/header.php';
+require ROOT_PATH . 'app/views/head.php';
 require ROOT_PATH . 'app/views/sidebar.php';
 ?>
 
