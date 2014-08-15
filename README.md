@@ -50,34 +50,57 @@ git checkout develop
 git checkout master
 ```
 
-## Start work on new feature
-#### Start new feature and finish it.
+## Delete Branches
 ```
-// you are in develop  branch, and want to start working on a NEW feature: UI-courses-create
-git checkout -b UI-courses-create
+// after finishing a feature, you might want to delete the branch for less/clear/easily/ branch management
+// delete local branch
+git branch -D feature/UI-courses-create
+// delete CAREFUL!!!!! servers/origin branch UI-courses-create. 
+git push origin --delete feature/UI-courses-create
+// verifiy branch is deleted on local pc.
+git branch
+// verify branch is delted on server/origin
+git branch -r
+``` 
+
+## Merge  Branches  
+// We want to merge feature/branch_one with feature/branche_two. We do work on feature/branch_one.  After commiting all work on branch_one:
+```
+git checkout feature/branche_two // usually " feature/branche_two" is "develop" branch.
+git merge feature/branch_one
+```
+// now the branch develop contains this new feature, and can continue to work.
+
+
+## Start work on new feature/bug
+#### Start new feature/bug and finish it.
+```
+// you are in develop  branch, and want to start working on a NEW feature: UI-courses-create. for bug replace feature with bug.
+git checkout -b feature/UI-courses-create
 // you do some work on it. bla bla. finish work.
 git add --all
 git commit -m "Create UI for creating course."
 // since you finished working on this feature/major work/no plans to work in near future/your partner to check it out: you want to merge those changes back to develop
 git checkout develop
-git merge UI-courses-create
+git merge feature/UI-courses-create
 // now the branch develop contains this new feature, and can continue to work.
 ``` 
 
-#### Start new feature but don't finish.
+#### Start new feature/bug but don't finish.
 // follow all previous steps then:
 // from branch UI-courses-create, you push it to server.
+// replace feature with bug as needed.
 ```
-git push origin UI-courses-create
+git push origin feature/UI-courses-create
 ```
 
-#### Delete branch of this new feature
+#### Delete branch of this new feature/bug
 ```
 // after finishing a feature, you might want to delete the branch for less/clear/easily/ branch management
 // delete local branch
-git branch -D UI-courses-create
+git branch -D feature/UI-courses-create
 // delete servers/origin branch UI-courses-create
-git push origin --delete UI-courses-create
+git push origin --delete feature/UI-courses-create
 // verifiy branch is deleted on local pc.
 git branch
 // verify branch is delted on server/origin
@@ -91,6 +114,8 @@ git branch -r
 [Training](https://github.com/nvie/gitflow)  
 
 ![Gitflow Diagram](http://nvie.com/img/2009/12/Screen-shot-2009-12-24-at-11.32.03.png "Visualize")
+
+# [Markdown-Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)  
 
 # localhost - emails
 http://www.toolheap.com/test-mail-server-tool/
