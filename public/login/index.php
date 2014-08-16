@@ -4,7 +4,7 @@ ob_start();
 // TODO: sql make 'img' of database to NOT NULL & refactor name to 'img_location'
 require '../app/init.php';
 
-// if there is an active log in process redirect to edit.php; load page only if no
+// if there is an active log in process redirect to overview.php; load page only if no
 // logged in user exists
 $general->logged_in_protect();
 $page_title = "Log In";
@@ -46,14 +46,14 @@ if (isLoginBtnPressed()) {
 		$password = trim($_POST['login_password']);
 
 		// check if credentials are correct. If they are not, an exception occurs.
-		$users->login($email, $password);
+		$id = $users->login($email, $password);
 		// destroying the old session id
 		//and creating a new one. protect from session fixation attack.
 		session_regenerate_id(true);
 		// The user's id is now set into the user's session  in the form of $_SESSION['id']
-		$_SESSION['email'] = $email;
+		$_SESSION['id'] = $id;
 
-		// if there is an active log in process redirect to edit.php; load page only if no logged in user exists
+		// if there is an active log in process redirect to overview.php; load page only if no logged in user exists
 		$general->logged_in_protect();
 	} catch (Exception $e) {
 		$errors[] = $e->getMessage();

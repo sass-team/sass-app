@@ -38,7 +38,7 @@ class Users {
 		} else if ($this->email_exists($email) === false) {
 			throw new Exception('Sorry that email doesn\'t exists.');
 		}
-		$query = "SELECT password, email FROM `" . DB_NAME . "`.user WHERE email = :email";
+		$query = "SELECT id, password, email FROM `" . DB_NAME . "`.user WHERE email = :email";
 		$query = $this->dbConnection->prepare($query);
 		$query->bindParam(':email', $email);
 
@@ -53,6 +53,7 @@ class Users {
 				throw new Exception('Sorry, that email/password is invalid.');
 			}
 
+			return $data['id'];
 		} catch (PDOException $e) {
 			// "Sorry could not connect to the database."
 			throw new Exception("Sorry could not connect to the database: ");
@@ -104,7 +105,8 @@ class Users {
 
 	public function getAll() {
 		// TODO: FIX QUERY TO NOT USER *, but rather specific columns instead. Safer & better performance
-		$query = "SELECT * FROM `" . DB_NAME . "`.user
+		$query = "SELECT user.id, user.f_name, user.l_name, user.img_loc, user.profile_description, user.date, user.mobile, user.email, user_types.type
+		         FROM `" . DB_NAME . "`.user
 						LEFT OUTER JOIN user_types ON user.`user_types_id` = `user_types`.id";
 		$query = $this->getDbConnection()->prepare($query);
 		try {
@@ -119,18 +121,18 @@ class Users {
 
 	/**
 	 * Returns all information of a user given his email.
-	 * @param $email $email of user
+	 * @param $id $email of user
 	 * @return mixed If
 	 */
-	function getData($email) {
+	function getData($id) {
 		$query = "SELECT user.email, user.id, user.`f_name`, user.`l_name`, user.`img_loc`,
 						user.date, user.`profile_description`, user.mobile, user_types.type
 					FROM `" . DB_NAME . "`.user
 						LEFT OUTER JOIN user_types ON user.`user_types_id` = `user_types`.id
-					WHERE email = :email";
+					WHERE user.id = :id";
 
 		$query = $this->getDbConnection()->prepare($query);
-		$query->bindValue(':email', $email, PDO::PARAM_INT);
+		$query->bindValue(':id', $id, PDO::PARAM_INT);
 
 		try {
 			$query->execute();
@@ -384,19 +386,18 @@ class Users {
 	public function fetch_info($what, $field, $where, $value) {
 		// I have only added few, but you can add more. However do not add 'password' even though the parameters will only be given by you and not the user, in our system.
 		$allowed = array('id', 'username', 'f_name', 'l_name', 'email', 'COUNT(mobile)',
-			'mobile', 'user', 'gen_string', 'COUNT(gen_string)', 'COUNT(id)');
+			'mobile', 'user', 'gen_string', 'COUNT(gen_string)', 'COUNT(id)', 'img_loc');
 		if (!in_array($what, $allowed, true) || !in_array($field, $allowed, true)) {
 			throw new InvalidArgumentException;
 		} else {
-			$sql = "SELECT $what FROM `" . DB_NAME . "`.`" . $field . "` WHERE $where = ?";
-			$query = $this->dbConnection->prepare($sql);
-			$query->bindValue(1, $value, PDO::PARAM_INT);
-
 			try {
+				$sql = "SELECT $what FROM `" . DB_NAME . "`.`" . $field . "` WHERE $where = ?";
+				$query = $this->dbConnection->prepare($sql);
+				$query->bindValue(1, $value, PDO::PARAM_INT);
 				$query->execute();
 				return $query->fetchColumn();
 				//return $sql;
-			} catch (PDOException $e) {
+			} catch (Exception $e) {
 				throw new Exception($e->getMessage());
 			}
 

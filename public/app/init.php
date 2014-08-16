@@ -29,23 +29,23 @@ try {
 // retrieves data if a user is logged in
 // TODO: CEHCK IF DB IS INITALIZED.
 	if ($general->logged_in() === true) {
-		// instantiate user class & connect to db.
-		$user_email = $_SESSION['email']; // getting user's id from the session.4
 
-		$userData = $users->getData($user_email);
+		// instantiate user class & connect to db.
+		$id = $_SESSION['id']; // getting user's id from the session.4
+
+		$userData = $users->getData($id);
 		// TODO: add secretary role.
 		if ($userData['type'] == 'admin') {
 			$user = new Admin($userData);
 		} else if ($userData['type'] == 'tutor') {
 			$user = new Tutor($userData);
 		}
-
 	}
+
 } catch (Exception $e) {
 	$errors[] = $e->getMessage();
-	var_dump($errors);
-	header('Location: ' . BASE_URL . 'error-500.php');
-	exit();
+	//header('Location: ' . BASE_URL . 'error-500.php');
+	//exit();
 }
 
 

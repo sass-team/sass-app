@@ -1,16 +1,89 @@
 <?php
+/**
+ * The MIT License (MIT)
+ *
+ * Copyright (c) <year> <copyright holders>
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+/**
+ * @author Rizart Dokollari
+ * @since 8/16/14.
+ */
+
+?>
+
+<?php
 require '../app/init.php';
 $general->logged_out_protect();
 
-$page_title = "View Users";
-$section = "users";
+// protect again any sql injections on url
+if (isset($_GET['id']) && !preg_match("/^[0-9]+$/", $_GET['id'])) {
+	header('Location: ' . BASE_URL . 'error-404');
+	exit();
+} else {
+	$userId = $_GET['id'];
+}
 
 try {
-	$all_users = $users->getAll();
+	$userData = $users->fetch_info("img_loc, f_name, l_name", "user", "id", $userId);
+	var_dump($userData);
+
+	$courseDb = new Courses($db->getDbConnection());
+	$courses = $courseDb->getAll();
+	$majors = $courseDb->getMajors();
+
+	//$majors = array_unique(array_column($courses, 'Major'));
+	//$majors_extensions = array_unique(array_column($courses, 'Extension'));
 } catch (Exception $e) {
 	$errors[] = $e->getMessage();
 }
+
+function is_create_bttn_Pressed() {
+	return isset($_POST['hidden_submit_pressed']) && empty($_POST['hidden_submit_pressed']);
+}
+
+
+if (isSaveBttnPressed()) {
+	$first_name = trim($_POST['first_name']);
+	$last_name = trim($_POST['last_name']);
+	$email = trim($_POST['email']);
+	$user_type = trim($_POST['user_type']);
+	$user_major_ext = trim($_POST['user_major']);
+	$teaching_courses[] = isset($_POST['teaching_courses']) ? $_POST['teaching_courses'] : "";
+
+	try {
+		$users->register($first_name, $last_name, $email, $user_type, $user_major_ext, $teaching_courses);
+	} catch (Exception $e) {
+		$errors[] = $e->getMessage();
+	}
+}
+
+function isSaveBttnPressed() {
+	return isset($_POST['hidden_submit_pressed']) && empty($_POST['hidden_submit_pressed']);
+}
+
+$page_title = "Edit";
+$section = "users";
 ?>
+
 
 <!DOCTYPE html>
 <!--[if lt IE 7]>
@@ -32,260 +105,334 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 <div id="content">
 
-	<div id="content-header">
-		<h1>All Users</h1>
+<div id="content-header">
+	<h1>Settings</h1>
+</div>
+<!-- #content-header -->
+
+
+<div id="content-container">
+
+<div class="row">
+
+<?php if (empty($errors) !== true): ?>
+	<div class="alert alert-danger">
+		<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+		<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
 	</div>
-	<!-- #content-header -->
+<?php endif; ?>
+<div class="col-md-3 col-sm-4">
+
+	<ul id="myTab" class="nav nav-pills nav-stacked">
+		<li class="active">
+			<a href="#profile-tab" data - toggle = "tab" >
+			<i class="fa fa-user"></i>
+			&nbsp;&nbsp;Profile Settings
+			</a >
+		</li>
+		<li class="">
+			<a href="#messaging" data - toggle = "tab" >
+			<i class="fa fa-envelope"></i>
+			&nbsp;&nbsp;Notifications Settings
+			</a >
+		</li>
+		<li class="">
+			<a href="#payments" data - toggle = "tab" >
+			<i class="fa fa-list-alt"></i>
+			&nbsp;&nbsp; Courses - Majors
+			</a >
+		</li>
+		<li class="">
+			<a href="#reports" data - toggle = "tab" >
+			<i class="fa fa-share-alt"></i>
+			&nbsp;&nbsp; Position
+			</a >
+		</li>
+		<li class="">
+			<a href="#reports" data - toggle = "tab" >
+			<i class="fa fa-warning"></i>
+			&nbsp;&nbsp;Status
+			</a >
+		</li>
+	</ul>
+
+</div>
+<!-- /.col-->
+
+<div class="col-md-9 col-sm-8">
+
+	<div class="tab-content stacked-content">
+		<div class="tab-pane fade active in" id="profile-tab">
+
+			<h3 class=""> Edit Profile Settings </h3>
+
+			<p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit . Aenean commodo ligula eget dolor . Aenean massa
+				.
+				Cum sociis natoque penatibus et magnis dis parturient montes . Lorem ipsum dolor sit amet, consectetuer
+				adipiscing elit .</p>
+
+			<hr>
+
+			<br>
+
+			<form action="./page-settings.html" class="form-horizontal">
 
 
-	<div id="content-container">
-		<?php
-		if (empty($errors) === false) {
-			?>
-			<div class="alert alert-danger">
-				<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-				<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
-			</div>
-		<?php
-		} ?>
-		<div class="row">
+				<div class="form-group">
 
-			<div class="col-md-12">
+					<label class="col-md-3"> Avatar</label>
 
-				<div class="portlet">
-
-					<div class="portlet-header">
-
-						<h3>
-							<i class="fa fa-table"></i>
-							Users
-						</h3>
-
-					</div>
-					<!-- /.portlet-header -->
-
-					<div class="portlet-content">
-						<div class="table-responsive">
-							<table
-								class="table table-striped table-bordered table-hover table-highlight table-checkable"
-								data-provide="datatable"
-								data-display-rows="10"
-								data-info="true"
-								data-search="true"
-								data-length-change="true"
-								data-paginate="true"
-								>
-								<thead>
-								<tr>
-									<th data-filterable="true" data-sortable="true" data-direction="desc">Name</th>
-									<th data-direction="asc" data-filterable="true" data-sortable="false">Email</th>
-									<th data-filterable="true" data-sortable="true">Position</th>
-									<th data-filterable="true" data-sortable="false">Mobile</th>
-									<th data-filterable="false" class="hidden-xs hidden-sm">Profile</th>
-									<th data-filterable="false" class="hidden-xs hidden-sm">Schedule</th>
-									<th data-filterable="false" class="hidden-xs hidden-sm">Data</th>
-								</tr>
-								</thead>
-								<tbody>
-
-								<?php
-								if (empty($errors) === true) {
-									foreach (array_reverse($all_users) as $currentUserData) {
-										include(ROOT_PATH . "app/views/partials/user-table-data-view.html.php");
-									}
-								} ?>
-								</tbody>
-							</table>
+					<div class="col-md-7">
+						<div class="fileupload fileupload-new" data
+						- provides = "fileupload" >
+						<div class="fileupload-new thumbnail" style="width: 180px; height: 180px;"><img
+								src="./img/avatars/avatar-large-1.jpg" alt="Profile Avatar"></div>
+						<div class="fileupload-preview fileupload-exists thumbnail"
+						     style="max-width: 200px; max-height: 200px; line-height: 20px;"></div>
+						<div>
+								<span class="btn btn-default btn-file" disabled><span
+										class="fileupload-new"> Select image </span><span
+										class="fileupload-exists"> Change</span><input type="file"></span>
+							<a href="#" class="btn btn-default fileupload-exists" data - dismiss = "fileupload" > Remove</a >
 						</div>
-						<!-- /.table-responsive -->
-
 					</div>
-					<!-- /.portlet-content -->
-
-
 				</div>
-				<!-- /.portlet -->
-
-			</div>
-			<!-- /.col -->
+				<!-- /.col-->
 
 		</div>
-		<!-- /.row -->
+		<!-- /.form - group-->
 
+		<div class="form-group">
 
-	</div>
-	<!-- /#content-container -->
+			<label class="col-md-3"> First Name </label>
 
-</div>
-<!-- /#content -->
-
-
-<div id="styledModal" class="modal modal-styled fade">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<form method="post" id="create-form" action="" class="form">
-
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h3 class="modal-title">Create User Form</h3>
-				</div>
-				<div class="modal-body">
-					<div class="portlet">
-						<?php
-						if (empty($errors) === false) {
-							?>
-							<div class="alert alert-danger">
-								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-								<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
-								?>
-							</div>
-						<?php
-						} else if (is_create_bttn_Pressed()) {
-							?>
-							<div class="alert alert-success">
-								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-								<strong>User successfully created!</strong> <br/>
-								An email is being sent to the email you just specified, with next steps to follow.
-							</div>
-						<?php } ?>
-
-						<div class="portlet-content">
-
-							<div class="row">
-
-
-								<div class="col-sm-12">
-
-									<div class="form-group">
-										<h5>
-											<i class="fa fa-edit"></i>
-											<label for="first_name">First Name</label>
-										</h5>
-										<input type="text" id="first_name" name="first_name" class="form-control"
-										       value="<?php if (isset($_POST['first_name'])) echo htmlentities($_POST['first_name']); ?>"
-										       autofocus="on" required>
-									</div>
-
-									<div class="form-group">
-										<h5>
-											<i class="fa fa-edit"></i>
-											<label for="last_name">Last Name</label>
-										</h5>
-										<input type="text" id="last_name" name="last_name" class="form-control"
-										       value="<?php if (isset($_POST['last_name'])) echo htmlentities($_POST['last_name']); ?>"
-										       required>
-									</div>
-
-									<div class="form-group">
-
-										<i class="fa fa-envelope"></i>
-										<label for="email">Email</label>
-										<input type="email" required id="email" name="email" class="form-control"
-										       value="<?php if (isset($_POST['email'])) echo htmlentities($_POST['email']); ?>">
-									</div>
-
-									<div class="form-group">
-										<h5>
-											<i class="fa fa-check"></i>
-											Type
-										</h5>
-
-
-										<div class="radio" id="id_tutor_div">
-											<label>
-												<input type="radio" name="user_type" id="id_input_user_type" value="tutor"
-												       class="icheck-input"
-												       checked data-required="true">
-												Tutor
-											</label>
-
-										</div>
-
-
-										<div class="radio">
-											<label>
-												<input type="radio" name="user_type" value="secretary" class="icheck-input"
-												       data-required="true">
-												Secretary
-											</label>
-										</div>
-
-										<div class="radio">
-											<label>
-												<input type="radio" name="user_type" value="admin" class="icheck-input"
-												       data-required="true">
-												Admin
-											</label>
-										</div>
-									</div>
-									<!-- /.form-group -->
-
-									<div class="form-group">
-
-										<h5>
-											<i class="fa fa-tasks"></i>
-											<label for="user_major">Tutor's Major</label>
-										</h5>
-										<select id="user_major" name="user_major" class="form-control">
-											<option value="null">I don&#39;t know.</option>
-											<?php foreach ($majors as $major) { ?>
-												<?php   include(ROOT_PATH . "app/views/partials/majors-select-options-view.html.php");
-											}
-											?>
-										</select>
-									</div>
-
-
-									<div class="form-group">
-
-										<h5>
-											<i class="fa fa-tasks"></i>
-											<label for="teaching_courses_multi">Tutor's Courses</label>
-										</h5>
-
-										<select id="teaching_courses_multi" name="teaching_courses[]" class="form-control"
-										        multiple>
-
-											<?php
-											foreach ($majors as $major) {
-												include(ROOT_PATH . "app/views/partials/courses-select-options-view.html.php");
-											}
-											?>
-
-										</select>
-									</div>
-
-
-								</div>
-							</div>
-
-						</div>
-
-					</div>
-				</div>
-
-				<div class="modal-footer">
-					<button type="button" class="btn btn-tertiary" data-dismiss="modal">Close</button>
-					<input type="hidden" name="hidden_submit_pressed">
-					<button type="submit" class="btn btn-primary">Create</button>
-				</div>
-			</form>
+			<div class="col-md-7">
+				<input type="text" name="first-name" value="Rod" class="form-control">
+			</div>
+			<!-- /.col-->
 
 		</div>
-		<!-- /.modal-content -->
+		<!-- /.form - group-->
+
+		<div class="form-group">
+
+			<label class="col-md-3"> Last Name </label>
+
+			<div class="col-md-7">
+				<input type="text" name="last-name" value="Howard" class="form-control">
+			</div>
+			<!-- /.col-->
+
+		</div>
+		<!-- /.form - group-->
+
+		<div class="form-group">
+
+			<label class="col-md-3"> Email Address </label>
+
+			<div class="col-md-7">
+				<input type="text" name="email-address" value="rod@example.com" class="form-control">
+			</div>
+			<!-- /.col-->
+
+		</div>
+		<!-- /.form - group-->
+
+		<div class="form-group">
+
+			<label class="col-md-3"> Website</label>
+
+			<div class="col-md-7">
+				<input type="text" name="website" value="http://jumpstartthemes.com" class="form-control">
+			</div>
+			<!-- /.col-->
+
+		</div>
+		<!-- /.form - group-->
+
+		<div class="form-group">
+
+			<label for="about-textarea" class="col-md-3"> About You </label>
+
+			<div class="col-md-7">
+				<textarea id="about-textarea" name="about-you" rows="6" class="form-control" disabled> Lorem ipsum
+					dolor sit
+					amet, consectetuer adipiscing elit . Aenean commodo ligula eget dolor . Aenean massa . Cum sociis
+					natoque penatibus et magnis dis parturient montes .</textarea>
+
+				<div class="charleft originalTextareaInfo" style="width: 658px;"> 193 characters | 31 words</div>
+			</div>
+			<!-- /.col-->
+
+		</div>
+		<!-- /.form - group-->
+
+		<br>
+
+		<div class="form-group">
+
+			<div class="col-md-7 col-md-push-3">
+				<button type="submit" class="btn btn-primary"> Save Changes</button>
+				&nbsp;
+				<button type="reset" class="btn btn-default"> Cancel</button>
+			</div>
+			<!-- /.col-->
+
+		</div>
+		<!-- /.form - group-->
+
+		</form >
+
+
 	</div>
-	<!-- /.modal-dialog -->
+
+	<div class="tab-pane fade" id="messaging">
+		<h3> Notification Settings </h3>
+
+		<p> Enable / Disable Email Notifications for</p>
+
+		<p> Enable / Disable sms notifications .</p>
+		<hr/>
+		<ul>
+			<li> New workshop session added to schedule</li>
+			<li> You have a workshop session in 3 hours, with x student, for x courses</li>
+			<li> Workshop session is canceled by students</li>
+		</ul>
+
+	</div>
+
+	<div class="tab-pane fade" id="payments">
+		<h3> Major</h3>
+
+		<p> List of Majors created </p>
+
+		<p> LIst of courses created .</p>
+	</div>
+
+	<div class="tab-pane fade" id="reports">
+		<h3> Reports Settings </h3>
+
+		<p> Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny
+			pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard
+			locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid
+			8-bit cred pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy retro
+			mlkshk vice blog. Scenester cred you probably haven't heard of them, vinyl craft beer blog stumptown .
+			Pitchfork sustainable tofu synth chambray yr .</p>
+
+		<p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit . Aenean commodo ligula eget dolor . Aenean massa .
+			Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus . Donec quam felis,
+			ultricies nec, pellentesque eu, pretium quis, sem . Nulla consequat massa quis enim . Donec pede justo,
+			fringilla vel, aliquet nec, vulputate eget, arcu . In enim justo, rhoncus ut, imperdiet a, venenatis vitae,
+			justo . Nullam dictum felis eu pede mollis pretium .</p>
+	</div>
+
 </div>
-<!-- /.modal -->
+
 </div>
-<!-- #wrapper -->
+<!-- /.col-->
+
+</div>
+<!-- /.row-->
+
+
+</div>
+<!-- /#content-container -->
+
+
+</div>
 
 <?php include ROOT_PATH . "app/views/footer.php"; ?>
+</div>
+<!-- /#wrapper -->
+
+
 <?php include ROOT_PATH . "app/views/assets/footer_common.php"; ?>
 
-<script src="<?php echo BASE_URL; ?>app/assets/js/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="<?php echo BASE_URL; ?>app/assets/js/plugins/datatables/DT_bootstrap.js"></script>
+<script src="<?php echo BASE_URL; ?>app/assets/js/plugins/select2/select2.js"></script>
+<script src="<?php echo BASE_URL; ?>app/assets/js/plugins/icheck/jquery.icheck.js"></script>
+
+<script src="<?php echo BASE_URL; ?>app/assets/js/plugins/datepicker/bootstrap-datepicker.js"></script>
+<script src="<?php echo BASE_URL; ?>app/assets/js/plugins/timepicker/bootstrap-timepicker.js"></script>
+<script src="<?php echo BASE_URL; ?>app/assets/js/plugins/simplecolorpicker/jquery.simplecolorpicker.js"></script>
+<script src="<?php echo BASE_URL; ?>app/assets/js/plugins/textarea-counter/jquery.textarea-counter.js"></script>
+<script src="<?php echo BASE_URL; ?>app/assets/js/plugins/autosize/jquery.autosize.min.js"></script>
+<script src="<?php echo BASE_URL; ?>app/assets/js/demos/form-extended.js"></script>
+
+
+<script type="text/javascript">
+	jQuery(function () {
+		$("#create-form").submit(function (event) {
+			var error_last_name = validate($("#last_name"), /^[a-zA-Z]{1,16}$/);
+			var error_first_name = validate($("#first_name"), /^[a-zA-Z]{1,16}$/);
+
+//			if ($('input[name=user_type').val() === "tutor") {
+//				alert("tutor");
+//			}
+			if (!error_last_name || !error_first_name) {
+				//event.preventDefault();
+			}
+		});
+
+		setTimeout(function () {
+			$("#bttn-styledModal").trigger("click");
+			//window.location.href = $href;
+		}, 10);
+
+		$("#user_major").select2();
+
+		// TODO: add error messages
+		// TODO: add option for second major
+		// TODO: check email ^ user major & course teaching are inputt if user is tutor type.
+		// TODO: hide major & courses & user type NOT tutor
+		var validate = function (element, regex) {
+			var str = $(element).val();
+			var $parent = $(element).parent();
+
+			if (regex.test(str)) {
+				$parent.attr('class', 'form-group has-success');
+				return true;
+			} else {
+				$parent.attr('class', 'form-group has-error');
+				return false;
+			}
+		};
+
+		$("#last_name").blur(function () {
+			validate(this, /^[a-zA-Z]{1,16}$/);
+		});
+
+		$("#first_name").blur(function () {
+			validate(this, /^[a-zA-Z]{1,16}$/);
+		});
+
+
+		$('input[name=user_type').on('ifChecked', function (event) {
+			if ($(this).val() === "tutor") {
+				$("#user_major").select2("enable", true);
+				$("#teaching_courses_multi").select2("enable", true);
+			} else {
+				$("#user_major").select2("enable", false);
+				$("#teaching_courses_multi").select2("enable", false);
+			}
+		});
+
+		$('input[name=iCheck]').each(function () {
+			var self = $(this),
+				label = self.next(),
+				label_text = label.text();
+
+			label.remove();
+			self.iCheck({
+				checkboxClass: 'icheckbox_line-red',
+				radioClass: 'iradio_line-red',
+				insert: '<div class="icheck_line-icon"></div>' + label_text
+			});
+		});
+
+	});
+
+
+</script>
 
 </body>
 </html>
-

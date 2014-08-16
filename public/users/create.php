@@ -335,8 +335,6 @@ require ROOT_PATH . 'app/views/sidebar.php';
 </div>
 <!-- /#wrapper -->
 
-</body>
-</html>
 
 <?php include ROOT_PATH . "app/views/assets/footer_common.php"; ?>
 
@@ -425,3 +423,6 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 
 </script>
+
+</body>
+</html>

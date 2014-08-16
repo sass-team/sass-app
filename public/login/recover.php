@@ -36,7 +36,7 @@ ob_start();
 // TODO: sql make 'img' of database to NOT NULL & refactor name to 'img_location'
 require '../app/init.php';
 
-// if there is an active log in process redirect to edit.php; load page only if no
+// if there is an active log in process redirect to overview.php; load page only if no
 // logged in user exists
 $general->logged_in_protect();
 $page_title = "Log In";

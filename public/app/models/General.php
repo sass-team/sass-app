@@ -27,10 +27,10 @@ class General {
 	 * @return bool
 	 */
 	public function logged_in() {
-		return isset($_SESSION['email']) ? true : false;
+		return isset($_SESSION['id']) ? true : false;
 	}
 
-	#if not logged in then redirect to edit.php
+	#if not logged in then redirect to overview.php
 	public function logged_out_protect() {
 		if ($this->logged_in() === false) {
 			header('Location: ' . BASE_URL . 'login');
