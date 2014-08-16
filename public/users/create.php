@@ -36,6 +36,7 @@ if (isSaveBttnPressed()) {
 function isSaveBttnPressed() {
 	return isset($_POST['hidden_submit_pressed']) && empty($_POST['hidden_submit_pressed']);
 }
+
 $page_title = "Edit";
 $section = "users";
 ?>
@@ -53,10 +54,10 @@ $section = "users";
 <?php require ROOT_PATH . 'app/views/head.php'; ?>
 <body>
 <div id="wrapper">
-	<?php
-	require ROOT_PATH . 'app/views/header.php';
-	require ROOT_PATH . 'app/views/sidebar.php';
-	?>
+<?php
+require ROOT_PATH . 'app/views/header.php';
+require ROOT_PATH . 'app/views/sidebar.php';
+?>
 
 
 <div id="content">
@@ -332,6 +333,8 @@ $section = "users";
 
 <?php include ROOT_PATH . "app/views/footer.php"; ?>
 </div>
+<!-- /#wrapper -->
+
 </body>
 </html>
 

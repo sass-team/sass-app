@@ -30,7 +30,19 @@ $mobile = $tempUser->getMobileNum();
 	<td><?php echo $position ?></td>
 	<td><?php echo $mobile ?></td>
 	<?php // TODO: CREATE public page for profile. crate page to edit user data? ?>
-	<td class="hidden-xs hidden-sm">Link</td>
-	<td class="hidden-xs hidden-sm">Link</td>
-	<td class="hidden-xs hidden-sm"><center><a href="#"><i class="fa fa-edit fa-lg"></i></a></center></td>
+	<td class="hidden-xs hidden-sm">
+		<a data-toggle="modal" href="#" class="btn btn-default btn-sm center-block">
+			<i class="fa fa-calendar"></i> View
+		</a>
+	</td>
+	<td class="hidden-xs hidden-sm">
+		<a data-toggle="modal" href="#" class="btn btn-default btn-sm center-block">
+			<i class="fa fa-calendar"></i> View
+		</a>
+	</td>
+	<td class="hidden-xs hidden-sm">
+		<a data-toggle="modal" href="#styledModal" class="btn btn-default btn-sm center-block">
+			<i class="fa fa-edit"></i> Edit
+		</a>
+	</td>
 </tr>
