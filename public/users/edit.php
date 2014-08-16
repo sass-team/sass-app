@@ -43,9 +43,7 @@ if (isset($_GET['id']) && !preg_match("/^[0-9]+$/", $_GET['id'])) {
 }
 
 try {
-	$userData = $users->fetch_info("img_loc, f_name, l_name", "user", "id", $userId);
-	var_dump($userData);
-
+	$userData = $users->getData($userId);
 	$courseDb = new Courses($db->getDbConnection());
 	$courses = $courseDb->getAll();
 	$majors = $courseDb->getMajors();
@@ -131,7 +129,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 			</a >
 		</li>
 		<li class="">
-			<a href="#messaging" data - toggle = "tab" >
+			<a href="#notifications" data - toggle = "tab" >
 			<i class="fa fa-envelope"></i>
 			&nbsp;&nbsp;Notifications Settings
 			</a >
@@ -186,7 +184,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 						<div class="fileupload fileupload-new" data
 						- provides = "fileupload" >
 						<div class="fileupload-new thumbnail" style="width: 180px; height: 180px;"><img
-								src="./img/avatars/avatar-large-1.jpg" alt="Profile Avatar"></div>
+								src="<?php echo BASE_URL . $userData["img_loc"]; ?>" alt="Profile Avatar"></div>
 						<div class="fileupload-preview fileupload-exists thumbnail"
 						     style="max-width: 200px; max-height: 200px; line-height: 20px;"></div>
 						<div>
@@ -207,7 +205,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 			<label class="col-md-3"> First Name </label>
 
 			<div class="col-md-7">
-				<input type="text" name="first-name" value="Rod" class="form-control">
+				<input type="text" name="first-name" value="<?php echo $userData['f_name']; ?>" class="form-control">
 			</div>
 			<!-- /.col-->
 
@@ -219,7 +217,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 			<label class="col-md-3"> Last Name </label>
 
 			<div class="col-md-7">
-				<input type="text" name="last-name" value="Howard" class="form-control">
+				<input type="text" name="last-name" value=""<?php echo $userData['l_name']; ?>"" class="form-control">
 			</div>
 			<!-- /.col-->
 
@@ -231,7 +229,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 			<label class="col-md-3"> Email Address </label>
 
 			<div class="col-md-7">
-				<input type="text" name="email-address" value="rod@example.com" class="form-control">
+				<input type="text" name="email-address" value=""<?php echo $userData['email']; ?>"" class="form-control">
 			</div>
 			<!-- /.col-->
 
@@ -243,7 +241,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 			<label class="col-md-3"> Website</label>
 
 			<div class="col-md-7">
-				<input type="text" name="website" value="http://jumpstartthemes.com" class="form-control">
+				<input type="text" name="website" value="" class="form-control">
 			</div>
 			<!-- /.col-->
 
@@ -255,10 +253,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 			<label for="about-textarea" class="col-md-3"> About You </label>
 
 			<div class="col-md-7">
-				<textarea id="about-textarea" name="about-you" rows="6" class="form-control" disabled> Lorem ipsum
-					dolor sit
-					amet, consectetuer adipiscing elit . Aenean commodo ligula eget dolor . Aenean massa . Cum sociis
-					natoque penatibus et magnis dis parturient montes .</textarea>
+				<textarea id="about-textarea" name="about-you" rows="6" class="form-control" disabled><<?php echo $userData['profile_description']; ?></textarea>
 
 				<div class="charleft originalTextareaInfo" style="width: 658px;"> 193 characters | 31 words</div>
 			</div>
@@ -286,7 +281,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 	</div>
 
-	<div class="tab-pane fade" id="messaging">
+	<div class="tab-pane fade" id="notifications">
 		<h3> Notification Settings </h3>
 
 		<p> Enable / Disable Email Notifications for</p>
