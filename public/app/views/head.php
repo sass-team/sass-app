@@ -19,7 +19,7 @@
     <!-- remove when on production server, and uncomment above. -->
     <link href="<?php echo BASE_URL; ?>app/assets/css/font-awesome.min.css" rel="stylesheet">
     <link href="<?php echo BASE_URL; ?>app/assets/css/bootstrap.min.css" rel="stylesheet">
-    <link href="<?php echo BASE_URL; ?>app/assets/js/libs/css/ui-lightness/jquery-ui-1.9.2.custom.css" rel="stylesheet">
+    <link href="<?php echo BASE_URL; ?>app/assets/js/libs/css/jquery-ui.css" rel="stylesheet">
 
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/js/plugins/icheck/skins/minimal/blue.css"
 	      type="text/css"/>
