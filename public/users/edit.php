@@ -123,31 +123,31 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 	<ul id="myTab" class="nav nav-pills nav-stacked">
 		<li class="active">
-			<a href="#profile-tab" data - toggle = "tab" >
+			<a href="#profile-tab" data-toggle="tab" >
 			<i class="fa fa-user"></i>
 			&nbsp;&nbsp;Profile Settings
 			</a >
 		</li>
 		<li class="">
-			<a href="#notifications" data - toggle = "tab" >
+			<a href="#notifications" data-toggle="tab" >
 			<i class="fa fa-envelope"></i>
 			&nbsp;&nbsp;Notifications Settings
 			</a >
 		</li>
 		<li class="">
-			<a href="#payments" data - toggle = "tab" >
+			<a href="#payments" data-toggle="tab" >
 			<i class="fa fa-list-alt"></i>
 			&nbsp;&nbsp; Courses - Majors
 			</a >
 		</li>
 		<li class="">
-			<a href="#reports" data - toggle = "tab" >
-			<i class="fa fa-share-alt"></i>
+			<a href="#reports" data-toggle="tab" >
+			<i class="fa fa-flag-o"></i>
 			&nbsp;&nbsp; Position
 			</a >
 		</li>
 		<li class="">
-			<a href="#reports" data - toggle = "tab" >
+			<a href="#reports" data-toggle="tab" >
 			<i class="fa fa-warning"></i>
 			&nbsp;&nbsp;Status
 			</a >
