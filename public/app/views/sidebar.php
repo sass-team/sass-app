@@ -81,16 +81,16 @@
 								Overview
 							</a>
 						</li>
+                        <li>
+                            <a href="<?php echo BASE_URL; ?>users#schedule">
+                                <i class="fa fa-calendar"></i>
+                                Schedule
+                            </a>
+                        </li>
 						<li>
 							<a href="<?php echo BASE_URL; ?>users/create">
 								<i class="fa fa-edit"></i>
 								Create
-							</a>
-						</li>
-						<li>
-							<a href="<?php echo BASE_URL; ?>users#schedule">
-								<i class="fa fa-calendar"></i>
-								Schedule
 							</a>
 						</li>
 					</ul>
