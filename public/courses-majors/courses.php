@@ -3,7 +3,7 @@ require '../app/init.php';
 $general->loggedOutProtect();
 
 try {
-	$course_db = new Courses($db->getDbConnection());
+	$course_db = new Courses($db->getConnection());
 	$courses = $course_db->getCourses();
 } catch (Exception $e) {
 	$errors[] = $e->getMessage();
@@ -11,16 +11,27 @@ try {
 
 $page_title = "Manage Courses";
 $section = "courses-majors";
-
-
-require ROOT_PATH . 'app/views/head.php';
-
-require ROOT_PATH . 'app/views/header.php';
-
-require ROOT_PATH . 'app/views/sidebar.php';
 ?>
 
-<div id="content">
+<!DOCTYPE html>
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js"> <!--<![endif]-->
+<?php require ROOT_PATH . 'app/views/head.php'; ?>
+<body>
+<div id="wrapper">
+	<?php
+	require ROOT_PATH . 'app/views/header.php';
+	require ROOT_PATH . 'app/views/sidebar.php';
+	?>
+
+
+	<div id="content">
 
 		<div id="content-header">
 			<h1>All Courses</h1>
@@ -114,9 +125,10 @@ require ROOT_PATH . 'app/views/sidebar.php';
 	</div>
 	<!-- /.col -->
 
-	</div> <!-- #wrapper -->
-
 <?php include ROOT_PATH . "app/views/footer.php"; ?>
+</div>
+<!-- #wrapper -->
+
 <?php include ROOT_PATH . "app/views/assets/footer_common.php"; ?>
 
 <script src="<?php echo BASE_URL; ?>app/assets/js/plugins/datatables/jquery.dataTables.min.js"></script>
