@@ -20,56 +20,56 @@ $section = "dashboard";
 <?php require ROOT_PATH . 'app/views/head.php'; ?>
 <body>
 <div id="wrapper">
-<?php
-require ROOT_PATH . 'app/views/header.php';
-require ROOT_PATH . 'app/views/sidebar.php';
-?>
+	<?php
+	require ROOT_PATH . 'app/views/header.php';
+	require ROOT_PATH . 'app/views/sidebar.php';
+	?>
 
 
-<div id="content">
+	<div id="content">
 
-<div id="content-header">
-	<h1>Schedule</h1>
-</div>
-<!-- #content-header -->
-
-
-<div id="content-container">
+		<div id="content-header">
+			<h1>Schedule</h1>
+		</div>
+		<!-- #content-header -->
 
 
-<div class="portlet">
+		<div id="content-container">
 
-	<div class="portlet-header">
 
-		<h3>
-			<i class="fa fa-calendar"></i>
-			Full Workshop Session Calendar
-		</h3>
+			<div class="portlet">
+
+				<div class="portlet-header">
+
+					<h3>
+						<i class="fa fa-calendar"></i>
+						Full Workshop Session Calendar
+					</h3>
+
+				</div>
+				<!-- /.portlet-header -->
+
+				<div class="portlet-content">
+
+
+					<div id="full-calendar"></div>
+
+
+				</div>
+				<!-- /.portlet-content -->
+
+			</div>
+			<!-- /.portlet -->
+
+		</div>
+		<!-- /#content-container -->
+
 
 	</div>
-	<!-- /.portlet-header -->
-
-	<div class="portlet-content">
+	<!-- #content -->
 
 
-		<div id="full-calendar"></div>
-
-
-	</div>
-	<!-- /.portlet-content -->
-
-</div>
-<!-- /.portlet -->
-
-</div>
-<!-- /#content-container -->
-
-
-</div>
-<!-- #content -->
-
-
-<?php include ROOT_PATH . "app/views/footer.php"; ?>
+	<?php include ROOT_PATH . "app/views/footer.php"; ?>
 </div>
 <!-- #wrapper<!-- #content -->
 

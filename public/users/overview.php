@@ -2,13 +2,6 @@
 require '../app/init.php';
 $general->loggedOutProtect();
 
-// redirect if user elevation is not that of secretary or tutor
-if (!$user->isTutor() && !$user->isAdmin()) {
-	header('Location: ' . BASE_URL);
-	exit();
-}
-
-
 $page_title = "View Users";
 $section = "users";
 
@@ -107,15 +100,15 @@ function isModifyBttnPressed() {
 						<div class="portlet-content">
 							<div class="table-responsive">
 								<table
-									class="table table-striped table-bordered table-hover table-highlight table-checkable"
-									data-provide="datatable"
-									data-display-rows="10"
-									data-info="true"
-									data-search="true"
-									data-length-change="true"
-									data-paginate="true"
-									id="usersTable"
-									>
+									 class="table table-striped table-bordered table-hover table-highlight table-checkable"
+									 data-provide="datatable"
+									 data-display-rows="10"
+									 data-info="true"
+									 data-search="true"
+									 data-length-change="true"
+									 data-paginate="true"
+									 id="usersTable"
+									 >
 									<thead>
 									<tr>
 										<th data-filterable="true" data-sortable="true" data-direction="desc">Name</th>
@@ -123,8 +116,15 @@ function isModifyBttnPressed() {
 										<th data-filterable="true" data-sortable="true">Position</th>
 										<th data-filterable="true" data-sortable="false">Mobile</th>
 										<th data-filterable="false" class="hidden-xs hidden-sm">Profile</th>
-										<th data-filterable="false" class="hidden-xs hidden-sm">Schedule</th>
-										<th data-filterable="false" class="hidden-xs hidden-sm">Data</th>
+
+										<?php if (!$user->isTutor()): ?>
+											<th data-filterable="false" class="hidden-xs hidden-sm">Schedule</th>
+										<?php endif; ?>
+
+
+										<?php if ($user->isAdmin()): ?>
+											<th data-filterable="false" class="hidden-xs hidden-sm">Data</th>
+										<?php endif; ?>
 									</tr>
 									</thead>
 									<tbody>
@@ -245,8 +245,8 @@ function isModifyBttnPressed() {
 
 		$('input[name=iCheck]').each(function () {
 			var self = $(this),
-				label = self.next(),
-				label_text = label.text();
+				 label = self.next(),
+				 label_text = label.text();
 
 			label.remove();
 			self.iCheck({

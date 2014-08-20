@@ -64,38 +64,41 @@
 				</ul>
 
 			</li>
-			<?php if ($user->isAdmin()) { ?>
-				<li class="dropdown <?php if ($section == "users") {
-					echo "active";
-				} ?>">
-					<a href="javascript:;">
-						<i class="fa fa-group"></i>
-						Users
-						<span class="caret"></span>
-					</a>
+			<li class="dropdown <?php if ($section == "users") {
+				echo "active";
+			} ?>">
+				<a href="javascript:;">
+					<i class="fa fa-group"></i>
+					Users
+					<span class="caret"></span>
+				</a>
 
-					<ul class="sub-nav">
+				<ul class="sub-nav">
+					<li>
+						<a href="<?php echo BASE_URL; ?>users/overview">
+							<i class="fa fa-group"></i>
+							Overview
+						</a>
+					</li>
+
+					<?php if ($user->isAdmin()): ?>
 						<li>
-							<a href="<?php echo BASE_URL; ?>users/overview">
-								<i class="fa fa-group"></i>
-								Overview
+							<a href="<?php echo BASE_URL; ?>users#schedule">
+								<i class="fa fa-calendar"></i>
+								Schedule
 							</a>
 						</li>
-                        <li>
-                            <a href="<?php echo BASE_URL; ?>users#schedule">
-                                <i class="fa fa-calendar"></i>
-                                Schedule
-                            </a>
-                        </li>
 						<li>
 							<a href="<?php echo BASE_URL; ?>users/create">
 								<i class="fa fa-edit"></i>
 								Create
 							</a>
 						</li>
-					</ul>
-				</li>
-			<?php } ?>
+					<?php endif; ?>
+
+
+				</ul>
+			</li>
 
 			<?php if ($user->isAdmin()) { ?>
 				<li class="dropdown <?php if ($section == "courses-majors") {

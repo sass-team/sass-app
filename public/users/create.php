@@ -2,6 +2,13 @@
 require '../app/init.php';
 $general->loggedOutProtect();
 
+// redirect if user elevation is not that of secretary or tutor
+if (!$user->isAdmin()) {
+	header('Location: ' . BASE_URL . "error-403");
+	exit();
+}
+
+
 try {
 	$course_db = new Courses($db->getConnection());
 	$courses = $course_db->getAll();

@@ -10,6 +10,7 @@ abstract class User
 	const ADMIN = 'admin';
 	const TUTOR = 'tutor';
 	const SECRETARY = 'secretary';
+	private $users;
 	private $id;
 	private $firstName;
 	private $lastName;
@@ -60,7 +61,7 @@ abstract class User
 	 */
 	private function setLastName($lastName) {
 		$this->lastName = $lastName;
-	} // end fetch_info
+	}
 
 	/**
 	 * @param mixed $avatarImgLoc
@@ -81,7 +82,7 @@ abstract class User
 	 */
 	private function setDateAccountCreated($dateAccountCreated) {
 		$this->dateAccountCreated = $dateAccountCreated;
-	}
+	} // end fetch_info
 
 	/**
 	 * @param mixed $mobileNum
@@ -102,7 +103,57 @@ abstract class User
 	 */
 	private function setUserType($userType) {
 		$this->userType = $userType;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getUsers() {
+		if (!isset($this->users)) {
+			$this->retrieveUsers();
+		}
+
+		return $this->users;
+	}
+
+	/**
+	 * @param mixed $users
+	 */
+	public function setUsers($users) {
+		$this->users = $users;
+	}
+
+	protected  function retrieveUsers() {
+		$query = "SELECT user.id, user.f_name, user.l_name, user.img_loc, user.profile_description, user.date, user.mobile, user.email, user_types.type
+		         FROM `" . DB_NAME . "`.user
+						LEFT OUTER JOIN user_types ON user.`user_types_id` = `user_types`.id";
+		$query = $this->getDb()->getConnection()->prepare($query);
+
+		try {
+			$query->execute();
+			$rows = $query->fetchAll();
+
+			$this->setUsers($rows);
+		} catch (PDOException $e) {
+			throw new Exception("Something terrible happened. Could not retrieve users data from database.: " . $e->getMessage());
+		} // end catch
 	} // end __construct
+
+	/**
+	 * @return mixed
+	 */
+	public function getDb() {
+		return $this->db;
+	}
+
+	// end function login
+
+	/**
+	 * @param mixed $db
+	 */
+	public function setDb($db) {
+		$this->db = $db;
+	}
 
 	function updateProfile($first_name, $last_name, $prevMobileNum, $new_mobile_num, $description) {
 		$first_name = trim($first_name);
@@ -144,14 +195,12 @@ abstract class User
 		}
 	}
 
-	// end function login
-
 	/**
 	 * @return mixed
 	 */
 	public function getId() {
 		return $this->id;
-	}
+	} // end function get_data
 
 	function isProfileDataCorrect($first_name, $last_name, $mobile_num) {
 		$errors = array();
@@ -173,20 +222,6 @@ abstract class User
 		} else {
 			return $errors;
 		}
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getDb() {
-		return $this->db;
-	} // end function get_data
-
-	/**
-	 * @param mixed $db
-	 */
-	public function setDb($db) {
-		$this->db = $db;
 	}
 
 	public function updateAvatarImg($avatar_img_loc) {
@@ -259,8 +294,7 @@ abstract class User
 		}
 	}
 
-	public function validate_email($email) {
-		// TODO: validate using phpmailer.
+	public function validateEmail($email) {
 		if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
 			throw new Exception("Please enter a valid email address");
 		} else if ($this->getDb()->emailExists($email)) {

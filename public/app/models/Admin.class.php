@@ -40,29 +40,45 @@ class Admin extends User
 		$this->users = $users;
 	}
 
-	private function retrieveUsers() {
-		$query = "SELECT user.id, user.f_name, user.l_name, user.img_loc, user.profile_description, user.date, user.mobile, user.email, user_types.type
-		         FROM `" . DB_NAME . "`.user
-						LEFT OUTER JOIN user_types ON user.`user_types_id` = `user_types`.id";
-		$query = $this->getDb()->getConnection()->prepare($query);
+	/**
+	 * Returns a single column from the next row of a result set or FALSE if there are no more rows.
+	 *
+	 * @param $what
+	 * @param $field
+	 * @param $value
+	 * @return mixed
+	 * @throws InvalidArgumentException
+	 */
+	public function updateInfo($what, $field, $where, $value) {
+		// I have only added few, but you can add more. However do not add 'password' even though the parameters will only be given by you and not the user, in our system.
+		$allowed = array('id', 'username', 'f_name', 'l_name', 'email', 'COUNT(mobile)',
+			 'mobile', 'user', 'gen_string', 'COUNT(gen_string)', 'COUNT(id)', 'img_loc');
+		if (!in_array($what, $allowed, true) || !in_array($field, $allowed, true)) {
+			throw new InvalidArgumentException;
+		} else {
+			try {
+				$sql = "SELECT $what FROM `" . DB_NAME . "`.`" . $field . "` WHERE $where = ?";
+				UPDATE `sass-ms`.`user` SET `f_name`='tutor' WHERE `id`='8' and`user_types_id`='9';
 
-		try {
-			$query->execute();
-			$rows = $query->fetchAll();
+				UPDATE `" . DB_NAME . "`.`" . $field . "` SET `$what`= ? WHERE `id`='8' and`user_types_id`='9';
 
-			$this->setUsers($rows);
-		} catch (PDOException $e) {
-			throw new Exception("Something terrible happened. Could not retrieve users data from database.: " . $e->getMessage());
-		} // end catch
-	}
+				$query = $this->getConnection()->prepare($sql);
+				$query->bindValue(1, $value, PDO::PARAM_STR);
+				$query->execute();
+				return $query->fetchColumn();
+				//return $sql;
+			} catch (Exception $e) {
+				throw new Exception($e->getMessage());
+			}
 
-
+		}
+	} // end getAllData
 
 
 	public function createUser($first_name, $last_name, $email, $user_type, $user_major_ext, $teaching_courses) {
 		$this->validate_name($first_name);
 		$this->validate_name($last_name);
-		$this->validate_email($email);
+		$this->validateEmail($email);
 		$this->validate_user_type($user_type);
 		//$this->validate_user_major($user_major_ext);
 		//$this->validate_teaching_course($teaching_courses);
