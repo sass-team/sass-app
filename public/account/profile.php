@@ -74,7 +74,7 @@ $section = "account";
 
 
 							<ul class="icons-list">
-								<li><i class="icon-li fa fa-envelope"></i> <?php echo $_SESSION['email']; ?></li>
+								<li><i class="icon-li fa fa-envelope"></i> <?php echo $user->getEmail(); ?></li>
 								<li><i class="icon-li fa fa-phone"></i> <?php echo $user->getMobileNum() ?></li>
 							</ul>
 							<?php if ($user->is_tutor()) { ?>
@@ -113,7 +113,7 @@ $section = "account";
 <!-- #wrapper -->
 
 <?php include ROOT_PATH . "app/views/footer.php"; ?>
-</div>
+
 </body>
 </html>
 
