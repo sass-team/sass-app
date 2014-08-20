@@ -119,7 +119,7 @@ abstract class User
 		}
 
 
-		if ($prevMobileNum !== $new_mobile_num && $this->fetchInfo('COUNT(mobile)', 'user', 'mobile', $new_mobile_num) != 0) {
+		if ($prevMobileNum !== $new_mobile_num && $this->db->fetchInfo('COUNT(mobile)', 'user', 'mobile', $new_mobile_num) != 0) {
 			throw new Exception("Mobile entered number already exists in database."); // the array of errors messages
 		}
 

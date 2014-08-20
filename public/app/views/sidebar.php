@@ -55,7 +55,7 @@
 					</li>
 					<?php if ($user->isTutor()) { ?>
 						<li>
-							<a href="<?php echo BASE_URL; ?>page-calendar.html">
+							<a href="<?php echo BASE_URL; ?>account/schedule">
 								<i class="fa fa-calendar"></i>
 								My Schedule
 							</a>
