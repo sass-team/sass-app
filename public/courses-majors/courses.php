@@ -9,13 +9,14 @@ try {
 	$errors[] = $e->getMessage();
 }
 
-<<<<<<< HEAD
-require ROOT_PATH . 'app/views/head.php';
-=======
 $page_title = "Manage Courses";
 $section = "courses-majors";
+
+
+require ROOT_PATH . 'app/views/head.php';
+
 require ROOT_PATH . 'app/views/header.php';
->>>>>>> 5e0a6b6bd1a88043be4fec924cd31cd0be2db499
+
 require ROOT_PATH . 'app/views/sidebar.php';
 ?>
 

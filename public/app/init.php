@@ -8,10 +8,10 @@ ob_start();
 session_start();
 
 require "config/app.php";
+
 // identical to require; but php will include it only if it has not already been included
 require_once ROOT_PATH . 'app/config/database.class.php';
 require_once ROOT_PATH . "app/models/user.class.php";
-//require_once ROOT_PATH . "app/models/users.class.php";
 require_once ROOT_PATH . "app/models/admin.class.php";
 require_once ROOT_PATH . "app/models/tutor.class.php";
 require_once ROOT_PATH . "app/models/secretary.class.php";
@@ -27,7 +27,6 @@ try {
 
 
 // retrieves data if a user is logged in
-// TODO: CEHCK IF DB IS INITALIZED.
 	if ($general->loggedIn() === true) {
 
 		// instantiate user class & connect to db.

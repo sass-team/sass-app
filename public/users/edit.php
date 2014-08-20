@@ -111,8 +111,8 @@ try {
 //    }
 	}
 
-//    $courseDb = new Courses($db->getDbConnection());
-//    $courses = $courseDb->getAll();
+	$courseDb = new Courses($db->getConnection());
+	$courses = $courseDb->getAll();
 //    $majors = $courseDb->getMajors();
 	//$majors = array_unique(array_column($courses, 'Major'));
 	//$majors_extensions = array_unique(array_column($courses, 'Extension'));
@@ -190,7 +190,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 		<li>
 			<a href="#courses-majors" data-toggle="tab">
 				<i class="fa fa-list-alt"></i>
-				&nbsp;&nbsp; Courses - Majors
+				&nbsp;&nbsp; Teaching Courses
 			</a>
 		</li>
 		<li>
@@ -206,7 +206,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 			</a>
 		</li>
 		<li>
-			<a href="#position" data-toggle="tab">
+			<a href="#notifications" data-toggle="tab">
 				<i class="fa fa-envelope"></i>
 				&nbsp;&nbsp;Notifications Settings
 			</a>
@@ -219,195 +219,269 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 <div class="col-md-9 col-sm-8">
 
-	<div class="tab-content stacked-content">
+<div class="tab-content stacked-content">
 
-		<div class="tab-pane fade in active" id="profile-tab">
+<div class="tab-pane fade in active" id="profile-tab">
 
-			<h3 class=""> Edit Profile Settings </h3>
+	<h3 class=""> Edit Profile Settings </h3>
 
-			<p>Here you will find all the changes that you can make for this user. The disabled fields are shown only
-				for your convenience--to help you identify the user.</p>
+	<p>Here you will find all the changes that you can make for this user. The disabled fields are shown only
+		for your convenience--to help you identify the user.</p>
 
-			<hr/>
+	<hr/>
 
-			<br/>
+	<br/>
 
-			<form action="<?php echo BASE_URL . 'users/edit/:' . $currUser->getId(); ?>"
-			      class="form-horizontal" method="post">
+	<form action="<?php echo BASE_URL . 'users/edit/:' . $currUser->getId(); ?>"
+	      class="form-horizontal" method="post">
 
-				<div class="form-group">
+		<div class="form-group">
 
-					<label class="col-md-3"> Avatar</label>
+			<label class="col-md-3"> Avatar</label>
 
-					<div class="col-md-7">
-						<div class="fileupload fileupload-new" data-provides="fileupload">
-							<div class="fileupload-new thumbnail" style="width: 180px; height: 180px;"><img
-									 src="<?php echo BASE_URL . $currUser->getAvatarImgLoc(); ?>" alt="Profile Avatar"/>
-							</div>
-							<div class="fileupload-preview fileupload-exists thumbnail"
-							     style="max-width: 200px; max-height: 200px; line-height: 20px;"></div>
-							<div>
+			<div class="col-md-7">
+				<div class="fileupload fileupload-new" data-provides="fileupload">
+					<div class="fileupload-new thumbnail" style="width: 180px; height: 180px;"><img
+							 src="<?php echo BASE_URL . $currUser->getAvatarImgLoc(); ?>" alt="Profile Avatar"/>
+					</div>
+					<div class="fileupload-preview fileupload-exists thumbnail"
+					     style="max-width: 200px; max-height: 200px; line-height: 20px;"></div>
+					<div>
 								<span disabled class="btn btn-default btn-file"><span
 										 class="fileupload-new"> Select image </span><span
 										 class="fileupload-exists"> Change</span><input type="file"></span>
-								<a href="#" class="btn btn-default fileupload-exists" data-dismiss="fileupload">
-									Remove</a>
-							</div>
-						</div>
-						<!-- /.fileupload-->
+						<a href="#" class="btn btn-default fileupload-exists" data-dismiss="fileupload">
+							Remove</a>
 					</div>
-					<!-- /.col -->
-
 				</div>
-				<!-- ./form-group -->
-
-				<div class="form-group">
-
-					<label class="col-md-3" for="firstName"> First Name </label>
-
-					<div class="col-md-7">
-						<input type="text" name="firstName" id="firstName"
-						       value="<?php echo $currUser->getFirstName(); ?>"
-						       class="form-control">
-					</div>
-					<!-- /.col-->
-
-				</div>
-				<!-- /.form - group-->
-
-				<div class="form-group">
-
-					<label class="col-md-3" for="lastName"> Last Name </label>
-
-					<div class="col-md-7">
-						<input type="text" name="lastName" id="lastName"
-						       value="<?php echo $currUser->getLastName(); ?>"
-						       class="form-control">
-					</div>
-					<!-- /.col-->
-
-				</div>
-				<!-- /.form - group-->
-
-				<div class="form-group">
-
-					<label class="col-md-3" for="email"> Email Address </label>
-
-					<div class="col-md-7">
-						<input type="text" name="email" id="email"
-						       value="<?php echo $currUser->getEmail(); ?>"
-						       class="form-control">
-					</div>
-					<!-- /.col-->
-
-				</div>
-				<!-- /.form - group-->
-
-				<div class="form-group">
-
-					<label for="aboutTextarea" class="col-md-3">
-						About <?php echo "<strong>" . $currUser->getFirstName() . " " . $currUser->getLastName() . "</strong>"; ?> </label>
-
-
-					<div class="col-md-7">
-						<textarea id="aboutTextarea" name="about-you" rows="6" disabled
-						          class="form-control"><?php echo $currUser->getProfileDescription(); ?></textarea>
-					</div>
-					<!-- /.col-->
-
-				</div>
-				<!-- /.form - group-->
-
-				<br/>
-
-				<div class="form-group">
-
-					<div class="col-md-7 col-md-push-3">
-						<button type="submit" class="btn btn-primary"> Save Changes</button>
-						<input type="hidden" name="hiddenSaveBttnProfile" value=""/>
-						&nbsp;
-						<a type="reset" class="btn btn-default" href="<?php echo BASE_URL . "users/overview"; ?>">
-							Cancel</a>
-					</div>
-					<!-- /.col-->
-
-				</div>
-				<!-- /.form - group-->
-
-			</form>
-			<!-- /form - data -->
+				<!-- /.fileupload-->
+			</div>
+			<!-- /.col -->
 
 		</div>
+		<!-- ./form-group -->
 
-		<div class="tab-pane fade" id="courses-majors">
-			<h3> Major</h3>
+		<div class="form-group">
 
-			<p> List of Majors created </p>
+			<label class="col-md-3" for="firstName"> First Name </label>
 
-			<p> LIst of courses created .</p>
+			<div class="col-md-7">
+				<input type="text" name="firstName" id="firstName"
+				       value="<?php echo $currUser->getFirstName(); ?>"
+				       class="form-control">
+			</div>
+			<!-- /.col-->
+
 		</div>
+		<!-- /.form - group-->
 
-		<div class="tab-pane fade" id="position">
-			<h3 class=""> Notification Settings </h3>
+		<div class="form-group">
 
-			<p> Enable / Disable Email Notifications for</p>
+			<label class="col-md-3" for="lastName"> Last Name </label>
 
-			<p> Enable / Disable sms notifications .</p>
-			<br/>
-			<ul>
-				<li> New workshop session added to schedule</li>
-				<li> You have a workshop session in 3 hours, with x student, for x courses</li>
-				<li> Workshop session is canceled by students</li>
-			</ul>
+			<div class="col-md-7">
+				<input type="text" name="lastName" id="lastName"
+				       value="<?php echo $currUser->getLastName(); ?>"
+				       class="form-control">
+			</div>
+			<!-- /.col-->
+
 		</div>
+		<!-- /.form - group-->
 
+		<div class="form-group">
 
-		<div class="tab-pane fade" id="position">
-			<h3> Reports Settings </h3>
+			<label class="col-md-3" for="email"> Email Address </label>
 
-			<p> Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro
-				fanny
-				pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone
-				skateboard
-				locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid
-				8-bit cred pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy
-				retro
-				mlkshk vice blog. Scenester cred you probably haven't heard of them, vinyl craft beer blog stumptown .
-				Pitchfork sustainable tofu synth chambray yr .</p>
+			<div class="col-md-7">
+				<input type="text" name="email" id="email"
+				       value="<?php echo $currUser->getEmail(); ?>"
+				       class="form-control">
+			</div>
+			<!-- /.col-->
 
-			<p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit . Aenean commodo ligula eget dolor . Aenean
-				massa .
-				Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus . Donec quam felis,
-				ultricies nec, pellentesque eu, pretium quis, sem . Nulla consequat massa quis enim . Donec pede justo,
-				fringilla vel, aliquet nec, vulputate eget, arcu . In enim justo, rhoncus ut, imperdiet a, venenatis
-				vitae,
-				justo . Nullam dictum felis eu pede mollis pretium .</p>
 		</div>
+		<!-- /.form - group-->
 
-		<div class="tab-pane fade" id="status">
-			<h3> Reports Settings </h3>
+		<div class="form-group">
 
-			<p> Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro
-				fanny
-				pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone
-				skateboard
-				locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid
-				8-bit cred pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy
-				retro
-				mlkshk vice blog. Scenester cred you probably haven't heard of them, vinyl craft beer blog stumptown .
-				Pitchfork sustainable tofu synth chambray yr .</p>
+			<label for="aboutTextarea" class="col-md-3">
+				About <?php echo "<strong>" . $currUser->getFirstName() . " " . $currUser->getLastName() . "</strong>"; ?> </label>
 
-			<p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit . Aenean commodo ligula eget dolor . Aenean
-				massa .
-				Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus . Donec quam felis,
-				ultricies nec, pellentesque eu, pretium quis, sem . Nulla consequat massa quis enim . Donec pede justo,
-				fringilla vel, aliquet nec, vulputate eget, arcu . In enim justo, rhoncus ut, imperdiet a, venenatis
-				vitae,
-				justo . Nullam dictum felis eu pede mollis pretium .</p>
+
+			<div class="col-md-7">
+				<textarea id="aboutTextarea" name="about-you" rows="6" disabled
+				          class="form-control"><?php echo $currUser->getProfileDescription(); ?></textarea>
+			</div>
+			<!-- /.col-->
+
 		</div>
+		<!-- /.form - group-->
+
+		<br/>
+
+		<div class="form-group">
+
+			<div class="col-md-7 col-md-push-3">
+				<button type="submit" class="btn btn-primary"> Save Changes</button>
+				<input type="hidden" name="hiddenSaveBttnProfile" value=""/>
+				&nbsp;
+				<a type="reset" class="btn btn-default" href="<?php echo BASE_URL . "users/overview"; ?>">
+					Cancel</a>
+			</div>
+			<!-- /.col-->
+
+		</div>
+		<!-- /.form - group-->
+
+	</form>
+	<!-- /form - data -->
+
+</div>
+
+<div class="tab-pane fade" id="courses-majors">
+
+
+	<div class="col-md-12">
+
+		<div class="portlet">
+
+			<div class="portlet-header">
+
+				<h3>
+					<i class="fa fa-table"></i>
+					Teaching Courses
+				</h3>
+
+			</div>
+			<!-- /.portlet-header -->
+
+			<div class="portlet-content">
+
+				<div class="table-responsive">
+
+					<table
+						 class="table table-striped table-bordered table-hover table-highlight table-checkable"
+						 data-provide="datatable"
+						 data-display-rows="10"
+						 data-info="true"
+						 data-search="true"
+						 data-length-change="true"
+						 data-paginate="true"
+						 >
+						<thead>
+						<tr>
+							<th data-filterable="true" data-sortable="true" data-direction="desc">Code</th>
+							<th data-direction="asc" data-filterable="true" data-sortable="false">Name</th>
+							<th>Action</th>
+						</tr>
+						</thead>
+						<tbody>
+
+						<?php
+						if (empty($errors) === true) {
+							foreach ($courses as $course) {
+								include(ROOT_PATH . "app/views/partials/courses-table-data-view.html.php");
+
+							}
+						} ?>
+						</tbody>
+					</table>
+				</div>
+				<!-- /.table-responsive -->
+
+
+			</div>
+			<!-- /.portlet-content -->
+
+		</div>
+		<!-- /.portlet -->
 
 	</div>
-	<!-- /.tab-content stacked-content -->
+	<!-- /.col -->
+
+</div>
+
+<div class="tab-pane fade" id="position">
+	<div class="col-md-12">
+
+		<div class="portlet">
+
+			<div class="portlet-header">
+
+				<h3>
+					<i class="fa fa-hand-o-up"></i>
+					User Type
+				</h3>
+
+			</div> <!-- /.portlet-header -->
+
+			<div class="portlet-content">
+
+				<div class="btn-group">
+					<button type="button" class="btn btn-default <?php if($user->isTutor()) echo "active"; ?>">Tutor</button>
+					<button type="button" class="btn btn-default <?php if($user->isSecretary()) echo "active"; ?>">Secretary</button>
+					<button type="button" class="btn btn-default <?php if($user->isAdmin()) echo "active"; ?>">Administration</button>
+				</div>
+
+				<br />
+
+
+
+			</div> <!-- /.portlet-content -->
+
+		</div> <!-- /.portlet -->
+
+	</div><!-- /.col -->
+</div>
+
+
+<div class="tab-pane fade" id="status">
+	<h3> Reports Settings </h3>
+
+	<p> Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro
+		fanny
+		pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone
+		skateboard
+		locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid
+		8-bit cred pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy
+		retro
+		mlkshk vice blog. Scenester cred you probably haven't heard of them, vinyl craft beer blog stumptown .
+		Pitchfork sustainable tofu synth chambray yr .</p>
+
+	<p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit . Aenean commodo ligula eget dolor . Aenean
+		massa .
+		Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus . Donec quam felis,
+		ultricies nec, pellentesque eu, pretium quis, sem . Nulla consequat massa quis enim . Donec pede justo,
+		fringilla vel, aliquet nec, vulputate eget, arcu . In enim justo, rhoncus ut, imperdiet a, venenatis
+		vitae,
+		justo . Nullam dictum felis eu pede mollis pretium .</p>
+</div>
+
+<div class="tab-pane fade" id="notifications">
+	<h3> Reports Settings </h3>
+
+	<p> Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro
+		fanny
+		pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone
+		skateboard
+		locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid
+		8-bit cred pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy
+		retro
+		mlkshk vice blog. Scenester cred you probably haven't heard of them, vinyl craft beer blog stumptown .
+		Pitchfork sustainable tofu synth chambray yr .</p>
+
+	<p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit . Aenean commodo ligula eget dolor . Aenean
+		massa .
+		Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus . Donec quam felis,
+		ultricies nec, pellentesque eu, pretium quis, sem . Nulla consequat massa quis enim . Donec pede justo,
+		fringilla vel, aliquet nec, vulputate eget, arcu . In enim justo, rhoncus ut, imperdiet a, venenatis
+		vitae,
+		justo . Nullam dictum felis eu pede mollis pretium .</p>
+</div>
+
+</div>
+<!-- /.tab-content stacked-content -->
 </div>
 <!-- /.col-md-9 col-sm-8-->
 
