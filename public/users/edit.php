@@ -63,16 +63,40 @@ try {
 
 
 	if (isSaveBttnProfilePressed()) {
-		$firstName = $_POST['firstName'];
-		$lastName = $_POST['lastName'];
-		$email = $_POST['email'];
+		$newDataAdded = false;
 
-		if (strcmp($currUser->getFirstName(), $firstName) === 0 && strcmp($currUser->getLastName(), $lastName) === 0
-			 && strcmp($currUser->getEmail(), $email) === 0
-		) {
-			$errors[] = "Changes are same as old.";
+		$newFirstName = $_POST['firstName'];
+		$newLastName = $_POST['lastName'];
+		$newEmail = $_POST['email'];
+
+		$oldFirstName = $currUser->getFirstName();
+		$oldLastName = $currUser->getLastName();
+		$oldEmail = $currUser->getEmail();
+
+
+		if (strcmp($newFirstName, $oldFirstName) !== 0) {
+			$user->validateName($newFirstName);
+			$user->updateInfo("f_name", "user", $newFirstName, $userId);
+			$newDataAdded = true;
+		}
+
+		if (strcmp($newLastName, $oldLastName) !== 0) {
+			$user->validateName($newLastName);
+			$user->updateInfo("l_name", "user", $newLastName, $userId);
+			$newDataAdded = true;
+		}
+
+		if (strcmp($newEmail, $oldEmail) !== 0) {
+			$user->validateEmail($newEmail);
+			$user->updateInfo("email", "user", $newEmail, $userId);
+			$newDataAdded = true;
+		}
+
+		if (!$newDataAdded) {
+			throw new Exception("No new data. No modifications were done.");
 		} else {
-			$user->updateUserFirstName($userId, $firstName, $lastName, $email);
+			header('Location: ' . BASE_URL . 'users/edit/:' . $userId . '/success');
+			exit();
 		}
 
 
@@ -101,6 +125,9 @@ function isSaveBttnProfilePressed() {
 	return isset($_POST['hiddenSaveBttnProfile']) && empty($_POST['hiddenSaveBttnProfile']);
 }
 
+function isModificationSuccessful() {
+	return isset($_GET['success']) && strcmp($_GET['success'], 'y1!' === 0);
+}
 
 $page_title = "Edit";
 $section = "users";
@@ -142,6 +169,13 @@ require ROOT_PATH . 'app/views/sidebar.php';
 	<div class="alert alert-danger">
 		<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
 		<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
+	</div>
+<?php elseif (isModificationSuccessful()): ?>
+	<div class="alert alert-success">
+		<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+		<strong>Woohoo!</strong>
+
+		<p>Update was successful.</p>
 	</div>
 <?php endif; ?>
 
@@ -198,7 +232,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 			<br/>
 
-			<form action="<?php echo BASE_URL . 'users/edit/:' . $currUser->getId() . '/save'; ?>"
+			<form action="<?php echo BASE_URL . 'users/edit/:' . $currUser->getId(); ?>"
 			      class="form-horizontal" method="post">
 
 				<div class="form-group">
@@ -305,6 +339,14 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 		</div>
 
+		<div class="tab-pane fade" id="courses-majors">
+			<h3> Major</h3>
+
+			<p> List of Majors created </p>
+
+			<p> LIst of courses created .</p>
+		</div>
+
 		<div class="tab-pane fade" id="position">
 			<h3 class=""> Notification Settings </h3>
 
@@ -317,15 +359,6 @@ require ROOT_PATH . 'app/views/sidebar.php';
 				<li> You have a workshop session in 3 hours, with x student, for x courses</li>
 				<li> Workshop session is canceled by students</li>
 			</ul>
-		</div>
-
-
-		<div class="tab-pane fade" id="courses-majors">
-			<h3> Major</h3>
-
-			<p> List of Majors created </p>
-
-			<p> LIst of courses created .</p>
 		</div>
 
 

@@ -288,7 +288,7 @@ abstract class User
 	 * @param $name
 	 * @throws Exception
 	 */
-	public function validate_name($name) {
+	public function validateName($name) {
 		if (!preg_match('/^[A-Za-z]+$/', $name)) {
 			throw new Exception("Please enter a first/last name containing only letters of minimum length 1.");
 		}

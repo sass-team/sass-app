@@ -5,7 +5,7 @@ RewriteBase /
 RewriteRule ^([a-z\-]+)/([a-z\-]+)$ /$1/$2.php [L]
 RewriteRule ^([a-z]+)$ /$1.php [L]
 RewriteRule ^users/edit/:([0-9]+)$ /users/edit.php?id=$1 [L]
-RewriteRule ^users/edit/:([0-9]+)/save$ /users/edit.php?id=$1&save=y1! [L]
+RewriteRule ^users/edit/:([0-9]+)/success /users/edit.php?id=$1&success=y1! [L]
 RewriteRule ^account/settings/success$ /account/settings.php?success [L]
 RewriteRule ^login/confirm-password/success$ /login/confirm-password.php?success [L]
 RewriteRule ^login/confirm-password/success$ /login/confirm-password.php?success [L]

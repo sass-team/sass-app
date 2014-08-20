@@ -49,7 +49,7 @@ class Admin extends User
 	 * @return mixed
 	 * @throws InvalidArgumentException
 	 */
-	public function updateInfo($what, $field, $where, $value) {
+	public function updateInfo($what, $field, $value, $id) {
 		// I have only added few, but you can add more. However do not add 'password' even though the parameters will only be given by you and not the user, in our system.
 		$allowed = array('id', 'username', 'f_name', 'l_name', 'email', 'COUNT(mobile)',
 			 'mobile', 'user', 'gen_string', 'COUNT(gen_string)', 'COUNT(id)', 'img_loc');
@@ -57,16 +57,14 @@ class Admin extends User
 			throw new InvalidArgumentException;
 		} else {
 			try {
-				$sql = "SELECT $what FROM `" . DB_NAME . "`.`" . $field . "` WHERE $where = ?";
-				UPDATE `sass-ms`.`user` SET `f_name`='tutor' WHERE `id`='8' and`user_types_id`='9';
 
-				UPDATE `" . DB_NAME . "`.`" . $field . "` SET `$what`= ? WHERE `id`='8' and`user_types_id`='9';
+				$sql = "UPDATE `" . DB_NAME . "`.`" . $field . "` SET `$what` = ? WHERE `id`= ?";
 
-				$query = $this->getConnection()->prepare($sql);
+				$query = $this->getDb()->getConnection()->prepare($sql);
 				$query->bindValue(1, $value, PDO::PARAM_STR);
+				$query->bindValue(2, $id, PDO::PARAM_INT);
 				$query->execute();
-				return $query->fetchColumn();
-				//return $sql;
+				return true;
 			} catch (Exception $e) {
 				throw new Exception($e->getMessage());
 			}
@@ -76,8 +74,8 @@ class Admin extends User
 
 
 	public function createUser($first_name, $last_name, $email, $user_type, $user_major_ext, $teaching_courses) {
-		$this->validate_name($first_name);
-		$this->validate_name($last_name);
+		$this->validateName($first_name);
+		$this->validateName($last_name);
 		$this->validateEmail($email);
 		$this->validate_user_type($user_type);
 		//$this->validate_user_major($user_major_ext);
