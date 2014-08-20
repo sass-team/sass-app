@@ -32,13 +32,11 @@
 
 <?php
 ob_start();
-// TODO: Add option-functionality to resend email if password forgot
-// TODO: sql make 'img' of database to NOT NULL & refactor name to 'img_location'
 require '../app/init.php';
 
 // if there is an active log in process redirect to overview.php; load page only if no
 // logged in user exists
-$general->logged_in_protect();
+$general->loggedInProtect();
 $page_title = "Log In";
 
 
@@ -59,7 +57,7 @@ if (isUpdatePasswordBtnPressed()) {
 			throw new Exception("The passwords you entered are incorrect. Please try again (make sure your caps lock is off).");
 		}
 
-		if (!is_url_contains_email_gen_string()) {
+		if (!isUrlOriginal()) {
 			throw new Exception("It seems you've modified the email url we send you. Please click the original link to proceed.");
 		}
 
@@ -67,14 +65,14 @@ if (isUpdatePasswordBtnPressed()) {
 		$new_password_2 = trim($_POST['new-password-2']);
 		$id = $_GET['id'];
 		$gen_string = $_GET['gen_string'];
-		if ($users->fetch_info('COUNT(id)', 'user', 'id', $id) === false) {
+		if ($db->fetchInfo('COUNT(id)', 'user', 'id', $id) === false) {
 			throw new Exception('Sorry, we could not find your account on database. Are you sure you did not modified the url we send you?');
 		}
-		if ($users->fetch_info('COUNT(gen_string)', 'user', 'gen_string', $gen_string) == 0) {
+		if ($db->fetchInfo('COUNT(gen_string)', 'user', 'gen_string', $gen_string) == 0) {
 			throw new Exception('Sorry, we could not find verify you account on database. Are you sure you did not modifed the url we send you?');
 		} // end if
 
-		$users->add_new_password($id, $new_password_1, $new_password_2);
+		$db->add_new_password($id, $new_password_1, $new_password_2);
 
 	} catch (Exception $e) {
 		$errors[] = $e->getMessage();
@@ -100,7 +98,7 @@ function isVerified() {
 /**
  * @return bool
  */
-function is_url_contains_email_gen_string() {
+function isUrlOriginal() {
 	return isset ($_GET['id'], $_GET['gen_string']) === true;
 }
 
@@ -153,7 +151,7 @@ function is_url_contains_email_gen_string() {
 		<div id="login">
 			<?php
 
-			if (is_url_contains_email_gen_string() || isUpdatePasswordBtnPressed()) {
+			if (isUrlOriginal() || isUpdatePasswordBtnPressed()) {
 			?>
 			<form action="/login/recover/<?php echo $_GET['id']; ?>/<?php echo $_GET['gen_string']; ?>"
 			      class="form-horizontal" method="post">

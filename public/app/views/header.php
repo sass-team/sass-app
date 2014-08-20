@@ -63,7 +63,7 @@
 
 				<ul class="dropdown-menu" role="menu">
 					<!-- "My schedule" choice is shown only to type tutor -->
-					<?php if ($user->is_tutor()) { ?>
+					<?php if ($user->isTutor()) { ?>
 						<li>
 							<a href="<?php echo BASE_URL; ?>page-calendar.html">
 								<i class="fa fa-calendar"></i>

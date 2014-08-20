@@ -1,16 +1,23 @@
 <?php
 require '../app/init.php';
-$general->logged_out_protect();
+$general->loggedOutProtect();
+
+// redirect if user elevation is not that of secretary or tutor
+if (!$user->isTutor() && !$user->isAdmin()) {
+	header('Location: ' . BASE_URL);
+	exit();
+}
+
 
 $page_title = "View Users";
 $section = "users";
 
 try {
-	$all_users = $users->getAll();
+	$allUsers = $user->getUsers();
 	//var_dump($all_users);
-	$course_db = new Courses($db->getDbConnection());
-	$courses = $course_db->getAll();
-	$majors = $course_db->getMajors();
+//	$course_db = new Courses($db->getDbConnection());
+//	$courses = $course_db->getAll();
+//	$majors = $course_db->getMajors();
 
 	//$majors = array_unique(array_column($courses, 'Major'));
 	//$majors_extensions = array_unique(array_column($courses, 'Extension'));
@@ -25,18 +32,18 @@ function isEditBttnPressed() {
 
 
 if (isModifyBttnPressed()) {
-	$first_name = trim($_POST['first_name']);
-	$last_name = trim($_POST['last_name']);
-	$email = trim($_POST['email']);
-	$user_type = trim($_POST['user_type']);
-	$user_major_ext = trim($_POST['user_major']);
-	$teaching_courses[] = isset($_POST['teaching_courses']) ? $_POST['teaching_courses'] : "";
-
-	try {
-		$users->register($first_name, $last_name, $email, $user_type, $user_major_ext, $teaching_courses);
-	} catch (Exception $e) {
-		$errors[] = $e->getMessage();
-	}
+//	$first_name = trim($_POST['first_name']);
+//	$last_name = trim($_POST['last_name']);
+//	$email = trim($_POST['email']);
+//	$user_type = trim($_POST['user_type']);
+//	$user_major_ext = trim($_POST['user_major']);
+//	$teaching_courses[] = isset($_POST['teaching_courses']) ? $_POST['teaching_courses'] : "";
+//
+//	try {
+//		$users->register($first_name, $last_name, $email, $user_type, $user_major_ext, $teaching_courses);
+//	} catch (Exception $e) {
+//		$errors[] = $e->getMessage();
+//	}
 }
 
 function isModifyBttnPressed() {
@@ -124,7 +131,7 @@ function isModifyBttnPressed() {
 
 									<?php
 									if (empty($errors) === true) {
-										foreach (array_reverse($all_users) as $currentUserData) {
+										foreach (array_reverse($allUsers) as $currUser) {
 											include(ROOT_PATH . "app/views/partials/user-table-data-view.html.php");
 										}
 									} ?>

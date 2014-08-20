@@ -29,7 +29,7 @@
 
 require 'app/init.php';
 // do not allow access to user that have not logged in.
-$general->logged_out_protect();
+$general->loggedOutProtect();
 $page_title = "Log Out";
 
 session_destroy();

@@ -10,19 +10,13 @@
  *
  */
 
-if ($currentUserData['type'] == 'admin') {
-	$tempUser = new Admin($currentUserData);
-} else if ($currentUserData['type'] == 'tutor') {
-	$tempUser = new Tutor($currentUserData);
-} else if ($currentUserData['type'] == 'secretary') {
-	$tempUser = new Secretary($currentUserData);
-}
-$first_name = $tempUser->getFirstName();
-$last_name = $tempUser->getLastName();
-$email = $tempUser->getEmail();
-$position = $tempUser->getUserType();
-$mobile = $tempUser->getMobileNum();
-$id = $tempUser->getId();
+
+$first_name = $currUser['f_name'];
+$last_name = $currUser['l_name'];
+$email = $currUser['email'];
+$position = $currUser['type'];
+$mobile = $currUser['mobile'];
+$id = $currUser['id'];
 ?>
 <tr>
 	<td><?php echo $first_name . " " . $last_name; ?></td>

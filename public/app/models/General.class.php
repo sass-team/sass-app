@@ -13,8 +13,8 @@ class General {
 	/**
 	 * If a log in session exists then to home.php
 	 */
-	public function logged_in_protect() {
-		if ($this->logged_in() === true) {
+	public function loggedInProtect() {
+		if ($this->loggedIn() === true) {
 			header('Location: ' . BASE_URL);
 			exit();
 		}
@@ -26,13 +26,13 @@ class General {
 	 *
 	 * @return bool
 	 */
-	public function logged_in() {
+	public function loggedIn() {
 		return isset($_SESSION['id']) ? true : false;
 	}
 
 	#if not logged in then redirect to overview.php
-	public function logged_out_protect() {
-		if ($this->logged_in() === false) {
+	public function loggedOutProtect() {
+		if ($this->loggedIn() === false) {
 			header('Location: ' . BASE_URL . 'login');
 			exit();
 		}

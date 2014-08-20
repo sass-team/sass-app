@@ -37,7 +37,7 @@ require '../app/init.php';
 
 // if there is an active log in process redirect to overview.php; load page only if no
 // logged in user exists
-$general->logged_in_protect();
+$general->loggedInProtect();
 $page_title = "Log In";
 
 
@@ -60,8 +60,8 @@ if (isContinueBtnPressed()) {
 	try {
 		$email = $_POST['email'];
 
-		if ($id = $users->fetch_info('id', 'user', 'email', $email) !== false) {
-			$users->confirm_recover($email, $id);
+		if (($idLost = $db->fetchInfo('id', 'user', 'email', $email)) !== false) {
+			$db->confirmRecover($email, $idLost);
 			header('Location: ' . BASE_URL . 'login/confirm-password/success');
 			exit();
 		} else {
@@ -155,7 +155,7 @@ if (isContinueBtnPressed()) {
 				<div class="form-group">
 					<input type="hidden" name="hidden_forgot_continue">
 					<button type="submit" id="login-btn" class="btn btn-primary btn-block">Continue <i
-							class="glyphicon glyphicon-envelope"></i></button>
+							 class="glyphicon glyphicon-envelope"></i></button>
 				</div>
 			</form>
 

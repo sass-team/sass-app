@@ -1,6 +1,6 @@
 <?php
 require '../app/init.php';
-$general->logged_out_protect();
+$general->loggedOutProtect();
 
 $page_title = "Manage Courses";
 $section = "courses-majors";

@@ -32,7 +32,7 @@
 
 <?php
 require '../app/init.php';
-$general->logged_out_protect();
+$general->loggedOutProtect();
 
 // protect again any sql injections on url
 if (!isset($_GET['id']) || !preg_match("/^[0-9]+$/", $_GET['id'])) {
@@ -62,31 +62,35 @@ try {
     $errors[] = $e->getMessage();
 }
 
-function is_create_bttn_Pressed()
-{
-    return isset($_POST['hidden_submit_pressed']) && empty($_POST['hidden_submit_pressed']);
-}
 
-
-if (isSaveBttnPressed()) {
-    $first_name = trim($_POST['first_name']);
-    $last_name = trim($_POST['last_name']);
+if ($currUser instanceof Admin && isSaveBttnProfilePressed()) {
+    var_dump($_POST);
+    $firstName = trim($_POST['firstName']);
+    $lastName = trim($_POST['lastName']);
     $email = trim($_POST['email']);
-    $user_type = trim($_POST['user_type']);
-    $user_major_ext = trim($_POST['user_major']);
-    $teaching_courses[] = isset($_POST['teaching_courses']) ? $_POST['teaching_courses'] : "";
 
-    try {
-        $users->register($first_name, $last_name, $email, $user_type, $user_major_ext, $teaching_courses);
-    } catch (Exception $e) {
-        $errors[] = $e->getMessage();
-    }
+//    $user_type = trim($_POST['user_type']);
+//    $user_major_ext = trim($_POST['user_major']);
+//    $teaching_courses[] = isset($_POST['teaching_courses']) ? $_POST['teaching_courses'] : "";
+//
+//    try {
+//        $users->register($first_name, $last_name, $email, $user_type, $user_major_ext, $teaching_courses);
+//    } catch (Exception $e) {
+//        $errors[] = $e->getMessage();
+//    }
 }
 
-function isSaveBttnPressed()
+//function isSaveBttnPressed()
+//{
+//    return isset($_POST['hiddenSaveBttnProfile']) && empty($_POST['hiddenSaveBttnProfile']);
+//}
+
+
+function isSaveBttnProfilePressed()
 {
-    return isset($_POST['hidden_submit_pressed']) && empty($_POST['hidden_submit_pressed']);
+    return isset($_POST['hiddenSaveBttnProfile']) && empty($_POST['hiddenSaveBttnProfile']);
 }
+
 
 $page_title = "Edit";
 $section = "users";
@@ -214,10 +218,10 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
                 <div class="form-group">
 
-                    <label class="col-md-3" for="first-name"> First Name </label>
+                    <label class="col-md-3" for="firstName"> First Name </label>
 
                     <div class="col-md-7">
-                        <input type="text" name="first-name" id="first-name"
+                        <input type="text" name="firstName" id="firstName"
                                value="<?php echo $currUser->getFirstName(); ?>"
                                class="form-control">
                     </div>
@@ -228,10 +232,10 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
                 <div class="form-group">
 
-                    <label class="col-md-3" for="last-name"> Last Name </label>
+                    <label class="col-md-3" for="lastName"> Last Name </label>
 
                     <div class="col-md-7">
-                        <input type="text" name="last-name" id="last-name"
+                        <input type="text" name="lastName" id="lastName"
                                value="<?php echo $currUser->getLastName(); ?>"
                                class="form-control">
                     </div>
@@ -242,10 +246,10 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
                 <div class="form-group">
 
-                    <label class="col-md-3" for="email-address"> Email Address </label>
+                    <label class="col-md-3" for="email"> Email Address </label>
 
                     <div class="col-md-7">
-                        <input type="text" name="email-address" id="email-address"
+                        <input type="text" name="email" id="email"
                                value="<?php echo $currUser->getEmail(); ?>"
                                class="form-control">
                     </div>
@@ -256,11 +260,11 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
                 <div class="form-group">
 
-                    <label for="about-textarea" class="col-md-3"> About You </label>
+                    <label for="aboutTextarea" class="col-md-3"> About You </label>
 
 
                     <div class="col-md-7">
-                        <textarea id="about-textarea" name="about-you" rows="6" disabled
+                        <textarea id="aboutTextarea" name="about-you" rows="6" disabled
                                   class="form-control"><?php echo $currUser->getProfileDescription(); ?></textarea>
                     </div>
                     <!-- /.col-->
@@ -274,6 +278,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
                     <div class="col-md-7 col-md-push-3">
                         <button type="submit" class="btn btn-primary"> Save Changes</button>
+                        <input type="hidden" name="hiddenSaveBttnProfile" value=""/>
                         &nbsp;
                         <a type="reset" class="btn btn-default" href="<?php echo BASE_URL . "users/overview"; ?>">
                             Cancel</a>
