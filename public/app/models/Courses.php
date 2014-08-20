@@ -65,5 +65,17 @@ class Courses {
 		}
 	}
 
+	public function getCourses() {
 
+		$query = "SELECT course.code AS 'Code', course.name AS 'Name'
+				FROM `" . DB_NAME . "`.course";
+		try {
+			$query = $this->db->prepare($query);
+			$query->execute();
+
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+		} catch (Exception $e) {
+			throw new Exception("Could not retrieve courses data from database.");
+		}
+	}
 } 
