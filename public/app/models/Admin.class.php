@@ -101,4 +101,27 @@ class Admin extends User
 			throw new Exception("Could not insert user into database.");
 		}
 	}
+
+	public function createCourse($course_code, $course_name) {
+		$this->$course_code;
+		$this->$course_name;
+
+		try {
+			$query = "INSERT INTO `" . DB_NAME . "`.course (`code`, `name`)
+				VALUES(
+					:course_code,
+					:course_name
+				)";
+
+			$query = $this->getDb()->getConnection()->prepare($query);
+			$query->bindParam(':course_code', $course_code, PDO::PARAM_STR);
+			$query->bindParam(':course_name', $course_name, PDO::PARAM_STR);
+			$query->execute();
+			return true;
+		} catch (Exception $e) {
+			throw new Exception("Could not insert course into database.");
+		}
+
+	}
+
 }
