@@ -43,7 +43,7 @@ class Tutor extends User
 			SELECT course.code AS 'Code', course.name AS 'Name',  course.id
 				FROM  `" . DB_NAME . "`.course
 				WHERE NOT EXISTS (
-					SELECT course_id FROM `sass-ms`.tutor_teaches_course WHERE course.id = tutor_teaches_course.course_id
+					SELECT `course_id` FROM `sass-ms`.`tutor_teaches_course` WHERE course.id = `tutor_teaches_course`.`course_id`
 				);
 			";
 
@@ -53,7 +53,7 @@ class Tutor extends User
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 
 		} catch (PDOException $e) {
-			throw new Exception("Could not retrieve courses data from database." . $e->getMessage());
+			throw new Exception("Could not retrieve courses data from database.");
 		}
 	}
 
@@ -82,17 +82,21 @@ class Tutor extends User
 	}
 
 	private function retrieveTeachingCourses() {
+		$tutorId = $this->getId();
+
 		$query = "SELECT course.code AS 'Code', course.name AS  'Name', tutor_teaches_course.course_id  AS id
 					FROM `" . DB_NAME . "`.course, `" . DB_NAME . "`.tutor_teaches_course
-					WHERE tutor_teaches_course.course_id = course.id;";
+					WHERE tutor_teaches_course.course_id = course.id AND tutor_teaches_course.tutor_user_id = :tutorId;";
 
 		try {
 			$query = $this->getDb()->getConnection()->prepare($query);
+			$query->bindParam(':tutorId', $tutorId, PDO::PARAM_INT);
+
 			$query->execute();
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 
 		} catch (PDOException $e) {
-			throw new Exception("Could not retrieve courses data from database.");
+			throw new Exception("Could not retrieve teaching courses data from database.");
 		}
 	}
 

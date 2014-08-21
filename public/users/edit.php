@@ -63,8 +63,6 @@ try {
 
 	// retrieve courses data only user type is tutor
 	if ($currUser->isTutor()) {
-		$courseDb = new Courses($db->getConnection());
-		$courses = $courseDb->getAll();
 		$courses = $currUser->getTeachingCourses();
 		$notTeachingCourses = $currUser->getNotTeachingCourses();
 	}
