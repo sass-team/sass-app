@@ -146,6 +146,7 @@ abstract class User
 		return $this->db;
 	} // end __construct
 
+	
 	/**
 	 * @param mixed $db
 	 */
