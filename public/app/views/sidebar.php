@@ -125,6 +125,31 @@
 						</li>
 					</ul>
 				</li>
+				<li class="dropdown <?php if ($section == "workshops") {
+					echo "active";
+				} ?>">
+					<a href="javascript:;">
+						<i class="fa fa-list-alt"></i>
+						Workshop Sessions
+						<span class="caret"></span>
+					</a>
+
+					<ul class="sub-nav">
+						<li>
+							<a href="<?php echo BASE_URL; ?>workshops/overview">
+								<i class="fa fa-table"></i>
+								Overview
+							</a>
+						</li>
+						<li>
+							<a href="<?php echo BASE_URL; ?>workshops/create">
+								<i class="fa fa-table"></i>
+								Create
+							</a>
+						</li>
+					</ul>
+				</li>
+
 			<?php } ?>
 
 			<li class="dropdown"></li>
