@@ -25,6 +25,7 @@
 
 /**
  * @author Rizart Dokollari
+ * @author George Skarlatos
  * @since 7/21/14.
  */
 class Courses {

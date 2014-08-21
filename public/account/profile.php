@@ -109,10 +109,10 @@ $section = "account";
 	</div>
 	<!-- #content -->
 
+	<?php include ROOT_PATH . "app/views/footer.php"; ?>
+
 </div>
 <!-- #wrapper -->
-
-<?php include ROOT_PATH . "app/views/footer.php"; ?>
 
 </body>
 </html>

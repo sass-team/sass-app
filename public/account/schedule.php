@@ -71,7 +71,7 @@ $section = "dashboard";
 
 	<?php include ROOT_PATH . "app/views/footer.php"; ?>
 </div>
-<!-- #wrapper<!-- #content -->
+<!-- #wrapper -->
 
 </body>
 </html>

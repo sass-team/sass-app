@@ -182,15 +182,15 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <div class="col-md-3 col-sm-4">
 	<ul id="myTab" class="nav nav-pills nav-stacked">
 		<li class="active">
-			<a href="#profile-tab" data-toggle="tab">
-				<i class="fa fa-user"></i>
-				&nbsp;&nbsp;Profile Settings
-			</a>
-		</li>
-		<li>
 			<a href="#courses-majors" data-toggle="tab">
 				<i class="fa fa-list-alt"></i>
 				&nbsp;&nbsp; Teaching Courses
+			</a>
+		</li>
+		<li>
+			<a href="#profile-tab" data-toggle="tab">
+				<i class="fa fa-user"></i>
+				&nbsp;&nbsp;Profile Settings
 			</a>
 		</li>
 		<li>
@@ -221,7 +221,81 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 <div class="tab-content stacked-content">
 
-<div class="tab-pane fade in active" id="profile-tab">
+<div class="tab-pane fade in active" id="courses-majors">
+
+
+	<div class="col-md-12">
+
+		<div class="portlet">
+
+			<div class="portlet-header">
+
+				<h3>
+					<i class="fa fa-table"></i>
+					Teaching Courses
+				</h3>
+
+			</div>
+			<!-- /.portlet-header -->
+
+			<div class="portlet-content">
+
+				<div class="table-responsive">
+
+					<table
+						 class="table table-striped table-bordered table-hover table-highlight table-checkable"
+						 data-provide="datatable"
+						 data-display-rows="10"
+						 data-info="true"
+						 data-search="true"
+						 data-length-change="true"
+						 data-paginate="true"
+						 >
+						<thead>
+						<tr>
+							<th data-filterable="true" data-sortable="true" data-direction="desc">Code</th>
+							<th data-direction="asc" data-filterable="true" data-sortable="false">Name</th>
+							<th>Action</th>
+						</tr>
+						</thead>
+						<tbody>
+
+						<?php
+						if (empty($errors) === true) {
+							foreach ($courses as $course) {
+								include(ROOT_PATH . "app/views/partials/courses-table-data-view.html.php");
+
+							}
+						} ?>
+						</tbody>
+					</table>
+				</div>
+				<!-- /.table-responsive -->
+
+
+			</div>
+			<!-- /.portlet-content -->
+
+		</div>
+		<!-- /.portlet -->
+
+		<br/>
+
+		<div class="form-group">
+
+			<a data-toggle="modal" id="bttn-styledModal" href="#styledModal" class="btn btn-primary">
+				Add Teaching Course
+			</a>
+			<!-- /.col-->
+
+		</div>
+		<!-- /.form - group-->
+	</div>
+	<!-- /.col -->
+
+</div>
+
+<div class="tab-pane fade" id="profile-tab">
 
 	<h3 class=""> Edit Profile Settings </h3>
 
@@ -339,69 +413,6 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 </div>
 
-<div class="tab-pane fade" id="courses-majors">
-
-
-	<div class="col-md-12">
-
-		<div class="portlet">
-
-			<div class="portlet-header">
-
-				<h3>
-					<i class="fa fa-table"></i>
-					Teaching Courses
-				</h3>
-
-			</div>
-			<!-- /.portlet-header -->
-
-			<div class="portlet-content">
-
-				<div class="table-responsive">
-
-					<table
-						 class="table table-striped table-bordered table-hover table-highlight table-checkable"
-						 data-provide="datatable"
-						 data-display-rows="10"
-						 data-info="true"
-						 data-search="true"
-						 data-length-change="true"
-						 data-paginate="true"
-						 >
-						<thead>
-						<tr>
-							<th data-filterable="true" data-sortable="true" data-direction="desc">Code</th>
-							<th data-direction="asc" data-filterable="true" data-sortable="false">Name</th>
-							<th>Action</th>
-						</tr>
-						</thead>
-						<tbody>
-
-						<?php
-						if (empty($errors) === true) {
-							foreach ($courses as $course) {
-								include(ROOT_PATH . "app/views/partials/courses-table-data-view.html.php");
-
-							}
-						} ?>
-						</tbody>
-					</table>
-				</div>
-				<!-- /.table-responsive -->
-
-
-			</div>
-			<!-- /.portlet-content -->
-
-		</div>
-		<!-- /.portlet -->
-
-	</div>
-	<!-- /.col -->
-
-</div>
-
 <div class="tab-pane fade" id="position">
 	<div class="col-md-12">
 
@@ -414,25 +425,33 @@ require ROOT_PATH . 'app/views/sidebar.php';
 					User Type
 				</h3>
 
-			</div> <!-- /.portlet-header -->
+			</div>
+			<!-- /.portlet-header -->
 
 			<div class="portlet-content">
 
 				<div class="btn-group">
-					<button type="button" class="btn btn-default <?php if($user->isTutor()) echo "active"; ?>">Tutor</button>
-					<button type="button" class="btn btn-default <?php if($user->isSecretary()) echo "active"; ?>">Secretary</button>
-					<button type="button" class="btn btn-default <?php if($user->isAdmin()) echo "active"; ?>">Administration</button>
+					<button type="button" class="btn btn-default <?php if ($user->isTutor()) echo "active"; ?>">Tutor
+					</button>
+					<button type="button" class="btn btn-default <?php if ($user->isSecretary()) echo "active"; ?>">
+						Secretary
+					</button>
+					<button type="button" class="btn btn-default <?php if ($user->isAdmin()) echo "active"; ?>">
+						Administration
+					</button>
 				</div>
 
-				<br />
+				<br/>
 
 
+			</div>
+			<!-- /.portlet-content -->
 
-			</div> <!-- /.portlet-content -->
+		</div>
+		<!-- /.portlet -->
 
-		</div> <!-- /.portlet -->
-
-	</div><!-- /.col -->
+	</div>
+	<!-- /.col -->
 </div>
 
 
@@ -495,6 +514,78 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 </div>
 <!-- #content -->
+
+
+<div id="styledModal" class="modal modal-styled fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form method="post" id="create-form" action="" class="form">
+
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h3 class="modal-title">Teaching Courses Form</h3>
+				</div>
+				<div class="modal-body">
+					<div class="portlet">
+						<?php
+						if (empty($errors) === false) {
+							?>
+							<div class="alert alert-danger">
+								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+								<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
+							</div>
+						<?php } ?>
+
+						<div class="portlet-content">
+
+							<div class="row">
+
+
+								<div class="col-sm-12">
+
+									<div class="form-group">
+
+										<h5>
+											<i class="fa fa-tasks"></i>
+											<label for="teaching_courses_multi">Tutor's Courses</label>
+										</h5>
+
+										<select id="teaching_courses_multi" name="teaching_courses[]"
+										        class="form-control"
+										        multiple>
+
+											<?php
+											foreach ($courses as $course) {
+												include(ROOT_PATH . "app/views/partials/courses-select-options-view.html.php");
+											}
+											?>
+
+										</select>
+									</div>
+
+
+								</div>
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-tertiary" data-dismiss="modal">Close</button>
+					<input type="hidden" name="hidden_submit_pressed">
+					<button type="submit" class="btn btn-primary">Create</button>
+				</div>
+			</form>
+
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
 
 <?php include ROOT_PATH . "app/views/footer.php"; ?>
 </div>

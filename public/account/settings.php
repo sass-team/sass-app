@@ -10,15 +10,15 @@ if (isset($_POST['form_action_profile_settings'])) {
 
 	try {
 		$update_result = $user->updateProfile($_POST['firstName'], $_POST['lastName'],
-			$user->getMobileNum(), $_POST['mobile'], $_POST['profile-description'], $user->getEmail());
+			 $user->getMobileNum(), $_POST['mobile'], $_POST['profile-description'], $user->getEmail());
 
 	} catch (Exception $e) {
 		$errors[] = $e->getMessage();
 	}
 	// decide if file upload needed.
 	$changeAvatarImg = (file_exists($_FILES["fileupload-avatar"]['tmp_name']) &&
-		is_uploaded_file($_FILES["fileupload-avatar"]['tmp_name'])) ?
-		true : false;
+		 is_uploaded_file($_FILES["fileupload-avatar"]['tmp_name'])) ?
+		 true : false;
 
 	// TODO: use OOP instead of procedural programming for file upload
 	if ($changeAvatarImg === true) {
@@ -82,10 +82,10 @@ $section = "account";
 <?php require ROOT_PATH . 'app/views/head.php'; ?>
 <body>
 <div id="wrapper">
-	<?php
-	require ROOT_PATH . 'app/views/header.php';
-	require ROOT_PATH . 'app/views/sidebar.php';
-	?>
+<?php
+require ROOT_PATH . 'app/views/header.php';
+require ROOT_PATH . 'app/views/sidebar.php';
+?>
 
 
 <div id="content">
@@ -154,13 +154,13 @@ $section = "account";
 				<div class="col-md-7">
 					<div class="fileupload fileupload-new" data-provides="fileupload">
 						<div class="fileupload-new thumbnail" style="width: 180px; height: 180px;"><img
-								src="<?php echo BASE_URL . $user->getAvatarImgLoc() ?>" name="fileupload-avatar"
-								alt="Profile Avatar"/></div>
+								 src="<?php echo BASE_URL . $user->getAvatarImgLoc() ?>" name="fileupload-avatar"
+								 alt="Profile Avatar"/></div>
 						<div class="fileupload-preview fileupload-exists thumbnail"
 						     style="max-width: 200px; max-height: 200px; line-height: 20px;"></div>
 						<div>
 												<span class="btn btn-default btn-file"><span
-														class="fileupload-new">Select image</span><span class="fileupload-exists">
+														 class="fileupload-new">Select image</span><span class="fileupload-exists">
 														Change</span><input name="fileupload-avatar" type="file"/></span>
 							<a href="#" class="btn btn-default fileupload-exists" data-dismiss="fileupload">Remove</a>
 						</div>
@@ -339,11 +339,12 @@ $section = "account";
 <!-- #content -->
 
 
-</div>
-<!-- #wrapper -->
+
 
 <?php include ROOT_PATH . "app/views/footer.php"; ?>
 </div>
+<!-- #wrapper -->
+
 </body>
 </html>
 

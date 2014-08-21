@@ -10,9 +10,9 @@ if (!$user->isAdmin()) {
 
 
 try {
-	$course_db = new Courses($db->getConnection());
-	$courses = $course_db->getAll();
-	$majors = $course_db->getMajors();
+	$coursesDb = new Courses($db->getConnection());
+	$courses = $coursesDb->getAll();
+	$majors = $coursesDb->getMajors();
 
 	//$majors = array_unique(array_column($courses, 'Major'));
 	//$majors_extensions = array_unique(array_column($courses, 'Extension'));
@@ -312,8 +312,8 @@ require ROOT_PATH . 'app/views/sidebar.php';
 										</h5>
 										<select id="user_major" name="user_major" class="form-control">
 											<option value="null">I don&#39;t know.</option>
-											<?php foreach ($majors as $major) { ?>
-												<?php   include(ROOT_PATH . "app/views/partials/majors-select-options-view.html.php");
+											<?php foreach ($majors as $major) {
+												include(ROOT_PATH . "app/views/partials/majors-select-options-view.html.php");
 											}
 											?>
 										</select>
@@ -331,8 +331,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 										        class="form-control"
 										        multiple>
 
-											<?php
-											foreach ($majors as $major) {
+											<?php foreach ($courses as $course) {
 												include(ROOT_PATH . "app/views/partials/courses-select-options-view.html.php");
 											}
 											?>
