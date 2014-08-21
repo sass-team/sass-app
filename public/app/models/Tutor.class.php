@@ -82,8 +82,9 @@ class Tutor extends User
 	}
 
 	private function retrieveTeachingCourses() {
-		$query = "SELECT course.code AS 'Code', course.name AS  'Name', tutor_teaches_course.course_id  AS id FROM `" . DB_NAME . "`.course, `" . DB_NAME . "`.tutor_teaches_course
-				WHERE tutor_teaches_course.course_id = course.id;";
+		$query = "SELECT course.code AS 'Code', course.name AS  'Name', tutor_teaches_course.course_id  AS id
+					FROM `" . DB_NAME . "`.course, `" . DB_NAME . "`.tutor_teaches_course
+					WHERE tutor_teaches_course.course_id = course.id;";
 
 		try {
 			$query = $this->getDb()->getConnection()->prepare($query);
@@ -117,6 +118,47 @@ class Tutor extends User
 		}
 	}
 
+	public function updateTeachingCourse($newCourseId, $oldCourseId) {
+		$tutorId = $this->getId();
+
+		if (!preg_match('/^[0-9]+$/', $newCourseId) || !preg_match('/^[0-9]+$/', $oldCourseId) || strcmp($newCourseId, $oldCourseId) !== 0) {
+			throw new Exception("Data has been tempered. Aborting process.");
+		}
+
+		if ($this->teachingCourseExists($newCourseId, $tutorId)) {
+			throw new Exception("Data has been tempered. Aborting process.");
+		}
+
+		try {
+			$query = "UPDATE `" . DB_NAME . "`.`tutor_teaches_course` SET `course_id`= :newCourseId WHERE `tutor_user_id`= :tutorId and`course_id`= :oldCourseId";
+			$query = $this->getDb()->getConnection()->prepare($query);
+			$query->bindParam(':newCourseId', $newCourseId, PDO::PARAM_INT);
+			$query->bindParam(':tutorId', $tutorId, PDO::PARAM_INT);
+			$query->bindParam(':oldCourseId', $oldCourseId, PDO::PARAM_INT);
+			$query->execute();
+		} catch (Exception $e) {
+			throw new Exception("Could not replace teaching courses data into database.");
+		}
+	}
+
+	/**
+	 * @param $newCourseId
+	 * @param $tutorId
+	 * @return bool
+	 */
+	public function teachingCourseExists($newCourseId, $tutorId) {
+		$query = "SELECT id FROM `" . DB_NAME . "`.tutor_teaches_course WHERE course_id = :courseId AND tutor_user_id = :tutorId";
+		$query = $this->getDb()->getConnection()->prepare($query);
+		$query->bindParam(':tutorId', $tutorId, PDO::PARAM_INT);
+		$query->bindParam(':courseId', $newCourseId, PDO::PARAM_INT);
+		$query->execute();
+		if ($query->fetchColumn() === FALSE) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public function delTeachingCourse($courseId) {
 		if (!preg_match('/^[0-9]+$/', $courseId)) {
 			throw new Exception("Data tempering detected.
@@ -140,8 +182,9 @@ class Tutor extends User
 	/**
 	 * @param mixed $tutorMajor
 	 */
-	private function setMajor($majors) {
+	private
+	function setMajor($majors) {
 		$this->major = array_values($majors)[0];
 	}
 
-} 
+}

@@ -236,10 +236,10 @@ function isModifyBttnPressed() {
 		$('input[name=user_type').on('ifChecked', function (event) {
 			if ($(this).val() === "tutor") {
 				$("#user_major").select2("enable", true);
-				$("#teaching_courses_multi").select2("enable", true);
+				$("#teachingCourse").select2("enable", true);
 			} else {
 				$("#user_major").select2("enable", false);
-				$("#teaching_courses_multi").select2("enable", false);
+				$("#teachingCourse").select2("enable", false);
 			}
 		});
 
