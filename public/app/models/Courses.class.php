@@ -28,7 +28,8 @@
  * @author George Skarlatos
  * @since 7/21/14.
  */
-class Courses {
+class Courses
+{
 	private $db;
 
 	public function __construct($db) {
@@ -68,7 +69,7 @@ class Courses {
 
 	public function getCourses() {
 
-		$query = "SELECT course.code AS 'Code', course.name AS 'Name'
+		$query = "SELECT course.code AS 'Code', course.name AS 'Name', course.id
 				FROM `" . DB_NAME . "`.course";
 		try {
 			$query = $this->db->prepare($query);
