@@ -53,9 +53,9 @@
 							Settings
 						</a>
 					</li>
-					<?php if ($user->is_tutor()) { ?>
+					<?php if ($user->isTutor()) { ?>
 						<li>
-							<a href="<?php echo BASE_URL; ?>page-calendar.html">
+							<a href="<?php echo BASE_URL; ?>account/schedule">
 								<i class="fa fa-calendar"></i>
 								My Schedule
 							</a>
@@ -64,21 +64,28 @@
 				</ul>
 
 			</li>
-			<?php if ($user->is_admin()) { ?>
-				<li class="dropdown <?php if ($section == "users") {
-					echo "active";
-				} ?>">
-					<a href="javascript:;">
-						<i class="fa fa-group"></i>
-						Users
-						<span class="caret"></span>
-					</a>
+			<li class="dropdown <?php if ($section == "users") {
+				echo "active";
+			} ?>">
+				<a href="javascript:;">
+					<i class="fa fa-group"></i>
+					Users
+					<span class="caret"></span>
+				</a>
 
-					<ul class="sub-nav">
+				<ul class="sub-nav">
+					<li>
+						<a href="<?php echo BASE_URL; ?>users/overview">
+							<i class="fa fa-group"></i>
+							Overview
+						</a>
+					</li>
+
+					<?php if ($user->isAdmin()): ?>
 						<li>
-							<a href="<?php echo BASE_URL; ?>users/overview">
-								<i class="fa fa-group"></i>
-								Overview
+							<a href="<?php echo BASE_URL; ?>users#schedule">
+								<i class="fa fa-calendar"></i>
+								Schedule
 							</a>
 						</li>
 						<li>
@@ -87,17 +94,13 @@
 								Create
 							</a>
 						</li>
-						<li>
-							<a href="<?php echo BASE_URL; ?>users#schedule">
-								<i class="fa fa-calendar"></i>
-								Schedule
-							</a>
-						</li>
-					</ul>
-				</li>
-			<?php } ?>
+					<?php endif; ?>
 
-			<?php if ($user->is_admin()) { ?>
+
+				</ul>
+			</li>
+
+			<?php if ($user->isAdmin()) { ?>
 				<li class="dropdown <?php if ($section == "courses-majors") {
 					echo "active";
 				} ?>">

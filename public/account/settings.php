@@ -1,7 +1,7 @@
 <?php
 
 require "../app/init.php";
-$general->logged_out_protect();
+$general->loggedOutProtect();
 
 
 $errors = array();
@@ -9,19 +9,19 @@ $errors = array();
 if (isset($_POST['form_action_profile_settings'])) {
 
 	try {
-		$update_result = $users->update_profile_data($_POST['first-name'], $_POST['last-name'],
-			$user->getMobileNum(), $_POST['mobile'], $_POST['profile-description'], $user->getEmail());
+		$update_result = $user->updateProfile($_POST['firstName'], $_POST['lastName'],
+			 $user->getMobileNum(), $_POST['mobile'], $_POST['profile-description'], $user->getEmail());
 
 	} catch (Exception $e) {
 		$errors[] = $e->getMessage();
 	}
 	// decide if file upload needed.
-	$change_avatar_img = (file_exists($_FILES["fileupload-avatar"]['tmp_name']) &&
-		is_uploaded_file($_FILES["fileupload-avatar"]['tmp_name'])) ?
-		true : false;
+	$changeAvatarImg = (file_exists($_FILES["fileupload-avatar"]['tmp_name']) &&
+		 is_uploaded_file($_FILES["fileupload-avatar"]['tmp_name'])) ?
+		 true : false;
 
 	// TODO: use OOP instead of procedural programming for file upload
-	if ($change_avatar_img === true) {
+	if ($changeAvatarImg === true) {
 
 		if ($_FILES['fileupload-avatar']['error'] == 1) {
 			$errors[] = "File size exceeded";
@@ -33,11 +33,11 @@ if (isset($_POST['form_action_profile_settings'])) {
 			$ext = pathinfo($path, PATHINFO_EXTENSION);
 
 			if (move_uploaded_file($_FILES['fileupload-avatar']['tmp_name'], $uploadfile)) {
-				$img_web_loc = $uploaddir . "avatar_img_" . $user->getId() . "." . $ext;
-				rename($uploadfile, $img_web_loc);
+				$imgWebLoc = $uploaddir . "avatar_img_" . $user->getId() . "." . $ext;
+				rename($uploadfile, $imgWebLoc);
 
-				$avatar_img_loc = "app/assets/img/avatars/avatar_img_" . $user->getId() . "." . $ext;
-				if (true !== ($update_avatar_img_response = $users->update_avatar_img($avatar_img_loc, $user->getId()))) {
+				$avatarImgLoc = "app/assets/img/avatars/avatar_img_" . $user->getId() . "." . $ext;
+				if (true !== ($updateAvatarImgResponse = $user->updateAvatarImg($avatarImgLoc, $user->getId()))) {
 					$errors[] = "Error storing img loc to database. Please try again later.";
 				}
 			} else {
@@ -53,7 +53,7 @@ if (isset($_POST['form_action_profile_settings'])) {
 } else if (isset($_POST['form_action_update_password'])) {
 
 	try {
-		$users->update_password($user->getId(), $_POST['old-password'], $_POST['new-password-1'], $_POST['new-password-2']);
+		$user->updatePassword($user->getId(), $_POST['old-password'], $_POST['new-password-1'], $_POST['new-password-2']);
 	} catch (Exception $e) {
 		$errors[] = $e->getMessage();
 	}
@@ -82,10 +82,10 @@ $section = "account";
 <?php require ROOT_PATH . 'app/views/head.php'; ?>
 <body>
 <div id="wrapper">
-	<?php
-	require ROOT_PATH . 'app/views/header.php';
-	require ROOT_PATH . 'app/views/sidebar.php';
-	?>
+<?php
+require ROOT_PATH . 'app/views/header.php';
+require ROOT_PATH . 'app/views/sidebar.php';
+?>
 
 
 <div id="content">
@@ -154,13 +154,13 @@ $section = "account";
 				<div class="col-md-7">
 					<div class="fileupload fileupload-new" data-provides="fileupload">
 						<div class="fileupload-new thumbnail" style="width: 180px; height: 180px;"><img
-								src="<?php echo BASE_URL . $user->getAvatarImgLoc() ?>" name="fileupload-avatar"
-								alt="Profile Avatar"/></div>
+								 src="<?php echo BASE_URL . $user->getAvatarImgLoc() ?>" name="fileupload-avatar"
+								 alt="Profile Avatar"/></div>
 						<div class="fileupload-preview fileupload-exists thumbnail"
 						     style="max-width: 200px; max-height: 200px; line-height: 20px;"></div>
 						<div>
 												<span class="btn btn-default btn-file"><span
-														class="fileupload-new">Select image</span><span class="fileupload-exists">
+														 class="fileupload-new">Select image</span><span class="fileupload-exists">
 														Change</span><input name="fileupload-avatar" type="file"/></span>
 							<a href="#" class="btn btn-default fileupload-exists" data-dismiss="fileupload">Remove</a>
 						</div>
@@ -189,7 +189,7 @@ $section = "account";
 				<label class="col-md-3">First Name</label>
 
 				<div class="col-md-7">
-					<input type="text" name="first-name" value="<?php echo $user->getFirstName(); ?>"
+					<input type="text" name="firstName" value="<?php echo $user->getFirstName(); ?>"
 					       class="form-control"/>
 				</div>
 				<!-- /.col -->
@@ -202,7 +202,7 @@ $section = "account";
 				<label class="col-md-3">Last Name</label>
 
 				<div class="col-md-7">
-					<input type="text" name="last-name" value="<?php echo $user->getLastName(); ?>"
+					<input type="text" name="lastName" value="<?php echo $user->getLastName(); ?>"
 					       class="form-control"/>
 				</div>
 				<!-- /.col -->
@@ -339,11 +339,12 @@ $section = "account";
 <!-- #content -->
 
 
-</div>
-<!-- #wrapper -->
+
 
 <?php include ROOT_PATH . "app/views/footer.php"; ?>
 </div>
+<!-- #wrapper -->
+
 </body>
 </html>
 

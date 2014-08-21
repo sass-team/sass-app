@@ -1,11 +1,18 @@
 <?php
 require '../app/init.php';
-$general->logged_out_protect();
+$general->loggedOutProtect();
+
+// redirect if user elevation is not that of secretary or tutor
+if (!$user->isAdmin()) {
+	header('Location: ' . BASE_URL . "error-403");
+	exit();
+}
+
 
 try {
-	$course_db = new Courses($db->getDbConnection());
-	$courses = $course_db->getAll();
-	$majors = $course_db->getMajors();
+	$coursesDb = new Courses($db->getConnection());
+	$courses = $coursesDb->getAll();
+	$majors = $coursesDb->getMajors();
 
 	//$majors = array_unique(array_column($courses, 'Major'));
 	//$majors_extensions = array_unique(array_column($courses, 'Extension'));
@@ -23,11 +30,11 @@ if (isSaveBttnPressed()) {
 	$last_name = trim($_POST['last_name']);
 	$email = trim($_POST['email']);
 	$user_type = trim($_POST['user_type']);
-	$user_major_ext = trim($_POST['user_major']);
+	$user_major_ext = (isset($_POST['user_major']) ? trim($_POST['user_major']) : "");
 	$teaching_courses[] = isset($_POST['teaching_courses']) ? $_POST['teaching_courses'] : "";
 
 	try {
-		$users->register($first_name, $last_name, $email, $user_type, $user_major_ext, $teaching_courses);
+		$user->createUser($first_name, $last_name, $email, $user_type, $user_major_ext, $teaching_courses);
 	} catch (Exception $e) {
 		$errors[] = $e->getMessage();
 	}
@@ -82,15 +89,15 @@ require ROOT_PATH . 'app/views/sidebar.php';
 					<li class="active"><a href="#add" data-toggle="tab"><i class="fa fa-plus"></i> &nbsp;&nbsp;Add
 							User</a></li>
 					<!--	<li><a href="#profile-3" data-toggle="tab"><i class="fa fa-user"></i> &nbsp;&nbsp;Profile</a></li>
-						<li class="dropdown">
-							<a href="javascript:;" id="myTabDrop3" class="dropdown-toggle" data-toggle="dropdown"><i
-									class="fa fa-chevron-sign-down"></i> &nbsp;&nbsp;Dropdown <b class="caret"></b></a>
-							<ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">
-								<li><a href="#dropdown5" tabindex="-1" data-toggle="tab">@fat</a></li>
-								<li><a href="#dropdown6" tabindex="-1" data-toggle="tab">@mdo</a></li>
-							</ul>
-						</li>
-						-->
+							<li class="dropdown">
+								 <a href="javascript:;" id="myTabDrop3" class="dropdown-toggle" data-toggle="dropdown"><i
+											class="fa fa-chevron-sign-down"></i> &nbsp;&nbsp;Dropdown <b class="caret"></b></a>
+								 <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">
+									  <li><a href="#dropdown5" tabindex="-1" data-toggle="tab">@fat</a></li>
+									  <li><a href="#dropdown6" tabindex="-1" data-toggle="tab">@mdo</a></li>
+								 </ul>
+							</li>
+							-->
 				</ul>
 
 			</div>
@@ -101,61 +108,84 @@ require ROOT_PATH . 'app/views/sidebar.php';
 				<div id="myTabContent" class="tab-content stacked-content">
 					<div class="tab-pane fade in active" id="add">
 						<p>In this section admin is able to add a new user and fill out the appropriate fields. Only
-							necessary fields are required in order to create a new user. Users(tutors or secretaries) are
+							necessary fields are required in order to create a new user. Users(tutors or secretaries)
+							are
 							able to modify some of their profile data nce they are logged in.</p>
 
 						<p>
-							<a data-toggle="modal" id="bttn-styledModal" href="#styledModal" class="btn btn-primary">Create a
+							<a data-toggle="modal" id="bttn-styledModal" href="#styledModal" class="btn btn-primary">Create
+								a
 								new user</a>
 						</p>
 					</div>
 
 					<div class="tab-pane fade" id="profile-3">
 						<p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid.
-							Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four
-							loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk
+							Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan
+							four
+							loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer
+							mlkshk
 							aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore
 							aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr, vero magna velit sapiente
-							labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean shorts beard
-							ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher
+							labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean shorts
+							beard
+							ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr
+							butcher
 							vero sint qui sapiente accusamus tattooed echo park.</p>
 
 						<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
-							Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus
-							mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa
-							quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo,
-							rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium.</p>
+							Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur
+							ridiculus
+							mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat
+							massa
+							quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim
+							justo,
+							rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis
+							pretium.</p>
 					</div>
 
 					<div class="tab-pane fade" id="dropdown5">
-						<p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo
-							retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft
+						<p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic
+							lomo
+							retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed
+							craft
 							beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR
 							banksy irony. Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh mi whatever
-							gluten-free, carles pitchfork biodiesel fixie etsy retro mlkshk vice blog. Scenester cred you
+							gluten-free, carles pitchfork biodiesel fixie etsy retro mlkshk vice blog. Scenester cred
+							you
 							probably haven't heard of them, vinyl craft beer blog stumptown. Pitchfork sustainable tofu
 							synth chambray yr.</p>
 
 						<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
-							Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus
-							mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa
-							quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo,
-							rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium.</p>
+							Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur
+							ridiculus
+							mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat
+							massa
+							quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim
+							justo,
+							rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis
+							pretium.</p>
 					</div>
 
 					<div class="tab-pane fade" id="dropdown6">
 						<p>Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out
 							master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan
-							DIY, art party locavore wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY salvia
+							DIY, art party locavore wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY
+							salvia
 							PBR, banh mi before they sold out farm-to-table VHS viral locavore cosby sweater. Lomo wolf
-							viral, mustache readymade thundercats keffiyeh craft beer marfa ethical. Wolf salvia freegan,
+							viral, mustache readymade thundercats keffiyeh craft beer marfa ethical. Wolf salvia
+							freegan,
 							sartorial keffiyeh echo park vegan.</p>
 
 						<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
-							Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus
-							mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa
-							quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo,
-							rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium.</p>
+							Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur
+							ridiculus
+							mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat
+							massa
+							quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim
+							justo,
+							rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis
+							pretium.</p>
 					</div>
 				</div>
 
@@ -245,7 +275,8 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 										<div class="radio" id="id_tutor_div">
 											<label>
-												<input type="radio" name="user_type" id="id_input_user_type" value="tutor"
+												<input type="radio" name="user_type" id="id_input_user_type"
+												       value="tutor"
 												       class="icheck-input"
 												       checked data-required="true">
 												Tutor
@@ -256,7 +287,8 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 										<div class="radio">
 											<label>
-												<input type="radio" name="user_type" value="secretary" class="icheck-input"
+												<input type="radio" name="user_type" value="secretary"
+												       class="icheck-input"
 												       data-required="true">
 												Secretary
 											</label>
@@ -280,8 +312,8 @@ require ROOT_PATH . 'app/views/sidebar.php';
 										</h5>
 										<select id="user_major" name="user_major" class="form-control">
 											<option value="null">I don&#39;t know.</option>
-											<?php foreach ($majors as $major) { ?>
-												<?php   include(ROOT_PATH . "app/views/partials/majors-select-options-view.html.php");
+											<?php foreach ($majors as $major) {
+												include(ROOT_PATH . "app/views/partials/majors-select-options-view.html.php");
 											}
 											?>
 										</select>
@@ -295,11 +327,11 @@ require ROOT_PATH . 'app/views/sidebar.php';
 											<label for="teaching_courses_multi">Tutor's Courses</label>
 										</h5>
 
-										<select id="teaching_courses_multi" name="teaching_courses[]" class="form-control"
+										<select id="teaching_courses_multi" name="teaching_courses[]"
+										        class="form-control"
 										        multiple>
 
-											<?php
-											foreach ($majors as $major) {
+											<?php foreach ($courses as $course) {
 												include(ROOT_PATH . "app/views/partials/courses-select-options-view.html.php");
 											}
 											?>
@@ -408,8 +440,8 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 		$('input[name=iCheck]').each(function () {
 			var self = $(this),
-				label = self.next(),
-				label_text = label.text();
+				 label = self.next(),
+				 label_text = label.text();
 
 			label.remove();
 			self.iCheck({
