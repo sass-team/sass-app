@@ -10,6 +10,11 @@ abstract class User
 	const ADMIN = 'admin';
 	const TUTOR = 'tutor';
 	const SECRETARY = 'secretary';
+	const ACTIVE_STRING = 'activateAccount';
+	const DEACTIVE_STRING = 'deactivateAccount';
+	const ACTIVE_STATUS = 1;
+	const DEACTIVE_STATUS = 0;
+
 	private $users;
 	private $id;
 	private $firstName;
@@ -20,6 +25,8 @@ abstract class User
 	private $userType;
 	private $mobileNum;
 	private $email;
+	private $active;
+
 	private $db;
 
 	/**
@@ -38,7 +45,7 @@ abstract class User
 
 		// initialize tutor/secretary/admin class depending on type.
 		$this->setUserType($data['type']);
-
+		$this->setActive($data['active']);
 		$this->setDb($db);
 	}
 
@@ -82,7 +89,7 @@ abstract class User
 	 */
 	private function setDateAccountCreated($dateAccountCreated) {
 		$this->dateAccountCreated = $dateAccountCreated;
-	} // end fetch_info
+	}
 
 	/**
 	 * @param mixed $mobileNum
@@ -103,6 +110,58 @@ abstract class User
 	 */
 	private function setUserType($userType) {
 		$this->userType = $userType;
+	} // end fetch_info
+
+	/**
+	 * @param mixed $active
+	 */
+	public function setActive($active) {
+		$this->active = $active;
+	}
+
+	public function updateActiveStatus($newStatus, $oldStatus) {
+		$oldStatus = $oldStatus == 1 ? self::ACTIVE_STRING : self::DEACTIVE_STRING;
+		$id = $this->getId();
+
+		if ((strcmp($newStatus, $oldStatus) === 0) || (strcmp($newStatus, self::ACTIVE_STRING) !== 0 && strcmp($newStatus, self::DEACTIVE_STRING))) {
+			throw new Exception("Tampered data detected. Aborting.");
+		}
+
+		$accountStatus = strcmp($newStatus, self::ACTIVE_STRING) === 0 ? self::ACTIVE_STATUS : self::DEACTIVE_STATUS;
+
+		try {
+			$query = "UPDATE `" . DB_NAME . "`.`user` SET `active`= :accountStatus WHERE `id`=:id";
+			$query = $this->getDb()->getConnection()->prepare($query);
+			$query->bindParam(':accountStatus', $accountStatus, PDO::PARAM_INT);
+			$query->bindParam(':id', $id, PDO::PARAM_INT);
+
+			$query->execute();
+
+			return true;
+		} catch (PDOException $e) {
+			throw new Exception("Something terrible happened. Could not retrieve users data from database.: " . $e->getMessage());
+		} // end catch
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getDb() {
+		return $this->db;
+	}
+
+	/**
+	 * @param mixed $db
+	 */
+	public function setDb($db) {
+		$this->db = $db;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function isActive() {
+		return $this->active;
 	}
 
 	/**
@@ -121,7 +180,7 @@ abstract class User
 	 */
 	public function setUsers($users) {
 		$this->users = $users;
-	}
+	} // end __construct
 
 	protected function retrieveUsers() {
 		$query = "SELECT user.id, user.f_name, user.l_name, user.img_loc, user.profile_description, user.date, user.mobile, user.email, user_types.type
@@ -139,24 +198,9 @@ abstract class User
 		} // end catch
 	}
 
-	/**
-	 * @return mixed
-	 */
-	public function getDb() {
-		return $this->db;
-	} // end __construct
-
-	
-	/**
-	 * @param mixed $db
-	 */
-	public function setDb($db) {
-		$this->db = $db;
-	}
-
 	// end function login
 
-	public function updatePosition($userType) {
+	public function updateUserType($userType) {
 		$this->validateUserType($userType);
 		$id = $this->getId();
 

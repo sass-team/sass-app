@@ -114,8 +114,12 @@ try {
 		$currUser->delTeachingCourse($_POST['delCourseIdModal']);
 		header('Location: ' . BASE_URL . 'users/edit/:' . $userId . '/success');
 		exit();
-	} else if (isBtnSbmtChangePositionPrsd()) {
-		$currUser->updatePosition($_POST['changePosition']);
+	} else if (isBtnSbmtChangeuserTypePrsd()) {
+		$currUser->updateUserType($_POST['changeuserType']);
+		header('Location: ' . BASE_URL . 'users/edit/:' . $userId . '/success');
+		exit();
+	} else if (isBtnSbmtChangeUserActivate()) {
+		$currUser->updateActiveStatus($_POST['changeUserActive'], $currUser->isActive());
 		header('Location: ' . BASE_URL . 'users/edit/:' . $userId . '/success');
 		exit();
 	}
@@ -141,10 +145,14 @@ function isBtnDelTeachingCoursesPressed() {
 	return isset($_POST['hiddenSubmitDeleteCourse']) && empty($_POST['hiddenSubmitDeleteCourse']);
 }
 
-function isBtnSbmtChangePositionPrsd() {
-	return isset($_POST['hiddenSbmtChangePosition']) && empty($_POST['hiddenSbmtChangePosition']);
+function isBtnSbmtChangeuserTypePrsd() {
+	return isset($_POST['hiddenSbmtChangeuserType']) && empty($_POST['hiddenSbmtChangeuserType']);
 }
 
+
+function isBtnSbmtChangeUserActivate() {
+	return isset($_POST['hiddenSbmtChangeUserActive']) && empty($_POST['hiddenSbmtChangeUserActive']);
+}
 
 $page_title = "Edit";
 $section = "users";
@@ -215,7 +223,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 			</a>
 		</li>
 		<li>
-			<a href="#position" data-toggle="tab">
+			<a href="#userType" data-toggle="tab">
 				<i class="fa fa-flag-o"></i>
 				&nbsp;&nbsp;Position
 			</a>
@@ -305,7 +313,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 			<div class="form-group">
 
-				<a data-toggle="modal" id="bttn-styledModal" href="#styledModal" class="btn btn-primary">
+				<a data-toggle="modal" id="bttn-coursesModal" href="#coursesModal" class="btn btn-primary">
 					Add Teaching Courses
 				</a>
 				<!-- /.col-->
@@ -435,7 +443,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 </div>
 
-<div class="tab-pane fade" id="position">
+<div class="tab-pane fade" id="userType">
 	<div class="col-md-12">
 
 		<div class="portlet">
@@ -467,10 +475,10 @@ require ROOT_PATH . 'app/views/sidebar.php';
 						        class="btn btn-default <?php if ($currUser->isAdmin()) echo "active"; ?> btnChangeType"
 						        id="admin"
 						        name="admin">
-							Administration
+							Administrator
 						</button>
-						<input type="hidden" name="hiddenSbmtChangePosition">
-						<input type="hidden" id="changePosition" name="changePosition" value="">
+						<input type="hidden" name="hiddenSbmtChangeuserType">
+						<input type="hidden" id="changeuserType" name="changeuserType" value="">
 
 					</div>
 
@@ -492,25 +500,46 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 
 <div class="tab-pane fade" id="status">
-	<h3> Reports Settings </h3>
+	<div class="col-md-12">
 
-	<p> Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro
-		fanny
-		pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone
-		skateboard
-		locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid
-		8-bit cred pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy
-		retro
-		mlkshk vice blog. Scenester cred you probably haven't heard of them, vinyl craft beer blog stumptown .
-		Pitchfork sustainable tofu synth chambray yr .</p>
+		<div class="portlet">
 
-	<p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit . Aenean commodo ligula eget dolor . Aenean
-		massa .
-		Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus . Donec quam felis,
-		ultricies nec, pellentesque eu, pretium quis, sem . Nulla consequat massa quis enim . Donec pede justo,
-		fringilla vel, aliquet nec, vulputate eget, arcu . In enim justo, rhoncus ut, imperdiet a, venenatis
-		vitae,
-		justo . Nullam dictum felis eu pede mollis pretium .</p>
+			<div class="portlet-header">
+
+				<h3>
+					<i class="fa fa-hand-o-up"></i>
+					Account Status
+				</h3>
+
+			</div>
+			<!-- /.portlet-header -->
+
+			<div class="portlet-content">
+				<form method="post" id="update-status-form" action="" class="form">
+
+					<button type="submit"
+					        class="btn btn-success <?php if ($currUser->isActive()) echo "active disabled"; ?> btnChangeActive"
+					        id="activateAccount">Activate
+					</button>
+
+					<button type="submit"
+					        class="btn btn-warning <?php if (!$currUser->isActive()) echo "active disabled"; ?> btnChangeActive"
+					        id="deactivateAccount">Deactivate
+					</button>
+					<input type="hidden" name="hiddenSbmtChangeUserActive" value="">
+					<input type="hidden" id="changeUserActive" name="changeUserActive" value="">
+
+				</form>
+			</div>
+			<!-- /.portlet-content -->
+
+		</div>
+		<!-- /.portlet -->
+
+	</div>
+	<!-- /.col -->
+
+
 </div>
 
 <div class="tab-pane fade" id="notifications">
@@ -552,7 +581,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <!-- #content -->
 
 
-<div id="styledModal" class="modal modal-styled fade">
+<div id="coursesModal" class="modal modal-styled fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<form method="post" id="create-form" action="" class="form">
@@ -649,7 +678,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 							<div class="row">
 								<div class="alert alert-warning">
 									<a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
-									<strong>Warning!</strong><br/>Tutor will not be able to teaching this course anymore.
+									<strong>Warning!</strong><br/>Tutor will not be able to teach this course anymore.
 								</div>
 							</div>
 
@@ -703,8 +732,14 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 		$(".btnChangeType").click(function () {
 			$id = $(this).attr('id');
-			$("#changePosition").val($id);
+			$("#changeuserType").val($id);
 		});
+
+		$(".btnChangeActive").click(function () {
+			$id = $(this).attr('id');
+			$("#changeUserActive").val($id);
+		});
+
 	});
 
 
@@ -722,7 +757,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <!--        });-->
 <!---->
 <!--        setTimeout(function () {-->
-<!--            $("#bttn-styledModal").trigger("click");-->
+<!--            $("#bttn-coursesModal").trigger("click");-->
 <!--            //window.location.href = $href;-->
 <!--        }, 10);-->
 <!---->

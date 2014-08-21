@@ -68,7 +68,7 @@ class Database
 		} else if ($this->emailExists($email) === false) {
 			throw new Exception('Sorry that email doesn\'t exists.');
 		}
-		$query = "SELECT id, password, email FROM `" . DB_NAME . "`.user WHERE email = :email";
+		$query = "SELECT id, active, password, email FROM `" . DB_NAME . "`.user WHERE email = :email";
 		$query = $this->connection->prepare($query);
 		$query->bindParam(':email', $email);
 
@@ -80,13 +80,16 @@ class Database
 
 			// using the verify method to compare the password with the stored hashed password.
 			if (!password_verify($password, $hash_password)) {
-				throw new Exception('Sorry, that email/password is invalid.');
+				throw new Exception('That email/password is invalid.');
 			}
 
+			if ($data['active'] == 0) {
+				throw new Exception('Your account has been deactivated.');
+			}
 			return $data['id'];
 		} catch (PDOException $e) {
 			// "Sorry could not connect to the database."
-			throw new Exception("Sorry could not connect to the database: ");
+			throw new Exception("Could not connect to the database: ");
 		}
 	} // end __construct
 
@@ -126,7 +129,7 @@ class Database
 	 */
 	function getData($id) {
 		$query = "SELECT user.email, user.id, user.`f_name`, user.`l_name`, user.`img_loc`,
-						user.date, user.`profile_description`, user.mobile, user_types.type
+						user.date, user.`profile_description`, user.mobile, user_types.type, user.active
 					FROM `" . DB_NAME . "`.user
 						LEFT OUTER JOIN user_types ON user.`user_types_id` = `user_types`.id
 					WHERE user.id = :id";
