@@ -543,25 +543,21 @@ require ROOT_PATH . 'app/views/sidebar.php';
 </div>
 
 <div class="tab-pane fade" id="notifications">
-	<h3> Reports Settings </h3>
+	<h3> Notification Settings </h3>
 
-	<p> Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro
-		fanny
-		pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone
-		skateboard
-		locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid
-		8-bit cred pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy
-		retro
-		mlkshk vice blog. Scenester cred you probably haven't heard of them, vinyl craft beer blog stumptown .
-		Pitchfork sustainable tofu synth chambray yr .</p>
+	<p> Email when a new workshop is assgined to tutor</p>
 
-	<p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit . Aenean commodo ligula eget dolor . Aenean
-		massa .
-		Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus . Donec quam felis,
-		ultricies nec, pellentesque eu, pretium quis, sem . Nulla consequat massa quis enim . Donec pede justo,
-		fringilla vel, aliquet nec, vulputate eget, arcu . In enim justo, rhoncus ut, imperdiet a, venenatis
-		vitae,
-		justo . Nullam dictum felis eu pede mollis pretium .</p>
+	<p> Email when my profile is update</p>
+
+	<p> Email when a workshop session is due to next day</p>
+
+	<h4>Please bare in mind that up to 25 sms can be in sent daily.</h4>
+	<p> SMS when a new workshop is assgined to tutor</p>
+
+	<p> SMS when my profile is update</p>
+
+	<p> SMS  when a workshop session is due to next day</p>
+
 </div>
 
 </div>
