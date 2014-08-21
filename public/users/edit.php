@@ -111,11 +111,16 @@ try {
 //    }
 	}
 
-	$courseDb = new Courses($db->getConnection());
-	$courses = $courseDb->getAll();
+	if ($currUser->isTutor()) {
+
+
+		$courseDb = new Courses($db->getConnection());
+		$courses = $courseDb->getAll();
+		$courses = $currUser->getTeachingCourses();
 //    $majors = $courseDb->getMajors();
-	//$majors = array_unique(array_column($courses, 'Major'));
-	//$majors_extensions = array_unique(array_column($courses, 'Extension'));
+		//$majors = array_unique(array_column($courses, 'Major'));
+		//$majors_extensions = array_unique(array_column($courses, 'Extension'));
+	}
 } catch (Exception $e) {
 	$errors[] = $e->getMessage();
 }
@@ -181,13 +186,17 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 <div class="col-md-3 col-sm-4">
 	<ul id="myTab" class="nav nav-pills nav-stacked">
-		<li class="active">
-			<a href="#courses-majors" data-toggle="tab">
-				<i class="fa fa-list-alt"></i>
-				&nbsp;&nbsp; Teaching Courses
-			</a>
-		</li>
-		<li>
+
+		<?php if ($user->isTutor()) { ?>
+			<li class="active">
+				<a href="#courses-majors" data-toggle="tab">
+					<i class="fa fa-list-alt"></i>
+					&nbsp;&nbsp; Teaching Courses
+				</a>
+			</li>
+		<?php } ?>
+
+		<li <?php if (!$user->isTutor()) echo "class='active'"; ?>>
 			<a href="#profile-tab" data-toggle="tab">
 				<i class="fa fa-user"></i>
 				&nbsp;&nbsp;Profile Settings
@@ -221,81 +230,82 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 <div class="tab-content stacked-content">
 
-<div class="tab-pane fade in active" id="courses-majors">
+<?php if ($currUser->isTutor()) { ?>
+	<div class="tab-pane fade in active" id="courses-majors">
 
 
-	<div class="col-md-12">
+		<div class="col-md-12">
 
-		<div class="portlet">
+			<div class="portlet">
 
-			<div class="portlet-header">
+				<div class="portlet-header">
 
-				<h3>
-					<i class="fa fa-table"></i>
-					Teaching Courses
-				</h3>
+					<h3>
+						<i class="fa fa-table"></i>
+						Teaching Courses
+					</h3>
 
-			</div>
-			<!-- /.portlet-header -->
-
-			<div class="portlet-content">
-
-				<div class="table-responsive">
-
-					<table
-						 class="table table-striped table-bordered table-hover table-highlight table-checkable"
-						 data-provide="datatable"
-						 data-display-rows="10"
-						 data-info="true"
-						 data-search="true"
-						 data-length-change="true"
-						 data-paginate="true"
-						 >
-						<thead>
-						<tr>
-							<th data-filterable="true" data-sortable="true" data-direction="desc">Code</th>
-							<th data-direction="asc" data-filterable="true" data-sortable="false">Name</th>
-							<th>Action</th>
-						</tr>
-						</thead>
-						<tbody>
-
-						<?php
-						if (empty($errors) === true) {
-							foreach ($courses as $course) {
-								include(ROOT_PATH . "app/views/partials/courses-table-data-view.html.php");
-
-							}
-						} ?>
-						</tbody>
-					</table>
 				</div>
-				<!-- /.table-responsive -->
+				<!-- /.portlet-header -->
 
+				<div class="portlet-content">
+
+					<div class="table-responsive">
+
+						<table
+							 class="table table-striped table-bordered table-hover table-highlight table-checkable"
+							 data-provide="datatable"
+							 data-display-rows="10"
+							 data-info="true"
+							 data-search="true"
+							 data-length-change="true"
+							 data-paginate="true"
+							 >
+							<thead>
+							<tr>
+								<th data-filterable="true" data-sortable="true" data-direction="desc">Code</th>
+								<th data-direction="asc" data-filterable="true" data-sortable="false">Name</th>
+								<th>Action</th>
+							</tr>
+							</thead>
+							<tbody>
+
+							<?php
+							if (empty($errors) === true) {
+								foreach ($courses as $course) {
+									include(ROOT_PATH . "app/views/partials/courses-table-data-view.html.php");
+
+								}
+							} ?>
+							</tbody>
+						</table>
+					</div>
+					<!-- /.table-responsive -->
+
+
+				</div>
+				<!-- /.portlet-content -->
 
 			</div>
-			<!-- /.portlet-content -->
+			<!-- /.portlet -->
 
+			<br/>
+
+			<div class="form-group">
+
+				<a data-toggle="modal" id="bttn-styledModal" href="#styledModal" class="btn btn-primary">
+					Add Teaching Course
+				</a>
+				<!-- /.col-->
+
+			</div>
+			<!-- /.form - group-->
 		</div>
-		<!-- /.portlet -->
+		<!-- /.col -->
 
-		<br/>
-
-		<div class="form-group">
-
-			<a data-toggle="modal" id="bttn-styledModal" href="#styledModal" class="btn btn-primary">
-				Add Teaching Course
-			</a>
-			<!-- /.col-->
-
-		</div>
-		<!-- /.form - group-->
 	</div>
-	<!-- /.col -->
-
-</div>
-
-<div class="tab-pane fade" id="profile-tab">
+<?php } ?>
+<div class="tab-pane fade <?php if (!$currUser->isTutor()) echo "in active"; ?>" id="profile-tab">
 
 	<h3 class=""> Edit Profile Settings </h3>
 
