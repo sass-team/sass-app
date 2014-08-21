@@ -103,8 +103,7 @@ class Admin extends User
 	}
 
 	public function createCourse($course_code, $course_name) {
-		$this->$course_code;
-		$this->$course_name;
+
 
 		try {
 			$query = "INSERT INTO `" . DB_NAME . "`.course (`code`, `name`)
@@ -119,7 +118,7 @@ class Admin extends User
 			$query->execute();
 			return true;
 		} catch (Exception $e) {
-			throw new Exception("Could not insert course into database.");
+			throw new Exception("Could not insert course into database."  . $e->getMessage());
 		}
 
 	}
