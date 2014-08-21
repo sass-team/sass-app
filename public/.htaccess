@@ -2,6 +2,7 @@
 RewriteEngine On
 RewriteBase /
 
+RewriteRule ^users/([0-9]+)$ /users/index.php?id=$1 [L]
 RewriteRule ^([a-z\-]+)/([a-z\-]+)$ /$1/$2.php [L]
 RewriteRule ^([a-z]+)$ /$1.php [L]
 RewriteRule ^users/edit/:([0-9]+)$ /users/edit.php?id=$1 [L]

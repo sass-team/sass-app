@@ -24,7 +24,7 @@ $id = $currUser['id'];
 	<td><?php echo $position ?></td>
 	<td><?php echo $mobile ?></td>
 	<td class="hidden-xs hidden-sm">
-		<a data-toggle="modal" href="#" class="btn btn-default btn-sm center-block">
+		<a data-toggle="modal" href="<?php echo BASE_URL . "users/" . $id; ?>" class="btn btn-default btn-sm center-block">
 			<i class="fa fa-user"></i> View
 		</a>
 	</td>
