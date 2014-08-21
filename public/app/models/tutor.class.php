@@ -39,13 +39,11 @@ class Tutor extends User
 	}
 
 	public function retrieveCoursesNotTeaching() {
-		$query = "
-			SELECT course.code AS 'Code', course.name AS 'Name',  course.id
-				FROM  `" . DB_NAME . "`.course
-				WHERE NOT EXISTS (
-					SELECT `course_id` FROM `sass-ms`.`tutor_teaches_course` WHERE course.id = `tutor_teaches_course`.`course_id`
-				);
-			";
+		$query = "SELECT course.code AS 'Code', course.name AS 'Name',  course.id
+					FROM  `" . DB_NAME . "`.course
+					WHERE NOT EXISTS (
+						SELECT `course_id` FROM  `" . DB_NAME . "`.`tutor_teaches_course` WHERE course.id = `tutor_teaches_course`.`course_id`
+					)";
 
 		try {
 			$query = $this->getDb()->getConnection()->prepare($query);
