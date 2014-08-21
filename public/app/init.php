@@ -11,12 +11,12 @@ require "config/app.php";
 
 // identical to require; but php will include it only if it has not already been included
 require_once ROOT_PATH . 'app/config/database.class.php';
-require_once ROOT_PATH . "app/models/user.class.php";
-require_once ROOT_PATH . "app/models/admin.class.php";
-require_once ROOT_PATH . "app/models/tutor.class.php";
-require_once ROOT_PATH . "app/models/secretary.class.php";
-require_once ROOT_PATH . "app/models/general.class.php";
-require_once ROOT_PATH . "app/models/courses.class.php";
+require_once ROOT_PATH . "app/models/user.php";
+require_once ROOT_PATH . "app/models/admin.php";
+require_once ROOT_PATH . "app/models/tutor.php";
+require_once ROOT_PATH . "app/models/secretary.php";
+require_once ROOT_PATH . "app/models/general.php";
+require_once ROOT_PATH . "app/models/courses.php";
 
 $errors = array();
 
