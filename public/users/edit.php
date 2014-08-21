@@ -110,6 +110,10 @@ try {
 			header('Location: ' . BASE_URL . 'users/edit/:' . $userId . '/success');
 			exit();
 		}
+	} else if (isBtnDelTeachingCoursesPressed()) {
+		$currUser->delTeachingCourse($_POST['delCourseIdModal']);
+		header('Location: ' . BASE_URL . 'users/edit/:' . $userId . '/success');
+		exit();
 	}
 } catch (Exception $e) {
 	$errors[] = $e->getMessage();
@@ -126,6 +130,11 @@ function isAddTeachingCoursesPressed() {
 
 function isModificationSuccessful() {
 	return isset($_GET['success']) && strcmp($_GET['success'], 'y1!' === 0);
+}
+
+
+function isBtnDelTeachingCoursesPressed() {
+	return isset($_POST['hiddenSubmitDeleteCourse']) && empty($_POST['hiddenSubmitDeleteCourse']);
 }
 
 $page_title = "Edit";
@@ -591,6 +600,57 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <!-- /.modal -->
 
 
+<div id="deleteCourse" class="modal modal-styled fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form method="post" id="create-form" action="" class="form">
+
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h3 class="modal-title">Remove course
+						from <?php echo $currUser->getFirstName() . " " . $currUser->getLastName(); ?></h3>
+				</div>
+				<div class="modal-body">
+					<div class="portlet">
+						<?php
+						if (empty($errors) === false) {
+							?>
+							<div class="alert alert-danger">
+								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+								<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
+							</div>
+						<?php } ?>
+
+						<div class="portlet-content">
+
+							<div class="row">
+								<div class="alert alert-warning">
+									<a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
+									<strong>Warning!</strong><br/>Tutor will not be able to teaching this course anymore.
+								</div>
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-tertiary" data-dismiss="modal">Cancel</button>
+					<input type="hidden" id="delCourseIdModal" name="delCourseIdModal" value=""/>
+					<input type="hidden" name="hiddenSubmitDeleteCourse">
+					<button type="submit" class="btn btn-primary">Delete</button>
+				</div>
+			</form>
+
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+
 <?php include ROOT_PATH . "app/views/footer.php"; ?>
 </div>
 <!-- #wrapper -->
@@ -608,9 +668,18 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <script src="<?php echo BASE_URL; ?>app/assets/js/plugins/autosize/jquery.autosize.min.js"></script>
 <script src="<?php echo BASE_URL; ?>app/assets/js/demos/form-extended.js"></script>
 
-<!---->
-<!--<script type="text/javascript">-->
-<!--    jQuery(function () {-->
+
+<script type="text/javascript">
+	jQuery(function () {
+		// prepare course id for delete on modal
+		$(".btnDeleteCourse").click(function () {
+			$id = $(this).next('input').val();
+			$("#delCourseIdModal").val($id);
+		});
+	});
+
+
+</script>
 <!--        $("#create-form").submit(function (event) {-->
 <!--            var error_last_name = validate($("#last_name"), /^[a-zA-Z]{1,16}$/);-->
 <!--            var error_first_name = validate($("#first_name"), /^[a-zA-Z]{1,16}$/);-->
@@ -629,60 +698,9 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <!--        }, 10);-->
 <!---->
 <!--        $("#user_major").select2();-->
+
 <!---->
-<!--        // TODO: add error messages-->
-<!--        // TODO: add option for second major-->
-<!--        // TODO: check email ^ user major & course teaching are inputt if user is tutor type.-->
-<!--        // TODO: hide major & courses & user type NOT tutor-->
-<!--        var validate = function (element, regex) {-->
-<!--            var str = $(element).val();-->
-<!--            var $parent = $(element).parent();-->
-<!---->
-<!--            if (regex.test(str)) {-->
-<!--                $parent.attr('class', 'form-group has-success');-->
-<!--                return true;-->
-<!--            } else {-->
-<!--                $parent.attr('class', 'form-group has-error');-->
-<!--                return false;-->
-<!--            }-->
-<!--        };-->
-<!---->
-<!--        $("#last_name").blur(function () {-->
-<!--            validate(this, /^[a-zA-Z]{1,16}$/);-->
-<!--        });-->
-<!---->
-<!--        $("#first_name").blur(function () {-->
-<!--            validate(this, /^[a-zA-Z]{1,16}$/);-->
-<!--        });-->
-<!---->
-<!---->
-<!--        $('input[name=user_type').on('ifChecked', function (event) {-->
-<!--            if ($(this).val() === "tutor") {-->
-<!--                $("#user_major").select2("enable", true);-->
-<!--                $("#teaching_courses_multi").select2("enable", true);-->
-<!--            } else {-->
-<!--                $("#user_major").select2("enable", false);-->
-<!--                $("#teaching_courses_multi").select2("enable", false);-->
-<!--            }-->
-<!--        });-->
-<!---->
-<!--        $('input[name=iCheck]').each(function () {-->
-<!--            var self = $(this),-->
-<!--                label = self.next(),-->
-<!--                label_text = label.text();-->
-<!---->
-<!--            label.remove();-->
-<!--            self.iCheck({-->
-<!--                checkboxClass: 'icheckbox_line-red',-->
-<!--                radioClass: 'iradio_line-red',-->
-<!--                insert: '<div class="icheck_line-icon"></div>' + label_text-->
-<!--            });-->
-<!--        });-->
-<!---->
-<!--    });-->
-<!---->
-<!---->
-<!--</script>-->
+
 
 </body>
 </html>

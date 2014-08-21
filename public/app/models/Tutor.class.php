@@ -113,7 +113,27 @@ class Tutor extends User
 
 			return true;
 		} catch (Exception $e) {
-			throw new Exception("Could not insert teaching courses data into database." . $e->getMessage());
+			throw new Exception("Could not insert teaching courses data into database.");
+		}
+	}
+
+	public function delTeachingCourse($courseId) {
+		if (!preg_match('/^[0-9]+$/', $courseId)) {
+			throw new Exception("Data tempering detected.
+			<br/>You&#39;re trying to hack this app.<br/>Developers are being notified about this.<br/>Expect us.");
+		}
+		$tutorId = $this->getId();
+
+		try {
+
+			$query = "DELETE FROM `" . DB_NAME . "`.`tutor_teaches_course` WHERE `tutor_user_id`=:id and`course_id`=:courseId;";
+			$query = $this->getDb()->getConnection()->prepare($query);
+			$query->bindParam(':id', $tutorId, PDO::PARAM_INT);
+			$query->bindParam(':courseId', $courseId, PDO::PARAM_INT);
+			$query->execute();
+			return true;
+		} catch (Exception $e) {
+			throw new Exception("Could not delete course from database.");
 		}
 	}
 
