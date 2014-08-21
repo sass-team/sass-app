@@ -74,6 +74,11 @@ try {
 		$currUser->addTeachingCourses($_POST['teaching_courses']);
 		header('Location: ' . BASE_URL . 'users/edit/:' . $userId . '/success');
 		exit();
+	} else if (isBtnSubmitReplaceCourse()) {
+		var_dump($_POST);
+		$currUser->updateTeachingCourse($_POST['teachingCourse'], $_POST['hiddenUpdateCourseOldId']);
+		header('Location: ' . BASE_URL . 'users/edit/:' . $userId . '/success');
+		exit();
 	} else if (isSaveBttnProfilePressed()) {
 		$newDataAdded = false;
 
@@ -153,6 +158,11 @@ function isBtnSbmtChangeuserTypePrsd() {
 function isBtnSbmtChangeUserActivate() {
 	return isset($_POST['hiddenSbmtChangeUserActive']) && empty($_POST['hiddenSbmtChangeUserActive']);
 }
+
+function isBtnSubmitReplaceCourse() {
+	return isset($_POST['hiddenSubmitReplaceCourse']) && empty($_POST['hiddenSubmitReplaceCourse']);
+}
+
 
 $page_title = "Edit";
 $section = "users";
@@ -543,25 +553,22 @@ require ROOT_PATH . 'app/views/sidebar.php';
 </div>
 
 <div class="tab-pane fade" id="notifications">
-	<h3> Reports Settings </h3>
+	<h3> Notification Settings </h3>
 
-	<p> Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro
-		fanny
-		pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone
-		skateboard
-		locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid
-		8-bit cred pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy
-		retro
-		mlkshk vice blog. Scenester cred you probably haven't heard of them, vinyl craft beer blog stumptown .
-		Pitchfork sustainable tofu synth chambray yr .</p>
+	<p> Email when a new workshop is assgined to tutor</p>
 
-	<p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit . Aenean commodo ligula eget dolor . Aenean
-		massa .
-		Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus . Donec quam felis,
-		ultricies nec, pellentesque eu, pretium quis, sem . Nulla consequat massa quis enim . Donec pede justo,
-		fringilla vel, aliquet nec, vulputate eget, arcu . In enim justo, rhoncus ut, imperdiet a, venenatis
-		vitae,
-		justo . Nullam dictum felis eu pede mollis pretium .</p>
+	<p> Email when my profile is update</p>
+
+	<p> Email when a workshop session is due to next day</p>
+
+	<h4>Please bare in mind that up to 25 sms can be in sent daily.</h4>
+
+	<p> SMS when a new workshop is assgined to tutor</p>
+
+	<p> SMS when my profile is update</p>
+
+	<p> SMS when a workshop session is due to next day</p>
+
 </div>
 
 </div>
@@ -702,6 +709,72 @@ require ROOT_PATH . 'app/views/sidebar.php';
 </div>
 <!-- /.modal -->
 
+<div id="updateCourse" class="modal modal-styled fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form method="post" id="delete-form" action="" class="form">
+
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h3 class="modal-title">Update Course
+						for <?php echo $currUser->getFirstName() . " " . $currUser->getLastName(); ?></h3>
+				</div>
+				<div class="modal-body">
+					<div class="portlet">
+
+						<div class="portlet-content">
+
+							<div class="col-sm-12">
+
+								<h4 class="heading_a">New Course</h4>
+
+								<select id="teachingCourse" name="teachingCourse"
+								        class="form-control">
+
+									<?php foreach ($notTeachingCourses as $course) {
+										include(ROOT_PATH . "app/views/partials/courses-select-options-view.html.php");
+									}
+									?>
+
+								</select>
+
+								<hr>
+								<?php
+								if (empty($errors) === false) {
+									?>
+									<div class="alert alert-danger">
+										<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+										<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
+									</div>
+								<?php } ?>
+
+								<div class="alert alert-info">
+									<a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
+									<strong>Careful!</strong><br/>The previous course will be replaced, and all it's upcoming
+									workshop sessions data will be deleted.
+								</div>
+							</div>
+
+
+						</div>
+
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-tertiary" data-dismiss="modal">Cancel</button>
+					<input type="hidden" name="hiddenSubmitReplaceCourse">
+					<input type="hidden" name="hiddenUpdateCourseOldId" id="hiddenUpdateCourseOldId">
+					<button type="submit" class="btn btn-primary">Replace</button>
+				</div>
+			</form>
+
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 
 <?php include ROOT_PATH . "app/views/footer.php"; ?>
 </div>
@@ -725,8 +798,8 @@ require ROOT_PATH . 'app/views/sidebar.php';
 	jQuery(function () {
 		// prepare course id for delete on modal
 		$(".btnDeleteCourse").click(function () {
-			$id = $(this).next('input').val();
-			$("#delCourseIdModal").val($id);
+			$inputVal = $(this).next('input').val();
+			$("#delCourseIdModal").val($inputVal);
 		});
 
 
@@ -740,6 +813,10 @@ require ROOT_PATH . 'app/views/sidebar.php';
 			$("#changeUserActive").val($id);
 		});
 
+		$(".btnUpdateCourse").click(function () {
+			$courseId = $(this).next().next('input');
+			$("#hiddenUpdateCourseOldId").val($courseId.val());
+		});
 	});
 
 
