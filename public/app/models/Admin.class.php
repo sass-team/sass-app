@@ -100,6 +100,5 @@ class Admin extends User
 		} catch (Exception $e) {
 			throw new Exception("Could not insert user into database.");
 		}
-
 	}
 }

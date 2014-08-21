@@ -38,6 +38,25 @@ class Tutor extends User
 		$this->notTeachingCourses = $notTeachingCourses;
 	}
 
+	public function retrieveCoursesNotTeaching() {
+		$query = "
+			SELECT course.code AS 'Code', course.name AS 'Name',  course.id
+				FROM  `" . DB_NAME . "`.course
+				WHERE NOT EXISTS (
+					SELECT course_id FROM `sass-ms`.tutor_teaches_course WHERE course.id = tutor_teaches_course.course_id
+				);
+			";
+
+		try {
+			$query = $this->getDb()->getConnection()->prepare($query);
+			$query->execute();
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+
+		} catch (PDOException $e) {
+			throw new Exception("Could not retrieve courses data from database.");
+		}
+	}
+
 	/**
 	 * @return mixed
 	 */
@@ -63,22 +82,8 @@ class Tutor extends User
 	}
 
 	private function retrieveTeachingCourses() {
-		$query = "SELECT course.code AS 'Code', course.name AS  'Name' FROM `" . DB_NAME . "`.course, `" . DB_NAME . "`.tutor_teaches_course
+		$query = "SELECT course.code AS 'Code', course.name AS  'Name', tutor_teaches_course.course_id  AS id FROM `" . DB_NAME . "`.course, `" . DB_NAME . "`.tutor_teaches_course
 				WHERE tutor_teaches_course.course_id = course.id;";
-
-		try {
-			$query = $this->getDb()->getConnection()->prepare($query);
-			$query->execute();
-			return $query->fetchAll(PDO::FETCH_ASSOC);
-
-		} catch (PDOException $e) {
-			throw new Exception("Could not retrieve courses data from database.");
-		}
-	}
-
-	public function retrieveCoursesNotTeaching() {
-		$query = "SELECT course.code AS 'Code', course.name AS  'Name' FROM `" . DB_NAME . "`.course, `" . DB_NAME . "`.tutor_teaches_course
-				WHERE tutor_teaches_course.course_id != course.id;";
 
 		try {
 			$query = $this->getDb()->getConnection()->prepare($query);
@@ -92,6 +97,24 @@ class Tutor extends User
 
 	public function isTutor() {
 		return true;
+	}
+
+	public function addTeachingCourses($coursesIds) {
+		$tutorId = $this->getId();
+
+		try {
+			foreach ($coursesIds as $courseId) {
+				$query = "INSERT INTO `" . DB_NAME . "`.`tutor_teaches_course` (`tutor_user_id`, `course_id`) VALUES(:id, :courseId);";
+				$query = $this->getDb()->getConnection()->prepare($query);
+				$query->bindParam(':id', $tutorId, PDO::PARAM_INT);
+				$query->bindParam(':courseId', $courseId, PDO::PARAM_INT);
+				$query->execute();
+			}
+
+			return true;
+		} catch (Exception $e) {
+			throw new Exception("Could not insert teaching courses data into database." . $e->getMessage());
+		}
 	}
 
 	/**

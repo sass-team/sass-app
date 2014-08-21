@@ -61,8 +61,20 @@ try {
 		$currUser = new Secretary($userData, $db);
 	}
 
+	// retrieve courses data only user type is tutor
+	if ($currUser->isTutor()) {
+		$courseDb = new Courses($db->getConnection());
+		$courses = $courseDb->getAll();
+		$courses = $currUser->getTeachingCourses();
+		$notTeachingCourses = $currUser->getNotTeachingCourses();
+	}
 
-	if (isSaveBttnProfilePressed()) {
+
+	if (isAddTeachingCoursesPressed()) {
+		$currUser->addTeachingCourses($_POST['teaching_courses']);
+		header('Location: ' . BASE_URL . 'users/edit/:' . $userId . '/success');
+		exit();
+	} else if (isSaveBttnProfilePressed()) {
 		$newDataAdded = false;
 
 		$newFirstName = $_POST['firstName'];
@@ -98,29 +110,6 @@ try {
 			header('Location: ' . BASE_URL . 'users/edit/:' . $userId . '/success');
 			exit();
 		}
-
-
-//    $user_type = trim($_POST['user_type']);
-//    $user_major_ext = trim($_POST['user_major']);
-//    $teaching_courses[] = isset($_POST['teaching_courses']) ? $_POST['teaching_courses'] : "";
-//
-//    try {
-//        $users->register($first_name, $last_name, $email, $user_type, $user_major_ext, $teaching_courses);
-//    } catch (Exception $e) {
-//        $errors[] = $e->getMessage();
-//    }
-	}
-
-	if ($currUser->isTutor()) {
-
-
-		$courseDb = new Courses($db->getConnection());
-		$courses = $courseDb->getAll();
-		$courses = $currUser->getTeachingCourses();
-		$notTeachingCourses = $currUser->getNotTeachingCourses();
-//    $majors = $courseDb->getMajors();
-		//$majors = array_unique(array_column($courses, 'Major'));
-		//$majors_extensions = array_unique(array_column($courses, 'Extension'));
 	}
 } catch (Exception $e) {
 	$errors[] = $e->getMessage();
@@ -129,6 +118,10 @@ try {
 
 function isSaveBttnProfilePressed() {
 	return isset($_POST['hiddenSaveBttnProfile']) && empty($_POST['hiddenSaveBttnProfile']);
+}
+
+function isAddTeachingCoursesPressed() {
+	return isset($_POST['hiddenSubmitAddTeachingCourse']) && empty($_POST['hiddenSubmitAddTeachingCourse']);
 }
 
 function isModificationSuccessful() {
@@ -188,7 +181,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <div class="col-md-3 col-sm-4">
 	<ul id="myTab" class="nav nav-pills nav-stacked">
 
-		<?php if ($user->isTutor()) { ?>
+		<?php if ($currUser->isTutor()) { ?>
 			<li class="active">
 				<a href="#courses-majors" data-toggle="tab">
 					<i class="fa fa-list-alt"></i>
@@ -197,7 +190,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 			</li>
 		<?php } ?>
 
-		<li <?php if (!$user->isTutor()) echo "class='active'"; ?>>
+		<li <?php if (!$currUser->isTutor()) echo "class='active'"; ?>>
 			<a href="#profile-tab" data-toggle="tab">
 				<i class="fa fa-user"></i>
 				&nbsp;&nbsp;Profile Settings
@@ -295,7 +288,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 			<div class="form-group">
 
 				<a data-toggle="modal" id="bttn-styledModal" href="#styledModal" class="btn btn-primary">
-					Add Teaching Course
+					Add Teaching Courses
 				</a>
 				<!-- /.col-->
 
@@ -585,7 +578,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 				<div class="modal-footer">
 					<button type="button" class="btn btn-tertiary" data-dismiss="modal">Close</button>
-					<input type="hidden" name="hidden_submit_pressed">
+					<input type="hidden" name="hiddenSubmitAddTeachingCourse">
 					<button type="submit" class="btn btn-primary">Add</button>
 				</div>
 			</form>
