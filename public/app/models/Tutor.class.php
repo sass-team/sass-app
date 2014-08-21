@@ -10,6 +10,7 @@ class Tutor extends User
 {
 	private $major;
 	private $teachingCourses;
+	private $notTeachingCourses;
 
 	/**
 	 * Constructor
@@ -17,6 +18,24 @@ class Tutor extends User
 	 */
 	public function __construct($data, $db) {
 		parent::__construct($data, $db);
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getNotTeachingCourses() {
+		if (!isset($this->notTeachingCourses)) {
+			$this->notTeachingCourses = $this->retrieveCoursesNotTeaching();
+		}
+		return $this->notTeachingCourses;
+
+	}
+
+	/**
+	 * @param mixed $notTeachingCourses
+	 */
+	public function setNotTeachingCourses($notTeachingCourses) {
+		$this->notTeachingCourses = $notTeachingCourses;
 	}
 
 	/**
@@ -57,21 +76,18 @@ class Tutor extends User
 		}
 	}
 
-	public function getCoursesNotTeaching() {
-//		$query = "SELECT  course.code AS 'Code', course.name AS  'Name'
-//						FROM `" . DB_NAME . "`.course, `" . DB_NAME . "`.`tutor_teaches_courses`
-//						WHERE course.id =! major_has_courses.course_id
-//							AND major.id =! major_has_courses.major_id;
-//					ORDER BY major.extension";
-//
-//		try {
-//			$query = $this->db->prepare($query);
-//			$query->execute();
-//
-//			return $query->fetchAll(PDO::FETCH_ASSOC);
-//		} catch (PDOException $e) {
-//			throw new Exception("Could not retrieve courses data from database.");
-//		}
+	public function retrieveCoursesNotTeaching() {
+		$query = "SELECT course.code AS 'Code', course.name AS  'Name' FROM `" . DB_NAME . "`.course, `" . DB_NAME . "`.tutor_teaches_course
+				WHERE tutor_teaches_course.course_id != course.id;";
+
+		try {
+			$query = $this->getDb()->getConnection()->prepare($query);
+			$query->execute();
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+
+		} catch (PDOException $e) {
+			throw new Exception("Could not retrieve courses data from database.");
+		}
 	}
 
 	public function isTutor() {

@@ -5,8 +5,8 @@
 ?>
 
 <option
-	 value="<?php echo $course['Extension'] . $course['Code']; ?>">
-	<?php echo $course['Extension'] . " " . $course['Code'] . " " . $course['Name']; ?></option>
+	 value="<?php echo $course['Code']; ?>">
+	<?php echo $course['Code'] . " " . $course['Name']; ?></option>
 
 
 

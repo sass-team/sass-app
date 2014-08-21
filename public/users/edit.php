@@ -117,6 +117,7 @@ try {
 		$courseDb = new Courses($db->getConnection());
 		$courses = $courseDb->getAll();
 		$courses = $currUser->getTeachingCourses();
+		$notTeachingCourses = $currUser->getNotTeachingCourses();
 //    $majors = $courseDb->getMajors();
 		//$majors = array_unique(array_column($courses, 'Major'));
 		//$majors_extensions = array_unique(array_column($courses, 'Extension'));
@@ -557,7 +558,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 										<h5>
 											<i class="fa fa-tasks"></i>
-											<label for="teaching_courses_multi">Tutor's Courses</label>
+											<label for="teaching_courses_multi">Courses</label>
 										</h5>
 
 										<select id="teaching_courses_multi" name="teaching_courses[]"
@@ -565,7 +566,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 										        multiple>
 
 											<?php
-											foreach ($courses as $course) {
+											foreach ($notTeachingCourses as $course) {
 												include(ROOT_PATH . "app/views/partials/courses-select-options-view.html.php");
 											}
 											?>
@@ -585,7 +586,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 				<div class="modal-footer">
 					<button type="button" class="btn btn-tertiary" data-dismiss="modal">Close</button>
 					<input type="hidden" name="hidden_submit_pressed">
-					<button type="submit" class="btn btn-primary">Create</button>
+					<button type="submit" class="btn btn-primary">Add</button>
 				</div>
 			</form>
 
