@@ -30,11 +30,11 @@ if (isSaveBttnPressed()) {
 	$last_name = trim($_POST['last_name']);
 	$email = trim($_POST['email']);
 	$user_type = trim($_POST['user_type']);
-	$user_major_ext = (isset($_POST['user_major']) ? trim($_POST['user_major']) : "");
-	$teaching_courses[] = isset($_POST['teaching_courses']) ? $_POST['teaching_courses'] : "";
+	$userMajor_ext = (isset($_POST['userMajor']) ? trim($_POST['userMajor']) : "");
+	$teachingCourses[] = isset($_POST['teachingCourses']) ? $_POST['teachingCourses'] : "";
 
 	try {
-		$user->createUser($first_name, $last_name, $email, $user_type, $user_major_ext, $teaching_courses);
+		$user->createUser($first_name, $last_name, $email, $user_type, $userMajor_ext, $teachingCourses);
 	} catch (Exception $e) {
 		$errors[] = $e->getMessage();
 	}
@@ -308,9 +308,9 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 										<h5>
 											<i class="fa fa-tasks"></i>
-											<label for="user_major">Tutor's Major</label>
+											<label for="userMajor">Tutor's Major</label>
 										</h5>
-										<select id="user_major" name="user_major" class="form-control">
+										<select id="userMajor" name="userMajor" class="form-control">
 											<option value="null">I don&#39;t know.</option>
 											<?php foreach ($majors as $major) {
 												include(ROOT_PATH . "app/views/partials/majors-select-options-view.html.php");
@@ -324,10 +324,10 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 										<h5>
 											<i class="fa fa-tasks"></i>
-											<label for="teaching_courses_multi">Tutor's Courses</label>
+											<label for="teachingCoursesMulti">Tutor's Courses</label>
 										</h5>
 
-										<select id="teaching_courses_multi" name="teaching_courses[]"
+										<select id="teachingCoursesMulti" name="teachingCourses[]"
 										        class="form-control"
 										        multiple>
 
@@ -362,10 +362,10 @@ require ROOT_PATH . 'app/views/sidebar.php';
 </div>
 <!-- /.modal -->
 
-
-<?php include ROOT_PATH . "app/views/footer.php"; ?>
 </div>
 <!-- /#wrapper -->
+<?php include ROOT_PATH . "app/views/footer.php"; ?>
+
 
 
 <?php include ROOT_PATH . "app/views/assets/footer_common.php"; ?>
@@ -378,6 +378,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <script src="<?php echo BASE_URL; ?>app/assets/js/plugins/simplecolorpicker/jquery.simplecolorpicker.js"></script>
 <script src="<?php echo BASE_URL; ?>app/assets/js/plugins/textarea-counter/jquery.textarea-counter.js"></script>
 <script src="<?php echo BASE_URL; ?>app/assets/js/plugins/autosize/jquery.autosize.min.js"></script>
+
 <script src="<?php echo BASE_URL; ?>app/assets/js/demos/form-extended.js"></script>
 
 
@@ -400,7 +401,9 @@ require ROOT_PATH . 'app/views/sidebar.php';
 			//window.location.href = $href;
 		}, 10);
 
-		$("#user_major").select2();
+		$("#userMajor").select2();
+		$("#teachingCoursesMulti").select2();
+
 
 		// TODO: add error messages
 		// TODO: add option for second major
@@ -430,10 +433,10 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 		$('input[name=user_type').on('ifChecked', function (event) {
 			if ($(this).val() === "tutor") {
-				$("#user_major").select2("enable", true);
+				$("#userMajor").select2("enable", true);
 				$("#teachingCourse").select2("enable", true);
 			} else {
-				$("#user_major").select2("enable", false);
+				$("#userMajor").select2("enable", false);
 				$("#teachingCourse").select2("enable", false);
 			}
 		});

@@ -28,8 +28,7 @@
  * @author George Skarlatos
  * @since 7/21/14.
  */
-class Courses
-{
+class Courses {
 	private $db;
 
 	public function __construct($db) {
@@ -37,7 +36,7 @@ class Courses
 	} // end __construct
 
 	public function getAll() {
-		$query = "SELECT course.code AS 'Code', course.name AS  'Name', course.id
+		$query = "SELECT major.extension AS 'Extension', course.code AS 'Code', course.name AS  'Name', major.name AS 'Major'
 						FROM `" . DB_NAME . "`.course, `" . DB_NAME . "`.major, `" . DB_NAME . "`.major_has_courses
 						WHERE course.id = major_has_courses.course_id
 							AND major.id = major_has_courses.major_id;
@@ -69,7 +68,7 @@ class Courses
 
 	public function getCourses() {
 
-		$query = "SELECT course.code AS 'Code', course.name AS 'Name', course.id
+		$query = "SELECT course.code AS 'Code', course.name AS 'Name'
 				FROM `" . DB_NAME . "`.course";
 		try {
 			$query = $this->db->prepare($query);

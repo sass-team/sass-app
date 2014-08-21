@@ -53,7 +53,7 @@ class Tutor extends User
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 
 		} catch (PDOException $e) {
-			throw new Exception("Could not retrieve courses data from database." . $e->getMessage());
+			throw new Exception("Could not retrieve courses data from database.");
 		}
 	}
 
@@ -114,14 +114,14 @@ class Tutor extends User
 
 			return true;
 		} catch (Exception $e) {
-			throw new Exception("Could not insert teaching courses data into database." . $e->getMessage());
+			throw new Exception("Could not insert teaching courses data into database.");
 		}
 	}
 
 	public function updateTeachingCourse($newCourseId, $oldCourseId) {
 		$tutorId = $this->getId();
 
-		if (!preg_match('/^[0-9]+$/', $newCourseId) || !preg_match('/^[0-9]+$/', $oldCourseId) || strcmp($newCourseId, $oldCourseId) === 0) {
+		if (!preg_match('/^[0-9]+$/', $newCourseId) || !preg_match('/^[0-9]+$/', $oldCourseId) || strcmp($newCourseId, $oldCourseId) !== 0) {
 			throw new Exception("Data has been tempered. Aborting process.");
 		}
 
@@ -147,15 +147,15 @@ class Tutor extends User
 	 * @return bool
 	 */
 	public function teachingCourseExists($newCourseId, $tutorId) {
-		$query = "SELECT course_id FROM `" . DB_NAME . "`.tutor_teaches_course WHERE course_id = :courseId AND tutor_user_id = :tutorId";
+		$query = "SELECT id FROM `" . DB_NAME . "`.tutor_teaches_course WHERE course_id = :courseId AND tutor_user_id = :tutorId";
 		$query = $this->getDb()->getConnection()->prepare($query);
 		$query->bindParam(':tutorId', $tutorId, PDO::PARAM_INT);
 		$query->bindParam(':courseId', $newCourseId, PDO::PARAM_INT);
 		$query->execute();
 		if ($query->fetchColumn() === FALSE) {
-			return false;
-		} else {
 			return true;
+		} else {
+			return false;
 		}
 	}
 

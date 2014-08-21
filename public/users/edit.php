@@ -71,11 +71,12 @@ try {
 
 
 	if (isAddTeachingCoursesPressed()) {
-		$currUser->addTeachingCourses($_POST['teaching_courses']);
-		header('Location: ' . BASE_URL . 'users/edit/:' . $userId . '/success');
-		exit();
+
+		if ($currUser->addTeachingCourses($_POST['teachingCourses'])) {
+			header('Location: ' . BASE_URL . 'users/edit/:' . $userId . '/success');
+			exit();
+		}
 	} else if (isBtnSubmitReplaceCourse()) {
-		var_dump($_POST);
 		$currUser->updateTeachingCourse($_POST['teachingCourse'], $_POST['hiddenUpdateCourseOldId']);
 		header('Location: ' . BASE_URL . 'users/edit/:' . $userId . '/success');
 		exit();
@@ -619,10 +620,10 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 										<h5>
 											<i class="fa fa-tasks"></i>
-											<label for="teaching_courses_multi">Courses</label>
+											<label for="teachingCoursesMulti">Courses</label>
 										</h5>
 
-										<select id="teaching_courses_multi" name="teaching_courses[]"
+										<select id="teachingCoursesMulti" name="teachingCourses[]"
 										        class="form-control"
 										        multiple>
 
@@ -731,6 +732,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 								<select id="teachingCourse" name="teachingCourse"
 								        class="form-control">
 
+
 									<?php foreach ($notTeachingCourses as $course) {
 										include(ROOT_PATH . "app/views/partials/courses-select-options-view.html.php");
 									}
@@ -800,6 +802,14 @@ require ROOT_PATH . 'app/views/sidebar.php';
 		$(".btnDeleteCourse").click(function () {
 			$inputVal = $(this).next('input').val();
 			$("#delCourseIdModal").val($inputVal);
+		});
+
+		$("#teachingCourse").select2({
+			placeholder: "Select..."
+		});
+
+		$("#teachingCoursesMulti").select2({
+			placeholder: "Select courses..."
 		});
 
 
