@@ -123,7 +123,7 @@ abstract class User
 		$this->users = $users;
 	}
 
-	protected  function retrieveUsers() {
+	protected function retrieveUsers() {
 		$query = "SELECT user.id, user.f_name, user.l_name, user.img_loc, user.profile_description, user.date, user.mobile, user.email, user_types.type
 		         FROM `" . DB_NAME . "`.user
 						LEFT OUTER JOIN user_types ON user.`user_types_id` = `user_types`.id";
@@ -137,16 +137,14 @@ abstract class User
 		} catch (PDOException $e) {
 			throw new Exception("Something terrible happened. Could not retrieve users data from database.: " . $e->getMessage());
 		} // end catch
-	} // end __construct
+	}
 
 	/**
 	 * @return mixed
 	 */
 	public function getDb() {
 		return $this->db;
-	}
-
-	// end function login
+	} // end __construct
 
 	/**
 	 * @param mixed $db
@@ -154,6 +152,47 @@ abstract class User
 	public function setDb($db) {
 		$this->db = $db;
 	}
+
+	// end function login
+
+	public function updatePosition($userType) {
+		$this->validateUserType($userType);
+		$id = $this->getId();
+
+		try {
+			$userTypeId = $this->getDb()->fetchInfo("id", "user_types", "type", $userType);
+
+			$query = "UPDATE  `" . DB_NAME . "`.`user` SET `user_types_id` = :userTypeId WHERE `id`= :id";
+
+			$query = $this->getDb()->getConnection()->prepare($query);
+			$query->bindParam(':userTypeId', $userTypeId, PDO::PARAM_INT);
+			$query->bindParam(':id', $id, PDO::PARAM_INT);
+
+			$query->execute();
+
+			return true;
+		} catch (Exception $e) {
+			throw new Exception("Could not update user type.");
+		}
+	}
+
+	public function validateUserType($user_type) {
+		switch ($user_type) {
+			case self::TUTOR:
+			case self::SECRETARY:
+			case self::ADMIN:
+				return true;
+			default:
+				throw new Exception('Incorrect user type.');
+		}
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getId() {
+		return $this->id;
+	} // end function get_data
 
 	function updateProfile($first_name, $last_name, $prevMobileNum, $new_mobile_num, $description) {
 		$first_name = trim($first_name);
@@ -194,13 +233,6 @@ abstract class User
 			throw new Exception("Something terrible happened. Could not update profile.");
 		}
 	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getId() {
-		return $this->id;
-	} // end function get_data
 
 	function isProfileDataCorrect($first_name, $last_name, $mobile_num) {
 		$errors = array();
@@ -264,8 +296,7 @@ abstract class User
 		} catch (Exception $e) {
 			throw new Exception("Could not connect to database.");
 		}
-	}
-
+	} // end getAllData
 
 	public function getHashedPassword($id) {
 		$query = "SELECT password FROM `" . DB_NAME . "`.user WHERE id = :id";
@@ -281,8 +312,7 @@ abstract class User
 		} catch (Exception $e) {
 			throw new Exception("Could not connect to database.");
 		}
-	} // end getAllData
-
+	}
 
 	/**
 	 * @param $name
@@ -300,17 +330,6 @@ abstract class User
 		} else if ($this->getDb()->emailExists($email)) {
 			throw new Exception('That email already exists. Please use another one.');
 		} // end else if
-	}
-
-	public function validate_user_type($user_type) {
-		switch ($user_type) {
-			case "tutor":
-			case "secretary":
-			case "admin":
-				return true;
-			default:
-				throw new Exception('Incorrect user type.');
-		}
 	}
 
 	public function validate_user_major($user_major_ext) {

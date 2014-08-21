@@ -15,15 +15,7 @@ class Secretary extends User {
 		parent::__construct($data, $db);
 	}
 
-	public function is_admin() {
-		return false;
-	}
-
-	public function is_tutor() {
-		return false;
-	}
-
-	public function is_secretary() {
+	public function isSecretary() {
 		return true;
 	}
 } 

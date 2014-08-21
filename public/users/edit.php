@@ -114,6 +114,10 @@ try {
 		$currUser->delTeachingCourse($_POST['delCourseIdModal']);
 		header('Location: ' . BASE_URL . 'users/edit/:' . $userId . '/success');
 		exit();
+	} else if (isBtnSbmtChangePositionPrsd()) {
+		$currUser->updatePosition($_POST['changePosition']);
+		header('Location: ' . BASE_URL . 'users/edit/:' . $userId . '/success');
+		exit();
 	}
 } catch (Exception $e) {
 	$errors[] = $e->getMessage();
@@ -136,6 +140,11 @@ function isModificationSuccessful() {
 function isBtnDelTeachingCoursesPressed() {
 	return isset($_POST['hiddenSubmitDeleteCourse']) && empty($_POST['hiddenSubmitDeleteCourse']);
 }
+
+function isBtnSbmtChangePositionPrsd() {
+	return isset($_POST['hiddenSbmtChangePosition']) && empty($_POST['hiddenSbmtChangePosition']);
+}
+
 
 $page_title = "Edit";
 $section = "users";
@@ -443,16 +452,30 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 			<div class="portlet-content">
 
-				<div class="btn-group">
-					<button type="button" class="btn btn-default <?php if ($user->isTutor()) echo "active"; ?>">Tutor
-					</button>
-					<button type="button" class="btn btn-default <?php if ($user->isSecretary()) echo "active"; ?>">
-						Secretary
-					</button>
-					<button type="button" class="btn btn-default <?php if ($user->isAdmin()) echo "active"; ?>">
-						Administration
-					</button>
-				</div>
+				<form method="post" id="delete-form" action="" class="form">
+					<div class="btn-group">
+						<button type="submit"
+						        class="btn btn-default <?php if ($currUser->isTutor()) echo "active"; ?> btnChangeType"
+						        id="tutor" name="tutor">Tutor
+						</button>
+						<button type="submit"
+						        class="btn btn-default <?php if ($currUser->isSecretary()) echo "active"; ?> btnChangeType"
+						        id="secretary" name="secretary">
+							Secretary
+						</button>
+						<button type="submit"
+						        class="btn btn-default <?php if ($currUser->isAdmin()) echo "active"; ?> btnChangeType"
+						        id="admin"
+						        name="admin">
+							Administration
+						</button>
+						<input type="hidden" name="hiddenSbmtChangePosition">
+						<input type="hidden" id="changePosition" name="changePosition" value="">
+
+					</div>
+
+
+				</form>
 
 				<br/>
 
@@ -603,7 +626,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <div id="deleteCourse" class="modal modal-styled fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form method="post" id="create-form" action="" class="form">
+			<form method="post" id="delete-form" action="" class="form">
 
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -675,6 +698,12 @@ require ROOT_PATH . 'app/views/sidebar.php';
 		$(".btnDeleteCourse").click(function () {
 			$id = $(this).next('input').val();
 			$("#delCourseIdModal").val($id);
+		});
+
+
+		$(".btnChangeType").click(function () {
+			$id = $(this).attr('id');
+			$("#changePosition").val($id);
 		});
 	});
 

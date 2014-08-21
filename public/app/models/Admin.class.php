@@ -77,7 +77,7 @@ class Admin extends User
 		$this->validateName($first_name);
 		$this->validateName($last_name);
 		$this->validateEmail($email);
-		$this->validate_user_type($user_type);
+		$this->validateUserType($user_type);
 		//$this->validate_user_major($user_major_ext);
 		//$this->validate_teaching_course($teaching_courses);
 
