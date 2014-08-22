@@ -137,6 +137,7 @@ $section = "courses-majors";
 				<div class="col-md-3 col-sidebar-right">
 
 					<h1>Add a new Course</h1>
+
 					<p class="lead"> You can also add a new course that is not already in the list.</p>
 					<a data-toggle="modal" href="#addCourse" class="btn btn-danger btn-jumbo btn-block">Add Course</a>
 
