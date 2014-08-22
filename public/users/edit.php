@@ -51,7 +51,11 @@ if (!isset($_GET['id']) || !preg_match("/^[0-9]+$/", $_GET['id'])) {
 
 
 try {
-	$userData = $db->getData($userId);
+	if ($userData = $db->getData($userId) === FALSE) {
+		header('Location: ' . BASE_URL . 'error-404');
+		exit();
+	}
+
 
 	if ($userData['type'] == 'admin') {
 		$currUser = new Admin($userData, $db);
