@@ -51,7 +51,7 @@ if (!isset($_GET['id']) || !preg_match("/^[0-9]+$/", $_GET['id'])) {
 
 
 try {
-	if ($userData = $db->getData($userId) === FALSE) {
+	if (($userData = $db->getData($userId)) === FALSE) {
 		header('Location: ' . BASE_URL . 'error-404');
 		exit();
 	}
