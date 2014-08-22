@@ -100,7 +100,7 @@
 				</ul>
 			</li>
 
-			<?php if ($user->isAdmin()) { ?>
+			<?php if ($user->isAdmin() || $user->isTutor()) { ?>
 				<li class="dropdown <?php if ($section == "courses-majors") {
 					echo "active";
 				} ?>">
@@ -129,7 +129,7 @@
 					echo "active";
 				} ?>">
 					<a href="javascript:;">
-						<i class="fa fa-list-alt"></i>
+						<i class="fa fa-calendar"></i>
 						Workshop Sessions
 						<span class="caret"></span>
 					</a>
@@ -137,14 +137,14 @@
 					<ul class="sub-nav">
 						<li>
 							<a href="<?php echo BASE_URL; ?>workshops/overview">
-								<i class="fa fa-table"></i>
+								<i class="fa fa-dashboard"></i>
 								Overview
 							</a>
 						</li>
 						<li>
-							<a href="<?php echo BASE_URL; ?>workshops/create">
-								<i class="fa fa-table"></i>
-								Create
+							<a href="<?php echo BASE_URL; ?>workshops/add">
+								<i class="fa fa-plus-square"></i>
+								Add
 							</a>
 						</li>
 					</ul>
