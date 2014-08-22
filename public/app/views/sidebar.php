@@ -56,39 +56,6 @@
 				</ul>
 			</li>
 
-			<?php if ($user->isAdmin() || $user->isTutor()) { ?>
-				<li class="dropdown <?php if ($section == "academia") {
-					echo "active";
-				} ?>">
-					<a href="javascript:;">
-						<i class="fa fa-university"></i>
-						Academia
-						<span class="caret"></span>
-					</a>
-
-					<ul class="sub-nav">
-						<li>
-							<a href="<?php echo BASE_URL; ?>academia/courses">
-								<i class="fa fa-book"></i>
-								Courses
-							</a>
-						</li>
-						<li>
-							<a href="<?php echo BASE_URL; ?>academia/students">
-								<i class="fa fa-users"></i>
-								Students
-							</a>
-						</li>
-						<li>
-							<a href="<?php echo BASE_URL; ?>academia/instructors">
-								<i class="fa fa-group"></i>
-								Instructors
-							</a>
-						</li>
-					</ul>
-				</li>
-			<?php } ?>
-
 			<li class="dropdown <?php if ($section == "users") {
 				echo "active";
 			} ?>">
@@ -123,6 +90,41 @@
 
 				</ul>
 			</li>
+
+			
+			<?php if ($user->isAdmin() || $user->isTutor()) { ?>
+				<li class="dropdown <?php if ($section == "academia") {
+					echo "active";
+				} ?>">
+					<a href="javascript:;">
+						<i class="fa fa-university"></i>
+						Academia
+						<span class="caret"></span>
+					</a>
+
+					<ul class="sub-nav">
+						<li>
+							<a href="<?php echo BASE_URL; ?>academia/courses">
+								<i class="fa fa-book"></i>
+								Courses
+							</a>
+						</li>
+						<li>
+							<a href="<?php echo BASE_URL; ?>academia/students">
+								<i class="fa fa-users"></i>
+								Students
+							</a>
+						</li>
+						<li>
+							<a href="<?php echo BASE_URL; ?>academia/instructors">
+								<i class="fa fa-group"></i>
+								Instructors
+							</a>
+						</li>
+					</ul>
+				</li>
+			<?php } ?>
+
 
 			<li class="dropdown <?php if ($section == "account") {
 				echo "active";
