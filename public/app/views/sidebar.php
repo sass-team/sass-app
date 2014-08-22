@@ -31,6 +31,99 @@
 				</a>
 			</li>
 
+			<li class="dropdown <?php if ($section == "workshops") {
+				echo "active";
+			} ?>">
+				<a href="javascript:;">
+					<i class="fa fa-calendar"></i>
+					Workshop Sessions
+					<span class="caret"></span>
+				</a>
+
+				<ul class="sub-nav">
+					<li>
+						<a href="<?php echo BASE_URL; ?>workshops/overview">
+							<i class="fa fa-dashboard"></i>
+							Overview
+						</a>
+					</li>
+					<li>
+						<a href="<?php echo BASE_URL; ?>workshops/add">
+							<i class="fa fa-plus-square"></i>
+							Add
+						</a>
+					</li>
+				</ul>
+			</li>
+
+			<?php if ($user->isAdmin() || $user->isTutor()) { ?>
+				<li class="dropdown <?php if ($section == "academia") {
+					echo "active";
+				} ?>">
+					<a href="javascript:;">
+						<i class="fa fa-university"></i>
+						Academia
+						<span class="caret"></span>
+					</a>
+
+					<ul class="sub-nav">
+						<li>
+							<a href="<?php echo BASE_URL; ?>academia/courses">
+								<i class="fa fa-book"></i>
+								Courses
+							</a>
+						</li>
+						<li>
+							<a href="<?php echo BASE_URL; ?>academia/students">
+								<i class="fa fa-users"></i>
+								Students
+							</a>
+						</li>
+						<li>
+							<a href="<?php echo BASE_URL; ?>academia/instructors">
+								<i class="fa fa-group"></i>
+								Instructors
+							</a>
+						</li>
+					</ul>
+				</li>
+			<?php } ?>
+
+			<li class="dropdown <?php if ($section == "users") {
+				echo "active";
+			} ?>">
+				<a href="javascript:;">
+					<i class="fa fa-group"></i>
+					Users
+					<span class="caret"></span>
+				</a>
+
+				<ul class="sub-nav">
+					<li>
+						<a href="<?php echo BASE_URL; ?>users/overview">
+							<i class="fa fa-dashboard"></i>
+							Overview
+						</a>
+					</li>
+
+					<?php if ($user->isAdmin()): ?>
+						<li>
+							<a href="<?php echo BASE_URL; ?>users#schedule">
+								<i class="fa fa-calendar"></i>
+								Schedule
+							</a>
+						</li>
+						<li>
+							<a href="<?php echo BASE_URL; ?>users/add">
+								<i class="fa fa-edit"></i>
+								Add
+							</a>
+						</li>
+					<?php endif; ?>
+
+				</ul>
+			</li>
+
 			<li class="dropdown <?php if ($section == "account") {
 				echo "active";
 			} ?>">
@@ -64,103 +157,7 @@
 				</ul>
 
 			</li>
-			<li class="dropdown <?php if ($section == "users") {
-				echo "active";
-			} ?>">
-				<a href="javascript:;">
-					<i class="fa fa-group"></i>
-					Users
-					<span class="caret"></span>
-				</a>
 
-				<ul class="sub-nav">
-					<li>
-						<a href="<?php echo BASE_URL; ?>users/overview">
-							<i class="fa fa-group"></i>
-							Overview
-						</a>
-					</li>
-
-					<?php if ($user->isAdmin()): ?>
-						<li>
-							<a href="<?php echo BASE_URL; ?>users#schedule">
-								<i class="fa fa-calendar"></i>
-								Schedule
-							</a>
-						</li>
-						<li>
-							<a href="<?php echo BASE_URL; ?>users/create">
-								<i class="fa fa-edit"></i>
-								Create
-							</a>
-						</li>
-					<?php endif; ?>
-
-
-				</ul>
-			</li>
-
-			<?php if ($user->isAdmin() || $user->isTutor()) { ?>
-				<li class="dropdown <?php if ($section == "courses-majors") {
-					echo "active";
-				} ?>">
-					<a href="javascript:;">
-						<i class="fa fa-list-alt"></i>
-						Courses &amp; Majors
-						<span class="caret"></span>
-					</a>
-
-					<ul class="sub-nav">
-						<li>
-							<a href="<?php echo BASE_URL; ?>courses-majors/courses">
-								<i class="fa fa-table"></i>
-								Courses
-							</a>
-						</li>
-						<li>
-							<a href="<?php echo BASE_URL; ?>courses-majors/majors">
-								<i class="fa fa-table"></i>
-								Majors
-							</a>
-						</li>
-					</ul>
-				</li>
-				<li class="dropdown <?php if ($section == "workshops") {
-					echo "active";
-				} ?>">
-					<a href="javascript:;">
-						<i class="fa fa-calendar"></i>
-						Workshop Sessions
-						<span class="caret"></span>
-					</a>
-
-					<ul class="sub-nav">
-						<li>
-							<a href="<?php echo BASE_URL; ?>workshops/overview">
-								<i class="fa fa-dashboard"></i>
-								Overview
-							</a>
-						</li>
-						<li>
-							<a href="<?php echo BASE_URL; ?>workshops/add">
-								<i class="fa fa-plus-square"></i>
-								Add
-							</a>
-						</li>
-					</ul>
-				</li>
-
-			<?php } ?>
-
-			<li class="dropdown"></li>
-
-			<li class="dropdown"></li>
-
-			<li></li>
-
-			<li class="dropdown"></li>
-
-			<li class="dropdown"></li>
 
 		</ul>
 

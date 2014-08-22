@@ -2,7 +2,7 @@
 ob_start();
 require '../app/init.php';
 
-// if there is an active log in process redirect to overview.php; load page only if no
+// if there is an active log in process redirect to students.php; load page only if no
 // logged in user exists
 $general->loggedInProtect();
 $page_title = "Log In";
@@ -38,7 +38,7 @@ if (isLoginBtnPressed()) {
 		// The user's id is now set into the user's session  in the form of $_SESSION['id']
 		$_SESSION['id'] = $id;
 
-		// if there is an active log in process redirect to overview.php; load page only if no logged in user exists
+		// if there is an active log in process redirect to students.php; load page only if no logged in user exists
 		$general->loggedInProtect();
 	} catch (Exception $e) {
 		$errors[] = $e->getMessage();

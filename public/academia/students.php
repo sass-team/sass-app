@@ -3,7 +3,7 @@ require '../app/init.php';
 $general->loggedOutProtect();
 
 $page_title = "View Users";
-$section = "users";
+$section = "students-instructors";
 
 try {
 	$allUsers = $user->getUsers();

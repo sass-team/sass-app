@@ -30,7 +30,7 @@ class General {
 		return isset($_SESSION['id']) ? true : false;
 	}
 
-	#if not logged in then redirect to overview.php
+	#if not logged in then redirect to students.php
 	public function loggedOutProtect() {
 		if ($this->loggedIn() === false) {
 			header('Location: ' . BASE_URL . 'login');

@@ -34,7 +34,7 @@
 ob_start();
 require '../app/init.php';
 
-// if there is an active log in process redirect to overview.php; load page only if no
+// if there is an active log in process redirect to students.php; load page only if no
 // logged in user exists
 $general->loggedInProtect();
 $page_title = "Log In";
