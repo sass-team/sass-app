@@ -91,7 +91,7 @@
 				</ul>
 			</li>
 
-			
+
 			<?php if ($user->isAdmin() || $user->isTutor()) { ?>
 				<li class="dropdown <?php if ($section == "academia") {
 					echo "active";
