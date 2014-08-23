@@ -6,6 +6,49 @@ $general->loggedOutProtect();
 
 $errors = array();
 
+/**
+ * @param $errors
+ * @param $user
+ * @return array
+ */
+function uploadAvatarImage($user) {
+	if ($_FILES['fileupload-avatar']['error'] == 1) {
+		throw new Exception("File size exceeded");
+	} else {
+		$uploaddir = ROOT_PATH . "app/assets/img/avatars/";
+		$uploadfile = $uploaddir . basename($_FILES['fileupload-avatar']['name']);
+
+		$path = $_FILES['fileupload-avatar']['name'];
+		$allowed = array('gif', 'png', 'jpg');
+		$ext = pathinfo($path, PATHINFO_EXTENSION);
+
+		if (!in_array($ext, $allowed)) {
+			throw new Exception("Only gif, png and jpg files are allowed");
+		}
+
+		if (move_uploaded_file($_FILES['fileupload-avatar']['tmp_name'], $uploadfile)) {
+			$imgWebLoc = $uploaddir . "avatar_img_" . $user . "." . $ext;
+			rename($uploadfile, $imgWebLoc);
+
+			$avatarImgLoc = "app/assets/img/avatars/avatar_img_" . $user->getId() . "." . $ext;
+			if (true !== ($updateAvatarImgResponse = $user->updateAvatarImg($avatarImgLoc, $user->getId()))) {
+				throw new Exception("Error storing img loc to database. Please try again later.");
+			}
+		} else {
+			throw new Exception("Error saving image. Please try again later");
+		}
+	}
+}
+
+/**
+ * @return bool
+ */
+function isNewAvatarImageUploadedTemp() {
+	return (file_exists($_FILES["fileupload-avatar"]['tmp_name']) &&
+		 is_uploaded_file($_FILES["fileupload-avatar"]['tmp_name'])) ?
+		 true : false;
+}
+
 if (isset($_POST['form_action_profile_settings'])) {
 
 	try {
@@ -41,50 +84,23 @@ if (isset($_POST['form_action_profile_settings'])) {
 			$newUpdate = true;
 		}
 
+		// TODO: use OOP instead of procedural programming for file upload
+		if (isNewAvatarImageUploadedTemp()) {
+			uploadAvatarImage($user);
+		}
 
 		$newEmailAdmin = "";
 
 		if (!$newUpdate) {
 			throw new Exception("No new data were added. No changes were made.");
 		}
+
+		header('Location: ' . BASE_URL . 'account/settings/success');
+		exit();
 	} catch (Exception $e) {
 		$errors[] = $e->getMessage();
 	}
-//	// decide if file upload needed.
-//	$changeAvatarImg = (file_exists($_FILES["fileupload-avatar"]['tmp_name']) &&
-//		 is_uploaded_file($_FILES["fileupload-avatar"]['tmp_name'])) ?
-//		 true : false;
-//
-//	// TODO: use OOP instead of procedural programming for file upload
-//	if ($changeAvatarImg === true) {
-//
-//		if ($_FILES['fileupload-avatar']['error'] == 1) {
-//			$errors[] = "File size exceeded";
-//		} else {
-//			$uploaddir = ROOT_PATH . "app/assets/img/avatars/";
-//			$uploadfile = $uploaddir . basename($_FILES['fileupload-avatar']['name']);
-//
-//			$path = $_FILES['fileupload-avatar']['name'];
-//			$ext = pathinfo($path, PATHINFO_EXTENSION);
-//
-//			if (move_uploaded_file($_FILES['fileupload-avatar']['tmp_name'], $uploadfile)) {
-//				$imgWebLoc = $uploaddir . "avatar_img_" . $user->getId() . "." . $ext;
-//				rename($uploadfile, $imgWebLoc);
-//
-//				$avatarImgLoc = "app/assets/img/avatars/avatar_img_" . $user->getId() . "." . $ext;
-//				if (true !== ($updateAvatarImgResponse = $user->updateAvatarImg($avatarImgLoc, $user->getId()))) {
-//					$errors[] = "Error storing img loc to database. Please try again later.";
-//				}
-//			} else {
-//				$errors[] = "Error saving image. Please try again later";
-//			}
-//		}
-//	}
 
-	if (empty($errors) === true) {
-		header('Location: ' . BASE_URL . 'account/settings/success');
-		exit();
-	}
 } else if (isset($_POST['form_action_update_password'])) {
 
 	try {
