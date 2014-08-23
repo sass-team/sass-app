@@ -20,6 +20,7 @@ abstract class User extends Person
 	const DB_MOBILE_NUM = "mobile";
 	const DB_FIRST_NAME = "f_name";
 	const DB_LAST_NAME = "l_name";
+	const DB_PROFILE_DESCRIPTION = "profile_description";
 
 	private $avatarImgLoc;
 	private $profileDescription;
@@ -137,10 +138,6 @@ abstract class User extends Person
 		}
 
 
-		if ($prevMobileNum !== $newMobileNum && self::existsMobileNum($db, $newMobileNum)) {
-			throw new Exception("Mobile entered number already exists in database."); // the array of errors messages
-		}
-
 		$query = "UPDATE `" . DB_NAME . "`.user
 					SET `f_name`= :first_name, `l_name`= :last_name, `mobile`= :mobile,
 						`profile_description`= :profile_description
@@ -173,9 +170,7 @@ abstract class User extends Person
 //			$errors[] = 'Last name may contain only letters.';
 //		}
 //
-//		if (!preg_match('/^[0-9]{10}$/', $mobile_num)) {
-//			$errors[] = 'Mobile number should contain only digits of total length 10';
-//		}
+
 //
 //		if (empty($errors)) {
 //			return true;
@@ -183,23 +178,6 @@ abstract class User extends Person
 //			return $errors;
 //		}
 //	}
-
-	public static function existsMobileNum($db, $newMobileNum) {
-
-		try {
-			$sql = "SELECT COUNT(" . self::DB_MOBILE_NUM . ") FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "` WHERE `" . self::DB_MOBILE_NUM . "` = :mobileNum";
-			$query = $db->getConnection()->prepare($sql);
-			$query->bindParam(':mobileNum', $newMobileNum, PDO::PARAM_INT);
-			$query->execute();
-			if ($query->fetchColumn() === 0) {
-				return false;
-			}
-
-			return true;
-		} catch (Exception $e) {
-			throw new Exception("Could not check if new mobile number already exists on database.");
-		}
-	}
 
 	public static function updateName($db, $id, $column, $newFirstName) {
 		$newFirstName = trim($newFirstName);
@@ -224,6 +202,71 @@ abstract class User extends Person
 		}
 	}
 
+	public static function updateProfileDescription($db, $id, $newProfileDescription) {
+
+		if (!preg_match("/^[\\w\t\n\r .,\\-]{0,512}$/", $newProfileDescription)) {
+			throw new Exception("Description can contain only <a href='http://www.regular-expressions.info/shorthand.html'
+			target='_blank'>word characters</a>, spaces, carriage returns, line feeds and special characters <strong>.,-2</strong> of max size 512 characters.");
+		}
+
+		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+					SET `" . self::DB_PROFILE_DESCRIPTION . "`= :newProfileDescription WHERE `id`= :id";
+		try {
+			$query = $db->getConnection()->prepare($query);
+
+			$query->bindParam(':newProfileDescription', $newProfileDescription, PDO::PARAM_STR);
+			$query->bindParam(':id', $id, PDO::PARAM_INT);
+
+			$query->execute();
+
+			return true;
+		} catch (Exception $e) {
+			throw new Exception("Something terrible happened. Could not update profile description.");
+		}
+	}
+
+	public static function updateMobileNumber($db, $id, $newMobileNum) {
+		if (!preg_match('/^[0-9]{10}$/', $newMobileNum)) {
+			throw new Exception('Mobile number should contain only digits of total length 10');
+		}
+
+		if (self::existsMobileNum($db, $newMobileNum)) {
+			throw new Exception("Mobile entered number already exists in database."); // the array of errors messages
+		}
+
+		try {
+
+			$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+					SET `mobile`= :mobile WHERE `id`= :id";
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':mobile', $newMobileNum, PDO::PARAM_INT);
+			$query->bindParam(':id', $id, PDO::PARAM_INT);
+
+			$query->execute();
+
+			return true;
+		} catch (Exception $e) {
+			throw new Exception("Something terrible happened. Could not update profile." . $e->getMessage());
+		}
+	}
+
+	public static function existsMobileNum($db, $newMobileNum) {
+
+		try {
+			$sql = "SELECT COUNT(" . self::DB_MOBILE_NUM . ") FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "` WHERE `" . self::DB_MOBILE_NUM . "` = :mobileNum";
+			$query = $db->getConnection()->prepare($sql);
+			$query->bindParam(':mobileNum', $newMobileNum, PDO::PARAM_INT);
+			$query->execute();
+			if ($query->fetchColumn() === '0') {
+				return false;
+			}
+
+			return true;
+		} catch (Exception $e) {
+			throw new Exception("Could not check if new mobile number already exists on database.");
+		}
+	}
+
 	/**
 	 * @return mixed
 	 */
@@ -243,7 +286,7 @@ abstract class User extends Person
 	 */
 	public function isActive() {
 		return $this->active;
-	}
+	} // end __construct
 
 	public function updateUserType($userType) {
 		$this->validateUserType($userType);
@@ -264,7 +307,7 @@ abstract class User extends Person
 		} catch (Exception $e) {
 			throw new Exception("Could not update user type.");
 		}
-	} // end __construct
+	}
 
 	public function validateUserType($user_type) {
 		switch ($user_type) {
@@ -276,8 +319,6 @@ abstract class User extends Person
 				throw new Exception('Incorrect user type.');
 		}
 	}
-
-	// end function login
 
 	public function updateAvatarImg($avatar_img_loc) {
 		$id = $this->getId();
