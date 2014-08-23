@@ -10,11 +10,15 @@ class Student extends Person
 {
 	private $ci, $credits;
 
-	public function  __construct($id, $firstName, $lastName, $email, $mobileNum, $ci, $credits) {
-		parent::__construct($id, $firstName, $lastName, $email, $mobileNum);
+	public function  __construct($db, $id, $firstName, $lastName, $email, $mobileNum, $ci, $credits) {
+		parent::__construct($db, $id, $firstName, $lastName, $email, $mobileNum);
 
 		$this->setCi($ci);
 		$this->setCredits($credits);
+	}
+
+	public static function add($db, $firstName, $lastName, $email, $mobileNum, $courses, $ci, $credits){
+
 	}
 
 	/**

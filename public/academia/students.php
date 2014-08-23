@@ -7,8 +7,14 @@ $section = "academia";
 
 try {
 	$students = Student::retrieve($db);
-	$majors = Course::getMajors($db);
-	$courses = Course::getAll($db);
+	$majors = Course::retrieveMajors($db);
+	$courses = Course::retrieveAll($db);
+
+	if (isBtnAddStudentPrsd()) {
+
+//		$course = isset($_POST['course']) ? $_POST['course'] : "";
+//		Student:add($_POST['$_POST'], $_POST['$_POST'], $_POST['$_POST'], $_POST['$_POST'])
+	}
 
 } catch (Exception $e) {
 	$errors[] = $e->getMessage();
@@ -19,12 +25,8 @@ function isEditBttnPressed() {
 	return isset($_GET['id']) && preg_match('/^[0-9]+$/', $_GET['id']);
 }
 
-function isModifyBttnPressed() {
-	return isset($_POST['hidden_submit_pressed']) && empty($_POST['hidden_submit_pressed']);
-}
-
 function isBtnAddStudentPrsd() {
-	return false;
+	return isset($_POST['hiddenSubmitPressed']) && empty($_POST['hiddenSubmitPressed']);
 }
 
 ?>
@@ -139,7 +141,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <div id="addStudentModal" class="modal modal-styled fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form method="post" id="create-form" action="" class="form">
+			<form method="post" id="add-student-form" action="" class="form">
 
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -205,6 +207,53 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 										<h5>
 											<i class="fa fa-tasks"></i>
+											<label for="course">Course</label>
+										</h5>
+
+										<select id="course" name="course"
+										        class="form-control">
+
+											<option
+												 value="null">Required
+											</option>
+											<?php foreach ($courses as $course) {
+												include(ROOT_PATH . "app/views/partials/courses-select-options-view.html.php");
+											}
+											?>
+
+										</select>
+										<span class="input-group-addon">Taught By Instructor</span>
+
+										<select id="course" name="course"
+										        class="form-control">
+
+											<option
+												 value="null">Required
+											</option>
+											<?php foreach ($courses as $course) {
+												include(ROOT_PATH . "app/views/partials/courses-select-options-view.html.php");
+											}
+											?>
+
+										</select>
+
+
+									</div>
+
+
+									<div class="form-group">
+										<h5>
+											<i class="fa fa-tasks"></i>
+											<label for="mobileNum">Mobile Number</label>
+											<input class="form-control" id="mobileNum" name="mobileNum" type="text"
+											       placeholder="123457890">
+										</h5>
+									</div>
+
+
+									<div class="form-group">
+										<h5>
+											<i class="fa fa-tasks"></i>
 											<label for="userMajor">Major</label>
 										</h5>
 										<select id="userMajor" name="userMajor" class="form-control">
@@ -218,31 +267,13 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 
 									<div class="form-group">
-										<h5>
-											<i class="fa fa-tasks"></i>
-											<label for="coursesTaught">Courses</label>
-										</h5>
-
-										<select id="coursesTaught" name="taughtCourses[]"
-										        class="form-control" multiple>
-
-
-											<?php foreach ($courses as $course) {
-												include(ROOT_PATH . "app/views/partials/courses-select-options-view.html.php");
-											}
-											?>
-
-										</select>
-									</div>
-
-
-									<div class="form-group">
 										<div class="col-sm-6">
 
 											<div class="form-group">
 												<div class="input-group">
 													<span class="input-group-addon">CI</span>
-													<input class="form-control" id="prependedInput" type="text" placeholder="3.5">
+													<input class="form-control" id="ciInput" name="ciInput" type="text"
+													       placeholder="3.5">
 												</div>
 											</div>
 										</div>
@@ -250,7 +281,8 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 											<div class="form-group">
 												<div class="input-group">
-													<input class="form-control" id="appendedInput" type="text" placeholder="100">
+													<input class="form-control" id="creditsInput" name="creditsInput" type="text"
+													       placeholder="100">
 													<span class="input-group-addon">Credits</span>
 												</div>
 											</div>
@@ -268,7 +300,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 				<div class="modal-footer">
 					<button type="button" class="btn btn-tertiary" data-dismiss="modal">Close</button>
-					<input type="hidden" name="hidden_submit_pressed">
+					<input type="hidden" name="hiddenSubmitPressed" value="">
 					<button type="submit" class="btn btn-primary">Create</button>
 				</div>
 			</form>
@@ -305,9 +337,14 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 		$("#userMajor").select2();
 
-		$("#coursesTaught").select2({
-			placeholder: "Select a Course",
-			allowClear: true
+		$("#course").select2({
+			placeholder: "Required",
+			allowClear: false
+		});
+
+		$("#instructor").select2({
+			placeholder: "Required",
+			allowClear: false
 		});
 
 	});

@@ -31,7 +31,7 @@
 class Course
 {
 
-	public static function getAll($db) {
+	public static function retrieveAll($db) {
 		$query = "SELECT course.code AS 'Code', course.name AS  'Name', course.id
 						FROM `" . DB_NAME . "`.course, `" . DB_NAME . "`.major, `" . DB_NAME . "`.major_has_courses
 						WHERE course.id = major_has_courses.course_id
@@ -48,7 +48,7 @@ class Course
 		}
 	}
 
-	public static function getMajors($db) {
+	public static function retrieveMajors($db) {
 
 		$query = "SELECT major.extension AS 'Extension', major.name AS 'Name'
 				FROM `" . DB_NAME . "`.major";
