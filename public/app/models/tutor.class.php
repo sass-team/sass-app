@@ -12,12 +12,9 @@ class Tutor extends User
 	private $teachingCourses;
 	private $notTeachingCourses;
 
-	/**
-	 * Constructor
-	 * @param $database
-	 */
-	public function __construct($data, $db) {
-		parent::__construct($data, $db);
+
+	public function __construct($id, $firstName, $lastName, $email, $mobileNum, $avatarImgLoc, $profileDescription, $dateAccountCreated, $userType, $accountActiveStatus) {
+		parent::__construct($id, $firstName, $lastName, $email, $mobileNum, $avatarImgLoc, $profileDescription, $dateAccountCreated, $userType, $accountActiveStatus);
 	}
 
 	/**

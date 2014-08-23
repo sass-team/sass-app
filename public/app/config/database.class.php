@@ -122,58 +122,37 @@ class Database
 		} // end catch
 	}
 
-	/**
-	 * Returns all information of a user given his email.
-	 * @param $id $email of user
-	 * @return mixed If
-	 */
-	function getData($id) {
-		$query = "SELECT user.email, user.id, user.`f_name`, user.`l_name`, user.`img_loc`,
-						user.date, user.`profile_description`, user.mobile, user_types.type, user.active
-					FROM `" . DB_NAME . "`.user
-						LEFT OUTER JOIN user_types ON user.`user_types_id` = `user_types`.id
-					WHERE user.id = :id";
 
-		$query = $this->getConnection()->prepare($query);
-		$query->bindValue(':id', $id, PDO::PARAM_INT);
 
-		try {
-			$query->execute();
-			return $query->fetch();
-		} catch (PDOException $e) {
-			throw new Exception("Something terrible happened. Could not retrieve database." . $e->getMessage());
-		} // end try
-	}
-
-	/**
-	 * Returns a single column from the next row of a result set or FALSE if there are no more rows.
-	 *
-	 * @param $what
-	 * @param $field
-	 * @param $value
-	 * @return mixed
-	 * @throws InvalidArgumentException
-	 */
-	public function fetchInfo($what, $field, $where, $value) {
-		// I have only added few, but you can add more. However do not add 'password' even though the parameters will only be given by you and not the user, in our system.
-		$allowed = array('id', 'username', 'f_name', 'l_name', 'email', 'COUNT(mobile)',
-			 'mobile', 'user', 'gen_string', 'COUNT(gen_string)', 'COUNT(id)', 'img_loc', 'user_types', 'type');
-		if (!in_array($what, $allowed, true) || !in_array($field, $allowed, true)) {
-			throw new InvalidArgumentException;
-		} else {
-			try {
-				$sql = "SELECT $what FROM `" . DB_NAME . "`.`" . $field . "` WHERE $where = ?";
-				$query = $this->getConnection()->prepare($sql);
-				$query->bindValue(1, $value, PDO::PARAM_STR);
-				$query->execute();
-				return $query->fetchColumn();
-				//return $sql;
-			} catch (Exception $e) {
-				throw new Exception($e->getMessage());
-			}
-
-		}
-	} // end getAllData
+//	/**
+//	 * Returns a single column from the next row of a result set or FALSE if there are no more rows.
+//	 *
+//	 * @param $what
+//	 * @param $field
+//	 * @param $value
+//	 * @return mixed
+//	 * @throws InvalidArgumentException
+//	 */
+//	public static function fetchInfo($what, $field, $where, $value) {
+//		// I have only added few, but you can add more. However do not add 'password' even though the parameters will only be given by you and not the user, in our system.
+//		$allowed = array('id', 'username', 'f_name', 'l_name', 'email', 'COUNT(mobile)',
+//			 'mobile', 'user', 'gen_string', 'COUNT(gen_string)', 'COUNT(id)', 'img_loc', 'user_types', 'type');
+//		if (!in_array($what, $allowed, true) || !in_array($field, $allowed, true)) {
+//			throw new InvalidArgumentException;
+//		} else {
+//			try {
+//				$sql = "SELECT $what FROM `" . DB_NAME . "`.`" . $field . "` WHERE $where = ?";
+//				$query = $this->getConnection()->prepare($sql);
+//				$query->bindValue(1, $value, PDO::PARAM_STR);
+//				$query->execute();
+//				return $query->fetchColumn();
+//				//return $sql;
+//			} catch (Exception $e) {
+//				throw new Exception($e->getMessage());
+//			}
+//
+//		}
+//	} // end getAllData
 
 
 	public function confirmRecover($email, $id) {

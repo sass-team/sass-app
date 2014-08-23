@@ -14,14 +14,12 @@
 $first_name = $currUser['f_name'];
 $last_name = $currUser['l_name'];
 $email = $currUser['email'];
-$position = $currUser['type'];
 $mobile = $currUser['mobile'];
 $id = $currUser['id'];
 ?>
 <tr>
 	<td><?php echo $first_name . " " . $last_name; ?></td>
 	<td><?php echo $email; ?></td>
-	<td><?php echo $position ?></td>
 	<td><?php echo $mobile ?></td>
 	<td>
 		<a data-toggle="modal" href="<?php echo BASE_URL . "users/" . $id; ?>"

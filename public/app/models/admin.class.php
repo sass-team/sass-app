@@ -8,14 +8,8 @@
  */
 class Admin extends User
 {
-	private $users;
-
-	/**
-	 * Constructor
-	 * @param $database
-	 */
-	public function __construct($data, $db) {
-		parent::__construct($data, $db);
+	public function __construct($id, $firstName, $lastName, $email, $mobileNum, $avatarImgLoc, $profileDescription, $dateAccountCreated, $userType, $accountActiveStatus) {
+		parent::__construct($id, $firstName, $lastName, $email, $mobileNum, $avatarImgLoc, $profileDescription, $dateAccountCreated, $userType, $accountActiveStatus);
 	}
 
 	public function isAdmin() {
@@ -118,7 +112,7 @@ class Admin extends User
 			$query->execute();
 			return true;
 		} catch (Exception $e) {
-			throw new Exception("Could not insert course into database."  . $e->getMessage());
+			throw new Exception("Could not insert course into database." . $e->getMessage());
 		}
 
 	}

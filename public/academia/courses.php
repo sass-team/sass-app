@@ -36,7 +36,7 @@ function isSaveBttnPressed() {
 }
 
 $page_title = "Manage Courses";
-$section = "courses-majors";
+$section = "academia";
 ?>
 
 <!DOCTYPE html>

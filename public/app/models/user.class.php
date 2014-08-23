@@ -4,7 +4,7 @@
  * Class User will contain prototype for users; tutors, secretary and admin.
  * Log In, Log Out.
  */
-abstract class User
+abstract class User extends Person
 {
 
 	const ADMIN = 'admin';
@@ -15,59 +15,31 @@ abstract class User
 	const ACTIVE_STATUS = 1;
 	const DEACTIVE_STATUS = 0;
 
-	private $users;
-	private $id;
-	private $firstName;
-	private $lastName;
+	// representation of database info
+	const DB_TABLE = "user";
+	const DB_MOBILE_NUM = "mobile";
+	const DB_FIRST_NAME = "f_name";
+	const DB_LAST_NAME = "l_name";
+
 	private $avatarImgLoc;
 	private $profileDescription;
 	private $dateAccountCreated;
 	private $userType;
-	private $mobileNum;
-	private $email;
-	private $active;
+	private $accountActiveStatus;
 
-	private $db;
 
 	/**
 	 * Constructor
 	 * @param $database
 	 */
-	public function __construct($data, $db) {
-		$this->setId($data['id']);
-		$this->setFirstName($data['f_name']);
-		$this->setLastName($data['l_name']);
-		$this->setAvatarImgLoc($data['img_loc']);
-		$this->setProfileDescription($data['profile_description']);
-		$this->setDateAccountCreated($data['date']);
-		$this->setMobileNum($data['mobile']);
-		$this->setEmail($data['email']);
+	public function __construct($id, $firstName, $lastName, $email, $mobileNum, $avatarImgLoc, $profileDescription, $dateAccountCreated, $userType, $accountActiveStatus) {
+		parent::__construct($id, $firstName, $lastName, $email, $mobileNum);
 
-		// initialize tutor/secretary/admin class depending on type.
-		$this->setUserType($data['type']);
-		$this->setActive($data['active']);
-		$this->setDb($db);
-	}
-
-	/**
-	 * @param mixed $id
-	 */
-	private function setId($id) {
-		$this->id = $id;
-	}
-
-	/**
-	 * @param mixed $firstName
-	 */
-	private function setFirstName($firstName) {
-		$this->firstName = $firstName;
-	}
-
-	/**
-	 * @param mixed $lastName
-	 */
-	private function setLastName($lastName) {
-		$this->lastName = $lastName;
+		$this->setAvatarImgLoc($avatarImgLoc);
+		$this->setProfileDescription($profileDescription);
+		$this->setDateAccountCreated($dateAccountCreated);
+		$this->setUserType($userType);
+		$this->setActive($accountActiveStatus);
 	}
 
 	/**
@@ -92,25 +64,11 @@ abstract class User
 	}
 
 	/**
-	 * @param mixed $mobileNum
-	 */
-	private function setMobileNum($mobileNum) {
-		$this->mobileNum = $mobileNum;
-	}
-
-	/**
-	 * @param mixed $email
-	 */
-	private function setEmail($email) {
-		$this->email = $email;
-	}
-
-	/**
 	 * @param mixed $userType
 	 */
 	private function setUserType($userType) {
 		$this->userType = $userType;
-	} // end fetch_info
+	}
 
 	/**
 	 * @param mixed $active
@@ -119,9 +77,31 @@ abstract class User
 		$this->active = $active;
 	}
 
-	public function updateActiveStatus($newStatus, $oldStatus) {
+	/**
+	 * Returns all information of a user given his email.
+	 * @param $id $email of user
+	 * @return mixed If
+	 */
+	public static function  retrieve($db, $id) {
+		$query = "SELECT user.email, user.id, user.`f_name`, user.`l_name`, user.`img_loc`,
+						user.date, user.`profile_description`, user.mobile, user_types.type, user.active
+					FROM `" . DB_NAME . "`.user
+						LEFT OUTER JOIN user_types ON user.`user_types_id` = `user_types`.id
+					WHERE user.id = :id";
+
+		$query = $db->getConnection()->prepare($query);
+		$query->bindValue(':id', $id, PDO::PARAM_INT);
+
+		try {
+			$query->execute();
+			return $query->fetch();
+		} catch (PDOException $e) {
+			throw new Exception("Something terrible happened. Could not retrieve database." . $e->getMessage());
+		} // end try
+	}
+
+	public static function updateActiveStatus($db, $id, $newStatus, $oldStatus) {
 		$oldStatus = $oldStatus == 1 ? self::ACTIVE_STRING : self::DEACTIVE_STRING;
-		$id = $this->getId();
 
 		if ((strcmp($newStatus, $oldStatus) === 0) || (strcmp($newStatus, self::ACTIVE_STRING) !== 0 && strcmp($newStatus, self::DEACTIVE_STRING))) {
 			throw new Exception("Tampered data detected. Aborting.");
@@ -131,7 +111,7 @@ abstract class User
 
 		try {
 			$query = "UPDATE `" . DB_NAME . "`.`user` SET `active`= :accountStatus WHERE `id`=:id";
-			$query = $this->getDb()->getConnection()->prepare($query);
+			$query = $db->getConnection()->prepare($query);
 			$query->bindParam(':accountStatus', $accountStatus, PDO::PARAM_INT);
 			$query->bindParam(':id', $id, PDO::PARAM_INT);
 
@@ -143,18 +123,119 @@ abstract class User
 		} // end catch
 	}
 
-	/**
-	 * @return mixed
-	 */
-	public function getDb() {
-		return $this->db;
+	static function updateProfile($db, $id, $firstName, $lastName, $prevMobileNum, $newMobileNum, $description) {
+		$firstName = trim($firstName);
+		$lastName = trim($lastName);
+		$newMobileNum = trim($newMobileNum);
+		$description = trim($description);
+
+		$isProfileDataCorrect = self::isProfileDataCorrect($firstName, $lastName,
+			 $newMobileNum);
+
+		if ($isProfileDataCorrect !== true) {
+			throw new Exception(implode("<br>", $isProfileDataCorrect)); // the array of errors messages
+		}
+
+
+		if ($prevMobileNum !== $newMobileNum && self::existsMobileNum($db, $newMobileNum)) {
+			throw new Exception("Mobile entered number already exists in database."); // the array of errors messages
+		}
+
+		$query = "UPDATE `" . DB_NAME . "`.user
+					SET `f_name`= :first_name, `l_name`= :last_name, `mobile`= :mobile,
+						`profile_description`= :profile_description
+						WHERE `id`= :id";
+		try {
+			$query = $db->getConnection()->prepare($query);
+
+			$query->bindParam(':first_name', $firstName, PDO::PARAM_STR);
+			$query->bindParam(':last_name', $lastName, PDO::PARAM_STR);
+			$query->bindParam(':mobile', $newMobileNum, PDO::PARAM_INT);
+			$query->bindParam(':profile_description', $description, PDO::PARAM_STR);
+			$query->bindParam(':id', $id, PDO::PARAM_INT);
+
+			$query->execute();
+
+			return true;
+		} catch (Exception $e) {
+			throw new Exception("Something terrible happened. Could not update profile." . $e->getMessage());
+		}
+	}
+
+//	static function isProfileDataCorrect($first_name, $last_name, $mobile_num) {
+//		$errors = array();
+//
+//		if (!ctype_alpha($first_name)) {
+//			$errors[] = 'First name may contain only letters.';
+//		}
+//
+//		if (!ctype_alpha($last_name)) {
+//			$errors[] = 'Last name may contain only letters.';
+//		}
+//
+//		if (!preg_match('/^[0-9]{10}$/', $mobile_num)) {
+//			$errors[] = 'Mobile number should contain only digits of total length 10';
+//		}
+//
+//		if (empty($errors)) {
+//			return true;
+//		} else {
+//			return $errors;
+//		}
+//	}
+
+	public static function existsMobileNum($db, $newMobileNum) {
+
+		try {
+			$sql = "SELECT COUNT(" . self::DB_MOBILE_NUM . ") FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "` WHERE `" . self::DB_MOBILE_NUM . "` = :mobileNum";
+			$query = $db->getConnection()->prepare($sql);
+			$query->bindParam(':mobileNum', $newMobileNum, PDO::PARAM_INT);
+			$query->execute();
+			if ($query->fetchColumn() === 0) {
+				return false;
+			}
+
+			return true;
+		} catch (Exception $e) {
+			throw new Exception("Could not check if new mobile number already exists on database.");
+		}
+	}
+
+	public static function updateName($db, $id, $column, $newFirstName) {
+		$newFirstName = trim($newFirstName);
+
+		if (!preg_match("/^[a-zA-Z]{1,35}$/", $newFirstName)) {
+			throw new Exception('Names may contain only letters of size 1-35 letters.');
+		}
+
+		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+					SET `" . $column . "`= :newFirstName WHERE `id`= :id";
+		try {
+			$query = $db->getConnection()->prepare($query);
+
+			$query->bindParam(':newFirstName', $newFirstName, PDO::PARAM_STR);
+			$query->bindParam(':id', $id, PDO::PARAM_INT);
+
+			$query->execute();
+
+			return true;
+		} catch (Exception $e) {
+			throw new Exception("Something terrible happened. Could not update profile." . $e->getMessage());
+		}
 	}
 
 	/**
-	 * @param mixed $db
+	 * @return mixed
 	 */
-	public function setDb($db) {
-		$this->db = $db;
+	public function getAccountActiveStatus() {
+		return $this->accountActiveStatus;
+	}
+
+	/**
+	 * @param mixed $accountActiveStatus
+	 */
+	public function setAccountActiveStatus($accountActiveStatus) {
+		$this->accountActiveStatus = $accountActiveStatus;
 	}
 
 	/**
@@ -163,42 +244,6 @@ abstract class User
 	public function isActive() {
 		return $this->active;
 	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getUsers() {
-		if (!isset($this->users)) {
-			$this->retrieveUsers();
-		}
-
-		return $this->users;
-	}
-
-	/**
-	 * @param mixed $users
-	 */
-	public function setUsers($users) {
-		$this->users = $users;
-	} // end __construct
-
-	protected function retrieveUsers() {
-		$query = "SELECT user.id, user.f_name, user.l_name, user.img_loc, user.profile_description, user.date, user.mobile, user.email, user_types.type
-		         FROM `" . DB_NAME . "`.user
-						LEFT OUTER JOIN user_types ON user.`user_types_id` = `user_types`.id";
-		$query = $this->getDb()->getConnection()->prepare($query);
-
-		try {
-			$query->execute();
-			$rows = $query->fetchAll();
-
-			$this->setUsers($rows);
-		} catch (PDOException $e) {
-			throw new Exception("Something terrible happened. Could not retrieve users data from database.: " . $e->getMessage());
-		} // end catch
-	}
-
-	// end function login
 
 	public function updateUserType($userType) {
 		$this->validateUserType($userType);
@@ -219,7 +264,7 @@ abstract class User
 		} catch (Exception $e) {
 			throw new Exception("Could not update user type.");
 		}
-	}
+	} // end __construct
 
 	public function validateUserType($user_type) {
 		switch ($user_type) {
@@ -232,74 +277,7 @@ abstract class User
 		}
 	}
 
-	/**
-	 * @return mixed
-	 */
-	public function getId() {
-		return $this->id;
-	} // end function get_data
-
-	function updateProfile($first_name, $last_name, $prevMobileNum, $new_mobile_num, $description) {
-		$first_name = trim($first_name);
-		$last_name = trim($last_name);
-		$new_mobile_num = trim($new_mobile_num);
-		$description = trim($description);
-		$id = $this->getId();
-
-		$isProfileDataCorrect = $this->isProfileDataCorrect($first_name, $last_name,
-			 $new_mobile_num);
-
-		if ($isProfileDataCorrect !== true) {
-			throw new Exception(implode("<br>", $isProfileDataCorrect)); // the array of errors messages
-		}
-
-
-		if ($prevMobileNum !== $new_mobile_num && $this->db->fetchInfo('COUNT(mobile)', 'user', 'mobile', $new_mobile_num) != 0) {
-			throw new Exception("Mobile entered number already exists in database."); // the array of errors messages
-		}
-
-		$query = "UPDATE `" . DB_NAME . "`.user
-					SET `f_name`= :first_name, `l_name`= :last_name, `mobile`= :mobile,
-						`profile_description`= :profile_description
-						WHERE `id`= :id";
-		try {
-			$query = $this->getDb()->getConnection()->prepare($query);
-
-			$query->bindParam(':first_name', $first_name, PDO::PARAM_STR);
-			$query->bindParam(':last_name', $last_name, PDO::PARAM_STR);
-			$query->bindParam(':mobile', $new_mobile_num, PDO::PARAM_INT);
-			$query->bindParam(':profile_description', $description, PDO::PARAM_STR);
-			$query->bindParam(':id', $id, PDO::PARAM_INT);
-
-			$query->execute();
-
-			return true;
-		} catch (PDOException $pe) {
-			throw new Exception("Something terrible happened. Could not update profile.");
-		}
-	}
-
-	function isProfileDataCorrect($first_name, $last_name, $mobile_num) {
-		$errors = array();
-
-		if (!ctype_alpha($first_name)) {
-			$errors[] = 'First name may contain only letters.';
-		}
-
-		if (!ctype_alpha($last_name)) {
-			$errors[] = 'Last name may contain only letters.';
-		}
-
-		if (!preg_match('/^[0-9]{10}$/', $mobile_num)) {
-			$errors[] = 'Mobile number should contain only digits of total length 10';
-		}
-
-		if (empty($errors)) {
-			return true;
-		} else {
-			return $errors;
-		}
-	}
+	// end function login
 
 	public function updateAvatarImg($avatar_img_loc) {
 		$id = $this->getId();
@@ -341,7 +319,7 @@ abstract class User
 		} catch (Exception $e) {
 			throw new Exception("Could not connect to database.");
 		}
-	} // end getAllData
+	}
 
 	public function getHashedPassword($id) {
 		$query = "SELECT password FROM `" . DB_NAME . "`.user WHERE id = :id";
@@ -357,7 +335,7 @@ abstract class User
 		} catch (Exception $e) {
 			throw new Exception("Could not connect to database.");
 		}
-	}
+	} // end function get_data
 
 	/**
 	 * @param $name
@@ -377,7 +355,7 @@ abstract class User
 		} // end else if
 	}
 
-	public function validate_user_major($user_major_ext) {
+	public function validateUserMajor($user_major_ext) {
 		if ($user_major_ext === "null") {
 			return true;
 		}
@@ -406,41 +384,13 @@ abstract class User
 	 */
 	public function getAvatarImgLoc() {
 		return $this->avatarImgLoc;
-	}
+	} // end getAllData
 
 	/**
 	 * @return mixed
 	 */
 	public function getDateAccountCreated() {
 		return $this->dateAccountCreated;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getEmail() {
-		return $this->email;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getFirstName() {
-		return $this->firstName;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getLastName() {
-		return $this->lastName;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getMobileNum() {
-		return $this->mobileNum;
 	}
 
 	/**
@@ -469,7 +419,28 @@ abstract class User
 		return $this->userType;
 	}
 
+	protected function retrieveUsers() {
+		$query = "SELECT user.id, user.f_name, user.l_name, user.img_loc, user.profile_description, user.date, user.mobile, user.email, user_types.type
+		         FROM `" . DB_NAME . "`.user
+						LEFT OUTER JOIN user_types ON user.`user_types_id` = `user_types`.id";
+		$query = $this->getDb()->getConnection()->prepare($query);
 
+		try {
+			$query->execute();
+			$rows = $query->fetchAll();
+
+			$this->setUsers($rows);
+		} catch (PDOException $e) {
+			throw new Exception("Something terrible happened. Could not retrieve users data from database.: " . $e->getMessage());
+		} // end catch
+	}
+
+	/**
+	 * @param mixed $users
+	 */
+	public function setUsers($users) {
+		$this->users = $users;
+	}
 }
 
 ?>
