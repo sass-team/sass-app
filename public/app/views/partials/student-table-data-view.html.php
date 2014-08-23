@@ -27,9 +27,9 @@ $credits = $student['credits'];
 	<td><?php echo $credits;?></td>
 
 	<td>
-		<a data-toggle="modal" href="<?php echo BASE_URL . "users/" . $id; ?>"
+		<a data-toggle="modal" href="<?php echo BASE_URL . "academia/students/" . $id; ?>"
 		   class="btn btn-default btn-sm center-block">
-			<i class="fa fa-user"></i> Courses
+			<i class="fa fa-user"></i> View
 		</a>
 	</td>
 
@@ -43,7 +43,7 @@ $credits = $student['credits'];
 
 	<?php if ($user->isAdmin()): ?>
 		<td>
-			<a data-toggle="modal" href="<?php echo BASE_URL . "users/edit/:" . $id; ?>"
+			<a data-toggle="modal" href="<?php echo BASE_URL . "academia/students/:" . $id; ?>"
 			   class="btn btn-default btn-sm center-block edit-user">
 				<i class="fa fa-edit"></i> Edit
 			</a>
