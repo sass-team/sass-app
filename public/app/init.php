@@ -20,8 +20,10 @@ require_once ROOT_PATH . "app/models/admin.class.php";
 require_once ROOT_PATH . "app/models/tutor.class.php";
 require_once ROOT_PATH . "app/models/secretary.class.php";
 
+require_once ROOT_PATH . "app/models/instructor.class.php";
 require_once ROOT_PATH . "app/models/course.class.php";
 require_once ROOT_PATH . "app/models/student.class.php";
+
 
 
 $errors = array();

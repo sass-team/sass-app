@@ -338,52 +338,8 @@ abstract class User extends Person
 		}
 	}
 
-	/**
-	 * @param $name
-	 * @throws Exception
-	 */
-	public static function validateName($name) {
-		if (!preg_match('/^[A-Za-z]+$/', $name)) {
-			throw new Exception("Please enter a first/last name containing only letters of minimum length 1.");
-		}
-	} // end __construct
 
-	public static function validateEmail($db, $email) {
-		if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
-			throw new Exception("Please enter a valid email address");
-		} else if (self::emailExists($db, $email)) {
-			throw new Exception('That email already exists. Please use another one.');
-		} // end else if
-	}
 
-	/**
-	 * Verifies a user with given email exists.
-	 * returns true if found; else false
-	 *
-	 * @param $email $email given email
-	 * @return bool true if found; else false
-	 */
-	public static function emailExists($db, $email) {
-		$email = trim($email);
-		$query = "SELECT COUNT(id) FROM `" . DB_NAME . "`.user WHERE email = :email";
-
-		$query = $db->getConnection()->prepare($query);
-		$query->bindParam(':email', $email, PDO::PARAM_STR);
-
-		try {
-			$query->execute();
-			$rows = $query->fetchColumn();
-
-			if ($rows == 1) {
-				return true;
-			} else {
-				return false;
-			} // end else if
-
-		} catch (PDOException $e) {
-			throw new Exception("Something terrible happened. Could not access database.");
-		} // end catch
-	}
 
 	public static function validateUserMajor($db, $user_major_ext) {
 		if ($user_major_ext === "null") {

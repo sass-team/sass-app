@@ -63,10 +63,17 @@ require ROOT_PATH . 'app/views/sidebar.php';
 			?>
 			<div class="alert alert-danger">
 				<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-				<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
+				<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
+				?>
 			</div>
 		<?php
-		} ?>
+		} else if (isBtnAddStudentPrsd()) {
+			?>
+			<div class="alert alert-success">
+				<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+				<strong>Student successfully created!</strong> <br/>
+			</div>
+		<?php } ?>
 		<div class="row">
 			<div class="col-md-12">
 				<a data-toggle="modal" id="bttn-styledModal" href="#addStudentModal"

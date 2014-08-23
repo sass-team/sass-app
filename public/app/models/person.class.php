@@ -21,17 +21,10 @@ abstract class Person
 	}
 
 	/**
-	 * @param mixed $db
+	 * @param mixed $id
 	 */
-	public function setDb($db) {
-		$this->db = $db;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getDb() {
-		return $this->db;
+	public function setId($id) {
+		$this->id = $id;
 	}
 
 	/**
@@ -62,6 +55,66 @@ abstract class Person
 		$this->mobileNum = $mobileNum;
 	}
 
+	/**
+	 * @param $name
+	 * @throws Exception
+	 */
+	public static function validateName($name) {
+		if (!preg_match('/^[A-Za-z]+$/', $name)) {
+			throw new Exception("Please enter a first/last name containing only letters of minimum length 1.");
+		}
+	}
+
+	public static function validateEmail($db, $email, $table) {
+		if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
+			throw new Exception("Please enter a valid email address");
+		} else if (self::emailExists($db, $email, $table)) {
+			throw new Exception('That email already exists. Please use another one.');
+		} // end else if
+	}
+
+	/**
+	 * Verifies a user with given email exists.
+	 * returns true if found; else false
+	 *
+	 * @param $email $email given email
+	 * @return bool true if found; else false
+	 */
+	public static function emailExists($db, $email, $table) {
+		$email = trim($email);
+		$query = "SELECT COUNT(id) FROM `" . DB_NAME . "`.`" . $table . "` WHERE email = :email";
+
+		$query = $db->getConnection()->prepare($query);
+		$query->bindParam(':email', $email, PDO::PARAM_STR);
+
+		try {
+			$query->execute();
+			$rows = $query->fetchColumn();
+
+			if ($rows == 1) {
+				return true;
+			} else {
+				return false;
+			} // end else if
+
+		} catch (PDOException $e) {
+			throw new Exception("Something terrible happened. Could not access database.");
+		} // end catch
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getDb() {
+		return $this->db;
+	}
+
+	/**
+	 * @param mixed $db
+	 */
+	public function setDb($db) {
+		$this->db = $db;
+	}
 
 	/**
 	 * @return mixed
@@ -85,13 +138,6 @@ abstract class Person
 	}
 
 	/**
-	 * @param mixed $id
-	 */
-	public function setId($id) {
-		$this->id = $id;
-	}
-
-	/**
 	 * @return mixed
 	 */
 	public function getLastName() {
@@ -103,5 +149,6 @@ abstract class Person
 	 */
 	public function getMobileNum() {
 		return $this->mobileNum;
-	}
+	} // end __construct
+
 } 
