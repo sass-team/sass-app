@@ -31,7 +31,7 @@ if (isLoginBtnPressed()) {
 		$password = trim($_POST['login_password']);
 
 		// check if credentials are correct. If they are not, an exception occurs.
-		$id = $db->login($email, $password);
+		$id = User::login($db, $email, $password);
 		// destroying the old session id
 		//and creating a new one. protect from session fixation attack.
 		session_regenerate_id(true);

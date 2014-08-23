@@ -9,8 +9,7 @@ if (!$user->isAdmin()) {
 }
 
 try {
-	$course_db = new Courses($db->getConnection());
-	$courses = $course_db->getCourses();
+	$courses = Course::getAll($db);
 } catch (Exception $e) {
 	$errors[] = $e->getMessage();
 }

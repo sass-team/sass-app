@@ -7,12 +7,9 @@ $section = "academia";
 
 try {
 	$students = Student::retrieve($db);
-	var_dump($students);
 } catch (Exception $e) {
 	$errors[] = $e->getMessage();
 }
-
-
 
 
 function isEditBttnPressed() {
@@ -62,59 +59,59 @@ function isModifyBttnPressed() {
 			<?php
 			} ?>
 			<div class="row">
-				<div class="col-md-12">
 
-					<a data-toggle="modal" id="bttn-styledModal" href="#styledModal" class="btn btn-primary navbar-right">Add
-						student</a>
-				</div>
 				<div class="col-md-12">
 
 
-					<div class="table-responsive">
-						<table
-							 class="table table-striped table-bordered table-hover table-highlight table-checkable"
-							 data-provide="datatable"
-							 data-display-rows="10"
-							 data-info="true"
-							 data-search="true"
-							 data-length-change="true"
-							 data-paginate="true"
-							 id="usersTable"
-							 >
+						<div class="portlet-content">
+							<div class="table-responsive">
+								<table
+									 class="table table-striped table-bordered table-hover table-highlight table-checkable"
+									 data-provide="datatable"
+									 data-display-rows="10"
+									 data-info="true"
+									 data-search="true"
+									 data-length-change="true"
+									 data-paginate="true"
+									 id="usersTable"
+									 >
+									<thead>
+									<tr>
+										<th data-filterable="true" data-sortable="true" data-direction="desc">Name</th>
+										<th data-direction="asc" data-filterable="true" data-sortable="false">Email</th>
+										<th data-filterable="true" data-sortable="false">Mobile</th>
+										<th data-filterable="true" data-sortable="true">CI</th>
+										<th data-filterable="true" data-sortable="true">Credits</th>
 
-							<thead>
+										<th data-filterable="false" class="hidden-xs hidden-sm">Profile</th>
 
-							<tr>
-
-								<th data-filterable="true" data-sortable="true" data-direction="desc">Name</th>
-								<th data-direction="asc" data-filterable="true" data-sortable="false">Email</th>
-								<th data-filterable="true" data-sortable="true">Position</th>
-								<th data-filterable="true" data-sortable="false">Mobile</th>
-								<th data-filterable="false">Profile</th>
-
-								<?php if (!$user->isTutor()): ?>
-									<th data-filterable="false">Schedule</th>
-								<?php endif; ?>
+										<?php if (!$user->isTutor()): ?>
+											<th data-filterable="false" class="hidden-xs hidden-sm">Schedule</th>
+										<?php endif; ?>
 
 
-								<?php if ($user->isAdmin()): ?>
-									<th data-filterable="false">Data</th>
-								<?php endif; ?>
-							</tr>
-							</thead>
-							<tbody>
+										<?php if ($user->isAdmin()): ?>
+											<th data-filterable="false" class="hidden-xs hidden-sm">Data</th>
+										<?php endif; ?>
+									</tr>
+									</thead>
+									<tbody>
 
-							<?php
-							if (empty($errors) === true) {
-								foreach (array_reverse($students) as $student) {
-									include(ROOT_PATH . "app/views/partials/student-table-data-view.html.php");
-								}
-							} ?>
-							</tbody>
-						</table>
+									<?php
+									if (empty($errors) === true) {
+										foreach (array_reverse($students) as $student) {
+											include(ROOT_PATH . "app/views/partials/student-table-data-view.html.php");
+										}
+									} ?>
+									</tbody>
+								</table>
+							</div>
+							<!-- /.table-responsive -->
+
+
+
 					</div>
-					<!-- /.table-responsive -->
-
+					<!-- /.portlet -->
 
 				</div>
 				<!-- /.col -->

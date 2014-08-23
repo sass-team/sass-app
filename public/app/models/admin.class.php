@@ -8,30 +8,12 @@
  */
 class Admin extends User
 {
-	public function __construct($id, $firstName, $lastName, $email, $mobileNum, $avatarImgLoc, $profileDescription, $dateAccountCreated, $userType, $accountActiveStatus) {
-		parent::__construct($id, $firstName, $lastName, $email, $mobileNum, $avatarImgLoc, $profileDescription, $dateAccountCreated, $userType, $accountActiveStatus);
+	public function __construct($db, $id, $firstName, $lastName, $email, $mobileNum, $avatarImgLoc, $profileDescription, $dateAccountCreated, $userType, $accountActiveStatus) {
+		parent::__construct($db, $id, $firstName, $lastName, $email, $mobileNum, $avatarImgLoc, $profileDescription, $dateAccountCreated, $userType, $accountActiveStatus);
 	}
 
 	public function isAdmin() {
 		return true;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getUsers() {
-		if (!isset($this->users)) {
-			$this->retrieveUsers();
-		}
-
-		return $this->users;
-	}
-
-	/**
-	 * @param mixed $users
-	 */
-	public function setUsers($users) {
-		$this->users = $users;
 	}
 
 	/**
@@ -67,11 +49,11 @@ class Admin extends User
 	} // end getAllData
 
 
-	public function createUser($first_name, $last_name, $email, $user_type, $user_major_ext, $teaching_courses) {
-		$this->validateName($first_name);
-		$this->validateName($last_name);
-		$this->validateEmail($email);
-		$this->validateUserType($user_type);
+	public static function createUser($db, $first_name, $last_name, $email, $user_type, $user_major_ext, $teaching_courses) {
+		self::validateName($first_name);
+		self::validateName($last_name);
+		self::validateEmail($db, $email);
+		self::validateUserType($user_type);
 		//$this->validate_user_major($user_major_ext);
 		//$this->validate_teaching_course($teaching_courses);
 
@@ -84,7 +66,7 @@ class Admin extends User
 					(SELECT id as 'user_types_id' FROM user_types WHERE user_types.type=:user_type )
 				)";
 
-			$query = $this->getDb()->getConnection()->prepare($query);
+			$query = $db->getConnection()->prepare($query);
 			$query->bindParam(':email', $email, PDO::PARAM_STR);
 			$query->bindParam(':first_name', $first_name, PDO::PARAM_STR);
 			$query->bindParam(':last_name', $last_name, PDO::PARAM_STR);

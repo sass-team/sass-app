@@ -12,19 +12,20 @@ if (!isset($_GET['id']) || !preg_match("/^[0-9]+$/", $_GET['id'])) {
 
 try {
 
-	if(($userData = $db->getData($userId)) === FALSE){
+	if (($userData = $db->getData($userId)) === FALSE) {
 		header('Location: ' . BASE_URL . 'error-404');
 		exit();
 	}
 
-	if ($userData['type'] == 'tutor') {
-		$currUser = new Tutor($userData, $db);
-	} else if ($userData['type'] == 'secretary') {
-		$currUser = new Secretary($userData, $db);
-	} else if ($userData['type'] == 'admin') {
-		$currUser = new Admin($userData, $db);
+	if (strcmp($data['type'], 'tutor') === 0) {
+		$user = new Tutor($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active']);
+	} else if (strcmp($data['type'], 'secretary') === 0) {
+		$user = new Secretary($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active']);
+	} else if (strcmp($data['type'], 'admin') === 0) {
+		$user = new Admin($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active']);
+	} else {
+		throw new Exception("Something terrible has happened with the database. <br/>The software developers will tremble with fear.");
 	}
-
 
 } catch (Exception $e) {
 	$errors[] = $e->getMessage();
@@ -74,7 +75,7 @@ $section = "users";
 						<div class="col-md-4 col-sm-5">
 
 							<div class="thumbnail">
-								<img src="<?php echo BASE_URL . $currUser->getAvatarImgLoc(); ?>"
+								<img src="<?php echo BASE_URL . $curUser->getAvatarImgLoc(); ?>"
 								     alt="Profile Picture"/>
 							</div>
 							<!-- /.thumbnail -->
@@ -87,9 +88,9 @@ $section = "users";
 
 						<div class="col-md-8 col-sm-7">
 
-							<h2><?php echo $currUser->getFirstName() . " " . $currUser->getLastName(); ?></h2>
+							<h2><?php echo $curUser->getFirstName() . " " . $curUser->getLastName(); ?></h2>
 
-							<h4>Position: <?php echo ucfirst($currUser->getUserType()) ?></h4>
+							<h4>Position: <?php echo ucfirst($curUser->getUserType()) ?></h4>
 
 							<hr/>
 
@@ -103,12 +104,12 @@ $section = "users";
 
 
 							<ul class="icons-list">
-								<li><i class="icon-li fa fa-envelope"></i> <?php echo $currUser->getEmail(); ?></li>
-								<li><i class="icon-li fa fa-phone"></i> <?php echo $currUser->getMobileNum() ?></li>
+								<li><i class="icon-li fa fa-envelope"></i> <?php echo $curUser->getEmail(); ?></li>
+								<li><i class="icon-li fa fa-phone"></i> <?php echo $curUser->getMobileNum() ?></li>
 							</ul>
-							<?php if ($currUser->isTutor()) { ?>
+							<?php if ($curUser->isTutor()) { ?>
 
-								Major: <strong><?php echo $currUser->getMajor(); ?></strong>
+								Major: <strong><?php echo $curUser->getMajor(); ?></strong>
 
 							<?php } ?>
 							<br/>
@@ -116,7 +117,7 @@ $section = "users";
 
 							<h3>About me</h3>
 
-							<p><?php echo $currUser->getProfileDescription() ?></p>
+							<p><?php echo $curUser->getProfileDescription() ?></p>
 
 							<hr/>
 

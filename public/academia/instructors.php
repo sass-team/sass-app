@@ -9,7 +9,7 @@ if (!$user->isAdmin()) {
 }
 
 try {
-	$course_db = new Courses($db->getConnection());
+	$course_db = new Course($db->getConnection());
 	$courses = $course_db->getCourses();
 } catch (Exception $e) {
 	$errors[] = $e->getMessage();

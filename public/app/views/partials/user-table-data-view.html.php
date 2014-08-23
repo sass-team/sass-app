@@ -11,12 +11,12 @@
  */
 
 
-$first_name = $currUser['f_name'];
-$last_name = $currUser['l_name'];
-$email = $currUser['email'];
-$position = $currUser['type'];
-$mobile = $currUser['mobile'];
-$id = $currUser['id'];
+$first_name = $curUser['f_name'];
+$last_name = $curUser['l_name'];
+$email = $curUser['email'];
+$position = $curUser['type'];
+$mobile = $curUser['mobile'];
+$id = $curUser['id'];
 ?>
 <tr>
 	<td><?php echo $first_name . " " . $last_name; ?></td>

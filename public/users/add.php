@@ -10,9 +10,9 @@ if (!$user->isAdmin()) {
 
 
 try {
-	$coursesDb = new Courses($db->getConnection());
-	$courses = $coursesDb->getAll();
-	$majors = $coursesDb->getMajors();
+	$courses = Course::getAll($db);
+	$majors = Course::getMajors($db);
+
 
 	//$majors = array_unique(array_column($courses, 'Major'));
 	//$majors_extensions = array_unique(array_column($courses, 'Extension'));
@@ -34,7 +34,7 @@ if (isSaveBttnPressed()) {
 	$teachingCourses[] = isset($_POST['teachingCourses']) ? $_POST['teachingCourses'] : "";
 
 	try {
-		$user->createUser($first_name, $last_name, $email, $user_type, $userMajor_ext, $teachingCourses);
+		Admin::createUser($db, $first_name, $last_name, $email, $user_type, $userMajor_ext, $teachingCourses);
 	} catch (Exception $e) {
 		$errors[] = $e->getMessage();
 	}

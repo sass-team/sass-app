@@ -49,7 +49,21 @@ function isNewAvatarImageUploadedTemp() {
 		 true : false;
 }
 
-if (isset($_POST['form_action_profile_settings'])) {
+/**
+ * @return bool
+ */
+function isBtnUpdateProfilePrsd() {
+	return isset($_POST['form_action_profile_settings']) && empty($_POST['form_action_profile_settings']);
+}
+
+/**
+ * @return bool
+ */
+function isBtnUpdatePasswordPrsd() {
+	return isset($_POST['form_action_update_password']) && empty($_POST['form_action_update_password']);
+}
+
+if (isBtnUpdateProfilePrsd()) {
 
 	try {
 		$newUpdate = false;
@@ -66,27 +80,28 @@ if (isset($_POST['form_action_profile_settings'])) {
 
 		// check if new changes are required. if to update process
 		if (strcmp($prevFirstName, $newFirstName) !== 0) {
-			User::updateName($db, $id, User::DB_FIRST_NAME, $newFirstName);
+			User::updateName($db, $user->getId(), User::DB_FIRST_NAME, $newFirstName);
 			$newUpdate = true;
 		}
 		if (strcmp($prevLastName, $newLastName) !== 0) {
-			User::updateName($db, $id, User::DB_LAST_NAME, $newLastName);
+			User::updateName($db, $user->getId(), User::DB_LAST_NAME, $newLastName);
 			$newUpdate = true;
 		}
 
 		if (strcmp($prevProfileDescription, $newProfileDescription) !== 0) {
-			User::updateProfileDescription($db, $id, $newProfileDescription);
+			User::updateProfileDescription($db, $user->getId(), $newProfileDescription);
 			$newUpdate = true;
 		}
 
 		if ($prevMobileNumber !== $newMobileNumber) {
-			User::updateMobileNumber($db, $id, $newMobileNumber);
+			User::updateMobileNumber($db, $user->getId(), $newMobileNumber);
 			$newUpdate = true;
 		}
 
 		// TODO: use OOP instead of procedural programming for file upload
 		if (isNewAvatarImageUploadedTemp()) {
 			uploadAvatarImage($user);
+			$newUpdate = true;
 		}
 
 		$newEmailAdmin = "";
@@ -101,10 +116,10 @@ if (isset($_POST['form_action_profile_settings'])) {
 		$errors[] = $e->getMessage();
 	}
 
-} else if (isset($_POST['form_action_update_password'])) {
+} else if (isBtnUpdatePasswordPrsd()) {
 
 	try {
-		$user->updatePassword($user->getId(), $_POST['oldPassword'], $_POST['newPassword1'], $_POST['newPassword2']);
+		User::updatePassword($db, $user->getId(), $_POST['oldPassword'], $_POST['newPassword1'], $_POST['newPassword2']);
 	} catch (Exception $e) {
 		$errors[] = $e->getMessage();
 	}
@@ -291,7 +306,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 		<div class="form-group">
 
-			<input type="hidden" name="form_action_profile_settings">
+			<input type="hidden" name="form_action_profile_settings" value="">
 
 			<div class="col-md-7 col-md-push-3">
 				<button type="submit" class="btn btn-primary">Save Changes</button>
@@ -363,7 +378,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 			<div class="col-md-7 col-md-push-3">
 				<button type="submit" class="btn btn-primary">Save Changes</button>
-				<input type="hidden" name="form_action_update_password">
+				<input type="hidden" name="form_action_update_password" value="">
 				&nbsp;
 				<button type="reset" class="btn btn-default">Cancel</button>
 			</div>

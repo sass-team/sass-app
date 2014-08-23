@@ -9,14 +9,29 @@
 abstract class Person
 {
 
-	private $id, $firstName, $lastName, $email, $mobileNum;
+	private $db, $id, $firstName, $lastName, $email, $mobileNum;
 
-	public function __construct($id, $firstName, $lastName, $email, $mobileNum) {
+	public function __construct($db, $id, $firstName, $lastName, $email, $mobileNum) {
 		$this->setId($id);
 		$this->setFirstName($firstName);
 		$this->setLastName($lastName);
 		$this->setEmail($email);
 		$this->setMobileNum($mobileNum);
+		$this->setDb($db);
+	}
+
+	/**
+	 * @param mixed $db
+	 */
+	public function setDb($db) {
+		$this->db = $db;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getDb() {
+		return $this->db;
 	}
 
 	/**

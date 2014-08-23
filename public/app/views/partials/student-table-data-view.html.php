@@ -11,20 +11,25 @@
  */
 
 
-$first_name = $currUser['f_name'];
-$last_name = $currUser['l_name'];
-$email = $currUser['email'];
-$mobile = $currUser['mobile'];
-$id = $currUser['id'];
+$first_name = $student['f_name'];
+$last_name = $student['l_name'];
+$email = $student['email'];
+$mobile = $student['mobile'];
+$id = $student['id'];
+$ci = $student['ci'];
+$credits = $student['credits'];
 ?>
 <tr>
 	<td><?php echo $first_name . " " . $last_name; ?></td>
 	<td><?php echo $email; ?></td>
-	<td><?php echo $mobile ?></td>
+	<td><?php echo $mobile; ?></td>
+	<td><?php echo $ci ;?></td>
+	<td><?php echo $credits;?></td>
+
 	<td>
 		<a data-toggle="modal" href="<?php echo BASE_URL . "users/" . $id; ?>"
 		   class="btn btn-default btn-sm center-block">
-			<i class="fa fa-user"></i> View
+			<i class="fa fa-user"></i> Courses
 		</a>
 	</td>
 

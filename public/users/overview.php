@@ -6,7 +6,7 @@ $page_title = "View Users";
 $section = "users";
 
 try {
-	$allUsers = $user->getUsers();
+	$users = User::retrieveAll($db);
 } catch (Exception $e) {
 	$errors[] = $e->getMessage();
 }
@@ -108,7 +108,7 @@ function isModifyBttnPressed() {
 
 									<?php
 									if (empty($errors) === true) {
-										foreach (array_reverse($allUsers) as $currUser) {
+										foreach (array_reverse($users) as $curUser) {
 											include(ROOT_PATH . "app/views/partials/user-table-data-view.html.php");
 										}
 									} ?>
