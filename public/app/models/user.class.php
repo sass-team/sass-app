@@ -1,4 +1,6 @@
-<?php
+
+<!-- saved from url=(0115)https://bitbucket.org/sass-tm/sass-ms/raw/bc3416dd114676a048acf651227c966ceb608f30/public/app/models/user.class.php -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><script type="text/javascript" src="chrome-extension://bfbmjmiodbnnpllbbbfblcplfjjepjdn/js/injected.js"></script><style type="text/css"></style></head><body><pre style="word-wrap: break-word; white-space: pre-wrap;">&lt;?php
 
 /**
  * Class User will contain prototype for users; tutors, secretary and admin.
@@ -36,46 +38,46 @@ abstract class User extends Person
 	public function __construct($db, $id, $firstName, $lastName, $email, $mobileNum, $avatarImgLoc, $profileDescription, $dateAccountCreated, $userType, $accountActiveStatus) {
 		parent::__construct($db, $id, $firstName, $lastName, $email, $mobileNum);
 
-		$this->setAvatarImgLoc($avatarImgLoc);
-		$this->setProfileDescription($profileDescription);
-		$this->setDateAccountCreated($dateAccountCreated);
-		$this->setUserType($userType);
-		$this->setActive($accountActiveStatus);
+		$this-&gt;setAvatarImgLoc($avatarImgLoc);
+		$this-&gt;setProfileDescription($profileDescription);
+		$this-&gt;setDateAccountCreated($dateAccountCreated);
+		$this-&gt;setUserType($userType);
+		$this-&gt;setActive($accountActiveStatus);
 	}
 
 	/**
 	 * @param mixed $avatarImgLoc
 	 */
 	private function setAvatarImgLoc($avatarImgLoc) {
-		$this->avatarImgLoc = $avatarImgLoc;
+		$this-&gt;avatarImgLoc = $avatarImgLoc;
 	}
 
 	/**
 	 * @param mixed $profileDescription
 	 */
 	private function setProfileDescription($profileDescription) {
-		$this->profileDescription = $profileDescription;
+		$this-&gt;profileDescription = $profileDescription;
 	} // end __construct
 
 	/**
 	 * @param mixed $dateAccountCreated
 	 */
 	private function setDateAccountCreated($dateAccountCreated) {
-		$this->dateAccountCreated = $dateAccountCreated;
+		$this-&gt;dateAccountCreated = $dateAccountCreated;
 	}
 
 	/**
 	 * @param mixed $userType
 	 */
 	private function setUserType($userType) {
-		$this->userType = $userType;
+		$this-&gt;userType = $userType;
 	}
 
 	/**
 	 * @param mixed $active
 	 */
 	public function setActive($active) {
-		$this->active = $active;
+		$this-&gt;active = $active;
 	}
 
 	/**
@@ -90,21 +92,21 @@ abstract class User extends Person
 						LEFT OUTER JOIN user_types ON user.`user_types_id` = `user_types`.id
 					WHERE user.id = :id";
 
-		$query = $db->getConnection()->prepare($query);
-		$query->bindValue(':id', $id, PDO::PARAM_INT);
+		$query = $db-&gt;getConnection()-&gt;prepare($query);
+		$query-&gt;bindValue(':id', $id, PDO::PARAM_INT);
 
 		try {
-			$query->execute();
-			return $query->fetch();
+			$query-&gt;execute();
+			return $query-&gt;fetch();
 		} catch (PDOException $e) {
-			throw new Exception("Something terrible happened. Could not retrieve database." . $e->getMessage());
+			throw new Exception("Something terrible happened. Could not retrieve database." . $e-&gt;getMessage());
 		} // end try
 	}
 
 	public static function updateActiveStatus($db, $id, $newStatus, $oldStatus) {
 		$oldStatus = $oldStatus == 1 ? self::ACTIVE_STRING : self::DEACTIVE_STRING;
 
-		if ((strcmp($newStatus, $oldStatus) === 0) || (strcmp($newStatus, self::ACTIVE_STRING) !== 0 && strcmp($newStatus, self::DEACTIVE_STRING))) {
+		if ((strcmp($newStatus, $oldStatus) === 0) || (strcmp($newStatus, self::ACTIVE_STRING) !== 0 &amp;&amp; strcmp($newStatus, self::DEACTIVE_STRING))) {
 			throw new Exception("Tampered data detected. Aborting.");
 		}
 
@@ -112,15 +114,15 @@ abstract class User extends Person
 
 		try {
 			$query = "UPDATE `" . DB_NAME . "`.`user` SET `active`= :accountStatus WHERE `id`=:id";
-			$query = $db->getConnection()->prepare($query);
-			$query->bindParam(':accountStatus', $accountStatus, PDO::PARAM_INT);
-			$query->bindParam(':id', $id, PDO::PARAM_INT);
+			$query = $db-&gt;getConnection()-&gt;prepare($query);
+			$query-&gt;bindParam(':accountStatus', $accountStatus, PDO::PARAM_INT);
+			$query-&gt;bindParam(':id', $id, PDO::PARAM_INT);
 
-			$query->execute();
+			$query-&gt;execute();
 
 			return true;
 		} catch (PDOException $e) {
-			throw new Exception("Something terrible happened. Could not retrieve users data from database.: " . $e->getMessage());
+			throw new Exception("Something terrible happened. Could not retrieve users data from database.: " . $e-&gt;getMessage());
 		} // end catch
 	}
 
@@ -134,7 +136,7 @@ abstract class User extends Person
 			 $newMobileNum);
 
 		if ($isProfileDataCorrect !== true) {
-			throw new Exception(implode("<br>", $isProfileDataCorrect)); // the array of errors messages
+			throw new Exception(implode("&lt;br&gt;", $isProfileDataCorrect)); // the array of errors messages
 		}
 
 
@@ -143,19 +145,19 @@ abstract class User extends Person
 						`profile_description`= :profile_description
 						WHERE `id`= :id";
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$query = $db-&gt;getConnection()-&gt;prepare($query);
 
-			$query->bindParam(':first_name', $firstName, PDO::PARAM_STR);
-			$query->bindParam(':last_name', $lastName, PDO::PARAM_STR);
-			$query->bindParam(':mobile', $newMobileNum, PDO::PARAM_INT);
-			$query->bindParam(':profile_description', $description, PDO::PARAM_STR);
-			$query->bindParam(':id', $id, PDO::PARAM_INT);
+			$query-&gt;bindParam(':first_name', $firstName, PDO::PARAM_STR);
+			$query-&gt;bindParam(':last_name', $lastName, PDO::PARAM_STR);
+			$query-&gt;bindParam(':mobile', $newMobileNum, PDO::PARAM_INT);
+			$query-&gt;bindParam(':profile_description', $description, PDO::PARAM_STR);
+			$query-&gt;bindParam(':id', $id, PDO::PARAM_INT);
 
-			$query->execute();
+			$query-&gt;execute();
 
 			return true;
 		} catch (Exception $e) {
-			throw new Exception("Something terrible happened. Could not update profile." . $e->getMessage());
+			throw new Exception("Something terrible happened. Could not update profile." . $e-&gt;getMessage());
 		}
 	}
 
@@ -169,16 +171,16 @@ abstract class User extends Person
 		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
 					SET `" . $column . "`= :newFirstName WHERE `id`= :id";
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$query = $db-&gt;getConnection()-&gt;prepare($query);
 
-			$query->bindParam(':newFirstName', $newFirstName, PDO::PARAM_STR);
-			$query->bindParam(':id', $id, PDO::PARAM_INT);
+			$query-&gt;bindParam(':newFirstName', $newFirstName, PDO::PARAM_STR);
+			$query-&gt;bindParam(':id', $id, PDO::PARAM_INT);
 
-			$query->execute();
+			$query-&gt;execute();
 
 			return true;
 		} catch (Exception $e) {
-			throw new Exception("Something terrible happened. Could not update profile." . $e->getMessage());
+			throw new Exception("Something terrible happened. Could not update profile." . $e-&gt;getMessage());
 		}
 	}
 
@@ -205,19 +207,19 @@ abstract class User extends Person
 	public static function updateProfileDescription($db, $id, $newProfileDescription) {
 
 		if (!preg_match("/^[\\w\t\n\r .,\\-]{0,512}$/", $newProfileDescription)) {
-			throw new Exception("Description can contain only <a href='http://www.regular-expressions.info/shorthand.html'
-			target='_blank'>word characters</a>, spaces, carriage returns, line feeds and special characters <strong>.,-2</strong> of max size 512 characters.");
+			throw new Exception("Description can contain only &lt;a href='http://www.regular-expressions.info/shorthand.html'
+			target='_blank'&gt;word characters&lt;/a&gt;, spaces, carriage returns, line feeds and special characters &lt;strong&gt;.,-2&lt;/strong&gt; of max size 512 characters.");
 		}
 
 		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
 					SET `" . self::DB_PROFILE_DESCRIPTION . "`= :newProfileDescription WHERE `id`= :id";
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$query = $db-&gt;getConnection()-&gt;prepare($query);
 
-			$query->bindParam(':newProfileDescription', $newProfileDescription, PDO::PARAM_STR);
-			$query->bindParam(':id', $id, PDO::PARAM_INT);
+			$query-&gt;bindParam(':newProfileDescription', $newProfileDescription, PDO::PARAM_STR);
+			$query-&gt;bindParam(':id', $id, PDO::PARAM_INT);
 
-			$query->execute();
+			$query-&gt;execute();
 
 			return true;
 		} catch (Exception $e) {
@@ -238,15 +240,15 @@ abstract class User extends Person
 
 			$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
 					SET `mobile`= :mobile WHERE `id`= :id";
-			$query = $db->getConnection()->prepare($query);
-			$query->bindParam(':mobile', $newMobileNum, PDO::PARAM_INT);
-			$query->bindParam(':id', $id, PDO::PARAM_INT);
+			$query = $db-&gt;getConnection()-&gt;prepare($query);
+			$query-&gt;bindParam(':mobile', $newMobileNum, PDO::PARAM_INT);
+			$query-&gt;bindParam(':id', $id, PDO::PARAM_INT);
 
-			$query->execute();
+			$query-&gt;execute();
 
 			return true;
 		} catch (Exception $e) {
-			throw new Exception("Something terrible happened. Could not update profile." . $e->getMessage());
+			throw new Exception("Something terrible happened. Could not update profile." . $e-&gt;getMessage());
 		}
 	}
 
@@ -254,10 +256,10 @@ abstract class User extends Person
 
 		try {
 			$sql = "SELECT COUNT(" . self::DB_MOBILE_NUM . ") FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "` WHERE `" . self::DB_MOBILE_NUM . "` = :mobileNum";
-			$query = $db->getConnection()->prepare($sql);
-			$query->bindParam(':mobileNum', $newMobileNum, PDO::PARAM_INT);
-			$query->execute();
-			if ($query->fetchColumn() === '0') {
+			$query = $db-&gt;getConnection()-&gt;prepare($sql);
+			$query-&gt;bindParam(':mobileNum', $newMobileNum, PDO::PARAM_INT);
+			$query-&gt;execute();
+			if ($query-&gt;fetchColumn() === '0') {
 				return false;
 			}
 
@@ -275,12 +277,12 @@ abstract class User extends Person
 
 		if (!self::validatePassword($newPassword1)) {
 			throw new Exception("Password should:
-			<ul>
-				<li>Contain at least one capitalized letter. [A-Z]</li>
-				<li>Contain at least one lowercase letter. [a-z]</li>
-				<li>Contain at least one special character. [!@#$%^&*()\-_=+{};:,<.>]</li>
-				<li>Be at least 8 characters long</li>
-			</ul> ");
+			&lt;ul&gt;
+				&lt;li&gt;Contain at least one capitalized letter. [A-Z]&lt;/li&gt;
+				&lt;li&gt;Contain at least one lowercase letter. [a-z]&lt;/li&gt;
+				&lt;li&gt;Contain at least one special character. [!@#$%^&amp;*()\-_=+{};:,&lt;.&gt;]&lt;/li&gt;
+				&lt;li&gt;Be at least 8 characters long&lt;/li&gt;
+			&lt;/ul&gt; ");
 		}
 
 		$old_password_hashed = self::getHashedPassword($db, $id);
@@ -292,11 +294,11 @@ abstract class User extends Person
 			$new_password_hashed = password_hash($newPassword1, PASSWORD_DEFAULT);
 
 			$query = "UPDATE `" . DB_NAME . "`.`user` SET `password`= :password WHERE `id`= :id";
-			$query = $db->getConnection()->prepare($query);
-			$query->bindParam(':id', $id);
-			$query->bindParam(':password', $new_password_hashed);
+			$query = $db-&gt;getConnection()-&gt;prepare($query);
+			$query-&gt;bindParam(':id', $id);
+			$query-&gt;bindParam(':password', $new_password_hashed);
 
-			$query->execute();
+			$query-&gt;execute();
 		} catch (Exception $e) {
 			throw new Exception("Could not connect to database.");
 		}
@@ -305,18 +307,18 @@ abstract class User extends Person
 	public static function validatePassword($password) {
 		$r1 = '/[A-Z]/'; //Uppercase
 		$r2 = '/[a-z]/'; //lowercase
-		$r3 = '/[!@#$%^&*()\-_=+{};:,<.>]/'; // whatever you mean by 'special char'
+		$r3 = '/[!@#$%^&amp;*()\-_=+{};:,&lt;.&gt;]/'; // whatever you mean by 'special char'
 		$r4 = '/[0-9]/'; //numbers
 
-		if (preg_match_all($r1, $password, $o) < 2) return FALSE;
+		if (preg_match_all($r1, $password, $o) &lt; 2) return FALSE;
 
-		if (preg_match_all($r2, $password, $o) < 2) return FALSE;
+		if (preg_match_all($r2, $password, $o) &lt; 2) return FALSE;
 
-		if (preg_match_all($r3, $password, $o) < 2) return FALSE;
+		if (preg_match_all($r3, $password, $o) &lt; 2) return FALSE;
 
-		if (preg_match_all($r4, $password, $o) < 2) return FALSE;
+		if (preg_match_all($r4, $password, $o) &lt; 2) return FALSE;
 
-		if (strlen($password) < 8) return FALSE;
+		if (strlen($password) &lt; 8) return FALSE;
 
 		return TRUE;
 
@@ -324,13 +326,13 @@ abstract class User extends Person
 
 	public static function getHashedPassword($db, $id) {
 		$query = "SELECT password FROM `" . DB_NAME . "`.user WHERE id = :id";
-		$query = $db->getConnection()->prepare($query);
-		$query->bindParam(':id', $id);
+		$query = $db-&gt;getConnection()-&gt;prepare($query);
+		$query-&gt;bindParam(':id', $id);
 
 		try {
 
-			$query->execute();
-			$data = $query->fetch();
+			$query-&gt;execute();
+			$data = $query-&gt;fetch();
 			$hash_password = $data['password'];
 			return $hash_password;
 		} catch (Exception $e) {
@@ -346,13 +348,13 @@ abstract class User extends Person
 			return true;
 		}
 		$query = "SELECT COUNT(1)  FROM `" . DB_NAME . "`.major WHERE major.extension=':extension'";
-		$query = $db->getDbConnection()->prepare($query);
-		$query->bindParam(':extension', $user_major_ext);
+		$query = $db-&gt;getDbConnection()-&gt;prepare($query);
+		$query-&gt;bindParam(':extension', $user_major_ext);
 
 		try {
 
-			$query->execute();
-			$data = $query->fetch();
+			$query-&gt;execute();
+			$data = $query-&gt;fetch();
 		} catch (Exception $e) {
 			throw new Exception("Could not connect to database.");
 		}
@@ -369,15 +371,15 @@ abstract class User extends Person
 		$query = "SELECT user.id, user.f_name, user.l_name, user.img_loc, user.profile_description, user.date, user.mobile, user.email, user_types.type
 		         FROM `" . DB_NAME . "`.user
 						LEFT OUTER JOIN user_types ON user.`user_types_id` = `user_types`.id";
-		$query = $db->getConnection()->prepare($query);
+		$query = $db-&gt;getConnection()-&gt;prepare($query);
 
 		try {
-			$query->execute();
-			$rows = $query->fetchAll();
+			$query-&gt;execute();
+			$rows = $query-&gt;fetchAll();
 
 			return $rows;
 		} catch (PDOException $e) {
-			throw new Exception("Something terrible happened. Could not retrieve users data from database.: " . $e->getMessage());
+			throw new Exception("Something terrible happened. Could not retrieve users data from database.: " . $e-&gt;getMessage());
 		} // end catch
 	}
 
@@ -402,13 +404,13 @@ abstract class User extends Person
 			throw new Exception('Sorry that email doesn\'t exists.');
 		}
 		$query = "SELECT id, active, password, email FROM `" . DB_NAME . "`.user WHERE email = :email";
-		$query = $db->getConnection()->prepare($query);
-		$query->bindParam(':email', $email);
+		$query = $db-&gt;getConnection()-&gt;prepare($query);
+		$query-&gt;bindParam(':email', $email);
 
 		try {
 
-			$query->execute();
-			$data = $query->fetch();
+			$query-&gt;execute();
+			$data = $query-&gt;fetch();
 			$hash_password = $data['password'];
 
 			// using the verify method to compare the password with the stored hashed password.
@@ -430,37 +432,37 @@ abstract class User extends Person
 	 * @return mixed
 	 */
 	public function getAccountActiveStatus() {
-		return $this->accountActiveStatus;
+		return $this-&gt;accountActiveStatus;
 	}
 
 	/**
 	 * @param mixed $accountActiveStatus
 	 */
 	public function setAccountActiveStatus($accountActiveStatus) {
-		$this->accountActiveStatus = $accountActiveStatus;
+		$this-&gt;accountActiveStatus = $accountActiveStatus;
 	}
 
 	/**
 	 * @return mixed
 	 */
 	public function isActive() {
-		return $this->active;
+		return $this-&gt;active;
 	}
 
 	public function updateUserType($userType) {
-		$this->validateUserType($userType);
-		$id = $this->getId();
+		$this-&gt;validateUserType($userType);
+		$id = $this-&gt;getId();
 
 		try {
-			$userTypeId = $this->fetchInfo("id", "user_types", "type", $userType);
+			$userTypeId = $this-&gt;fetchInfo("id", "user_types", "type", $userType);
 
 			$query = "UPDATE  `" . DB_NAME . "`.`user` SET `user_types_id` = :userTypeId WHERE `id`= :id";
 
-			$query = $this->getDb()->getConnection()->prepare($query);
-			$query->bindParam(':userTypeId', $userTypeId, PDO::PARAM_INT);
-			$query->bindParam(':id', $id, PDO::PARAM_INT);
+			$query = $this-&gt;getDb()-&gt;getConnection()-&gt;prepare($query);
+			$query-&gt;bindParam(':userTypeId', $userTypeId, PDO::PARAM_INT);
+			$query-&gt;bindParam(':id', $id, PDO::PARAM_INT);
 
-			$query->execute();
+			$query-&gt;execute();
 
 			return true;
 		} catch (Exception $e) {
@@ -497,29 +499,29 @@ abstract class User extends Person
 		} else {
 			try {
 				$sql = "SELECT $what FROM `" . DB_NAME . "`.`" . $field . "` WHERE $where = ?";
-				$query = $this->getDb()->getConnection()->prepare($sql);
-				$query->bindValue(1, $value, PDO::PARAM_STR);
-				$query->execute();
-				return $query->fetchColumn();
+				$query = $this-&gt;getDb()-&gt;getConnection()-&gt;prepare($sql);
+				$query-&gt;bindValue(1, $value, PDO::PARAM_STR);
+				$query-&gt;execute();
+				return $query-&gt;fetchColumn();
 				//return $sql;
 			} catch (Exception $e) {
-				throw new Exception($e->getMessage());
+				throw new Exception($e-&gt;getMessage());
 			}
 
 		}
 	} // end getAllData
 
 	public function updateAvatarImg($avatar_img_loc) {
-		$id = $this->getId();
+		$id = $this-&gt;getId();
 
 		try {
 
 			$query = "UPDATE `" . DB_NAME . "`.user SET `img_loc`= :avatar_img WHERE `id`= :user_id";
-			$query = $this->getDb()->getConnection()->prepare($query);
-			$query->bindParam(':avatar_img', $avatar_img_loc, PDO::PARAM_STR);
-			$query->bindParam(':user_id', $id, PDO::PARAM_INT);
+			$query = $this-&gt;getDb()-&gt;getConnection()-&gt;prepare($query);
+			$query-&gt;bindParam(':avatar_img', $avatar_img_loc, PDO::PARAM_STR);
+			$query-&gt;bindParam(':user_id', $id, PDO::PARAM_INT);
 
-			$query->execute();
+			$query-&gt;execute();
 			return true;
 		} catch (PDOException $e) {
 			throw new Exception("Something terrible happened. Could not update database.");
@@ -530,21 +532,21 @@ abstract class User extends Person
 	 * @return mixed
 	 */
 	public function getAvatarImgLoc() {
-		return $this->avatarImgLoc;
+		return $this-&gt;avatarImgLoc;
 	}
 
 	/**
 	 * @return mixed
 	 */
 	public function getDateAccountCreated() {
-		return $this->dateAccountCreated;
+		return $this-&gt;dateAccountCreated;
 	}
 
 	/**
 	 * @return mixed
 	 */
 	public function getProfileDescription() {
-		return $this->profileDescription;
+		return $this-&gt;profileDescription;
 	}
 
 	public function isAdmin() {
@@ -563,15 +565,16 @@ abstract class User extends Person
 	 * @return mixed
 	 */
 	public function getUserType() {
-		return $this->userType;
+		return $this-&gt;userType;
 	}
 
 	/**
 	 * @param mixed $users
 	 */
 	public function setUsers($users) {
-		$this->users = $users;
+		$this-&gt;users = $users;
 	}
 }
 
-?>
+?&gt;
+</pre></body></html>
