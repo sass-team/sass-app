@@ -51,7 +51,7 @@ if (!isset($_GET['id']) || !preg_match("/^[0-9]+$/", $_GET['id'])) {
 
 
 try {
-	if (($userData = User::retrieve($db, $userId)) === FALSE) {
+	if (($data = User::retrieve($db, $userId)) === FALSE) {
 		header('Location: ' . BASE_URL . 'error-404');
 		exit();
 	}
@@ -69,8 +69,8 @@ try {
 
 	// retrieve courses data only user type is tutor
 	if ($curUser->isTutor()) {
-		$courses = $curUser->getTeachingCourses();
-		$notTeachingCourses = $curUser->getNotTeachingCourses();
+		$teachingCourses = Tutor::retrieveTeachingCourses($db, $curUser->getId());
+		$notTeachingCourses = Tutor::retrieveCoursesNotTeaching($db, $curUser->getId());
 	}
 
 
@@ -81,7 +81,8 @@ try {
 			exit();
 		}
 	} else if (isBtnSubmitReplaceCourse()) {
-		$curUser->updateTeachingCourse($_POST['teachingCourse'], $_POST['hiddenUpdateCourseOldId']);
+
+		Tutor::updateTeachingCourse($db, $curUser->getId(), $_POST['teachingCourse'], $_POST['hiddenUpdateCourseOldId']);
 		header('Location: ' . BASE_URL . 'users/edit/:' . $userId . '/success');
 		exit();
 	} else if (isSaveBttnProfilePressed()) {
@@ -109,7 +110,7 @@ try {
 		}
 
 		if (strcmp($newEmail, $oldEmail) !== 0) {
-			User::validateEmail($db, $newEmail);
+			Person::validateEmail($db, $newEmail, User::DB_TABLE);
 			$user->updateInfo("email", "user", $newEmail, $userId);
 			$newDataAdded = true;
 		}
@@ -129,7 +130,7 @@ try {
 		header('Location: ' . BASE_URL . 'users/edit/:' . $userId . '/success');
 		exit();
 	} else if (isBtnSbmtChangeUserActivate()) {
-		$curUser->updateActiveStatus($_POST['changeUserActive'], $curUser->isActive());
+		User::updateActiveStatus($db, $curUser->getId(), $_POST['changeUserActive'], $curUser->isActive());
 		header('Location: ' . BASE_URL . 'users/edit/:' . $userId . '/success');
 		exit();
 	}
@@ -171,6 +172,7 @@ function isBtnSubmitReplaceCourse() {
 
 $page_title = "Edit";
 $section = "users";
+
 ?>
 
 
@@ -307,7 +309,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 							<?php
 							if (empty($errors) === true) {
-								foreach ($courses as $course) {
+								foreach ($teachingCourses as $course) {
 									include(ROOT_PATH . "app/views/partials/courses-table-data-view.html.php");
 
 								}

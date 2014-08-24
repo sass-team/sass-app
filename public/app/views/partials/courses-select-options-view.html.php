@@ -6,7 +6,7 @@
 
 <option
 	 value="<?php echo $course['id']; ?>">
-	<?php echo $course['Code'] . " " . $course['Name']; ?></option>
+	<?php echo $course['code'] . " " . $course['name']; ?></option>
 
 
 

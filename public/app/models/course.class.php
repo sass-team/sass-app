@@ -31,8 +31,13 @@
 class Course
 {
 
+	const DB_TABLE = "course";
+	const DB_CODE = "code";
+	const DB_NAME = "name";
+	const DB_ID = "id";
+
 	public static function retrieveAll($db) {
-		$query = "SELECT course.code AS 'Code', course.name AS  'Name', course.id
+		$query = "SELECT course.code AS 'code', course.name AS  'name', course.id
 						FROM `" . DB_NAME . "`.course, `" . DB_NAME . "`.major, `" . DB_NAME . "`.major_has_courses
 						WHERE course.id = major_has_courses.course_id
 							AND major.id = major_has_courses.major_id;
