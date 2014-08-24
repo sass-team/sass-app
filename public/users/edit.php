@@ -51,35 +51,38 @@ if (!isset($_GET['id']) || !preg_match("/^[0-9]+$/", $_GET['id'])) {
 
 
 try {
-	if (($userData = $db->getData($userId)) === FALSE) {
+	if (($data = User::retrieve($db, $userId)) === FALSE) {
 		header('Location: ' . BASE_URL . 'error-404');
 		exit();
 	}
 
 
-	if ($userData['type'] == 'admin') {
-		$currUser = new Admin($userData, $db);
-	} else if ($userData['type'] == 'tutor') {
-		$currUser = new Tutor($userData, $db);
-	} else if ($userData['type'] == 'secretary') {
-		$currUser = new Secretary($userData, $db);
+	if (strcmp($data['type'], 'tutor') === 0) {
+		$curUser = new Tutor($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active']);
+	} else if (strcmp($data['type'], 'secretary') === 0) {
+		$curUser = new Secretary($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active']);
+	} else if (strcmp($data['type'], 'admin') === 0) {
+		$curUser = new Admin($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active']);
+	} else {
+		throw new Exception("Something terrible has happened with the database. <br/>The software developers will tremble with fear.");
 	}
 
 	// retrieve courses data only user type is tutor
-	if ($currUser->isTutor()) {
-		$courses = $currUser->getTeachingCourses();
-		$notTeachingCourses = $currUser->getNotTeachingCourses();
+	if ($curUser->isTutor()) {
+		$teachingCourses = Tutor::retrieveTeachingCourses($db, $curUser->getId());
+		$notTeachingCourses = Tutor::retrieveCoursesNotTeaching($db, $curUser->getId());
 	}
 
 
 	if (isAddTeachingCoursesPressed()) {
 
-		if ($currUser->addTeachingCourses($_POST['teachingCourses'])) {
+		if ($curUser->addTeachingCourses($_POST['teachingCourses'])) {
 			header('Location: ' . BASE_URL . 'users/edit/:' . $userId . '/success');
 			exit();
 		}
 	} else if (isBtnSubmitReplaceCourse()) {
-		$currUser->updateTeachingCourse($_POST['teachingCourse'], $_POST['hiddenUpdateCourseOldId']);
+
+		Tutor::updateTeachingCourse($db, $curUser->getId(), $_POST['teachingCourse'], $_POST['hiddenUpdateCourseOldId']);
 		header('Location: ' . BASE_URL . 'users/edit/:' . $userId . '/success');
 		exit();
 	} else if (isSaveBttnProfilePressed()) {
@@ -89,9 +92,9 @@ try {
 		$newLastName = $_POST['lastName'];
 		$newEmail = $_POST['email'];
 
-		$oldFirstName = $currUser->getFirstName();
-		$oldLastName = $currUser->getLastName();
-		$oldEmail = $currUser->getEmail();
+		$oldFirstName = $curUser->getFirstName();
+		$oldLastName = $curUser->getLastName();
+		$oldEmail = $curUser->getEmail();
 
 
 		if (strcmp($newFirstName, $oldFirstName) !== 0) {
@@ -107,7 +110,7 @@ try {
 		}
 
 		if (strcmp($newEmail, $oldEmail) !== 0) {
-			$user->validateEmail($newEmail);
+			Person::validateEmail($db, $newEmail, User::DB_TABLE);
 			$user->updateInfo("email", "user", $newEmail, $userId);
 			$newDataAdded = true;
 		}
@@ -119,15 +122,15 @@ try {
 			exit();
 		}
 	} else if (isBtnDelTeachingCoursesPressed()) {
-		$currUser->delTeachingCourse($_POST['delCourseIdModal']);
+		$curUser->delTeachingCourse($_POST['delCourseIdModal']);
 		header('Location: ' . BASE_URL . 'users/edit/:' . $userId . '/success');
 		exit();
 	} else if (isBtnSbmtChangeuserTypePrsd()) {
-		$currUser->updateUserType($_POST['changeuserType']);
+		$curUser->updateUserType($_POST['changeuserType']);
 		header('Location: ' . BASE_URL . 'users/edit/:' . $userId . '/success');
 		exit();
 	} else if (isBtnSbmtChangeUserActivate()) {
-		$currUser->updateActiveStatus($_POST['changeUserActive'], $currUser->isActive());
+		User::updateActiveStatus($db, $curUser->getId(), $_POST['changeUserActive'], $curUser->isActive());
 		header('Location: ' . BASE_URL . 'users/edit/:' . $userId . '/success');
 		exit();
 	}
@@ -169,6 +172,7 @@ function isBtnSubmitReplaceCourse() {
 
 $page_title = "Edit";
 $section = "users";
+
 ?>
 
 
@@ -194,7 +198,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 <div id="content-header">
 	<h1>Settings
-		- <?php echo "<strong>" . $currUser->getFirstName() . " " . $currUser->getLastName() . "</strong>"; ?></h1>
+		- <?php echo "<strong>" . $curUser->getFirstName() . " " . $curUser->getLastName() . "</strong>"; ?></h1>
 </div>
 <!-- #content-header -->
 
@@ -220,7 +224,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <div class="col-md-3 col-sm-4">
 	<ul id="myTab" class="nav nav-pills nav-stacked">
 
-		<?php if ($currUser->isTutor()) { ?>
+		<?php if ($curUser->isTutor()) { ?>
 			<li class="active">
 				<a href="#courses-majors" data-toggle="tab">
 					<i class="fa fa-list-alt"></i>
@@ -229,7 +233,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 			</li>
 		<?php } ?>
 
-		<li <?php if (!$currUser->isTutor()) echo "class='active'"; ?>>
+		<li <?php if (!$curUser->isTutor()) echo "class='active'"; ?>>
 			<a href="#profile-tab" data-toggle="tab">
 				<i class="fa fa-user"></i>
 				&nbsp;&nbsp;Profile Settings
@@ -263,7 +267,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 <div class="tab-content stacked-content">
 
-<?php if ($currUser->isTutor()) { ?>
+<?php if ($curUser->isTutor()) { ?>
 	<div class="tab-pane fade in active" id="courses-majors">
 
 
@@ -305,7 +309,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 							<?php
 							if (empty($errors) === true) {
-								foreach ($courses as $course) {
+								foreach ($teachingCourses as $course) {
 									include(ROOT_PATH . "app/views/partials/courses-table-data-view.html.php");
 
 								}
@@ -338,7 +342,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 	</div>
 <?php } ?>
-<div class="tab-pane fade <?php if (!$currUser->isTutor()) echo "in active"; ?>" id="profile-tab">
+<div class="tab-pane fade <?php if (!$curUser->isTutor()) echo "in active"; ?>" id="profile-tab">
 
 	<h3 class=""> Edit Profile Settings </h3>
 
@@ -349,7 +353,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 	<br/>
 
-	<form action="<?php echo BASE_URL . 'users/edit/:' . $currUser->getId(); ?>"
+	<form action="<?php echo BASE_URL . 'users/edit/:' . $curUser->getId(); ?>"
 	      class="form-horizontal" method="post">
 
 		<div class="form-group">
@@ -359,7 +363,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 			<div class="col-md-7">
 				<div class="fileupload fileupload-new" data-provides="fileupload">
 					<div class="fileupload-new thumbnail" style="width: 180px; height: 180px;"><img
-							 src="<?php echo BASE_URL . $currUser->getAvatarImgLoc(); ?>" alt="Profile Avatar"/>
+							 src="<?php echo BASE_URL . $curUser->getAvatarImgLoc(); ?>" alt="Profile Avatar"/>
 					</div>
 					<div class="fileupload-preview fileupload-exists thumbnail"
 					     style="max-width: 200px; max-height: 200px; line-height: 20px;"></div>
@@ -384,7 +388,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 			<div class="col-md-7">
 				<input type="text" name="firstName" id="firstName"
-				       value="<?php echo $currUser->getFirstName(); ?>"
+				       value="<?php echo $curUser->getFirstName(); ?>"
 				       class="form-control">
 			</div>
 			<!-- /.col-->
@@ -398,7 +402,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 			<div class="col-md-7">
 				<input type="text" name="lastName" id="lastName"
-				       value="<?php echo $currUser->getLastName(); ?>"
+				       value="<?php echo $curUser->getLastName(); ?>"
 				       class="form-control">
 			</div>
 			<!-- /.col-->
@@ -412,7 +416,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 			<div class="col-md-7">
 				<input type="text" name="email" id="email"
-				       value="<?php echo $currUser->getEmail(); ?>"
+				       value="<?php echo $curUser->getEmail(); ?>"
 				       class="form-control">
 			</div>
 			<!-- /.col-->
@@ -423,12 +427,12 @@ require ROOT_PATH . 'app/views/sidebar.php';
 		<div class="form-group">
 
 			<label for="aboutTextarea" class="col-md-3">
-				About <?php echo "<strong>" . $currUser->getFirstName() . " " . $currUser->getLastName() . "</strong>"; ?> </label>
+				About <?php echo "<strong>" . $curUser->getFirstName() . " " . $curUser->getLastName() . "</strong>"; ?> </label>
 
 
 			<div class="col-md-7">
 				<textarea id="aboutTextarea" name="about-you" rows="6" disabled
-				          class="form-control"><?php echo $currUser->getProfileDescription(); ?></textarea>
+				          class="form-control"><?php echo $curUser->getProfileDescription(); ?></textarea>
 			</div>
 			<!-- /.col-->
 
@@ -476,18 +480,18 @@ require ROOT_PATH . 'app/views/sidebar.php';
 				<form method="post" id="delete-form" action="" class="form">
 					<div class="btn-group">
 						<button type="submit"
-						        class="btn btn-default <?php if ($currUser->isTutor()) echo "active"; ?> btnChangeType"
-						        id="tutor" name="tutor">Tutor
+						        class="btn btn-default <?php if ($curUser->isTutor()) echo "active"; ?> btnChangeType"
+						        id="tutor" name="tutor" disabled>Tutor
 						</button>
 						<button type="submit"
-						        class="btn btn-default <?php if ($currUser->isSecretary()) echo "active"; ?> btnChangeType"
-						        id="secretary" name="secretary">
+						        class="btn btn-default <?php if ($curUser->isSecretary()) echo "active"; ?> btnChangeType"
+						        id="secretary" name="secretary" disabled>
 							Secretary
 						</button>
 						<button type="submit"
-						        class="btn btn-default <?php if ($currUser->isAdmin()) echo "active"; ?> btnChangeType"
+						        class="btn btn-default <?php if ($curUser->isAdmin()) echo "active"; ?> btnChangeType"
 						        id="admin"
-						        name="admin">
+						        name="admin" disabled>
 							Administrator
 						</button>
 						<input type="hidden" name="hiddenSbmtChangeuserType">
@@ -531,12 +535,12 @@ require ROOT_PATH . 'app/views/sidebar.php';
 				<form method="post" id="update-status-form" action="" class="form">
 
 					<button type="submit"
-					        class="btn btn-success <?php if ($currUser->isActive()) echo "active disabled"; ?> btnChangeActive"
+					        class="btn btn-success <?php if ($curUser->isActive()) echo "active disabled"; ?> btnChangeActive"
 					        id="activateAccount">Activate
 					</button>
 
 					<button type="submit"
-					        class="btn btn-warning <?php if (!$currUser->isActive()) echo "active disabled"; ?> btnChangeActive"
+					        class="btn btn-warning <?php if (!$curUser->isActive()) echo "active disabled"; ?> btnChangeActive"
 					        id="deactivateAccount">Deactivate
 					</button>
 					<input type="hidden" name="hiddenSbmtChangeUserActive" value="">
@@ -670,7 +674,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					<h3 class="modal-title">Remove course
-						from <?php echo $currUser->getFirstName() . " " . $currUser->getLastName(); ?></h3>
+						from <?php echo $curUser->getFirstName() . " " . $curUser->getLastName(); ?></h3>
 				</div>
 				<div class="modal-body">
 					<div class="portlet">
@@ -720,7 +724,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					<h3 class="modal-title">Update Course
-						for <?php echo $currUser->getFirstName() . " " . $currUser->getLastName(); ?></h3>
+						for <?php echo $curUser->getFirstName() . " " . $curUser->getLastName(); ?></h3>
 				</div>
 				<div class="modal-body">
 					<div class="portlet">

@@ -9,8 +9,7 @@ if (!$user->isAdmin()) {
 }
 
 try {
-	$course_db = new Courses($db->getConnection());
-	$courses = $course_db->getCourses();
+	$courses = Course::retrieveAll($db);
 } catch (Exception $e) {
 	$errors[] = $e->getMessage();
 }
@@ -36,7 +35,7 @@ function isSaveBttnPressed() {
 }
 
 $page_title = "Manage Courses";
-$section = "courses-majors";
+$section = "academia";
 ?>
 
 <!DOCTYPE html>

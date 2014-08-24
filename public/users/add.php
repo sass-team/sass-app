@@ -10,9 +10,9 @@ if (!$user->isAdmin()) {
 
 
 try {
-	$coursesDb = new Courses($db->getConnection());
-	$courses = $coursesDb->getAll();
-	$majors = $coursesDb->getMajors();
+	$courses = Course::retrieveAll($db);
+	$majors = Course::retrieveMajors($db);
+
 
 	//$majors = array_unique(array_column($courses, 'Major'));
 	//$majors_extensions = array_unique(array_column($courses, 'Extension'));
@@ -34,7 +34,7 @@ if (isSaveBttnPressed()) {
 	$teachingCourses[] = isset($_POST['teachingCourses']) ? $_POST['teachingCourses'] : "";
 
 	try {
-		$user->createUser($first_name, $last_name, $email, $user_type, $userMajor_ext, $teachingCourses);
+		Admin::createUser($db, $first_name, $last_name, $email, $user_type, $userMajor_ext, $teachingCourses);
 	} catch (Exception $e) {
 		$errors[] = $e->getMessage();
 	}
@@ -113,80 +113,14 @@ require ROOT_PATH . 'app/views/sidebar.php';
 							able to modify some of their profile data nce they are logged in.</p>
 
 						<p>
-							<a data-toggle="modal" id="bttn-styledModal" href="#styledModal" class="btn btn-primary">Create
+							<a data-toggle="modal" id="btnAddUserModal" href="#styledModal" class="btn btn-primary">Create
 								a
 								new user</a>
 						</p>
 					</div>
 
-					<div class="tab-pane fade" id="profile-3">
-						<p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid.
-							Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan
-							four
-							loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer
-							mlkshk
-							aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore
-							aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr, vero magna velit sapiente
-							labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean shorts
-							beard
-							ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr
-							butcher
-							vero sint qui sapiente accusamus tattooed echo park.</p>
 
-						<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
-							Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur
-							ridiculus
-							mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat
-							massa
-							quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim
-							justo,
-							rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis
-							pretium.</p>
-					</div>
 
-					<div class="tab-pane fade" id="dropdown5">
-						<p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic
-							lomo
-							retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed
-							craft
-							beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR
-							banksy irony. Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh mi whatever
-							gluten-free, carles pitchfork biodiesel fixie etsy retro mlkshk vice blog. Scenester cred
-							you
-							probably haven't heard of them, vinyl craft beer blog stumptown. Pitchfork sustainable tofu
-							synth chambray yr.</p>
-
-						<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
-							Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur
-							ridiculus
-							mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat
-							massa
-							quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim
-							justo,
-							rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis
-							pretium.</p>
-					</div>
-
-					<div class="tab-pane fade" id="dropdown6">
-						<p>Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out
-							master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan
-							DIY, art party locavore wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY
-							salvia
-							PBR, banh mi before they sold out farm-to-table VHS viral locavore cosby sweater. Lomo wolf
-							viral, mustache readymade thundercats keffiyeh craft beer marfa ethical. Wolf salvia
-							freegan,
-							sartorial keffiyeh echo park vegan.</p>
-
-						<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
-							Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur
-							ridiculus
-							mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat
-							massa
-							quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim
-							justo,
-							rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis
-							pretium.</p>
-					</div>
 				</div>
 
 			</div>
@@ -366,8 +300,6 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <!-- /#wrapper -->
 <?php include ROOT_PATH . "app/views/footer.php"; ?>
 
-
-
 <?php include ROOT_PATH . "app/views/assets/footer_common.php"; ?>
 
 <script src="<?php echo BASE_URL; ?>app/assets/js/plugins/select2/select2.js"></script>
@@ -397,7 +329,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 		});
 
 		setTimeout(function () {
-			$("#bttn-styledModal").trigger("click");
+			$("#btnAddUserModal").trigger("click");
 			//window.location.href = $href;
 		}, 10);
 

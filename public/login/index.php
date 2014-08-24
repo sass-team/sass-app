@@ -2,7 +2,7 @@
 ob_start();
 require '../app/init.php';
 
-// if there is an active log in process redirect to students.php; load page only if no
+// if there is an active log in process redirect to students.class.php; load page only if no
 // logged in user exists
 $general->loggedInProtect();
 $page_title = "Log In";
@@ -31,14 +31,14 @@ if (isLoginBtnPressed()) {
 		$password = trim($_POST['login_password']);
 
 		// check if credentials are correct. If they are not, an exception occurs.
-		$id = $db->login($email, $password);
+		$id = User::login($db, $email, $password);
 		// destroying the old session id
 		//and creating a new one. protect from session fixation attack.
 		session_regenerate_id(true);
 		// The user's id is now set into the user's session  in the form of $_SESSION['id']
 		$_SESSION['id'] = $id;
 
-		// if there is an active log in process redirect to students.php; load page only if no logged in user exists
+		// if there is an active log in process redirect to students.class.php; load page only if no logged in user exists
 		$general->loggedInProtect();
 	} catch (Exception $e) {
 		$errors[] = $e->getMessage();

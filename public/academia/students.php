@@ -3,10 +3,19 @@ require '../app/init.php';
 $general->loggedOutProtect();
 
 $page_title = "View Users";
-$section = "students-instructors";
+$section = "academia";
 
 try {
-	$allUsers = $user->getUsers();
+	$students = Student::retrieve($db);
+	$majors = Course::retrieveMajors($db);
+	$courses = Course::retrieveAll($db);
+
+	if (isBtnAddStudentPrsd()) {
+
+//		$course = isset($_POST['course']) ? $_POST['course'] : "";
+//		Student:add($_POST['$_POST'], $_POST['$_POST'], $_POST['$_POST'], $_POST['$_POST'])
+	}
+
 } catch (Exception $e) {
 	$errors[] = $e->getMessage();
 }
@@ -16,8 +25,8 @@ function isEditBttnPressed() {
 	return isset($_GET['id']) && preg_match('/^[0-9]+$/', $_GET['id']);
 }
 
-function isModifyBttnPressed() {
-	return isset($_POST['hidden_submit_pressed']) && empty($_POST['hidden_submit_pressed']);
+function isBtnAddStudentPrsd() {
+	return isset($_POST['hiddenSubmitPressed']) && empty($_POST['hiddenSubmitPressed']);
 }
 
 ?>
@@ -34,108 +43,281 @@ function isModifyBttnPressed() {
 <?php require ROOT_PATH . 'app/views/head.php'; ?>
 <body>
 <div id="wrapper">
-	<?php
-	require ROOT_PATH . 'app/views/header.php';
-	require ROOT_PATH . 'app/views/sidebar.php';
-	?>
+<?php
+require ROOT_PATH . 'app/views/header.php';
+require ROOT_PATH . 'app/views/sidebar.php';
+?>
 
 
-	<div id="content">
+<div id="content">
 
-		<div id="content-header">
-			<h1>All Users</h1>
-		</div>
-		<!-- #content-header -->
+	<div id="content-header">
+		<h1>All Students</h1>
+	</div>
+	<!-- #content-header -->
 
 
-		<div id="content-container">
-			<?php
-			if (empty($errors) === false) {
+	<div id="content-container">
+		<?php
+		if (empty($errors) === false) {
+			?>
+			<div class="alert alert-danger">
+				<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+				<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
 				?>
-				<div class="alert alert-danger">
-					<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-					<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
-				</div>
-			<?php
-			} ?>
-			<div class="row">
+			</div>
+		<?php
+		} else if (isBtnAddStudentPrsd()) {
+			?>
+			<div class="alert alert-success">
+				<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+				<strong>Student successfully created!</strong> <br/>
+			</div>
+		<?php } ?>
+		<div class="row">
+			<div class="col-md-12">
+				<a data-toggle="modal" id="bttn-styledModal" href="#addStudentModal"
+				   class="btn btn-primary navbar-right">
+					Add Student</a>
+			</div>
+			<div class="col-md-12">
 
-				<div class="col-md-12">
+				<div class="portlet-content">
 
-					<div class="portlet">
+					<div class="table-responsive">
+						<table
+							 class="table table-striped table-bordered table-hover table-highlight table-checkable"
+							 data-provide="datatable"
+							 data-display-rows="10"
+							 data-info="true"
+							 data-search="true"
+							 data-length-change="true"
+							 data-paginate="true"
+							 id="usersTable"
+							 >
+							<thead>
+							<tr>
+								<th data-filterable="true" data-sortable="true" data-direction="desc">Name</th>
+								<th data-direction="asc" data-filterable="true" data-sortable="false">Email</th>
+								<th data-filterable="true" data-sortable="false">Mobile</th>
+								<th data-filterable="true" data-sortable="true">CI</th>
+								<th data-filterable="true" data-sortable="true">Credits</th>
 
-						<div class="portlet-header">
+								<th data-filterable="false" class="hidden-xs hidden-sm">Courses</th>
 
-							<h3>
-								<i class="fa fa-table"></i>
-								Users
-							</h3>
-
-						</div>
-						<!-- /.portlet-header -->
-
-						<div class="portlet-content">
-							<div class="table-responsive">
-								<table
-									 class="table table-striped table-bordered table-hover table-highlight table-checkable"
-									 data-provide="datatable"
-									 data-display-rows="10"
-									 data-info="true"
-									 data-search="true"
-									 data-length-change="true"
-									 data-paginate="true"
-									 id="usersTable"
-									 >
-									<thead>
-									<tr>
-										<th data-filterable="true" data-sortable="true" data-direction="desc">Name</th>
-										<th data-direction="asc" data-filterable="true" data-sortable="false">Email</th>
-										<th data-filterable="true" data-sortable="true">Position</th>
-										<th data-filterable="true" data-sortable="false">Mobile</th>
-										<th data-filterable="false" class="hidden-xs hidden-sm">Profile</th>
-
-										<?php if (!$user->isTutor()): ?>
-											<th data-filterable="false" class="hidden-xs hidden-sm">Schedule</th>
-										<?php endif; ?>
+								<?php if (!$user->isTutor()): ?>
+									<th data-filterable="false" class="hidden-xs hidden-sm">Schedule</th>
+								<?php endif; ?>
 
 
-										<?php if ($user->isAdmin()): ?>
-											<th data-filterable="false" class="hidden-xs hidden-sm">Data</th>
-										<?php endif; ?>
-									</tr>
-									</thead>
-									<tbody>
+								<?php if ($user->isAdmin()): ?>
+									<th data-filterable="false" class="hidden-xs hidden-sm">Data</th>
+								<?php endif; ?>
+							</tr>
+							</thead>
+							<tbody>
 
-									<?php
-									if (empty($errors) === true) {
-										foreach (array_reverse($allUsers) as $currUser) {
-											include(ROOT_PATH . "app/views/partials/user-table-data-view.html.php");
-										}
-									} ?>
-									</tbody>
-								</table>
-							</div>
-							<!-- /.table-responsive -->
-
-						</div>
-						<!-- /.portlet-content -->
-
-
+							<?php
+							if (empty($errors) === true) {
+								foreach (array_reverse($students) as $student) {
+									include(ROOT_PATH . "app/views/partials/student-table-data-view.html.php");
+								}
+							} ?>
+							</tbody>
+						</table>
 					</div>
-					<!-- /.portlet -->
+					<!-- /.table-responsive -->
+
 
 				</div>
-				<!-- /.col -->
+				<!-- /.portlet -->
 
 			</div>
-			<!-- /.row -->
-
+			<!-- /.col -->
 
 		</div>
-		<!-- /#content-container -->
+		<!-- /.row -->
+
 
 	</div>
-	<!-- /#content -->
+	<!-- /#content-container -->
+
+</div>
+<!-- /#content -->
+
+<div id="addStudentModal" class="modal modal-styled fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form method="post" id="add-student-form" action="" class="form">
+
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h3 class="modal-title">Add Student Form</h3>
+				</div>
+				<div class="modal-body">
+					<div class="portlet">
+						<?php
+						if (empty($errors) === false) {
+							?>
+							<div class="alert alert-danger">
+								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+								<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
+								?>
+							</div>
+						<?php
+						} else if (isBtnAddStudentPrsd()) {
+							?>
+							<div class="alert alert-success">
+								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+								<strong>Student successfully created!</strong> <br/>
+							</div>
+						<?php } ?>
+
+						<div class="portlet-content">
+
+							<div class="row">
+
+
+								<div class="col-sm-12">
+
+									<div class="form-group">
+										<h5>
+											<i class="fa fa-edit"></i>
+											<label for="firstName">First Name</label>
+										</h5>
+										<input type="text" id="firstName" name="firstName" class="form-control"
+										       value="<?php if (isset($_POST['firstName'])) echo htmlentities($_POST['firstName']); ?>"
+										       autofocus="on" placeholder="Required" required>
+									</div>
+
+									<div class="form-group">
+										<h5>
+											<i class="fa fa-edit"></i>
+											<label for="lastName">Last Name</label>
+										</h5>
+										<input type="text" id="lastName" name="lastName" class="form-control"
+										       value="<?php if (isset($_POST['lastName'])) echo htmlentities($_POST['lastName']); ?>"
+										       required placeholder="Required">
+									</div>
+
+									<div class="form-group">
+
+										<i class="fa fa-envelope"></i>
+										<label for="email">Email</label>
+										<input type="email" required id="email" name="email" class="form-control"
+										       value="<?php if (isset($_POST['email'])) echo htmlentities($_POST['email']); ?>"
+										       placeholder="Required">
+									</div>
+
+
+									<div class="form-group">
+
+										<h5>
+											<i class="fa fa-tasks"></i>
+											<label for="course">Course</label>
+										</h5>
+
+										<select id="course" name="course"
+										        class="form-control">
+
+											<option
+												 value="null">Required
+											</option>
+											<?php foreach ($courses as $course) {
+												include(ROOT_PATH . "app/views/partials/courses-select-options-view.html.php");
+											}
+											?>
+
+										</select>
+										<span class="input-group-addon">Taught By Instructor</span>
+
+										<select id="course" name="course"
+										        class="form-control">
+
+											<option
+												 value="null">Required
+											</option>
+											<?php foreach ($courses as $course) {
+												include(ROOT_PATH . "app/views/partials/courses-select-options-view.html.php");
+											}
+											?>
+
+										</select>
+
+
+									</div>
+
+
+									<div class="form-group">
+										<h5>
+											<i class="fa fa-tasks"></i>
+											<label for="mobileNum">Mobile Number</label>
+											<input class="form-control" id="mobileNum" name="mobileNum" type="text"
+											       placeholder="123457890">
+										</h5>
+									</div>
+
+
+									<div class="form-group">
+										<h5>
+											<i class="fa fa-tasks"></i>
+											<label for="userMajor">Major</label>
+										</h5>
+										<select id="userMajor" name="userMajor" class="form-control">
+											<option value="null">I don&#39;t know.</option>
+											<?php foreach ($majors as $major) {
+												include(ROOT_PATH . "app/views/partials/majors-select-options-view.html.php");
+											}
+											?>
+										</select>
+									</div>
+
+
+									<div class="form-group">
+										<div class="col-sm-6">
+
+											<div class="form-group">
+												<div class="input-group">
+													<span class="input-group-addon">CI</span>
+													<input class="form-control" id="ciInput" name="ciInput" type="text"
+													       placeholder="3.5">
+												</div>
+											</div>
+										</div>
+										<div class="col-sm-6">
+
+											<div class="form-group">
+												<div class="input-group">
+													<input class="form-control" id="creditsInput" name="creditsInput" type="text"
+													       placeholder="100">
+													<span class="input-group-addon">Credits</span>
+												</div>
+											</div>
+
+										</div>
+									</div>
+
+								</div>
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-tertiary" data-dismiss="modal">Close</button>
+					<input type="hidden" name="hiddenSubmitPressed" value="">
+					<button type="submit" class="btn btn-primary">Create</button>
+				</div>
+			</form>
+
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+
 
 </div>
 <!-- #wrapper -->
@@ -158,79 +340,18 @@ function isModifyBttnPressed() {
 
 <script type="text/javascript">
 	jQuery(function () {
-		$(".edit-user").click(function () {
-			$id = $(this).next('input').val();
 
 
+		$("#userMajor").select2();
+
+		$("#course").select2({
+			placeholder: "Required",
+			allowClear: false
 		});
 
-		$("#create-form").submit(function (event) {
-			var error_last_name = validate($("#last_name"), /^[a-zA-Z]{1,16}$/);
-			var error_first_name = validate($("#first_name"), /^[a-zA-Z]{1,16}$/);
-
-//			if ($('input[name=user_type').val() === "tutor") {
-//				alert("tutor");
-//			}
-			if (!error_last_name || !error_first_name) {
-				//event.preventDefault();
-			}
-		});
-
-		setTimeout(function () {
-			$("#bttn-styledModal").trigger("click");
-//			window.location = document.getElementById('#styledModal').href;
-//			$("#styledModal").click();
-		}, 10);
-
-		$("#user_major").select2();
-
-		// TODO: add error messages
-		// TODO: add option for second major
-		// TODO: check email ^ user major & course teaching are inputt if user is tutor type.
-		// TODO: hide major & courses & user type NOT tutor
-		var validate = function (element, regex) {
-			var str = $(element).val();
-			var $parent = $(element).parent();
-
-			if (regex.test(str)) {
-				$parent.attr('class', 'form-group has-success');
-				return true;
-			} else {
-				$parent.attr('class', 'form-group has-error');
-				return false;
-			}
-		};
-
-		$("#last_name").blur(function () {
-			validate(this, /^[a-zA-Z]{1,16}$/);
-		});
-
-		$("#first_name").blur(function () {
-			validate(this, /^[a-zA-Z]{1,16}$/);
-		});
-
-
-		$('input[name=user_type').on('ifChecked', function (event) {
-			if ($(this).val() === "tutor") {
-				$("#user_major").select2("enable", true);
-				$("#teachingCourse").select2("enable", true);
-			} else {
-				$("#user_major").select2("enable", false);
-				$("#teachingCourse").select2("enable", false);
-			}
-		});
-
-		$('input[name=iCheck]').each(function () {
-			var self = $(this),
-				 label = self.next(),
-				 label_text = label.text();
-
-			label.remove();
-			self.iCheck({
-				checkboxClass: 'icheckbox_line-red',
-				radioClass: 'iradio_line-red',
-				insert: '<div class="icheck_line-icon"></div>' + label_text
-			});
+		$("#instructor").select2({
+			placeholder: "Required",
+			allowClear: false
 		});
 
 	});
