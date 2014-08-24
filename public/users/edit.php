@@ -481,17 +481,17 @@ require ROOT_PATH . 'app/views/sidebar.php';
 					<div class="btn-group">
 						<button type="submit"
 						        class="btn btn-default <?php if ($curUser->isTutor()) echo "active"; ?> btnChangeType"
-						        id="tutor" name="tutor">Tutor
+						        id="tutor" name="tutor" disabled>Tutor
 						</button>
 						<button type="submit"
 						        class="btn btn-default <?php if ($curUser->isSecretary()) echo "active"; ?> btnChangeType"
-						        id="secretary" name="secretary">
+						        id="secretary" name="secretary" disabled>
 							Secretary
 						</button>
 						<button type="submit"
 						        class="btn btn-default <?php if ($curUser->isAdmin()) echo "active"; ?> btnChangeType"
 						        id="admin"
-						        name="admin">
+						        name="admin" disabled>
 							Administrator
 						</button>
 						<input type="hidden" name="hiddenSbmtChangeuserType">
