@@ -341,29 +341,7 @@ abstract class User extends Person
 
 
 
-	public static function validateUserMajor($db, $user_major_ext) {
-		if ($user_major_ext === "null") {
-			return true;
-		}
-		$query = "SELECT COUNT(1)  FROM `" . DB_NAME . "`.major WHERE major.extension=':extension'";
-		$query = $db->getDbConnection()->prepare($query);
-		$query->bindParam(':extension', $user_major_ext);
 
-		try {
-
-			$query->execute();
-			$data = $query->fetch();
-		} catch (Exception $e) {
-			throw new Exception("Could not connect to database.");
-		}
-
-		if ($data === 1) {
-			return true;
-		} else {
-			// TODO: sent email to developer relavant to this error.
-			throw new Exception("Either something went wrong with a database query, or you're trying to hack this app. In either case, the developers were just notified about this.");
-		}
-	}
 
 	public static function retrieveAll($db) {
 		$query = "SELECT user.id, user.f_name, user.l_name, user.img_loc, user.profile_description, user.date, user.mobile, user.email, user_types.type

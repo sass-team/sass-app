@@ -310,7 +310,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 							<?php
 							if (empty($errors) === true) {
 								foreach ($teachingCourses as $course) {
-									include(ROOT_PATH . "app/views/partials/courses-table-data-view.html.php");
+									include(ROOT_PATH . "app/views/partials/course-table-data-view.html.php");
 
 								}
 							} ?>
@@ -635,7 +635,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 											<?php
 											foreach ($notTeachingCourses as $course) {
-												include(ROOT_PATH . "app/views/partials/courses-select-options-view.html.php");
+												include(ROOT_PATH . "app/views/partials/course-select-options-view.html.php");
 											}
 											?>
 
@@ -740,7 +740,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 
 									<?php foreach ($notTeachingCourses as $course) {
-										include(ROOT_PATH . "app/views/partials/courses-select-options-view.html.php");
+										include(ROOT_PATH . "app/views/partials/course-select-options-view.html.php");
 									}
 									?>
 

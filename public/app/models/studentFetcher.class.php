@@ -6,8 +6,9 @@
  * Date: 8/23/14
  * Time: 2:15 PM
  */
-class Student extends Person
+class StudentFetcher extends Person
 {
+	const DB_TABLE = "student";
 	private $ci, $credits;
 
 	public function  __construct($db, $id, $firstName, $lastName, $email, $mobileNum, $ci, $credits) {
@@ -17,15 +18,15 @@ class Student extends Person
 		$this->setCredits($credits);
 	}
 
-	public static function add($db, $firstName, $lastName, $email, $mobileNum, $courses, $ci, $credits){
-
-	}
-
 	/**
 	 * @param mixed $credits
 	 */
 	public function setCredits($credits) {
 		$this->credits = $credits;
+	}
+
+	public static function add($db, $firstName, $lastName, $email, $mobileNum, $courses, $ci, $credits) {
+
 	}
 
 	/**
@@ -46,12 +47,12 @@ class Student extends Person
 		} // end catch
 	}
 
-	public static function create($db, $firstName, $lastName, $email){
-//		self::validateName($first_name);
-//		self::validateName($last_name);
-//		self::validateEmail($db, $email);
-//		self::validateUserType($user_type);
-//		//$this->validate_user_major($user_major_ext);
+	public static function create($db, $firstName, $lastName, $email, $mobileNum, $majorId, $ci, $credits) {
+		self::validateName($firstName);
+		self::validateName($lastName);
+		self::validateEmail($db, $email, self::DB_TABLE);
+
+		self::validateMajor($db, $majorId);
 //		//$this->validate_teaching_course($teaching_courses);
 //
 //		try {
@@ -73,6 +74,31 @@ class Student extends Person
 //		} catch (Exception $e) {
 //			throw new Exception("Could not insert user into database.");
 //		}
+	}
+
+	public static function validateMajor($db, $majorId) {
+		if(!preg_match("/$[0-9]+^/", $majorId)){
+			throw new Exception("Data has been tempered. Aborting process");
+		}
+
+		$query = "SELECT COUNT(1)  FROM `" . DB_NAME . "`.major WHERE major.extension=':extension'";
+		$query = $db->getDbConnection()->prepare($query);
+		$query->bindParam(':extension', $majorId);
+
+		try {
+
+			$query->execute();
+			$data = $query->fetch();
+		} catch (Exception $e) {
+			throw new Exception("Could not connect to database.");
+		}
+
+		if ($data === 1) {
+			return true;
+		} else {
+			// TODO: sent email to developer relavant to this error.
+			throw new Exception("Either something went wrong with a database query, or you're trying to hack this app. In either case, the developers were just notified about this.");
+		}
 	}
 
 	/**

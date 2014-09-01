@@ -247,7 +247,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 										<select id="userMajor" name="userMajor" class="form-control">
 											<option value="null">I don&#39;t know.</option>
 											<?php foreach ($majors as $major) {
-												include(ROOT_PATH . "app/views/partials/majors-select-options-view.html.php");
+												include(ROOT_PATH . "app/views/partials/major-select-options-view.html.php");
 											}
 											?>
 										</select>
@@ -266,7 +266,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 										        multiple>
 
 											<?php foreach ($courses as $course) {
-												include(ROOT_PATH . "app/views/partials/courses-select-options-view.html.php");
+												include(ROOT_PATH . "app/views/partials/course-select-options-view.html.php");
 											}
 											?>
 

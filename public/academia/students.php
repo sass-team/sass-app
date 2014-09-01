@@ -6,14 +6,15 @@ $page_title = "View Users";
 $section = "academia";
 
 try {
-	$students = Student::retrieve($db);
+	$students = StudentFetcher::retrieve($db);
 	$majors = Course::retrieveMajors($db);
 	$courses = Course::retrieveAll($db);
-
+	$instructors = Instructor::retrieve($db);
 	if (isBtnAddStudentPrsd()) {
-
-//		$course = isset($_POST['course']) ? $_POST['course'] : "";
-//		Student:add($_POST['$_POST'], $_POST['$_POST'], $_POST['$_POST'], $_POST['$_POST'])
+		var_dump($_POST);
+		$course = isset($_POST['course']) ? $_POST['course'] : "";
+		StudentFetcher::create($db, $_POST['firstName'], $_POST['lastName'], $_POST['email'], $course, $_POST['mobileNum'],
+			 $_POST['userMajor'], $_POST['ciInput'], $_POST['creditsInput']);
 	}
 
 } catch (Exception $e) {
@@ -224,21 +225,21 @@ require ROOT_PATH . 'app/views/sidebar.php';
 												 value="null">Required
 											</option>
 											<?php foreach ($courses as $course) {
-												include(ROOT_PATH . "app/views/partials/courses-select-options-view.html.php");
+												include(ROOT_PATH . "app/views/partials/course-select-options-view.html.php");
 											}
 											?>
 
 										</select>
-										<span class="input-group-addon">Taught By Instructor</span>
+										<span class="input-group-addon">Taught By Instructor:</span>
 
 										<select id="course" name="course"
 										        class="form-control">
 
 											<option
-												 value="null">Required
+												 value="null">I don&#39;t know.
 											</option>
-											<?php foreach ($courses as $course) {
-												include(ROOT_PATH . "app/views/partials/courses-select-options-view.html.php");
+											<?php foreach ($instructors as $instructor) {
+												include(ROOT_PATH . "app/views/partials/instructor-select-options-view.html.php");
 											}
 											?>
 
@@ -266,7 +267,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 										<select id="userMajor" name="userMajor" class="form-control">
 											<option value="null">I don&#39;t know.</option>
 											<?php foreach ($majors as $major) {
-												include(ROOT_PATH . "app/views/partials/majors-select-options-view.html.php");
+												include(ROOT_PATH . "app/views/partials/major-select-options-view.html.php");
 											}
 											?>
 										</select>

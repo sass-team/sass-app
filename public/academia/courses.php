@@ -115,7 +115,7 @@ $section = "academia";
 									<?php
 									if (empty($errors) === true) {
 										foreach ($courses as $course) {
-											include(ROOT_PATH . "app/views/partials/courses-table-data-view.html.php");
+											include(ROOT_PATH . "app/views/partials/course-table-data-view.html.php");
 
 										}
 									} ?>

@@ -214,7 +214,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 										<select id="courses" name="courses[]"
 										        class="form-control" multiple>
 											<?php foreach ($courses as $course) {
-												include(ROOT_PATH . "app/views/partials/courses-select-options-view.html.php");
+												include(ROOT_PATH . "app/views/partials/course-select-options-view.html.php");
 											}
 											?>
 

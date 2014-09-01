@@ -37,11 +37,14 @@ class Course
 	const DB_ID = "id";
 
 	public static function retrieveAll($db) {
-		$query = "SELECT course.code AS 'code', course.name AS  'name', course.id
-						FROM `" . DB_NAME . "`.course, `" . DB_NAME . "`.major, `" . DB_NAME . "`.major_has_courses
-						WHERE course.id = major_has_courses.course_id
-							AND major.id = major_has_courses.major_id;
-					ORDER BY major.extension";
+		$query =
+			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_CODE . "` AS 'code', `" . self::DB_TABLE . "`.`" .
+			   self::DB_CODE . "` AS  'name', `" . self::DB_TABLE . "`.`" . self::DB_ID . "`
+			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`, `" . DB_NAME . "`.`" . Major::TABLE_NAME . "`,
+				`" . DB_NAME . "`.`" . Major::DB_TABLE_MAJOR_HAS_COURSES . "`
+			WHERE `" . self::DB_TABLE . "`.`" . self::DB_ID . "` = `" . Major::DB_TABLE_MAJOR_HAS_COURSES . "`.course_id
+				AND major.id = major_has_courses.major_id;
+			ORDER BY major.extension";
 
 		try {
 			$query = $db->getConnection()->prepare($query);
