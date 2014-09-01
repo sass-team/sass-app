@@ -45,32 +45,32 @@ $page_title = "Log In";
  * @return bool
  */
 function isContinueBtnPressed() {
-	return isset($_POST['hidden_forgot_continue']) && empty($_POST['hidden_forgot_continue']);
+    return isset($_POST['hidden_forgot_continue']) && empty($_POST['hidden_forgot_continue']);
 }
 
 /**
  * @return bool
  */
 function isVerified() {
-	return isset($_GET['success']) === true && empty ($_GET['success']);
+    return isset($_GET['success']) === true && empty ($_GET['success']);
 }
 
 // $users->email_exists($_POST['email'])) {
 if (isContinueBtnPressed()) {
-	try {
-		$email = $_POST['email'];
+    try {
+        $email = $_POST['email'];
 
-		if (($idLost = $db->fetchInfo('id', 'user', 'email', $email)) !== false) {
-			$db->confirmRecover($email, $idLost);
-			header('Location: ' . BASE_URL . 'login/confirm-password/success');
-			exit();
-		} else {
-			$errors[] = 'Sorry, that email doesn\'t exist.';
-		} // end else if
+        if (($idLost = User::fetchInfo($db, User::DB_COLUMN_ID, User::DB_TABLE, User::DB_COLUMN_EMAIL, $email)) !== false) {
+            $db->confirmRecover($email, $idLost);
+            header('Location: ' . BASE_URL . 'login/confirm-password/success');
+            exit();
+        } else {
+            $errors[] = 'Sorry, that email doesn\'t exist.';
+        } // end else if
 
-	} catch (Exception $e) {
-		$errors[] = $e->getMessage();
-	}
+    } catch (Exception $e) {
+        $errors[] = $e->getMessage();
+    }
 } // end outer if
 ?>
 
@@ -86,93 +86,93 @@ if (isContinueBtnPressed()) {
 <html class="no-js"> <!--<![endif]-->
 <head>
 
-	<title>Login - Canvas Admin</title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-	<meta name="description" content="">
-	<meta name="author" content=""/>
-	<link rel="shortcut icon" href="<?php echo BASE_URL; ?>app/assets/img/logos/logo-login.png">
+    <title>Login - Canvas Admin</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="">
+    <meta name="author" content=""/>
+    <link rel="shortcut icon" href="<?php echo BASE_URL; ?>app/assets/img/logos/logo-login.png">
 
-	<link rel="stylesheet"
-	      href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,800italic,400,600,800"
-	      type="text/css">
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/css/font-awesome.min.css" type="text/css"/>
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/css/bootstrap.min.css" type="text/css"/>
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/js/libs/css/ui-lightness/jquery-ui-1.9.2.custom.css"
-	      type="text/css"/>
+    <link rel="stylesheet"
+          href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,800italic,400,600,800"
+          type="text/css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/css/font-awesome.min.css" type="text/css"/>
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/css/bootstrap.min.css" type="text/css"/>
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/js/libs/css/ui-lightness/jquery-ui-1.9.2.custom.css"
+          type="text/css"/>
 
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/css/App.css" type="text/css"/>
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/css/Login.css" type="text/css"/>
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/css/App.css" type="text/css"/>
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/css/Login.css" type="text/css"/>
 
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/css/custom.css" type="text/css"/>
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>app/assets/css/custom.css" type="text/css"/>
 
 </head>
 
 <body>
 <div id="login-container">
 
-	<div id="logo">
-		<a href="<?php echo BASE_URL; ?>login">
-			<img src="<?php echo BASE_URL; ?>app/assets/img/logos/logo-login.png" alt="Logo"/>
-		</a>
-	</div>
+    <div id="logo">
+        <a href="<?php echo BASE_URL; ?>login">
+            <img src="<?php echo BASE_URL; ?>app/assets/img/logos/logo-login.png" alt="Logo"/>
+        </a>
+    </div>
 
-	<?php if (isVerified()) { ?>
+    <?php if (isVerified()) { ?>
 
-		<!-- /#forgot -->
-		<div id="login">
-			<h4>Thank you.</h4>
-			<hr/>
+        <!-- /#forgot -->
+        <div id="login">
+            <h4>Thank you.</h4>
+            <hr/>
 
-			<h5>Please check your email to confirm your request for a new password.</h5>
+            <h5>Please check your email to confirm your request for a new password.</h5>
 
-			<hr/>
-			<?php
-			if (empty($errors) === false) {
-				?>
-				<div class="alert alert-danger">
-					<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-					<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
-				</div>
-			<?php
-			}
-			?>
-		</div>
-		<!-- /#forgot -->
+            <hr/>
+            <?php
+            if (empty($errors) === false) {
+                ?>
+                <div class="alert alert-danger">
+                    <a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+                    <strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
+                </div>
+            <?php
+            }
+            ?>
+        </div>
+        <!-- /#forgot -->
 
-	<?php } else { ?>
-		<!-- /#forgot -->
-		<div id="login">
-			<h4>Password Recovery</h4>
-			<h5>Submit your email address and we'll send you a link to reset it.</h5>
+    <?php } else { ?>
+        <!-- /#forgot -->
+        <div id="login">
+            <h4>Password Recovery</h4>
+            <h5>Submit your email address and we'll send you a link to reset it.</h5>
 
-			<form method="post" id="login-form" action="confirm-password.php" class="form">
-				<div class="form-group">
-					<label for="login-email">Email</label>
-					<input required type="email" class="form-control" id="login-email" name="email" placeholder="Email">
-				</div>
+            <form method="post" id="login-form" action="confirm-password" class="form">
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input required type="email" class="form-control" id="login-email" name="email" placeholder="Email">
+                </div>
 
-				<div class="form-group">
-					<input type="hidden" name="hidden_forgot_continue">
-					<button type="submit" id="login-btn" class="btn btn-primary btn-block">Continue <i
-							 class="glyphicon glyphicon-envelope"></i></button>
-				</div>
-			</form>
+                <div class="form-group">
+                    <input type="hidden" name="hidden_forgot_continue">
+                    <button type="submit" id="login-btn" class="btn btn-primary btn-block">Continue <i
+                            class="glyphicon glyphicon-envelope"></i></button>
+                </div>
+            </form>
 
-			<?php
-			if (empty($errors) === false) {
-				?>
-				<div class="alert alert-danger">
-					<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-					<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
-				</div>
-			<?php
-			}
-			?>
-		</div>
-		<!-- /#forgot -->
+            <?php
+            if (empty($errors) === false) {
+                ?>
+                <div class="alert alert-danger">
+                    <a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+                    <strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
+                </div>
+            <?php
+            }
+            ?>
+        </div>
+        <!-- /#forgot -->
 
-	<?php } ?>
+    <?php } ?>
 </div>
 <!-- /#forgot-container -->
 
