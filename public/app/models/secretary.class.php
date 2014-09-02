@@ -16,4 +16,6 @@ class Secretary extends User
 	public function isSecretary() {
 		return true;
 	}
+
+
 } 

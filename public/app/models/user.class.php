@@ -18,13 +18,13 @@ abstract class User extends Person
     // representation of database info
     const DB_TABLE = "user";
     const DB_MOBILE_NUM = "mobile";
-    const DB_FIRST_NAME = "f_name";
-    const DB_LAST_NAME = "l_name";
-    const DB_PROFILE_DESCRIPTION = "profile_description";
+    const DB_COLUMN_FIRST_NAME = "f_name";
+    const DB_COLUMN_LAST_NAME = "l_name";
+    const DB_COLUMN_PROFILE_DESCRIPTION = "profile_description";
     const DB_COLUMN_ID = "id";
     const DB_COLUMN_EMAIL = "email";
     const DB_COLUMN_GEN_STRING = "gen_string";
-
+    const DB_COLUMN_USER_TYPES_ID = "user_types_id";
 
     private $avatarImgLoc;
     private $profileDescription;
@@ -214,7 +214,7 @@ abstract class User extends Person
         }
 
         $query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
-					SET `" . self::DB_PROFILE_DESCRIPTION . "`= :newProfileDescription WHERE `id`= :id";
+					SET `" . self::DB_COLUMN_PROFILE_DESCRIPTION . "`= :newProfileDescription WHERE `id`= :id";
         try {
             $query = $db->getConnection()->prepare($query);
 

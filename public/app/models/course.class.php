@@ -31,56 +31,52 @@
 class Course
 {
 
-	const DB_TABLE = "course";
-	const DB_CODE = "code";
-	const DB_NAME = "name";
-	const DB_ID = "id";
+    const DB_TABLE = "course";
+    const DB_CODE = "code";
+    const DB_NAME = "name";
+    const DB_ID = "id";
 
-	public static function retrieveAll($db) {
-		$query =
-			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_CODE . "` AS 'code', `" . self::DB_TABLE . "`.`" .
-			   self::DB_CODE . "` AS  'name', `" . self::DB_TABLE . "`.`" . self::DB_ID . "`
-			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`, `" . DB_NAME . "`.`" . Major::TABLE_NAME . "`,
-				`" . DB_NAME . "`.`" . Major::DB_TABLE_MAJOR_HAS_COURSES . "`
-			WHERE `" . self::DB_TABLE . "`.`" . self::DB_ID . "` = `" . Major::DB_TABLE_MAJOR_HAS_COURSES . "`.course_id
-				AND major.id = major_has_courses.major_id;
-			ORDER BY major.extension";
+    public static function retrieveAll($db) {
+        $query =
+            "SELECT `" . self::DB_TABLE . "`.`" . self::DB_CODE . "` AS 'code', `" . self::DB_TABLE . "`.`" .
+            self::DB_NAME . "` AS  'name', `" . self::DB_TABLE . "`.`" . self::DB_ID . "`
+			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`";
 
-		try {
-			$query = $db->getConnection()->prepare($query);
-			$query->execute();
+        try {
+            $query = $db->getConnection()->prepare($query);
+            $query->execute();
 
-			return $query->fetchAll(PDO::FETCH_ASSOC);
-		} catch (PDOException $e) {
-			throw new Exception("Could not retrieve courses data from database.");
-		}
-	}
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new Exception("Could not retrieve courses data from database.");
+        }
+    }
 
-	public static function retrieveMajors($db) {
+    public static function retrieveMajors($db) {
 
-		$query = "SELECT major.extension AS 'Extension', major.name AS 'Name'
+        $query = "SELECT major.extension AS 'Extension', major.name AS 'Name'
 				FROM `" . DB_NAME . "`.major";
-		try {
-			$query = $db->getConnection()->prepare($query);
-			$query->execute();
+        try {
+            $query = $db->getConnection()->prepare($query);
+            $query->execute();
 
-			return $query->fetchAll(PDO::FETCH_ASSOC);
-		} catch (Exception $e) {
-			throw new Exception("Could not retrieve majors data from database.");
-		}
-	}
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            throw new Exception("Could not retrieve majors data from database.");
+        }
+    }
 
-	public function getCourses() {
+    public function getCourses() {
 
-		$query = "SELECT course.code AS 'Code', course.name AS 'Name', course.id
+        $query = "SELECT course.code AS 'Code', course.name AS 'Name', course.id
 				FROM `" . DB_NAME . "`.course";
-		try {
-			$query = $this->db->prepare($query);
-			$query->execute();
+        try {
+            $query = $this->db->prepare($query);
+            $query->execute();
 
-			return $query->fetchAll(PDO::FETCH_ASSOC);
-		} catch (Exception $e) {
-			throw new Exception("Could not retrieve courses data from database.");
-		}
-	}
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            throw new Exception("Could not retrieve courses data from database.");
+        }
+    }
 } 

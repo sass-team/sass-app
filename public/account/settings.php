@@ -80,11 +80,11 @@ if (isBtnUpdateProfilePrsd()) {
 
 		// check if new changes are required. if to update process
 		if (strcmp($prevFirstName, $newFirstName) !== 0) {
-			User::updateName($db, $user->getId(), User::DB_FIRST_NAME, $newFirstName);
+			User::updateName($db, $user->getId(), User::DB_COLUMN_FIRST_NAME, $newFirstName);
 			$newUpdate = true;
 		}
 		if (strcmp($prevLastName, $newLastName) !== 0) {
-			User::updateName($db, $user->getId(), User::DB_LAST_NAME, $newLastName);
+			User::updateName($db, $user->getId(), User::DB_COLUMN_LAST_NAME, $newLastName);
 			$newUpdate = true;
 		}
 

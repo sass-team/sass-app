@@ -8,23 +8,23 @@
  */
 class Tutor extends User
 {
-	const DB_TABLE = "tutor";
-	const DB_TUTOR_HAS_COURSE = "tutor_has_course";
-	const DB_TUTOR_USER_ID = "tutor_user_id";
-	const DB_COURSE_ID = "course_id";
+    const DB_TABLE = "tutor";
+    const DB_TUTOR_HAS_COURSE = "tutor_has_course";
+    const DB_TUTOR_USER_ID = "tutor_user_id";
+    const DB_COURSE_ID = "course_id";
 
-	private $major;
-	private $teachingCourses;
+    private $major;
+    private $teachingCourses;
 
-	public function __construct($db, $id, $firstName, $lastName, $email, $mobileNum, $avatarImgLoc, $profileDescription, $dateAccountCreated, $userType, $accountActiveStatus) {
-		parent::__construct($db, $id, $firstName, $lastName, $email, $mobileNum, $avatarImgLoc, $profileDescription, $dateAccountCreated, $userType, $accountActiveStatus);
-	}
+    public function __construct($db, $id, $firstName, $lastName, $email, $mobileNum, $avatarImgLoc, $profileDescription, $dateAccountCreated, $userType, $accountActiveStatus) {
+        parent::__construct($db, $id, $firstName, $lastName, $email, $mobileNum, $avatarImgLoc, $profileDescription, $dateAccountCreated, $userType, $accountActiveStatus);
+    }
 
 
-	public static function retrieveCoursesNotTeaching($db, $id) {
-		$query =
-			 "SELECT `" . Course::DB_TABLE . "`.`" . Course::DB_CODE . "` AS 'code', `" . Course::DB_TABLE . "`.`" .
-			 Course::DB_NAME . "` AS 'name',  `" . Course::DB_TABLE . "`.`" . Course::DB_ID . "`
+    public static function retrieveCoursesNotTeaching($db, $id) {
+        $query =
+            "SELECT `" . Course::DB_TABLE . "`.`" . Course::DB_CODE . "` AS 'code', `" . Course::DB_TABLE . "`.`" .
+            Course::DB_NAME . "` AS 'name',  `" . Course::DB_TABLE . "`.`" . Course::DB_ID . "`
 		FROM  `" . DB_NAME . "`.`" . Course::DB_TABLE . "`
 		WHERE NOT EXISTS (
 			SELECT `" . self::DB_TUTOR_HAS_COURSE . "`.`" . self::DB_COURSE_ID . "`
@@ -34,141 +34,155 @@ class Tutor extends User
 			`" . self::DB_TUTOR_HAS_COURSE . "`.`" . self::DB_TUTOR_USER_ID . "` = :tutorUserId
 		)";
 
-		try {
-			$query = $db->getConnection()->prepare($query);
-			$query->bindParam(':tutorUserId', $id, PDO::PARAM_INT);
-			$query->execute();
-			return $query->fetchAll(PDO::FETCH_ASSOC);
+        try {
+            $query = $db->getConnection()->prepare($query);
+            $query->bindParam(':tutorUserId', $id, PDO::PARAM_INT);
+            $query->execute();
+            return $query->fetchAll(PDO::FETCH_ASSOC);
 
-		} catch (PDOException $e) {
-			throw new Exception("Could not retrieve courses not teaching by this user from database.");
-		}
-	}
+        } catch (PDOException $e) {
+            throw new Exception("Could not retrieve courses not teaching by this user from database.");
+        }
+    }
 
-	public static function retrieveTeachingCourses($db, $id) {
+    public static function retrieveTeachingCourses($db, $id) {
 
 
-		$query = "SELECT `" . Course::DB_TABLE . "`.`" . Course::DB_CODE . "` AS 'code', `" . Course::DB_TABLE . "`.`" .
-			 Course::DB_NAME . "` AS  'name', `" . self::DB_TUTOR_HAS_COURSE . "`.`" . self::DB_COURSE_ID . "`  AS id
+        $query = "SELECT `" . Course::DB_TABLE . "`.`" . Course::DB_CODE . "` AS 'code', `" . Course::DB_TABLE . "`.`" .
+            Course::DB_NAME . "` AS  'name', `" . self::DB_TUTOR_HAS_COURSE . "`.`" . self::DB_COURSE_ID . "`  AS id
 					FROM `" . DB_NAME . "`.`" . Course::DB_TABLE . "`, `" . DB_NAME . "`.`" . self::DB_TUTOR_HAS_COURSE . "`
 					WHERE `" . self::DB_TUTOR_HAS_COURSE . "`.`" . self::DB_COURSE_ID . "` =
 					`" . Course::DB_TABLE . "`.`" . Course::DB_ID . "` AND
 					`" . self::DB_TUTOR_HAS_COURSE . "`.`" . self::DB_TUTOR_USER_ID . "` = :tutorId;";
 
-		try {
-			$query = $db->getConnection()->prepare($query);
-			$query->bindParam(':tutorId', $id, PDO::PARAM_INT);
+        try {
+            $query = $db->getConnection()->prepare($query);
+            $query->bindParam(':tutorId', $id, PDO::PARAM_INT);
 
-			$query->execute();
-			return $query->fetchAll(PDO::FETCH_ASSOC);
+            $query->execute();
+            return $query->fetchAll(PDO::FETCH_ASSOC);
 
-		} catch (PDOException $e) {
-			throw new Exception("Could not retrieve teaching courses data from database." . $e->getMessage());
-		}
-	}
+        } catch (PDOException $e) {
+            throw new Exception("Could not retrieve teaching courses data from database." . $e->getMessage());
+        }
+    }
 
-	public static function updateTeachingCourse($db, $id, $newCourseId, $oldCourseId) {
+    public static function updateTeachingCourse($db, $id, $newCourseId, $oldCourseId) {
 
-		if (!preg_match('/^[0-9]+$/', $newCourseId) || !preg_match('/^[0-9]+$/', $oldCourseId) || strcmp($newCourseId, $oldCourseId) === 0) {
-			throw new Exception("Data has been tempered. Aborting process.");
-		}
+        if (!preg_match('/^[0-9]+$/', $newCourseId) || !preg_match('/^[0-9]+$/', $oldCourseId) || strcmp($newCourseId, $oldCourseId) === 0) {
+            throw new Exception("Data has been tempered. Aborting process.");
+        }
 
-		if (self::teachingCourseExists($db, $newCourseId, $id)) {
-			throw new Exception("Data has been tempered. Aborting process.");
-		}
+        if (self::teachingCourseExists($db, $newCourseId, $id)) {
+            throw new Exception("Data has been tempered. Aborting process.");
+        }
 
-		try {
-			$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TUTOR_HAS_COURSE . "` SET `course_id`= :newCourseId WHERE `tutor_user_id`= :tutorId and`course_id`= :oldCourseId";
-			$query = $db->getConnection()->prepare($query);
-			$query->bindParam(':newCourseId', $newCourseId, PDO::PARAM_INT);
-			$query->bindParam(':tutorId', $id, PDO::PARAM_INT);
-			$query->bindParam(':oldCourseId', $oldCourseId, PDO::PARAM_INT);
-			$query->execute();
-		} catch (Exception $e) {
-			throw new Exception("Could not replace teaching courses data into database.");
-		}
-	}
+        try {
+            $query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TUTOR_HAS_COURSE . "` SET `course_id`= :newCourseId WHERE `tutor_user_id`= :tutorId and`course_id`= :oldCourseId";
+            $query = $db->getConnection()->prepare($query);
+            $query->bindParam(':newCourseId', $newCourseId, PDO::PARAM_INT);
+            $query->bindParam(':tutorId', $id, PDO::PARAM_INT);
+            $query->bindParam(':oldCourseId', $oldCourseId, PDO::PARAM_INT);
+            $query->execute();
+        } catch (Exception $e) {
+            throw new Exception("Could not replace teaching courses data into database.");
+        }
+    }
 
-	/**
-	 * @param $newCourseId
-	 * @param $tutorId
-	 * @return bool
-	 */
-	public static function teachingCourseExists($db, $newCourseId, $tutorId) {
-		$query = "SELECT course_id FROM `" . DB_NAME . "`.`" . self::DB_TUTOR_HAS_COURSE . "` WHERE course_id = :courseId AND tutor_user_id = :tutorId";
-		$query = $db->getConnection()->prepare($query);
-		$query->bindParam(':tutorId', $tutorId, PDO::PARAM_INT);
-		$query->bindParam(':courseId', $newCourseId, PDO::PARAM_INT);
-		$query->execute();
-		if ($query->fetchColumn() === FALSE) {
-			return false;
-		} else {
-			return true;
-		}
-	}
+    /**
+     * @param $newCourseId
+     * @param $tutorId
+     * @return bool
+     */
+    public static function teachingCourseExists($db, $newCourseId, $tutorId) {
+        $query = "SELECT course_id FROM `" . DB_NAME . "`.`" . self::DB_TUTOR_HAS_COURSE . "` WHERE course_id = :courseId AND tutor_user_id = :tutorId";
+        $query = $db->getConnection()->prepare($query);
+        $query->bindParam(':tutorId', $tutorId, PDO::PARAM_INT);
+        $query->bindParam(':courseId', $newCourseId, PDO::PARAM_INT);
+        $query->execute();
+        if ($query->fetchColumn() === FALSE) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
-	/**
-	 * @return mixed
-	 */
-	public function getMajor() {
-		return $this->major;
-	}
+    public static function insert($db, $id) {
+        try {
+            $query = "INSERT INTO `" . DB_NAME . "`.`" . self::DB_TABLE . "` VALUES(:id);";
+            $query = $db->getConnection()->prepare($query);
+            $query->bindParam(':id', $id, PDO::PARAM_INT);
+            $query->execute();
 
-	/**
-	 * @param mixed $teachingCourses
-	 */
-	public function setTeachingCourses($teachingCourses) {
-		$this->teachingCourses = $teachingCourses;
-	}
 
-	public function isTutor() {
-		return true;
-	}
+            return true;
+        } catch (Exception $e) {
+            throw new Exception("Could not insert teaching courses data into database." . $e->getMessage());
+        }
+    }
 
-	public function addTeachingCourses($coursesIds) {
-		$tutorId = $this->getId();
+    /**
+     * @return mixed
+     */
+    public function getMajor() {
+        return $this->major;
+    }
 
-		try {
-			foreach ($coursesIds as $courseId) {
-				$query = "INSERT INTO `" . DB_NAME . "`.`" . self::DB_TUTOR_HAS_COURSE . "` (`tutor_user_id`, `course_id`) VALUES(:id, :courseId);";
-				$query = $this->getDb()->getConnection()->prepare($query);
-				$query->bindParam(':id', $tutorId, PDO::PARAM_INT);
-				$query->bindParam(':courseId', $courseId, PDO::PARAM_INT);
-				$query->execute();
-			}
+    /**
+     * @param mixed $teachingCourses
+     */
+    public function setTeachingCourses($teachingCourses) {
+        $this->teachingCourses = $teachingCourses;
+    }
 
-			return true;
-		} catch (Exception $e) {
-			throw new Exception("Could not insert teaching courses data into database.");
-		}
-	}
+    public function isTutor() {
+        return true;
+    }
 
-	public function delTeachingCourse($courseId) {
-		if (!preg_match('/^[0-9]+$/', $courseId)) {
-			throw new Exception("Data tempering detected.
+    public function addTeachingCourses($coursesIds) {
+        $tutorId = $this->getId();
+
+        try {
+            foreach ($coursesIds as $courseId) {
+                $query = "INSERT INTO `" . DB_NAME . "`.`" . self::DB_TUTOR_HAS_COURSE . "` (`" . self::DB_TUTOR_USER_ID . "`, `" . self::DB_COURSE_ID . "`) VALUES(:id, :courseId);";
+                $query = $this->getDb()->getConnection()->prepare($query);
+                $query->bindParam(':id', $tutorId, PDO::PARAM_INT);
+                $query->bindParam(':courseId', $courseId, PDO::PARAM_INT);
+                $query->execute();
+            }
+
+            return true;
+        } catch (Exception $e) {
+            throw new Exception("Could not insert teaching courses data into database." . $e->getMessage());
+        }
+    }
+
+    public function delTeachingCourse($courseId) {
+        if (!preg_match('/^[0-9]+$/', $courseId)) {
+            throw new Exception("Data tempering detected.
 			<br/>You&#39;re trying to hack this app.<br/>Developers are being notified about this.<br/>Expect us.");
-		}
-		$tutorId = $this->getId();
+        }
+        $tutorId = $this->getId();
 
-		try {
+        try {
 
-			$query = "DELETE FROM `" . DB_NAME . "`.`" . self::DB_TUTOR_HAS_COURSE . "` WHERE `tutor_user_id`=:id and`course_id`=:courseId;";
-			$query = $this->getDb()->getConnection()->prepare($query);
-			$query->bindParam(':id', $tutorId, PDO::PARAM_INT);
-			$query->bindParam(':courseId', $courseId, PDO::PARAM_INT);
-			$query->execute();
-			return true;
-		} catch (Exception $e) {
-			throw new Exception("Could not delete course from database.");
-		}
-	}
+            $query = "DELETE FROM `" . DB_NAME . "`.`" . self::DB_TUTOR_HAS_COURSE . "` WHERE `tutor_user_id`=:id and`course_id`=:courseId;";
+            $query = $this->getDb()->getConnection()->prepare($query);
+            $query->bindParam(':id', $tutorId, PDO::PARAM_INT);
+            $query->bindParam(':courseId', $courseId, PDO::PARAM_INT);
+            $query->execute();
+            return true;
+        } catch (Exception $e) {
+            throw new Exception("Could not delete course from database.");
+        }
+    }
 
-	/**
-	 * @param mixed $tutorMajor
-	 */
-	private
-	function setMajor($majors) {
-		$this->major = array_values($majors)[0];
-	}
+    /**
+     * @param mixed $tutorMajor
+     */
+    private
+    function setMajor($majors) {
+        $this->major = array_values($majors)[0];
+    }
 
 }
