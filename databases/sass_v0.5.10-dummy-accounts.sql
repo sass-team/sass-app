@@ -1,5 +1,4 @@
-CREATE DATABASE  IF NOT EXISTS `sass-ms` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `sass-ms`;
+
 -- MySQL dump 10.13  Distrib 5.6.17, for Win32 (x86)
 --
 -- Host: localhost    Database: sass-ms
