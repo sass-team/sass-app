@@ -15,12 +15,12 @@ require_once ROOT_PATH . "app/models/general.class.php";
 
 require_once ROOT_PATH . "app/models/person.class.php";
 
-require_once ROOT_PATH . "app/models/user.class.php";
+require_once ROOT_PATH . "app/models/User.class.php";
 require_once ROOT_PATH . "app/models/UserFetcher.class.php";
 
 require_once ROOT_PATH . "app/models/admin.class.php";
 require_once ROOT_PATH . "app/models/tutor.class.php";
-require_once ROOT_PATH . "app/models/secretary.class.php";
+require_once ROOT_PATH . "app/models/Secretary.class.php";
 
 require_once ROOT_PATH . "app/models/InstructorFetcher.class.php";
 require_once ROOT_PATH . "app/models/UserTypes.class.php";
