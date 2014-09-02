@@ -186,26 +186,6 @@ abstract class User extends Person
         }
     }
 
-//	static function isProfileDataCorrect($first_name, $last_name, $mobile_num) {
-//		$errors = array();
-//
-//		if (!ctype_alpha($first_name)) {
-//			$errors[] = 'First name may contain only letters.';
-//		}
-//
-//		if (!ctype_alpha($last_name)) {
-//			$errors[] = 'Last name may contain only letters.';
-//		}
-//
-
-//
-//		if (empty($errors)) {
-//			return true;
-//		} else {
-//			return $errors;
-//		}
-//	}
-
     public static function updateProfileDescription($db, $id, $newProfileDescription) {
 
         if (!preg_match("/^[\\w\t\n\r .,\\-]{0,512}$/", $newProfileDescription)) {
@@ -248,6 +228,26 @@ abstract class User extends Person
         }
     }
 
+
+    /**
+     * @param $db
+     * @param $newMobileNum
+     * @throws Exception
+     */
+    public static function validateMobileNumber($db, $newMobileNum) {
+        if (empty($newMobileNum) === TRUE) {
+            return NULL; // no mobilenumber
+        }
+        if (!preg_match('/^[0-9]{10}$/', $newMobileNum)) {
+            throw new Exception('Mobile number should contain only digits of total length 10');
+        }
+
+        if (UserFetcher::existsMobileNum($db, $newMobileNum)) {
+            throw new Exception("Mobile entered number already exists in database."); // the array of errors messages
+        }
+
+        return $newMobileNum;
+    }
 
 
     public static function updatePassword($db, $id, $oldPassword, $newPassword1, $newPassword2) {
@@ -382,7 +382,6 @@ abstract class User extends Person
             throw new Exception("Could not connect to the database: ");
         }
     }
-
 
 
     /**
