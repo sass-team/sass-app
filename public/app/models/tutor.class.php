@@ -23,13 +23,13 @@ class Tutor extends User
 
     public static function retrieveCoursesNotTeaching($db, $id) {
         $query =
-            "SELECT `" . Course::DB_TABLE . "`.`" . Course::DB_CODE . "` AS 'code', `" . Course::DB_TABLE . "`.`" .
-            Course::DB_NAME . "` AS 'name',  `" . Course::DB_TABLE . "`.`" . Course::DB_ID . "`
-		FROM  `" . DB_NAME . "`.`" . Course::DB_TABLE . "`
+            "SELECT `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_CODE . "` AS 'code', `" . CourseFetcher::DB_TABLE . "`.`" .
+            CourseFetcher::DB_COLUMN_NAME . "` AS 'name',  `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_ID . "`
+		FROM  `" . DB_NAME . "`.`" . CourseFetcher::DB_TABLE . "`
 		WHERE NOT EXISTS (
 			SELECT `" . self::DB_TUTOR_HAS_COURSE . "`.`" . self::DB_COURSE_ID . "`
 			FROM  `" . DB_NAME . "`.`" . self::DB_TUTOR_HAS_COURSE . "`
-			WHERE `" . Course::DB_TABLE . "`.`" . Course::DB_ID . "` = `" . self::DB_TUTOR_HAS_COURSE . "`.`" . self::DB_COURSE_ID . "`
+			WHERE `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_ID . "` = `" . self::DB_TUTOR_HAS_COURSE . "`.`" . self::DB_COURSE_ID . "`
 			AND
 			`" . self::DB_TUTOR_HAS_COURSE . "`.`" . self::DB_TUTOR_USER_ID . "` = :tutorUserId
 		)";
@@ -48,11 +48,11 @@ class Tutor extends User
     public static function retrieveTeachingCourses($db, $id) {
 
 
-        $query = "SELECT `" . Course::DB_TABLE . "`.`" . Course::DB_CODE . "` AS 'code', `" . Course::DB_TABLE . "`.`" .
-            Course::DB_NAME . "` AS  'name', `" . self::DB_TUTOR_HAS_COURSE . "`.`" . self::DB_COURSE_ID . "`  AS id
-					FROM `" . DB_NAME . "`.`" . Course::DB_TABLE . "`, `" . DB_NAME . "`.`" . self::DB_TUTOR_HAS_COURSE . "`
+        $query = "SELECT `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_CODE . "` AS 'code', `" . CourseFetcher::DB_TABLE . "`.`" .
+            CourseFetcher::DB_COLUMN_NAME . "` AS  'name', `" . self::DB_TUTOR_HAS_COURSE . "`.`" . self::DB_COURSE_ID . "`  AS id
+					FROM `" . DB_NAME . "`.`" . CourseFetcher::DB_TABLE . "`, `" . DB_NAME . "`.`" . self::DB_TUTOR_HAS_COURSE . "`
 					WHERE `" . self::DB_TUTOR_HAS_COURSE . "`.`" . self::DB_COURSE_ID . "` =
-					`" . Course::DB_TABLE . "`.`" . Course::DB_ID . "` AND
+					`" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_ID . "` AND
 					`" . self::DB_TUTOR_HAS_COURSE . "`.`" . self::DB_TUTOR_USER_ID . "` = :tutorId;";
 
         try {

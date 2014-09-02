@@ -6,7 +6,7 @@
  * Date: 8/24/14
  * Time: 12:38 AM
  */
-class Instructor extends Person
+class InstructorFetcher extends Person
 {
 	const DB_TABLE = "instructor";
 	const DB_ID = "id";

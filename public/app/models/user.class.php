@@ -230,13 +230,7 @@ abstract class User extends Person
     }
 
     public static function updateMobileNumber($db, $id, $newMobileNum) {
-        if (!preg_match('/^[0-9]{10}$/', $newMobileNum)) {
-            throw new Exception('Mobile number should contain only digits of total length 10');
-        }
-
-        if (self::existsMobileNum($db, $newMobileNum)) {
-            throw new Exception("Mobile entered number already exists in database."); // the array of errors messages
-        }
+        self::validateMobileNumber($db, $newMobileNum);
 
         try {
 
@@ -254,22 +248,7 @@ abstract class User extends Person
         }
     }
 
-    public static function existsMobileNum($db, $newMobileNum) {
 
-        try {
-            $sql = "SELECT COUNT(" . self::DB_MOBILE_NUM . ") FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "` WHERE `" . self::DB_MOBILE_NUM . "` = :mobileNum";
-            $query = $db->getConnection()->prepare($sql);
-            $query->bindParam(':mobileNum', $newMobileNum, PDO::PARAM_INT);
-            $query->execute();
-            if ($query->fetchColumn() === '0') {
-                return false;
-            }
-
-            return true;
-        } catch (Exception $e) {
-            throw new Exception("Could not check if new mobile number already exists on database.");
-        }
-    }
 
     public static function updatePassword($db, $id, $oldPassword, $newPassword1, $newPassword2) {
 
@@ -402,7 +381,9 @@ abstract class User extends Person
             // "Sorry could not connect to the database."
             throw new Exception("Could not connect to the database: ");
         }
-    } // end function get_data
+    }
+
+
 
     /**
      * @return mixed

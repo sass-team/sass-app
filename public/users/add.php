@@ -10,8 +10,8 @@ if (!$user->isAdmin()) {
 
 
 try {
-    $courses = Course::retrieveAll($db);
-    $majors = Course::retrieveMajors($db);
+    $courses = CourseFetcher::retrieveAll($db);
+    $majors = CourseFetcher::retrieveMajors($db);
 
 
     //$majors = array_unique(array_column($courses, 'Major'));

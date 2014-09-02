@@ -20,10 +20,15 @@ require_once ROOT_PATH . "app/models/admin.class.php";
 require_once ROOT_PATH . "app/models/tutor.class.php";
 require_once ROOT_PATH . "app/models/secretary.class.php";
 
-require_once ROOT_PATH . "app/models/instructor.class.php";
+require_once ROOT_PATH . "app/models/InstructorFetcher.class.php";
 require_once ROOT_PATH . "app/models/UserTypes.class.php";
-require_once ROOT_PATH . "app/models/major.class.php";
-require_once ROOT_PATH . "app/models/course.class.php";
+require_once ROOT_PATH . "app/models/MajorFetcher.class.php";
+require_once ROOT_PATH . "app/models/Major.class.php";
+
+require_once ROOT_PATH . "app/models/CourseFetcher.class.php";
+require_once ROOT_PATH . "app/models/Course.class.php";
+
+require_once ROOT_PATH . "app/models/StudentFetcher.class.php";
 require_once ROOT_PATH . "app/models/student.class.php";
 
 

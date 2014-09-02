@@ -6,16 +6,16 @@ $page_title = "View Instructors";
 $section = "academia";
 
 try {
-	$instructors = Instructor::retrieve($db);
-	$courses = Course::retrieveAll($db);
+	$instructors = InstructorFetcher::retrieve($db);
+	$courses = CourseFetcher::retrieveAll($db);
 
 	if (isBtnCreateInstructortPrsd()) {
 
 		$course = isset($_POST['courses']) ? $_POST['courses'] : "";
-		Instructor::create($db, $_POST['firstName'], $_POST['lastName'], $_POST['email'], $course);
+		InstructorFetcher::create($db, $_POST['firstName'], $_POST['lastName'], $_POST['email'], $course);
 
 		// retrieve new data
-		$instructors = Instructor::retrieve($db);
+		$instructors = InstructorFetcher::retrieve($db);
 	}
 
 } catch (Exception $e) {

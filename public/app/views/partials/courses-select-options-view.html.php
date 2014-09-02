@@ -5,8 +5,9 @@
 ?>
 
 <option
-	 value="<?php echo $course['id']; ?>">
-	<?php echo $course['code'] . " " . $course['name']; ?></option>
+    value="<?php echo $course[CourseFetcher::DB_COLUMN_ID]; ?>">
+    <?php echo $course['code'] . " " . $course['name']; ?>
+</option>
 
 
 

@@ -28,18 +28,19 @@
  * @author George Skarlatos
  * @since 7/21/14.
  */
-class Course
+class CourseFetcher
 {
 
     const DB_TABLE = "course";
-    const DB_CODE = "code";
-    const DB_NAME = "name";
-    const DB_ID = "id";
+    const DB_COLUMN_CODE = "code";
+    const DB_COLUMN_NAME = "name";
+    const DB_COLUMN_ID = "id";
+    const DB_COLUMN_EMAIL = "email";
 
     public static function retrieveAll($db) {
         $query =
-            "SELECT `" . self::DB_TABLE . "`.`" . self::DB_CODE . "` AS 'code', `" . self::DB_TABLE . "`.`" .
-            self::DB_NAME . "` AS  'name', `" . self::DB_TABLE . "`.`" . self::DB_ID . "`
+            "SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_CODE . "` AS 'code', `" . self::DB_TABLE . "`.`" .
+            self::DB_COLUMN_NAME . "` AS  'name', `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`
 			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`";
 
         try {
@@ -66,6 +67,28 @@ class Course
         }
     }
 
+
+
+    public static function courseExists($db, $courseId) {
+
+        $query = "SELECT COUNT(`" . self::DB_COLUMN_ID . "`) FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "` WHERE
+        `" . self::DB_COLUMN_ID . "`= :courseId";
+
+        $query = $db->getConnection()->prepare($query);
+        $query->bindParam(':courseId', $courseId, PDO::PARAM_STR);
+
+        try {
+            $query->execute();
+            $rows = $query->fetchColumn();
+
+            if ($rows == 1) return true;
+        } catch (PDOException $e) {
+            throw new Exception("Something terrible happened. Could not access database.");
+        } // end catch
+
+        return false;
+    }
+
     public function getCourses() {
 
         $query = "SELECT course.code AS 'Code', course.name AS 'Name', course.id
@@ -79,4 +102,5 @@ class Course
             throw new Exception("Could not retrieve courses data from database.");
         }
     }
+
 } 

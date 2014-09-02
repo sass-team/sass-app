@@ -9,7 +9,7 @@ if (!$user->isAdmin()) {
 }
 
 try {
-    $courses = Course::retrieveAll($db);
+    $courses = CourseFetcher::retrieveAll($db);
 } catch (Exception $e) {
     $errors[] = $e->getMessage();
 }
