@@ -68,7 +68,6 @@ class CourseFetcher
     }
 
 
-
     public static function courseExists($db, $courseId) {
 
         $query = "SELECT COUNT(`" . self::DB_COLUMN_ID . "`) FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "` WHERE
@@ -89,6 +88,57 @@ class CourseFetcher
         return false;
     }
 
+    public static function insert($db, $courseCode, $courseName) {
+        try {
+            $query = "INSERT INTO `" . DB_NAME . "`.`" . CourseFetcher::DB_TABLE . "` (`" . CourseFetcher::DB_COLUMN_CODE .
+                "`, `" . CourseFetcher::DB_COLUMN_NAME . "`)
+				VALUES(
+					:course_code,
+					:course_name
+				)";
+
+            $query = $db->getConnection()->prepare($query);
+            $query->bindParam(':course_code', $courseCode, PDO::PARAM_STR);
+            $query->bindParam(':course_name', $courseName, PDO::PARAM_STR);
+            $query->execute();
+            return true;
+        } catch (Exception $e) {
+            throw new Exception("Could not insert course into database." . $e->getMessage());
+        }
+    }
+
+    public static function codeExists($db, $courseCode) {
+        try {
+            $sql = "SELECT COUNT(" . self::DB_COLUMN_CODE . ") FROM `" . DB_NAME . "`.`" .
+                self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_CODE . "` = :courseCode";
+            $query = $db->getConnection()->prepare($sql);
+            $query->bindParam(':courseCode', $courseCode, PDO::PARAM_STR);
+            $query->execute();
+
+            if ($query->fetchColumn() === '0') return false;
+        } catch (Exception $e) {
+            throw new Exception("Could not check if course code already exists on database. <br/> Aborting process.");
+        }
+
+        return true;
+    }
+
+    public static function nameExists($db, $courseName) {
+        try {
+            $sql = "SELECT COUNT(" . self::DB_COLUMN_NAME . ") FROM `" . DB_NAME . "`.`" .
+                self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_NAME . "` = :courseName";
+            $query = $db->getConnection()->prepare($sql);
+            $query->bindParam(':courseName', $courseName, PDO::PARAM_STR);
+            $query->execute();
+
+            if ($query->fetchColumn() === '0') return false;
+        } catch (Exception $e) {
+            throw new Exception("Could not check if course code already exists on database. <br/> Aborting process.");
+        }
+
+        return true;
+    }
+
     public function getCourses() {
 
         $query = "SELECT course.code AS 'Code', course.name AS 'Name', course.id
@@ -102,5 +152,4 @@ class CourseFetcher
             throw new Exception("Could not retrieve courses data from database.");
         }
     }
-
 } 

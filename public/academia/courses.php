@@ -9,7 +9,7 @@ if (!$user->isAdmin()) {
 }
 
 try {
-    $courses = CourseFetcher::retrieveAll($db);
+
 } catch (Exception $e) {
     $errors[] = $e->getMessage();
 }
@@ -18,20 +18,28 @@ function is_create_bttn_Pressed() {
     return isset($_POST['hidden_submit_pressed']) && empty($_POST['hidden_submit_pressed']);
 }
 
-if (isSaveBttnPressed()) {
-    $course_code = trim($_POST['course_code']);
-    $course_name = trim($_POST['course_name']);
+try {
+    $courses = CourseFetcher::retrieveAll($db);
 
-    try {
-        $user->createCourse($course_code, $course_name);
-    } catch (Exception $e) {
-        $errors[] = $e->getMessage();
+    if (isSaveBttnPressed()) {
+        $course_code = trim($_POST['course_code']);
+        $course_name = trim($_POST['course_name']);
+
+
+        Course::createCourse($db, $course_code, $course_name);
+        header('Location: ' . BASE_URL . 'academia/courses/success');
+        exit();
     }
+} catch (Exception $e) {
+    $errors[] = $e->getMessage();
 }
-
 
 function isSaveBttnPressed() {
     return isset($_POST['hidden_submit_pressed']) && empty($_POST['hidden_submit_pressed']);
+}
+
+function isModificationSuccessful() {
+    return isset($_GET['success']) && strcmp($_GET['success'], 'y1!qp' === 0);
 }
 
 $page_title = "Manage Courses";
@@ -73,7 +81,15 @@ require ROOT_PATH . 'app/views/sidebar.php';
                 <strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
             </div>
         <?php
-        } ?>
+        } else if (isModificationSuccessful()) {
+            ?>
+            <div class="alert alert-success">
+                <a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+                <strong>Course successfully created!</strong> <br/>
+            </div>
+        <?php
+        }
+        ?>
         <div class="row">
 
             <div class="col-md-6">
@@ -113,11 +129,10 @@ require ROOT_PATH . 'app/views/sidebar.php';
                                 <tbody>
 
                                 <?php
-                                if (empty($errors) === true) {
-                                    foreach ($courses as $course) {
-                                        include(ROOT_PATH . "app/views/partials/course-table-data-view.html.php");
+                                foreach ($courses as $course) {
+                                    include(ROOT_PATH . "app/views/partials/course-table-data-view.html.php");
 
-                                    }
+
                                 } ?>
                                 </tbody>
                             </table>
@@ -172,7 +187,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
                                 ?>
                             </div>
                         <?php
-                        } else if (is_create_bttn_Pressed()) {
+                        } else if (isModificationSuccessful()) {
                             ?>
                             <div class="alert alert-success">
                                 <a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
