@@ -153,13 +153,13 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 
 <div id="addCourseModal" class="modal modal-styled fade">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <form method="post" id="create-form" action="" class="form">
 
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h3 class="modal-title">Teaching Courses Form</h3>
+                    <h3 class="modal-title">Create Course</h3>
                 </div>
                 <div class="modal-body">
                     <div class="portlet">
@@ -168,38 +168,51 @@ require ROOT_PATH . 'app/views/sidebar.php';
                             ?>
                             <div class="alert alert-danger">
                                 <a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-                                <strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
+                                <strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
+                                ?>
+                            </div>
+                        <?php
+                        } else if (is_create_bttn_Pressed()) {
+                            ?>
+                            <div class="alert alert-success">
+                                <a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+                                <strong>Course successfully created!</strong> <br/>
                             </div>
                         <?php } ?>
-
                         <div class="portlet-content">
-
                             <div class="row">
-
-
                                 <div class="col-sm-12">
 
                                     <div class="form-group">
-
                                         <h5>
-                                            <i class="fa fa-tasks"></i>
-                                            <label for="teachingCoursesMulti">Courses</label>
+                                            <i class="fa fa-edit"></i>
+                                            <label for="course_code">Course Code</label>
                                         </h5>
+                                        <input type="text" id="course_code" name="course_code" class="form-control"
+                                               value="<?php if (isset($_POST['course_code'])) echo htmlentities($_POST['course_code']); ?>"
+                                               autofocus="on" required>
                                     </div>
 
+                                    <div class="form-group">
+                                        <h5>
+                                            <i class="fa fa-edit"></i>
+                                            <label for="course_name">Course Name</label>
+                                        </h5>
+                                        <input type="text" id="course_name" name="course_name" class="form-control"
+                                               value="<?php if (isset($_POST['course_name'])) echo htmlentities($_POST['course_name']); ?>"
+                                               required>
 
+                                    </div>
                                 </div>
                             </div>
-
                         </div>
-
                     </div>
                 </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-tertiary" data-dismiss="modal">Close</button>
-                    <input type="hidden" name="hiddenSubmitAddTeachingCourse">
-                    <button type="submit" class="btn btn-primary">Add</button>
+                    <input type="hidden" name="hidden_submit_pressed">
+                    <button type="submit" class="btn btn-primary">Create</button>
                 </div>
             </form>
 
@@ -209,6 +222,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
     <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
+
 
 <div id="deleteCourse" class="modal modal-styled fade">
     <div class="modal-dialog">
