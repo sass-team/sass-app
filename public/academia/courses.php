@@ -29,6 +29,10 @@ try {
         Course::createCourse($db, $course_code, $course_name);
         header('Location: ' . BASE_URL . 'academia/courses/success');
         exit();
+    } else if (isBtnDeleteCoursePressed()) {
+        Course::delete($db, $_POST['delCourseIdModal']);
+        header('Location: ' . BASE_URL . 'academia/courses/success');
+        exit();
     }
 } catch (Exception $e) {
     $errors[] = $e->getMessage();
@@ -40,6 +44,10 @@ function isSaveBttnPressed() {
 
 function isModificationSuccessful() {
     return isset($_GET['success']) && strcmp($_GET['success'], 'y1!qp' === 0);
+}
+
+function isBtnDeleteCoursePressed() {
+    return isset($_POST['hiddenSubmitDeleteCourse']) && empty($_POST['hiddenSubmitDeleteCourse']);
 }
 
 $page_title = "Manage Courses";
@@ -74,22 +82,18 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
     <div id="content-container">
         <?php
-        if (empty($errors) === false) {
-            ?>
+        if (empty($errors) === false): ?>
             <div class="alert alert-danger">
                 <a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-                <strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
+                <strong>Oh snap!</strong>
+                <?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
             </div>
-        <?php
-        } else if (isModificationSuccessful()) {
-            ?>
+        <?php elseif (isModificationSuccessful()): ?>
             <div class="alert alert-success">
                 <a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-                <strong>Course successfully created!</strong> <br/>
+                <strong>Data successfully modified</strong> <br/>
             </div>
-        <?php
-        }
-        ?>
+        <?php endif; ?>
         <div class="row">
 
             <div class="col-md-6">
@@ -131,8 +135,6 @@ require ROOT_PATH . 'app/views/sidebar.php';
                                 <?php
                                 foreach ($courses as $course) {
                                     include(ROOT_PATH . "app/views/partials/course-table-data-view.html.php");
-
-
                                 } ?>
                                 </tbody>
                             </table>
@@ -266,7 +268,9 @@ require ROOT_PATH . 'app/views/sidebar.php';
                             <div class="row">
                                 <div class="alert alert-warning">
                                     <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
-                                    <strong>Warning!</strong><br/>Tutor will not be able to teach this course anymore.
+                                    <strong>Warning!</strong><br/>Are you sure you want to delete this course?
+                                    <br/><i>If a tutor is already teaching this course, then you'll have to first remove
+                                        it from his profile.</i>
                                 </div>
                             </div>
 
@@ -369,5 +373,23 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <script src="<?php echo BASE_URL; ?>app/assets/js/plugins/textarea-counter/jquery.textarea-counter.js"></script>
 <script src="<?php echo BASE_URL; ?>app/assets/js/plugins/autosize/jquery.autosize.min.js"></script>
 <script src="<?php echo BASE_URL; ?>app/assets/js/demos/form-extended.js"></script>
+
+<script type="text/javascript">
+    jQuery(function () {
+        // prepare course id for delete on modal
+        $(".btnDeleteCourse").click(function () {
+            $inputVal = $(this).next('input').val();
+            $("#delCourseIdModal").val($inputVal);
+        });
+
+        $(".btnUpdateCourse").click(function () {
+            $courseId = $(this).next().next('input');
+            $("#hiddenUpdateCourseOldId").val($courseId.val());
+        });
+    });
+
+
+</script>
+
 </body>
 </html>

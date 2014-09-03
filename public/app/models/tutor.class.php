@@ -144,7 +144,8 @@ class Tutor extends User
 
         try {
             foreach ($coursesIds as $courseId) {
-                $query = "INSERT INTO `" . DB_NAME . "`.`" . self::DB_TUTOR_HAS_COURSE . "` (`" . self::DB_TUTOR_USER_ID . "`, `" . self::DB_COURSE_ID . "`) VALUES(:id, :courseId);";
+                $query = "INSERT INTO `" . DB_NAME . "`.`" . self::DB_TUTOR_HAS_COURSE . "` (`" . self::DB_TUTOR_USER_ID
+                    . "`, `" . self::DB_COURSE_ID . "`) VALUES(:id, :courseId)";
                 $query = $this->getDb()->getConnection()->prepare($query);
                 $query->bindParam(':id', $tutorId, PDO::PARAM_INT);
                 $query->bindParam(':courseId', $courseId, PDO::PARAM_INT);
@@ -157,16 +158,16 @@ class Tutor extends User
         }
     }
 
-    public function delTeachingCourse($courseId) {
+    public function deleteTeachingCourse($courseId) {
         if (!preg_match('/^[0-9]+$/', $courseId)) {
             throw new Exception("Data tempering detected.
-			<br/>You&#39;re trying to hack this app.<br/>Developers are being notified about this.<br/>Expect us.");
+			<br/>You&#39;re trying to hack this app.<br/>Developers are being notified about this.<br/>Expect Us.");
         }
         $tutorId = $this->getId();
 
         try {
 
-            $query = "DELETE FROM `" . DB_NAME . "`.`" . self::DB_TUTOR_HAS_COURSE . "` WHERE `tutor_user_id`=:id and`course_id`=:courseId;";
+            $query = "DELETE FROM `" . DB_NAME . "`.`" . self::DB_TUTOR_HAS_COURSE . "` WHERE `tutor_user_id`=:id AND`course_id`=:courseId;";
             $query = $this->getDb()->getConnection()->prepare($query);
             $query->bindParam(':id', $tutorId, PDO::PARAM_INT);
             $query->bindParam(':courseId', $courseId, PDO::PARAM_INT);

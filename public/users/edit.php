@@ -75,6 +75,8 @@ try {
 
 
     if (isAddTeachingCoursesPressed()) {
+        var_dump($curUser);
+        var_dump($_POST['teachingCourses']);
 
         if ($curUser->addTeachingCourses($_POST['teachingCourses'])) {
             header('Location: ' . BASE_URL . 'users/edit/:' . $userId . '/success');
@@ -122,7 +124,7 @@ try {
             exit();
         }
     } else if (isBtnDelTeachingCoursesPressed()) {
-        $curUser->delTeachingCourse($_POST['delCourseIdModal']);
+        $curUser->deleteTeachingCourse($_POST['delCourseIdModal']);
         header('Location: ' . BASE_URL . 'users/edit/:' . $userId . '/success');
         exit();
     } else if (isBtnSbmtChangeuserTypePrsd()) {

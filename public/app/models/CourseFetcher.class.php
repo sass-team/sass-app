@@ -139,6 +139,18 @@ class CourseFetcher
         return true;
     }
 
+    public static function delete($db, $id) {
+        try {
+            $query = "DELETE FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :id";
+            $query = $db->getConnection()->prepare($query);
+            $query->bindParam(':id', $id, PDO::PARAM_INT);
+            $query->execute();
+            return true;
+        } catch (Exception $e) {
+            throw new Exception("Could not delete course from database.");
+        }
+    }
+
     public function getCourses() {
 
         $query = "SELECT course.code AS 'Code', course.name AS 'Name', course.id

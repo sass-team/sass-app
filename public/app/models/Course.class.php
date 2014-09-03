@@ -53,4 +53,14 @@ class Course
         return $courseName;
     }
 
+    public static function delete($db, $id) {
+        Person::validateId($id);
+        if (!CourseFetcher::courseExists($db, $id)) {
+            throw new Exception("Could not retrieve course to be deleted from database. <br/>
+                Maybe some other administrator just deleted it?");
+        }
+
+        CourseFetcher::delete($db, $id);
+    }
+
 } 
