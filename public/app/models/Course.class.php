@@ -47,7 +47,7 @@ class Course
         }
 
         if (CourseFetcher::nameExists($db, $courseName)) {
-            throw new Exception("Course code already exists on database. Please insert a different one.");
+            throw new Exception("Course name already exists on database. Please insert a different one.");
         }
 
         return $courseName;
