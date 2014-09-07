@@ -3,15 +3,9 @@ require '../app/init.php';
 $general->loggedOutProtect();
 
 // redirect if user elevation is not that of secretary or tutor
-if (!$user->isAdmin()) {
+if ($user->isTutor()) {
 	header('Location: ' . BASE_URL . "error-403");
 	exit();
-}
-
-try {
-
-} catch (Exception $e) {
-	$errors[] = $e->getMessage();
 }
 
 function is_create_bttn_Pressed() {
@@ -70,7 +64,6 @@ $section = "academia";
 require ROOT_PATH . 'app/views/header.php';
 require ROOT_PATH . 'app/views/sidebar.php';
 ?>
-
 
 <div id="content">
 
@@ -141,7 +134,6 @@ require ROOT_PATH . 'app/views/sidebar.php';
 						</div>
 						<!-- /.table-responsive -->
 
-
 					</div>
 					<!-- /.portlet-content -->
 
@@ -158,18 +150,16 @@ require ROOT_PATH . 'app/views/sidebar.php';
 		</div>
 		<!-- /.row -->
 
-
 	</div>
 	<!-- /#content-container -->
 
 </div>
 <!-- /.col -->
 
-
 <div id="addCourseModal" class="modal modal-styled fade">
 	<div class="modal-dialog modal-sm">
 		<div class="modal-content">
-			<form method="post" id="create-form" action="" class="form">
+			<form method="post" id="create-form" action="<?php echo BASE_URL . 'academia/courses'; ?>" class="form">
 
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -239,11 +229,10 @@ require ROOT_PATH . 'app/views/sidebar.php';
 </div>
 <!-- /.modal -->
 
-
 <div id="deleteCourse" class="modal modal-styled fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form method="post" id="delete-form" action="" class="form">
+			<form method="post" id="delete-form" action="<?php echo BASE_URL . 'academia/courses'; ?>" class="form">
 
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -296,7 +285,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <div id="updateCourse" class="modal modal-styled fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form method="post" id="delete-form" action="" class="form">
+			<form method="post" id="delete-form" action="<?php echo BASE_URL . 'academia/courses'; ?>" class="form">
 
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -353,15 +342,11 @@ require ROOT_PATH . 'app/views/sidebar.php';
 </div>
 <!-- /.modal -->
 
-
 <?php include ROOT_PATH . "app/views/footer.php"; ?>
 </div>
 <!-- #wrapper -->
 
 <?php include ROOT_PATH . "app/views/assets/footer_common.php"; ?>
-
-
-
 
 <script src="<?php echo BASE_URL; ?>app/assets/js/plugins/select2/select2.js"></script>
 <script src="<?php echo BASE_URL; ?>app/assets/js/plugins/icheck/jquery.icheck.js"></script>
@@ -386,7 +371,6 @@ require ROOT_PATH . 'app/views/sidebar.php';
 			$("#hiddenUpdateCourseOldId").val($courseId.val());
 		});
 	});
-
 
 </script>
 
