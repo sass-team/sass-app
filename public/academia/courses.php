@@ -15,24 +15,59 @@ function is_create_bttn_Pressed() {
 try {
 	$courses = CourseFetcher::retrieveAll($db);
 
-	if (isSaveBttnPressed()) {
-		$course_code = trim($_POST['course_code']);
-		$course_name = trim($_POST['course_name']);
+	if (isBtnUpdatePrsd()) {
+		$updateDone = false;
+		$courseId = trim($_POST['updateCourseIdModal']);
+		$newCourseCode = trim($_POST['courseCodeUpdate']);
+		$newCourseName = trim($_POST['courseNameUpdate']);
+
+		Course::validateId($db, $id);
+		Course::validateCode($db, $newCourseCode);
+		Course::validateName($db, $newCourseName);
 
 
-		Course::createCourse($db, $course_code, $course_name);
+		Course::update($db, $courseId, $newCourseCode, $newCourseName);
+		header('Location: ' . BASE_URL . 'academia/courses/success');
+
+	} else if (isBtnSavePrsd()) {
+		$newCourseCode = trim($_POST['course_code']);
+		$newCourseName = trim($_POST['course_name']);
+
+
+		Course::create($db, $newCourseCode, $newCourseName);
 		header('Location: ' . BASE_URL . 'academia/courses/success');
 		exit();
-	} else if (isBtnDeleteCoursePressed()) {
+	} else if (isBtnDeletePrsd()) {
 		Course::delete($db, $_POST['delCourseIdModal']);
 		header('Location: ' . BASE_URL . 'academia/courses/success');
 		exit();
 	}
+
 } catch (Exception $e) {
 	$errors[] = $e->getMessage();
 }
 
-function isSaveBttnPressed() {
+/**
+ * http://stackoverflow.com/a/4128377/2790481
+ *
+ * @param $needle
+ * @param $courses
+ * @param bool $strict
+ * @return bool
+ */
+function in_array_r($needle, $courses, $strict = false) {
+	foreach ($courses as $course) {
+		if (($strict ? $course === $needle : $course == $needle) ||
+			(is_array($course) && in_array_r($needle, $course, $strict))
+		) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+function isBtnSavePrsd() {
 	return isset($_POST['hidden_submit_pressed']) && empty($_POST['hidden_submit_pressed']);
 }
 
@@ -40,8 +75,12 @@ function isModificationSuccessful() {
 	return isset($_GET['success']) && strcmp($_GET['success'], 'y1!qp' === 0);
 }
 
-function isBtnDeleteCoursePressed() {
+function isBtnDeletePrsd() {
 	return isset($_POST['hiddenSubmitDeleteCourse']) && empty($_POST['hiddenSubmitDeleteCourse']);
+}
+
+function isBtnUpdatePrsd() {
+	return isset($_POST['hiddenUpdatePrsd']) && empty($_POST['hiddenUpdatePrsd']);
 }
 
 $page_title = "Manage Courses";
@@ -285,53 +324,68 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <div id="updateCourse" class="modal modal-styled fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form method="post" id="delete-form" action="<?php echo BASE_URL . 'academia/courses'; ?>" class="form">
+			<form method="post" id="create-form" action="<?php echo BASE_URL . 'academia/courses'; ?>" class="form">
 
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h3 class="modal-title">Update Course
-						<!--                        for --><?php //echo $curUser->getFirstName() . " " . $curUser->getLastName(); ?>
-					</h3>
+					<h3 class="modal-title">Create Course</h3>
 				</div>
 				<div class="modal-body">
 					<div class="portlet">
-
+						<?php
+						if (empty($errors) === false) {
+							?>
+							<div class="alert alert-danger">
+								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+								<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
+								?>
+							</div>
+						<?php
+						} else if (isModificationSuccessful()) {
+							?>
+							<div class="alert alert-success">
+								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+								<strong>Course successfully created!</strong> <br/>
+							</div>
+						<?php } ?>
 						<div class="portlet-content">
+							<div class="row">
+								<div class="col-sm-12">
 
-							<div class="col-sm-12">
-
-								<h4 class="heading_a">New Course</h4>
-
-								<hr>
-								<?php
-								if (empty($errors) === false) {
-									?>
-									<div class="alert alert-danger">
-										<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-										<strong>Oh
-											snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
+									<div class="form-group">
+										<h5>
+											<i class="fa fa-edit"></i>
+											<label for="courseCodeUpdate">Course Code</label>
+										</h5>
+										<input type="text" id="courseCodeUpdate" name="courseCodeUpdate" class="form-control"
+										       value="<?php if (isset($_POST['courseCodeUpdate'])) echo
+										       htmlentities($_POST['courseCodeUpdate']); ?>"
+										       autofocus="on" required>
 									</div>
-								<?php } ?>
 
-								<div class="alert alert-info">
-									<a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
-									<strong>Careful!</strong><br/>The previous course will be replaced, and all it's
-									upcoming
-									workshop sessions data will be deleted.
+									<div class="form-group">
+										<h5>
+											<i class="fa fa-edit"></i>
+											<label for="courseNameUpdate">Course Name</label>
+										</h5>
+										<input type="text" id="courseNameUpdate" name="courseNameUpdate" class="form-control"
+										       value="<?php if (isset($_POST['courseNameUpdate'])) echo
+										       htmlentities($_POST['courseNameUpdate']); ?>"
+										       required>
+
+									</div>
 								</div>
 							</div>
-
-
 						</div>
-
 					</div>
 				</div>
 
 				<div class="modal-footer">
-					<button type="button" class="btn btn-tertiary" data-dismiss="modal">Cancel</button>
-					<input type="hidden" name="hiddenSubmitReplaceCourse">
-					<input type="hidden" name="hiddenUpdateCourseOldId" id="hiddenUpdateCourseOldId">
-					<button type="submit" class="btn btn-primary">Replace</button>
+					<button type="button" class="btn btn-tertiary" data-dismiss="modal">Close</button>
+					<input type="hidden" name="hiddenUpdatePrsd">
+					<input type="hidden" id="updateCourseIdModal" name="updateCourseIdModal" value=""/>
+
+					<button type="submit" class="btn btn-primary">Update</button>
 				</div>
 			</form>
 
@@ -367,9 +421,17 @@ require ROOT_PATH . 'app/views/sidebar.php';
 		});
 
 		$(".btnUpdateCourse").click(function () {
-			$courseId = $(this).next().next('input');
-			$("#hiddenUpdateCourseOldId").val($courseId.val());
+			$courseId = $(this).next().next('input').val();
+			$courseName = ($(this).parent().prev().text());
+			$courseCode = ($(this).parent().prev().prev().text());
+
+			$("#updateCourseIdModal").val($courseId);
+			$("#courseCodeUpdate").val($courseCode);
+			$("#courseNameUpdate").val($courseName);
+
 		});
+
+
 	});
 
 </script>
