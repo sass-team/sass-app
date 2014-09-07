@@ -3953,3 +3953,19 @@ Stack trace:
 [16-Aug-2014 13:54:01 Europe/Paris] PHP Stack trace:
 [16-Aug-2014 13:54:01 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:0
 [16-Aug-2014 13:54:01 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:24
+[07-Sep-2014 14:20:25 Europe/Paris] PHP Warning:  require(config/app.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\_\sass-ms\public\app\init.php on line 10
+[07-Sep-2014 14:20:25 Europe/Paris] PHP Stack trace:
+[07-Sep-2014 14:20:25 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:0
+[07-Sep-2014 14:20:25 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:2
+[07-Sep-2014 14:20:25 Europe/Paris] PHP Fatal error:  require(): Failed opening required 'config/app.php' (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\_\sass-ms\public\app\init.php on line 10
+[07-Sep-2014 14:20:25 Europe/Paris] PHP Stack trace:
+[07-Sep-2014 14:20:25 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:0
+[07-Sep-2014 14:20:25 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:2
+[07-Sep-2014 14:20:29 Europe/Paris] PHP Warning:  require(config/app.php): failed to open stream: No such file or directory in C:\Users\Riza\Desktop\_\sass-ms\public\app\init.php on line 10
+[07-Sep-2014 14:20:29 Europe/Paris] PHP Stack trace:
+[07-Sep-2014 14:20:29 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:0
+[07-Sep-2014 14:20:29 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:2
+[07-Sep-2014 14:20:29 Europe/Paris] PHP Fatal error:  require(): Failed opening required 'config/app.php' (include_path='.;C:\php\pear') in C:\Users\Riza\Desktop\_\sass-ms\public\app\init.php on line 10
+[07-Sep-2014 14:20:29 Europe/Paris] PHP Stack trace:
+[07-Sep-2014 14:20:29 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:0
+[07-Sep-2014 14:20:29 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:2
