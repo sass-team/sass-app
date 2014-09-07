@@ -1,67 +1,133 @@
 <?php
 
 require "../app/init.php";
-$general->logged_out_protect();
+$general->loggedOutProtect();
 
 
 $errors = array();
 
-if (isset($_POST['form_action_profile_settings'])) {
+/**
+ * @param $errors
+ * @param $user
+ * @return array
+ */
+function uploadAvatarImage($user) {
+    if ($_FILES['fileupload-avatar']['error'] == 1) {
+        throw new Exception("File size exceeded");
+    } else {
+        $uploaddir = ROOT_PATH . "app/assets/img/avatars/";
+        $uploadfile = $uploaddir . basename($_FILES['fileupload-avatar']['name']);
 
-	try {
-		$update_result = $users->update_profile_data($_POST['first-name'], $_POST['last-name'],
-			$user->getMobileNum(), $_POST['mobile'], $_POST['profile-description'], $user->getEmail());
+        $path = $_FILES['fileupload-avatar']['name'];
+        $allowed = array('gif', 'png', 'jpg');
+        $ext = pathinfo($path, PATHINFO_EXTENSION);
 
-	} catch (Exception $e) {
-		$errors[] = $e->getMessage();
-	}
-	// decide if file upload needed.
-	$change_avatar_img = (file_exists($_FILES["fileupload-avatar"]['tmp_name']) &&
-		is_uploaded_file($_FILES["fileupload-avatar"]['tmp_name'])) ?
-		true : false;
+        if (!in_array($ext, $allowed)) {
+            throw new Exception("Only gif, png and jpg files are allowed");
+        }
 
-	// TODO: use OOP instead of procedural programming for file upload
-	if ($change_avatar_img === true) {
+        if (move_uploaded_file($_FILES['fileupload-avatar']['tmp_name'], $uploadfile)) {
+            $imgWebLoc = $uploaddir . "avatar_img_" . $user . "." . $ext;
+            rename($uploadfile, $imgWebLoc);
 
-		if ($_FILES['fileupload-avatar']['error'] == 1) {
-			$errors[] = "File size exceeded";
-		} else {
-			$uploaddir = ROOT_PATH . "app/assets/img/avatars/";
-			$uploadfile = $uploaddir . basename($_FILES['fileupload-avatar']['name']);
+            $avatarImgLoc = "app/assets/img/avatars/avatar_img_" . $user->getId() . "." . $ext;
+            if (true !== ($updateAvatarImgResponse = $user->updateAvatarImg($avatarImgLoc, $user->getId()))) {
+                throw new Exception("Error storing img loc to database. Please try again later.");
+            }
+        } else {
+            throw new Exception("Error saving image. Please try again later");
+        }
+    }
+}
 
-			$path = $_FILES['fileupload-avatar']['name'];
-			$ext = pathinfo($path, PATHINFO_EXTENSION);
+/**
+ * @return bool
+ */
+function isNewAvatarImageUploadedTemp() {
+    return (file_exists($_FILES["fileupload-avatar"]['tmp_name']) &&
+        is_uploaded_file($_FILES["fileupload-avatar"]['tmp_name'])) ?
+        true : false;
+}
 
-			if (move_uploaded_file($_FILES['fileupload-avatar']['tmp_name'], $uploadfile)) {
-				$img_web_loc = $uploaddir . "avatar_img_" . $user->getId() . "." . $ext;
-				rename($uploadfile, $img_web_loc);
+/**
+ * @return bool
+ */
+function isBtnUpdateProfilePrsd() {
+    return isset($_POST['form_action_profile_settings']) && empty($_POST['form_action_profile_settings']);
+}
 
-				$avatar_img_loc = "app/assets/img/avatars/avatar_img_" . $user->getId() . "." . $ext;
-				if (true !== ($update_avatar_img_response = $users->update_avatar_img($avatar_img_loc, $user->getId()))) {
-					$errors[] = "Error storing img loc to database. Please try again later.";
-				}
-			} else {
-				$errors[] = "Error saving image. Please try again later";
-			}
-		}
-	}
+/**
+ * @return bool
+ */
+function isBtnUpdatePasswordPrsd() {
+    return isset($_POST['form_action_update_password']) && empty($_POST['form_action_update_password']);
+}
 
-	if (empty($errors) === true) {
-		header('Location: ' . BASE_URL . 'account/settings/success');
-		exit();
-	}
-} else if (isset($_POST['form_action_update_password'])) {
+if (isBtnUpdateProfilePrsd()) {
 
-	try {
-		$users->update_password($user->getId(), $_POST['old-password'], $_POST['new-password-1'], $_POST['new-password-2']);
-	} catch (Exception $e) {
-		$errors[] = $e->getMessage();
-	}
+    try {
+        $newUpdate = false;
 
-	if (empty($errors) === true) {
-		header('Location: ' . BASE_URL . 'account/settings/success');
-		exit();
-	}
+        $prevFirstName = $user->getFirstName();
+        $prevLastName = $user->getLastName();
+        $prevProfileDescription = $user->getProfileDescription();
+        $prevMobileNumber = $user->getMobileNum();
+
+        $newFirstName = $_POST['firstName'];
+        $newLastName = $_POST['lastName'];
+        $newProfileDescription = $_POST['profileDescription'];
+        $newMobileNumber = $_POST['newMobileNum'];
+
+        // check if new changes are required. if to update process
+        if (strcmp($prevFirstName, $newFirstName) !== 0) {
+            User::updateName($db, $user->getId(), User::DB_COLUMN_FIRST_NAME, $newFirstName);
+            $newUpdate = true;
+        }
+        if (strcmp($prevLastName, $newLastName) !== 0) {
+            User::updateName($db, $user->getId(), User::DB_COLUMN_LAST_NAME, $newLastName);
+            $newUpdate = true;
+        }
+
+        if (strcmp($prevProfileDescription, $newProfileDescription) !== 0) {
+            User::updateProfileDescription($db, $user->getId(), $newProfileDescription);
+            $newUpdate = true;
+        }
+
+        if ($prevMobileNumber !== $newMobileNumber) {
+            User::updateMobileNumber($db, $user->getId(), $newMobileNumber);
+            $newUpdate = true;
+        }
+
+        // TODO: use OOP instead of procedural programming for file upload
+        if (isNewAvatarImageUploadedTemp()) {
+            uploadAvatarImage($user);
+            $newUpdate = true;
+        }
+
+        $newEmailAdmin = "";
+
+        if (!$newUpdate) {
+            throw new Exception("No new data were added. No changes were made.");
+        }
+
+        header('Location: ' . BASE_URL . 'account/settings/success');
+        exit();
+    } catch (Exception $e) {
+        $errors[] = $e->getMessage();
+    }
+
+} else if (isBtnUpdatePasswordPrsd()) {
+
+    try {
+        User::updatePassword($db, $user->getId(), $_POST['oldPassword'], $_POST['newPassword1'], $_POST['newPassword2']);
+    } catch (Exception $e) {
+        $errors[] = $e->getMessage();
+    }
+
+    if (empty($errors) === true) {
+        header('Location: ' . BASE_URL . 'account/settings/success');
+        exit();
+    }
 }
 
 $page_title = "My Account - Settings";
@@ -82,16 +148,16 @@ $section = "account";
 <?php require ROOT_PATH . 'app/views/head.php'; ?>
 <body>
 <div id="wrapper">
-	<?php
-	require ROOT_PATH . 'app/views/header.php';
-	require ROOT_PATH . 'app/views/sidebar.php';
-	?>
+<?php
+require ROOT_PATH . 'app/views/header.php';
+require ROOT_PATH . 'app/views/sidebar.php';
+?>
 
 
 <div id="content">
 
 <div id="content-header">
-	<h1>Settings</h1>
+    <h1>Settings</h1>
 </div>
 <!-- #content-header -->
 
@@ -102,20 +168,20 @@ $section = "account";
 
 <div class="col-md-3 col-sm-4">
 
-	<ul id="myTab" class="nav nav-pills nav-stacked">
-		<li class="active">
-			<a href="#profile-tab" data-toggle="tab">
-				<i class="fa fa-user"></i>
-				&nbsp;&nbsp;Profile Settings
-			</a>
-		</li>
-		<li>
-			<a href="#password-tab" data-toggle="tab">
-				<i class="fa fa-lock"></i>
-				&nbsp;&nbsp;Change Password
-			</a>
-		</li>
-	</ul>
+    <ul id="myTab" class="nav nav-pills nav-stacked">
+        <li class="active">
+            <a href="#profile-tab" data-toggle="tab">
+                <i class="fa fa-user"></i>
+                &nbsp;&nbsp;Profile Settings
+            </a>
+        </li>
+        <li>
+            <a href="#password-tab" data-toggle="tab">
+                <i class="fa fa-lock"></i>
+                &nbsp;&nbsp;Change Password
+            </a>
+        </li>
+    </ul>
 
 </div>
 <!-- /.col -->
@@ -123,205 +189,208 @@ $section = "account";
 <div class="col-md-9 col-sm-8">
 
 <div class="tab-content stacked-content">
-	<div class="tab-pane fade in active" id="profile-tab">
+<div class="tab-pane fade in active" id="profile-tab">
 
-		<h3 class="">Edit Profile Settings</h3>
+    <h3 class="">Edit Profile Settings</h3>
 
-		<hr/>
+    <hr/>
 
-		<br/>
+    <br/>
 
-		<form action="<?php echo BASE_URL; ?>account/settings" class="form-horizontal" method="post"
-		      enctype="multipart/form-data">
+    <form action="<?php echo BASE_URL; ?>account/settings" class="form-horizontal" method="post"
+          enctype="multipart/form-data">
 
-			<?php
-			if (empty($errors) !== true) {
-				?>
-				<div class="alert alert-danger">
-					<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-					<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
-				</div>
-			<?php } else if (isset($_GET['success'])) { ?>
-				<div class="alert alert-success">
-					<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-					<strong>Well done!</strong> Successfully updated data.
-				</div>
-			<?php } ?>
-			<div class="form-group">
+        <?php
+        if (empty($errors) !== true) {
+            ?>
+            <div class="alert alert-danger">
+                <a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+                <strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
+            </div>
+        <?php } else if (isset($_GET['success'])) { ?>
+            <div class="alert alert-success">
+                <a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+                <strong>Well done!</strong> Successfully updated data.
+            </div>
+        <?php } ?>
+        <div class="form-group">
 
-				<label class="col-md-3">Avatar</label>
+            <label class="col-md-3">Avatar</label>
 
-				<div class="col-md-7">
-					<div class="fileupload fileupload-new" data-provides="fileupload">
-						<div class="fileupload-new thumbnail" style="width: 180px; height: 180px;"><img
-								src="<?php echo BASE_URL . $user->getAvatarImgLoc() ?>" name="fileupload-avatar"
-								alt="Profile Avatar"/></div>
-						<div class="fileupload-preview fileupload-exists thumbnail"
-						     style="max-width: 200px; max-height: 200px; line-height: 20px;"></div>
-						<div>
+            <div class="col-md-7">
+                <div class="fileupload fileupload-new" data-provides="fileupload">
+                    <div class="fileupload-new thumbnail" style="width: 180px; height: 180px;"><img
+                            src="<?php echo BASE_URL . $user->getAvatarImgLoc() ?>" name="fileupload-avatar"
+                            alt="Profile Avatar"/></div>
+                    <div class="fileupload-preview fileupload-exists thumbnail"
+                         style="max-width: 200px; max-height: 200px; line-height: 20px;"></div>
+                    <div>
 												<span class="btn btn-default btn-file"><span
-														class="fileupload-new">Select image</span><span class="fileupload-exists">
-														Change</span><input name="fileupload-avatar" type="file"/></span>
-							<a href="#" class="btn btn-default fileupload-exists" data-dismiss="fileupload">Remove</a>
-						</div>
-					</div>
-				</div>
-				<!-- /.col -->
+                                                        class="fileupload-new">Select image</span><span
+                                                        class="fileupload-exists">
+														Change</span><input name="fileupload-avatar"
+                                                                            type="file"/></span>
+                        <a href="#" class="btn btn-default fileupload-exists" data-dismiss="fileupload">Remove</a>
+                    </div>
+                </div>
+            </div>
+            <!-- /.col -->
 
-			</div>
-			<!-- /.form-group -->
+        </div>
+        <!-- /.form-group -->
 
-			<div class="form-group">
+        <div class="form-group">
 
-				<label class="col-md-3">Email</label>
+            <label class="col-md-3">Email</label>
 
-				<div class="col-md-7">
-					<input type="text" name="user-name" value="<?php echo $user->getEmail(); ?>"
-					       class="form-control" disabled/>
-				</div>
-				<!-- /.col -->
+            <div class="col-md-7">
+                <input type="text" name="user-name" value="<?php echo $user->getEmail(); ?>"
+                       class="form-control" disabled/>
+            </div>
+            <!-- /.col -->
 
-			</div>
-			<!-- /.form-group -->
+        </div>
+        <!-- /.form-group -->
 
-			<div class="form-group">
+        <div class="form-group">
 
-				<label class="col-md-3">First Name</label>
+            <label class="col-md-3" for="firstName">First Name</label>
 
-				<div class="col-md-7">
-					<input type="text" name="first-name" value="<?php echo $user->getFirstName(); ?>"
-					       class="form-control"/>
-				</div>
-				<!-- /.col -->
+            <div class="col-md-7">
+                <input type="text" name="firstName" id="firstName" value="<?php echo $user->getFirstName(); ?>"
+                       class="form-control" required/>
+            </div>
+            <!-- /.col -->
 
-			</div>
-			<!-- /.form-group -->
+        </div>
+        <!-- /.form-group -->
 
-			<div class="form-group">
+        <div class="form-group">
 
-				<label class="col-md-3">Last Name</label>
+            <label class="col-md-3" for="lastName">Last Name</label>
 
-				<div class="col-md-7">
-					<input type="text" name="last-name" value="<?php echo $user->getLastName(); ?>"
-					       class="form-control"/>
-				</div>
-				<!-- /.col -->
+            <div class="col-md-7">
+                <input type="text" name="lastName" id="lastName" value="<?php echo $user->getLastName(); ?>"
+                       class="form-control"/>
+            </div>
+            <!-- /.col -->
 
-			</div>
-			<!-- /.form-group -->
+        </div>
+        <!-- /.form-group -->
 
-			<div class="form-group">
+        <div class="form-group">
 
-				<label class="col-md-3">Mobile</label>
+            <label class="col-md-3" for="newMobileNum">Mobile</label>
 
-				<div class="col-md-7">
-					<input type="text" name="mobile" value="<?php echo $user->getMobileNum(); ?>" class="form-control"/>
-				</div>
-				<!-- /.col -->
+            <div class="col-md-7">
+                <input type="text" name="newMobileNum" id="newMobileNum" value="<?php echo $user->getMobileNum(); ?>"
+                       class="form-control"/>
+            </div>
+            <!-- /.col -->
 
-			</div>
-			<!-- /.form-group -->
+        </div>
+        <!-- /.form-group -->
 
-			<div class="form-group">
+        <div class="form-group">
 
-				<label class="col-md-3">Short Description</label>
+            <label class="col-md-3" for="profileDescription">Short Description</label>
 
-				<div class="col-md-7">
-					<textarea id="about-textarea" name="profile-description" rows="6"
-					          class="form-control"><?php echo $user->getProfileDescription() ?></textarea>
-				</div>
-				<!-- /.col -->
+            <div class="col-md-7">
+                <textarea id="profileDescription" name="profileDescription" rows="6"
+                          class="form-control"><?php echo $user->getProfileDescription() ?></textarea>
+            </div>
+            <!-- /.col -->
 
-			</div>
-			<!-- /.form-group -->
+        </div>
+        <!-- /.form-group -->
 
-			<br/>
+        <br/>
 
-			<div class="form-group">
+        <div class="form-group">
 
-				<input type="hidden" name="form_action_profile_settings">
+            <input type="hidden" name="form_action_profile_settings" value="">
 
-				<div class="col-md-7 col-md-push-3">
-					<button type="submit" class="btn btn-primary">Save Changes</button>
-					&nbsp;
-					<button type="reset" class="btn btn-default">Cancel</button>
-				</div>
-				<!-- /.col -->
+            <div class="col-md-7 col-md-push-3">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+                &nbsp;
+                <button type="reset" class="btn btn-default">Cancel</button>
+            </div>
+            <!-- /.col -->
 
-			</div>
-			<!-- /.form-group -->
+        </div>
+        <!-- /.form-group -->
 
-		</form>
-
-
-	</div>
-	<div class="tab-pane fade" id="password-tab">
-
-		<h3 class="">Change Your Password</h3>
-
-		<p></p>
-
-		<br/>
-
-		<form action="<?php echo BASE_URL; ?>account/settings" class="form-horizontal" method="post">
-
-			<div class="form-group">
-
-				<label class="col-md-3">Old Password</label>
-
-				<div class="col-md-7">
-					<input type="password" name="old-password" class="form-control"/>
-				</div>
-				<!-- /.col -->
-
-			</div>
-			<!-- /.form-group -->
+    </form>
 
 
-			<hr/>
+</div>
+<div class="tab-pane fade" id="password-tab">
+
+    <h3 class="">Change Your Password</h3>
+
+    <p></p>
+
+    <br/>
+
+    <form action="<?php echo BASE_URL; ?>account/settings" class="form-horizontal" method="post">
+
+        <div class="form-group">
+
+            <label class="col-md-3" for="oldPassword">Old Password</label>
+
+            <div class="col-md-7">
+                <input type="password" name="oldPassword" id="oldPassword" class="form-control"/>
+            </div>
+            <!-- /.col -->
+
+        </div>
+        <!-- /.form-group -->
 
 
-			<div class="form-group">
+        <hr/>
 
-				<label class="col-md-3">New Password</label>
 
-				<div class="col-md-7">
-					<input type="password" name="new-password-1" class="form-control"/>
-				</div>
-				<!-- /.col -->
+        <div class="form-group">
 
-			</div>
-			<!-- /.form-group -->
+            <label class="col-md-3" for="newPassword1">New Password</label>
 
-			<div class="form-group">
+            <div class="col-md-7">
+                <input type="password" name="newPassword1" id="newPassword1" class="form-control"/>
+            </div>
+            <!-- /.col -->
 
-				<label class="col-md-3">New Password Confirm</label>
+        </div>
+        <!-- /.form-group -->
 
-				<div class="col-md-7">
-					<input type="password" name="new-password-2" class="form-control"/>
-				</div>
-				<!-- /.col -->
+        <div class="form-group">
 
-			</div>
-			<!-- /.form-group -->
+            <label class="col-md-3" for="newPassword2">New Password Confirm</label>
 
-			<br/>
+            <div class="col-md-7">
+                <input type="password" name="newPassword2" id="newPassword2" class="form-control"/>
+            </div>
+            <!-- /.col -->
 
-			<div class="form-group">
+        </div>
+        <!-- /.form-group -->
 
-				<div class="col-md-7 col-md-push-3">
-					<button type="submit" class="btn btn-primary">Save Changes</button>
-					<input type="hidden" name="form_action_update_password">
-					&nbsp;
-					<button type="reset" class="btn btn-default">Cancel</button>
-				</div>
-				<!-- /.col -->
+        <br/>
 
-			</div>
-			<!-- /.form-group -->
+        <div class="form-group">
 
-		</form>
-	</div>
+            <div class="col-md-7 col-md-push-3">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <input type="hidden" name="form_action_update_password" value="">
+                &nbsp;
+                <button type="reset" class="btn btn-default">Cancel</button>
+            </div>
+            <!-- /.col -->
+
+        </div>
+        <!-- /.form-group -->
+
+    </form>
+</div>
 </div>
 
 </div>
@@ -339,11 +408,12 @@ $section = "account";
 <!-- #content -->
 
 
-</div>
-<!-- #wrapper -->
+
 
 <?php include ROOT_PATH . "app/views/footer.php"; ?>
 </div>
+<!-- #wrapper -->
+
 </body>
 </html>
 

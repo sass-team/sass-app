@@ -1,6 +1,6 @@
 <?php
 require '../app/init.php';
-$general->logged_out_protect();
+$general->loggedOutProtect();
 
 $page_title = "My Account - Profile";
 $section = "account";
@@ -74,12 +74,12 @@ $section = "account";
 
 
 							<ul class="icons-list">
-								<li><i class="icon-li fa fa-envelope"></i> <?php echo $_SESSION['email']; ?></li>
+								<li><i class="icon-li fa fa-envelope"></i> <?php echo $user->getEmail(); ?></li>
 								<li><i class="icon-li fa fa-phone"></i> <?php echo $user->getMobileNum() ?></li>
 							</ul>
-							<?php if ($user->is_tutor()) { ?>
+							<?php if ($user->isTutor()) { ?>
 
-								Major: <strong><?php echo $user->getMajor1() ?></strong>
+								Major: <strong><?php echo $user->getMajor(); ?></strong>
 
 							<?php } ?>
 							<br/>
@@ -109,11 +109,11 @@ $section = "account";
 	</div>
 	<!-- #content -->
 
+	<?php include ROOT_PATH . "app/views/footer.php"; ?>
+
 </div>
 <!-- #wrapper -->
 
-<?php include ROOT_PATH . "app/views/footer.php"; ?>
-</div>
 </body>
 </html>
 

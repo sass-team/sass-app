@@ -32,4 +32,5 @@
 
 ?>
 
-<option value="<?php echo $major['Extension']; ?>"><?php echo $major['Name']; ?></option>
+<option
+    value="<?php echo $major[MajorFetcher::DB_COLUMN_ID]; ?>"><?php echo $major[MajorFetcher::DB_COLUMN_NAME]; ?></option>

@@ -3734,3 +3734,222 @@ Stack trace:
 [07-Aug-2014 10:34:20 Europe/Paris] PHP Stack trace:
 [07-Aug-2014 10:34:20 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:0
 [07-Aug-2014 10:37:30 Europe/Paris] PHP Parse error:  syntax error, unexpected '}', expecting ',' or ';' in C:\Users\Riza\Desktop\_\sass-ms\public\index.php on line 129
+[16-Aug-2014 07:38:38 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 113
+[16-Aug-2014 07:38:38 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 07:38:38 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 07:43:01 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 143
+[16-Aug-2014 07:43:01 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 07:43:01 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 07:46:47 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 143
+[16-Aug-2014 07:46:47 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 07:46:47 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 07:50:32 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 143
+[16-Aug-2014 07:50:32 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 07:50:32 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 07:51:09 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 143
+[16-Aug-2014 07:51:09 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 07:51:09 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 07:51:31 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 143
+[16-Aug-2014 07:51:31 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 07:51:31 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 07:53:03 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 143
+[16-Aug-2014 07:53:03 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 07:53:03 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 07:53:27 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 143
+[16-Aug-2014 07:53:27 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 07:53:27 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 07:54:50 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 143
+[16-Aug-2014 07:54:50 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 07:54:50 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 07:55:05 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 143
+[16-Aug-2014 07:55:05 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 07:55:05 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 07:56:21 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 143
+[16-Aug-2014 07:56:21 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 07:56:21 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 07:56:28 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 143
+[16-Aug-2014 07:56:28 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 07:56:28 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 07:56:55 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 143
+[16-Aug-2014 07:56:55 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 07:56:55 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 07:57:01 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 143
+[16-Aug-2014 07:57:01 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 07:57:01 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 07:57:52 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 143
+[16-Aug-2014 07:57:52 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 07:57:52 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 07:58:01 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 143
+[16-Aug-2014 07:58:01 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 07:58:01 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 07:58:20 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 143
+[16-Aug-2014 07:58:20 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 07:58:20 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 07:58:28 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 143
+[16-Aug-2014 07:58:28 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 07:58:28 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 07:58:57 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 143
+[16-Aug-2014 07:58:57 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 07:58:57 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 07:59:05 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 143
+[16-Aug-2014 07:59:05 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 07:59:05 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 08:00:18 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 143
+[16-Aug-2014 08:00:18 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 08:00:18 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 08:00:30 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 143
+[16-Aug-2014 08:00:30 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 08:00:30 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 08:00:43 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 143
+[16-Aug-2014 08:00:43 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 08:00:43 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 08:00:49 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 143
+[16-Aug-2014 08:00:49 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 08:00:49 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 08:01:06 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 143
+[16-Aug-2014 08:01:06 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 08:01:06 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 08:01:21 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 143
+[16-Aug-2014 08:01:21 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 08:01:21 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 08:01:30 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 143
+[16-Aug-2014 08:01:30 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 08:01:30 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 08:05:41 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 143
+[16-Aug-2014 08:05:41 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 08:05:41 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 08:05:53 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 143
+[16-Aug-2014 08:05:53 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 08:05:53 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 08:09:27 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 143
+[16-Aug-2014 08:09:27 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 08:09:27 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 08:10:17 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 145
+[16-Aug-2014 08:10:17 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 08:10:17 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 08:11:24 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 145
+[16-Aug-2014 08:11:24 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 08:11:24 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 08:11:37 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 145
+[16-Aug-2014 08:11:37 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 08:11:37 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 08:11:38 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 145
+[16-Aug-2014 08:11:38 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 08:11:38 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 08:11:39 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 145
+[16-Aug-2014 08:11:39 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 08:11:39 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 08:11:39 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 145
+[16-Aug-2014 08:11:39 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 08:11:39 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 08:11:39 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 145
+[16-Aug-2014 08:11:39 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 08:11:39 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 08:12:14 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 145
+[16-Aug-2014 08:12:14 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 08:12:14 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 08:13:19 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 145
+[16-Aug-2014 08:13:19 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 08:13:19 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 08:14:38 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 145
+[16-Aug-2014 08:14:38 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 08:14:38 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 08:15:14 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 145
+[16-Aug-2014 08:15:14 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 08:15:14 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 08:16:35 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 145
+[16-Aug-2014 08:16:35 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 08:16:35 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 08:16:42 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 145
+[16-Aug-2014 08:16:42 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 08:16:42 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 08:17:28 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 152
+[16-Aug-2014 08:17:28 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 08:17:28 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 08:23:04 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 150
+[16-Aug-2014 08:23:04 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 08:23:04 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 08:23:32 Europe/Paris] PHP Fatal error:  Call to undefined function is_create_bttn_Pressed() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 149
+[16-Aug-2014 08:23:32 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 08:23:32 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 08:45:50 Europe/Paris] PHP Fatal error:  Cannot use object of type Tutor as array in C:\Users\Riza\Desktop\_\sass-ms\public\app\views\partials\user-table-data-view.html.php on line 47
+[16-Aug-2014 08:45:50 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 08:45:50 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 08:45:50 Europe/Paris] PHP   2. include() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:127
+[16-Aug-2014 11:27:02 Europe/Paris] PHP Notice:  Undefined variable: majors in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 268
+[16-Aug-2014 11:27:02 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 11:27:02 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 11:27:02 Europe/Paris] PHP Warning:  Invalid argument supplied for foreach() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 268
+[16-Aug-2014 11:27:02 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 11:27:02 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 11:27:02 Europe/Paris] PHP Notice:  Undefined variable: majors in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 287
+[16-Aug-2014 11:27:02 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 11:27:02 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 11:27:02 Europe/Paris] PHP Warning:  Invalid argument supplied for foreach() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 287
+[16-Aug-2014 11:27:02 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 11:27:02 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 11:27:56 Europe/Paris] PHP Notice:  Undefined variable: majors in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 268
+[16-Aug-2014 11:27:56 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 11:27:56 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 11:27:56 Europe/Paris] PHP Warning:  Invalid argument supplied for foreach() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 268
+[16-Aug-2014 11:27:56 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 11:27:56 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 11:27:56 Europe/Paris] PHP Notice:  Undefined variable: majors in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 287
+[16-Aug-2014 11:27:56 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 11:27:56 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 11:27:56 Europe/Paris] PHP Warning:  Invalid argument supplied for foreach() in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 287
+[16-Aug-2014 11:27:56 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 11:27:56 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php:0
+[16-Aug-2014 13:34:55 Europe/Paris] PHP Parse error:  syntax error, unexpected end of file in C:\Users\Riza\Desktop\_\sass-ms\public\users\edit.php on line 440
+[16-Aug-2014 13:47:24 Europe/Paris] PHP Notice:  Undefined index: id in C:\Users\Riza\Desktop\_\sass-ms\public\app\init.php on line 33
+[16-Aug-2014 13:47:24 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 13:47:24 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\login\index.php:0
+[16-Aug-2014 13:47:24 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\_\sass-ms\public\login\index.php:5
+[16-Aug-2014 13:47:55 Europe/Paris] PHP Notice:  Undefined index: id in C:\Users\Riza\Desktop\_\sass-ms\public\app\init.php on line 33
+[16-Aug-2014 13:47:55 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 13:47:55 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:0
+[16-Aug-2014 13:47:55 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:2
+[16-Aug-2014 13:49:15 Europe/Paris] PHP Notice:  Undefined index: id in C:\Users\Riza\Desktop\_\sass-ms\public\app\init.php on line 32
+[16-Aug-2014 13:49:15 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 13:49:15 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:0
+[16-Aug-2014 13:49:15 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:2
+[16-Aug-2014 13:49:18 Europe/Paris] PHP Notice:  Undefined index: id in C:\Users\Riza\Desktop\_\sass-ms\public\app\init.php on line 32
+[16-Aug-2014 13:49:18 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 13:49:18 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:0
+[16-Aug-2014 13:49:18 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:2
+[16-Aug-2014 13:49:18 Europe/Paris] PHP Notice:  Undefined index: id in C:\Users\Riza\Desktop\_\sass-ms\public\app\init.php on line 32
+[16-Aug-2014 13:49:18 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 13:49:18 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:0
+[16-Aug-2014 13:49:18 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:2
+[16-Aug-2014 13:49:18 Europe/Paris] PHP Notice:  Undefined index: id in C:\Users\Riza\Desktop\_\sass-ms\public\app\init.php on line 32
+[16-Aug-2014 13:49:18 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 13:49:18 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:0
+[16-Aug-2014 13:49:18 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:2
+[16-Aug-2014 13:49:18 Europe/Paris] PHP Notice:  Undefined index: id in C:\Users\Riza\Desktop\_\sass-ms\public\app\init.php on line 32
+[16-Aug-2014 13:49:18 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 13:49:18 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:0
+[16-Aug-2014 13:49:18 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:2
+[16-Aug-2014 13:49:18 Europe/Paris] PHP Notice:  Undefined index: id in C:\Users\Riza\Desktop\_\sass-ms\public\app\init.php on line 32
+[16-Aug-2014 13:49:18 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 13:49:18 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:0
+[16-Aug-2014 13:49:18 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:2
+[16-Aug-2014 13:49:18 Europe/Paris] PHP Notice:  Undefined index: id in C:\Users\Riza\Desktop\_\sass-ms\public\app\init.php on line 32
+[16-Aug-2014 13:49:18 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 13:49:18 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:0
+[16-Aug-2014 13:49:18 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:2
+[16-Aug-2014 13:49:19 Europe/Paris] PHP Notice:  Undefined index: id in C:\Users\Riza\Desktop\_\sass-ms\public\app\init.php on line 32
+[16-Aug-2014 13:49:19 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 13:49:19 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:0
+[16-Aug-2014 13:49:19 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:2
+[16-Aug-2014 13:51:46 Europe/Paris] PHP Notice:  Undefined index: id in C:\Users\Riza\Desktop\_\sass-ms\public\app\init.php on line 34
+[16-Aug-2014 13:51:46 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 13:51:46 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:0
+[16-Aug-2014 13:51:46 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:2
+[16-Aug-2014 13:54:01 Europe/Paris] PHP Notice:  Undefined variable: user in C:\Users\Riza\Desktop\_\sass-ms\public\app\views\header.php on line 60
+[16-Aug-2014 13:54:01 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 13:54:01 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:0
+[16-Aug-2014 13:54:01 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:24
+[16-Aug-2014 13:54:01 Europe/Paris] PHP Fatal error:  Call to a member function getFirstName() on a non-object in C:\Users\Riza\Desktop\_\sass-ms\public\app\views\header.php on line 60
+[16-Aug-2014 13:54:01 Europe/Paris] PHP Stack trace:
+[16-Aug-2014 13:54:01 Europe/Paris] PHP   1. {main}() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:0
+[16-Aug-2014 13:54:01 Europe/Paris] PHP   2. require() C:\Users\Riza\Desktop\_\sass-ms\public\index.php:24

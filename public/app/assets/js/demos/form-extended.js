@@ -45,7 +45,7 @@ $(function () {
 		placeholder: "Select..."
 	})
 
-	$('#teaching_courses_multi').select2 ({
+	$('#teachingCourse').select2 ({
 		placeholder: "Select..."
 	})
 

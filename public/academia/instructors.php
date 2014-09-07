@@ -1,0 +1,284 @@
+<?php
+require '../app/init.php';
+$general->loggedOutProtect();
+
+$page_title = "View Instructors";
+$section = "academia";
+
+try {
+	$instructors = InstructorFetcher::retrieve($db);
+	$courses = CourseFetcher::retrieveAll($db);
+
+	if (isBtnCreateInstructortPrsd()) {
+
+		$course = isset($_POST['courses']) ? $_POST['courses'] : "";
+		InstructorFetcher::create($db, $_POST['firstName'], $_POST['lastName'], $_POST['email'], $course);
+
+		// retrieve new data
+		$instructors = InstructorFetcher::retrieve($db);
+	}
+
+} catch (Exception $e) {
+	$errors[] = $e->getMessage();
+}
+
+
+function isEditBttnPressed() {
+	return isset($_GET['id']) && preg_match('/^[0-9]+$/', $_GET['id']);
+}
+
+function isBtnCreateInstructortPrsd() {
+	return isset($_POST['hiddenSubmitPressed']) && empty($_POST['hiddenSubmitPressed']);
+}
+
+?>
+
+<!DOCTYPE html>
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js"> <!--<![endif]-->
+<?php require ROOT_PATH . 'app/views/head.php'; ?>
+<body>
+<div id="wrapper">
+<?php
+require ROOT_PATH . 'app/views/header.php';
+require ROOT_PATH . 'app/views/sidebar.php';
+?>
+
+
+<div id="content">
+
+	<div id="content-header">
+		<h1>All Instructors</h1>
+	</div>
+	<!-- #content-header -->
+
+
+	<div id="content-container">
+		<?php
+		if (empty($errors) === false) {
+			?>
+			<div class="alert alert-danger">
+				<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+				<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
+				?>
+			</div>
+		<?php
+		} else if (isBtnCreateInstructortPrsd()) {
+			?>
+			<div class="alert alert-success">
+				<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+				<strong>Instructor successfully created!</strong> <br/>
+			</div>
+		<?php } ?>
+		<div class="row">
+			<div class="col-md-12">
+				<a data-toggle="modal" id="bttn-styledModal" href="#addInstructorModal"
+				   class="btn btn-primary navbar-right">
+					Create Instructor</a>
+			</div>
+			<div class="col-md-12">
+
+				<div class="portlet-content">
+
+					<div class="table-responsive">
+						<table
+							 class="table table-striped table-bordered table-hover table-highlight table-checkable"
+							 data-provide="datatable"
+							 data-display-rows="10"
+							 data-info="true"
+							 data-search="true"
+							 data-length-change="true"
+							 data-paginate="true"
+							 id="usersTable"
+							 >
+							<thead>
+							<tr>
+								<th data-filterable="true" data-sortable="true" data-direction="desc">Name</th>
+								<th data-direction="asc" data-filterable="true" data-sortable="false">Email</th>
+								<th data-filterable="false" class="hidden-xs hidden-sm">Courses</th>
+
+
+								<?php if ($user->isAdmin()): ?>
+									<th data-filterable="false" class="hidden-xs hidden-sm">Data</th>
+								<?php endif; ?>
+							</tr>
+							</thead>
+							<tbody>
+
+							<?php
+							if (empty($errors) === true && !empty($instructors)) {
+								foreach (array_reverse($instructors) as $instructor) {
+									include(ROOT_PATH . "app/views/partials/instructor-table-data-view.html.php");
+								}
+							} ?>
+							</tbody>
+						</table>
+					</div>
+					<!-- /.table-responsive -->
+
+
+				</div>
+				<!-- /.portlet -->
+
+			</div>
+			<!-- /.col -->
+
+		</div>
+		<!-- /.row -->
+
+
+	</div>
+	<!-- /#content-container -->
+
+</div>
+<!-- /#content -->
+
+<div id="addInstructorModal" class="modal modal-styled fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form method="post" id="add-student-form" action="" class="form">
+
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h3 class="modal-title">Create Instructor Form</h3>
+				</div>
+				<div class="modal-body">
+					<div class="portlet">
+						<?php
+						if (empty($errors) === false) {
+							?>
+							<div class="alert alert-danger">
+								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+								<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
+								?>
+							</div>
+						<?php
+						} else if (isBtnCreateInstructortPrsd()) {
+							?>
+							<div class="alert alert-success">
+								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+								<strong>Instructor successfully created!</strong> <br/>
+							</div>
+						<?php } ?>
+
+						<div class="portlet-content">
+
+							<div class="row">
+
+
+								<div class="col-sm-12">
+
+									<div class="form-group">
+										<h5>
+											<i class="fa fa-edit"></i>
+											<label for="firstName">First Name</label>
+										</h5>
+										<input type="text" id="firstName" name="firstName" class="form-control"
+										       value="<?php if (isset($_POST['firstName'])) echo htmlentities($_POST['firstName']); ?>"
+										       autofocus="on" placeholder="Required..." required>
+									</div>
+
+									<div class="form-group">
+										<h5>
+											<i class="fa fa-edit"></i>
+											<label for="lastName">Last Name</label>
+										</h5>
+										<input type="text" id="lastName" name="lastName" class="form-control"
+										       value="<?php if (isset($_POST['lastName'])) echo htmlentities($_POST['lastName']); ?>"
+										       required placeholder="Required...">
+									</div>
+
+									<div class="form-group">
+
+										<i class="fa fa-envelope"></i>
+										<label for="email">Email</label>
+										<input type="email" required id="email" name="email" class="form-control"
+										       value="<?php if (isset($_POST['email'])) echo htmlentities($_POST['email']); ?>"
+										       placeholder="Required...">
+									</div>
+
+
+									<div class="form-group">
+
+										<h5>
+											<i class="fa fa-tasks"></i>
+											<label for="courses">Course(s)</label>
+										</h5>
+
+										<select id="courses" name="courses[]"
+										        class="form-control" multiple>
+											<?php foreach ($courses as $course) {
+												include(ROOT_PATH . "app/views/partials/course-select-options-view.html.php");
+											}
+											?>
+
+										</select>
+
+
+									</div>
+
+								</div>
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-tertiary" data-dismiss="modal">Close</button>
+					<input type="hidden" name="hiddenSubmitPressed" value="">
+					<button type="submit" class="btn btn-primary">Create</button>
+				</div>
+			</form>
+
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+
+
+</div>
+<!-- #wrapper -->
+
+<?php include ROOT_PATH . "app/views/footer.php"; ?>
+<?php include ROOT_PATH . "app/views/assets/footer_common.php"; ?>
+
+<script src="<?php echo BASE_URL; ?>app/assets/js/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="<?php echo BASE_URL; ?>app/assets/js/plugins/datatables/DT_bootstrap.js"></script>
+
+<script src="<?php echo BASE_URL; ?>app/assets/js/plugins/select2/select2.js"></script>
+<script src="<?php echo BASE_URL; ?>app/assets/js/plugins/icheck/jquery.icheck.js"></script>
+
+<script src="<?php echo BASE_URL; ?>app/assets/js/plugins/datepicker/bootstrap-datepicker.js"></script>
+<script src="<?php echo BASE_URL; ?>app/assets/js/plugins/timepicker/bootstrap-timepicker.js"></script>
+<script src="<?php echo BASE_URL; ?>app/assets/js/plugins/simplecolorpicker/jquery.simplecolorpicker.js"></script>
+<script src="<?php echo BASE_URL; ?>app/assets/js/plugins/textarea-counter/jquery.textarea-counter.js"></script>
+<script src="<?php echo BASE_URL; ?>app/assets/js/plugins/autosize/jquery.autosize.min.js"></script>
+<script src="<?php echo BASE_URL; ?>app/assets/js/demos/form-extended.js"></script>
+
+<script type="text/javascript">
+	jQuery(function () {
+
+
+		$("#courses").select2({
+			placeholder: "Required...",
+			allowClear: false
+		});
+		2
+
+	});
+
+
+</script>
+
+</body>
+</html>
+

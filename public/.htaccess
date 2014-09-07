@@ -4,21 +4,18 @@ RewriteBase /
 
 RewriteRule ^([a-z\-]+)/([a-z\-]+)$ /$1/$2.php [L]
 RewriteRule ^([a-z]+)$ /$1.php [L]
+RewriteRule ^workshops/([0-9]+)$ /workshops/index.php?id=$1 [L]
+RewriteRule ^academia/students/success$ /academia/students.php?success=y1!q [L]
+RewriteRule ^academia/courses/success$ /academia/courses.php?success=y1!qp [L]
+RewriteRule ^users/edit/:([0-9]+)$ /users/edit.php?id=$1 [L]
+RewriteRule ^users/edit/:([0-9]+)/success$ /users/edit.php?id=$1&success=y1! [L]
+RewriteRule ^users/([0-9]+)$ /users/index.php?id=$1 [L]
 RewriteRule ^account/settings/success$ /account/settings.php?success [L]
 RewriteRule ^login/confirm-password/success$ /login/confirm-password.php?success [L]
 RewriteRule ^login/confirm-password/success$ /login/confirm-password.php?success [L]
 RewriteRule ^login/recover/([^/]+)/([\w\.]+) /login/recover.php?id=$1&gen_string=$2 [L]
 RewriteRule ^(error\-[0-9]{3})$ /$1.php [L]
 
-
-#RewriteRule ^(/?login/(confirm-password|recover))/?$ $1.php [NC,L]
-#RewriteRule ^(/?login/(confirm-password|recover))/success$ $1.php?success [NC,L]
-#RewriteRule ^(/?logout)$ $1.php [NC,L]
-
-#RewriteRule ^(/?account/(profile|settings))/?$ $1.php [NC,L]
-#RewriteRule ^(/?account/settings)/success$ $1.php?success [NC,L]
-
-#RewriteRule ^(/?users/(create|edit))/?$ $1.php [NC,L]
 ErrorDocument 404 /error-404
 ErrorDocument 403 /error-403
 ErrorDocument 500 /error-500

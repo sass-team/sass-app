@@ -1,0 +1,24 @@
+Method 	Route 				Description
+GET 	/users 				Overview users
+GET 	/users/overview 	Overivew of all users
+GET 	/users/:id 			Individual user profile
+GET 	/users/create 		Form to create a new user account
+POST 	/users/create		Handle creation of new user page
+GET 	/users/edit/:id 	Form to edit/delete existing user page
+POST 	/users/edit/:id 	Handle updates/delete to user page
+
+
+
+
+
+
+
+
+
+
+============== unused ===========================
+GET 	/users/types/:name 	Overview page for specific users types
+GET 	/users/:id/edit 	Form to edit existing users page
+PUT /users/:id Handle updates to user page
+GET /users/:id/delete Form to confirm deletion of page
+DELETE /users/:id Handle deletion of user page

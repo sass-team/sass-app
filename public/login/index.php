@@ -1,12 +1,10 @@
 <?php
 ob_start();
-// TODO: Add option-functionality to resend email if password forgot
-// TODO: sql make 'img' of database to NOT NULL & refactor name to 'img_location'
 require '../app/init.php';
 
-// if there is an active log in process redirect to edit.php; load page only if no
+// if there is an active log in process redirect to students.class.php; load page only if no
 // logged in user exists
-$general->logged_in_protect();
+$general->loggedInProtect();
 $page_title = "Log In";
 
 ?>
@@ -15,7 +13,40 @@ $page_title = "Log In";
 	<!-- 1. It's preferred to create a hidden input for security purposes, as well verifying that this input or another dummy
 	is not filled, as to protect from robots/spam.
 		2. It's preferred to have the php code on the beginning of the script and the view code afterwards. More neat & organized.-->
-<?php /**
+<?php
+
+if (isLoginBtnPressed()) {
+
+	try {
+		if (!isset($_POST['login_email'])) {
+			throw new Exception("The email you entered does not belong to any account.
+			<br/>You can login using any email associated with your account. Make sure that it is typed correctly.");
+		}
+
+		if (!isset($_POST['login_password'])) {
+			throw new Exception("The password you entered is incorrect. Please try again (make sure your caps lock is off).");
+		}
+
+		$email = trim($_POST['login_email']);
+		$password = trim($_POST['login_password']);
+
+		// check if credentials are correct. If they are not, an exception occurs.
+		$id = User::login($db, $email, $password);
+		// destroying the old session id
+		//and creating a new one. protect from session fixation attack.
+		session_regenerate_id(true);
+		// The user's id is now set into the user's session  in the form of $_SESSION['id']
+		$_SESSION['id'] = $id;
+
+		// if there is an active log in process redirect to students.class.php; load page only if no logged in user exists
+		$general->loggedInProtect();
+	} catch (Exception $e) {
+		$errors[] = $e->getMessage();
+	}
+}
+
+
+/**
  * @return bool
  */
 function isLoginBtnPressed() {
@@ -29,36 +60,6 @@ function isForgotBtnPressed() {
 	return isset($_POST['hidden_forgot_pressed']) && empty($_POST['hidden_forgot_pressed']);
 }
 
-if (isLoginBtnPressed()) {
-
-	try {
-		if (!isset($_POST['login_email'])) {
-			throw new Exception("The email you entered does not belong to any account.
-			<br/>You can login using any email associated with your account. Make sure that it is typed correctly.");
-		}
-
-		if (!isset($_POST['login_password'])) {
-			throw new Exception("The password you entered is incorrect. Please try again (make sure your caps lock is off)..");
-		}
-
-
-		$email = trim($_POST['login_email']);
-		$password = trim($_POST['login_password']);
-
-		// check if credentials are correct. If they are not, an exception occurs.
-		$users->login($email, $password);
-		// destroying the old session id
-		//and creating a new one. protect from session fixation attack.
-		session_regenerate_id(true);
-		// The user's id is now set into the user's session  in the form of $_SESSION['id']
-		$_SESSION['email'] = $email;
-
-		// if there is an active log in process redirect to edit.php; load page only if no logged in user exists
-		$general->logged_in_protect();
-	} catch (Exception $e) {
-		$errors[] = $e->getMessage();
-	}
-}
 ?>
 	<!DOCTYPE html>
 	<!--[if lt IE 7]>
@@ -173,7 +174,7 @@ if (isLoginBtnPressed()) {
 					<div class="form-group">
 						<input type="hidden" name="hidden_submit_pressed">
 						<button type="submit" id="login-btn" name="login" class="btn btn-primary btn-block">Log In &nbsp; <i
-								class="fa fa-sign-in"></i></button>
+								 class="fa fa-sign-in"></i></button>
 					</div>
 				</form>
 

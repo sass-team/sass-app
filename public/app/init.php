@@ -8,44 +8,65 @@ ob_start();
 session_start();
 
 require "config/app.php";
+
 // identical to require; but php will include it only if it has not already been included
-require_once ROOT_PATH . 'app/config/database.php';
-require_once ROOT_PATH . "app/models/User.php";
-require_once ROOT_PATH . "app/models/Users.php";
-require_once ROOT_PATH . "app/models/Admin.php";
-require_once ROOT_PATH . "app/models/Tutor.php";
-require_once ROOT_PATH . "app/models/Secretary.php";
-require_once ROOT_PATH . "app/models/General.php";
-require_once ROOT_PATH . "app/models/Courses.php";
+require_once ROOT_PATH . 'app/config/database.class.php';
+require_once ROOT_PATH . "app/models/general.class.php";
+
+require_once ROOT_PATH . "app/models/person.class.php";
+
+require_once ROOT_PATH . "app/models/User.class.php";
+require_once ROOT_PATH . "app/models/UserFetcher.class.php";
+
+require_once ROOT_PATH . "app/models/admin.class.php";
+require_once ROOT_PATH . "app/models/tutor.class.php";
+require_once ROOT_PATH . "app/models/Secretary.class.php";
+
+require_once ROOT_PATH . "app/models/InstructorFetcher.class.php";
+require_once ROOT_PATH . "app/models/UserTypes.class.php";
+require_once ROOT_PATH . "app/models/MajorFetcher.class.php";
+require_once ROOT_PATH . "app/models/Major.class.php";
+
+require_once ROOT_PATH . "app/models/CourseFetcher.class.php";
+require_once ROOT_PATH . "app/models/Course.class.php";
+
+require_once ROOT_PATH . "app/models/StudentFetcher.class.php";
+require_once ROOT_PATH . "app/models/Student.class.php";
+
 
 $errors = array();
 
 try {
-	$db = new DB();
-	$users = new Users($db->getDbConnection());
-	$general = new General();
+    $db = new Database();
+//	$users = new Users($db->getDbConnection());
+    $general = new General();
 
 
 // retrieves data if a user is logged in
-// TODO: CEHCK IF DB IS INITALIZED.
-	if ($general->logged_in() === true) {
-		// instantiate user class & connect to db.
-		$user_email = $_SESSION['email']; // getting user's id from the session.4
+    if ($general->loggedIn() === true) {
 
-		$userData = $users->getData($user_email);
-		// TODO: add secretary role.
-		if ($userData['type'] == 'admin') {
-			$user = new Admin($userData);
-		} else if ($userData['type'] == 'tutor') {
-			$user = new Tutor($userData);
-		}
+        // instantiate user class & connect to db.
+        $id = $_SESSION['id']; // getting user's id from the session.4
 
-	}
-} catch (Exception $e) {
-	$errors[] = $e->getMessage();
-	var_dump($errors);
-	header('Location: ' . BASE_URL . 'error-500.php');
-	exit();
+        $data = User::retrieve($db, $id);
+
+        if (strcmp($data['type'], 'tutor') === 0) {
+            $user = new Tutor($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active']);
+        } else if (strcmp($data['type'], 'secretary') === 0) {
+            $user = new Secretary($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active']);
+        } else if (strcmp($data['type'], 'admin') === 0) {
+            $user = new Admin($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active']);
+        } else {
+            throw new Exception("Something terrible has happened with the database. <br/>The software developers will tremble with fear.");
+        }
+    }
+
+} catch
+(Exception $e) {
+    // if no database connection available this app is not able to work.
+    $errors[] = $e->getMessage();
+    header('Location: ' . BASE_URL . 'error-500.php');
+    exit();
 }
 
 
