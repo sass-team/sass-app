@@ -2,7 +2,7 @@
 require '../app/init.php';
 $general->loggedOutProtect();
 
-$page_title = "View Users";
+$page_title = "Manage Students";
 $section = "academia";
 
 try {
@@ -88,6 +88,8 @@ require ROOT_PATH . 'app/views/sidebar.php';
                    class="btn btn-primary navbar-right">
                     Add Student</a>
             </div>
+        </div>
+        <div class="row">
             <div class="col-md-12">
 
                 <div class="portlet-content">

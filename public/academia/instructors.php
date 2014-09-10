@@ -2,7 +2,7 @@
 require '../app/init.php';
 $general->loggedOutProtect();
 
-$page_title = "View Instructors";
+$page_title = "Manage Instructors";
 $section = "academia";
 
 try {

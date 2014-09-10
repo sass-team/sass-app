@@ -128,7 +128,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 		<?php endif; ?>
 		<div class="row">
 
-			<div class="col-md-9">
+			<div class="col-md-8">
 
 				<div class="portlet">
 
@@ -157,9 +157,9 @@ require ROOT_PATH . 'app/views/sidebar.php';
 								>
 								<thead>
 								<tr>
-									<th data-filterable="true" data-sortable="true" data-direction="desc">Code</th>
-									<th data-direction="asc" data-filterable="true" data-sortable="false">Name</th>
-									<th>Action</th>
+									<th class="text-center" data-filterable="true" data-sortable="true">Code</th>
+									<th class="text-center" data-filterable="true" data-sortable="false">Name</th>
+									<th class="text-center">Action</th>
 								</tr>
 								</thead>
 								<tbody>
@@ -181,7 +181,8 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 			</div>
 			<!-- /.col -->
-			<div class="col-md-3 col-sidebar-right">
+			<div class="col-md-4 col-sidebar-right">
+				<h2>Add a new Course</h2>
 				<p class="lead"> You can also add a new course that is not already in the list.</p>
 				<a data-toggle="modal" href="#addCourseModal" class="btn btn-danger btn-jumbo btn-block">Add Course</a>
 
@@ -275,7 +276,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h3 class="modal-title">Remove course
+					<h3 class="modal-title">Remove Course
 						<!--                        from --><?php //echo $curUser->getFirstName() . " " . $curUser->getLastName(); ?>
 					</h3>
 				</div>
@@ -322,13 +323,13 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <!-- /.modal -->
 
 <div id="updateCourse" class="modal modal-styled fade">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-sm">
 		<div class="modal-content">
 			<form method="post" id="create-form" action="<?php echo BASE_URL . 'academia/courses'; ?>" class="form">
 
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h3 class="modal-title">Create Course</h3>
+					<h3 class="modal-title">Update Course</h3>
 				</div>
 				<div class="modal-body">
 					<div class="portlet">
@@ -345,7 +346,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 							?>
 							<div class="alert alert-success">
 								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-								<strong>Course successfully created!</strong> <br/>
+								<strong>Course successfully updated!</strong> <br/>
 							</div>
 						<?php } ?>
 						<div class="portlet-content">
@@ -355,7 +356,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 									<div class="form-group">
 										<h5>
 											<i class="fa fa-edit"></i>
-											<label for="courseCodeUpdate">Course Code</label>
+											<label for="courseCodeUpdate">Edit Code</label>
 										</h5>
 										<input type="text" id="courseCodeUpdate" name="courseCodeUpdate" class="form-control"
 										       value="<?php if (isset($_POST['courseCodeUpdate'])) echo
@@ -366,7 +367,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 									<div class="form-group">
 										<h5>
 											<i class="fa fa-edit"></i>
-											<label for="courseNameUpdate">Course Name</label>
+											<label for="courseNameUpdate">Edit Name</label>
 										</h5>
 										<input type="text" id="courseNameUpdate" name="courseNameUpdate" class="form-control"
 										       value="<?php if (isset($_POST['courseNameUpdate'])) echo
@@ -404,6 +405,9 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 <script src="<?php echo BASE_URL; ?>app/assets/js/plugins/select2/select2.js"></script>
 <script src="<?php echo BASE_URL; ?>app/assets/js/plugins/icheck/jquery.icheck.js"></script>
+
+<script src="<?php echo BASE_URL; ?>app/assets/js/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="<?php echo BASE_URL; ?>app/assets/js/plugins/datatables/DT_bootstrap.js"></script>
 
 <script src="<?php echo BASE_URL; ?>app/assets/js/plugins/datepicker/bootstrap-datepicker.js"></script>
 <script src="<?php echo BASE_URL; ?>app/assets/js/plugins/timepicker/bootstrap-timepicker.js"></script>

@@ -43,7 +43,7 @@ class Course {
 		$courseCode = trim($courseCode);
 
 		if (!preg_match("/^[A-Z0-9]{1,10}$/", $courseCode)) {
-			throw new Exception("Course code can contain characters in the range of A-Z, 0-9 and of length 1-10.");
+			throw new Exception("Course code can contain capital letters in the range of A-Z, numbers 0-9 and of length 1-10.");
 		}
 
 		if (CourseFetcher::codeExists($db, $courseCode)) {

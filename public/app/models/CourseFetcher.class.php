@@ -40,7 +40,7 @@ class CourseFetcher {
 		$query =
 			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_CODE . "` AS 'code', `" . self::DB_TABLE . "`.`" .
 			self::DB_COLUMN_NAME . "` AS  'name', `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`
-			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`";
+			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "` order by `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` desc";
 
 		try {
 			$query = $db->getConnection()->prepare($query);
@@ -106,6 +106,27 @@ class CourseFetcher {
 		}
 	}
 
+	public static function update($db, $courseId, $newCourseCode, $newCourseName) {
+		$newCourseCode = trim($newCourseCode);
+        $newCourseName = trim($newCourseName);
+
+        $query = "UPDATE `" . DB_NAME . "`.`" . CourseFetcher::DB_TABLE . "`
+					SET `" . self::DB_COLUMN_CODE . "`= :newCourseCode, 
+						`" . self::DB_COLUMN_NAME . "`= :newCourseName
+					WHERE `id`= :courseId";
+
+		try {
+            $query = $db->getConnection()->prepare($query);
+            $query->bindParam(':newCourseCode', $newCourseCode, PDO::PARAM_STR);
+            $query->bindParam(':newCourseName', $newCourseName, PDO::PARAM_STR);
+            $query->execute();
+
+            return true;
+        } catch (Exception $e) {
+            throw new Exception("Something terrible happened. Could not update course." . $e->getMessage());
+        }
+	}
+
 	public static function codeExists($db, $courseCode) {
 		try {
 			$sql = "SELECT COUNT(" . self::DB_COLUMN_CODE . ") FROM `" . DB_NAME . "`.`" .
@@ -130,7 +151,7 @@ class CourseFetcher {
 			$query->bindParam(':courseId', $courseId, PDO::PARAM_INT);
 			$query->execute();
 
-			if ($query->fetchColumn() === '0') return false;
+			if ($query->fetchColumn() === 0) return false;
 		} catch (Exception $e) {
 			throw new Exception("Could not check if course code already exists on database. <br/> Aborting process.");
 		}
