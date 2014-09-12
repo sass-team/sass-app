@@ -73,17 +73,24 @@ if (isBtnUpdateProfilePrsd()) {
         $prevProfileDescription = $user->getProfileDescription();
         $prevMobileNumber = $user->getMobileNum();
 
-        $newFirstName = $_POST['firstName'];
-        $newLastName = $_POST['lastName'];
+        if ($user->isAdmin()) {
+            $newFirstName = $_POST['firstName'];
+            $newLastName = $_POST['lastName'];
+        }
+
         $newProfileDescription = $_POST['profileDescription'];
         $newMobileNumber = $_POST['newMobileNum'];
 
         // check if new changes are required. if to update process
-        if (strcmp($prevFirstName, $newFirstName) !== 0) {
+        if ($user->isAdmin() && strcmp($prevFirstName, $newFirstName) !== 0) {
             User::updateName($db, $user->getId(), User::DB_COLUMN_FIRST_NAME, $newFirstName);
             $newUpdate = true;
         }
-        if (strcmp($prevLastName, $newLastName) !== 0) {
+
+        if ($user->isAdmin() && strcmp($prevLastName, $newLastName) !== 0) {
+            if (!$user->isAdmin()) {
+                throw new Exception("You're trying to hack this app. Process aborted.");
+            }
             User::updateName($db, $user->getId(), User::DB_COLUMN_LAST_NAME, $newLastName);
             $newUpdate = true;
         }
@@ -245,7 +252,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
             <div class="col-md-7">
                 <input type="text" name="user-name" value="<?php echo $user->getEmail(); ?>"
-                       class="form-control" disabled/>
+                       class="form-control" disabled requird/>
             </div>
             <!-- /.col -->
 
@@ -258,7 +265,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
             <div class="col-md-7">
                 <input type="text" name="firstName" id="firstName" value="<?php echo $user->getFirstName(); ?>"
-                       class="form-control" required/>
+                       class="form-control" required <?php if (!$user->isAdmin()) echo "disabled"; ?>/>
             </div>
             <!-- /.col -->
 
@@ -271,7 +278,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
             <div class="col-md-7">
                 <input type="text" name="lastName" id="lastName" value="<?php echo $user->getLastName(); ?>"
-                       class="form-control"/>
+                       class="form-control" required <?php if (!$user->isAdmin()) echo "disabled"; ?>/>
             </div>
             <!-- /.col -->
 

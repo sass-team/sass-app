@@ -241,18 +241,16 @@ require ROOT_PATH . 'app/views/sidebar.php';
                 &nbsp;&nbsp;Profile Settings
             </a>
         </li>
-        <li>
-            <a href="#userType" data-toggle="tab">
-                <i class="fa fa-flag-o"></i>
-                &nbsp;&nbsp;Position
-            </a>
-        </li>
-        <li>
-            <a href="#status" data-toggle="tab">
-                <i class="fa fa-warning"></i>
-                &nbsp;&nbsp;Status
-            </a>
-        </li>
+
+        <?php if (strcmp($user->getId(), $userId) !== 0): ?>
+            <li>
+                <a href="#status" data-toggle="tab">
+                    <i class="fa fa-warning"></i>
+                    &nbsp;&nbsp;Status
+                </a>
+            </li>
+        <?php endif; ?>
+
         <li>
             <a href="#notifications" data-toggle="tab">
                 <i class="fa fa-envelope"></i>
@@ -462,104 +460,52 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 </div>
 
-<div class="tab-pane fade" id="userType">
-    <div class="col-md-12">
+<?php if (strcmp($user->getId(), $userId) !== 0): ?>
 
-        <div class="portlet">
+    <div class="tab-pane fade" id="status">
+        <div class="col-md-12">
 
-            <div class="portlet-header">
+            <div class="portlet">
 
-                <h3>
-                    <i class="fa fa-hand-o-up"></i>
-                    User Type
-                </h3>
+                <div class="portlet-header">
+
+                    <h3>
+                        <i class="fa fa-hand-o-up"></i>
+                        Account Status
+                    </h3>
+
+                </div>
+                <!-- /.portlet-header -->
+
+                <div class="portlet-content">
+                    <form method="post" id="update-status-form" action="" class="form">
+
+                        <button type="submit"
+                                class="btn btn-success <?php if ($curUser->isActive()) echo "active disabled"; ?> btnChangeActive"
+                                id="activateAccount">Activate
+                        </button>
+
+                        <button type="submit"
+                                class="btn btn-warning <?php if (!$curUser->isActive()) echo "active disabled"; ?> btnChangeActive"
+                                id="deactivateAccount">Deactivate
+                        </button>
+                        <input type="hidden" name="hiddenSbmtChangeUserActive" value="">
+                        <input type="hidden" id="changeUserActive" name="changeUserActive" value="">
+
+                    </form>
+                </div>
+                <!-- /.portlet-content -->
 
             </div>
-            <!-- /.portlet-header -->
-
-            <div class="portlet-content">
-
-                <form method="post" id="delete-form" action="" class="form">
-                    <div class="btn-group">
-                        <button type="submit"
-                                class="btn btn-default <?php if ($curUser->isTutor()) echo "active"; ?> btnChangeType"
-                                id="tutor" name="tutor" disabled>Tutor
-                        </button>
-                        <button type="submit"
-                                class="btn btn-default <?php if ($curUser->isSecretary()) echo "active"; ?> btnChangeType"
-                                id="secretary" name="secretary" disabled>
-                            Secretary
-                        </button>
-                        <button type="submit"
-                                class="btn btn-default <?php if ($curUser->isAdmin()) echo "active"; ?> btnChangeType"
-                                id="admin"
-                                name="admin" disabled>
-                            Administrator
-                        </button>
-                        <input type="hidden" name="hiddenSbmtChangeuserType">
-                        <input type="hidden" id="changeuserType" name="changeuserType" value="">
-
-                    </div>
-
-
-                </form>
-
-                <br/>
-
-
-            </div>
-            <!-- /.portlet-content -->
+            <!-- /.portlet -->
 
         </div>
-        <!-- /.portlet -->
+        <!-- /.col -->
+
 
     </div>
-    <!-- /.col -->
-</div>
 
-
-<div class="tab-pane fade" id="status">
-    <div class="col-md-12">
-
-        <div class="portlet">
-
-            <div class="portlet-header">
-
-                <h3>
-                    <i class="fa fa-hand-o-up"></i>
-                    Account Status
-                </h3>
-
-            </div>
-            <!-- /.portlet-header -->
-
-            <div class="portlet-content">
-                <form method="post" id="update-status-form" action="" class="form">
-
-                    <button type="submit"
-                            class="btn btn-success <?php if ($curUser->isActive()) echo "active disabled"; ?> btnChangeActive"
-                            id="activateAccount">Activate
-                    </button>
-
-                    <button type="submit"
-                            class="btn btn-warning <?php if (!$curUser->isActive()) echo "active disabled"; ?> btnChangeActive"
-                            id="deactivateAccount">Deactivate
-                    </button>
-                    <input type="hidden" name="hiddenSbmtChangeUserActive" value="">
-                    <input type="hidden" id="changeUserActive" name="changeUserActive" value="">
-
-                </form>
-            </div>
-            <!-- /.portlet-content -->
-
-        </div>
-        <!-- /.portlet -->
-
-    </div>
-    <!-- /.col -->
-
-
-</div>
+<?php endif; ?>
 
 <div class="tab-pane fade" id="notifications">
     <h3> Notification Settings </h3>
