@@ -11,7 +11,8 @@ $errors = array();
  * @param $user
  * @return array
  */
-function uploadAvatarImage($user) {
+function uploadAvatarImage($user)
+{
     if ($_FILES['fileupload-avatar']['error'] == 1) {
         throw new Exception("File size exceeded");
     } else {
@@ -43,7 +44,8 @@ function uploadAvatarImage($user) {
 /**
  * @return bool
  */
-function isNewAvatarImageUploadedTemp() {
+function isNewAvatarImageUploadedTemp()
+{
     return (file_exists($_FILES["fileupload-avatar"]['tmp_name']) &&
         is_uploaded_file($_FILES["fileupload-avatar"]['tmp_name'])) ?
         true : false;
@@ -52,14 +54,16 @@ function isNewAvatarImageUploadedTemp() {
 /**
  * @return bool
  */
-function isBtnUpdateProfilePrsd() {
+function isBtnUpdateProfilePrsd()
+{
     return isset($_POST['form_action_profile_settings']) && empty($_POST['form_action_profile_settings']);
 }
 
 /**
  * @return bool
  */
-function isBtnUpdatePasswordPrsd() {
+function isBtnUpdatePasswordPrsd()
+{
     return isset($_POST['form_action_update_password']) && empty($_POST['form_action_update_password']);
 }
 
@@ -100,7 +104,7 @@ if (isBtnUpdateProfilePrsd()) {
             $newUpdate = true;
         }
 
-        if ($prevMobileNumber !== $newMobileNumber) {
+        if (strcmp($prevMobileNumber, $newMobileNumber) !== 0) {
             User::updateMobileNumber($db, $user->getId(), $newMobileNumber);
             $newUpdate = true;
         }
