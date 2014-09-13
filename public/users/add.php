@@ -11,7 +11,7 @@ if (!$user->isAdmin()) {
 
 try {
     $courses = CourseFetcher::retrieveAll($db);
-    $majors = CourseFetcher::retrieveMajors($db);
+    $majors = MajorFetcher::retrieveMajors($db);
 
 
     //$majors = array_unique(array_column($courses, 'Major'));
@@ -244,7 +244,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
                                             <label for="userMajor">Tutor's Major</label>
                                         </h5>
                                         <select id="userMajor" name="userMajor" class="form-control">
-                                            <option value="null">I don&#39;t know.</option>
+                                            <option value="null">Select a major</option>
                                             <?php foreach ($majors as $major) {
                                                 include(ROOT_PATH . "app/views/partials/major-select-options-view.html.php");
                                             }

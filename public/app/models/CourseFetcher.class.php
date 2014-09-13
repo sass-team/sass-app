@@ -53,21 +53,6 @@ class CourseFetcher
         }
     }
 
-    public static function retrieveMajors($db) {
-
-        $query = "SELECT major.extension AS 'Extension', major.name AS 'Name'
-				FROM `" . DB_NAME . "`.major";
-        try {
-            $query = $db->getConnection()->prepare($query);
-            $query->execute();
-
-            return $query->fetchAll(PDO::FETCH_ASSOC);
-        } catch (Exception $e) {
-            throw new Exception("Could not retrieve majors data from database.");
-        }
-    }
-
-
     public static function courseExists($db, $courseId) {
 
         $query = "SELECT COUNT(`" . self::DB_COLUMN_ID . "`) FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "` WHERE
@@ -162,7 +147,7 @@ class CourseFetcher
 
             return true;
         } catch (Exception $e) {
-            throw new Exception("Something terrible happened. Could not update course name" . $e->getMessage());
+            throw new Exception("Something terrible happened. Could not update course code" . $e->getMessage());
         }
     }
 
@@ -208,7 +193,7 @@ class CourseFetcher
 
             if ($query->fetchColumn() === '0') return false;
         } catch (Exception $e) {
-            throw new Exception("Could not check if course code already exists on database. <br/> Aborting process.");
+            throw new Exception("Could not check if course name already exists on database. <br/> Aborting process.");
         }
 
         return true;

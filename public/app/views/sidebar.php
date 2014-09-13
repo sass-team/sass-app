@@ -95,7 +95,7 @@
             </li>
 
 
-            <?php if ($user->isAdmin() || $user->isSecretary()) { ?>
+            <?php if (!$user->isTutor()) { ?>
                 <li class="dropdown <?php if ($section == "academia") {
                     echo "active";
                 } ?>">
@@ -110,6 +110,12 @@
                             <a href="<?php echo BASE_URL; ?>academia/courses">
                                 <i class="fa fa-book"></i>
                                 Courses
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<?php echo BASE_URL; ?>academia/majors">
+                                <i class="fa fa-book"></i>
+                                Majors
                             </a>
                         </li>
                         <li>
