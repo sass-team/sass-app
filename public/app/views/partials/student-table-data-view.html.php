@@ -11,20 +11,23 @@
  */
 
 
-$first_name = $student['f_name'];
-$last_name = $student['l_name'];
-$email = $student['email'];
-$mobile = $student['mobile'];
-$id = $student['id'];
-$ci = $student['ci'];
-$credits = $student['credits'];
+$first_name = $student[StudentFetcher::DB_COLUMN_FIRST_NAME];
+$last_name = $student[StudentFetcher::DB_COLUMN_LAST_NAME];
+$email = $student[StudentFetcher::DB_COLUMN_EMAIL];
+$mobile = $student[StudentFetcher::DB_COLUMN_MOBILE];
+$id = $student[StudentFetcher::DB_COLUMN_ID];
+$ci = $student[StudentFetcher::DB_COLUMN_CI];
+$credits = $student[StudentFetcher::DB_COLUMN_CREDITS];
+$major = $student[MajorFetcher::DB_COLUMN_NAME];
+
 ?>
 <tr>
 	<td><?php echo $first_name . " " . $last_name; ?></td>
 	<td><?php echo $email; ?></td>
 	<td><?php echo $mobile; ?></td>
-	<td><?php echo $ci ;?></td>
-	<td><?php echo $credits;?></td>
+	<td><?php echo $major; ?></td>
+	<td><?php echo $ci; ?></td>
+	<td><?php echo $credits; ?></td>
 
 	<td>
 		<a data-toggle="modal" href="<?php echo BASE_URL . "academia/students/" . $id; ?>"
