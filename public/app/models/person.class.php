@@ -65,13 +65,13 @@ abstract class Person
 		}
 	}
 
-	public static function validateEmail($db, $email, $table) {
-		if (!isset($email) || empty($email)) {
+	public static function validateEmail($db, $newEmail, $table) {
+		if (!isset($newEmail) || empty($newEmail)) {
 			throw new Exception("Email is required");
 		}
-		if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
+		if (filter_var($newEmail, FILTER_VALIDATE_EMAIL) === false) {
 			throw new Exception("Please enter a valid email address");
-		} else if (self::emailExists($db, $email, $table)) {
+		} else if (self::emailExists($db, $newEmail, $table)) {
 			throw new Exception('That email already exists. Please use another one.');
 		} // end else if
 	}

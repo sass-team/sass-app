@@ -20,13 +20,58 @@ try {
 		Major::create($db, $_POST['majorCode'], $_POST['majorName']);
 		header('Location: ' . BASE_URL . "academia/students/success");
 	} else if (isBtnUpdatePrsd()) {
-		var_dump($_POST);
+
+		if (!isset($_POST['idUpdate']) || ($oldStudentData = getStudent($_POST['idUpdate'], $students)) === false) {
+			throw new Exception("Data tempering detected. Process stopped.");
+		} else {
+			$id = $oldStudentData[StudentFetcher::DB_COLUMN_ID];
+			$newFirstName = $_POST['newFirstName'];
+			$newLastName = $_POST['newLastName'];
+			$newEmail = $_POST['newEmail'];
+			$newStudentId = $_POST['newStudentId'];
+			$newMobileNum = $_POST['newMobileNum'];
+			$newMajorId = $_POST['newStudentMajorId'];
+			$newCI = isset($_POST['newCI']) ? $_POST['newCI'] : NULL;
+			$newCreditsNum = $_POST['newCreditsNum'];
+
+
+			Student::updateFirstName($db, $id, $newFirstName, $oldStudentData[StudentFetcher::DB_COLUMN_FIRST_NAME]);
+			Student::updateLastName($db, $id, $newLastName, $oldStudentData[StudentFetcher::DB_COLUMN_LAST_NAME]);
+			Student::updateStudentId($db, $id, $newStudentId, $oldStudentData[StudentFetcher::DB_COLUMN_STUDENT_ID]);
+			Student::updateEmail($db, $id, $newEmail, $oldStudentData[StudentFetcher::DB_COLUMN_EMAIL]);
+			Student::updateMobileNum($db, $id, $newMobileNum, $oldStudentData[StudentFetcher::DB_COLUMN_MOBILE]);
+			Student::updateMajorId($db, $id, $newMajorId, $oldStudentData[StudentFetcher::DB_COLUMN_MAJOR_ID]);
+			Student::updateCi($db, $id, $newCI, $oldStudentData[StudentFetcher::DB_COLUMN_CI]);
+			Student::updateCredits($db, $id, $newCreditsNum, $oldStudentData[StudentFetcher::DB_COLUMN_CREDITS]);
+
+			header('Location: ' . BASE_URL . "academia/students/success");
+
+		}
+
 	}
 
 
 } catch (Exception $e) {
 	$errors[] = $e->getMessage();
 }
+
+
+/**
+ * http://stackoverflow.com/a/4128377/2790481
+ *
+ * @param $needle
+ * @param $students
+ * @param bool $strict
+ * @return bool
+ */
+function getStudent($needle, $students, $strict = false) {
+	foreach ($students as $student) {
+		if ($student[StudentFetcher::DB_COLUMN_ID] === $needle) return $student;
+	}
+
+	return false;
+}
+
 
 function isEditbtnPressed() {
 	return isset($_GET['id']) && preg_match('/^[0-9]+$/', $_GET['id']);
@@ -443,28 +488,19 @@ require ROOT_PATH . 'app/views/sidebar.php';
 											<i class="fa fa-edit"></i>
 											<label for="firstName">First Name</label>
 										</h5>
-										<input type="text" id="firstNameUpdate" name="firstNameUpdate" class="form-control"
-										       value="<?php if (isset($_POST['firstNameUpdate'])) echo htmlentities($_POST['firstNameUpdate']); ?>"
+										<input type="text" id="newFirstName" name="newFirstName" class="form-control"
+										       value="<?php if (isset($_POST['newFirstName'])) echo htmlentities($_POST['newFirstName']); ?>"
 										       autofocus="on" placeholder="Required" required>
 									</div>
 
 									<div class="form-group">
 										<h5>
 											<i class="fa fa-edit"></i>
-											<label for="lastNameUpdate">Last Name</label>
+											<label for="newLastName">Last Name</label>
 										</h5>
-										<input type="text" id="lastNameUpdate" name="lastNameUpdate" class="form-control"
-										       value="<?php if (isset($_POST['lastNameUpdate'])) echo htmlentities($_POST['lastNameUpdate']); ?>"
+										<input type="text" id="newLastName" name="newLastName" class="form-control"
+										       value="<?php if (isset($_POST['newLastName'])) echo htmlentities($_POST['newLastName']); ?>"
 										       required placeholder="Required">
-									</div>
-
-									<div class="form-group">
-
-										<i class="fa fa-envelope"></i>
-										<label for="emailUpdate">Email</label>
-										<input type="email" required id="emailUpdate" name="emailUpdate" class="form-control"
-										       value="<?php if (isset($_POST['emailUpdate'])) echo htmlentities($_POST['emailUpdate']); ?>"
-										       placeholder="Required">
 									</div>
 
 
@@ -472,21 +508,31 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 										<h5>
 											<i class="fa fa-tasks"></i>
-											<label for="studentIdUpdate">Student ID</label>
+											<label for="newStudentId">Student ID</label>
 										</h5>
 
-										<input class="form-control" id="studentIdUpdate" name="studentIdUpdate" type="text"
-										       value="<?php if (isset($_POST['studentIdUpdate'])) echo htmlentities($_POST['studentIdUpdate']); ?>"
+										<input class="form-control" id="newStudentId" name="newStudentId" type="text"
+										       value="<?php if (isset($_POST['newStudentId'])) echo htmlentities($_POST['newStudentId']); ?>"
 										       placeholder="123456">
 
 									</div>
 
 									<div class="form-group">
+
+										<i class="fa fa-envelope"></i>
+										<label for="newEmail">Email</label>
+										<input type="email" required id="newEmail" name="newEmail" class="form-control"
+										       value="<?php if (isset($_POST['newEmail'])) echo htmlentities($_POST['newEmail']); ?>"
+										       placeholder="Required">
+									</div>
+
+
+									<div class="form-group">
 										<h5>
 											<i class="fa fa-tasks"></i>
-											<label for="mobileNumUpdate">Mobile Number</label>
-											<input class="form-control" id="mobileNumUpdate" name="mobileNumUpdate" type="text"
-											       value="<?php if (isset($_POST['mobileNumUpdate'])) echo htmlentities($_POST['mobileNumUpdate']); ?>"
+											<label for="newMobileNum">Mobile Number</label>
+											<input class="form-control" id="newMobileNum" name="newMobileNum" type="text"
+											       value="<?php if (isset($_POST['newMobileNum'])) echo htmlentities($_POST['newMobileNum']); ?>"
 											       placeholder="69........">
 
 
@@ -497,9 +543,9 @@ require ROOT_PATH . 'app/views/sidebar.php';
 									<div class="form-group">
 										<h5>
 											<i class="fa fa-tasks"></i>
-											<label for="userMajorIdUpdate">Major</label>
+											<label for="newStudentMajorId">Major</label>
 										</h5>
-										<select id="userMajorIdUpdate" name="userMajorIdUpdate" class="form-control">
+										<select id="newStudentMajorId" name="newStudentMajorId" class="form-control">
 											<?php foreach ($majors as $major) {
 												include(ROOT_PATH . "app/views/partials/major-select-options-view.html.php");
 											}
@@ -514,9 +560,9 @@ require ROOT_PATH . 'app/views/sidebar.php';
 											<div class="form-group">
 												<div class="input-group">
 													<span class="input-group-addon">CI</span>
-													<input class="form-control" id="ciInputUpdate" name="ciInputUpdate" type="text"
+													<input class="form-control" id="newCI" name="newCI" type="text"
 													       placeholder="e.g. 3.5"
-													       value="<?php if (isset($_POST['ciInputUpdate'])) echo htmlentities($_POST['ciInputUpdate']); ?>">
+													       value="<?php if (isset($_POST['newCI'])) echo htmlentities($_POST['newCI']); ?>">
 
 												</div>
 											</div>
@@ -525,9 +571,9 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 											<div class="form-group">
 												<div class="input-group">
-													<input class="form-control" id="creditsInputUpdate" name="creditsInputUpdate"
+													<input class="form-control" id="newCreditsNum" name="newCreditsNum"
 													       type="text"
-													       value="<?php if (isset($_POST['creditsInputUpdate'])) echo htmlentities($_POST['creditsInputUpdate']); ?>"
+													       value="<?php if (isset($_POST['newCreditsNum'])) echo htmlentities($_POST['newCreditsNum']); ?>"
 													       placeholder="e.g. 50">
 													<span class="input-group-addon">Credits</span>
 													<input type="hidden" value="" id="idUpdate" name="idUpdate"/>
@@ -585,7 +631,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 
 		$("#userMajorId").select2();
-		$("#userMajorIdUpdate").select2();
+		$("#newStudentMajorId").select2();
 
 
 		$(".btnUpdateStudent").click(function () {
@@ -599,14 +645,14 @@ require ROOT_PATH . 'app/views/sidebar.php';
 			var firstName = ($(this).parent().prev().prev().prev().prev().prev().prev().prev().prev().find("span:first")).text();
 			var lastName = ($(this).parent().prev().prev().prev().prev().prev().prev().prev().prev().find("span:first")).next().text();
 
-			$("#firstNameUpdate").val(firstName);
-			$("#lastNameUpdate").val(lastName);
-			$("#emailUpdate").val(studentEmail);
-			$("#studentIdUpdate").val(studentId);
-			$("#mobileNumUpdate").val(studentMobile);
-			$("#userMajorIdUpdate").select2("val", studentMajorId); // select "5"
-			$("#ciInputUpdate").val(studentCi);
-			$("#creditsInputUpdate").val(studentsCredits);
+			$("#newFirstName").val(firstName);
+			$("#newLastName").val(lastName);
+			$("#newEmail").val(studentEmail);
+			$("#newStudentId").val(studentId);
+			$("#newMobileNum").val(studentMobile);
+			$("#newStudentMajorId").select2("val", studentMajorId); // select "5"
+			$("#newCI").val(studentCi);
+			$("#newCreditsNum").val(studentsCredits);
 			$("#idUpdate").val(id);
 		});
 

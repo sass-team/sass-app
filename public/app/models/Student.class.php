@@ -37,7 +37,8 @@ class Student extends Person
 	}
 
 	/**
-	 * @return mixed
+	 * @param $db
+	 * @throws Exception
 	 */
 	public static function retrieve($db) {
 		$query = "SELECT id, email, f_name, l_name, mobile, ci, credits
@@ -102,7 +103,6 @@ class Student extends Person
 
 	public static function validateCi($ci) {
 		if (empty($ci) === TRUE) return NULL;
-		$ci = trim($ci);
 		if (!preg_match('/^[0-4](\.[0-9]+)?$/', $ci)) throw new Exception('CI must similar to 3.5; 0 =< CI <= 4');
 
 		return $ci;
@@ -110,10 +110,76 @@ class Student extends Person
 
 	public static function validateCredits($credits) {
 		if (empty($credits) === TRUE) return null;
-		$credits = trim($credits);
-		if (!preg_match('/^[0-9]+$/', $credits)) throw new Exception('CI must similar to 3.5; 0 =< CI <= 4');
+		if (!preg_match('/^[0-9]{1,3}$/', $credits) || floatval($credits) > 200) throw new Exception('Credits should be in the range of 0 - 200');
+	}
 
-		return $credits;
+	public static function updateFirstName($db, $id, $newName, $oldName) {
+
+		if (strcmp($newName, $oldName) === 0) return;
+
+		self::validateName($newName);
+		StudentFetcher::updateFirstName($db, $id, $newName);
+	}
+
+	public static function updateLastName($db, $id, $newName, $oldName) {
+		if (strcmp($newName, $oldName) === 0) return;
+
+		self::validateName($newName);
+		StudentFetcher::updateLastName($db, $id, $newName);
+	}
+
+	public static function updateMobileNum($db, $id, $newMobileNum, $oldMobileNum) {
+		if (strcmp($newMobileNum, $oldMobileNum) === 0) return;
+
+		self::validateMobileNumber($db, $newMobileNum);
+		StudentFetcher::updateMobileNum($db, $id, $newMobileNum);
+	}
+
+	public static function updateMajorId($db, $id, $newMajorId, $oldMajorId) {
+		if (!isset($newMajorId) || empty($newMajorId)) throw new Exception("Data tempering detected. Aborting.");
+		if (strcmp($newMajorId, $oldMajorId) === 0) return;
+
+		Major::validateId($db, $newMajorId);
+		StudentFetcher::updateMajorId($db, $id, $newMajorId);
+	}
+
+	public static function updateCi($db, $id, $newCi, $oldCi) {
+		if (strcmp($newCi, $oldCi) === 0) return;
+
+		$newCi = self::validateCi($newCi);
+		StudentFetcher::updateCi($db, $id, $newCi);
+	}
+
+
+	public static function updateEmail($db, $id, $newEmail, $oldEmail) {
+		Student::validateEmail($db, $newEmail, $oldEmail);
+		StudentFetcher::updateEmail($db, $id, $newEmail);
+	}
+
+	public static function validateEmail($db, $newEmail, $oldEmail) {
+		if (!isset($newEmail) || empty($newEmail)) throw new Exception("Email is required");
+		if (strcmp($newEmail, $oldEmail) === 0) return;
+
+		if (filter_var($newEmail, FILTER_VALIDATE_EMAIL) === false) {
+			throw new Exception("Please enter a valid email address");
+		} else if (StudentFetcher::existsEmail($db, $newEmail)) {
+			throw new Exception('That email already exists. Please use another one.');
+		} // end else if
+	}
+
+	public static function updateStudentId($db, $id, $newStudentId, $oldStudentId) {
+		if (strcmp($newStudentId, $oldStudentId) === 0) return;
+		Student::validateStudentId($db, $newStudentId);
+
+		StudentFetcher::updateStudentId($db, $id, $newStudentId);
+	}
+
+
+	public static function updateCredits($db, $id, $newCreditsNum, $oldCredits) {
+		if (strcmp($newCreditsNum, $oldCredits) === 0) return;
+		Student::validateCredits($newCreditsNum);
+
+		StudentFetcher::updateCredits($db, $id, $newCreditsNum);
 	}
 
 	/**

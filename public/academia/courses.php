@@ -16,7 +16,7 @@ try {
 	$courses = CourseFetcher::retrieveAll($db);
 
 	if (isBtnUpdatePrsd()) {
-		$updateDone = false;
+		$updateDone = 0;
 		$courseId = trim($_POST['updateCourseIdModal']);
 
 		$newCourseCode = trim($_POST['courseCodeUpdate']);
@@ -27,10 +27,9 @@ try {
 			$oldCourseCodeName = $course[CourseFetcher::DB_COLUMN_CODE];
 			$oldCourseName = $course[CourseFetcher::DB_COLUMN_NAME];
 
-			if (strcmp($newCourseName, $oldCourseName) !== 0) {
-				$updateDone = true;
-				Course::updateName($db, $courseId, $newCourseName);
-			}
+
+			Course::updateName($db, $courseId, $newCourseName, $oldCourseName);
+
 
 			if (strcmp($newCourseCode, $oldCourseCodeName) !== 0) {
 				$updateDone = true;

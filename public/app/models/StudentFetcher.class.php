@@ -107,6 +107,165 @@ class StudentFetcher extends Person
 		return true;
 	}
 
+	public static function updateFirstName($db, $id, $newName) {
+		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+					SET	`" . self::DB_COLUMN_FIRST_NAME . "`= :newName
+					WHERE `" . self::DB_COLUMN_ID . "`= :id";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':id', $id, PDO::PARAM_INT);
+			$query->bindParam(':newName', $newName, PDO::PARAM_STR);
+			$query->execute();
+
+			return true;
+		} catch (Exception $e) {
+			throw new Exception("Something terrible happened. Could not update first name");
+		}
+	}
+
+	public static function updateLastName($db, $id, $newName) {
+		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+					SET	`" . self::DB_COLUMN_LAST_NAME . "`= :newName
+					WHERE `" . self::DB_COLUMN_ID . "`= :id";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':id', $id, PDO::PARAM_INT);
+			$query->bindParam(':newName', $newName, PDO::PARAM_STR);
+			$query->execute();
+
+			return true;
+		} catch (Exception $e) {
+			throw new Exception("Something terrible happened. Could not update last name");
+		}
+	}
+
+	public static function updateMobileNum($db, $id, $mobileNum) {
+		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+					SET	`" . self::DB_COLUMN_MOBILE . "`= :mobileNum
+					WHERE `" . self::DB_COLUMN_ID . "`= :id";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':id', $id, PDO::PARAM_INT);
+			$query->bindParam(':mobileNum', $mobileNum, PDO::PARAM_STR);
+			$query->execute();
+
+			return true;
+		} catch (Exception $e) {
+			throw new Exception("Something terrible happened. Could not update mobile number");
+		}
+	}
+
+	public static function updateStudentId($db, $id, $studentId) {
+		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+					SET	`" . self::DB_COLUMN_STUDENT_ID . "`= :newStudentId
+					WHERE `" . self::DB_COLUMN_ID . "`= :id";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':id', $id, PDO::PARAM_INT);
+			$query->bindParam(':newStudentId', $studentId, PDO::PARAM_INT);
+			$query->execute();
+
+			return true;
+		} catch (Exception $e) {
+			throw new Exception("Something terrible happened. Could not update student id.");
+		}
+	}
+
+	public static function updateMajorId($db, $id, $majorId) {
+		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+					SET	`" . self::DB_COLUMN_MAJOR_ID . "`= :majorId
+					WHERE `" . self::DB_COLUMN_ID . "`= :id";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':id', $id, PDO::PARAM_INT);
+			$query->bindParam(':majorId', $majorId, PDO::PARAM_INT);
+			$query->execute();
+
+			return true;
+		} catch (Exception $e) {
+			throw new Exception("Something terrible happened. Could not update major id.");
+		}
+	}
+
+	public static function updateCi($db, $id, $newCi) {
+		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+					SET	`" . self::DB_COLUMN_CI . "`= :ci
+					WHERE `" . self::DB_COLUMN_ID . "`= :id";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':id', $id, PDO::PARAM_INT);
+			$query->bindParam(':ci', $newCi, PDO::PARAM_BOOL);
+			$query->execute();
+
+			return true;
+		} catch (Exception $e) {
+			throw new Exception("Something terrible happened. Could not update CI.");
+		}
+	}
+
+	public static function updateCredits($db, $id, $credits) {
+		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+					SET	`" . self::DB_COLUMN_CREDITS . "`= :credits
+					WHERE `" . self::DB_COLUMN_ID . "`= :id";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':id', $id, PDO::PARAM_INT);
+			$query->bindParam(':credits', $credits, PDO::PARAM_INT);
+			$query->execute();
+
+			return true;
+		} catch (Exception $e) {
+			throw new Exception("Something terrible happened. Could not update credits.");
+		}
+	}
+
+
+	public static function existsEmail($db, $email) {
+		try {
+			$email = trim($email);
+			$query = "SELECT COUNT(`" . self::DB_COLUMN_ID . "`) FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "` WHERE `" .
+				self::DB_COLUMN_EMAIL . "` = :email";
+
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':email', $email, PDO::PARAM_STR);
+
+			$query->execute();
+
+			if ($query->fetchColumn() === '0') return false;
+
+		} catch (PDOException $e) {
+			throw new Exception("Something terrible happened. Could not access database.");
+		} // end catch
+
+		return true;
+
+	} // end function get_data
+
+	public static function updateEmail($db, $id, $email) {
+		try {
+
+			$sql = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "` SET `" . self::DB_COLUMN_EMAIL . "` = :email WHERE `" .
+				self::DB_COLUMN_ID . "`= :id";
+
+			$query = $db->getConnection()->prepare($sql);
+			$query->bindParam(':id', $id, PDO::PARAM_INT);
+			$query->bindParam(':email', $email, PDO::PARAM_STR);
+			$query->execute();
+			return true;
+		} catch (Exception $e) {
+			throw new Exception($e->getMessage());
+		}
+
+	}
+
+
 	public static function existsStudentId($db, $newMobileNum) {
 		try {
 			$sql = "SELECT COUNT(" . StudentFetcher::DB_COLUMN_STUDENT_ID . ") FROM `" . DB_NAME . "`.`" .
