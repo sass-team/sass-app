@@ -6,34 +6,92 @@ $page_title = "Manage Students";
 $section = "academia";
 
 try {
-    $students = StudentFetcher::retrieve($db);
-    $majors = CourseFetcher::retrieveMajors($db);
-    $courses = CourseFetcher::retrieveAll($db);
-    $instructors = InstructorFetcher::retrieve($db);
+	$students = StudentFetcher::retrieve($db);
+	$majors = MajorFetcher::retrieveMajors($db);
+
+	if (isBtnAddStudentPrsd()) {
+		$majorId = !empty($_POST['userMajorId']) ? $_POST['userMajorId'] : NULL;
+
+		Student::create($db, $_POST['firstName'], $_POST['lastName'], $_POST['email'], $_POST['studentId'],
+			$_POST['mobileNum'], $majorId, $_POST['ciInput'], $_POST['creditsInput']);
+		header('Location: ' . BASE_URL . "academia/students/success");
+		exit();
+	} else if (isBtnAddMajorPrsd()) {
+		Major::create($db, $_POST['majorCode'], $_POST['majorName']);
+		header('Location: ' . BASE_URL . "academia/students/success");
+	} else if (isBtnUpdatePrsd()) {
+
+		if (!isset($_POST['idUpdate']) || ($oldStudentData = getStudent($_POST['idUpdate'], $students)) === false) {
+			throw new Exception("Data tempering detected. Process stopped.");
+		} else {
+			$id = $oldStudentData[StudentFetcher::DB_COLUMN_ID];
+			$newFirstName = $_POST['newFirstName'];
+			$newLastName = $_POST['newLastName'];
+			$newEmail = $_POST['newEmail'];
+			$newStudentId = $_POST['newStudentId'];
+			$newMobileNum = $_POST['newMobileNum'];
+			$newMajorId = $_POST['newStudentMajorId'];
+			$newCI = isset($_POST['newCI']) ? $_POST['newCI'] : NULL;
+			$newCreditsNum = $_POST['newCreditsNum'];
 
 
-    if (isBtnAddStudentPrsd()) {
-        Student::create($db, $_POST['firstName'], $_POST['lastName'], $_POST['email'], $_POST['courseId'],
-            $_POST['mobileNum'], $_POST['userMajorId'], $_POST['ciInput'], $_POST['creditsInput']);
-        header('Location: ' . BASE_URL . "academia/students/success");
-        exit();
-    }
+			Student::updateFirstName($db, $id, $newFirstName, $oldStudentData[StudentFetcher::DB_COLUMN_FIRST_NAME]);
+			Student::updateLastName($db, $id, $newLastName, $oldStudentData[StudentFetcher::DB_COLUMN_LAST_NAME]);
+			Student::updateStudentId($db, $id, $newStudentId, $oldStudentData[StudentFetcher::DB_COLUMN_STUDENT_ID]);
+			Student::updateEmail($db, $id, $newEmail, $oldStudentData[StudentFetcher::DB_COLUMN_EMAIL]);
+			Student::updateMobileNum($db, $id, $newMobileNum, $oldStudentData[StudentFetcher::DB_COLUMN_MOBILE]);
+			Student::updateMajorId($db, $id, $newMajorId, $oldStudentData[StudentFetcher::DB_COLUMN_MAJOR_ID]);
+			Student::updateCi($db, $id, $newCI, $oldStudentData[StudentFetcher::DB_COLUMN_CI]);
+			Student::updateCredits($db, $id, $newCreditsNum, $oldStudentData[StudentFetcher::DB_COLUMN_CREDITS]);
+
+			header('Location: ' . BASE_URL . "academia/students/success");
+
+		}
+
+	}
 
 
 } catch (Exception $e) {
-    $errors[] = $e->getMessage();
+	$errors[] = $e->getMessage();
 }
 
-function isEditBttnPressed() {
-    return isset($_GET['id']) && preg_match('/^[0-9]+$/', $_GET['id']);
+
+/**
+ * http://stackoverflow.com/a/4128377/2790481
+ *
+ * @param $needle
+ * @param $students
+ * @param bool $strict
+ * @return bool
+ */
+function getStudent($needle, $students, $strict = false) {
+	foreach ($students as $student) {
+		if ($student[StudentFetcher::DB_COLUMN_ID] === $needle) return $student;
+	}
+
+	return false;
+}
+
+
+function isEditbtnPressed() {
+	return isset($_GET['id']) && preg_match('/^[0-9]+$/', $_GET['id']);
 }
 
 function isBtnAddStudentPrsd() {
-    return isset($_POST['hiddenSubmitPressed']) && empty($_POST['hiddenSubmitPressed']);
+	return isset($_POST['hiddenSubmitPressed']) && empty($_POST['hiddenSubmitPressed']);
 }
 
-function isStudentAddedSuccessful() {
-    return isset($_GET['success']) && strcmp($_GET['success'], 'y1!q' === 0);
+function isModificationSuccess() {
+	return isset($_GET['success']) && strcmp($_GET['success'], 'y1!q' === 0);
+}
+
+function isBtnAddMajorPrsd() {
+	return isset($_POST['hiddenCreateMajor']) && empty($_POST['hiddenCreateMajor']);
+}
+
+function isBtnUpdatePrsd() {
+	return isset($_POST['hiddenUpdatePrsd']) && empty($_POST['hiddenUpdatePrsd']);
+
 }
 
 ?>
@@ -59,280 +117,500 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 <div id="content">
 
-    <div id="content-header">
-        <h1>All Students</h1>
-    </div>
-    <!-- #content-header -->
+	<div id="content-header">
+		<h1>All Students</h1>
+	</div>
+	<!-- #content-header -->
 
-    <div id="content-container">
+	<div id="content-container">
 
-        <?php
-        if (empty($errors) === false) {
-            ?>
-            <div class="alert alert-danger">
-                <a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-                <strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
-                ?>
-            </div>
-        <?php
-        } else if (isStudentAddedSuccessful()) {
-            ?>
-            <div class="alert alert-success">
-                <a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-                <strong>Student successfully created!</strong> <br/>
-            </div>
-        <?php } ?>
-        <div class="row">
-            <div class="col-md-12">
-                <a data-toggle="modal" id="bttn-styledModal" href="#addStudentModal"
-                   class="btn btn-primary navbar-right">
-                    Add Student</a>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
+		<?php
+		if (empty($errors) === false) {
+			?>
+			<div class="alert alert-danger">
+				<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+				<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
+				?>
+			</div>
+		<?php
+		} else if (isModificationSuccess()) {
+			?>
+			<div class="alert alert-success">
+				<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+				<strong>Data successfully modified!</strong> <br/>
+			</div>
+		<?php } ?>
+		<div class="row">
+			<div class="col-md-12">
 
-                <div class="portlet-content">
+				<div class="btn-group navbar-right">
+					<a data-toggle="modal" id="btn-styledModal" href="#addStudentModal"
+					   class="btn btn-primary">
+						Add Student</a>
+					<a data-toggle="modal" id="btn-styledModal" href="#addMajorModal"
+					   class="btn btn-primary">
+						Add Major</a>
+				</div>
 
-                    <div class="table-responsive">
-                        <table
-                            class="table table-striped table-bordered table-hover table-highlight table-checkable"
-                            data-provide="datatable"
-                            data-display-rows="10"
-                            data-info="true"
-                            data-search="true"
-                            data-length-change="true"
-                            data-paginate="true"
-                            id="usersTable"
-                            >
-                            <thead>
-                            <tr>
-                                <th data-filterable="true" data-sortable="true" data-direction="desc">Name</th>
-                                <th data-direction="asc" data-filterable="true" data-sortable="false">Email</th>
-                                <th data-filterable="true" data-sortable="false">Mobile</th>
-                                <th data-filterable="true" data-sortable="true">CI</th>
-                                <th data-filterable="true" data-sortable="true">Credits</th>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
 
-                                <th data-filterable="false" class="hidden-xs hidden-sm">Courses</th>
+				<div class="portlet-content">
 
-                                <?php if (!$user->isTutor()): ?>
-                                    <th data-filterable="false" class="hidden-xs hidden-sm">Schedule</th>
-                                <?php endif; ?>
+					<div class="table-responsive">
+						<table
+							class="table table-striped table-bordered table-hover table-highlight table-checkable"
+							data-provide="datatable"
+							data-display-rows="10"
+							data-info="true"
+							data-search="true"
+							data-length-change="true"
+							data-paginate="true"
+							id="usersTable"
+							>
+							<thead>
+							<tr>
+								<th data-filterable="true" data-sortable="true" data-direction="desc">Name</th>
+								<th data-filterable="true" data-sortable="true" data-direction="desc">ID</th>
+								<th data-direction="asc" data-filterable="true" data-sortable="false">Email</th>
+								<th data-filterable="true" data-sortable="false">Mobile</th>
+								<th data-filterable="true" data-sortable="true">Major</th>
+								<th data-filterable="true" data-sortable="true">CI</th>
+								<th data-filterable="true" data-sortable="true">Credits</th>
 
-
-                                <?php if ($user->isAdmin()): ?>
-                                    <th data-filterable="false" class="hidden-xs hidden-sm">Data</th>
-                                <?php endif; ?>
-                            </tr>
-                            </thead>
-                            <tbody>
-
-                            <?php
-                            if (empty($errors) === true) {
-                                foreach (array_reverse($students) as $student) {
-                                    include(ROOT_PATH . "app/views/partials/student-table-data-view.html.php");
-                                }
-                            } ?>
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- /.table-responsive -->
+								<?php if (!$user->isTutor()): ?>
+									<th data-filterable="false" class="hidden-xs hidden-sm">Schedule</th>
+								<?php endif; ?>
 
 
-                </div>
-                <!-- /.portlet -->
+								<?php if ($user->isAdmin()): ?>
+									<th data-filterable="false" class="hidden-xs hidden-sm">Action</th>
+								<?php endif; ?>
+							</tr>
+							</thead>
+							<tbody>
 
-            </div>
-            <!-- /.col -->
+							<?php
+							foreach (array_reverse($students) as $student) {
+								include(ROOT_PATH . "app/views/partials/student-table-data-view.html.php");
+							} ?>
+							</tbody>
+						</table>
+					</div>
+					<!-- /.table-responsive -->
 
-        </div>
-        <!-- /.row -->
+
+				</div>
+				<!-- /.portlet -->
+
+			</div>
+			<!-- /.col -->
+
+		</div>
+		<!-- /.row -->
 
 
-    </div>
-    <!-- /#content-container -->
+	</div>
+	<!-- /#content-container -->
 
 </div>
 <!-- /#content -->
 
 <div id="addStudentModal" class="modal modal-styled fade">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form method="post" id="add-student-form" action="" class="form">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form method="post" id="add-student-form" action="<?php echo BASE_URL . 'academia/students'; ?>" class="form">
 
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h3 class="modal-title">Add Student Form</h3>
-                </div>
-                <div class="modal-body">
-                    <div class="portlet">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h3 class="modal-title">Add Student Form</h3>
+				</div>
+				<div class="modal-body">
+					<div class="portlet">
 
-                        <?php
-                        if (empty($errors) === false) {
-                            ?>
-                            <div class="alert alert-danger">
-                                <a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-                                <strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
-                                ?>
-                            </div>
-                        <?php
-                        } else if (isBtnAddStudentPrsd()) {
-                            ?>
-                            <div class="alert alert-success">
-                                <a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-                                <strong>Student successfully created!</strong> <br/>
-                            </div>
-                        <?php } ?>
+						<?php
+						if (empty($errors) === false) {
+							?>
+							<div class="alert alert-danger">
+								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+								<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
+								?>
+							</div>
+						<?php
+						} else if (isBtnAddStudentPrsd()) {
+							?>
+							<div class="alert alert-success">
+								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+								<strong>Student successfully created!</strong> <br/>
+							</div>
+						<?php } ?>
 
-                        <div class="portlet-content">
+						<div class="portlet-content">
 
-                            <div class="row">
-
-
-                                <div class="col-sm-12">
-
-                                    <div class="form-group">
-                                        <h5>
-                                            <i class="fa fa-edit"></i>
-                                            <label for="firstName">First Name</label>
-                                        </h5>
-                                        <input type="text" id="firstName" name="firstName" class="form-control"
-                                               value="<?php if (isset($_POST['firstName'])) echo htmlentities($_POST['firstName']); ?>"
-                                               autofocus="on" placeholder="Required" required>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <h5>
-                                            <i class="fa fa-edit"></i>
-                                            <label for="lastName">Last Name</label>
-                                        </h5>
-                                        <input type="text" id="lastName" name="lastName" class="form-control"
-                                               value="<?php if (isset($_POST['lastName'])) echo htmlentities($_POST['lastName']); ?>"
-                                               required placeholder="Required">
-                                    </div>
-
-                                    <div class="form-group">
-
-                                        <i class="fa fa-envelope"></i>
-                                        <label for="email">Email</label>
-                                        <input type="email" required id="email" name="email" class="form-control"
-                                               value="<?php if (isset($_POST['email'])) echo htmlentities($_POST['email']); ?>"
-                                               placeholder="Required">
-                                    </div>
+							<div class="row">
 
 
-                                    <div class="form-group">
+								<div class="col-sm-12">
 
-                                        <h5>
-                                            <i class="fa fa-tasks"></i>
-                                            <label for="courseId">Course</label>
-                                        </h5>
+									<div class="form-group">
+										<h5>
+											<i class="fa fa-edit"></i>
+											<label for="firstName">First Name</label>
+										</h5>
+										<input type="text" id="firstName" name="firstName" class="form-control"
+										       value="<?php if (isset($_POST['firstName'])) echo htmlentities($_POST['firstName']); ?>"
+										       autofocus="on" placeholder="Required" required>
+									</div>
 
-                                        <select id="courseId" name="courseId" class="form-control">
+									<div class="form-group">
+										<h5>
+											<i class="fa fa-edit"></i>
+											<label for="lastName">Last Name</label>
+										</h5>
+										<input type="text" id="lastName" name="lastName" class="form-control"
+										       value="<?php if (isset($_POST['lastName'])) echo htmlentities($_POST['lastName']); ?>"
+										       required placeholder="Required">
+									</div>
 
-                                            <option value="null">Required</option>
-                                            <?php foreach ($courses as $course) {
-                                                include(ROOT_PATH . "app/views/partials/course-select-options-view.html.php");
-                                            }
-                                            ?>
+									<div class="form-group">
 
-                                        </select>
-                                        <span class="input-group-addon">Taught By Instructor:</span>
-
-                                        <select id="instructorId" name="instructorId"
-                                                class="form-control">
-
-                                            <option
-                                                value="null">I don&#39;t know.
-                                            </option>
-                                            <?php foreach ($instructors as $instructor) {
-                                                include(ROOT_PATH . "app/views/partials/instructor-select-options-view.html.php");
-                                            }
-                                            ?>
-
-                                        </select>
-
-
-                                    </div>
+										<i class="fa fa-envelope"></i>
+										<label for="email">Email</label>
+										<input type="email" required id="email" name="email" class="form-control"
+										       value="<?php if (isset($_POST['email'])) echo htmlentities($_POST['email']); ?>"
+										       placeholder="Required">
+									</div>
 
 
-                                    <div class="form-group">
-                                        <h5>
-                                            <i class="fa fa-tasks"></i>
-                                            <label for="mobileNum">Mobile Number</label>
-                                            <input class="form-control" id="mobileNum" name="mobileNum" type="text"
-                                                   placeholder="123457890">
+									<div class="form-group">
 
-                                        </h5>
-                                    </div>
+										<h5>
+											<i class="fa fa-tasks"></i>
+											<label for="studentId">Student ID</label>
+										</h5>
 
+										<input class="form-control" id="studentId" name="studentId" type="text"
+										       value="<?php if (isset($_POST['studentId'])) echo htmlentities($_POST['studentId']); ?>"
+										       placeholder="123456">
 
-                                    <div class="form-group">
-                                        <h5>
-                                            <i class="fa fa-tasks"></i>
-                                            <label for="userMajorId">Major</label>
-                                        </h5>
-                                        <select id="userMajorId" name="userMajorId" class="form-control">
-                                            <option value="">I don&#39;t know.</option>
-                                            <?php foreach ($majors as $major) {
-                                                include(ROOT_PATH . "app/views/partials/major-select-options-view.html.php");
-                                            }
-                                            ?>
-                                        </select>
-                                    </div>
+									</div>
+
+									<div class="form-group">
+										<h5>
+											<i class="fa fa-tasks"></i>
+											<label for="mobileNum">Mobile Number</label>
+											<input class="form-control" id="mobileNum" name="mobileNum" type="text"
+											       value="<?php if (isset($_POST['mobileNum'])) echo htmlentities($_POST['mobileNum']); ?>"
+											       placeholder="69........">
 
 
-                                    <div class="form-group">
-                                        <div class="col-sm-6">
+										</h5>
+									</div>
 
-                                            <div class="form-group">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon">CI</span>
-                                                    <input class="form-control" id="ciInput" name="ciInput" type="text"
-                                                           placeholder="3.5">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
 
-                                            <div class="form-group">
-                                                <div class="input-group">
-                                                    <input class="form-control" id="creditsInput" name="creditsInput"
-                                                           type="text"
-                                                           placeholder="100">
-                                                    <span class="input-group-addon">Credits</span>
-                                                </div>
-                                            </div>
+									<div class="form-group">
+										<h5>
+											<i class="fa fa-tasks"></i>
+											<label for="userMajorId">Major</label>
+										</h5>
+										<select id="userMajorId" name="userMajorId" class="form-control">
+											<?php foreach ($majors as $major) {
+												include(ROOT_PATH . "app/views/partials/major-select-options-view.html.php");
+											}
+											?>
+										</select>
+									</div>
 
-                                        </div>
-                                    </div>
 
-                                </div>
-                            </div>
+									<div class="form-group">
+										<div class="col-sm-6">
 
-                        </div>
+											<div class="form-group">
+												<div class="input-group">
+													<span class="input-group-addon">CI</span>
+													<input class="form-control" id="ciInput" name="ciInput" type="text"
+													       placeholder="e.g. 3.5"
+													       value="<?php if (isset($_POST['ciInput'])) echo htmlentities($_POST['ciInput']); ?>">
 
-                    </div>
-                </div>
+												</div>
+											</div>
+										</div>
+										<div class="col-sm-6">
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-tertiary" data-dismiss="modal">Close</button>
-                    <input type="hidden" name="hiddenSubmitPressed" value="">
-                    <button type="submit" class="btn btn-primary">Create</button>
-                </div>
-            </form>
+											<div class="form-group">
+												<div class="input-group">
+													<input class="form-control" id="creditsInput" name="creditsInput"
+													       type="text"
+													       value="<?php if (isset($_POST['creditsInput'])) echo htmlentities($_POST['creditsInput']); ?>"
+													       placeholder="e.g. 50">
+													<span class="input-group-addon">Credits</span>
+												</div>
+											</div>
 
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
+										</div>
+									</div>
+
+								</div>
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-tertiary" data-dismiss="modal">Close</button>
+					<input type="hidden" name="hiddenSubmitPressed" value="">
+					<button type="submit" class="btn btn-primary">Create</button>
+				</div>
+			</form>
+
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
 </div>
 
 
+<div id="addMajorModal" class="modal modal-styled fade">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<form method="post" id="create-form" action="<?php echo BASE_URL . 'academia/students'; ?>" class="form">
+
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h3 class="modal-title">Create Major</h3>
+				</div>
+				<div class="modal-body">
+					<div class="portlet">
+						<?php
+						if (empty($errors) === false) {
+							?>
+							<div class="alert alert-danger">
+								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+								<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
+								?>
+							</div>
+						<?php
+						} else if (isModificationSuccess()) {
+							?>
+							<div class="alert alert-success">
+								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+								<strong>Data successfully modified!</strong> <br/>
+							</div>
+						<?php } ?>
+						<div class="portlet-content">
+							<div class="row">
+								<div class="col-sm-12">
+
+									<div class="form-group">
+										<h5>
+											<i class="fa fa-edit"></i>
+											<label for="majorCode">Major Code</label>
+										</h5>
+										<input type="text" id="majorCode" name="majorCode" class="form-control"
+										       value="<?php if (isset($_POST['majorCode'])) echo
+										       htmlentities($_POST['majorCode']); ?>"
+										       autofocus="on" required>
+									</div>
+
+									<div class="form-group">
+										<h5>
+											<i class="fa fa-edit"></i>
+											<label for="majorName">Major Name</label>
+										</h5>
+										<input type="text" id="majorName" name="majorName" class="form-control"
+										       value="<?php if (isset($_POST['majorName'])) echo
+										       htmlentities($_POST['majorName']); ?>"
+										       required>
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-tertiary" data-dismiss="modal">Close</button>
+					<input type="hidden" name="hiddenCreateMajor">
+					<button type="submit" class="btn btn-primary">Create</button>
+				</div>
+			</form>
+
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<div id="updateStudent" class="modal modal-styled fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form method="post" id="add-student-form" action="<?php echo BASE_URL . 'academia/students'; ?>" class="form">
+
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h3 class="modal-title">Update Student Form</h3>
+				</div>
+				<div class="modal-body">
+					<div class="portlet">
+
+						<?php
+						if (empty($errors) === false) {
+							?>
+							<div class="alert alert-danger">
+								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+								<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
+								?>
+							</div>
+						<?php
+						} else if (isBtnAddStudentPrsd()) {
+							?>
+							<div class="alert alert-success">
+								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+								<strong>Student successfully created!</strong> <br/>
+							</div>
+						<?php } ?>
+
+						<div class="portlet-content">
+
+							<div class="row">
+
+
+								<div class="col-sm-12">
+
+									<div class="form-group">
+										<h5>
+											<i class="fa fa-edit"></i>
+											<label for="firstName">First Name</label>
+										</h5>
+										<input type="text" id="newFirstName" name="newFirstName" class="form-control"
+										       value="<?php if (isset($_POST['newFirstName'])) echo htmlentities($_POST['newFirstName']); ?>"
+										       autofocus="on" placeholder="Required" required>
+									</div>
+
+									<div class="form-group">
+										<h5>
+											<i class="fa fa-edit"></i>
+											<label for="newLastName">Last Name</label>
+										</h5>
+										<input type="text" id="newLastName" name="newLastName" class="form-control"
+										       value="<?php if (isset($_POST['newLastName'])) echo htmlentities($_POST['newLastName']); ?>"
+										       required placeholder="Required">
+									</div>
+
+
+									<div class="form-group">
+
+										<h5>
+											<i class="fa fa-tasks"></i>
+											<label for="newStudentId">Student ID</label>
+										</h5>
+
+										<input class="form-control" id="newStudentId" name="newStudentId" type="text"
+										       value="<?php if (isset($_POST['newStudentId'])) echo htmlentities($_POST['newStudentId']); ?>"
+										       placeholder="123456">
+
+									</div>
+
+									<div class="form-group">
+
+										<i class="fa fa-envelope"></i>
+										<label for="newEmail">Email</label>
+										<input type="email" required id="newEmail" name="newEmail" class="form-control"
+										       value="<?php if (isset($_POST['newEmail'])) echo htmlentities($_POST['newEmail']); ?>"
+										       placeholder="Required">
+									</div>
+
+
+									<div class="form-group">
+										<h5>
+											<i class="fa fa-tasks"></i>
+											<label for="newMobileNum">Mobile Number</label>
+											<input class="form-control" id="newMobileNum" name="newMobileNum" type="text"
+											       value="<?php if (isset($_POST['newMobileNum'])) echo htmlentities($_POST['newMobileNum']); ?>"
+											       placeholder="69........">
+
+
+										</h5>
+									</div>
+
+
+									<div class="form-group">
+										<h5>
+											<i class="fa fa-tasks"></i>
+											<label for="newStudentMajorId">Major</label>
+										</h5>
+										<select id="newStudentMajorId" name="newStudentMajorId" class="form-control">
+											<?php foreach ($majors as $major) {
+												include(ROOT_PATH . "app/views/partials/major-select-options-view.html.php");
+											}
+											?>
+										</select>
+									</div>
+
+
+									<div class="form-group">
+										<div class="col-sm-6">
+
+											<div class="form-group">
+												<div class="input-group">
+													<span class="input-group-addon">CI</span>
+													<input class="form-control" id="newCI" name="newCI" type="text"
+													       placeholder="e.g. 3.5"
+													       value="<?php if (isset($_POST['newCI'])) echo htmlentities($_POST['newCI']); ?>">
+
+												</div>
+											</div>
+										</div>
+										<div class="col-sm-6">
+
+											<div class="form-group">
+												<div class="input-group">
+													<input class="form-control" id="newCreditsNum" name="newCreditsNum"
+													       type="text"
+													       value="<?php if (isset($_POST['newCreditsNum'])) echo htmlentities($_POST['newCreditsNum']); ?>"
+													       placeholder="e.g. 50">
+													<span class="input-group-addon">Credits</span>
+													<input type="hidden" value="" id="idUpdate" name="idUpdate"/>
+
+												</div>
+											</div>
+
+										</div>
+									</div>
+
+								</div>
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-tertiary" data-dismiss="modal">Close</button>
+					<input type="hidden" name="hiddenUpdatePrsd" value="">
+					<button type="submit" class="btn btn-primary">Update</button>
+				</div>
+			</form>
+
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+
+<?php include ROOT_PATH . "app/views/footer.php"; ?>
 </div>
 <!-- #wrapper -->
 
-<?php include ROOT_PATH . "app/views/footer.php"; ?>
 <?php include ROOT_PATH . "app/views/assets/footer_common.php"; ?>
 
 <script src="<?php echo BASE_URL; ?>app/assets/js/plugins/datatables/jquery.dataTables.min.js"></script>
@@ -349,22 +627,36 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <script src="<?php echo BASE_URL; ?>app/assets/js/demos/form-extended.js"></script>
 
 <script type="text/javascript">
-    jQuery(function () {
+	jQuery(function () {
 
 
-        $("#userMajorId").select2();
+		$("#userMajorId").select2();
+		$("#newStudentMajorId").select2();
 
-        $("#courseId").select2({
-            placeholder: "Required",
-            allowClear: false
-        });
 
-        $("#instructorId").select2({
-            placeholder: "Required",
-            allowClear: false
-        });
+		$(".btnUpdateStudent").click(function () {
+			var id = $(this).next().val();
+			var studentsCredits = ($(this).parent().prev().prev().text());
+			var studentCi = ($(this).parent().prev().prev().prev().text());
+			var studentMajorId = ($(this).parent().prev().prev().prev().prev().find("input:first")).val();
+			var studentMobile = ($(this).parent().prev().prev().prev().prev().prev().text());
+			var studentEmail = ($(this).parent().prev().prev().prev().prev().prev().prev().text());
+			var studentId = ($(this).parent().prev().prev().prev().prev().prev().prev().prev().text());
+			var firstName = ($(this).parent().prev().prev().prev().prev().prev().prev().prev().prev().find("span:first")).text();
+			var lastName = ($(this).parent().prev().prev().prev().prev().prev().prev().prev().prev().find("span:first")).next().text();
 
-    });
+			$("#newFirstName").val(firstName);
+			$("#newLastName").val(lastName);
+			$("#newEmail").val(studentEmail);
+			$("#newStudentId").val(studentId);
+			$("#newMobileNum").val(studentMobile);
+			$("#newStudentMajorId").select2("val", studentMajorId); // select "5"
+			$("#newCI").val(studentCi);
+			$("#newCreditsNum").val(studentsCredits);
+			$("#idUpdate").val(id);
+		});
+
+	});
 
 
 </script>

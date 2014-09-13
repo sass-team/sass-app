@@ -77,15 +77,15 @@ function isModifyBttnPressed() {
 						<div class="portlet-content">
 							<div class="table-responsive">
 								<table
-									 class="table table-striped table-bordered table-hover table-highlight table-checkable"
-									 data-provide="datatable"
-									 data-display-rows="10"
-									 data-info="true"
-									 data-search="true"
-									 data-length-change="true"
-									 data-paginate="true"
-									 id="usersTable"
-									 >
+									class="table table-striped table-bordered table-hover table-highlight table-checkable"
+									data-provide="datatable"
+									data-display-rows="10"
+									data-info="true"
+									data-search="true"
+									data-length-change="true"
+									data-paginate="true"
+									id="usersTable"
+									>
 									<thead>
 									<tr>
 										<th data-filterable="true" data-sortable="true" data-direction="desc">Name</th>
@@ -222,8 +222,8 @@ function isModifyBttnPressed() {
 
 		$('input[name=iCheck]').each(function () {
 			var self = $(this),
-				 label = self.next(),
-				 label_text = label.text();
+				label = self.next(),
+				label_text = label.text();
 
 			label.remove();
 			self.iCheck({

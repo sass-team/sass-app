@@ -16,8 +16,8 @@ class MajorFetcher
 	public static function retrieveMajors($db) {
 
 	        $query = 
-	        	"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_CODE . "` AS 'code',
-	        			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_NAME . "` AS  'name',
+	        	"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_CODE . "`,
+	        			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_NAME . "`,
 	        			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`
 					FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
 					order by `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` asc"; //ordering tis way so "Undecided" and "I do not know" to be first
@@ -36,8 +36,8 @@ class MajorFetcher
 	public static function retrieveMajorsToEdit($db) {
 
 	        $query = 
-	        	"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_CODE . "` AS 'code',
-	        			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_NAME . "` AS  'name',
+	        	"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_CODE . "`,
+	        			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_NAME . "`,
 	        			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`
 				   FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
 				  WHERE `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_CODE . "` != 'A'
@@ -54,25 +54,21 @@ class MajorFetcher
 	        }
 	    }
 
-	public static function majorExists($db, $majorId) {
+    public static function idExists($db, $majorId) {
+        try {
+            $sql = "SELECT COUNT(" . self::DB_COLUMN_ID . ") FROM `" . DB_NAME . "`.`" .
+                self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :majorId";
+            $query = $db->getConnection()->prepare($sql);
+            $query->bindParam(':majorId', $majorId, PDO::PARAM_INT);
+            $query->execute();
 
-	        $query = "SELECT COUNT(`" . self::DB_COLUMN_ID . "`) FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "` WHERE
-	        `" . self::DB_COLUMN_ID . "`= :majorId";
+            if ($query->fetchColumn() === 0) return false;
+        } catch (Exception $e) {
+            throw new Exception("Could not check if major code already exists on database. <br/> Aborting process.");
+        }
 
-	        $query = $db->getConnection()->prepare($query);
-	        $query->bindParam(':majorId', $majorId, PDO::PARAM_STR);
-
-	        try {
-	            $query->execute();
-	            $rows = $query->fetchColumn();
-
-	            if ($rows == 1) return true;
-	        } catch (PDOException $e) {
-	            throw new Exception("Something terrible happened. Could not access database.");
-	        } // end catch
-
-	        return false;
-	    }
+        return true;
+    }
 
 	public static function insert($db, $majorCode, $majorName) {
         try {
@@ -93,6 +89,7 @@ class MajorFetcher
         }
     }
 
+
     public static function update($db, $majorId, $newMajorCode, $newMajorName) {
         $newMajorCode = trim($newMajorCode);
         $newMajorName = trim($newMajorName);
@@ -100,7 +97,7 @@ class MajorFetcher
         $query = "UPDATE `" . DB_NAME . "`.`" . MajorFetcher::DB_TABLE . "`
 					SET `" . self::DB_COLUMN_CODE . "`= :newMajorCode, 
 						`" . self::DB_COLUMN_NAME . "`= :newMajorName
-					WHERE `id`= :majorId";
+					WHERE `" . self::DB_COLUMN_ID . "`= :majorId";
 
         try {
             $query = $db->getConnection()->prepare($query);
@@ -119,7 +116,7 @@ class MajorFetcher
 
         $query = "UPDATE `" . DB_NAME . "`.`" . MajorFetcher::DB_TABLE . "`
 					SET	`" . self::DB_COLUMN_NAME . "`= :newMajorName
-					WHERE `id`= :majorId";
+					WHERE  `" . self::DB_COLUMN_ID . "`= :majorId";
 
         try {
             $query = $db->getConnection()->prepare($query);
@@ -138,7 +135,7 @@ class MajorFetcher
 
         $query = "UPDATE `" . DB_NAME . "`.`" . MajorFetcher::DB_TABLE . "`
 					SET	`" . self::DB_COLUMN_CODE . "`= :newCode
-					WHERE `id`= :majorId";
+					WHERE  `" . self::DB_COLUMN_ID . "`= :majorId";
 
         try {
             $query = $db->getConnection()->prepare($query);
@@ -168,21 +165,7 @@ class MajorFetcher
         return true;
     }
 
-    public static function idExists($db, $majorId) {
-        try {
-            $sql = "SELECT COUNT(" . self::DB_COLUMN_ID . ") FROM `" . DB_NAME . "`.`" .
-                self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :majorId";
-            $query = $db->getConnection()->prepare($sql);
-            $query->bindParam(':majorId', $majorId, PDO::PARAM_INT);
-            $query->execute();
 
-            if ($query->fetchColumn() === 0) return false;
-        } catch (Exception $e) {
-            throw new Exception("Could not check if major code already exists on database. <br/> Aborting process.");
-        }
-
-        return true;
-    }
 
     public static function nameExists($db, $majorName) {
         try {
@@ -225,4 +208,28 @@ class MajorFetcher
             throw new Exception("Could not retrieve majors data from database.");
         }
     }
+=======
+	const DB_TABLE = "major";
+	const DB_COLUMN_ID = "id";
+	const DB_COLUMN_CODE = "code";
+	const DB_COLUMN_NAME = "name";
+
+	public static function retrieveMajors($db) {
+
+		$query = "SELECT `" . self::DB_COLUMN_ID . "`, `" . self::DB_COLUMN_CODE . "`, `" .
+			self::DB_COLUMN_NAME . "` FROM `" . DB_NAME . "`.major";
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->execute();
+
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+		} catch (Exception $e) {
+			throw new Exception("Could not retrieve majors data from database.");
+		}
+	}
+
+
+
+
+
 }
