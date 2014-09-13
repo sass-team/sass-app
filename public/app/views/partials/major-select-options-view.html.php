@@ -33,5 +33,5 @@
 ?>
 
 <option
-	value="<?php echo $major[MajorFetcher::DB_COLUMN_ID]; ?>"><?php echo $major[MajorFetcher::DB_COLUMN_CODE] . " " .
+	value="<?php echo $major[MajorFetcher::DB_COLUMN_ID]; ?>"><?php echo $major[MajorFetcher::DB_COLUMN_CODE] . " - " .
 		$major[MajorFetcher::DB_COLUMN_NAME]; ?></option>

@@ -60,8 +60,8 @@ abstract class Person
 	 * @throws Exception
 	 */
 	public static function validateName($name) {
-		if (!preg_match('/^[A-Za-z]+$/', $name)) {
-			throw new Exception("Please enter a first/last name containing only letters of minimum length 1.");
+		if (!preg_match('/^[A-Za-z\\ ]{1,35}$/', $name)) {
+			throw new Exception("Please enter a first/last name containing only letters of minimum length 1-35.");
 		}
 	}
 

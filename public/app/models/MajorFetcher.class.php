@@ -208,28 +208,5 @@ class MajorFetcher
             throw new Exception("Could not retrieve majors data from database.");
         }
     }
-=======
-	const DB_TABLE = "major";
-	const DB_COLUMN_ID = "id";
-	const DB_COLUMN_CODE = "code";
-	const DB_COLUMN_NAME = "name";
-
-	public static function retrieveMajors($db) {
-
-		$query = "SELECT `" . self::DB_COLUMN_ID . "`, `" . self::DB_COLUMN_CODE . "`, `" .
-			self::DB_COLUMN_NAME . "` FROM `" . DB_NAME . "`.major";
-		try {
-			$query = $db->getConnection()->prepare($query);
-			$query->execute();
-
-			return $query->fetchAll(PDO::FETCH_ASSOC);
-		} catch (Exception $e) {
-			throw new Exception("Could not retrieve majors data from database.");
-		}
-	}
-
-
-
-
 
 }
