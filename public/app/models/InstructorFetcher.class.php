@@ -28,7 +28,7 @@ class InstructorFetcher extends Person
 
 			return $rows;
 		} catch (PDOException $e) {
-			throw new Exception("Something terrible happened. Could not retrieve users data from database.: " . $e->getMessage());
+			throw new Exception("Something terrible happened. Could not retrieve users data from database.: ");
 		} // end catch
 	}
 

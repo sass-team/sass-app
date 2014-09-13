@@ -44,7 +44,7 @@ class StudentFetcher extends Person
 
 			return $rows;
 		} catch (PDOException $e) {
-			throw new Exception("Something terrible happened. Could not retrieve users data from database.: " . $e->getMessage());
+			throw new Exception("Something terrible happened. Could not retrieve users data from database.: ");
 		} // end catch
 	}
 
@@ -82,7 +82,7 @@ class StudentFetcher extends Person
 			$query->execute();
 			return true;
 		} catch (Exception $e) {
-			throw new Exception("Could not insert user into database." . $e->getMessage());
+			throw new Exception("Could not insert student into database." . $e->getMessage());
 		}
 	}
 

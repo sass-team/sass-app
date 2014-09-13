@@ -55,8 +55,8 @@ class CourseFetcher
 
 	public static function retrieveMajors($db) {
 
-		$query = "SELECT major.extension AS 'Extension', major.name AS 'Name'
-				FROM `" . DB_NAME . "`.major";
+		$query = "SELECT `" . MajorFetcher::DB_COLUMN_ID . "`, `" . MajorFetcher::DB_COLUMN_CODE . "`, `" .
+			MajorFetcher::DB_COLUMN_NAME . "` FROM `" . DB_NAME . "`.major";
 		try {
 			$query = $db->getConnection()->prepare($query);
 			$query->execute();
@@ -88,22 +88,22 @@ class CourseFetcher
 		return false;
 	}
 
-	public static function insert($db, $courseCode, $courseName) {
+	public static function insert($db, $code, $name) {
 		try {
-			$query = "INSERT INTO `" . DB_NAME . "`.`" . CourseFetcher::DB_TABLE . "` (`" . CourseFetcher::DB_COLUMN_CODE .
-				"`, `" . CourseFetcher::DB_COLUMN_NAME . "`)
+			$query = "INSERT INTO `" . DB_NAME . "`.`" . self::DB_TABLE . "` (`" . self::DB_COLUMN_CODE .
+				"`, `" . self::DB_COLUMN_NAME . "`)
 				VALUES(
-					:course_code,
-					:course_name
+					:code,
+					:name
 				)";
 
 			$query = $db->getConnection()->prepare($query);
-			$query->bindParam(':course_code', $courseCode, PDO::PARAM_STR);
-			$query->bindParam(':course_name', $courseName, PDO::PARAM_STR);
+			$query->bindParam(':code', $code, PDO::PARAM_STR);
+			$query->bindParam(':name', $name, PDO::PARAM_STR);
 			$query->execute();
 			return true;
 		} catch (Exception $e) {
-			throw new Exception("Could not insert course into database." . $e->getMessage());
+			throw new Exception("Could not insert course into database.");
 		}
 	}
 
@@ -111,7 +111,7 @@ class CourseFetcher
 		$newCourseCode = trim($newCourseCode);
 		$newCourseName = trim($newCourseName);
 
-		$query = "UPDATE `" . DB_NAME . "`.`" . CourseFetcher::DB_TABLE . "`
+		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
 					SET `" . self::DB_COLUMN_CODE . "`= :newCourseCode, 
 						`" . self::DB_COLUMN_NAME . "`= :newCourseName
 					WHERE `id`= :courseId";
@@ -124,14 +124,14 @@ class CourseFetcher
 
 			return true;
 		} catch (Exception $e) {
-			throw new Exception("Something terrible happened. Could not update course." . $e->getMessage());
+			throw new Exception("Something terrible happened. Could not update course.");
 		}
 	}
 
 	public static function updateName($db, $id, $newName) {
 		$newName = trim($newName);
 
-		$query = "UPDATE `" . DB_NAME . "`.`" . CourseFetcher::DB_TABLE . "`
+		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
 					SET	`" . self::DB_COLUMN_NAME . "`= :newCourseName
 					WHERE `id`= :courseId";
 
@@ -143,14 +143,14 @@ class CourseFetcher
 
 			return true;
 		} catch (Exception $e) {
-			throw new Exception("Something terrible happened. Could not update course name" . $e->getMessage());
+			throw new Exception("Something terrible happened. Could not update course name");
 		}
 	}
 
 	public static function updateCode($db, $id, $newCode) {
 		$newCode = trim($newCode);
 
-		$query = "UPDATE `" . DB_NAME . "`.`" . CourseFetcher::DB_TABLE . "`
+		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
 					SET	`" . self::DB_COLUMN_CODE . "`= :newCode
 					WHERE `id`= :courseId";
 
@@ -162,7 +162,7 @@ class CourseFetcher
 
 			return true;
 		} catch (Exception $e) {
-			throw new Exception("Something terrible happened. Could not update course name" . $e->getMessage());
+			throw new Exception("Something terrible happened. Could not update course name");
 		}
 	}
 
@@ -176,7 +176,7 @@ class CourseFetcher
 
 			if ($query->fetchColumn() === '0') return false;
 		} catch (Exception $e) {
-			throw new Exception("Could not check if course id already exists on database. <br/> Aborting process.");
+			throw new Exception("Could not check if course code already exists on database. <br/> Aborting process.");
 		}
 
 		return true;
@@ -192,7 +192,7 @@ class CourseFetcher
 
 			if ($query->fetchColumn() === 0) return false;
 		} catch (Exception $e) {
-			throw new Exception("Could not check if course code already exists on database. <br/> Aborting process.");
+			throw new Exception("Could not check if course id already exists on database. <br/> Aborting process.");
 		}
 
 		return true;
@@ -208,7 +208,7 @@ class CourseFetcher
 
 			if ($query->fetchColumn() === '0') return false;
 		} catch (Exception $e) {
-			throw new Exception("Could not check if course code already exists on database. <br/> Aborting process.");
+			throw new Exception("Could not check if course name already exists on database. <br/> Aborting process.");
 		}
 
 		return true;

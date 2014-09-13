@@ -9,33 +9,53 @@
 class Major
 {
 
-    const DB_TABLE = "major";
-    const DB_COLUMN_ID = "id";
-    const DB_COLUMN_EXTENSIONS = "extension";
+	public static function validateId($db, $id) {
+		if (is_null($id)) throw new Exception("Major is required.");
 
-    public static function validate($db, $majorId) {
-        if (!preg_match("/^[0-9]+$/", $majorId)) {
-            throw new Exception("Data has been tempered. Aborting process.");
-        }
+		if (!preg_match("/^[0-9]+$/", $id)) {
+			throw new Exception("Data has been tempered. Aborting process.");
+		}
 
-        $query = "SELECT COUNT(`" . Major::DB_COLUMN_ID . "`)  FROM `" . DB_NAME . "`.`" . Major::DB_TABLE . "`
-            WHERE `" . Major::DB_TABLE . "`.`" . Major::DB_COLUMN_EXTENSIONS . "` = :extension";
-        $query = $db->getDbConnection()->prepare($query);
-        $query->bindParam(':extension', $majorId);
+		if (!MajorFetcher::idExists($db, $id)) {
+			// TODO: sent email to developer relevant to this error.
+			throw new Exception("Either something went wrong with a database query, or you're trying to hack this app. In either case, the developers were just notified about this.");
+		}
+	}
 
-        try {
+	public static function create($db, $code, $name) {
+		$code = self::validateCode($db, $code);
+		$name = self::validateName($db, $name);
+		MajorFetcher::insert($db, $code, $name);
 
-            $query->execute();
-            $data = $query->fetch();
-        } catch (Exception $e) {
-            throw new Exception("Could not connect to database.");
-        }
+	}
 
-        if ($data === 1) {
-            return true;
-        } else {
-            // TODO: sent email to developer relavant to this error.
-            throw new Exception("Either something went wrong with a database query, or you're trying to hack this app. In either case, the developers were just notified about this.");
-        }
-    }
-} 
+	public static function  validateCode($db, $code) {
+		$code = trim($code);
+
+		if (!preg_match("/^[A-Z0-9]{1,10}$/", $code)) {
+			throw new Exception("Major code can contain capital letters in the range of A-Z, numbers 0-9 and of length 1-10.");
+		}
+
+		if (MajorFetcher::codeExists($db, $code)) {
+			throw new Exception("Major code already exists on database. Please insert a different one.");
+		}
+
+		return $code;
+	}
+
+	public static function  validateName($db, $name) {
+
+		if (!preg_match("/^[\\w\\[ *\\w]* ?$/", $name)) {
+			throw new Exception("Major name can only contain <a href='http://www.regular-expressions.info/shorthand.html'
+            target='_blank'>word characters</a> and spaces of length 1-50. Example: 'Psychology', 'Information Technology'");
+		}
+
+		if (MajorFetcher::nameExists($db, $name)) {
+			throw new Exception("Major name already exists on database. Please insert a different one.");
+		}
+
+		return $name;
+	}
+
+
+}

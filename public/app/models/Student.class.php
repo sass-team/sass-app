@@ -50,7 +50,7 @@ class Student extends Person
 
 			return $rows;
 		} catch (PDOException $e) {
-			throw new Exception("Something terrible happened. Could not retrieve users data from database.: " . $e->getMessage());
+			throw new Exception("Something terrible happened. Could not retrieve users data from database.: ");
 		} // end catch
 	}
 
@@ -60,8 +60,9 @@ class Student extends Person
 		Person::validateName($lastName);
 		Person::validateEmail($db, $email, StudentFetcher::DB_TABLE);
 		self::validateStudentId($db, $studentId);
-		$mobileNum = self::validateMobileNumber($db, $mobileNum);
-		if (!empty($majorId)) Major::validate($db, $majorId);
+		self::validateMobileNumber($db, $mobileNum);
+		Major::validateId($db, $majorId);
+
 		$ci = Student::validateCi($ci);
 		$credits = Student::validateCredits($credits);
 
@@ -87,8 +88,9 @@ class Student extends Person
 	 */
 	public static function validateMobileNumber($db, $newMobileNum) {
 		if (empty($newMobileNum) === TRUE) {
-			return NULL; // no mobilenumber
+			throw new Exception('Mobile number is required.');
 		}
+
 		if (!preg_match('/^[0-9]{10}$/', $newMobileNum)) {
 			throw new Exception('Mobile number should contain only digits of total length 10');
 		}
@@ -96,8 +98,6 @@ class Student extends Person
 		if (StudentFetcher::existsMobileNum($db, $newMobileNum)) {
 			throw new Exception("Mobile entered number already exists in database."); // the array of errors messages
 		}
-
-		return $newMobileNum;
 	}
 
 	public static function validateCi($ci) {

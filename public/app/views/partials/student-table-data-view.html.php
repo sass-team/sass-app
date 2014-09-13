@@ -29,13 +29,6 @@ $major = $student[MajorFetcher::DB_COLUMN_NAME];
 	<td><?php echo $ci; ?></td>
 	<td><?php echo $credits; ?></td>
 
-	<td>
-		<a data-toggle="modal" href="<?php echo BASE_URL . "academia/students/" . $id; ?>"
-		   class="btn btn-default btn-sm center-block">
-			<i class="fa fa-user"></i> View
-		</a>
-	</td>
-
 	<?php if (!$user->isTutor()): ?>
 		<td>
 			<a data-toggle="modal" href="#" class="btn btn-default btn-sm center-block">

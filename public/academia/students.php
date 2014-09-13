@@ -8,8 +8,6 @@ $section = "academia";
 try {
 	$students = StudentFetcher::retrieve($db);
 	$majors = CourseFetcher::retrieveMajors($db);
-	$courses = CourseFetcher::retrieveAll($db);
-
 
 	if (isBtnAddStudentPrsd()) {
 		$majorId = !empty($_POST['userMajorId']) ? $_POST['userMajorId'] : NULL;
@@ -18,6 +16,9 @@ try {
 			$_POST['mobileNum'], $majorId, $_POST['ciInput'], $_POST['creditsInput']);
 		header('Location: ' . BASE_URL . "academia/students/success");
 		exit();
+	} else if (isBtnAddMajorPrsd()) {
+		Major::create($db, $_POST['majorCode'], $_POST['majorName']);
+		header('Location: ' . BASE_URL . "academia/students/success");
 	}
 
 
@@ -25,7 +26,7 @@ try {
 	$errors[] = $e->getMessage();
 }
 
-function isEditBttnPressed() {
+function isEditbtnPressed() {
 	return isset($_GET['id']) && preg_match('/^[0-9]+$/', $_GET['id']);
 }
 
@@ -33,8 +34,12 @@ function isBtnAddStudentPrsd() {
 	return isset($_POST['hiddenSubmitPressed']) && empty($_POST['hiddenSubmitPressed']);
 }
 
-function isStudentAddedSuccessful() {
+function isModificationSuccess() {
 	return isset($_GET['success']) && strcmp($_GET['success'], 'y1!q' === 0);
+}
+
+function isBtnAddMajorPrsd() {
+	return isset($_POST['hiddenCreateMajor']) && empty($_POST['hiddenCreateMajor']);
 }
 
 ?>
@@ -76,18 +81,25 @@ require ROOT_PATH . 'app/views/sidebar.php';
 				?>
 			</div>
 		<?php
-		} else if (isStudentAddedSuccessful()) {
+		} else if (isModificationSuccess()) {
 			?>
 			<div class="alert alert-success">
 				<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-				<strong>Student successfully created!</strong> <br/>
+				<strong>Data successfully modified!</strong> <br/>
 			</div>
 		<?php } ?>
 		<div class="row">
 			<div class="col-md-12">
-				<a data-toggle="modal" id="bttn-styledModal" href="#addStudentModal"
-				   class="btn btn-primary navbar-right">
-					Add Student</a>
+
+				<div class="btn-group navbar-right">
+					<a data-toggle="modal" id="btn-styledModal" href="#addStudentModal"
+					   class="btn btn-primary">
+						Add Student</a>
+					<a data-toggle="modal" id="btn-styledModal" href="#addMajorModal"
+					   class="btn btn-primary">
+						Add Major</a>
+				</div>
+
 			</div>
 		</div>
 		<div class="row">
@@ -115,8 +127,6 @@ require ROOT_PATH . 'app/views/sidebar.php';
 								<th data-filterable="true" data-sortable="true">CI</th>
 								<th data-filterable="true" data-sortable="true">Credits</th>
 
-								<th data-filterable="false" class="hidden-xs hidden-sm">Courses</th>
-
 								<?php if (!$user->isTutor()): ?>
 									<th data-filterable="false" class="hidden-xs hidden-sm">Schedule</th>
 								<?php endif; ?>
@@ -130,10 +140,8 @@ require ROOT_PATH . 'app/views/sidebar.php';
 							<tbody>
 
 							<?php
-							if (empty($errors) === true) {
-								foreach (array_reverse($students) as $student) {
-									include(ROOT_PATH . "app/views/partials/student-table-data-view.html.php");
-								}
+							foreach (array_reverse($students) as $student) {
+								include(ROOT_PATH . "app/views/partials/student-table-data-view.html.php");
 							} ?>
 							</tbody>
 						</table>
@@ -160,7 +168,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <div id="addStudentModal" class="modal modal-styled fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form method="post" id="add-student-form" action="" class="form">
+			<form method="post" id="add-student-form" action="<?php echo BASE_URL . 'academia/students'; ?>" class="form">
 
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -231,6 +239,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 										</h5>
 
 										<input class="form-control" id="studentId" name="studentId" type="text"
+										       value="<?php if (isset($_POST['studentId'])) echo htmlentities($_POST['studentId']); ?>"
 										       placeholder="123456">
 
 									</div>
@@ -240,7 +249,9 @@ require ROOT_PATH . 'app/views/sidebar.php';
 											<i class="fa fa-tasks"></i>
 											<label for="mobileNum">Mobile Number</label>
 											<input class="form-control" id="mobileNum" name="mobileNum" type="text"
-											       placeholder="1234567890">
+											       value="<?php if (isset($_POST['mobileNum'])) echo htmlentities($_POST['mobileNum']); ?>"
+											       placeholder="69........">
+
 
 										</h5>
 									</div>
@@ -252,7 +263,6 @@ require ROOT_PATH . 'app/views/sidebar.php';
 											<label for="userMajorId">Major</label>
 										</h5>
 										<select id="userMajorId" name="userMajorId" class="form-control">
-											<option value="">Undecided</option>
 											<?php foreach ($majors as $major) {
 												include(ROOT_PATH . "app/views/partials/major-select-options-view.html.php");
 											}
@@ -268,7 +278,9 @@ require ROOT_PATH . 'app/views/sidebar.php';
 												<div class="input-group">
 													<span class="input-group-addon">CI</span>
 													<input class="form-control" id="ciInput" name="ciInput" type="text"
-													       placeholder="3.5">
+													       placeholder="e.g. 3.5"
+													       value="<?php if (isset($_POST['ciInput'])) echo htmlentities($_POST['ciInput']); ?>">
+
 												</div>
 											</div>
 										</div>
@@ -278,7 +290,8 @@ require ROOT_PATH . 'app/views/sidebar.php';
 												<div class="input-group">
 													<input class="form-control" id="creditsInput" name="creditsInput"
 													       type="text"
-													       placeholder="100">
+													       value="<?php if (isset($_POST['creditsInput'])) echo htmlentities($_POST['creditsInput']); ?>"
+													       placeholder="e.g. 50">
 													<span class="input-group-addon">Credits</span>
 												</div>
 											</div>
@@ -308,10 +321,83 @@ require ROOT_PATH . 'app/views/sidebar.php';
 </div>
 
 
+<div id="addMajorModal" class="modal modal-styled fade">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<form method="post" id="create-form" action="<?php echo BASE_URL . 'academia/students'; ?>" class="form">
+
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h3 class="modal-title">Create Major</h3>
+				</div>
+				<div class="modal-body">
+					<div class="portlet">
+						<?php
+						if (empty($errors) === false) {
+							?>
+							<div class="alert alert-danger">
+								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+								<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
+								?>
+							</div>
+						<?php
+						} else if (isModificationSuccess()) {
+							?>
+							<div class="alert alert-success">
+								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+								<strong>Data successfully modified!</strong> <br/>
+							</div>
+						<?php } ?>
+						<div class="portlet-content">
+							<div class="row">
+								<div class="col-sm-12">
+
+									<div class="form-group">
+										<h5>
+											<i class="fa fa-edit"></i>
+											<label for="majorCode">Major Code</label>
+										</h5>
+										<input type="text" id="majorCode" name="majorCode" class="form-control"
+										       value="<?php if (isset($_POST['majorCode'])) echo
+										       htmlentities($_POST['majorCode']); ?>"
+										       autofocus="on" required>
+									</div>
+
+									<div class="form-group">
+										<h5>
+											<i class="fa fa-edit"></i>
+											<label for="majorName">Major Name</label>
+										</h5>
+										<input type="text" id="majorName" name="majorName" class="form-control"
+										       value="<?php if (isset($_POST['majorName'])) echo
+										       htmlentities($_POST['majorName']); ?>"
+										       required>
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-tertiary" data-dismiss="modal">Close</button>
+					<input type="hidden" name="hiddenCreateMajor">
+					<button type="submit" class="btn btn-primary">Create</button>
+				</div>
+			</form>
+
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<?php include ROOT_PATH . "app/views/footer.php"; ?>
 </div>
 <!-- #wrapper -->
 
-<?php include ROOT_PATH . "app/views/footer.php"; ?>
 <?php include ROOT_PATH . "app/views/assets/footer_common.php"; ?>
 
 <script src="<?php echo BASE_URL; ?>app/assets/js/plugins/datatables/jquery.dataTables.min.js"></script>
