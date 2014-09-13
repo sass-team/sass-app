@@ -7,7 +7,7 @@ $section = "academia";
 
 try {
 	$students = StudentFetcher::retrieve($db);
-	$majors = CourseFetcher::retrieveMajors($db);
+	$majors = MajorFetcher::retrieveMajors($db);
 
 	if (isBtnAddStudentPrsd()) {
 		$majorId = !empty($_POST['userMajorId']) ? $_POST['userMajorId'] : NULL;
@@ -19,6 +19,8 @@ try {
 	} else if (isBtnAddMajorPrsd()) {
 		Major::create($db, $_POST['majorCode'], $_POST['majorName']);
 		header('Location: ' . BASE_URL . "academia/students/success");
+	} else if (isBtnUpdatePrsd()) {
+		var_dump($_POST);
 	}
 
 
@@ -40,6 +42,11 @@ function isModificationSuccess() {
 
 function isBtnAddMajorPrsd() {
 	return isset($_POST['hiddenCreateMajor']) && empty($_POST['hiddenCreateMajor']);
+}
+
+function isBtnUpdatePrsd() {
+	return isset($_POST['hiddenUpdatePrsd']) && empty($_POST['hiddenUpdatePrsd']);
+
 }
 
 ?>
@@ -121,6 +128,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 							<thead>
 							<tr>
 								<th data-filterable="true" data-sortable="true" data-direction="desc">Name</th>
+								<th data-filterable="true" data-sortable="true" data-direction="desc">ID</th>
 								<th data-direction="asc" data-filterable="true" data-sortable="false">Email</th>
 								<th data-filterable="true" data-sortable="false">Mobile</th>
 								<th data-filterable="true" data-sortable="true">Major</th>
@@ -133,7 +141,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 
 								<?php if ($user->isAdmin()): ?>
-									<th data-filterable="false" class="hidden-xs hidden-sm">Data</th>
+									<th data-filterable="false" class="hidden-xs hidden-sm">Action</th>
 								<?php endif; ?>
 							</tr>
 							</thead>
@@ -394,6 +402,165 @@ require ROOT_PATH . 'app/views/sidebar.php';
 </div>
 <!-- /.modal -->
 
+<div id="updateStudent" class="modal modal-styled fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form method="post" id="add-student-form" action="<?php echo BASE_URL . 'academia/students'; ?>" class="form">
+
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h3 class="modal-title">Update Student Form</h3>
+				</div>
+				<div class="modal-body">
+					<div class="portlet">
+
+						<?php
+						if (empty($errors) === false) {
+							?>
+							<div class="alert alert-danger">
+								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+								<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
+								?>
+							</div>
+						<?php
+						} else if (isBtnAddStudentPrsd()) {
+							?>
+							<div class="alert alert-success">
+								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+								<strong>Student successfully created!</strong> <br/>
+							</div>
+						<?php } ?>
+
+						<div class="portlet-content">
+
+							<div class="row">
+
+
+								<div class="col-sm-12">
+
+									<div class="form-group">
+										<h5>
+											<i class="fa fa-edit"></i>
+											<label for="firstName">First Name</label>
+										</h5>
+										<input type="text" id="firstNameUpdate" name="firstNameUpdate" class="form-control"
+										       value="<?php if (isset($_POST['firstNameUpdate'])) echo htmlentities($_POST['firstNameUpdate']); ?>"
+										       autofocus="on" placeholder="Required" required>
+									</div>
+
+									<div class="form-group">
+										<h5>
+											<i class="fa fa-edit"></i>
+											<label for="lastNameUpdate">Last Name</label>
+										</h5>
+										<input type="text" id="lastNameUpdate" name="lastNameUpdate" class="form-control"
+										       value="<?php if (isset($_POST['lastNameUpdate'])) echo htmlentities($_POST['lastNameUpdate']); ?>"
+										       required placeholder="Required">
+									</div>
+
+									<div class="form-group">
+
+										<i class="fa fa-envelope"></i>
+										<label for="emailUpdate">Email</label>
+										<input type="email" required id="emailUpdate" name="emailUpdate" class="form-control"
+										       value="<?php if (isset($_POST['emailUpdate'])) echo htmlentities($_POST['emailUpdate']); ?>"
+										       placeholder="Required">
+									</div>
+
+
+									<div class="form-group">
+
+										<h5>
+											<i class="fa fa-tasks"></i>
+											<label for="studentIdUpdate">Student ID</label>
+										</h5>
+
+										<input class="form-control" id="studentIdUpdate" name="studentIdUpdate" type="text"
+										       value="<?php if (isset($_POST['studentIdUpdate'])) echo htmlentities($_POST['studentIdUpdate']); ?>"
+										       placeholder="123456">
+
+									</div>
+
+									<div class="form-group">
+										<h5>
+											<i class="fa fa-tasks"></i>
+											<label for="mobileNumUpdate">Mobile Number</label>
+											<input class="form-control" id="mobileNumUpdate" name="mobileNumUpdate" type="text"
+											       value="<?php if (isset($_POST['mobileNumUpdate'])) echo htmlentities($_POST['mobileNumUpdate']); ?>"
+											       placeholder="69........">
+
+
+										</h5>
+									</div>
+
+
+									<div class="form-group">
+										<h5>
+											<i class="fa fa-tasks"></i>
+											<label for="userMajorIdUpdate">Major</label>
+										</h5>
+										<select id="userMajorIdUpdate" name="userMajorIdUpdate" class="form-control">
+											<?php foreach ($majors as $major) {
+												include(ROOT_PATH . "app/views/partials/major-select-options-view.html.php");
+											}
+											?>
+										</select>
+									</div>
+
+
+									<div class="form-group">
+										<div class="col-sm-6">
+
+											<div class="form-group">
+												<div class="input-group">
+													<span class="input-group-addon">CI</span>
+													<input class="form-control" id="ciInputUpdate" name="ciInputUpdate" type="text"
+													       placeholder="e.g. 3.5"
+													       value="<?php if (isset($_POST['ciInputUpdate'])) echo htmlentities($_POST['ciInputUpdate']); ?>">
+
+												</div>
+											</div>
+										</div>
+										<div class="col-sm-6">
+
+											<div class="form-group">
+												<div class="input-group">
+													<input class="form-control" id="creditsInputUpdate" name="creditsInputUpdate"
+													       type="text"
+													       value="<?php if (isset($_POST['creditsInputUpdate'])) echo htmlentities($_POST['creditsInputUpdate']); ?>"
+													       placeholder="e.g. 50">
+													<span class="input-group-addon">Credits</span>
+													<input type="hidden" value="" id="idUpdate" name="idUpdate"/>
+
+												</div>
+											</div>
+
+										</div>
+									</div>
+
+								</div>
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-tertiary" data-dismiss="modal">Close</button>
+					<input type="hidden" name="hiddenUpdatePrsd" value="">
+					<button type="submit" class="btn btn-primary">Update</button>
+				</div>
+			</form>
+
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+
 <?php include ROOT_PATH . "app/views/footer.php"; ?>
 </div>
 <!-- #wrapper -->
@@ -418,10 +585,29 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 
 		$("#userMajorId").select2();
+		$("#userMajorIdUpdate").select2();
 
-		$("#instructorId").select2({
-			placeholder: "Required",
-			allowClear: false
+
+		$(".btnUpdateStudent").click(function () {
+			var id = $(this).next().val();
+			var studentsCredits = ($(this).parent().prev().prev().text());
+			var studentCi = ($(this).parent().prev().prev().prev().text());
+			var studentMajorId = ($(this).parent().prev().prev().prev().prev().find("input:first")).val();
+			var studentMobile = ($(this).parent().prev().prev().prev().prev().prev().text());
+			var studentEmail = ($(this).parent().prev().prev().prev().prev().prev().prev().text());
+			var studentId = ($(this).parent().prev().prev().prev().prev().prev().prev().prev().text());
+			var firstName = ($(this).parent().prev().prev().prev().prev().prev().prev().prev().prev().find("span:first")).text();
+			var lastName = ($(this).parent().prev().prev().prev().prev().prev().prev().prev().prev().find("span:first")).next().text();
+
+			$("#firstNameUpdate").val(firstName);
+			$("#lastNameUpdate").val(lastName);
+			$("#emailUpdate").val(studentEmail);
+			$("#studentIdUpdate").val(studentId);
+			$("#mobileNumUpdate").val(studentMobile);
+			$("#userMajorIdUpdate").select2("val", studentMajorId); // select "5"
+			$("#ciInputUpdate").val(studentCi);
+			$("#creditsInputUpdate").val(studentsCredits);
+			$("#idUpdate").val(id);
 		});
 
 	});

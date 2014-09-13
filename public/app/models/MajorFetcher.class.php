@@ -13,6 +13,21 @@ class MajorFetcher
 	const DB_COLUMN_CODE = "code";
 	const DB_COLUMN_NAME = "name";
 
+	public static function retrieveMajors($db) {
+
+		$query = "SELECT `" . self::DB_COLUMN_ID . "`, `" . self::DB_COLUMN_CODE . "`, `" .
+			self::DB_COLUMN_NAME . "` FROM `" . DB_NAME . "`.major";
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->execute();
+
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+		} catch (Exception $e) {
+			throw new Exception("Could not retrieve majors data from database.");
+		}
+	}
+
+
 	public static function codeExists($db, $code) {
 		try {
 			$sql = "SELECT COUNT(" . self::DB_COLUMN_CODE . ") FROM `" . DB_NAME . "`.`" .

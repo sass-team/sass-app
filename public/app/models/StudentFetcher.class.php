@@ -28,12 +28,16 @@ class StudentFetcher extends Person
 	 * @throws Exception
 	 */
 	public static function retrieve($db) {
-		$query = "SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`, `" . self::DB_TABLE . "`.`" .
-			self::DB_COLUMN_EMAIL . "`, `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_FIRST_NAME . "`,
-			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_LAST_NAME . "`, `" . self::DB_TABLE . "`.`" .
-			self::DB_COLUMN_MOBILE . "`,  `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_CI . "`,  `" . self::DB_TABLE .
-			"`.`" . self::DB_COLUMN_CREDITS . "`, `" . MajorFetcher::DB_TABLE . "`.`" . MajorFetcher::DB_COLUMN_NAME . "`
-			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`, `" . DB_NAME . "`.`" . MajorFetcher::DB_TABLE . "`
+		$query =
+			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_STUDENT_ID . "`, `" . self::DB_TABLE . "`.`" .
+			self::DB_COLUMN_ID . "`, `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_EMAIL . "`, `" . self::DB_TABLE . "`.`"
+			. self::DB_COLUMN_FIRST_NAME . "`, `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_LAST_NAME . "`, `" .
+			self::DB_TABLE . "`.`" . self::DB_COLUMN_MOBILE . "`,  `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_CI . "`,
+				`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_CREDITS . "`, `" . MajorFetcher::DB_TABLE . "`.`" .
+			MajorFetcher::DB_COLUMN_ID . "` AS `" . self::DB_COLUMN_MAJOR_ID . "`,`" . MajorFetcher::DB_TABLE . "`.`" .
+			MajorFetcher::DB_COLUMN_NAME . "` , `" . MajorFetcher::DB_TABLE . "`.`" .
+			MajorFetcher::DB_COLUMN_CODE . "` FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`, `" . DB_NAME . "`.`" .
+			MajorFetcher::DB_TABLE . "`
 			WHERE `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_MAJOR_ID . "` = `" . MajorFetcher::DB_TABLE . "`.`" .
 			MajorFetcher::DB_COLUMN_ID . "`;";
 		$query = $db->getConnection()->prepare($query);

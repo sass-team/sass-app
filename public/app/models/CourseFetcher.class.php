@@ -53,19 +53,6 @@ class CourseFetcher
 		}
 	}
 
-	public static function retrieveMajors($db) {
-
-		$query = "SELECT `" . MajorFetcher::DB_COLUMN_ID . "`, `" . MajorFetcher::DB_COLUMN_CODE . "`, `" .
-			MajorFetcher::DB_COLUMN_NAME . "` FROM `" . DB_NAME . "`.major";
-		try {
-			$query = $db->getConnection()->prepare($query);
-			$query->execute();
-
-			return $query->fetchAll(PDO::FETCH_ASSOC);
-		} catch (Exception $e) {
-			throw new Exception("Could not retrieve majors data from database.");
-		}
-	}
 
 
 	public static function courseExists($db, $courseId) {
