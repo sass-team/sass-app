@@ -5,7 +5,7 @@
  * Date: 9/14/2014
  * Time: 1:37 PM
  */
-require __DIR__ . '/../app/init.php';
+require __DIR__ . '/../../app/init.php';
 ?>
 
 <!DOCTYPE html>

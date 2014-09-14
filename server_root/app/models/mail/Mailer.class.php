@@ -57,7 +57,7 @@ class Mailer
 			$mail->Subject = 'PHPMailer sendmail test';
 			//Read an HTML message body from an external file, convert referenced images to embedded,
 			//convert HTML into a basic plain-text alternative body
-			$mail->msgHTML(file_get_contents("http://" . $_SERVER['SERVER_NAME'] . "mail/contents.html"), dirname($_SERVER['SERVER_NAME'] . "mail/contents.html"));
+			$mail->msgHTML(file_get_contents(ROOT_PATH . "public_html/mail/contents.html"), ROOT_PATH . "public_html/");
 			//Replace the plain text body with one created manually
 			$mail->AltBody = 'This is a plain-text message body';
 			//Attach an image file
