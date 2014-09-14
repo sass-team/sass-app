@@ -17,7 +17,6 @@ class Admin extends User
 		self::validateName($last_name);
 		self::validateEmail($db, $email, self::DB_TABLE);
 		self::validateUserType($user_type);
-		Major::validateId($db, $majorId);
 		//$this->validate_teaching_course($teaching_courses);
 
 		try {
@@ -42,16 +41,17 @@ class Admin extends User
 			$queryInsertUser->execute();
 
 			// last inserted if of THIS connection
-			$tutorId = $db->getConnection()->lastInsertId();
+			$userId = $db->getConnection()->lastInsertId();
 
 			if (strcasecmp($user_type, User::SECRETARY)) {
-				Tutor::insertMajor($db, $tutorId, $majorId);
-				if ($coursesIds !== NULL) Tutor_has_course::addCourses($db, $tutorId, $coursesIds);
+				Major::validateId($db, $majorId);
+				Tutor::insertMajor($db, $userId, $majorId);
+				if ($coursesIds !== NULL) Tutor_has_course::addCourses($db, $userId, $coursesIds);
 			}
 
 
 			$db->getConnection()->commit();
-			return true;
+			return $userId;
 		} catch (Exception $e) {
 			$db->getConnection()->rollback();
 			throw new Exception("Could not insert user into database." . $e->getMessage());

@@ -37,7 +37,7 @@ require_once ROOT_PATH . "app/models/Course.class.php";
 require_once ROOT_PATH . "app/models/StudentFetcher.class.php";
 require_once ROOT_PATH . "app/models/Student.class.php";
 
-require_once ROOT_PATH . "app/models/mail/Mailer.class.php";
+require_once ROOT_PATH . "app/models/Mailer.class.php";
 
 
 $errors = array();
@@ -54,10 +54,11 @@ try {
 		// instantiate user class & connect to db.
 		$id = $_SESSION['id']; // getting user's id from the session.4
 
-		$data = User::retrieve($db, $id);
+		$data = User::getSingle($db, $id);
 
 		if (strcmp($data['type'], 'tutor') === 0) {
-			$user = new Tutor($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active']);
+			$tutor = Tutor::getSingle($db, $id);
+			$user = new Tutor($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active'], TutorFetcher::DB_COLUMN_MAJOR_ID);
 		} else if (strcmp($data['type'], 'secretary') === 0) {
 			$user = new Secretary($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active']);
 		} else if (strcmp($data['type'], 'admin') === 0) {
