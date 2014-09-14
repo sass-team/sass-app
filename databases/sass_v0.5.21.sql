@@ -1,4 +1,5 @@
-
+CREATE DATABASE  IF NOT EXISTS `sass-ms_db` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `sass-ms_db`;
 -- MySQL dump 10.13  Distrib 5.6.17, for Win32 (x86)
 --
 -- Host: localhost    Database: sass-ms_db
@@ -282,7 +283,7 @@ CREATE TABLE `user` (
   `profile_description` varchar(512) DEFAULT NULL,
   `active` int(11) NOT NULL DEFAULT '1',
   `gen_string` varchar(45) DEFAULT NULL,
-  `gen_string_update_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `gen_string_update_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`,`user_types_id`),
   UNIQUE KEY `email_UNIQUE` (`email`),
   UNIQUE KEY `mobile_UNIQUE` (`mobile`),
@@ -297,7 +298,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (21,'admin@acg.edu','admin','last','$2y$10$oC3UdMGrkhvY8KRpCCV9jOuKfxzMZHmeKqTQ07i2.VKhDNt47OZ8y','app/assets/img/avatars/default_avatar.jpg','2014-09-14 20:55:42',16,NULL,NULL,1,'','2014-09-14 23:55:42');
+INSERT INTO `user` VALUES (21,'admin@acg.edu','admin','last','$2y$10$jF1IEx2g.oi9CgOFdAineebSNu3SfM4AvpMarAT6nspDlcl4STcIa','app/assets/img/avatars/default_avatar.jpg','2014-09-14 21:08:35',16,NULL,NULL,1,'541603d3cdd9d8.11410946LQIZCXUPWF','2014-09-14 21:08:35');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -335,4 +336,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-09-14 23:56:25
+-- Dump completed on 2014-09-15  0:10:46
