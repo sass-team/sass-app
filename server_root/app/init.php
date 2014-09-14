@@ -37,6 +37,8 @@ require_once ROOT_PATH . "app/models/Course.class.php";
 require_once ROOT_PATH . "app/models/StudentFetcher.class.php";
 require_once ROOT_PATH . "app/models/Student.class.php";
 
+require_once ROOT_PATH . "app/models/mail/Mailer.class.php";
+
 
 $errors = array();
 
