@@ -12,7 +12,7 @@ if (!isset($_GET['id']) || !preg_match("/^[0-9]+$/", $_GET['id'])) {
 
 try {
 
-	if (($data = User::retrieve($db, $userId)) === FALSE) {
+	if (($data = User::getSingle($db, $userId)) === FALSE) {
 		header('Location: ' . BASE_URL . 'error-404');
 		exit();
 	}

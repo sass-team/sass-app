@@ -33,7 +33,12 @@ if (isSaveBttnPressed()) {
 	$userMajorId = (isset($_POST['userMajor']) ? trim($_POST['userMajor']) : "");
 	$teachingCoursesIds = isset($_POST['teachingCoursesMulti']) ? $_POST['teachingCoursesMulti'] : NULL;
 	try {
-		Admin::createUser($db, $first_name, $last_name, $email, $user_type, $userMajorId, $teachingCoursesIds);
+		$newUserId = Admin::createUser($db, $first_name, $last_name, $email, $user_type, $userMajorId, $teachingCoursesIds);
+		$newUser = User::getSingle($db, $newUserId);
+		Mailer::sendNewAccount($db, $newUserId, $user->getEmail(), $user->getFirstName() . " " . $user->getLastName(),
+			$newUser[UserFetcher::DB_COLUMN_EMAIL], $newUser[UserFetcher::DB_COLUMN_FIRST_NAME] . " " .
+			$newUser[UserFetcher::DB_COLUMN_LAST_NAME]);
+
 	} catch (Exception $e) {
 		$errors[] = $e->getMessage();
 	}

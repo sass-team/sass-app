@@ -59,48 +59,50 @@ class Database
 			$query->bindValue(2, $id);
 
 			$query->execute();
-		} catch (PDOException $e) {
+
+
+			$email = trim($email);
+			$message = "We heard that you lost your SASS password. Sorry about that!<br/><br/>";
+			$message .= "But don't worry! You can use the following link within the next day to reset your password:<br/><br/>";
+			$message .= "<a href='http://" . $_SERVER['SERVER_NAME'] . "/login/recover/" . $id . "/" . $generated_string . "' target='_blank' >Reset Password</a><br/><br/>";
+			$message .= "If you don&#39;t use this link within 24 hours, it will expire. To get a new password reset link, visit: ";
+			$message .= "<a href='http://" . $_SERVER['SERVER_NAME'] . "/login/confirm-password' target='_blank'>Request New Password Reset Link</a><br/><br/>";
+			$message .= "Thanks,<br/>SASS Automatic System";
+
+			// mailer process
+			require_once(ROOT_PATH . "app/plugins/PHPMailer/class.phpmailer.php");
+			//Create a new PHPMailer instance
+			$mail = new PHPMailer();
+
+			$email_body = "";
+			$email_body = $message;
+
+			//Set who the message is to be sent from
+			$mail->setFrom($email, "no-reply@" . $_SERVER['SERVER_NAME']);
+			//Set who the message is to be sent to
+			$address = $email;
+			$mail->addAddress($address, "SASS Automatic System");
+			//Set the subject line
+			$mail->Subject = 'SASS | ' . 'Recovery System';
+			//Read an HTML message body from an external file, convert referenced images to embedded,
+			//convert HTML into a basic plain-text alternative body
+			$mail->msgHTML($email_body);
+			//Attach an image file
+			//$mail->addAttachment('images/phpmailer_mini.gif');
+
+			//send the message, check for errors
+			if ($mail->send()) { // successful mail sender
+				return true;
+			} else {
+				throw new Exception("There was a problem sending the email: " . $mail->ErrorInfo);
+			} // end else
+
+		} catch (Exception $e) {
 			throw new Exception("We could not send your email. Please retry.");
 		}
-
-		$email = trim($email);
-		$message = "We heard that you lost your SASS password. Sorry about that!<br/><br/>";
-		$message .= "But don't worry! You can use the following link within the next day to reset your password:<br/><br/>";
-		$message .= "<a href='http://" . $_SERVER['SERVER_NAME'] . "/login/recover/" . $id . "/" . $generated_string . "' target='_blank' >Reset Password</a><br/><br/>";
-		$message .= "If you don&#39;t use this link within 24 hours, it will expire. To get a new password reset link, visit: ";
-		$message .= "<a href='http://" . $_SERVER['SERVER_NAME'] . "/login/confirm-password' target='_blank'>Request New Password Reset Link</a><br/><br/>";
-		$message .= "Thanks,<br/>SASS Automatic System";
-
-		// mailer process
-		require_once(ROOT_PATH . "app/plugins/PHPMailer/class.phpmailer.php");
-		//Create a new PHPMailer instance
-		$mail = new PHPMailer();
-
-		$email_body = "";
-		$email_body = $message;
-
-		//Set who the message is to be sent from
-		$mail->setFrom($email, "no-reply@" . $_SERVER['SERVER_NAME']);
-		//Set who the message is to be sent to
-		$address = $email;
-		$mail->addAddress($address, "SASS Automatic System");
-		//Set the subject line
-		$mail->Subject = 'SASS | ' . 'Recovery System';
-		//Read an HTML message body from an external file, convert referenced images to embedded,
-		//convert HTML into a basic plain-text alternative body
-		$mail->msgHTML($email_body);
-		//Attach an image file
-		//$mail->addAttachment('images/phpmailer_mini.gif');
-
-		//send the message, check for errors
-		if ($mail->send()) { // successful mail sender
-			return true;
-		} else {
-			throw new Exception("There was a problem sending the email: " . $mail->ErrorInfo);
-		} // end else
 	} // end confirm_recover
 
-	public function add_new_password($id, $new_password_1, $new_password_2) {
+	public function addNewPassword($id, $new_password_1, $new_password_2) {
 		if ($new_password_1 !== $new_password_2) {
 			throw new Exception("There was a mismatch with the new passwords");
 		}

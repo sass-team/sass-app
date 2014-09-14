@@ -88,22 +88,16 @@ abstract class User extends Person
 	 * @param $id
 	 * @throws Exception
 	 */
-	public static function  retrieve($db, $id) {
-		$query = "SELECT `" . self::DB_TABLE . "`.email, user.id, user.`f_name`, user.`l_name`, user.`img_loc`,
-						user.date, user.`profile_description`, user.mobile, user_types.type, user.active
-					FROM `" . DB_NAME . "`.user
-						LEFT OUTER JOIN user_types ON user.`user_types_id` = `user_types`.id
-					WHERE user.id = :id";
+	public static function  getSingle($db, $id) {
+		self::validateId($db, $id);
 
-		$query = $db->getConnection()->prepare($query);
-		$query->bindValue(':id', $id, PDO::PARAM_INT);
+		return UserFetcher::retrieveSingle($db, $id);
+	}
 
-		try {
-			$query->execute();
-			return $query->fetch();
-		} catch (PDOException $e) {
-			throw new Exception("Something terrible happened. Could not retrieve database." . $e->getMessage());
-		} // end try
+	public static function validateId($db, $id) {
+		if (!preg_match('/^[0-9]+$/', $id) || !UserFetcher::existsId($db, $id)) {
+			throw new Exception('Data tempering detected. Aborting.');
+		}
 	}
 
 	public static function updateActiveStatus($db, $id, $newStatus, $oldStatus) {
@@ -127,6 +121,17 @@ abstract class User extends Person
 		} catch (PDOException $e) {
 			throw new Exception("Something terrible happened. Could not retrieve users data from database.: " . $e->getMessage());
 		} // end catch
+	}
+
+	public static function generateNewPasswordString($db, $id) {
+		$unique = uniqid('', true); // generate a unique string
+		$random = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 10); // generate a more random string
+		$generatedString = $unique . $random; // a random and unique string
+
+		User::validateId($db, $id);
+		UserFetcher::updateString($db, $id, $generatedString);
+
+		return $generatedString;
 	}
 
 	static function updateProfile($db, $id, $firstName, $lastName, $prevMobileNum, $newMobileNum, $description) {
@@ -229,10 +234,10 @@ abstract class User extends Person
 		}
 	}
 
-
 	/**
 	 * @param $db
 	 * @param $newMobileNum
+	 * @return null
 	 * @throws Exception
 	 */
 	public static function validateMobileNumber($db, $newMobileNum) {
@@ -249,7 +254,6 @@ abstract class User extends Person
 
 		return $newMobileNum;
 	}
-
 
 	public static function updatePassword($db, $id, $oldPassword, $newPassword1, $newPassword2) {
 
@@ -316,7 +320,6 @@ abstract class User extends Person
 			throw new Exception("Could not connect to database.");
 		}
 	}
-
 
 	public static function retrieveAll($db) {
 		$query = "SELECT user.id, user.f_name, user.l_name, user.img_loc, user.profile_description, user.date, user.mobile, user.email, user_types.type
@@ -420,6 +423,17 @@ abstract class User extends Person
 			}
 
 		}
+	}
+
+	public static function addNewPassword($db, $id, $newPassword1, $newPassword2, $generatedString) {
+		if (strcmp($newPassword1, $newPassword2) !== 0) {
+			throw new Exception("There was a mismatch with the new passwords");
+		}
+		User::validatePassword($newPassword1);
+		if (!UserFetcher::generatedStringExists($db, $id, $generatedString)) {
+			throw new Exception("Could not verify generated string exists. Please make sure url sent was not modified.");
+		}
+		UserFetcher::updatePassword($db, $id, $newPassword1);
 	}
 
 	/**
