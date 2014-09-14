@@ -40,7 +40,6 @@ class Mailer
 		$alternativeName = "SASS Developers";
 		$setPasswordLink = "<a href='http://" . $_SERVER['SERVER_NAME'] . "/login/set/" . $id . "/" . $getString . "' target='_blank' >Set SASS App Password</a><br/>";
 		$sassPageLogin = "<a href='http://" . $_SERVER['SERVER_NAME'] . "/login/' target='_blank' >log in</a>";
-		$senderName = $senderName;
 
 		try {
 			//Create a new PHPMailer instance
@@ -53,7 +52,7 @@ class Mailer
 			//Set who the message is to be sent to
 			$mail->addAddress($receiverEmail, $receiverName);
 			//Set the subject line
-			$mail->Subject = 'PHPMailer sendmail test';
+			$mail->Subject = $subject;
 
 			$message = "<div bgcolor='#fafafa' marginheight='0' marginwidth='0' style='width:100%!important;background:#fafafa'>";
 			$message .= "<div style='padding:20px 20px 20px 20px!important;width:550px;margin:0 auto'>";
@@ -101,36 +100,62 @@ class Mailer
 	}
 
 	public static function sendRecover($db, $email) {
-		User::validateEmail($db, $email, UserFetcher::DB_TABLE);
-		$id = UserFetcher::retrieveId($db, $email);
+		User::validateExistingEmail($db, $email, UserFetcher::DB_TABLE);
+		$user = UserFetcher::retrieveUsingEmail($db, $email);
+		$id = $user[UserFetcher::DB_COLUMN_ID];
+		$name = $user[UserFetcher::DB_COLUMN_FIRST_NAME] . " " . $user[UserFetcher::DB_COLUMN_LAST_NAME];
 		$genString = User::generateNewPasswordString($db, $id);
 
+		$subject = "Password recovery";
+		$alternativeEmail = "dev.sass.ms@gmail.com";
+		$alternativeName = "SASS Developers";
+		$passwordRecoveryLink = "<a href='http://" . $_SERVER['SERVER_NAME'] . "/login/recover/" . $id . "/" . $genString . "' target='_blank' >Reset Password</a>";
+		$sassPageLogin = "<a href='http://" . $_SERVER['SERVER_NAME'] . "/login/' target='_blank' >log in</a>";
+		$sassPageRecover = "<a href='http://" . $_SERVER['SERVER_NAME'] . "/login/confirm-password' target='_blank' >password recovery</a>";
+		$senderEmail = "no-reply@" . $_SERVER['SERVER_NAME'];
+		$senderName = "SASS Automatic System";
+		$receiverEmail = $email;
+		$receiverName = $name;
 		try {
-
-			$message = "We heard that you lost your SASS password. Sorry about that!<br/><br/>";
-			$message .= "But don't worry! You can use the following link within the next day to reset your password:<br/><br/>";
-			$message .= "<a href='http://" . $_SERVER['SERVER_NAME'] . "/login/recover/" . $id . "/" . $genString . "' target='_blank' >Reset Password</a><br/><br/>";
-			$message .= "If you don&#39;t use this link within 1 hour, it will expire. To get a new password reset link, visit: ";
-			$message .= "<a href='http://" . $_SERVER['SERVER_NAME'] . "/login/confirm-password' target='_blank'>Request New Password Reset Link</a><br/><br/>";
-			$message .= "Thanks,<br/>SASS Automatic System";
-
-			// mailer process
-			require_once(ROOT_PATH . "app/plugins/PHPMailer/class.phpmailer.php");
+			require ROOT_PATH . "app/plugins/PHPMailer/PHPMailerAutoload.php";
 			//Create a new PHPMailer instance
 			$mail = new PHPMailer();
-
-			$email_body = $message;
-
+			// Set PHPMailer to use the sendmail transport
 			//Set who the message is to be sent from
-			$mail->setFrom($email, "no-reply@" . $_SERVER['SERVER_NAME']);
+			$mail->setFrom($senderEmail, $senderName);
+			//Set an alternative reply-to address
+			$mail->addReplyTo($alternativeEmail, $alternativeName);
 			//Set who the message is to be sent to
-			$address = $email;
-			$mail->addAddress($address, "SASS Automatic System");
+			$mail->addAddress($receiverEmail, $receiverName);
 			//Set the subject line
-			$mail->Subject = 'SASS | ' . 'Recovery System';
-			//Read an HTML message body from an external file, convert referenced images to embedded,
-			//convert HTML into a basic plain-text alternative body
-			$mail->msgHTML($email_body);
+			$mail->Subject = $subject;
+
+			$message = "<div bgcolor='#fafafa' marginheight='0' marginwidth='0' style='width:100%!important;background:#fafafa'>";
+			$message .= "<div style='padding:20px 20px 20px 20px!important;width:550px;margin:0 auto'>";
+			$message .= "<h1 style='margin:0;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:40px;letter-spacing:-1px;color:#333;font-weight:normal'>
+					SASS App Password Recovery</h1>";
+			$message .= "<span style='margin:0 0 30px 0;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:17px;font-weight:300;color:#555'>
+					We heard that you lost your SASS password. Sorry about that!</span>.";
+
+			$message .= "<div style='margin:20px auto!important;width:510px;padding:20px 20px 20px 20px!important;border:1px solid #ddd!important;border-radius:3px!important;background:#ffffff!important'>";
+			$message .= "<p style='margin:5px 0 15px 0;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;font-weight:normal;color:#333;line-height:20px'>";
+			$message .= "But don&#39;t worry! You can use the following link within the next hour to reset your password:";
+			$message .= "<br/>" . $passwordRecoveryLink . "</p>";
+			$message .= "<p style='margin:0 0 30px 0;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:17px;font-weight:300;color:#555'>";
+			$message .= "You will be prompted for a password for your account. When you are done, you can $sassPageLogin at SASS App using this email address and the new password you choose.</p>";
+			$message .= "<p style='margin:0 0 30px 0;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:17px;font-weight:300;color:#555'>";
+			$message .= "If you don&#39;t use this link within 1 hour, it will expire. Please check your spam folder if the email does not appear within a few minutes. To get a new password reset link, please visit and insert your email: ";
+			$message .= "<br/>" . $sassPageRecover . "</p>";
+			$message .= "<div style='margin:20px 0;border-top:1px solid #ddd'></div>";
+			$message .= "<p style='margin:0 0 30px 0;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:17px;font-weight:300;color:#555'>Thanks,<br/><strong>$senderName</strong></p>";
+			$message .= "</div>";
+			$message .= "<div style='margin:20px 0;text-align:center;'>";
+			$message .= '<img alt="SASS logo" height="40" width="40" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAC4jAAAuIwF4pT92AAAAB3RJTUUH3gkOEB4GKCv7JwAABOFJREFUWMPt1n+slmUZB/DP9TznvICkiDCcJChUDAMpkR+OR0dkLp0zZz+mbG2t1tYmzZrzZenGakVbnbdcVrjStpxlODVsrTbWahqDR63FiElqwBbNQeuHghyB877nee/+OI9wfDnoH/1D2/v969lzf+/7vq7vfV3f+6aPPvroo48+/hfEGx+NaM6WXIkrgnMTf8VTif0drTTR5NyiBZkVM8PsZ9u+3p2I09CcimV4Hy7BIfwRO9paozUnq8ffj8sSx4Ldwm8zmBTNZZJ7ExdnWfb9rvQErsPPSFPOkNyspP1DptxPTJ6IMBjNGdiYuEnEr0XcR0zD47iwDm4SvoDbE/tSpG8Gf8NX8ZmBhub5KdmIb3S0nu6M6fBcQ/N2YihOidyLT5IvDO+oaM/AsR7lMskdGO5obXDqDDYMas7l5J8PYmUKn+2k1nD996GG5gnJ9AyXI8eLPQd4WKQXRJrg6LKLcGeY9hD5SJKu6GUkzsUabJugrp4NRhqxflDEtXg+Jcd75pc4lGE6BhJTxxO6RqvIPRC5kQnU+xKOZN77S6pXahV6w5iamFWv/+bgIzaniMNSyqW0ANOCwZ4sDqbcbzIcwcLg5lxz4I3xUd9KI6OtIyOjvQ2SLcEdxGMdP36GdCBYfLpK6VhwAjcOal48fqyThg530lCFyli9XRNjDTKO0xrtVK1jea44imtwXca8XLG3Ur76Fo3/PZxPWofXcsUKLM0Higeqbtk91eFFe4xnbbA4U7zeVe4dv1Kl7I7xYi1WZopGmlzsMlqeFCWvlMdzq0piFa7Ch3PFJXmjeK6qyk6PetfjHtIf8IM6kPlYpesXlfLIuM1TrtiVOCe4MVieK1bnihcq5b9P5bv6QKZ7CB8LluSjbsoVr1TKfermUClfrZQ/zRXT8W5cpbImj2LH+E2JLxPLctfe0/ApueUX4p11Yvsq5Z4ehdpd5VOZ4sX6CBfg45ni75PyYt9oKiXbU6XcE1nxRCQrMBe35ooqU+zMexb8/WBWPJmShbgScwes2lopuyJbQncDMw4Oum0geW1NiKJecEZiele55TQv1IyO1t5K+ZNM0QgWBDenFE9Wdhw92ZSpPFopH8sVe7AIt2BvnMH9J+Mr+LyIy9tp6ADZ3dhI3EC1tYe/DVPaWsvf7upqaN5am/eDHa2hM3CWYgjHs4bmh3oJba0TtX+N4BxMG6s9v6L7zAQX5jY0GtZffUq59fMHrV85gT/+CS+HmNfwxWhorp1g/504kMR5WWL1GZJNieFIi/aT3VAH+ijpyOlMm9EgrRxnM/NDWnh6LlFhirCZwQsm9tCxjgxpdxZi9oDme95UN1mzgdUR8e22uxt4BH/G0xOtNMpLxjxv+aC7Lqhvi/PqB0BPLmkp/hUp7RxLypyBcf5bH/EizMGmaMT6R6T0LnynNs2ZxC2kfzSs2zhs3qeJTVhH9/63qK3P4WvYjt2JS4Or8SCxnTRQX31zsKmttbOheRGex6OJLbWxL65VfRw/HyDdhQ9gaf0segn3Jp39wy49gSXYQv4jumcs/sTDwev1K2Vb8DIuG7sE0ifqZ9bvEn/paP2nnvZPXI8i+EjicLArcadG+2CnfV96m57LPkrWrbM+G5FtJfvu2frankncRjbrbA1wSt1lffTRRx999PF/jP8CuIm4fhDynqkAAAAASUVORK5CYII=" />';
+			$message .= "</div>";
+			$message .= "</div>";
+			$message .= "</div>";
+
+			$mail->msgHTML($message);
 			//Attach an image file
 			//$mail->addAttachment('images/phpmailer_mini.gif');
 

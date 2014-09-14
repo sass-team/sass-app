@@ -12,7 +12,7 @@ abstract class User extends Person
 	const SECRETARY = 'secretary';
 	const ACTIVE_STRING = 'activateAccount';
 	const DEACTIVE_STRING = 'deactivateAccount';
-	const ACTIVE_STATUS = 1;
+	const ACTIVE_STATUS = self::PASSWORD_EXPIRATION_TIME_MINUTES;
 	const DEACTIVE_STATUS = 0;
 
 	// representation of database info
@@ -25,13 +25,12 @@ abstract class User extends Person
 	const DB_COLUMN_EMAIL = "email";
 	const DB_COLUMN_GEN_STRING = "gen_string";
 	const DB_COLUMN_USER_TYPES_ID = "user_types_id";
-
+	const PASSWORD_EXPIRATION_TIME_MINUTES = 60;
 	private $avatarImgLoc;
 	private $profileDescription;
 	private $dateAccountCreated;
 	private $userType;
 	private $accountActiveStatus;
-
 
 	/**
 	 * Constructor
@@ -101,26 +100,27 @@ abstract class User extends Person
 	}
 
 	public static function updateActiveStatus($db, $id, $newStatus, $oldStatus) {
-		$oldStatus = $oldStatus == 1 ? self::ACTIVE_STRING : self::DEACTIVE_STRING;
-
-		if ((strcmp($newStatus, $oldStatus) === 0) || (strcmp($newStatus, self::ACTIVE_STRING) !== 0 && strcmp($newStatus, self::DEACTIVE_STRING))) {
-			throw new Exception("Tampered data detected. Aborting.");
-		}
-
-		$accountStatus = strcmp($newStatus, self::ACTIVE_STRING) === 0 ? self::ACTIVE_STATUS : self::DEACTIVE_STATUS;
-
-		try {
-			$query = "UPDATE `" . DB_NAME . "`.`user` SET `active`= :accountStatus WHERE `id`=:id";
-			$query = $db->getConnection()->prepare($query);
-			$query->bindParam(':accountStatus', $accountStatus, PDO::PARAM_INT);
-			$query->bindParam(':id', $id, PDO::PARAM_INT);
-
-			$query->execute();
-
-			return true;
-		} catch (PDOException $e) {
-			throw new Exception("Something terrible happened. Could not retrieve users data from database.: " . $e->getMessage());
-		} // end catch
+		throw new Exception("status changed has been disabled");
+//		$oldStatus = ($oldStatus == self::PASSWORD_EXPIRATION_TIME_HOURS) ? self::ACTIVE_STRING : self::DEACTIVE_STRING;
+//
+//		if ((strcmp($newStatus, $oldStatus) === 0) || (strcmp($newStatus, self::ACTIVE_STRING) !== 0 && strcmp($newStatus, self::DEACTIVE_STRING))) {
+//			throw new Exception("Tampered data detected. Aborting.");
+//		}
+//
+//		$accountStatus = strcmp($newStatus, self::ACTIVE_STRING) === 0 ? self::ACTIVE_STATUS : self::DEACTIVE_STATUS;
+//
+//		try {
+//			$query = "UPDATE `" . DB_NAME . "`.`user` SET `active`= :accountStatus WHERE `id`=:id";
+//			$query = $db->getConnection()->prepare($query);
+//			$query->bindParam(':accountStatus', $accountStatus, PDO::PARAM_INT);
+//			$query->bindParam(':id', $id, PDO::PARAM_INT);
+//
+//			$query->execute();
+//
+//			return true;
+//		} catch (PDOException $e) {
+//			throw new Exception("Something terrible happened. Could not retrieve users data from database.: " . $e->getMessage());
+//		} // end catch
 	}
 
 	static function updateProfile($db, $id, $firstName, $lastName, $prevMobileNum, $newMobileNum, $description) {
@@ -442,8 +442,15 @@ abstract class User extends Person
 	}
 
 	public static function isGeneratedStringExpired($db, $id, $generatedString) {
+		date_default_timezone_set('Europe/Athens');
+		$generatedStringDate = UserFetcher::retrieveGenStringDate($db, $id);
 
-		return true;
+		$dateNow = new DateTime();
+		$dateGenStringMdfd = new DateTime($generatedStringDate);
+		$dateDurationInterval = date_diff($dateNow, $dateGenStringMdfd);
+
+
+		return $dateDurationInterval->i > self::PASSWORD_EXPIRATION_TIME_MINUTES;
 	}
 
 
@@ -453,8 +460,8 @@ abstract class User extends Person
 		$generatedString = $unique . $random; // a random and unique string
 
 		User::validateId($db, $id);
-		UserFetcher::updateGeneratedString($db, $id, $generatedString);
-
+		UserFetcher::updateGenString($db, $id, $generatedString);
+		UserFetcher::updateGenStringTimeUpdate($db, $id);
 		return $generatedString;
 	}
 

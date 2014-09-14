@@ -15,7 +15,7 @@ class Admin extends User
 	public static function createUser($db, $first_name, $last_name, $email, $user_type, $majorId, $coursesIds) {
 		self::validateName($first_name);
 		self::validateName($last_name);
-		self::validateEmail($db, $email, self::DB_TABLE);
+		self::validateNewEmail($db, $email, self::DB_TABLE);
 		self::validateUserType($user_type);
 		//$this->validate_teaching_course($teaching_courses);
 

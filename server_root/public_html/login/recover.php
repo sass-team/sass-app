@@ -40,22 +40,9 @@ $general->loggedInProtect();
 $page_title = "Log In";
 
 
-/**
- * @return bool
- */
-function are_passwords_names_not_modified() {
-	return !isset($_POST['new-password-1']) || !isset($_POST['new-password-2']);
-}
-
 if (isUpdatePasswordBtnPressed()) {
 
-
-// The email link you clicked does not belong to any account.
-	//<br/>Make sure that you did not modified the link you retreived on your email.
 	try {
-		if (are_passwords_names_not_modified()) {
-			throw new Exception("The passwords you entered are incorrect. Please try again (make sure your caps lock is off).");
-		}
 
 		if (!isUrlOriginal()) {
 			throw new Exception("It seems you've modified the email url we send you. Please click the original link to proceed.");
@@ -67,22 +54,14 @@ if (isUpdatePasswordBtnPressed()) {
 		$genString = $_GET['gen_string'];
 		User::recoverPassword($db, $id, $newPassword1, $newPassword2, $genString);
 
-//		if (User::fetchInfo($db, User::DB_COLUMN_ID, User::DB_TABLE, User::DB_COLUMN_ID, $id) === false) {
-//			throw new Exception('Sorry, we could not find your account on database. Are you sure you did not modified the url we send you?');
-//		}
-//		if (User::fetchInfo($db, User::DB_COLUMN_GEN_STRING, User::DB_TABLE, User::DB_COLUMN_GEN_STRING, $gen_string) == 0) {
-//			throw new Exception('Sorry, we could not find verify you account on database. Are you sure you did not modified the url we send you?');
-//		} // end if
-//
-//		$db->addNewPassword($id, $new_password_1, $new_password_2);
+		header('Location: ' . BASE_URL . 'login/recover/success');
+		exit();
 
 	} catch (Exception $e) {
 		$errors[] = $e->getMessage();
 	}
 
-	#redirect the user to recover.php?success if recover() function does not return false.
-	//header('Location: ' . BASE_URL . 'login/recover/success');
-	//exit();
+
 }
 
 
@@ -215,12 +194,24 @@ function isUrlOriginal() {
 			</form>
 
 		</div>
-		<?php } else { ?>
+		<?php } else if (empty($errors) === false) { ?>
 			<div class="alert alert-danger">
 				<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
 				<strong>Oh snap!</strong> It seems you your url for reset your password is malformed
 				<hr/>
 				We recommend to try to re-send a new link for reset password.
+			</div>
+		<?php } else { ?>
+			<div class="alert alert-success">
+				<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+				<strong>Well done!</strong> Successfully updated password.
+			</div>
+			<hr>
+			<div class="form-group text-center">
+				<input type="hidden" name="hidden_forgot_pressed">
+				<a href="<?php echo BASE_URL; ?>login/" name="forgot" class="btn btn-default">
+					Back to Log In Page
+				</a>
 			</div>
 		<?php } ?>
 	</div>

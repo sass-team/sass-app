@@ -60,6 +60,8 @@ if (isContinueBtnPressed()) {
 	try {
 		$email = $_POST['email'];
 		Mailer::sendRecover($db, $email);
+		header('Location: ' . BASE_URL . 'login/confirm-password/success');
+		exit();
 	} catch (Exception $e) {
 		$errors[] = $e->getMessage();
 	}
