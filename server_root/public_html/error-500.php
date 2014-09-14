@@ -18,13 +18,13 @@
 	<link rel="stylesheet"
 	      href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,800italic,400,600,800"
 	      type="text/css">
-	<link rel="stylesheet" href="../app/assets/css/font-awesome.min.css" type="text/css"/>
-	<link rel="stylesheet" href="../app/assets/css/bootstrap.min.css" type="text/css"/>
-	<link rel="stylesheet" href="../app/assets/js/libs/css/ui-lightness/jquery-ui-1.9.2.custom.css" type="text/css"/>
+	<link rel="stylesheet" href="assets/css/font-awesome.min.css" type="text/css"/>
+	<link rel="stylesheet" href="assets/css/bootstrap.min.css" type="text/css"/>
+	<link rel="stylesheet" href="assets/js/libs/css/ui-lightness/jquery-ui-1.9.2.custom.css" type="text/css"/>
 
-	<link rel="stylesheet" href="../app/assets/css/App.css" type="text/css"/>
+	<link rel="stylesheet" href="assets/css/App.css" type="text/css"/>
 
-	<link rel="stylesheet" href="../app/assets/css/custom.css" type="text/css"/>
+	<link rel="stylesheet" href="assets/css/custom.css" type="text/css"/>
 
 </head>
 
@@ -36,7 +36,7 @@
 
 		<h1 id="site-logo">
 			<a href="/">
-				<img src="../app/assets/img/logos/logo.png" alt="Site Logo"/>
+				<img src="assets/img/logos/logo.png" alt="Site Logo"/>
 			</a>
 		</h1>
 
@@ -155,11 +155,11 @@
 	</ul>
 </footer>
 
-<script src="../app/assets/js/libs/jquery-1.9.1.min.js"></script>
-<script src="../app/assets/js/libs/jquery-ui-1.9.2.custom.min.js"></script>
-<script src="../app/assets/js/libs/bootstrap.min.js"></script>
+<script src="assets/js/libs/jquery-1.9.1.min.js"></script>
+<script src="assets/js/libs/jquery-ui-1.9.2.custom.min.js"></script>
+<script src="assets/js/libs/bootstrap.min.js"></script>
 
-<script src="../app/assets/js/App.js"></script>
+<script src="assets/js/App.js"></script>
 
 </body>
 </html>
