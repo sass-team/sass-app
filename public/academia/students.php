@@ -6,7 +6,7 @@ $page_title = "Manage Students";
 $section = "academia";
 
 try {
-	$students = StudentFetcher::retrieve($db);
+	$students = StudentFetcher::retrieveAll($db);
 	$majors = MajorFetcher::retrieveMajors($db);
 
 	if (isBtnAddStudentPrsd()) {

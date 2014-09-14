@@ -27,7 +27,7 @@ class StudentFetcher extends Person
 	 * @param $db
 	 * @throws Exception
 	 */
-	public static function retrieve($db) {
+	public static function retrieveAll($db) {
 		$query =
 			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_STUDENT_ID . "`, `" . self::DB_TABLE . "`.`" .
 			self::DB_COLUMN_ID . "`, `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_EMAIL . "`, `" . self::DB_TABLE . "`.`"

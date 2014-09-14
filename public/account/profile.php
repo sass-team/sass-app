@@ -79,7 +79,7 @@ $section = "account";
 							</ul>
 							<?php if ($user->isTutor()) { ?>
 
-								Major: <strong><?php echo $user->getMajor(); ?></strong>
+								Major: <strong><?php echo $user->getMajorId(); ?></strong>
 
 							<?php } ?>
 							<br/>

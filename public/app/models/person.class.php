@@ -106,13 +106,6 @@ abstract class Person
 		} // end catch
 	} // end function get_data
 
-	public static function validateId($id) {
-		if (!preg_match('/^[0-9]+$/', $id)) {
-			throw new Exception("Data tempering detected.
-			<br/>You&#39;re trying to hack this app.<br/>Developers are being notified about this.<br/>Expect Us.");
-		}
-	}
-
 	/**
 	 * @return mixed
 	 */

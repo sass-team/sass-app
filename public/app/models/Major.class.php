@@ -79,13 +79,9 @@ class Major
 
 
     public static function delete($db, $id) {
-        Person::validateId($id);
-        if (!MajorFetcher::idExists($db, $id)) {
-            throw new Exception("Could not retrieve major to be deleted from database. <br/>
-                Maybe some other administrator just deleted it?");
-        }
-
+        self::validateId($db, $id);
         MajorFetcher::delete($db, $id);
     }
+
 } 
 

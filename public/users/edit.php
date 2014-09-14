@@ -25,6 +25,7 @@
 
 /**
  * @author Rizart Dokollari
+ * @author George Skarlatos
  * @since 8/16/14.
  */
 
@@ -51,14 +52,19 @@ if (!isset($_GET['id']) || !preg_match("/^[0-9]+$/", $_GET['id'])) {
 
 
 try {
+	var_dump($_POST);
+
+
 	if (($data = User::retrieve($db, $userId)) === FALSE) {
 		header('Location: ' . BASE_URL . 'error-404');
 		exit();
 	}
 
 
+	// TODO: fix this code -- is ugly.
 	if (strcmp($data['type'], 'tutor') === 0) {
-		$curUser = new Tutor($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active']);
+		$tutor = TutorFetcher::retrieve($db, $userId);
+		$curUser = new Tutor($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active'], $tutor[TutorFetcher::DB_COLUMN_MAJOR_ID]);
 	} else if (strcmp($data['type'], 'secretary') === 0) {
 		$curUser = new Secretary($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active']);
 	} else if (strcmp($data['type'], 'admin') === 0) {
@@ -71,33 +77,32 @@ try {
 	if ($curUser->isTutor()) {
 		$teachingCourses = Tutor::retrieveTeachingCourses($db, $curUser->getId());
 		$notTeachingCourses = Tutor::retrieveCoursesNotTeaching($db, $curUser->getId());
+		$majors = MajorFetcher::retrieveMajors($db);
 	}
 
 
-	if (isAddTeachingCoursesPressed()) {
-		var_dump($curUser);
-		var_dump($_POST['teachingCourses']);
+	if (isBtnAddTeachingCoursesPrsd()) {
+		Tutor_has_course::addCourses($db, $userId, $_POST['teachingCourses']);
+		header('Location: ' . BASE_URL . 'users/edit/:' . $userId . '/success');
+		exit();
 
-		if ($curUser->addTeachingCourses($_POST['teachingCourses'])) {
-			header('Location: ' . BASE_URL . 'users/edit/:' . $userId . '/success');
-			exit();
-		}
 	} else if (isBtnSubmitReplaceCourse()) {
-
 		Tutor::updateTeachingCourse($db, $curUser->getId(), $_POST['teachingCourse'], $_POST['hiddenUpdateCourseOldId']);
 		header('Location: ' . BASE_URL . 'users/edit/:' . $userId . '/success');
 		exit();
+
 	} else if (isSaveBttnProfilePressed()) {
 		$newDataAdded = false;
 
 		$newFirstName = $_POST['firstName'];
 		$newLastName = $_POST['lastName'];
 		$newEmail = $_POST['email'];
+		$newMajorId = $_POST['majorId'];
 
 		$oldFirstName = $curUser->getFirstName();
 		$oldLastName = $curUser->getLastName();
 		$oldEmail = $curUser->getEmail();
-
+		$oldMajorId = $curUser->getMajorId();
 
 		if (strcmp($newFirstName, $oldFirstName) !== 0) {
 			$user->validateName($newFirstName);
@@ -116,6 +121,9 @@ try {
 			$user->updateInfo("email", "user", $newEmail, $userId);
 			$newDataAdded = true;
 		}
+
+		$newDataAdded = Tutor::replaceMajorId($db, $userId, $newMajorId, $oldMajorId) || $newDataAdded;
+
 
 		if (!$newDataAdded) {
 			throw new Exception("No new data. No modifications were done.");
@@ -145,7 +153,7 @@ function isSaveBttnProfilePressed() {
 	return isset($_POST['hiddenSaveBttnProfile']) && empty($_POST['hiddenSaveBttnProfile']);
 }
 
-function isAddTeachingCoursesPressed() {
+function isBtnAddTeachingCoursesPrsd() {
 	return isset($_POST['hiddenSubmitAddTeachingCourse']) && empty($_POST['hiddenSubmitAddTeachingCourse']);
 }
 
@@ -310,7 +318,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 							<?php
 							if (empty($errors) === true) {
 								foreach ($teachingCourses as $course) {
-									include(ROOT_PATH . "app/views/partials/course-table-data-view.html.php");
+									include(ROOT_PATH . "app/views/partials/tutors-course-table-data-view.html.php");
 
 								}
 							} ?>
@@ -409,6 +417,24 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 		</div>
 		<!-- /.form - group-->
+
+		<?php if ($curUser->isTutor()): ?>
+			<div class="form-group">
+
+				<label class="col-md-3" for="majorId">Tutor's Major      <?php
+					?></label>
+
+				<div class="col-md-7">
+
+					<select id="majorId" name="majorId" class="form-control">
+						<?php foreach ($majors as $major) {
+							include(ROOT_PATH . "app/views/partials/major-select-options-view.html.php");
+						}
+						?>
+					</select>
+				</div>
+			</div>
+		<?php endif; ?>
 
 		<div class="form-group">
 
@@ -767,6 +793,11 @@ require ROOT_PATH . 'app/views/sidebar.php';
 			placeholder: "Select courses..."
 		});
 
+		$("#majorId").select2({
+			placeholder: "Select courses..."
+		});
+
+		$("#majorId").select2("val", "<?php echo $curUser->getMajorId(); ?>");
 
 		$(".btnChangeType").click(function () {
 			$id = $(this).attr('id');

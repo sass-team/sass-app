@@ -109,7 +109,7 @@ $section = "users";
 							</ul>
 							<?php if ($curUser->isTutor()) { ?>
 
-								Major: <strong><?php echo $curUser->getMajor(); ?></strong>
+								Major: <strong><?php echo $curUser->getMajorId(); ?></strong>
 
 							<?php } ?>
 							<br/>

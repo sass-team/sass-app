@@ -30,12 +30,10 @@ if (isSaveBttnPressed()) {
 	$last_name = trim($_POST['last_name']);
 	$email = trim($_POST['email']);
 	$user_type = trim($_POST['user_type']);
-	$userMajor_ext = (isset($_POST['userMajor']) ? trim($_POST['userMajor']) : "");
-	$teachingCourses[] = isset($_POST['teachingCourses']) ? $_POST['teachingCourses'] : "";
-
-	var_dump($_POST);
+	$userMajorId = (isset($_POST['userMajor']) ? trim($_POST['userMajor']) : "");
+	$teachingCoursesIds = isset($_POST['teachingCourses']) ? $_POST['teachingCourses'] : "";
 	try {
-		Admin::createUser($db, $first_name, $last_name, $email, $user_type, $userMajor_ext, $teachingCourses);
+		Admin::createUser($db, $first_name, $last_name, $email, $user_type, $userMajorId, $teachingCoursesIds);
 	} catch (Exception $e) {
 		$errors[] = $e->getMessage();
 	}

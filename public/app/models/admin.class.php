@@ -12,41 +12,49 @@ class Admin extends User
 		parent::__construct($db, $id, $firstName, $lastName, $email, $mobileNum, $avatarImgLoc, $profileDescription, $dateAccountCreated, $userType, $accountActiveStatus);
 	}
 
-	public static function createUser($db, $first_name, $last_name, $email, $user_type, $user_major_ext, $teaching_courses) {
+	public static function createUser($db, $first_name, $last_name, $email, $user_type, $majorId, $coursesIds) {
 		self::validateName($first_name);
 		self::validateName($last_name);
 		self::validateEmail($db, $email, self::DB_TABLE);
 		self::validateUserType($user_type);
-		//$this->validate_user_major($user_major_ext);
+		Major::validateId($db, $majorId);
 		//$this->validate_teaching_course($teaching_courses);
 
 		try {
-			$queryInsertUser = "INSERT INTO `" . DB_NAME . "`.`" . User::DB_TABLE . "` (`" . User::DB_COLUMN_EMAIL . "`, `" . User::DB_COLUMN_FIRST_NAME . "`, `" . User::DB_COLUMN_LAST_NAME . "`, `" . User::DB_COLUMN_USER_TYPES_ID . "`)
+			$queryInsertUser = "INSERT INTO `" . DB_NAME . "`.`" . User::DB_TABLE . "` (`" . User::DB_COLUMN_EMAIL . "`,
+			`" . User::DB_COLUMN_FIRST_NAME . "`, `" . User::DB_COLUMN_LAST_NAME . "`, `" . User::DB_COLUMN_USER_TYPES_ID . "`)
 				VALUES(
 					:email,
 					:first_name,
 					:last_name,
-					(SELECT `" . UserTypes::DB_COLUMN_ID . "` AS `" . User::DB_COLUMN_USER_TYPES_ID . "` FROM `" . UserTypes::DB_TABLE . "` WHERE `" . UserTypes::DB_TABLE . "`.`" . UserTypes::DB_COLUMN_TYPE . "`=:user_type )
+					(SELECT `" . UserTypes::DB_COLUMN_ID . "` FROM `" . UserTypes::DB_TABLE . "` WHERE `" .
+				UserTypes::DB_COLUMN_TYPE . "`=:user_type )
 				)";
 
+			$db->getConnection()->beginTransaction();
 
 			$queryInsertUser = $db->getConnection()->prepare($queryInsertUser);
 			$queryInsertUser->bindParam(':email', $email, PDO::PARAM_STR);
 			$queryInsertUser->bindParam(':first_name', $first_name, PDO::PARAM_STR);
 			$queryInsertUser->bindParam(':last_name', $last_name, PDO::PARAM_STR);
-			$queryInsertUser->bindParam(':user_type', $user_type, PDO::PARAM_INT);
+			$queryInsertUser->bindParam(':user_type', $user_type, PDO::PARAM_STR);
 
 			$queryInsertUser->execute();
+
+			// last inserted if of THIS connection
 			$tutorId = $db->getConnection()->lastInsertId();
+
 			if (strcasecmp($user_type, User::SECRETARY)) {
-				Tutor::insert($db, $tutorId);
+				Tutor::insertMajor($db, $tutorId, $majorId);
+				Tutor_has_course::addCourses($db, $tutorId, $coursesIds);
 			}
 
 
+			$db->getConnection()->commit();
 			return true;
 		} catch (Exception $e) {
 			$db->getConnection()->rollback();
-			throw new Exception("Could not insert user into database.");
+			throw new Exception("Could not insert user into database." . $e->getMessage());
 		}
 	}
 

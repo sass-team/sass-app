@@ -396,13 +396,13 @@ abstract class User extends Person
 	}
 
 	/**
-	 * Returns a single column from the next row of a result set or FALSE if there are no more rows.
-	 *
+	 *  Returns a single column from the next row of a result set or FALSE if there are no more rows.
+	 * @param $db
 	 * @param $what
 	 * @param $field
+	 * @param $where
 	 * @param $value
-	 * @return mixed
-	 * @throws InvalidArgumentException
+	 * @throws Exception
 	 */
 	public static function fetchInfo($db, $what, $field, $where, $value) {
 		// I have only added few, but you can add more. However do not add 'password' even though the parameters will only be given by you and not the user, in our system.

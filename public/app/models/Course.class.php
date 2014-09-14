@@ -60,13 +60,10 @@ class Course
 	}
 
 	public static function validateId($db, $id) {
-		$id = trim($id);
 		if (!preg_match('/^[0-9]+$/', $id) || (!CourseFetcher::idExists($db, $id))) {
 			throw new Exception("Data tempering detected.
 			<br/>You&#39;re trying to hack this app.<br/>Developers are being notified about this.<br/>Expect Us.");
 		}
-
-		return $id;
 	}
 
 	public static function updateCode($db, $id, $newCode) {
@@ -82,7 +79,7 @@ class Course
 	}
 
 	public static function delete($db, $id) {
-		Person::validateId($id);
+		self::validateId($db, $id);
 		if (!CourseFetcher::courseExists($db, $id)) {
 			throw new Exception("Could not retrieve course to be deleted from database. <br/>
                 Maybe some other administrator just deleted it?");
@@ -91,4 +88,5 @@ class Course
 		CourseFetcher::delete($db, $id);
 	}
 
-} 
+
+}
