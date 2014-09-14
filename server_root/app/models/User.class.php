@@ -281,24 +281,22 @@ abstract class User extends Person
 	public static function validatePassword($password) {
 		$r1 = '/[A-Z]/'; //Uppercase
 		$r2 = '/[a-z]/'; //lowercase
-		$r3 = '/[!@#$%^&*()\-_=+{};:,<.>]/'; // special characters
-		$r4 = '/[0-9]/'; //numbers
+		$r3 = '/[0-9]/'; //numbers
 
 		$correctPassword = TRUE;
 
 		$correctPassword = $correctPassword && preg_match($r1, $password);
 		$correctPassword = $correctPassword && preg_match($r2, $password);
 		$correctPassword = $correctPassword && preg_match($r3, $password);
-		$correctPassword = $correctPassword && preg_match($r4, $password);
-		$correctPassword = $correctPassword && (strlen($password) > 6);
+		$correctPassword = $correctPassword && (strlen($password) > 5);
 
 		if (!$correctPassword) {
 			throw new Exception("Password should:
 			<ul>
 				<li>Contain at least one capitalized letter. [A-Z]</li>
 				<li>Contain at least one lowercase letter. [a-z]</li>
-				<li>Contain at least one special character. [!@#$%^&*()\\-_=+{};:,<.>]</li>
-				<li>Be at least 7 characters long</li>
+				<li>Contain at least one number. [0-9]</li>
+				<li>Be at least 6 characters long</li>
 			</ul> ");
 		}
 	}
