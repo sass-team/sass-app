@@ -8,7 +8,8 @@
  * Date: 5/20/14
  * Time: 12:52 AM
  */
-class General {
+class General
+{
 
 	/**
 	 * If a log in session exists then to home.php
@@ -35,6 +36,29 @@ class General {
 		if ($this->loggedIn() === false) {
 			header('Location: ' . BASE_URL . 'login');
 			exit();
+		}
+
+		// source: http://stackoverflow.com/a/1270960/2790481
+
+		// last request was more than 1 hours ago
+		if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 3600)) {
+			session_unset();     // unset $_SESSION variable for the run-time
+			session_destroy();   // destroy session data in storage
+			header('Location: ' . BASE_URL . 'login');
+			exit();
+		}
+		$_SESSION['LAST_ACTIVITY'] = time(); // update last activity time stamp
+
+		if (!isset($_SESSION['CREATED'])) {
+			$_SESSION['CREATED'] = time();
+		} else if (time() - $_SESSION['CREATED'] > 1800) {
+			// session started more than 30 minutes ago
+			$id = $_SESSION['id'];
+
+			session_regenerate_id(true);    // change session ID for the current session and invalidate old session ID
+			$_SESSION['CREATED'] = time();  // update creation time
+			$_SESSION['id'] = $id;
+			$_SESSION['LAST_ACTIVITY'] = time(); // update last activity time stamp
 		}
 	}
 }

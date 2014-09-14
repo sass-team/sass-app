@@ -257,7 +257,7 @@ abstract class User extends Person
 			throw new Exception("There was a mismatch with the new passwords");
 		}
 
-		!self::validatePassword($newPassword1);
+		self::validatePassword($newPassword1);
 
 		$old_password_hashed = self::getHashedPassword($db, $id);
 		if (!password_verify($oldPassword, $old_password_hashed)) {
