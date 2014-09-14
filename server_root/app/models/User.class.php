@@ -444,7 +444,17 @@ abstract class User extends Person
 		if (!UserFetcher::generatedStringExists($db, $id, $generatedString)) {
 			throw new Exception("Could not verify generated string exists. Please make sure url sent was not modified.");
 		}
+
+		if (User::isGeneratedStringExpired($db, $id, $generatedString)) {
+			throw new Exception("Sorry that link has expired. Please <a href='http://" . $_SERVER['SERVER_NAME']
+				. "/login/confirm-password'
+							target='_self'>request</a> a new one");
+		}
 		UserFetcher::updatePassword($db, $id, $newPassword1);
+	}
+
+	public static function isGeneratedStringExpired($db, $id, $generatedString) {
+		return true;
 	}
 
 	/**

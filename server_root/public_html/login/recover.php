@@ -61,20 +61,20 @@ if (isUpdatePasswordBtnPressed()) {
 			throw new Exception("It seems you've modified the email url we send you. Please click the original link to proceed.");
 		}
 
-		$new_password_1 = trim($_POST['new-password-1']);
-		$new_password_2 = trim($_POST['new-password-2']);
+		$newPassword1 = trim($_POST['new-password-1']);
+		$newPassword2 = trim($_POST['new-password-2']);
 		$id = $_GET['id'];
-		$gen_string = $_GET['gen_string'];
+		$genString = $_GET['gen_string'];
 		User::recoverPassword($db, $id, $newPassword1, $newPassword2, $genString);
 
-		if (User::fetchInfo($db, User::DB_COLUMN_ID, User::DB_TABLE, User::DB_COLUMN_ID, $id) === false) {
-			throw new Exception('Sorry, we could not find your account on database. Are you sure you did not modified the url we send you?');
-		}
-		if (User::fetchInfo($db, User::DB_COLUMN_GEN_STRING, User::DB_TABLE, User::DB_COLUMN_GEN_STRING, $gen_string) == 0) {
-			throw new Exception('Sorry, we could not find verify you account on database. Are you sure you did not modified the url we send you?');
-		} // end if
-
-		$db->addNewPassword($id, $new_password_1, $new_password_2);
+//		if (User::fetchInfo($db, User::DB_COLUMN_ID, User::DB_TABLE, User::DB_COLUMN_ID, $id) === false) {
+//			throw new Exception('Sorry, we could not find your account on database. Are you sure you did not modified the url we send you?');
+//		}
+//		if (User::fetchInfo($db, User::DB_COLUMN_GEN_STRING, User::DB_TABLE, User::DB_COLUMN_GEN_STRING, $gen_string) == 0) {
+//			throw new Exception('Sorry, we could not find verify you account on database. Are you sure you did not modified the url we send you?');
+//		} // end if
+//
+//		$db->addNewPassword($id, $new_password_1, $new_password_2);
 
 	} catch (Exception $e) {
 		$errors[] = $e->getMessage();
