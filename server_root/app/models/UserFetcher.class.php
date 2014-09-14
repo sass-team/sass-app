@@ -37,6 +37,21 @@ class UserFetcher
 
 	}
 
+	public static function retrieveId($db, $email) {
+		$query = "SELECT `" . self::DB_COLUMN_ID . "` FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "` WHERE `" .
+			self::DB_COLUMN_EMAIL . "`=:email";
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':id', $email, PDO::PARAM_STR);
+
+			$query->execute();
+			return $query->fetch(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			throw new Exception("Something terrible happened. Could not retrieve database." . $e->getMessage());
+		} // end try
+
+	}
+
 	public static function retrieveSingle($db, $id) {
 		$query = "SELECT `" . self::DB_TABLE . "`.email, user.id, user.`f_name`, user.`l_name`, user.`img_loc`,
 						user.date, user.`profile_description`, user.mobile, user_types.type, user.active
@@ -102,7 +117,7 @@ class UserFetcher
 		return true;
 	}
 
-	public static function updateString($db, $id, $generatedString) {
+	public static function updateGeneratedString($db, $id, $generatedString) {
 		try {
 			$sql = "UPDATE `" . DB_NAME . "`.`user` SET `gen_string` = :gen_string WHERE `id` = :id";
 			$query = $db->getConnection()->prepare($sql);

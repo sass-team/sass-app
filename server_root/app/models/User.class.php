@@ -123,17 +123,6 @@ abstract class User extends Person
 		} // end catch
 	}
 
-	public static function generateNewPasswordString($db, $id) {
-		$unique = uniqid('', true); // generate a unique string
-		$random = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 10); // generate a more random string
-		$generatedString = $unique . $random; // a random and unique string
-
-		User::validateId($db, $id);
-		UserFetcher::updateString($db, $id, $generatedString);
-
-		return $generatedString;
-	}
-
 	static function updateProfile($db, $id, $firstName, $lastName, $prevMobileNum, $newMobileNum, $description) {
 		$firstName = trim($firstName);
 		$lastName = trim($lastName);
@@ -436,7 +425,6 @@ abstract class User extends Person
 		UserFetcher::updatePassword($db, $id, $newPassword1);
 	}
 
-
 	public static function recoverPassword($db, $id, $newPassword1, $newPassword2, $generatedString) {
 		if (strcmp($newPassword1, $newPassword2) !== 0) throw new Exception("There was a mismatch with the new passwords");
 		User::validatePassword($newPassword1);
@@ -454,7 +442,20 @@ abstract class User extends Person
 	}
 
 	public static function isGeneratedStringExpired($db, $id, $generatedString) {
+
 		return true;
+	}
+
+
+	public static function generateNewPasswordString($db, $id) {
+		$unique = uniqid('', true); // generate a unique string
+		$random = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 10); // generate a more random string
+		$generatedString = $unique . $random; // a random and unique string
+
+		User::validateId($db, $id);
+		UserFetcher::updateGeneratedString($db, $id, $generatedString);
+
+		return $generatedString;
 	}
 
 	/**

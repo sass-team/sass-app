@@ -48,7 +48,7 @@ class Database
 	} // end __construct
 
 
-	public function confirmRecover($email, $id) {
+	public function confirmRecover($db, $email, $id) {
 
 		try {
 			$unique = uniqid('', true); // generate a unique string
@@ -60,6 +60,7 @@ class Database
 
 			$query->execute();
 
+			$generated_string = User::generateNewPasswordString($db, $id);
 
 			$email = trim($email);
 			$message = "We heard that you lost your SASS password. Sorry about that!<br/><br/>";
