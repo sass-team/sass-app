@@ -18,6 +18,7 @@ class UserFetcher
 	const DB_COLUMN_EMAIL = "email";
 	const DB_COLUMN_GEN_STRING = "gen_string";
 	const DB_COLUMN_USER_TYPES_ID = "user_types_id";
+	const DB_COLUMN_GEN_STRING_UPDATE_AT = "gen_string_update_at";
 
 	public static function existsMobileNum($db, $newMobileNum) {
 
@@ -37,6 +38,36 @@ class UserFetcher
 
 	}
 
+	public static function retrieveUsingEmail($db, $email) {
+		$query = "SELECT `" . self::DB_COLUMN_ID . "`, `" . self::DB_COLUMN_FIRST_NAME . "`, `" .
+			self::DB_COLUMN_LAST_NAME . "` FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "` WHERE `" .
+			self::DB_COLUMN_EMAIL . "`=:email";
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':email', $email, PDO::PARAM_STR);
+
+			$query->execute();
+			return $query->fetch(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			throw new Exception("Something terrible happened. Could not retrieve database." . $e->getMessage());
+		} // end try
+
+	}
+
+	public static function retrieveGenStringDate($db, $id) {
+		$query = "SELECT `" . self::DB_COLUMN_GEN_STRING_UPDATE_AT . "` FROM `" . DB_NAME . "`.`" . self::DB_TABLE .
+			"` WHERE `" . self::DB_COLUMN_ID . "`=:id";
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':id', $id, PDO::PARAM_STR);
+
+			$query->execute();
+			return $query->fetchColumn();
+		} catch (PDOException $e) {
+			throw new Exception("Something terrible happened. Could not retrieve database." . $e->getMessage());
+		} // end try
+	}
+
 	public static function retrieveSingle($db, $id) {
 		$query = "SELECT `" . self::DB_TABLE . "`.email, user.id, user.`f_name`, user.`l_name`, user.`img_loc`,
 						user.date, user.`profile_description`, user.mobile, user_types.type, user.active
@@ -53,6 +84,25 @@ class UserFetcher
 		} catch (PDOException $e) {
 			throw new Exception("Something terrible happened. Could not retrieve database." . $e->getMessage());
 		} // end try
+	}
+
+
+	public static function updateGenStringTimeUpdate($db, $id) {
+		date_default_timezone_set('Europe/Athens');
+		$date_modified = date("Y-m-d H:i:s");
+
+		try {
+
+			$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "` SET `" . self::DB_COLUMN_GEN_STRING_UPDATE_AT . "`=
+			 :data_modified WHERE `" . self::DB_COLUMN_ID . "`= :id";
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':id', $id);
+			$query->bindParam(':data_modified', $date_modified);
+
+			$query->execute();
+		} catch (Exception $e) {
+			throw new Exception("Could not update data for password recovery.");
+		}
 	}
 
 	public static function generatedStringExists($db, $id, $generatedString) {
@@ -102,7 +152,7 @@ class UserFetcher
 		return true;
 	}
 
-	public static function updateString($db, $id, $generatedString) {
+	public static function updateGenString($db, $id, $generatedString) {
 		try {
 			$sql = "UPDATE `" . DB_NAME . "`.`user` SET `gen_string` = :gen_string WHERE `id` = :id";
 			$query = $db->getConnection()->prepare($sql);

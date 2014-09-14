@@ -65,7 +65,7 @@ abstract class Person
 		}
 	}
 
-	public static function validateEmail($db, $newEmail, $table) {
+	public static function validateNewEmail($db, $newEmail, $table) {
 		if (!isset($newEmail) || empty($newEmail)) {
 			throw new Exception("Email is required");
 		}
@@ -104,6 +104,17 @@ abstract class Person
 		} catch (PDOException $e) {
 			throw new Exception("Something terrible happened. Could not access database.");
 		} // end catch
+	}
+
+	public static function validateExistingEmail($db, $newEmail, $table) {
+		if (!isset($newEmail) || empty($newEmail)) {
+			throw new Exception("Email is required");
+		}
+		if (filter_var($newEmail, FILTER_VALIDATE_EMAIL) === false) {
+			throw new Exception("Please enter a valid email address");
+		} else if (!self::emailExists($db, $newEmail, $table)) {
+			throw new Exception('Email was not found on database.');
+		} // end else if
 	} // end function get_data
 
 	/**

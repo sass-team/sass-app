@@ -115,7 +115,7 @@ try {
 		}
 
 		if (strcmp($newEmail, $oldEmail) !== 0) {
-			Person::validateEmail($db, $newEmail, User::DB_TABLE);
+			Person::validateNewEmail($db, $newEmail, User::DB_TABLE);
 			$user->updateInfo("email", "user", $newEmail, $userId);
 			$newDataAdded = true;
 		}

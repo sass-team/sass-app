@@ -59,15 +59,9 @@ function isVerified() {
 if (isContinueBtnPressed()) {
 	try {
 		$email = $_POST['email'];
-
-		if (($idLost = User::fetchInfo($db, User::DB_COLUMN_ID, User::DB_TABLE, User::DB_COLUMN_EMAIL, $email)) !== false) {
-			$db->confirmRecover($email, $idLost);
-			header('Location: ' . BASE_URL . 'login/confirm-password/success');
-			exit();
-		} else {
-			$errors[] = 'Sorry, that email doesn\'t exist.';
-		} // end else if
-
+		Mailer::sendRecover($db, $email);
+		header('Location: ' . BASE_URL . 'login/confirm-password/success');
+		exit();
 	} catch (Exception $e) {
 		$errors[] = $e->getMessage();
 	}

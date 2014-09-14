@@ -59,7 +59,7 @@ class Student extends Person
 		// Validate data
 		Person::validateName($firstName);
 		Person::validateName($lastName);
-		Person::validateEmail($db, $email, StudentFetcher::DB_TABLE);
+		Person::validateNewEmail($db, $email, StudentFetcher::DB_TABLE);
 		self::validateStudentId($db, $studentId);
 		self::validateMobileNumber($db, $mobileNum);
 		Major::validateId($db, $majorId);
@@ -152,11 +152,11 @@ class Student extends Person
 
 
 	public static function updateEmail($db, $id, $newEmail, $oldEmail) {
-		Student::validateEmail($db, $newEmail, $oldEmail);
+		Student::validateNewEmail($db, $newEmail, $oldEmail);
 		StudentFetcher::updateEmail($db, $id, $newEmail);
 	}
 
-	public static function validateEmail($db, $newEmail, $oldEmail) {
+	public static function validateNewEmail($db, $newEmail, $oldEmail) {
 		if (!isset($newEmail) || empty($newEmail)) throw new Exception("Email is required");
 		if (strcmp($newEmail, $oldEmail) === 0) return;
 
