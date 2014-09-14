@@ -170,7 +170,7 @@ function isUrlOriginal() {
 						</a>
 					</div>
 					<hr>
-				<?php } else { ?>
+				<?php } else if (empty($errors) === false) { ?>
 					<div class="alert alert-danger">
 						<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
 						<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
@@ -179,6 +179,7 @@ function isUrlOriginal() {
 					</div>
 
 					<hr>
+				<?php } else if (isUrlOriginal()) { ?>
 					<div class="form-group">
 						<label class="col-md-4">New Password</label>
 
