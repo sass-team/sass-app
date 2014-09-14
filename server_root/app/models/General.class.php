@@ -40,8 +40,8 @@ class General
 
 		// source: http://stackoverflow.com/a/1270960/2790481
 
-		// last request was more than 1 hours ago
-		if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 3600)) {
+		// last request was more than 1 day ago
+		if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 86400)) {
 			session_unset();     // unset $_SESSION variable for the run-time
 			session_destroy();   // destroy session data in storage
 			header('Location: ' . BASE_URL . 'login');
@@ -51,10 +51,11 @@ class General
 
 		if (!isset($_SESSION['CREATED'])) {
 			$_SESSION['CREATED'] = time();
-		} else if (time() - $_SESSION['CREATED'] > 1800) {
-			// session started more than 30 minutes ago
+		} else if (time() - $_SESSION['CREATED'] > 3600) {
+			// session started more than 1 hour ago
 			$id = $_SESSION['id'];
 
+			// better security - avoid fixation attack.
 			session_regenerate_id(true);    // change session ID for the current session and invalidate old session ID
 			$_SESSION['CREATED'] = time();  // update creation time
 			$_SESSION['id'] = $id;
