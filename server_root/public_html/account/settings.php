@@ -14,9 +14,10 @@ function uploadAvatarImage($user) {
 	if ($_FILES['fileupload-avatar']['error'] == 1) {
 		throw new Exception("File size exceeded");
 	} else {
-		$uploaddir = BASE_URL . "assets/img/avatars/";
+		$uploaddir = ROOT_PATH . "public_html/assets/img/avatars/";
 		$uploadfile = $uploaddir . basename($_FILES['fileupload-avatar']['name']);
 
+		var_dump($uploadfile);
 		$path = $_FILES['fileupload-avatar']['name'];
 		$allowed = array('gif', 'png', 'jpg');
 		$ext = pathinfo($path, PATHINFO_EXTENSION);
@@ -26,7 +27,7 @@ function uploadAvatarImage($user) {
 		}
 
 		if (move_uploaded_file($_FILES['fileupload-avatar']['tmp_name'], $uploadfile)) {
-			$imgWebLoc = $uploaddir . "avatar_img_" . $user . "." . $ext;
+			$imgWebLoc = $uploaddir . "avatar_img_" . $user->getId() . "." . $ext;
 			rename($uploadfile, $imgWebLoc);
 
 			$avatarImgLoc = "assets/img/avatars/avatar_img_" . $user->getId() . "." . $ext;
