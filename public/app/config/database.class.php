@@ -48,10 +48,6 @@ class Database
 	} // end __construct
 
 
-
-
-
-
 	public function confirmRecover($email, $id) {
 
 		try {
@@ -108,6 +104,8 @@ class Database
 		if ($new_password_1 !== $new_password_2) {
 			throw new Exception("There was a mismatch with the new passwords");
 		}
+
+		User::validatePassword($new_password_1);
 
 		try {
 			$new_password_hashed = password_hash($new_password_1, PASSWORD_DEFAULT);

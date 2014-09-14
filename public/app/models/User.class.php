@@ -257,15 +257,7 @@ abstract class User extends Person
 			throw new Exception("There was a mismatch with the new passwords");
 		}
 
-		if (!self::validatePassword($newPassword1)) {
-			throw new Exception("Password should:
-			<ul>
-				<li>Contain at least one capitalized letter. [A-Z]</li>
-				<li>Contain at least one lowercase letter. [a-z]</li>
-				<li>Contain at least one special character. [!@#$%^&*()\-_=+{};:,<.>]</li>
-				<li>Be at least 8 characters long</li>
-			</ul> ");
-		}
+		!self::validatePassword($newPassword1);
 
 		$old_password_hashed = self::getHashedPassword($db, $id);
 		if (!password_verify($oldPassword, $old_password_hashed)) {
@@ -289,21 +281,26 @@ abstract class User extends Person
 	public static function validatePassword($password) {
 		$r1 = '/[A-Z]/'; //Uppercase
 		$r2 = '/[a-z]/'; //lowercase
-		$r3 = '/[!@#$%^&*()\-_=+{};:,<.>]/'; // whatever you mean by 'special char'
+		$r3 = '/[!@#$%^&*()\-_=+{};:,<.>]/'; // special characters
 		$r4 = '/[0-9]/'; //numbers
 
-		if (preg_match_all($r1, $password, $o) < 2) return FALSE;
+		$correctPassword = TRUE;
 
-		if (preg_match_all($r2, $password, $o) < 2) return FALSE;
+		$correctPassword = $correctPassword && preg_match($r1, $password);
+		$correctPassword = $correctPassword && preg_match($r2, $password);
+		$correctPassword = $correctPassword && preg_match($r3, $password);
+		$correctPassword = $correctPassword && preg_match($r4, $password);
+		$correctPassword = $correctPassword && (strlen($password) > 6);
 
-		if (preg_match_all($r3, $password, $o) < 2) return FALSE;
-
-		if (preg_match_all($r4, $password, $o) < 2) return FALSE;
-
-		if (strlen($password) < 8) return FALSE;
-
-		return TRUE;
-
+		if (!$correctPassword) {
+			throw new Exception("Password should:
+			<ul>
+				<li>Contain at least one capitalized letter. [A-Z]</li>
+				<li>Contain at least one lowercase letter. [a-z]</li>
+				<li>Contain at least one special character. [!@#$%^&*()\\-_=+{};:,<.>]</li>
+				<li>Be at least 7 characters long</li>
+			</ul> ");
+		}
 	}
 
 	public static function getHashedPassword($db, $id) {
