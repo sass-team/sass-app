@@ -40,7 +40,7 @@ class Mailer
 		$alternativeName = "SASS Developers";
 		$setPasswordLink = "<a href='http://" . $_SERVER['SERVER_NAME'] . "/login/set/" . $id . "/" . $getString . "' target='_blank' >Set SASS App Password</a><br/>";
 		$sassPageLogin = "<a href='http://" . $_SERVER['SERVER_NAME'] . "/login/' target='_blank' >log in</a>";
-		$senderName = "Administrator: " . $senderName;
+		$senderName = $senderName;
 
 		try {
 			//Create a new PHPMailer instance

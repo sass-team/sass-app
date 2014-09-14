@@ -65,6 +65,8 @@ if (isUpdatePasswordBtnPressed()) {
 		$new_password_2 = trim($_POST['new-password-2']);
 		$id = $_GET['id'];
 		$gen_string = $_GET['gen_string'];
+		User::recoverPassword($db, $id, $newPassword1, $newPassword2, $genString);
+
 		if (User::fetchInfo($db, User::DB_COLUMN_ID, User::DB_TABLE, User::DB_COLUMN_ID, $id) === false) {
 			throw new Exception('Sorry, we could not find your account on database. Are you sure you did not modified the url we send you?');
 		}

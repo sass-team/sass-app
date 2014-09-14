@@ -436,6 +436,17 @@ abstract class User extends Person
 		UserFetcher::updatePassword($db, $id, $newPassword1);
 	}
 
+
+	public static function recoverPassword($db, $id, $newPassword1, $newPassword2, $generatedString) {
+		if (strcmp($newPassword1, $newPassword2) !== 0) throw new Exception("There was a mismatch with the new passwords");
+		User::validatePassword($newPassword1);
+
+		if (!UserFetcher::generatedStringExists($db, $id, $generatedString)) {
+			throw new Exception("Could not verify generated string exists. Please make sure url sent was not modified.");
+		}
+		UserFetcher::updatePassword($db, $id, $newPassword1);
+	}
+
 	/**
 	 * @return mixed
 	 */
