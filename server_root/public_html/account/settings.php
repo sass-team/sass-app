@@ -7,15 +7,14 @@ $general->loggedOutProtect();
 $errors = array();
 
 /**
- * @param $errors
  * @param $user
- * @return array
+ * @throws Exception
  */
 function uploadAvatarImage($user) {
 	if ($_FILES['fileupload-avatar']['error'] == 1) {
 		throw new Exception("File size exceeded");
 	} else {
-		$uploaddir = ROOT_PATH . "app/assets/img/avatars/";
+		$uploaddir = BASE_URL . "assets/img/avatars/";
 		$uploadfile = $uploaddir . basename($_FILES['fileupload-avatar']['name']);
 
 		$path = $_FILES['fileupload-avatar']['name'];
@@ -30,7 +29,7 @@ function uploadAvatarImage($user) {
 			$imgWebLoc = $uploaddir . "avatar_img_" . $user . "." . $ext;
 			rename($uploadfile, $imgWebLoc);
 
-			$avatarImgLoc = "app/assets/img/avatars/avatar_img_" . $user->getId() . "." . $ext;
+			$avatarImgLoc = "assets/img/avatars/avatar_img_" . $user->getId() . "." . $ext;
 			if (true !== ($updateAvatarImgResponse = $user->updateAvatarImg($avatarImgLoc, $user->getId()))) {
 				throw new Exception("Error storing img loc to database. Please try again later.");
 			}
