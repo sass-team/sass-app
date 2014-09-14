@@ -21,4 +21,14 @@ ErrorDocument 404 /error-404
 ErrorDocument 403 /error-403
 ErrorDocument 500 /error-500
 
-#RewriteRule ^$ /upgrade [L]
+#RewriteRule ^/$ /upgrade [L]
+
+# MAINTENANCE-PAGE REDIRECT
+#<IfModule mod_rewrite.c>
+# RewriteEngine on
+# RewriteCond %{REMOTE_ADDR} !^(?:(?:192\.168\.1\.1)|(?:127\.0\.0\.1))|(?::1)$
+# RewriteCond %{REQUEST_URI} !/upgrade/index.html$ [NC]
+# RewriteCond %{REQUEST_URI} !\.(jpe?g?|png|gif) [NC]
+# RewriteCond %{REQUEST_URI} !/upgrade/.*$ [NC]
+# RewriteRule .* /upgrade/index.html [R=302,L]
+#</IfModule>
