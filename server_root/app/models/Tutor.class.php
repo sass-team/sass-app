@@ -9,7 +9,7 @@
 class Tutor extends User
 {
 	const DB_TABLE = "tutor";
-	const DB_TABLE_TUTOR_HAS_COURSE = "tutor_has_course";
+	const DB_TABLE_TUTOR_HAS_COURSE_HAS_SCHEDULE = "tutor_has_course_has_schedule";
 	const DB_TABLE_TUTOR_HAS_COURSE_TUTOR_USER_ID = "tutor_user_id";
 	const DB_COLUMN_USER_ID = "user_id";
 	const DB_COLUMN_COURSE_ID = "course_id";
@@ -30,11 +30,11 @@ class Tutor extends User
 			CourseFetcher::DB_COLUMN_NAME . "` AS 'name',  `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_ID . "`
 		FROM  `" . DB_NAME . "`.`" . CourseFetcher::DB_TABLE . "`
 		WHERE NOT EXISTS (
-			SELECT `" . self::DB_TABLE_TUTOR_HAS_COURSE . "`.`" . self::DB_COLUMN_COURSE_ID . "`
-			FROM  `" . DB_NAME . "`.`" . self::DB_TABLE_TUTOR_HAS_COURSE . "`
-			WHERE `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_ID . "` = `" . self::DB_TABLE_TUTOR_HAS_COURSE . "`.`" . self::DB_COLUMN_COURSE_ID . "`
+			SELECT `" . self::DB_TABLE_TUTOR_HAS_COURSE_HAS_SCHEDULE . "`.`" . self::DB_COLUMN_COURSE_ID . "`
+			FROM  `" . DB_NAME . "`.`" . self::DB_TABLE_TUTOR_HAS_COURSE_HAS_SCHEDULE . "`
+			WHERE `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_ID . "` = `" . self::DB_TABLE_TUTOR_HAS_COURSE_HAS_SCHEDULE . "`.`" . self::DB_COLUMN_COURSE_ID . "`
 			AND
-			`" . self::DB_TABLE_TUTOR_HAS_COURSE . "`.`" . self::DB_TABLE_TUTOR_HAS_COURSE_TUTOR_USER_ID . "` = :tutorUserId
+			`" . self::DB_TABLE_TUTOR_HAS_COURSE_HAS_SCHEDULE . "`.`" . self::DB_TABLE_TUTOR_HAS_COURSE_TUTOR_USER_ID . "` = :tutorUserId
 		)";
 
 		try {
@@ -52,11 +52,11 @@ class Tutor extends User
 
 
 		$query = "SELECT `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_CODE . "` , `" . CourseFetcher::DB_TABLE . "`.`" .
-			CourseFetcher::DB_COLUMN_NAME . "` , `" . self::DB_TABLE_TUTOR_HAS_COURSE . "`.`" . self::DB_COLUMN_COURSE_ID . "`
-					FROM `" . DB_NAME . "`.`" . CourseFetcher::DB_TABLE . "`, `" . DB_NAME . "`.`" . self::DB_TABLE_TUTOR_HAS_COURSE . "`
-					WHERE `" . self::DB_TABLE_TUTOR_HAS_COURSE . "`.`" . self::DB_COLUMN_COURSE_ID . "` =
+			CourseFetcher::DB_COLUMN_NAME . "` , `" . self::DB_TABLE_TUTOR_HAS_COURSE_HAS_SCHEDULE . "`.`" . self::DB_COLUMN_COURSE_ID . "`
+					FROM `" . DB_NAME . "`.`" . CourseFetcher::DB_TABLE . "`, `" . DB_NAME . "`.`" . self::DB_TABLE_TUTOR_HAS_COURSE_HAS_SCHEDULE . "`
+					WHERE `" . self::DB_TABLE_TUTOR_HAS_COURSE_HAS_SCHEDULE . "`.`" . self::DB_COLUMN_COURSE_ID . "` =
 					`" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_ID . "` AND
-					`" . self::DB_TABLE_TUTOR_HAS_COURSE . "`.`" . self::DB_TABLE_TUTOR_HAS_COURSE_TUTOR_USER_ID . "` = :tutorId;";
+					`" . self::DB_TABLE_TUTOR_HAS_COURSE_HAS_SCHEDULE . "`.`" . self::DB_TABLE_TUTOR_HAS_COURSE_TUTOR_USER_ID . "` = :tutorId;";
 
 		try {
 			$query = $db->getConnection()->prepare($query);
@@ -66,7 +66,7 @@ class Tutor extends User
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 
 		} catch (PDOException $e) {
-			throw new Exception("Could not retrieve teaching courses data from database.");
+			throw new Exception("Could not retrieve teaching courses data from database." . $e->getMessage());
 		}
 	}
 
@@ -81,7 +81,7 @@ class Tutor extends User
 		}
 
 		try {
-			$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE_TUTOR_HAS_COURSE . "` SET `course_id`= :newCourseId WHERE `tutor_user_id`= :tutorId and`course_id`= :oldCourseId";
+			$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE_TUTOR_HAS_COURSE_HAS_SCHEDULE . "` SET `course_id`= :newCourseId WHERE `tutor_user_id`= :tutorId and`course_id`= :oldCourseId";
 			$query = $db->getConnection()->prepare($query);
 			$query->bindParam(':newCourseId', $newCourseId, PDO::PARAM_INT);
 			$query->bindParam(':tutorId', $id, PDO::PARAM_INT);
@@ -98,7 +98,7 @@ class Tutor extends User
 	 * @return bool
 	 */
 	public static function teachingCourseExists($db, $newCourseId, $tutorId) {
-		$query = "SELECT course_id FROM `" . DB_NAME . "`.`" . self::DB_TABLE_TUTOR_HAS_COURSE . "` WHERE course_id = :courseId AND tutor_user_id = :tutorId";
+		$query = "SELECT course_id FROM `" . DB_NAME . "`.`" . self::DB_TABLE_TUTOR_HAS_COURSE_HAS_SCHEDULE . "` WHERE course_id = :courseId AND tutor_user_id = :tutorId";
 		$query = $db->getConnection()->prepare($query);
 		$query->bindParam(':tutorId', $tutorId, PDO::PARAM_INT);
 		$query->bindParam(':courseId', $newCourseId, PDO::PARAM_INT);
@@ -175,7 +175,7 @@ class Tutor extends User
 
 		try {
 
-			$query = "DELETE FROM `" . DB_NAME . "`.`" . self::DB_TABLE_TUTOR_HAS_COURSE . "` WHERE `tutor_user_id`=:id AND`course_id`=:courseId;";
+			$query = "DELETE FROM `" . DB_NAME . "`.`" . self::DB_TABLE_TUTOR_HAS_COURSE_HAS_SCHEDULE . "` WHERE `tutor_user_id`=:id AND`course_id`=:courseId;";
 			$query = $this->getDb()->getConnection()->prepare($query);
 			$query->bindParam(':id', $tutorId, PDO::PARAM_INT);
 			$query->bindParam(':courseId', $courseId, PDO::PARAM_INT);

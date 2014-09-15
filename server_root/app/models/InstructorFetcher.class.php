@@ -16,7 +16,7 @@ class InstructorFetcher extends Person
 	/**
 	 * @return mixed
 	 */
-	public static function retrieve($db) {
+	public static function retrieveAll($db) {
 		$query = "SELECT `" . self::DB_ID . "`, `" . self::DB_FIRST_NAME . "`, `" .
 			self::DB_LAST_NAME . "` FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`";
 		$query = $db->getConnection()->prepare($query);

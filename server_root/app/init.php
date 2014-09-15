@@ -21,8 +21,8 @@ require_once ROOT_PATH . "app/models/UserFetcher.class.php";
 require_once ROOT_PATH . "app/models/Admin.class.php";
 require_once ROOT_PATH . "app/models/Tutor.class.php";
 require_once ROOT_PATH . "app/models/TutorFetcher.class.php";
-require_once ROOT_PATH . "app/models/Tutor_has_course.class.php";
-require_once ROOT_PATH . "app/models/Tutor_has_courseFetcher.class.php";
+require_once ROOT_PATH . "app/models/Tutor_has_course_has_schedule.class.php";
+require_once ROOT_PATH . "app/models/Tutor_has_course_has_scheduleFetcher.class.php";
 require_once ROOT_PATH . "app/models/TermFetcher.class.php";
 require_once ROOT_PATH . "app/models/Term.class.php";
 

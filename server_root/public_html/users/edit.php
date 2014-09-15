@@ -76,11 +76,12 @@ try {
 		$teachingCourses = Tutor::retrieveTeachingCourses($db, $curUser->getId());
 		$notTeachingCourses = Tutor::retrieveCoursesNotTeaching($db, $curUser->getId());
 		$majors = MajorFetcher::retrieveMajors($db);
+		$terms = TermFetcher::retrieveAll($db);
 	}
 
 
 	if (isBtnAddTeachingCoursesPrsd()) {
-		Tutor_has_course::addCourses($db, $userId, $_POST['teachingCourses']);
+		Tutor_has_course_has_schedule::addCourses($db, $userId, $_POST['teachingCourses'], $_POST['term']);
 		header('Location: ' . BASE_URL . 'users/edit/:' . $userId . '/success');
 		exit();
 
@@ -614,6 +615,23 @@ require ROOT_PATH . 'app/views/sidebar.php';
 										</select>
 									</div>
 
+									<div class="form-group">
+
+										<h5>
+											<i class="fa fa-tasks"></i>
+											<label for="term">Term</label>
+										</h5>
+
+										<select id="term" name="term" class="form-control">
+
+											<?php
+											foreach ($terms as $term) {
+												include(ROOT_PATH . "app/views/partials/term-select-options-view.html.php");
+											}
+											?>
+
+										</select>
+									</div>
 
 								</div>
 							</div>
@@ -790,6 +808,8 @@ require ROOT_PATH . 'app/views/sidebar.php';
 		$("#teachingCoursesMulti").select2({
 			placeholder: "Select courses..."
 		});
+
+		$("#term").select2();
 
 		$("#majorId").select2({
 			placeholder: "Select courses..."

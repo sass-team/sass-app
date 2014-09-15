@@ -13,7 +13,7 @@ function is_create_bttn_Pressed() {
 }
 
 try {
-	$instructors = InstructorFetcher::retrieve($db);
+	$instructors = InstructorFetcher::retrieveAll($db);
 
 	if (isBtnUpdatePrsd()) {
 		$updateDone = 0;
