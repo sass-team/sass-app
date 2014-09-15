@@ -449,7 +449,6 @@ abstract class User extends Person
 		$dateGenStringMdfd = new DateTime($generatedStringDate);
 		$dateDurationInterval = date_diff($dateNow, $dateGenStringMdfd);
 
-
 		return $dateDurationInterval->i > self::PASSWORD_EXPIRATION_TIME_MINUTES;
 	}
 

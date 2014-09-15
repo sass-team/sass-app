@@ -1,5 +1,4 @@
-CREATE DATABASE  IF NOT EXISTS `sass-ms_db` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `sass-ms_db`;
+
 -- MySQL dump 10.13  Distrib 5.6.17, for Win32 (x86)
 --
 -- Host: localhost    Database: sass-ms_db
@@ -283,7 +282,7 @@ CREATE TABLE `user` (
   `profile_description` varchar(512) DEFAULT NULL,
   `active` int(11) NOT NULL DEFAULT '1',
   `gen_string` varchar(45) DEFAULT NULL,
-  `gen_string_update_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `gen_string_update_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`,`user_types_id`),
   UNIQUE KEY `email_UNIQUE` (`email`),
   UNIQUE KEY `mobile_UNIQUE` (`mobile`),
@@ -336,4 +335,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-09-15  0:10:46
+-- Dump completed on 2014-09-15  0:16:57
