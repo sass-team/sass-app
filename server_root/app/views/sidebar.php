@@ -89,6 +89,12 @@
                                 Add
                             </a>
                         </li>
+	                    <li>
+		                    <a href="<?php echo BASE_URL; ?>users/terms">
+			                    <i class="fa fa-calendar"></i>
+			                    Terms
+		                    </a>
+	                    </li>
                     <?php endif; ?>
 
                 </ul>

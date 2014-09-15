@@ -12,7 +12,6 @@
 	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 	<!--	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-
 	<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.0/themes/smoothness/jquery-ui.css"/>
 
 	<!-- remove when on production server, and uncomment above. -->
@@ -26,15 +25,11 @@
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/js/plugins/icheck/skins/square/green.css">
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/js/plugins/icheck/skins/square/red.css">
 
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/js/plugins/datepicker/datepicker.css"
-	      type="text/css"/>
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/js/plugins/select2/select2.css" type="text/css"/>
 	<link rel="stylesheet"
 	      href="<?php echo BASE_URL; ?>assets/js/plugins/simplecolorpicker/jquery.simplecolorpicker.css"
 	      type="text/css"/>
 
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/js/plugins/timepicker/bootstrap-timepicker.css"
-	      type="text/css"/>
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/js/plugins/fileupload/bootstrap-fileupload.css"
 	      type="text/css"/>
 
@@ -44,6 +39,10 @@
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/App.css" type="text/css"/>
 
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/custom.css" type="text/css"/>
+	<link rel="stylesheet"
+	      href="<?php echo BASE_URL; ?>assets/js/plugins/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css"
+	      type="text/css"/>
+
 	<style type="text/css">
 		#wrap {
 			min-height: 100%;

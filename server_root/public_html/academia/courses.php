@@ -452,8 +452,8 @@ require ROOT_PATH . 'app/views/sidebar.php';
 			$courseCode = ($(this).parent().prev().prev().text());
 
 			$("#updateCourseIdModal").val($courseId);
-			$("#courseCodeUpdate").val($courseCode);
-			$("#courseNameUpdate").val($courseName);
+			$("#nameUpdate").val($courseCode);
+			$("#dateStartUpdate").val($courseName);
 
 		});
 

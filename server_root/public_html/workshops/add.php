@@ -66,30 +66,25 @@ $section = "workshops";
 
 								<h4>Workshop Session</h4>
 
-								<div class="form-group">
-
+								<div class="form-group col-md-12">
 									<div class="input-group">
-										<span class="input-group-addon"><label for="dateTimePickerStart">Starts At</label></span>
-										<input id="dateTimePickerStart" name="dateTimePickerStart" type="text"
-										       value="08/22/2014 07:08"
-										       class="form-control">
-
-							    <span class="input-group-btn">
-							     <button id="imgBtnStart" class="btn btn-default" type="button">
-								     <i class="fa fa-calendar"></i>
+										<div class='input-group date' id='dateTimePickerStart'>
+											<span class="input-group-addon"><label for="dateTimePickerStart">Starts
+													At</label></span>
+											<input type='text' class="form-control"/>
+                                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+										</div>
 									</div>
 								</div>
-								<div class="form-group">
 
+								<div class="form-group col-md-12">
 									<div class="input-group">
-										<span class="input-group-addon"><label for="dateTimePickerEnd">Ends At</label></span>
-										<input id="dateTimePickerEnd" name="dateTimePickerEnd" type="text"
-										       value="08/22/2014 07:08"
-										       class="form-control">
-
-					    <span class="input-group-btn">
-					     <button id="imgBtnEnd" class="btn btn-default" type="button">
-						     <i class="fa fa-calendar"></i>
+										<div class='input-group date' id='dateTimePickerEnd'>
+											<span class="input-group-addon"><label for="dateTimePickerEnd">Ends
+													At&#32; </label></span>
+											<input type='text' class="form-control"/>
+                                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -139,40 +134,47 @@ $section = "workshops";
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/autosize/jquery.autosize.min.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/textarea-counter/jquery.textarea-counter.js"></script>
 
-<script src="<?php echo BASE_URL; ?>assets/js/plugins/datepicker/bootstrap-datepicker.js"></script>
-
 <script src="<?php echo BASE_URL; ?>assets/js/demos/calendar.js"></script>
-
 <script src="<?php echo BASE_URL; ?>assets/js/demos/dashboard.js"></script>
 
-<link rel="stylesheet" type="text/css" href="<?php echo BASE_URL; ?>assets/css/jquery.datetimepicker.css"/ >
-<script src="<?php echo BASE_URL; ?>assets/js/plugins/datetimepicker/jquery.datetimepicker.js"></script>
+<script
+	src="<?php echo BASE_URL; ?>assets/js/plugins/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js">
+</script>
 
 <script type="text/javascript">
 	$(function () {
-
-		$('#dpStart').datepicker().on('changeDate', function (e) {
-			$('#dpEnd').datepicker('setStartDate', e.date);
-		});
-
-		$('#dpEnd').datepicker().on('changeDate', function (e) {
-			$('#dpStart').datepicker('setEndDate', e.date)
-		});
+		// http://momentjs.com/docs/#/manipulating/add/
+		// http://eonasdan.github.io/bootstrap-datetimepicker
+		moment().format();
 
 		$('#dateTimePickerStart').datetimepicker({
-			format: 'm/d/Y H:i'
+			defaultDate: moment(),
+			minDate: moment().subtract('1', 'day'),
+			minuteStepping: 10,
+			daysOfWeekDisabled: [0, 6],
+			sideBySide: true
 		});
+		var $startSessionMoment = moment($('#dateTimePickerStart').data("DateTimePicker").getDate());
+		var dateEnd = moment().add(30, 'minutes');
 
 		$('#dateTimePickerEnd').datetimepicker({
-			format: 'm/d/Y H:i'
+			defaultDate: dateEnd,
+			minDate: $startSessionMoment,
+			minuteStepping: 10,
+			daysOfWeekDisabled: [0, 6],
+			sideBySide: true
+		});
+		var $endSessionMoment = moment($('#dateTimePickerEnd').data("DateTimePicker").getDate());
+
+		$("#dateTimePickerStart").on("dp.change", function (e) {
+			var momentStart = $endSessionMoment;
+			var momentEnd = momentStart.clone();
+			var momentMinEnd = momentStart.clone();
+
+			$('#dateTimePickerEnd').data("DateTimePicker").setMinDate(momentMinEnd.add(20, 'minutes'));
+			$('#dateTimePickerEnd').data("DateTimePicker").setDate(momentEnd.add(30, 'minutes'));
 		});
 
-		$('#imgBtnStart').click(function () {
-			$('#dateTimePickerStart').datetimepicker('show'); //support hide,show and destroy command
-		});
 
-		$('#imgBtnEnd').click(function () {
-			$('#dateTimePickerEnd').datetimepicker('show'); //support hide,show and destroy command
-		});
 	});
 </script>

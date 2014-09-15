@@ -12,6 +12,7 @@ RewriteRule ^academia/instructors/success$ /academia/instructors.php?success=y1!
 RewriteRule ^users/edit/:([0-9]+)$ /users/edit.php?id=$1 [L]
 RewriteRule ^users/edit/:([0-9]+)/success$ /users/edit.php?id=$1&success=y1! [L]
 RewriteRule ^users/([0-9]+)$ /users/index.php?id=$1 [L]
+RewriteRule ^users/terms/success$ /users/terms.php?success=y1!qp [L]
 RewriteRule ^account/settings/success$ /account/settings.php?success [L]
 RewriteRule ^login/confirm-password/success$ /login/confirm-password.php?success [L]
 RewriteRule ^login/confirm-password/success$ /login/confirm-password.php?success [L]
@@ -24,8 +25,6 @@ RewriteRule ^(error\-[0-9]{3})$ /$1.php [L]
 ErrorDocument 404 /error-404
 ErrorDocument 403 /error-403
 ErrorDocument 500 /error-500
-
-#RewriteRule ^/$ /upgrade [L]
 
 # MAINTENANCE-PAGE REDIRECT
 #<IfModule mod_rewrite.c>
