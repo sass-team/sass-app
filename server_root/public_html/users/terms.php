@@ -1,4 +1,34 @@
 <?php
+/**
+ * The MIT License (MIT)
+ *
+ * Copyright (c) <year> <copyright holders>
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+/**
+ * @author Rizart Dokollari
+ * @author George Skarlatos
+ * @since 9/15/2014
+ */
+
 require __DIR__ . '/../../app/init.php';
 $general->loggedOutProtect();
 
@@ -8,57 +38,48 @@ if ($user->isTutor()) {
 	exit();
 }
 
-function is_create_bttn_Pressed() {
-	return isset($_POST['hidden_submit_pressed']) && empty($_POST['hidden_submit_pressed']);
-}
 
 try {
-	$courses = CourseFetcher::retrieveAll($db);
-
+	$terms = TermFetcher::retrieveAll($db);
 	if (isBtnUpdatePrsd()) {
 		$updateDone = 0;
-		$courseId = trim($_POST['updateCourseIdModal']);
+		$termId = trim($_POST['updateTermIdModal']);
 
-		$newCourseCode = trim($_POST['courseCodeUpdate']);
-		$newCourseName = trim($_POST['courseNameUpdate']);
+		$newTermName = trim($_POST['nameUpdate']);
+		$newStartDate = trim($_POST['dateStartUpdate']);
 		$updateDone = false;
 
-		if (($course = getCourse($courseId, $courses)) !== false) {
-			$oldCourseCodeName = $course[CourseFetcher::DB_COLUMN_CODE];
-			$oldCourseName = $course[CourseFetcher::DB_COLUMN_NAME];
+		if (($term = getTerm($termId, $terms)) !== false) {
+			$oldTermName = $term[CourseFetcher::DB_COLUMN_CODE];
+			$oldStartDate = $term[CourseFetcher::DB_COLUMN_NAME];
 
 
-			$updateDone = $updateDone || Course::updateName($db, $courseId, $newCourseName, $oldCourseName);
+			$updateDone = $updateDone || Course::updateName($db, $termId, $newStartDate, $oldStartDate);
 
 
-			if (strcmp($newCourseCode, $oldCourseCodeName) !== 0) {
+			if (strcmp($newTermName, $oldTermName) !== 0) {
 				$updateDone = true;
-				Course::updateCode($db, $courseId, $newCourseCode);
+				Course::updateCode($db, $termId, $newTermName);
 			}
 
-			if (!$updateDone) {
-				throw new Exception("No new data inputted. Process aborted.");
-			}
+			if (!$updateDone) throw new Exception("No new data inputted. Process aborted.");
 
-			//
-			header('Location: ' . BASE_URL . 'academia/courses/success');
+
+			header('Location: ' . BASE_URL . 'users/terms/success');
 
 		} else {
 			throw new Exception("Either you're trying to hack this app or something wrong went. In either case the
             developers we just notified about this");
 		}
 
-	} else if (isBtnSavePrsd()) {
-		$newCourseCode = trim($_POST['course_code']);
-		$newCourseName = trim($_POST['course_name']);
+	} else if (isBtnCreatePrsd()) {
 
-
-		Course::create($db, $newCourseCode, $newCourseName);
-		header('Location: ' . BASE_URL . 'academia/courses/success');
+		Term::create($db, $_POST['termName'], $_POST['dateTimePickerStart'], $_POST['dateTimePickerEnd']);
+		header('Location: ' . BASE_URL . 'users/terms/success');
 		exit();
 	} else if (isBtnDeletePrsd()) {
-		Course::delete($db, $_POST['delCourseIdModal']);
-		header('Location: ' . BASE_URL . 'academia/courses/success');
+		Course::delete($db, $_POST['delTermIdModal']);
+		header('Location: ' . BASE_URL . 'users/terms/success');
 		exit();
 	}
 
@@ -70,24 +91,24 @@ try {
  * http://stackoverflow.com/a/4128377/2790481
  *
  * @param $needle
- * @param $courses
+ * @param $terms
  * @param bool $strict
  * @return bool
  */
-function getCourse($needle, $courses, $strict = false) {
-	foreach ($courses as $course) {
-		if (($strict ? $course === $needle : $course == $needle) ||
-			(is_array($course) && getCourse($needle, $course, $strict))
+function getTerm($needle, $terms, $strict = false) {
+	foreach ($terms as $term) {
+		if (($strict ? $term === $needle : $term == $needle) ||
+			(is_array($term) && getTerm($needle, $term, $strict))
 		) {
-			return $course;
+			return $term;
 		}
 	}
 
 	return false;
 }
 
-function isBtnSavePrsd() {
-	return isset($_POST['hidden_submit_pressed']) && empty($_POST['hidden_submit_pressed']);
+function isBtnCreatePrsd() {
+	return isset($_POST['hiddenSbmtPrsCreateTerm']) && empty($_POST['hiddenSbmtPrsCreateTerm']);
 }
 
 function isModificationSuccessful() {
@@ -95,15 +116,15 @@ function isModificationSuccessful() {
 }
 
 function isBtnDeletePrsd() {
-	return isset($_POST['hiddenSubmitDeleteCourse']) && empty($_POST['hiddenSubmitDeleteCourse']);
+	return isset($_POST['hiddenSubmitDeleteTerm']) && empty($_POST['hiddenSubmitDeleteTerm']);
 }
 
 function isBtnUpdatePrsd() {
 	return isset($_POST['hiddenUpdatePrsd']) && empty($_POST['hiddenUpdatePrsd']);
 }
 
-$page_title = "Manage Courses";
-$section = "academia";
+$page_title = "Manage Terms";
+$section = "users";
 ?>
 
 <!DOCTYPE html>
@@ -126,7 +147,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <div id="content">
 
 	<div id="content-header">
-		<h1>All Courses</h1>
+		<h1><?php echo $page_title; ?></h1>
 	</div>
 	<!-- #content-header -->
 
@@ -155,7 +176,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 						<h3>
 							<i class="fa fa-table"></i>
-							View and Manage Courses
+							View and Manage Terms
 						</h3>
 
 					</div>
@@ -176,16 +197,18 @@ require ROOT_PATH . 'app/views/sidebar.php';
 								>
 								<thead>
 								<tr>
-									<th class="text-center" data-filterable="true" data-sortable="true">Code</th>
-									<th class="text-center" data-filterable="true" data-sortable="false">Name</th>
+									<th class="text-center" data-filterable="true" data-sortable="true">Name</th>
+									<th class="text-center" data-filterable="true" data-sortable="false">Starting Date</th>
+									<th class="text-center" data-filterable="true" data-sortable="false">Ending Date</th>
 									<th class="text-center">Action</th>
+
 								</tr>
 								</thead>
 								<tbody>
 
 								<?php
-								foreach ($courses as $course) {
-									include(ROOT_PATH . "app/views/partials/all-course-table-data-view.html.php");
+								foreach ($terms as $term) {
+									include(ROOT_PATH . "app/views/partials/all-term-table-data-view.html.php");
 								} ?>
 								</tbody>
 							</table>
@@ -201,10 +224,10 @@ require ROOT_PATH . 'app/views/sidebar.php';
 			</div>
 			<!-- /.col -->
 			<div class="col-md-4 col-sidebar-right">
-				<h2>Add a new Course</h2>
+				<h2>Add a new Term</h2>
 
-				<p class="lead"> You can also add a new course that is not already in the list.</p>
-				<a data-toggle="modal" href="#addCourseModal" class="btn btn-danger btn-jumbo btn-block">Add Course</a>
+				<p class="lead"> You can also add a new Term that is not already in the list.</p>
+				<a data-toggle="modal" href="#addTermModal" class="btn btn-danger btn-jumbo btn-block">Add Term</a>
 
 			</div>
 		</div>
@@ -216,14 +239,14 @@ require ROOT_PATH . 'app/views/sidebar.php';
 </div>
 <!-- /.col -->
 
-<div id="addCourseModal" class="modal modal-styled fade">
-	<div class="modal-dialog modal-sm">
+<div id="addTermModal" class="modal modal-styled fade">
+	<div class="modal-dialog">
 		<div class="modal-content">
-			<form method="post" id="create-form" action="<?php echo BASE_URL . 'academia/courses'; ?>" class="form">
+			<form method="post" id="create-form" action="<?php echo BASE_URL . 'users/terms'; ?>" class="form">
 
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h3 class="modal-title">Create Course</h3>
+					<h3 class="modal-title">Create Term</h3>
 				</div>
 				<div class="modal-body">
 					<div class="portlet">
@@ -240,35 +263,46 @@ require ROOT_PATH . 'app/views/sidebar.php';
 							?>
 							<div class="alert alert-success">
 								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-								<strong>Course successfully created!</strong> <br/>
+								<strong>Term successfully created!</strong> <br/>
 							</div>
 						<?php } ?>
 						<div class="portlet-content">
 							<div class="row">
 								<div class="col-sm-12">
 
-									<div class="form-group">
-										<h5>
-											<i class="fa fa-edit"></i>
-											<label for="course_code">Course Code</label>
-										</h5>
-										<input type="text" id="course_code" name="course_code" class="form-control"
-										       value="<?php if (isset($_POST['course_code'])) echo
-										       htmlentities($_POST['course_code']); ?>"
-										       autofocus="on" required>
+									<div class="form-group col-md-12">
+										<h4>Name </h4>
+										<input type="text" id="termName" name="termName" class="form-control"
+										       value="<?php if (isset($_POST['termName'])) echo
+										       htmlentities($_POST['termName']); ?>"
+										       required placeholder="e.g. Fall Semester 2014">
 									</div>
 
-									<div class="form-group">
-										<h5>
-											<i class="fa fa-edit"></i>
-											<label for="course_name">Course Name</label>
-										</h5>
-										<input type="text" id="course_name" name="course_name" class="form-control"
-										       value="<?php if (isset($_POST['course_name'])) echo
-										       htmlentities($_POST['course_name']); ?>"
-										       required>
+									<div class="form-group col-md-12">
+										<h4>Term Period</h4>
 
+										<div class="input-group">
+											<div class='input-group date' id='dateTimePickerStart'>
+											<span class="input-group-addon"><label for="dateTimePickerStart">Starts
+													At</label></span>
+												<input type='text' class="form-control" name="dateTimePickerStart"/>
+                                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+											</div>
+										</div>
 									</div>
+
+									<div class="form-group col-md-12">
+										<div class="input-group">
+											<div class='input-group date' id='dateTimePickerEnd'>
+											<span class="input-group-addon"><label for="dateTimePickerEnd">Ends
+													At&#32; </label></span>
+												<input type='text' class="form-control" name="dateTimePickerEnd"/>
+                                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+											</div>
+										</div>
+									</div>
+
+
 								</div>
 							</div>
 						</div>
@@ -277,7 +311,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 				<div class="modal-footer">
 					<button type="button" class="btn btn-tertiary" data-dismiss="modal">Close</button>
-					<input type="hidden" name="hidden_submit_pressed">
+					<input type="hidden" name="hiddenSbmtPrsCreateTerm">
 					<button type="submit" class="btn btn-primary">Create</button>
 				</div>
 			</form>
@@ -289,14 +323,14 @@ require ROOT_PATH . 'app/views/sidebar.php';
 </div>
 <!-- /.modal -->
 
-<div id="deleteCourse" class="modal modal-styled fade">
+<div id="deleteTerm" class="modal modal-styled fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form method="post" id="delete-form" action="<?php echo BASE_URL . 'academia/courses'; ?>" class="form">
+			<form method="post" id="delete-form" action="<?php echo BASE_URL . 'users/terms'; ?>" class="form">
 
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h3 class="modal-title">Remove Course
+					<h3 class="modal-title">Remove Term
 						<!--                        from --><?php //echo $curUser->getFirstName() . " " . $curUser->getLastName(); ?>
 					</h3>
 				</div>
@@ -316,9 +350,8 @@ require ROOT_PATH . 'app/views/sidebar.php';
 							<div class="row">
 								<div class="alert alert-warning">
 									<a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
-									<strong>Warning!</strong><br/>Are you sure you want to delete this course?
-									<br/><i>If a tutor is already teaching this course, then you'll have to first remove
-										it from his profile.</i>
+									<strong>Warning!</strong><br/>Are you sure you want to delete this term?
+									<br/><i>This delete process will carry on only if no data are used in this term's period.</i>
 								</div>
 							</div>
 
@@ -329,8 +362,8 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 				<div class="modal-footer">
 					<button type="button" class="btn btn-tertiary" data-dismiss="modal">Cancel</button>
-					<input type="hidden" id="delCourseIdModal" name="delCourseIdModal" value=""/>
-					<input type="hidden" name="hiddenSubmitDeleteCourse">
+					<input type="hidden" id="delTermIdModal" name="delTermIdModal" value=""/>
+					<input type="hidden" name="hiddenSubmitDeleteTerm">
 					<button type="submit" class="btn btn-primary">Delete</button>
 				</div>
 			</form>
@@ -342,14 +375,14 @@ require ROOT_PATH . 'app/views/sidebar.php';
 </div>
 <!-- /.modal -->
 
-<div id="updateCourse" class="modal modal-styled fade">
+<div id="updateTerm" class="modal modal-styled fade">
 	<div class="modal-dialog modal-sm">
 		<div class="modal-content">
-			<form method="post" id="create-form" action="<?php echo BASE_URL . 'academia/courses'; ?>" class="form">
+			<form method="post" id="create-form" action="<?php echo BASE_URL . 'users/terms'; ?>" class="form">
 
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h3 class="modal-title">Update Course</h3>
+					<h3 class="modal-title">Update Term</h3>
 				</div>
 				<div class="modal-body">
 					<div class="portlet">
@@ -366,7 +399,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 							?>
 							<div class="alert alert-success">
 								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-								<strong>Course successfully updated!</strong> <br/>
+								<strong>Term successfully updated!</strong> <br/>
 							</div>
 						<?php } ?>
 						<div class="portlet-content">
@@ -376,24 +409,24 @@ require ROOT_PATH . 'app/views/sidebar.php';
 									<div class="form-group">
 										<h5>
 											<i class="fa fa-edit"></i>
-											<label for="courseCodeUpdate">Edit Code</label>
+											<label for="nameUpdate">Edit Code</label>
 										</h5>
-										<input type="text" id="courseCodeUpdate" name="courseCodeUpdate"
+										<input type="text" id="nameUpdate" name="nameUpdate"
 										       class="form-control"
-										       value="<?php if (isset($_POST['courseCodeUpdate'])) echo
-										       htmlentities($_POST['courseCodeUpdate']); ?>"
+										       value="<?php if (isset($_POST['nameUpdate'])) echo
+										       htmlentities($_POST['nameUpdate']); ?>"
 										       autofocus="on" required>
 									</div>
 
 									<div class="form-group">
 										<h5>
 											<i class="fa fa-edit"></i>
-											<label for="courseNameUpdate">Edit Name</label>
+											<label for="dateStartUpdate">Edit Name</label>
 										</h5>
-										<input type="text" id="courseNameUpdate" name="courseNameUpdate"
+										<input type="text" id="dateStartUpdate" name="dateStartUpdate"
 										       class="form-control"
-										       value="<?php if (isset($_POST['courseNameUpdate'])) echo
-										       htmlentities($_POST['courseNameUpdate']); ?>"
+										       value="<?php if (isset($_POST['dateStartUpdate'])) echo
+										       htmlentities($_POST['dateStartUpdate']); ?>"
 										       required>
 
 									</div>
@@ -406,7 +439,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 				<div class="modal-footer">
 					<button type="button" class="btn btn-tertiary" data-dismiss="modal">Close</button>
 					<input type="hidden" name="hiddenUpdatePrsd">
-					<input type="hidden" id="updateCourseIdModal" name="updateCourseIdModal" value=""/>
+					<input type="hidden" id="updateTermIdModal" name="updateTermIdModal" value=""/>
 
 					<button type="submit" class="btn btn-primary">Update</button>
 				</div>
@@ -438,25 +471,61 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/autosize/jquery.autosize.min.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/demos/form-extended.js"></script>
 
+<script
+	src="<?php echo BASE_URL; ?>assets/js/plugins/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js">
+</script>
+
 <script type="text/javascript">
 	jQuery(function () {
-		// prepare course id for delete on modal
-		$(".btnDeleteCourse").click(function () {
+		// prepare term id for delete on modal
+		$(".btnDeleteTerm").click(function () {
 			$inputVal = $(this).next('input').val();
-			$("#delCourseIdModal").val($inputVal);
+			$("#delTermIdModal").val($inputVal);
 		});
 
-		$(".btnUpdateCourse").click(function () {
-			$courseId = $(this).next().next('input').val();
-			$courseName = ($(this).parent().prev().text());
-			$courseCode = ($(this).parent().prev().prev().text());
+		$(".btnUpdateTerm").click(function () {
+			$termId = $(this).next().next('input').val();
+			$termName = ($(this).parent().prev().text());
+			$termCode = ($(this).parent().prev().prev().text());
 
-			$("#updateCourseIdModal").val($courseId);
-			$("#nameUpdate").val($courseCode);
-			$("#dateStartUpdate").val($courseName);
+			$("#updateTermIdModal").val($termId);
+			$("#nameUpdate").val($termCode);
+			$("#dateStartUpdate").val($termName);
 
 		});
 
+
+		// http://momentjs.com/docs/#/manipulating/add/
+		// http://eonasdan.github.io/bootstrap-datetimepicker
+		moment().format();
+
+		$('#dateTimePickerStart').datetimepicker({
+			defaultDate: moment(),
+			minDate: moment().subtract('1', 'day'),
+			minuteStepping: 10,
+			daysOfWeekDisabled: [0, 6],
+			sideBySide: true
+		});
+		var $startSessionMoment = moment($('#dateTimePickerStart').data("DateTimePicker").getDate());
+		var dateEnd = moment().add(30, 'minutes');
+
+		$('#dateTimePickerEnd').datetimepicker({
+			defaultDate: dateEnd,
+			minDate: $startSessionMoment,
+			minuteStepping: 10,
+			daysOfWeekDisabled: [0, 6],
+			sideBySide: true
+		});
+		var $endSessionMoment = moment($('#dateTimePickerEnd').data("DateTimePicker").getDate());
+
+		$("#dateTimePickerStart").on("dp.change", function (e) {
+			var momentStart = $endSessionMoment;
+			var momentEnd = momentStart.clone();
+			var momentMinEnd = momentStart.clone();
+
+			$('#dateTimePickerEnd').data("DateTimePicker").setMinDate(momentMinEnd.add(20, 'minutes'));
+			$('#dateTimePickerEnd').data("DateTimePicker").setDate(momentEnd.add(30, 'minutes'));
+		});
 
 	});
 

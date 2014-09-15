@@ -138,7 +138,8 @@ $section = "workshops";
 <script src="<?php echo BASE_URL; ?>assets/js/demos/dashboard.js"></script>
 
 <script
-	src="<?php echo BASE_URL; ?>assets/js/plugins/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+	src="<?php echo BASE_URL; ?>assets/js/plugins/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js">
+</script>
 
 <script type="text/javascript">
 	$(function () {
