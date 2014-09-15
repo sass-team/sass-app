@@ -34,9 +34,9 @@
 	<td class="text-center"><?php echo htmlentities($term[TermFetcher::DB_COLUMN_START_DATE]); ?></td>
 	<td class="text-center"><?php echo htmlentities($term[TermFetcher::DB_COLUMN_END_DATE]); ?></td>
 	<td class="text-center">
-		<a href="#updateCourse" data-toggle="modal" class="btn btn-xs btn-primary btnUpdateTerm"><i
+		<a href="#updateTerm" data-toggle="modal" class="btn btn-xs btn-primary btnUpdateTerm"><i
 				class="fa fa-pencil fa-lg"></i></a>
-		<a href="#deleteCourse" data-toggle="modal" class="btn btn-xs btn-secondary btnDeleteTerm"><i
+		<a href="#deleteTerm" data-toggle="modal" class="btn btn-xs btn-secondary btnDeleteTerm"><i
 				class="fa fa-times fa-lg"></i></a>
 		<input type="hidden" value="<?php echo $term[TermFetcher::DB_COLUMN_ID]; ?>"/>
 	</td>

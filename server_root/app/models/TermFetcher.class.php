@@ -35,7 +35,9 @@ class TermFetcher
 	const DB_COLUMN_NAME = "name";
 	const DB_COLUMN_START_DATE = "start_date";
 	const DB_COLUMN_END_DATE = "end_date";
-	const DATE_FORMAT = "Y-m-d H:i:s";
+	const DATE_FORMAT_IN = "Y-m-d H:i:s";
+	const DATE_FORMAT_OUT = "m/d/Y g:i A";
+
 //m-d-Y h:i A
 	public static function retrieveAll($db) {
 		$query =
@@ -53,11 +55,63 @@ class TermFetcher
 		}
 	}
 
+	public static function updateName($db, $id, $newName) {
+		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+					SET	`" . self::DB_COLUMN_NAME . "`= :newName
+					WHERE `id`= :id";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':id', $id, PDO::PARAM_INT);
+			$query->bindParam(':newName', $newName, PDO::PARAM_STR);
+			$query->execute();
+
+			return true;
+		} catch (Exception $e) {
+			throw new Exception("Something terrible happened. Could not update term name");
+		}
+	}
+
+	public static function  updateStartingDate($db, $id, $newStartingDate) {
+		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+					SET	`" . self::DB_COLUMN_START_DATE . "`= :newName
+					WHERE `id`= :id";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':id', $id, PDO::PARAM_INT);
+			$query->bindParam(':newName', $newStartingDate, PDO::PARAM_STR);
+			$query->execute();
+
+			return true;
+		} catch (Exception $e) {
+			throw new Exception("Something terrible happened. Could not update term name");
+		}
+	}
+
+
+	public static function updateSingleColumn($db, $id, $column, $value, $valueType){
+		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+					SET	`" . $column . "`= :column
+					WHERE `id`= :id";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':id', $id, PDO::PARAM_INT);
+			$query->bindParam(':column', $value, $valueType);
+			$query->execute();
+
+			return true;
+		} catch (Exception $e) {
+			throw new Exception("Something went wrong. Could not update term table.");
+		}
+	}
+
 	public static function insert($db, $name, $startDate, $endDate) {
 		date_default_timezone_set('Europe/Athens');
 
-		$startDate = $startDate->format(self::DATE_FORMAT);
-		$endDate = $endDate->format(self::DATE_FORMAT);
+		$startDate = $startDate->format(self::DATE_FORMAT_IN);
+		$endDate = $endDate->format(self::DATE_FORMAT_IN);
 
 		try {
 			$query = "INSERT INTO `" . DB_NAME . "`.`" . self::DB_TABLE . "` (`" . self::DB_COLUMN_NAME .
@@ -79,6 +133,36 @@ class TermFetcher
 		}
 	}
 
+	public static function idExists($db, $id) {
+		try {
+			$sql = "SELECT COUNT(" . self::DB_COLUMN_ID . ") FROM `" . DB_NAME . "`.`" .
+				self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :id";
+			$query = $db->getConnection()->prepare($sql);
+			$query->bindParam(':id', $id, PDO::PARAM_INT);
+			$query->execute();
+
+			if ($query->fetchColumn() === 0) return false;
+		} catch (Exception $e) {
+			throw new Exception("Could not check if term id already exists on database. <br/> Aborting process.");
+		}
+
+		return true;
+	}
+
+
+	public static function delete($db, $id) {
+		try {
+			$query = "DELETE FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :id";
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':id', $id, PDO::PARAM_INT);
+			$query->execute();
+			return true;
+		} catch (Exception $e) {
+			throw new Exception("Could not delete term from database.");
+		}
+	}
+
+
 	public static function existsName($db, $name) {
 		try {
 			$sql = "SELECT COUNT(" . self::DB_COLUMN_NAME . ") FROM `" . DB_NAME . "`.`" .
@@ -89,7 +173,7 @@ class TermFetcher
 
 			if ($query->fetchColumn() === '0') return false;
 		} catch (Exception $e) {
-			throw new Exception("Could not check if course name already exists on database. <br/> Aborting process.");
+			throw new Exception("Could not check if term name already exists on database. <br/> Aborting process.");
 		}
 
 		return true;

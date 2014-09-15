@@ -42,35 +42,20 @@ if ($user->isTutor()) {
 try {
 	$terms = TermFetcher::retrieveAll($db);
 	if (isBtnUpdatePrsd()) {
-		$updateDone = 0;
-		$termId = trim($_POST['updateTermIdModal']);
+		var_dump($_POST);
+		$updateDone = FALSE;
+		$termId = $_POST['updateTermIdModal'];
+		$termName = $_POST['nameUpdate'];
 
-		$newTermName = trim($_POST['nameUpdate']);
-		$newStartDate = trim($_POST['dateStartUpdate']);
-		$updateDone = false;
+		if (($term = getTerm($termId, $terms)) === FALSE) throw new Exception("Data tempering detected. Aborting.");
 
-		if (($term = getTerm($termId, $terms)) !== false) {
-			$oldTermName = $term[CourseFetcher::DB_COLUMN_CODE];
-			$oldStartDate = $term[CourseFetcher::DB_COLUMN_NAME];
+		$updateDone = $updateDone || Term::updateName($db, $termId, $_POST['nameUpdate'], $term[TermFetcher::DB_COLUMN_NAME]);
+		$updateDone = $updateDone || Term::updateStartingDate($db, $termId, $_POST['dateStartUpdate'], $term[TermFetcher::DB_COLUMN_START_DATE]);
+		$updateDone = $updateDone || Term::updateEndingDate($db, $termId, $_POST['dateEndUpdate'], $term[TermFetcher::DB_COLUMN_END_DATE]);
 
-
-			$updateDone = $updateDone || Course::updateName($db, $termId, $newStartDate, $oldStartDate);
-
-
-			if (strcmp($newTermName, $oldTermName) !== 0) {
-				$updateDone = true;
-				Course::updateCode($db, $termId, $newTermName);
-			}
-
-			if (!$updateDone) throw new Exception("No new data inputted. Process aborted.");
-
-
-			header('Location: ' . BASE_URL . 'users/terms/success');
-
-		} else {
-			throw new Exception("Either you're trying to hack this app or something wrong went. In either case the
-            developers we just notified about this");
-		}
+		if (!$updateDone) throw new Exception("No new data inputted. Process aborted.");
+		header('Location: ' . BASE_URL . 'users/terms/success');
+		exit();
 
 	} else if (isBtnCreatePrsd()) {
 
@@ -78,7 +63,7 @@ try {
 		header('Location: ' . BASE_URL . 'users/terms/success');
 		exit();
 	} else if (isBtnDeletePrsd()) {
-		Course::delete($db, $_POST['delTermIdModal']);
+		Term::delete($db, $_POST['delTermIdModal']);
 		header('Location: ' . BASE_URL . 'users/terms/success');
 		exit();
 	}
@@ -331,7 +316,6 @@ require ROOT_PATH . 'app/views/sidebar.php';
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					<h3 class="modal-title">Remove Term
-						<!--                        from --><?php //echo $curUser->getFirstName() . " " . $curUser->getLastName(); ?>
 					</h3>
 				</div>
 				<div class="modal-body">
@@ -376,7 +360,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <!-- /.modal -->
 
 <div id="updateTerm" class="modal modal-styled fade">
-	<div class="modal-dialog modal-sm">
+	<div class="modal-dialog">
 		<div class="modal-content">
 			<form method="post" id="create-form" action="<?php echo BASE_URL . 'users/terms'; ?>" class="form">
 
@@ -406,30 +390,45 @@ require ROOT_PATH . 'app/views/sidebar.php';
 							<div class="row">
 								<div class="col-sm-12">
 
-									<div class="form-group">
-										<h5>
-											<i class="fa fa-edit"></i>
-											<label for="nameUpdate">Edit Code</label>
-										</h5>
-										<input type="text" id="nameUpdate" name="nameUpdate"
-										       class="form-control"
+
+									<div class="form-group col-md-12">
+										<h4>Name </h4>
+										<input type="text" id="nameUpdate" name="nameUpdate" class="form-control"
 										       value="<?php if (isset($_POST['nameUpdate'])) echo
 										       htmlentities($_POST['nameUpdate']); ?>"
-										       autofocus="on" required>
-									</div>
-
-									<div class="form-group">
-										<h5>
-											<i class="fa fa-edit"></i>
-											<label for="dateStartUpdate">Edit Name</label>
-										</h5>
-										<input type="text" id="dateStartUpdate" name="dateStartUpdate"
-										       class="form-control"
-										       value="<?php if (isset($_POST['dateStartUpdate'])) echo
-										       htmlentities($_POST['dateStartUpdate']); ?>"
 										       required>
-
 									</div>
+
+
+									<div class="form-group col-md-12">
+										<h4>Term Period</h4>
+
+
+										<div class="form-group">
+											<div class="input-group">
+												<div class='input-group date' id='dateStartUpdate'>
+											<span class="input-group-addon"><label for="dateStartUpdate">Starts
+													At&#32; </label></span>
+													<input type='text' class="form-control" name="dateStartUpdate"
+													       data-date-format="YYYY-MM-DD HH:mm:ss"/>
+                                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+												</div>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="input-group">
+												<div class='input-group date' id='dateEndUpdate'>
+											<span class="input-group-addon"><label for="dateEndUpdate">Ends
+													At&#32; </label></span>
+													<input type='text' class="form-control" name="dateEndUpdate"
+													       data-date-format="YYYY-MM-DD HH:mm:ss"/>
+                                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+												</div>
+											</div>
+										</div>
+									</div>
+
+
 								</div>
 							</div>
 						</div>
@@ -477,55 +476,34 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 <script type="text/javascript">
 	jQuery(function () {
-		// prepare term id for delete on modal
-		$(".btnDeleteTerm").click(function () {
-			$inputVal = $(this).next('input').val();
-			$("#delTermIdModal").val($inputVal);
-		});
-
-		$(".btnUpdateTerm").click(function () {
-			$termId = $(this).next().next('input').val();
-			$termName = ($(this).parent().prev().text());
-			$termCode = ($(this).parent().prev().prev().text());
-
-			$("#updateTermIdModal").val($termId);
-			$("#nameUpdate").val($termCode);
-			$("#dateStartUpdate").val($termName);
-
-		});
-
-
 		// http://momentjs.com/docs/#/manipulating/add/
 		// http://eonasdan.github.io/bootstrap-datetimepicker
 		moment().format();
+		/////////////// CREATE /////////////////////////
+		$('#dateTimePickerStart').datetimepicker();
+		$('#dateTimePickerEnd').datetimepicker();
+		////////// UPDATE /////////////////////////
+		$('#dateStartUpdate').datetimepicker();
+		$('#dateEndUpdate').datetimepicker();
 
-		$('#dateTimePickerStart').datetimepicker({
-			defaultDate: moment(),
-			minDate: moment().subtract('1', 'day'),
-			minuteStepping: 10,
-			daysOfWeekDisabled: [0, 6],
-			sideBySide: true
+		// prepare term id for delete on modal
+		$(".btnDeleteTerm").click(function () {
+			var inputVal = $(this).next('input').val();
+			$("#delTermIdModal").val(inputVal);
 		});
-		var $startSessionMoment = moment($('#dateTimePickerStart').data("DateTimePicker").getDate());
-		var dateEnd = moment().add(30, 'minutes');
 
-		$('#dateTimePickerEnd').datetimepicker({
-			defaultDate: dateEnd,
-			minDate: $startSessionMoment,
-			minuteStepping: 10,
-			daysOfWeekDisabled: [0, 6],
-			sideBySide: true
+		$(".btnUpdateTerm").click(function () {
+			var termId = $(this).next().next('input').val();
+			var termName = ($(this).parent().prev().prev().prev().text());
+			var startDate = ($(this).parent().prev().prev().text());
+			var endDate = ($(this).parent().prev().text());
+
+			$("#updateTermIdModal").val(termId);
+			$("#nameUpdate").val(termName);
+			$('#dateStartUpdate').data("DateTimePicker").setDate(startDate);
+			$('#dateEndUpdate').data("DateTimePicker").setDate(endDate);
 		});
-		var $endSessionMoment = moment($('#dateTimePickerEnd').data("DateTimePicker").getDate());
 
-		$("#dateTimePickerStart").on("dp.change", function (e) {
-			var momentStart = $endSessionMoment;
-			var momentEnd = momentStart.clone();
-			var momentMinEnd = momentStart.clone();
-
-			$('#dateTimePickerEnd').data("DateTimePicker").setMinDate(momentMinEnd.add(20, 'minutes'));
-			$('#dateTimePickerEnd').data("DateTimePicker").setDate(momentEnd.add(30, 'minutes'));
-		});
 
 	});
 

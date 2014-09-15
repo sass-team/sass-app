@@ -39,6 +39,8 @@ class CourseFetcher
 
 
 	public static function retrieveAll($db) {
+		date_default_timezone_set('Europe/Athens');
+
 		$query =
 			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_CODE . "` AS 'code', `" . self::DB_TABLE . "`.`" .
 			self::DB_COLUMN_NAME . "` AS  'name', `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`
@@ -56,13 +58,13 @@ class CourseFetcher
   
 
 
-	public static function courseExists($db, $courseId) {
+	public static function courseExists($db, $id) {
 
 		$query = "SELECT COUNT(`" . self::DB_COLUMN_ID . "`) FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "` WHERE
-        `" . self::DB_COLUMN_ID . "`= :courseId";
+        `" . self::DB_COLUMN_ID . "`= :id";
 
 		$query = $db->getConnection()->prepare($query);
-		$query->bindParam(':courseId', $courseId, PDO::PARAM_STR);
+		$query->bindParam(':id', $id, PDO::PARAM_STR);
 
 		try {
 			$query->execute();
@@ -101,13 +103,13 @@ class CourseFetcher
 		$newName = trim($newName);
 
 		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
-					SET	`" . self::DB_COLUMN_NAME . "`= :newCourseName
-					WHERE `id`= :courseId";
+					SET	`" . self::DB_COLUMN_NAME . "`= :newName
+					WHERE `id`= :id";
 
 		try {
 			$query = $db->getConnection()->prepare($query);
-			$query->bindParam(':courseId', $id, PDO::PARAM_INT);
-			$query->bindParam(':newCourseName', $newName, PDO::PARAM_STR);
+			$query->bindParam(':id', $id, PDO::PARAM_INT);
+			$query->bindParam(':newName', $newName, PDO::PARAM_STR);
 			$query->execute();
 
 			return true;
@@ -121,11 +123,11 @@ class CourseFetcher
 
 		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
 					SET	`" . self::DB_COLUMN_CODE . "`= :newCode
-					WHERE `id`= :courseId";
+					WHERE `id`= :id";
 
         try {
             $query = $db->getConnection()->prepare($query);
-            $query->bindParam(':courseId', $id, PDO::PARAM_INT);
+            $query->bindParam(':id', $id, PDO::PARAM_INT);
             $query->bindParam(':newCode', $newCode, PDO::PARAM_STR);
             $query->execute();
 
@@ -153,12 +155,12 @@ class CourseFetcher
 
 
 
-    public static function idExists($db, $courseId) {
+    public static function idExists($db, $id) {
         try {
             $sql = "SELECT COUNT(" . self::DB_COLUMN_ID . ") FROM `" . DB_NAME . "`.`" .
-                self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :courseId";
+                self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :id";
             $query = $db->getConnection()->prepare($sql);
-            $query->bindParam(':courseId', $courseId, PDO::PARAM_INT);
+            $query->bindParam(':id', $id, PDO::PARAM_INT);
             $query->execute();
 
             if ($query->fetchColumn() === 0) return false;
