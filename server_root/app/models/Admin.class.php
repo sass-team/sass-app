@@ -46,7 +46,7 @@ class Admin extends User
 			if (strcmp($user_type, User::TUTOR) === 0) {
 				Major::validateId($db, $majorId);
 				Tutor::insertMajor($db, $userId, $majorId);
-				if ($coursesIds !== NULL) Tutor_has_course::addCourses($db, $userId, $coursesIds);
+				if ($coursesIds !== NULL) Tutor_has_course_has_schedule::addCourses($db, $userId, $coursesIds);
 			}
 
 

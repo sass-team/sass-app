@@ -5,6 +5,15 @@ $general->loggedOutProtect();
 // viewers
 $page_title = "Workshops";
 $section = "workshops";
+
+try {
+	$courses = CourseFetcher::retrieveAll($db);
+	$terms = TermFetcher::retrieveAll($db);
+	$instructors = InstructorFetcher::retrieveAll($db);
+	$students = StudentFetcher::retrieveAll($db);
+} catch (Exception $e) {
+	$errors[] = $e->getMessage();
+}
 ?>
 
 
@@ -32,7 +41,7 @@ $section = "workshops";
 
 			<h1>
 				<i class="fa fa-calendar"></i>
-				Full Workshop Session Calendar
+				Add Workshop Session
 			</h1>
 
 		</div>
@@ -43,30 +52,25 @@ $section = "workshops";
 
 			<div class="portlet">
 
-				<div class="portlet-header">
-
-					<h3>
-						<i class="fa fa-calendar"></i>
-						Date Picker
-					</h3>
-
-				</div>
-				<!-- /.portlet-header -->
-
-				<div class="portlet-content">
+				<div class="row">
 
 
-					<div class="row">
+					<div class="col-sm-4">
+						<div class="portlet-header">
 
-						<div class="col-sm-8">
-							<div id="full-calendar"></div>
+							<h3>
+								<i class="fa fa-calendar"></i>
+								New Workshop Session
+							</h3>
+
 						</div>
-						<div class="col-sm-4">
+						<!-- /.portlet-header -->
+
+						<div class="portlet-content">
+
 							<div class="form-group">
 
-								<h4>Workshop Session</h4>
-
-								<div class="form-group col-md-12">
+								<div class="form-group">
 									<div class="input-group">
 										<div class='input-group date' id='dateTimePickerStart'>
 											<span class="input-group-addon"><label for="dateTimePickerStart">Starts
@@ -77,7 +81,7 @@ $section = "workshops";
 									</div>
 								</div>
 
-								<div class="form-group col-md-12">
+								<div class="form-group">
 									<div class="input-group">
 										<div class='input-group date' id='dateTimePickerEnd'>
 											<span class="input-group-addon"><label for="dateTimePickerEnd">Ends
@@ -87,13 +91,85 @@ $section = "workshops";
 										</div>
 									</div>
 								</div>
+
+								<div class="form-group">
+									<div class="input-group">
+										<span class="input-group-addon"><label for="courseId">Course</label></span>
+										<select id="courseId" name="courseId" class="form-control">
+											<?php foreach ($courses as $course) {
+												include(ROOT_PATH . "app/views/partials/course-select-options-view.html.php");
+											}
+											?>
+										</select>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<div class="input-group">
+										<span class="input-group-addon"><label for="studentsIds">Students</label></span>
+										<select id="studentsIds" name="studentsIds[]" class="form-control" multiple>
+
+											<?php
+											foreach ($students as $student) {
+												include(ROOT_PATH . "app/views/partials/students-select-options-view.html.php");
+											}
+											?>
+
+										</select>
+									</div>
+								</div>
+
+
+								<div class="form-group">
+									<div class="input-group">
+										<span class="input-group-addon"><label for="instructorId">Instructor</label></span>
+										<select id="instructorId" name="instructorId" class="form-control">
+											<?php foreach ($instructors as $instructor) {
+												include(ROOT_PATH . "app/views/partials/instructor-select-options-view.html.php");
+											}
+											?>
+										</select>
+									</div>
+								</div>
+
+
+								<div class="form-group">
+									<div class="input-group">
+										<span class="input-group-addon"><label for="termId">Term</label></span>
+										<select id="termId" name="termId" class="form-control">
+											<?php foreach ($terms as $term) {
+												include(ROOT_PATH . "app/views/partials/term-select-options-view.html.php");
+											}
+											?>
+										</select>
+									</div>
+								</div>
+
 							</div>
 						</div>
+					</div>
 
+
+					<div class="col-md-8">
+						<div class="portlet-header">
+
+							<h3>
+								<i class="fa fa-calendar"></i>
+								Date Picker
+							</h3>
+
+						</div>
+						<!-- /.portlet-header -->
+
+						<div class="portlet-content">
+
+							<div id="full-calendar"></div>
+						</div>
 					</div>
 
 				</div>
-				<!-- /.portlet-content -->
+				<!-- /.row -->
+
 
 			</div>
 			<!-- /.portlet -->
@@ -133,6 +209,7 @@ $section = "workshops";
 
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/autosize/jquery.autosize.min.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/textarea-counter/jquery.textarea-counter.js"></script>
+<script src="<?php echo BASE_URL; ?>assets/js/plugins/select2/select2.js"></script>
 
 <script src="<?php echo BASE_URL; ?>assets/js/demos/calendar.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/demos/dashboard.js"></script>
@@ -146,6 +223,14 @@ $section = "workshops";
 		// http://momentjs.com/docs/#/manipulating/add/
 		// http://eonasdan.github.io/bootstrap-datetimepicker
 		moment().format();
+
+
+		$("#courseId").select2();
+		$("#termId").select2();
+		$("#instructorId").select2();
+		$("#studentsIds").select2();
+
+
 
 		$('#dateTimePickerStart').datetimepicker({
 			defaultDate: moment(),

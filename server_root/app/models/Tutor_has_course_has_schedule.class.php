@@ -6,13 +6,14 @@
  * Date: 9/14/2014
  * Time: 4:55 AM
  */
-class Tutor_has_course
+class Tutor_has_course_has_schedule
 {
 
 
-	public static function addCourses($db, $id, $coursesIds) {
+	public static function addCourses($db, $id, $coursesIds, $termId) {
 		self::validateCoursesId($db, $coursesIds);
-		Tutor_has_courseFetcher::insertMany($db, $id, $coursesIds);
+		Term::validateId($db, $termId);
+		Tutor_has_course_has_scheduleFetcher::insertMany($db, $id, $coursesIds, $termId);
 	}
 
 	public static function validateCoursesId($db, $coursesId) {

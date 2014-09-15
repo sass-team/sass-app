@@ -47,11 +47,11 @@ try {
 		$termId = $_POST['updateTermIdModal'];
 		$termName = $_POST['nameUpdate'];
 
-		if (($term = getTerm($termId, $terms)) === FALSE) throw new Exception("Data tempering detected. Aborting.");
+		if (($course = getTerm($termId, $terms)) === FALSE) throw new Exception("Data tempering detected. Aborting.");
 
-		$updateDone = $updateDone || Term::updateName($db, $termId, $_POST['nameUpdate'], $term[TermFetcher::DB_COLUMN_NAME]);
-		$updateDone = $updateDone || Term::updateStartingDate($db, $termId, $_POST['dateStartUpdate'], $term[TermFetcher::DB_COLUMN_START_DATE]);
-		$updateDone = $updateDone || Term::updateEndingDate($db, $termId, $_POST['dateEndUpdate'], $term[TermFetcher::DB_COLUMN_END_DATE]);
+		$updateDone = $updateDone || Term::updateName($db, $termId, $_POST['nameUpdate'], $course[TermFetcher::DB_COLUMN_NAME]);
+		$updateDone = $updateDone || Term::updateStartingDate($db, $termId, $_POST['dateStartUpdate'], $course[TermFetcher::DB_COLUMN_START_DATE]);
+		$updateDone = $updateDone || Term::updateEndingDate($db, $termId, $_POST['dateEndUpdate'], $course[TermFetcher::DB_COLUMN_END_DATE]);
 
 		if (!$updateDone) throw new Exception("No new data inputted. Process aborted.");
 		header('Location: ' . BASE_URL . 'users/terms/success');
@@ -193,7 +193,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 								<?php
 								foreach ($terms as $term) {
-									include(ROOT_PATH . "app/views/partials/all-term-table-data-view.html.php");
+									include(ROOT_PATH . "app/views/partials/term-table-data-view.html.php");
 								} ?>
 								</tbody>
 							</table>
