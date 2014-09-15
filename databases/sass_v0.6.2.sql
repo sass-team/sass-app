@@ -1,5 +1,4 @@
-CREATE DATABASE  IF NOT EXISTS `sass-ms_db` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `sass-ms_db`;
+
 -- MySQL dump 10.13  Distrib 5.6.17, for Win32 (x86)
 --
 -- Host: localhost    Database: sass-ms_db
@@ -52,8 +51,8 @@ DROP TABLE IF EXISTS `appointment`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `appointment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `start_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `end_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `end_time` timestamp NULL DEFAULT NULL,
+  `start_time` timestamp NULL DEFAULT NULL,
   `course_id` int(11) NOT NULL,
   `tutor_user_id` int(11) NOT NULL,
   `schedule_id` int(11) NOT NULL,
@@ -62,8 +61,8 @@ CREATE TABLE `appointment` (
   KEY `fk_appointment_tutor1_idx` (`tutor_user_id`),
   KEY `fk_appointment_schedule1_idx` (`schedule_id`),
   CONSTRAINT `fk_appointment_course1` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_appointment_tutor1` FOREIGN KEY (`tutor_user_id`) REFERENCES `tutor` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_appointment_schedule1` FOREIGN KEY (`schedule_id`) REFERENCES `term` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_appointment_schedule1` FOREIGN KEY (`schedule_id`) REFERENCES `term` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_appointment_tutor1` FOREIGN KEY (`tutor_user_id`) REFERENCES `tutor` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -281,8 +280,8 @@ DROP TABLE IF EXISTS `term`;
 CREATE TABLE `term` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
-  `start_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `end_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `start_date` timestamp NULL DEFAULT NULL,
+  `end_date` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
@@ -372,13 +371,13 @@ CREATE TABLE `user` (
   `l_name` varchar(35) NOT NULL,
   `password` varchar(512) DEFAULT NULL,
   `img_loc` varchar(125) NOT NULL DEFAULT 'assets/img/avatars/default_avatar.jpg',
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'date of account creation',
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'date of account creation',
   `user_types_id` int(11) NOT NULL,
   `mobile` varchar(10) DEFAULT NULL,
   `profile_description` varchar(512) DEFAULT NULL,
   `active` int(11) NOT NULL DEFAULT '1',
   `gen_string` varchar(45) DEFAULT NULL,
-  `gen_string_update_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `gen_string_update_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email_UNIQUE` (`email`),
   UNIQUE KEY `mobile_UNIQUE` (`mobile`),
@@ -431,8 +430,8 @@ DROP TABLE IF EXISTS `work_week_hours`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `work_week_hours` (
   `id` int(11) NOT NULL,
-  `start` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `end` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `start` timestamp NULL DEFAULT NULL,
+  `end` timestamp NULL DEFAULT NULL,
   `schedule_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_work_day_schedule1_idx` (`schedule_id`),
@@ -458,4 +457,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-09-15 21:25:15
+-- Dump completed on 2014-09-15 21:47:36
