@@ -34,6 +34,9 @@ ob_start();
 // TODO: Add option-functionality to resend email if password forgot
 // TODO: sql make 'img' of database to NOT NULL & refactor name to 'img_location'
 require __DIR__ . '/../../app/init.php';
+require_once(ROOT_PATH . 'app/plugins/recaptcha-php-1.11/recaptchalib.php');
+$publicKey = "6LffUPoSAAAAANxt7IO2AH22C1EV3wxxzkMuHtEr";
+$privateKey = "6LffUPoSAAAAAIm74Ss08shwmJA7Nj9NN6E8-wvx";
 
 // if there is an active log in process redirect to students.class.php; load page only if no
 // logged in user exists
@@ -59,6 +62,12 @@ function isVerified() {
 if (isContinueBtnPressed()) {
 	try {
 		$email = $_POST['email'];
+		$resp = recaptcha_check_answer($privateKey, $_SERVER["REMOTE_ADDR"], $_POST["recaptcha_challenge_field"],
+			$_POST["recaptcha_response_field"]);
+
+		// What happens when the CAPTCHA was entered incorrectly
+		if (!$resp->is_valid) throw new Exception ("The reCAPTCHA wasn't entered correctly.");
+
 		Mailer::sendRecover($db, $email);
 		header('Location: ' . BASE_URL . 'login/confirm-password/success');
 		exit();
@@ -99,7 +108,17 @@ if (isContinueBtnPressed()) {
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/Login.css" type="text/css"/>
 
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/custom.css" type="text/css"/>
+	<script type="text/javascript">
+		var RecaptchaOptions = {
+			theme : 'blackglass'
+		};
+	</script>
 
+	<style>
+		#recaptcha_area, #recaptcha_table {
+			margin: auto !important;;
+		}
+	</style>
 </head>
 
 <body>
@@ -144,6 +163,10 @@ if (isContinueBtnPressed()) {
 				<div class="form-group">
 					<label for="login-email">Email</label>
 					<input required type="email" class="form-control" id="login-email" name="email" placeholder="Email">
+				</div>
+
+				<div class="form-group text-center">
+					<?php echo recaptcha_get_html($publicKey); ?>
 				</div>
 
 				<div class="form-group">
