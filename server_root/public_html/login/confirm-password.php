@@ -30,19 +30,22 @@
 
 ?>
 <?php
+
+
 ob_start();
 // TODO: Add option-functionality to resend email if password forgot
 // TODO: sql make 'img' of database to NOT NULL & refactor name to 'img_location'
 require __DIR__ . '/../../app/init.php';
 require_once(ROOT_PATH . 'app/plugins/recaptcha-php-1.11/recaptchalib.php');
-$publicKey = "6LffUPoSAAAAANxt7IO2AH22C1EV3wxxzkMuHtEr";
-$privateKey = "6LffUPoSAAAAAIm74Ss08shwmJA7Nj9NN6E8-wvx";
+require_once(ROOT_PATH . 'app/models/ReCAPTCHA.class.php');
+
+$publicKey = ReCAPTCHA::retrievePublicKey();
+$privateKey = ReCAPTCHA::retrievePrivateKey();;
 
 // if there is an active log in process redirect to students.class.php; load page only if no
 // logged in user exists
 $general->loggedInProtect();
 $page_title = "Log In";
-
 
 /**
  * @return bool
@@ -110,7 +113,7 @@ if (isContinueBtnPressed()) {
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/custom.css" type="text/css"/>
 	<script type="text/javascript">
 		var RecaptchaOptions = {
-			theme : 'blackglass'
+			theme: 'blackglass'
 		};
 	</script>
 
