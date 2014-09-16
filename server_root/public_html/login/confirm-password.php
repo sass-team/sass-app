@@ -30,13 +30,16 @@
 
 ?>
 <?php
+const PUBLIC_KEY_PRODUCTION = "6LdHUfoSAAAAALViAZ_fc5twpfu8wO-QVpfKKAwF";
+const PRIVATE_KEY_PRODUCTION = "6LdHUfoSAAAAAMLha2Zkx87qXN7Z4SIOxwkLk-QA";
 ob_start();
 // TODO: Add option-functionality to resend email if password forgot
 // TODO: sql make 'img' of database to NOT NULL & refactor name to 'img_location'
 require __DIR__ . '/../../app/init.php';
 require_once(ROOT_PATH . 'app/plugins/recaptcha-php-1.11/recaptchalib.php');
-$publicKey = "6LffUPoSAAAAANxt7IO2AH22C1EV3wxxzkMuHtEr";
-$privateKey = "6LffUPoSAAAAAIm74Ss08shwmJA7Nj9NN6E8-wvx";
+
+$publicKey = PUBLIC_KEY_PRODUCTION;
+$privateKey = PRIVATE_KEY_PRODUCTION;
 
 // if there is an active log in process redirect to students.class.php; load page only if no
 // logged in user exists
