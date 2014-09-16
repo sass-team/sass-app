@@ -20,12 +20,18 @@ class ReCAPTCHA
 	const PUBLIC_KEY_RDOK = "6LeDbPoSAAAAAK5ZbtC2g5fMlT_oqh1PbdM_BUhX";
 	const PRIVATE_KEY_RDOK = "6LeDbPoSAAAAAEEmGB-M8kAzSNPU1Ld1zBTF3k1k";
 
+	const GEOIF_HOST = "sass.app";
+	const PUBLIC_KEY_GEOIF = "6LeJcPoSAAAAALXLpLdq-WiNXJp2W6dwwkk4N8G7";
+	const PRIVATE_KEY_GEOIF = "6LeJcPoSAAAAALH7cUOxmyBgr34tHmFFseOJCd7F";
+
+
 	public static function retrievePublicKey() {
 		$currentHost = $_SERVER['SERVER_NAME'];
 
 		if (strcmp($currentHost, self::PRODUCTION_HOST) === 0) return self::PUBLIC_KEY_PRODUCTION;
 		if (strcmp($currentHost, self::STAGE_HOST) === 0) return self::PUBLIC_KEY_STAGE;
 		if (strcmp($currentHost, self::RDOK_HOST) === 0) return self::PUBLIC_KEY_RDOK;
+		if (strcmp($currentHost, self::GEOIF_HOST) === 0) return self::PUBLIC_KEY_GEOIF;
 	}
 
 	public static function retrievePrivateKey() {
@@ -34,5 +40,6 @@ class ReCAPTCHA
 		if (strcmp($currentHost, self::PRODUCTION_HOST) === 0) return self::PRIVATE_KEY_PRODUCTION;
 		if (strcmp($currentHost, self::STAGE_HOST) === 0) return self::PRIVATE_KEY_STAGE;
 		if (strcmp($currentHost, self::RDOK_HOST) === 0) return self::PRIVATE_KEY_RDOK;
+		if (strcmp($currentHost, self::GEOIF_HOST) === 0) return self::PRIVATE_KEY_GEOIF;
 	}
 }
