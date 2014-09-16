@@ -11,9 +11,24 @@ try {
 	$terms = TermFetcher::retrieveAll($db);
 	$instructors = InstructorFetcher::retrieveAll($db);
 	$students = StudentFetcher::retrieveAll($db);
+
+	if (isBtnAddStudentPrsd()) {
+		$_POST['dateTimePickerStart'];
+		$_POST['dateTimePickerEnd'];
+		$_POST['courseId'];
+		$_POST['studentsIds'];
+		$_POST['instructorId'];
+		$_POST['termId'];
+
+	}
 } catch (Exception $e) {
 	$errors[] = $e->getMessage();
 }
+
+function isBtnAddStudentPrsd() {
+	return isset($_POST['hiddenSubmitPrsd']) && empty($_POST['hiddenSubmitPrsd']);
+}
+
 ?>
 
 
@@ -41,8 +56,10 @@ try {
 
 			<h1>
 				<i class="fa fa-calendar"></i>
-				Add Workshop Session
+				New Workshop Session
+
 			</h1>
+
 
 		</div>
 		<!-- #content-header -->
@@ -60,6 +77,9 @@ try {
 
 							<h3>
 								<i class="fa fa-calendar"></i>
+								<?php
+								var_dump($_POST);
+								?>
 								New Workshop Session
 							</h3>
 
@@ -69,83 +89,89 @@ try {
 						<div class="portlet-content">
 
 							<div class="form-group">
+								<form method="post" id="add-student-form" action="<?php echo BASE_URL . 'workshops/add'; ?>"
+								      class="form">
 
-								<div class="form-group">
-									<div class="input-group">
+									<div class="form-group">
 										<div class='input-group date' id='dateTimePickerStart'>
-											<span class="input-group-addon"><label for="dateTimePickerStart">Starts
-													At</label></span>
-											<input type='text' class="form-control"/>
+											<span class="input-group-addon"><label for="dateTimePickerStart">
+													Starts At</label></span>
+											<input type='text' name='dateTimePickerStart' class="form-control"/>
                                  <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
 										</div>
 									</div>
-								</div>
 
-								<div class="form-group">
-									<div class="input-group">
+									<div class="form-group">
 										<div class='input-group date' id='dateTimePickerEnd'>
-											<span class="input-group-addon"><label for="dateTimePickerEnd">Ends
-													At&#32; </label></span>
-											<input type='text' class="form-control"/>
-                                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+											<span class="input-group-addon"><label for="dateTimePickerEnd">Ends At</label></span>
+											<input type='text' name='dateTimePickerEnd' class="form-control"/>
+										<span class="input-group-addon">
+											<span class="glyphicon glyphicon-calendar">
+										</span>
 										</div>
 									</div>
-								</div>
 
-								<div class="form-group">
-									<div class="input-group">
-										<span class="input-group-addon"><label for="courseId">Course</label></span>
-										<select id="courseId" name="courseId" class="form-control">
-											<?php foreach ($courses as $course) {
-												include(ROOT_PATH . "app/views/partials/course-select-options-view.html.php");
-											}
-											?>
-										</select>
+									<div class="form-group">
+										<div class="input-group">
+											<span class="input-group-addon"><label for="courseId">Course</label></span>
+											<select id="courseId" name="courseId" class="form-control">
+												<?php foreach ($courses as $course) {
+													include(ROOT_PATH . "app/views/partials/course-select-options-view.html.php");
+												}
+												?>
+											</select>
+										</div>
 									</div>
-								</div>
 
-								<div class="form-group">
-									<div class="input-group">
-										<span class="input-group-addon"><label for="studentsIds">Students</label></span>
-										<select id="studentsIds" name="studentsIds[]" class="form-control" multiple>
+									<div class="form-group">
+										<div class="input-group">
+											<span class="input-group-addon"><label for="studentsIds">Students</label></span>
+											<select id="studentsIds" name="studentsIds[]" class="form-control" multiple required>
 
-											<?php
-											foreach ($students as $student) {
-												include(ROOT_PATH . "app/views/partials/students-select-options-view.html.php");
-											}
-											?>
+												<?php
+												foreach ($students as $student):
+													include(ROOT_PATH . "app/views/partials/students-select-options-view.html.php");
+												endforeach;
+												?>
 
-										</select>
+											</select>
+										</div>
 									</div>
-								</div>
 
 
-								<div class="form-group">
-									<div class="input-group">
-										<span class="input-group-addon"><label for="instructorId">Instructor</label></span>
-										<select id="instructorId" name="instructorId" class="form-control">
-											<?php foreach ($instructors as $instructor) {
-												include(ROOT_PATH . "app/views/partials/instructor-select-options-view.html.php");
-											}
-											?>
-										</select>
+									<div class="form-group">
+										<div class="input-group">
+											<span class="input-group-addon"><label for="instructorId">Instructor</label></span>
+											<select id="instructorId" name="instructorId" class="form-control">
+												<?php foreach ($instructors as $instructor) {
+													include(ROOT_PATH . "app/views/partials/instructor-select-options-view.html.php");
+												}
+												?>
+											</select>
+										</div>
 									</div>
-								</div>
 
 
-								<div class="form-group">
-									<div class="input-group">
-										<span class="input-group-addon"><label for="termId">Term</label></span>
-										<select id="termId" name="termId" class="form-control">
-											<?php foreach ($terms as $term) {
-												include(ROOT_PATH . "app/views/partials/term-select-options-view.html.php");
-											}
-											?>
-										</select>
+									<div class="form-group">
+										<div class="input-group">
+											<span class="input-group-addon"><label for="termId">Term</label></span>
+											<select id="termId" name="termId" class="form-control">
+												<?php foreach ($terms as $term) {
+													include(ROOT_PATH . "app/views/partials/term-select-options-view.html.php");
+												}
+												?>
+											</select>
+										</div>
 									</div>
-								</div>
 
+									<div class="form-group">
+										<button type="submit" class="btn btn-block btn-primary">Add</button>
+										<input type="hidden" name="hiddenSubmitPrsd" value="">
+									</div>
+								</form>
 							</div>
+							<!-- /.form-group -->
+
 						</div>
 					</div>
 
@@ -177,10 +203,9 @@ try {
 		</div>
 		<!-- /#content-container -->
 
-
+		<div id="push"></div>
 	</div>
 	<!-- #content -->
-
 
 	<?php include ROOT_PATH . "app/views/footer.php"; ?>
 </div>
@@ -229,7 +254,6 @@ try {
 		$("#termId").select2();
 		$("#instructorId").select2();
 		$("#studentsIds").select2();
-
 
 
 		$('#dateTimePickerStart').datetimepicker({

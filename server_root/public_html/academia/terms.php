@@ -54,17 +54,17 @@ try {
 		$updateDone = $updateDone || Term::updateEndingDate($db, $termId, $_POST['dateEndUpdate'], $course[TermFetcher::DB_COLUMN_END_DATE]);
 
 		if (!$updateDone) throw new Exception("No new data inputted. Process aborted.");
-		header('Location: ' . BASE_URL . 'users/terms/success');
+		header('Location: ' . BASE_URL . 'academia/terms/success');
 		exit();
 
 	} else if (isBtnCreatePrsd()) {
 
 		Term::create($db, $_POST['termName'], $_POST['dateTimePickerStart'], $_POST['dateTimePickerEnd']);
-		header('Location: ' . BASE_URL . 'users/terms/success');
+		header('Location: ' . BASE_URL . 'academia/terms/success');
 		exit();
 	} else if (isBtnDeletePrsd()) {
 		Term::delete($db, $_POST['delTermIdModal']);
-		header('Location: ' . BASE_URL . 'users/terms/success');
+		header('Location: ' . BASE_URL . 'academia/terms/success');
 		exit();
 	}
 
@@ -227,7 +227,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <div id="addTermModal" class="modal modal-styled fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form method="post" id="create-form" action="<?php echo BASE_URL . 'users/terms'; ?>" class="form">
+			<form method="post" id="create-form" action="<?php echo BASE_URL . 'academia/terms'; ?>" class="form">
 
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -311,7 +311,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <div id="deleteTerm" class="modal modal-styled fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form method="post" id="delete-form" action="<?php echo BASE_URL . 'users/terms'; ?>" class="form">
+			<form method="post" id="delete-form" action="<?php echo BASE_URL . 'academia/terms'; ?>" class="form">
 
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -362,7 +362,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <div id="updateTerm" class="modal modal-styled fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form method="post" id="create-form" action="<?php echo BASE_URL . 'users/terms'; ?>" class="form">
+			<form method="post" id="create-form" action="<?php echo BASE_URL . 'academia/terms'; ?>" class="form">
 
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
