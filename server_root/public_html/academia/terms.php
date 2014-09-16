@@ -109,7 +109,7 @@ function isBtnUpdatePrsd() {
 }
 
 $page_title = "Manage Terms";
-$section = "users";
+$section = "academia";
 ?>
 
 <!DOCTYPE html>
@@ -153,7 +153,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 		<?php endif; ?>
 		<div class="row">
 
-			<div class="col-md-8">
+			<div class="col-md-12">
 
 				<div class="portlet">
 
@@ -164,6 +164,12 @@ require ROOT_PATH . 'app/views/sidebar.php';
 							View and Manage Terms
 						</h3>
 
+						<ul class="portlet-tools pull-right">
+							<li>
+								<a data-toggle="modal" href="#addTermModal" class="btn btn-sm btn-default">Add Term</a>
+							</li>
+						</ul>
+
 					</div>
 					<!-- /.portlet-header -->
 
@@ -172,7 +178,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 						<div class="table-responsive">
 
 							<table
-								class="table table-striped table-bordered table-hover table-highlight table-checkable"
+								class="table table-striped table-bordered table-hover table-highlight"
 								data-provide="datatable"
 								data-display-rows="10"
 								data-info="true"
@@ -183,8 +189,8 @@ require ROOT_PATH . 'app/views/sidebar.php';
 								<thead>
 								<tr>
 									<th class="text-center" data-filterable="true" data-sortable="true">Name</th>
-									<th class="text-center" data-filterable="true" data-sortable="false">Starting Date</th>
-									<th class="text-center" data-filterable="true" data-sortable="false">Ending Date</th>
+									<th class="text-center" data-filterable="false" data-sortable="false">Starting Date</th>
+									<th class="text-center" data-filterable="false" data-sortable="false">Ending Date</th>
 									<th class="text-center">Action</th>
 
 								</tr>
@@ -208,13 +214,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 			</div>
 			<!-- /.col -->
-			<div class="col-md-4 col-sidebar-right">
-				<h2>Add a new Term</h2>
-
-				<p class="lead"> You can also add a new Term that is not already in the list.</p>
-				<a data-toggle="modal" href="#addTermModal" class="btn btn-danger btn-jumbo btn-block">Add Term</a>
-
-			</div>
+			
 		</div>
 		<!-- /.row -->
 
@@ -222,7 +222,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 	<!-- /#content-container -->
 
 </div>
-<!-- /.col -->
+<!-- /content -->
 
 <div id="addTermModal" class="modal modal-styled fade">
 	<div class="modal-dialog">
