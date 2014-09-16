@@ -141,27 +141,42 @@ require ROOT_PATH . 'app/views/sidebar.php';
 			</div>
 		<?php } ?>
 		<div class="row">
+
 			<div class="col-md-12">
 
-				<div class="btn-group navbar-right">
-					<a data-toggle="modal" id="btn-styledModal" href="#addStudentModal"
-					   class="btn btn-primary">
-						Add Student</a>
-					<a data-toggle="modal" id="btn-styledModal" href="#addMajorModal"
-					   class="btn btn-primary">
-						Add Major</a>
-				</div>
+				<div class="portlet">
 
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-12">
+					<div class="portlet-header">
+
+						<h3>
+							<i class="fa fa-users"></i>
+							View and Manage Students
+						</h3>
+
+						<ul class="portlet-tools pull-right">
+								<li>
+									<div class="btn-group">
+									  <button type="button" class="btn btn-sm btn-primary">Add</button>
+									  <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
+									    <span class="caret"></span>
+									  </button>
+									  <ul class="dropdown-menu" role="menu">
+									    <li><a data-toggle="modal" href="#addStudentModal">Student</a></li>
+									    <li class="divider"></li>
+									    <li><a data-toggle="modal" href="#addMajorModal">Major</a></li>
+									  </ul>
+									</div>
+								</li>
+						</ul>
+
+					</div>
+					<!-- /.portlet-header -->
 
 				<div class="portlet-content">
 
 					<div class="table-responsive">
 						<table
-							class="table table-striped table-bordered table-hover table-highlight table-checkable"
+							class="table table-striped table-bordered table-hover table-highlight"
 							data-provide="datatable"
 							data-display-rows="10"
 							data-info="true"
@@ -200,7 +215,8 @@ require ROOT_PATH . 'app/views/sidebar.php';
 						</table>
 					</div>
 					<!-- /.table-responsive -->
-
+					</div>
+					<!-- /.portlet-content -->
 
 				</div>
 				<!-- /.portlet -->
