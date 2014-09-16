@@ -156,10 +156,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 						<ul class="portlet-tools pull-right">
 								<li>
 									<div class="btn-group">
-									  <button type="button" class="btn btn-sm btn-primary">Add</button>
-									  <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
-									    <span class="caret"></span>
-									  </button>
+									  <button data-toggle="dropdown" class="btn btn-md btn-primary dropdown-toggle">Add <span class="caret"></span></button>
 									  <ul class="dropdown-menu" role="menu">
 									    <li><a data-toggle="modal" href="#addStudentModal">Student</a></li>
 									    <li class="divider"></li>

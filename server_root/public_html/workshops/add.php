@@ -72,9 +72,6 @@ function isBtnAddStudentPrsd() {
 
 							<h3>
 								<i class="fa fa-calendar"></i>
-								<?php
-								var_dump($_POST);
-								?>
 								New Workshop Session
 							</h3>
 
@@ -110,6 +107,7 @@ function isBtnAddStudentPrsd() {
 										<div class="input-group">
 											<span class="input-group-addon"><label for="courseId">Course</label></span>
 											<select id="courseId" name="courseId" class="form-control">
+
 												<?php foreach ($courses as $course) {
 													include(ROOT_PATH . "app/views/partials/course-select-options-view.html.php");
 												}
