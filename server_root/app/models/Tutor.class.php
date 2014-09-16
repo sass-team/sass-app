@@ -9,7 +9,7 @@
 class Tutor extends User
 {
 	const DB_TABLE = "tutor";
-	const DB_TABLE_TUTOR_HAS_COURSE_HAS_SCHEDULE = "tutor_has_course_has_schedule";
+	const DB_TABLE_TUTOR_HAS_COURSE_HAS_SCHEDULE = "tutor_has_course_has_term";
 	const DB_TABLE_TUTOR_HAS_COURSE_TUTOR_USER_ID = "tutor_user_id";
 	const DB_COLUMN_USER_ID = "user_id";
 	const DB_COLUMN_COURSE_ID = "course_id";

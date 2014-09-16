@@ -16,6 +16,7 @@ class AppointmentFetcher
 	const DB_COLUMN_TERM_ID = "end_time";
 
 	public static function insert($db, $startTime, $endTime, $courseId, $tutorUserId, $termId) {
+		date_default_timezone_set('Europe/Athens');
 
 	}
 

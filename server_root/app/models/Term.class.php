@@ -82,29 +82,18 @@ class Term
 	public static function updateStartingDate($db, $id, $newStartingDate, $oldStartingDate) {
 		if (strcmp($newStartingDate, $oldStartingDate) === 0) return false;
 
-		self::validateDateAsStrings($newStartingDate, $oldStartingDate);
+		Dates::validateSingleAsString($newStartingDate, $oldStartingDate);
 		TermFetcher::updateStartingDate($db, $id, $newStartingDate);
 
 		return true;
 	}
 
-	public static function validateDateAsStrings($startDate, $endDate) {
 
-		try {
-
-			$startDate = new DateTime($startDate);
-			$endDate = new DateTime($endDate);
-
-		} catch (Exception $e) {
-			throw new Exception("Dates have been malformed.");
-		}
-
-	}
 
 	public static function updateEndingDate($db, $id, $newEndingDate, $oldEndingDate) {
 		if (strcmp($newEndingDate, $oldEndingDate) === 0) return false;
 
-		self::validateDateAsStrings($newEndingDate, $oldEndingDate);
+		Dates::validateSingleAsString($newEndingDate, $oldEndingDate);
 		TermFetcher::updateSingleColumn($db, $id, TermFetcher::DB_COLUMN_END_DATE, $newEndingDate, PDO::PARAM_STR);
 		return true;
 	}

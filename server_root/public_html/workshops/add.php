@@ -13,13 +13,8 @@ try {
 	$students = StudentFetcher::retrieveAll($db);
 
 	if (isBtnAddStudentPrsd()) {
-		$_POST['dateTimePickerStart'];
-		$_POST['dateTimePickerEnd'];
-		$_POST['courseId'];
-		$_POST['studentsIds'];
-		$_POST['instructorId'];
-		$_POST['termId'];
-
+		Appointment::add($db, $_POST['dateTimePickerStart'], $_POST['dateTimePickerEnd'], $_POST['courseId'],
+			$_POST['studentsIds'], $_POST['instructorId'], $_POST['termId']);
 	}
 } catch (Exception $e) {
 	$errors[] = $e->getMessage();
