@@ -12,7 +12,7 @@ class Admin extends User
 		parent::__construct($db, $id, $firstName, $lastName, $email, $mobileNum, $avatarImgLoc, $profileDescription, $dateAccountCreated, $userType, $accountActiveStatus);
 	}
 
-	public static function createUser($db, $first_name, $last_name, $email, $user_type, $majorId, $coursesIds) {
+	public static function createUser($db, $first_name, $last_name, $email, $user_type, $majorId, $coursesIds, $termId) {
 		self::validateName($first_name);
 		self::validateName($last_name);
 		self::validateNewEmail($db, $email, self::DB_TABLE);
@@ -46,7 +46,7 @@ class Admin extends User
 			if (strcmp($user_type, User::TUTOR) === 0) {
 				Major::validateId($db, $majorId);
 				Tutor::insertMajor($db, $userId, $majorId);
-				if ($coursesIds !== NULL) Tutor_has_course_has_schedule::addCourses($db, $userId, $coursesIds);
+				if ($coursesIds !== NULL) Tutor_has_course_has_schedule::addCourses($db, $userId, $coursesIds, $termId);
 			}
 
 

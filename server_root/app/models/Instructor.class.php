@@ -44,6 +44,12 @@ class Instructor
 		}
 	}
 
+	public static function validateIds($db, $ids) {
+		foreach ($ids as $id) {
+			self::validateId($db, $id);
+		}
+	}
+
 	public static function updateFname($db, $id, $newFirstName) {
 		$newFirstName = self::validateName($db, $newFirstName);
 		InstructorFetcher::updateFname($db, $id, $newFirstName);

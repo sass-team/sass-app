@@ -61,7 +61,7 @@ try {
 
 	// TODO: fix this code -- is ugly.
 	if (strcmp($data['type'], 'tutor') === 0) {
-		$tutor = TutorFetcher::retrieve($db, $userId);
+		$tutor = TutorFetcher::retrieveSingle($db, $userId);
 		$curUser = new Tutor($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active'], $tutor[TutorFetcher::DB_COLUMN_MAJOR_ID]);
 	} else if (strcmp($data['type'], 'secretary') === 0) {
 		$curUser = new Secretary($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active']);
@@ -316,8 +316,8 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 							<?php
 							if (empty($errors) === true) {
-								foreach ($teachingCourses as $course) {
-									include(ROOT_PATH . "app/views/partials/tutors-course-table-data-view.html.php");
+								foreach ($teachingCourses as $teachingCourse) {
+									include(ROOT_PATH . "app/views/partials/tutor/table-data-view.html.php");
 
 								}
 							} ?>
@@ -427,7 +427,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 					<select id="majorId" name="majorId" class="form-control">
 						<?php foreach ($majors as $major) {
-							include(ROOT_PATH . "app/views/partials/major-select-options-view.html.php");
+							include(ROOT_PATH . "app/views/partials/major/select-options-view.html.php");
 						}
 						?>
 					</select>
@@ -607,8 +607,8 @@ require ROOT_PATH . 'app/views/sidebar.php';
 										        multiple>
 
 											<?php
-											foreach ($notTeachingCourses as $course) {
-												include(ROOT_PATH . "app/views/partials/course-select-options-view.html.php");
+											foreach ($notTeachingCourses as $teachingCourse) {
+												include(ROOT_PATH . "app/views/partials/course/select-options-view.html.php");
 											}
 											?>
 
@@ -626,7 +626,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 											<?php
 											foreach ($terms as $term) {
-												include(ROOT_PATH . "app/views/partials/term-select-options-view.html.php");
+												include(ROOT_PATH . "app/views/partials/term/select-options-view.html.php");
 											}
 											?>
 
@@ -728,8 +728,8 @@ require ROOT_PATH . 'app/views/sidebar.php';
 								        class="form-control">
 
 
-									<?php foreach ($notTeachingCourses as $course) {
-										include(ROOT_PATH . "app/views/partials/course-select-options-view.html.php");
+									<?php foreach ($notTeachingCourses as $teachingCourse) {
+										include(ROOT_PATH . "app/views/partials/course/select-options-view.html.php");
 									}
 									?>
 

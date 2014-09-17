@@ -55,6 +55,7 @@ class Student extends Person
 		} // end catch
 	}
 
+
 	public static function create($db, $firstName, $lastName, $email, $studentId, $mobileNum, $majorId, $ci, $credits) {
 		// Validate data
 		Person::validateName($firstName);
@@ -150,7 +151,6 @@ class Student extends Person
 		StudentFetcher::updateCi($db, $id, $newCi);
 	}
 
-
 	public static function updateEmail($db, $id, $newEmail, $oldEmail) {
 		Student::validateNewEmail($db, $newEmail, $oldEmail);
 		StudentFetcher::updateEmail($db, $id, $newEmail);
@@ -165,6 +165,23 @@ class Student extends Person
 		} else if (StudentFetcher::existsEmail($db, $newEmail)) {
 			throw new Exception('That email already exists. Please use another one.');
 		} // end else if
+	}
+
+	public static function validateIds($db, $ids) {
+		foreach ($ids as $id) {
+			self::validateId($db, $id);
+		}
+	}
+
+	public static function validateId($db, $id) {
+		if (is_null($id) || (!preg_match("/^[0-9]+$/", $id))) {
+			throw new Exception("Data has been tempered. Aborting process.");
+		}
+
+		if (!StudentFetcher::exists($db, StudentFetcher::DB_COLUMN_ID, $id, PDO::PARAM_INT)) {
+			// TODO: sent email to developer relevant to this error.
+			throw new Exception("Either something went wrong with a database query, or you're trying to hack this app. In either case, the developers were just notified about this.");
+		}
 	}
 
 	public static function updateStudentId($db, $id, $newStudentId, $oldStudentId) {

@@ -8,7 +8,7 @@
  */
 class Tutor_has_course_has_scheduleFetcher
 {
-	const DB_TABLE = "tutor_has_course_has_schedule";
+	const DB_TABLE = "tutor_has_course_has_term";
 	const DB_COLUMN_TUTOR_USER_ID = "tutor_user_id";
 	const DB_COLUMN_COURSE_ID = "course_id";
 	const DB_COLUMN_TERM_ID = "term_id";

@@ -93,8 +93,8 @@ class StudentFetcher extends Person
 
 	public static function existsMobileNum($db, $newMobileNum) {
 		try {
-			$sql = "SELECT COUNT(" . StudentFetcher::DB_COLUMN_MOBILE . ") FROM `" . DB_NAME . "`.`" .
-				StudentFetcher::DB_TABLE . "` WHERE `" . StudentFetcher::DB_COLUMN_MOBILE . "` = :mobileNum";
+			$sql = "SELECT COUNT(" . self::DB_COLUMN_MOBILE . ") FROM `" . DB_NAME . "`.`" .
+				self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_MOBILE . "` = :mobileNum";
 			$query = $db->getConnection()->prepare($sql);
 			$query->bindParam(':mobileNum', $newMobileNum, PDO::PARAM_INT);
 			$query->execute();
@@ -102,6 +102,22 @@ class StudentFetcher extends Person
 			if ($query->fetchColumn() === '0') return false;
 		} catch (Exception $e) {
 			throw new Exception("Could not check if new mobile number already exists on database.");
+		}
+
+		return true;
+	}
+
+	public static function exists($db, $column, $value, $type) {
+		try {
+			$sql = "SELECT COUNT(" . self::DB_COLUMN_ID . ") FROM `" . DB_NAME . "`.`" .
+				self::DB_TABLE . "` WHERE `" . $column . "` = :column_value";
+			$query = $db->getConnection()->prepare($sql);
+			$query->bindParam(':column_value', $value, $type);
+			$query->execute();
+
+			if ($query->fetchColumn() === '0') return false;
+		} catch (Exception $e) {
+			throw new Exception("Could verify data on database.");
 		}
 
 		return true;
@@ -266,12 +282,12 @@ class StudentFetcher extends Person
 	}
 
 
-	public static function existsStudentId($db, $newMobileNum) {
+	public static function existsStudentId($db, $studentId) {
 		try {
-			$sql = "SELECT COUNT(" . StudentFetcher::DB_COLUMN_STUDENT_ID . ") FROM `" . DB_NAME . "`.`" .
-				StudentFetcher::DB_TABLE . "` WHERE `" . StudentFetcher::DB_COLUMN_STUDENT_ID . "` = :mobileNum";
+			$sql = "SELECT COUNT(" . self::DB_COLUMN_STUDENT_ID . ") FROM `" . DB_NAME . "`.`" .
+				self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_STUDENT_ID . "` = :studentId";
 			$query = $db->getConnection()->prepare($sql);
-			$query->bindParam(':mobileNum', $newMobileNum, PDO::PARAM_INT);
+			$query->bindParam(':studentId', $studentId, PDO::PARAM_INT);
 			$query->execute();
 
 			if ($query->fetchColumn() === '0') return false;

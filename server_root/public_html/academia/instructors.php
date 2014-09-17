@@ -151,16 +151,22 @@ require ROOT_PATH . 'app/views/sidebar.php';
 		<?php endif; ?>
 		<div class="row">
 
-			<div class="col-md-8">
+			<div class="col-md-12">
 
 				<div class="portlet">
 
 					<div class="portlet-header">
 
 						<h3>
-							<i class="fa fa-table"></i>
+							<i class="fa fa-users"></i>
 							View and Manage Instructors
 						</h3>
+
+						<ul class="portlet-tools pull-right">
+							<li>
+								<a data-toggle="modal" href="#addInstructorModal" class="btn btn-sm btn-default">Add Instructor</a>
+							</li>
+						</ul>
 
 					</div>
 					<!-- /.portlet-header -->
@@ -170,7 +176,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 						<div class="table-responsive">
 
 							<table
-								class="table table-striped table-bordered table-hover table-highlight table-checkable"
+								class="table table-striped table-bordered table-hover table-highlight"
 								data-provide="datatable"
 								data-display-rows="10"
 								data-info="true"
@@ -189,7 +195,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 								<?php
 								foreach (array_reverse($instructors) as $instructor) {
-									include(ROOT_PATH . "app/views/partials/instructor-table-data-view.html.php");
+									include(ROOT_PATH . "app/views/partials/instructor/table-data-view.html.php");
 								} ?>
 								</tbody>
 							</table>
@@ -204,21 +210,14 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 			</div>
 			<!-- /.col -->
-			<div class="col-md-4 col-sidebar-right">
-				<h2>Add a new Instructor</h2>
-
-				<p class="lead"> You can also add a new instructor that is not already in the list.</p>
-				<a data-toggle="modal" href="#addInstructorModal" class="btn btn-danger btn-jumbo btn-block">Add Instructor</a>
-
 			</div>
-		</div>
 		<!-- /.row -->
 
 	</div>
 	<!-- /#content-container -->
 
 </div>
-<!-- /.col -->
+<!-- /content -->
 
 <div id="addInstructorModal" class="modal modal-styled fade">
 	<div class="modal-dialog modal-sm">
