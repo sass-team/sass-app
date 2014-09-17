@@ -2,6 +2,13 @@
 require __DIR__ . '/../../app/init.php';
 $general->loggedOutProtect();
 
+// redirect if user elevation is not that of secretary or admin
+if ($user->isTutor()) {
+	header('Location: ' . BASE_URL . "error-403");
+	exit();
+}
+
+
 // viewers
 $page_title = "Workshops";
 $section = "workshops";
@@ -12,11 +19,13 @@ try {
 	$instructors = InstructorFetcher::retrieveAll($db);
 	$students = StudentFetcher::retrieveAll($db);
 	$tutors = TutorFetcher::retrieveAll($db);
+	$appointments = AppointmentFetcher::retrieveAll($db);
 
 	if (isBtnAddStudentPrsd()) {
-		var_dump($_POST);
 		Appointment::add($db, $_POST['dateTimePickerStart'], $_POST['dateTimePickerEnd'], $_POST['courseId'],
 			$_POST['studentsIds'], $_POST['tutorId'], $_POST['instructorId'], $_POST['termId']);
+		header('Location: ' . BASE_URL . 'workshops/add/success');
+		exit();
 	}
 } catch (Exception $e) {
 	$errors[] = $e->getMessage();
@@ -29,6 +38,21 @@ function isBtnAddStudentPrsd() {
 
 function isModificationSuccess() {
 	return isset($_GET['success']) && strcmp($_GET['success'], 'y1!q' === 0);
+}
+
+/**
+ * http://stackoverflow.com/a/4128377/2790481
+ *
+ * @param $findId
+ * @param $objects
+ * @return bool
+ */
+function get($objects, $findId, $column) {
+	foreach ($objects as $object) {
+		if ($object[$column] === $findId) return $object;
+	}
+
+	return false;
 }
 
 ?>
@@ -214,7 +238,7 @@ function isModificationSuccess() {
 
 						<div class="portlet-content">
 
-							<div id="full-calendar"></div>
+							<div id="workshops-calendar"></div>
 						</div>
 					</div>
 
@@ -242,31 +266,30 @@ function isModificationSuccess() {
 <?php include ROOT_PATH . "app/views/assets/footer_common.php"; ?>
 
 <!-- dashboard assets -->
-<script src="<?php echo BASE_URL; ?>assets/js/plugins/icheck/jquery.icheck.min.js"></script>
-<script src="<?php echo BASE_URL; ?>assets/js/plugins/tableCheckable/jquery.tableCheckable.js"></script>
+<!--<script src="--><?php //echo BASE_URL; ?><!--assets/js/plugins/icheck/jquery.icheck.min.js"></script>-->
+<!--<script src="--><?php //echo BASE_URL; ?><!--assets/js/plugins/tableCheckable/jquery.tableCheckable.js"></script>-->
 
-<script src="<?php echo BASE_URL; ?>assets/js/libs/raphael-2.1.2.min.js"></script>
-<script src="<?php echo BASE_URL; ?>assets/js/plugins/morris/morris.min.js"></script>
+<!--<script src="--><?php //echo BASE_URL; ?><!--assets/js/libs/raphael-2.1.2.min.js"></script>-->
+<!--<script src="--><?php //echo BASE_URL; ?><!--assets/js/plugins/morris/morris.min.js"></script>-->
 
-<script src="<?php echo BASE_URL; ?>assets/js/demos/charts/morris/area.js"></script>
-<script src="<?php echo BASE_URL; ?>assets/js/demos/charts/morris/donut.js"></script>
+<!--<script src="--><?php //echo BASE_URL; ?><!--assets/js/demos/charts/morris/area.js"></script>-->
+<!--<script src="--><?php //echo BASE_URL; ?><!--assets/js/demos/charts/morris/donut.js"></script>-->
 
-<script src="<?php echo BASE_URL; ?>assets/js/plugins/sparkline/jquery.sparkline.min.js"></script>
+<!--<script src="--><?php //echo BASE_URL; ?><!--assets/js/plugins/sparkline/jquery.sparkline.min.js"></script>-->
 
-<script src="<?php echo BASE_URL; ?>assets/js/plugins/fullcalendar/fullcalendar.min.js"></script>
 
-<script src="<?php echo BASE_URL; ?>assets/js/plugins/simplecolorpicker/jquery.simplecolorpicker.js"></script>
+<!--<script src="--><?php //echo BASE_URL; ?><!--assets/js/plugins/simplecolorpicker/jquery.simplecolorpicker.js"></script>-->
 
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/autosize/jquery.autosize.min.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/textarea-counter/jquery.textarea-counter.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/select2/select2.js"></script>
 
-<script src="<?php echo BASE_URL; ?>assets/js/demos/calendar.js"></script>
-<script src="<?php echo BASE_URL; ?>assets/js/demos/dashboard.js"></script>
 
 <script
 	src="<?php echo BASE_URL; ?>assets/js/plugins/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js">
 </script>
+<script src="<?php echo BASE_URL; ?>assets/js/plugins/fullcalendar/fullcalendar.min.js"></script>
+
 
 <script type="text/javascript">
 	$(function () {
@@ -274,13 +297,73 @@ function isModificationSuccess() {
 		// http://eonasdan.github.io/bootstrap-datetimepicker
 		moment().format();
 
-
 		$("#courseId").select2();
 		$("#termId").select2();
 		$("#instructorId").select2();
 		$("#studentsIds").select2();
 		$("#tutorId").select2();
+		$("#workshops-calendar").fullCalendar({
+			header: {
+				left: 'prev,next',
+				center: 'title',
+				right: 'agendaWeek,month,agendaDay'
+			},
+			weekends: false, // will hide Saturdays and Sundays
+			defaultView: "agendaWeek",
+			editable: false,
+			droppable: false,
+			events: [
+				<?php	if(sizeof($appointments) <= 1): ?>
+				<?php foreach($appointments as $appointment): ?>
+				<?php
+				$course = get($courses,  $appointment[AppointmentFetcher::DB_COLUMN_COURSE_ID], CourseFetcher::DB_COLUMN_ID);
+				$courseName = $course[CourseFetcher::DB_COLUMN_NAME];
+				$dateStart = new DateTime($appointment[AppointmentFetcher::DB_COLUMN_START_TIME]);
+				$dateEnd = new DateTime($appointment[AppointmentFetcher::DB_COLUMN_END_TIME]);
+				?>
+				{
+					title: '<?php echo htmlentities($courseName); ?>',
+					start: '<?php echo $dateStart->format('Y-m-d H:i:s'); ?>',
+					end: '<?php echo $dateEnd->format('Y-m-d H:i:s'); ?>',
+					allDay: false,
+					className: 'fc-yellow'
+				}
+				<?php endforeach; ?>
+				<?php else: ?>
+				<?php for($i = 0; $i < (sizeof($appointments) - 1); $i++): ?>
+				<?php
+				$course = get($courses,  $appointments[$i][AppointmentFetcher::DB_COLUMN_COURSE_ID], CourseFetcher::DB_COLUMN_ID);
+				$courseName = $course[CourseFetcher::DB_COLUMN_NAME];
+				$dateStart = new DateTime($appointments[$i][AppointmentFetcher::DB_COLUMN_START_TIME]);
+				$dateEnd = new DateTime($appointments[$i][AppointmentFetcher::DB_COLUMN_END_TIME]);
+				?>
+				{
+					title: '<?php echo htmlentities($courseName); ?>',
+					start: '<?php echo $dateStart->format('Y-m-d H:i:s'); ?>',
+					end: '<?php echo $dateEnd->format('Y-m-d H:i:s'); ?>',
+					allDay: false,
+					className: 'fc-yellow'
+				},
+				<?php endfor; ?>
+				<?php
+					$lastAppointmentIndex = sizeof($appointments)-1;
 
+					$course = get($courses,  $appointments[$lastAppointmentIndex][AppointmentFetcher::DB_COLUMN_COURSE_ID], CourseFetcher::DB_COLUMN_ID);
+					$courseName = $course[CourseFetcher::DB_COLUMN_NAME];
+					$dateStart = new DateTime($appointments[$lastAppointmentIndex][AppointmentFetcher::DB_COLUMN_START_TIME]);
+					$dateEnd = new DateTime($appointments[$lastAppointmentIndex][AppointmentFetcher::DB_COLUMN_END_TIME]);
+					?>
+				{
+					title: '<?php echo htmlentities($courseName); ?>',
+					start: '<?php echo $dateStart->format('Y-m-d H:i:s'); ?>',
+					end: '<?php echo $dateEnd->format('Y-m-d H:i:s'); ?>',
+					allDay: false,
+					className: 'fc-yellow'
+				}
+				<?php endif; ?>
+			],
+			timeFormat: 'H(:mm)' // uppercase H for 24-hour clock
+		});
 
 		$('#dateTimePickerStart').datetimepicker({
 			defaultDate: moment(),
@@ -311,5 +394,6 @@ function isModificationSuccess() {
 		});
 
 
-	});
+	})
+	;
 </script>

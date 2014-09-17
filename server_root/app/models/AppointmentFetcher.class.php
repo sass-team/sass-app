@@ -61,4 +61,22 @@ class AppointmentFetcher
 
 	}
 
+	public static function retrieveAll($db) {
+		$query =
+			"SELECT `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_START_TIME . "` , `" . self::DB_COLUMN_END_TIME . "`,
+			 `" . self::DB_COLUMN_COURSE_ID . "`,  `" . self::DB_COLUMN_TUTOR_USER_ID . "`,  `" .
+			self::DB_COLUMN_TUTOR_USER_ID . "`
+			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "` order by `" . self::DB_TABLE . "`.`" .
+			self::DB_COLUMN_START_TIME . "` DESC";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->execute();
+
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			throw new Exception("Could not retrieve terms data from database.");
+		}
+	}
+
 } 

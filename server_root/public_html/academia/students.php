@@ -2,6 +2,13 @@
 require __DIR__ . '/../../app/init.php';
 $general->loggedOutProtect();
 
+// redirect if user elevation is not that of secretary or admin
+if ($user->isTutor()) {
+	header('Location: ' . BASE_URL . "error-403");
+	exit();
+}
+
+
 $page_title = "Manage Students";
 $section = "academia";
 
@@ -61,10 +68,9 @@ try {
  *
  * @param $needle
  * @param $students
- * @param bool $strict
  * @return bool
  */
-function getStudent($needle, $students, $strict = false) {
+function getStudent($needle, $students) {
 	foreach ($students as $student) {
 		if ($student[StudentFetcher::DB_COLUMN_ID] === $needle) return $student;
 	}
