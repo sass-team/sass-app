@@ -10,3 +10,4 @@
 <option
 	value="<?php echo $student[StudentFetcher::DB_COLUMN_ID]; ?>">
 	<?php echo $student[StudentFetcher::DB_COLUMN_FIRST_NAME] . " " . $student[StudentFetcher::DB_COLUMN_LAST_NAME]; ?></option>
+	<?php echo $student[StudentFetcher::DB_COLUMN_FIRST_NAME] . " " . $student[StudentFetcher::DB_COLUMN_LAST_NAME] . " - " . $student[StudentFetcher::DB_COLUMN_STUDENT_ID]; ?></option>
