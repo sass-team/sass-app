@@ -189,6 +189,15 @@ function get($objects, $findId, $column) {
 									</div>
 
 									<div class="form-group">
+										<div class="alert alert-warning">
+											<a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
+											<strong>Warning!</strong><i> Make sure to specify instructors order insertion same as
+												of that students order insertion.</i>
+										</div>
+									</div>
+
+
+									<div class="form-group">
 										<div class="input-group">
 											<span class="input-group-addon"><label for="instructorId">Instructor</label></span>
 											<select id="instructorId" name="instructorId[]" class="form-control" multiple required>
