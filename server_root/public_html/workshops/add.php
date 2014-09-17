@@ -113,7 +113,7 @@ function get($objects, $findId, $column) {
 				<div class="row">
 
 
-					<div class="col-md-4">
+					<div class="col-md-5">
 						<div class="portlet-header">
 
 							<h3>
@@ -234,7 +234,7 @@ function get($objects, $findId, $column) {
 					</div>
 
 
-					<div class="col-md-8">
+					<div class="col-md-7">
 						<div class="portlet-header">
 
 							<h3>
