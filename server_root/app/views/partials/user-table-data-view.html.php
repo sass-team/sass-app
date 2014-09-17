@@ -19,11 +19,12 @@ $mobile = $curUser['mobile'];
 $id = $curUser['id'];
 ?>
 <tr>
-	<td><?php echo $first_name . " " . $last_name; ?></td>
-	<td><?php echo $email; ?></td>
-	<td><?php echo $position ?></td>
-	<td><?php echo $mobile ?></td>
-	<td>
+	<td class="text-center"><?php echo $first_name . " " . $last_name; ?></td>
+	<td class="text-center"><?php echo $email; ?></td>
+	<td class="text-center"><?php echo $position ?></td>
+	<td class="text-center"><?php echo $mobile ?></td>
+
+	<td class="text-center">
 		<a data-toggle="modal" href="<?php echo BASE_URL . "users/" . $id; ?>"
 		   class="btn btn-default btn-sm center-block">
 			<i class="fa fa-user"></i> View
@@ -31,7 +32,16 @@ $id = $curUser['id'];
 	</td>
 
 	<?php if (!$user->isTutor()): ?>
-		<td>
+		<td class="text-center">
+			<a class="btn btn-default btn-sm center-block ui-popover" data-toggle="tooltip" data-placement="right" data-trigger="hover" 
+					data-content="Sed posuere consectetur est at lobortis. Aenean eu leo quam." title="Teaching Courses">
+			        <i class="fa fa-book"></i> Courses
+			</a>
+		</td>
+	<?php endif; ?>
+
+	<?php if (!$user->isTutor()): ?>
+		<td class="text-center">
 			<a data-toggle="modal" href="#" class="btn btn-default btn-sm center-block">
 				<i class="fa fa-calendar"></i> View
 			</a>
@@ -39,7 +49,7 @@ $id = $curUser['id'];
 	<?php endif; ?>
 
 	<?php if ($user->isAdmin()): ?>
-		<td>
+		<td class="text-center">
 			<a data-toggle="modal" href="<?php echo BASE_URL . "users/edit/:" . $id; ?>"
 			   class="btn btn-default btn-sm center-block edit-user">
 				<i class="fa fa-edit"></i> Edit

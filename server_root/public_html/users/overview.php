@@ -121,19 +121,23 @@ function isModifyBttnPressed() {
 									>
 									<thead>
 									<tr>
-										<th data-filterable="true" data-sortable="true" data-direction="desc">Name</th>
-										<th data-direction="asc" data-filterable="true" data-sortable="false">Email</th>
-										<th data-filterable="true" data-sortable="true">Position</th>
-										<th data-filterable="true" data-sortable="false">Mobile</th>
-										<th data-filterable="false" class="hidden-xs hidden-sm">Profile</th>
+										<th class="text-center" data-filterable="true" data-sortable="true" data-direction="desc">Name</th>
+										<th class="text-center" data-direction="asc" data-filterable="true" data-sortable="false">Email</th>
+										<th class="text-center" data-filterable="true" data-sortable="true">Position</th>
+										<th class="text-center" data-filterable="true" data-sortable="false">Mobile</th>
+										<th class="text-center" data-filterable="false" class="hidden-xs hidden-sm">Profile</th>
 
 										<?php if (!$user->isTutor()): ?>
-											<th data-filterable="false" class="hidden-xs hidden-sm">Schedule</th>
+											<th class="text-center" data-filterable="false" class="hidden-xs hidden-sm">Teaching</th>
+										<?php endif; ?>
+
+										<?php if (!$user->isTutor()): ?>
+											<th class="text-center" data-filterable="false" class="hidden-xs hidden-sm">Schedule</th>
 										<?php endif; ?>
 
 
 										<?php if ($user->isAdmin()): ?>
-											<th data-filterable="false" class="hidden-xs hidden-sm">Data</th>
+											<th class="text-center" data-filterable="false" class="hidden-xs hidden-sm">Data</th>
 										<?php endif; ?>
 									</tr>
 									</thead>

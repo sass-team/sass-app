@@ -24,19 +24,19 @@ $majorId = $student[StudentFetcher::DB_COLUMN_MAJOR_ID];
 
 ?>
 <tr>
-	<td><span><?php echo $first_name; ?></span>&#32;<span><?php echo $last_name; ?></span></td>
-	<td><?php echo $studentId; ?></td>
-	<td><?php echo $email; ?></td>
-	<td><?php echo $mobile; ?></td>
-	<td><?php echo $majorCode . " " . $majorName; ?>
+	<td class="text-center"><span><?php echo $first_name; ?></span>&#32;<span><?php echo $last_name; ?></span></td>
+	<td class="text-center"><?php echo $studentId; ?></td>
+	<td class="text-center"><?php echo $email; ?></td>
+	<td class="text-center"><?php echo $mobile; ?></td>
+	<td class="text-center"><?php echo $majorCode . " " . $majorName; ?>
 		<input type="hidden" value="<?php echo $majorId; ?>" id="majorId"/>
 
 	</td>
-	<td><?php echo $ci; ?></td>
-	<td><?php echo $credits; ?></td>
+	<td class="text-center"><?php echo $ci; ?></td>
+	<td class="text-center"><?php echo $credits; ?></td>
 
 	<?php if (!$user->isTutor()): ?>
-		<td>
+		<td class="text-center">
 			<a data-toggle="modal" href="#" class="btn btn-default btn-sm center-block">
 				<i class="fa fa-calendar"></i> View
 			</a>
