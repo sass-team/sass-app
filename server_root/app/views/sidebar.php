@@ -47,12 +47,15 @@
 							Overview
 						</a>
 					</li>
-					<li>
-						<a href="<?php echo BASE_URL; ?>workshops/add">
-							<i class="fa fa-plus-square"></i>
-							Add
-						</a>
-					</li>
+
+					<?php if (!$user->isTutor()): ?>
+						<li>
+							<a href="<?php echo BASE_URL; ?>workshops/add">
+								<i class="fa fa-plus-square"></i>
+								Add
+							</a>
+						</li>
+					<?php endif; ?>
 				</ul>
 			</li>
 

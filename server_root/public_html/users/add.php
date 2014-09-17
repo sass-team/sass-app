@@ -12,7 +12,7 @@ if (!$user->isAdmin()) {
 try {
 	$courses = CourseFetcher::retrieveAll($db);
 	$majors = MajorFetcher::retrieveMajors($db);
-
+	$terms = TermFetcher::retrieveAll($db);
 
 	//$majors = array_unique(array_column($courses, 'Major'));
 	//$majors_extensions = array_unique(array_column($courses, 'Extension'));
@@ -32,8 +32,10 @@ if (isSaveBttnPressed()) {
 	$user_type = trim($_POST['user_type']);
 	$userMajorId = (isset($_POST['userMajor']) ? trim($_POST['userMajor']) : "");
 	$teachingCoursesIds = isset($_POST['teachingCoursesMulti']) ? $_POST['teachingCoursesMulti'] : NULL;
+	$termIds = $_POST['termIds'];
+
 	try {
-		$newUserId = Admin::createUser($db, $first_name, $last_name, $email, $user_type, $userMajorId, $teachingCoursesIds);
+		$newUserId = Admin::createUser($db, $first_name, $last_name, $email, $user_type, $userMajorId, $teachingCoursesIds, $termIds);
 		$newUser = User::getSingle($db, $newUserId);
 		Mailer::sendNewAccount($db, $newUserId, $user->getEmail(), $user->getFirstName() . " " . $user->getLastName(),
 			$newUser[UserFetcher::DB_COLUMN_EMAIL], $newUser[UserFetcher::DB_COLUMN_FIRST_NAME] . " " .
@@ -260,6 +262,22 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 										<h5>
 											<i class="fa fa-tasks"></i>
+											<label for="termIds">Term</label>
+										</h5>
+										<select id="termIds" name="termIds" class="form-control" required>
+											<?php foreach ($terms as $term) {
+												include(ROOT_PATH . "app/views/partials/term/select-options-view.html.php");
+											}
+											?>
+										</select>
+									</div>
+
+
+
+									<div class="form-group">
+
+										<h5>
+											<i class="fa fa-tasks"></i>
 											<label for="teachingCoursesMulti">Tutor's Courses</label>
 										</h5>
 
@@ -337,6 +355,8 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 		$("#userMajor").select2();
 		$("#teachingCoursesMulti").select2();
+		$("#termIds").select2();
+
 
 
 		// TODO: add error messages
