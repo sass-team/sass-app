@@ -388,10 +388,12 @@ require ROOT_PATH . 'app/views/sidebar.php';
 		$('input[name=user_type').on('ifChecked', function (event) {
 			if ($(this).val() === "tutor") {
 				$("#userMajor").select2("enable", true);
-				$("#teachingCourse").select2("enable", true);
+				$("#teachingCoursesMulti").select2("enable", true);
+				$("#termIds").select2("enable", true);
 			} else {
 				$("#userMajor").select2("enable", false);
-				$("#teachingCourse").select2("enable", false);
+				$("#teachingCoursesMulti").select2("enable", false);
+				$("#termIds").select2("enable", false);
 			}
 		});
 
