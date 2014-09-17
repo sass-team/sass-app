@@ -23,6 +23,7 @@ class Appointment
 		Tutor::validateId($db, $tutorId);
 		Term::validateId($db, $termId);
 
-		AppointmentFetcher::insert($db, $dateStart, $dateEnd, $courseId, $studentsIds, $tutorId, $instructorsIds, $termId);
+		$appointmentId = AppointmentFetcher::insert($db, $dateStart, $dateEnd, $courseId, $studentsIds, $tutorId, $instructorsIds, $termId);
+		Mailer::sendTutorNewAppointment($db, $appointmentId);
 	}
 }

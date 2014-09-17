@@ -56,10 +56,29 @@ class AppointmentFetcher
 			return $appointmentId;
 		} catch (Exception $e) {
 			$db->getConnection()->rollback();
-			throw new Exception("Could not insert user into database." . $e->getMessage());
+			throw new Exception("Could not insert data into database.");
 		}
 
 	}
+
+	public static function retrieveSingle($db, $id) {
+		$query = "SELECT `" . self::DB_COLUMN_START_TIME . "`, `" . self::DB_COLUMN_END_TIME . "`, `" .
+			self::DB_COLUMN_COURSE_ID . "`, `" . self::DB_COLUMN_TUTOR_USER_ID . "`,  `" . self::DB_COLUMN_TUTOR_USER_ID .
+			"`,  `" . self::DB_COLUMN_ID . "`
+			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+			WHERE `" . self::DB_COLUMN_ID . "`=:id";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':id', $id, PDO::PARAM_INT);
+
+			$query->execute();
+			return $query->fetch(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			throw new Exception("Something terrible happened . Could not retrieve data from database .: ");
+		} // end catch
+	}
+
 
 	public static function retrieveAll($db) {
 		$query =
@@ -75,7 +94,7 @@ class AppointmentFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
-			throw new Exception("Could not retrieve terms data from database.");
+			throw new Exception("Could not retrieve data from database.");
 		}
 	}
 
