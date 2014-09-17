@@ -282,12 +282,12 @@ class StudentFetcher extends Person
 	}
 
 
-	public static function existsStudentId($db, $newMobileNum) {
+	public static function existsStudentId($db, $studentId) {
 		try {
 			$sql = "SELECT COUNT(" . self::DB_COLUMN_STUDENT_ID . ") FROM `" . DB_NAME . "`.`" .
-				self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_STUDENT_ID . "` = :mobileNum";
+				self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_STUDENT_ID . "` = :studentId";
 			$query = $db->getConnection()->prepare($sql);
-			$query->bindParam(':mobileNum', $newMobileNum, PDO::PARAM_INT);
+			$query->bindParam(':studentId', $studentId, PDO::PARAM_INT);
 			$query->execute();
 
 			if ($query->fetchColumn() === '0') return false;

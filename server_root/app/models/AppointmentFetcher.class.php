@@ -61,10 +61,47 @@ class AppointmentFetcher
 
 	}
 
+	public static function existsId($db, $id) {
+		try {
+			$sql = "SELECT COUNT(" . self::DB_COLUMN_ID . ") FROM `" . DB_NAME . "`.`" .
+				self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :id";
+			$query = $db->getConnection()->prepare($sql);
+			$query->bindParam(':id', $id, PDO::PARAM_INT);
+			$query->execute();
+
+			if ($query->fetchColumn() === '0') return false;
+		} catch (Exception $e) {
+			throw new Exception("Could not check data already exists on database.");
+		}
+
+		return true;
+	}
+
+
+	public static function belongsToTutor($db, $id, $tutorId) {
+		try {
+			$sql = "SELECT COUNT(" . self::DB_COLUMN_ID . ")
+			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+				WHERE `" . self::DB_COLUMN_ID . "` = :id
+				AND `" . self::DB_COLUMN_TUTOR_USER_ID . "` = :tutor_id";
+			$query = $db->getConnection()->prepare($sql);
+			$query->bindParam(':id', $id, PDO::PARAM_INT);
+			$query->bindParam(':tutor_id', $tutorId, PDO::PARAM_INT);
+			$query->execute();
+
+			if ($query->fetchColumn() === '0') return false;
+		} catch (Exception $e) {
+			throw new Exception("Could not check data already exists on database.");
+		}
+
+		return true;
+	}
+
+
 	public static function retrieveSingle($db, $id) {
 		$query = "SELECT `" . self::DB_COLUMN_START_TIME . "`, `" . self::DB_COLUMN_END_TIME . "`, `" .
 			self::DB_COLUMN_COURSE_ID . "`, `" . self::DB_COLUMN_TUTOR_USER_ID . "`,  `" . self::DB_COLUMN_TUTOR_USER_ID .
-			"`,  `" . self::DB_COLUMN_ID . "`
+			"`,  `" . self::DB_COLUMN_ID . "`,  `" . self::DB_COLUMN_TERM_ID . "`
 			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
 			WHERE `" . self::DB_COLUMN_ID . "`=:id";
 

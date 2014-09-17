@@ -54,6 +54,24 @@ class TermFetcher
 		}
 	}
 
+
+	public static function retrieveSingle($db, $id) {
+		$query = "SELECT  `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_NAME . "` , `" . self::DB_COLUMN_START_DATE
+			. "`,		 `" . self::DB_COLUMN_END_DATE . "`
+			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+			WHERE `" . self::DB_COLUMN_ID . "`=:id";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':id', $id, PDO::PARAM_INT);
+
+			$query->execute();
+			return $query->fetch(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			throw new Exception("Could not retrieve data from database .: ");
+		} // end catch
+	}
+
 	public static function updateName($db, $id, $newName) {
 		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
 					SET	`" . self::DB_COLUMN_NAME . "`= :newName
@@ -89,7 +107,7 @@ class TermFetcher
 	}
 
 
-	public static function updateSingleColumn($db, $id, $column, $value, $valueType){
+	public static function updateSingleColumn($db, $id, $column, $value, $valueType) {
 		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
 					SET	`" . $column . "`= :column
 					WHERE `id`= :id";
