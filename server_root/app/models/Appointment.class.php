@@ -9,14 +9,20 @@
 class Appointment
 {
 
-	public static function add($db, $dateStart, $dateEnd, $courseId, $studentsIds, $instructorsId,
-	                           $termId) {
-		Dates::validateSingleAsString($dateStart);
-		Dates::validateSingleAsString($dateEnd);
+	public static function add($db, $dateStart, $dateEnd, $courseId, $studentsIds, $tutorId, $instructorsIds, $termId) {
+		$dateStart = Dates::initDateTime($dateStart);
+		$dateEnd = Dates::initDateTime($dateEnd);
 		Course::validateId($db, $courseId);
+
+		if (sizeof($studentsIds) != sizeof($instructorsIds)) {
+			throw new Exception("An instructor is required for each student.");
+		}
+
 		Student::validateIds($db, $studentsIds);
-		Instructor::validateId($db, $instructorsId);
+		Instructor::validateIds($db, $instructorsIds);
+		Tutor::validateId($db, $tutorId);
 		Term::validateId($db, $termId);
 
+		AppointmentFetcher::insert($db, $dateStart, $dateEnd, $courseId, $studentsIds, $tutorId, $instructorsIds, $termId);
 	}
-} 
+}

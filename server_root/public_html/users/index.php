@@ -50,7 +50,7 @@ try {
 	}
 
 	if (strcmp($data['type'], 'tutor') === 0) {
-		$tutor = TutorFetcher::retrieve($db, $userId);
+		$tutor = TutorFetcher::retrieveSingle($db, $userId);
 		$curUser = new Tutor($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active'], $tutor[TutorFetcher::DB_COLUMN_MAJOR_ID]);
 	} else if (strcmp($data['type'], 'secretary') === 0) {
 		$curUser = new Secretary($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active']);

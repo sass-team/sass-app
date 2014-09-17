@@ -25,6 +25,9 @@ require_once ROOT_PATH . "app/models/Tutor_has_course_has_schedule.class.php";
 require_once ROOT_PATH . "app/models/Tutor_has_course_has_scheduleFetcher.class.php";
 require_once ROOT_PATH . "app/models/TermFetcher.class.php";
 require_once ROOT_PATH . "app/models/Term.class.php";
+require_once ROOT_PATH . "app/models/Appointment.class.php";
+require_once ROOT_PATH . "app/models/AppointmentFetcher.class.php";
+require_once ROOT_PATH . "app/models/Appointment_has_student_has_report_has_instructor.class.php";
 
 require_once ROOT_PATH . "app/models/Secretary.class.php";
 
@@ -39,6 +42,8 @@ require_once ROOT_PATH . "app/models/Course.class.php";
 
 require_once ROOT_PATH . "app/models/StudentFetcher.class.php";
 require_once ROOT_PATH . "app/models/Student.class.php";
+
+require_once ROOT_PATH . "app/models/Dates.class.php";
 
 require_once ROOT_PATH . "app/models/Mailer.class.php";
 

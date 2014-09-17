@@ -191,7 +191,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 								<?php
 								foreach ($courses as $course) {
-									include(ROOT_PATH . "app/views/partials/course-table-data-view.html.php");
+									include(ROOT_PATH . "app/views/partials/course/table-data-view.html.php");
 								} ?>
 								</tbody>
 							</table>

@@ -195,7 +195,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 								<?php
 								foreach (array_reverse($instructors) as $instructor) {
-									include(ROOT_PATH . "app/views/partials/instructor-table-data-view.html.php");
+									include(ROOT_PATH . "app/views/partials/instructor/table-data-view.html.php");
 								} ?>
 								</tbody>
 							</table>

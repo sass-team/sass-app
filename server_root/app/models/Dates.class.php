@@ -8,9 +8,13 @@
  */
 class Dates
 {
-	public static function validateSingleAsString($dateString) {
+	const DATE_FORMAT_IN = "Y-m-d H:i:s";
+	const DATE_FORMAT_OUT = "m/d/Y g:i A";
+
+	public static function initDateTime($dateString) {
 		try {
-			$endDate = new DateTime($dateString);
+			$dateString = new DateTime($dateString);
+			return $dateString;
 		} catch (Exception $e) {
 			throw new Exception("Date have been malformed.");
 		}

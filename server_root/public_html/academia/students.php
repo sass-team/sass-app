@@ -2,6 +2,13 @@
 require __DIR__ . '/../../app/init.php';
 $general->loggedOutProtect();
 
+// redirect if user elevation is not that of secretary or admin
+if ($user->isTutor()) {
+	header('Location: ' . BASE_URL . "error-403");
+	exit();
+}
+
+
 $page_title = "Manage Students";
 $section = "academia";
 
@@ -61,10 +68,9 @@ try {
  *
  * @param $needle
  * @param $students
- * @param bool $strict
  * @return bool
  */
-function getStudent($needle, $students, $strict = false) {
+function getStudent($needle, $students) {
 	foreach ($students as $student) {
 		if ($student[StudentFetcher::DB_COLUMN_ID] === $needle) return $student;
 	}
@@ -209,7 +215,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 							<?php
 							foreach (array_reverse($students) as $student) {
-								include(ROOT_PATH . "app/views/partials/student-table-data-view.html.php");
+								include(ROOT_PATH . "app/views/partials/student/table-data-view.html.php");
 							} ?>
 							</tbody>
 						</table>
@@ -333,7 +339,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 										</h5>
 										<select id="userMajorId" name="userMajorId" class="form-control">
 											<?php foreach ($majors as $major) {
-												include(ROOT_PATH . "app/views/partials/major-select-options-view.html.php");
+												include(ROOT_PATH . "app/views/partials/major/select-options-view.html.php");
 											}
 											?>
 										</select>
@@ -563,7 +569,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 										</h5>
 										<select id="newStudentMajorId" name="newStudentMajorId" class="form-control">
 											<?php foreach ($majors as $major) {
-												include(ROOT_PATH . "app/views/partials/major-select-options-view.html.php");
+												include(ROOT_PATH . "app/views/partials/major/select-options-view.html.php");
 											}
 											?>
 										</select>
