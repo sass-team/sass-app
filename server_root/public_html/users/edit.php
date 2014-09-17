@@ -316,8 +316,8 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 							<?php
 							if (empty($errors) === true) {
-								foreach ($teachingCourses as $course) {
-									include(ROOT_PATH . "app/views/partials/tutors-course-table-data-view.html.php");
+								foreach ($teachingCourses as $teachingCourse) {
+									include(ROOT_PATH . "app/views/partials/tutor/table-data-view.html.php");
 
 								}
 							} ?>
@@ -427,7 +427,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 					<select id="majorId" name="majorId" class="form-control">
 						<?php foreach ($majors as $major) {
-							include(ROOT_PATH . "app/views/partials/major-select-options-view.html.php");
+							include(ROOT_PATH . "app/views/partials/major/select-options-view.html.php");
 						}
 						?>
 					</select>
@@ -607,8 +607,8 @@ require ROOT_PATH . 'app/views/sidebar.php';
 										        multiple>
 
 											<?php
-											foreach ($notTeachingCourses as $course) {
-												include(ROOT_PATH . "app/views/partials/course-select-options-view.html.php");
+											foreach ($notTeachingCourses as $teachingCourse) {
+												include(ROOT_PATH . "app/views/partials/course/select-options-view.html.php");
 											}
 											?>
 
@@ -626,7 +626,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 											<?php
 											foreach ($terms as $term) {
-												include(ROOT_PATH . "app/views/partials/term-select-options-view.html.php");
+												include(ROOT_PATH . "app/views/partials/term/select-options-view.html.php");
 											}
 											?>
 
@@ -728,8 +728,8 @@ require ROOT_PATH . 'app/views/sidebar.php';
 								        class="form-control">
 
 
-									<?php foreach ($notTeachingCourses as $course) {
-										include(ROOT_PATH . "app/views/partials/course-select-options-view.html.php");
+									<?php foreach ($notTeachingCourses as $teachingCourse) {
+										include(ROOT_PATH . "app/views/partials/course/select-options-view.html.php");
 									}
 									?>
 

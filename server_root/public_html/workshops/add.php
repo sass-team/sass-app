@@ -154,7 +154,7 @@ function get($objects, $findId, $column) {
 											<span class="input-group-addon"><label for="courseId">Course</label></span>
 											<select id="courseId" name="courseId" class="form-control" required>
 												<?php foreach ($courses as $course) {
-													include(ROOT_PATH . "app/views/partials/course-select-options-view.html.php");
+													include(ROOT_PATH . "app/views/partials/course/select-options-view.html.php");
 												}
 												?>
 											</select>
@@ -166,7 +166,7 @@ function get($objects, $findId, $column) {
 											<span class="input-group-addon"><label for="tutorId">Tutors</label></span>
 											<select id="tutorId" name="tutorId" class="form-control" required>
 												<?php foreach ($tutors as $tutor) {
-													include(ROOT_PATH . "app/views/partials/tutor-select-options-view.html.php");
+													include(ROOT_PATH . "app/views/partials/tutor/select-options-view.html.php");
 												}
 												?>
 											</select>
@@ -180,7 +180,7 @@ function get($objects, $findId, $column) {
 
 												<?php
 												foreach ($students as $student):
-													include(ROOT_PATH . "app/views/partials/students-select-options-view.html.php");
+													include(ROOT_PATH . "app/views/partials/student/select-options-view.html.php");
 												endforeach;
 												?>
 
@@ -193,7 +193,7 @@ function get($objects, $findId, $column) {
 											<span class="input-group-addon"><label for="instructorId">Instructor</label></span>
 											<select id="instructorId" name="instructorId[]" class="form-control" multiple required>
 												<?php foreach ($instructors as $instructor) {
-													include(ROOT_PATH . "app/views/partials/instructor-select-options-view.html.php");
+													include(ROOT_PATH . "app/views/partials/instructor/select-options-view.html.php");
 												}
 												?>
 											</select>
@@ -206,7 +206,7 @@ function get($objects, $findId, $column) {
 											<span class="input-group-addon"><label for="termId">Term</label></span>
 											<select id="termId" name="termId" class="form-control" required>
 												<?php foreach ($terms as $term) {
-													include(ROOT_PATH . "app/views/partials/term-select-options-view.html.php");
+													include(ROOT_PATH . "app/views/partials/term/select-options-view.html.php");
 												}
 												?>
 											</select>
@@ -313,54 +313,20 @@ function get($objects, $findId, $column) {
 			editable: false,
 			droppable: false,
 			events: [
-				<?php	if(sizeof($appointments) <= 1): ?>
-				<?php foreach($appointments as $appointment): ?>
-				<?php
-				$course = get($courses,  $appointment[AppointmentFetcher::DB_COLUMN_COURSE_ID], CourseFetcher::DB_COLUMN_ID);
-				$courseName = $course[CourseFetcher::DB_COLUMN_NAME];
-				$dateStart = new DateTime($appointment[AppointmentFetcher::DB_COLUMN_START_TIME]);
-				$dateEnd = new DateTime($appointment[AppointmentFetcher::DB_COLUMN_END_TIME]);
-				?>
-				{
-					title: '<?php echo htmlentities($courseName); ?>',
-					start: '<?php echo $dateStart->format('Y-m-d H:i:s'); ?>',
-					end: '<?php echo $dateEnd->format('Y-m-d H:i:s'); ?>',
-					allDay: false,
-					className: 'fc-yellow'
-				}
-				<?php endforeach; ?>
-				<?php else: ?>
-				<?php for($i = 0; $i < (sizeof($appointments) - 1); $i++): ?>
-				<?php
-				$course = get($courses,  $appointments[$i][AppointmentFetcher::DB_COLUMN_COURSE_ID], CourseFetcher::DB_COLUMN_ID);
-				$courseName = $course[CourseFetcher::DB_COLUMN_NAME];
-				$dateStart = new DateTime($appointments[$i][AppointmentFetcher::DB_COLUMN_START_TIME]);
-				$dateEnd = new DateTime($appointments[$i][AppointmentFetcher::DB_COLUMN_END_TIME]);
-				?>
-				{
-					title: '<?php echo htmlentities($courseName); ?>',
-					start: '<?php echo $dateStart->format('Y-m-d H:i:s'); ?>',
-					end: '<?php echo $dateEnd->format('Y-m-d H:i:s'); ?>',
-					allDay: false,
-					className: 'fc-yellow'
-				},
-				<?php endfor; ?>
-				<?php
+				<?php	if(sizeof($appointments) <= 1){
+					foreach($appointments as $appointment){
+						include(ROOT_PATH . "app/views/partials/workshops/fullcalendar-single.php");
+					}
+				 }else{
+				   for($i = 0; $i < (sizeof($appointments) - 1); $i++){
+				      include(ROOT_PATH . "app/views/partials/workshops/fullcalendar-multi.php");
+					}
 					$lastAppointmentIndex = sizeof($appointments)-1;
+					$id = $lastAppointmentIndex;
+					include(ROOT_PATH . "app/views/partials/workshops/fullcalendar-multi.php");
 
-					$course = get($courses,  $appointments[$lastAppointmentIndex][AppointmentFetcher::DB_COLUMN_COURSE_ID], CourseFetcher::DB_COLUMN_ID);
-					$courseName = $course[CourseFetcher::DB_COLUMN_NAME];
-					$dateStart = new DateTime($appointments[$lastAppointmentIndex][AppointmentFetcher::DB_COLUMN_START_TIME]);
-					$dateEnd = new DateTime($appointments[$lastAppointmentIndex][AppointmentFetcher::DB_COLUMN_END_TIME]);
-					?>
-				{
-					title: '<?php echo htmlentities($courseName); ?>',
-					start: '<?php echo $dateStart->format('Y-m-d H:i:s'); ?>',
-					end: '<?php echo $dateEnd->format('Y-m-d H:i:s'); ?>',
-					allDay: false,
-					className: 'fc-yellow'
 				}
-				<?php endif; ?>
+				?>
 			],
 			timeFormat: 'H(:mm)' // uppercase H for 24-hour clock
 		});

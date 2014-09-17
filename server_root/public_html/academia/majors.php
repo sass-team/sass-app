@@ -192,7 +192,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 								<?php
 								foreach ($majors as $major) {
-									include(ROOT_PATH . "app/views/partials/major-table-data-view.html.php");
+									include(ROOT_PATH . "app/views/partials/major/table-data-view.html.php");
 								} ?>
 								</tbody>
 							</table>

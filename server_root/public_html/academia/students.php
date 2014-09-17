@@ -215,7 +215,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 							<?php
 							foreach (array_reverse($students) as $student) {
-								include(ROOT_PATH . "app/views/partials/student-table-data-view.html.php");
+								include(ROOT_PATH . "app/views/partials/student/table-data-view.html.php");
 							} ?>
 							</tbody>
 						</table>
@@ -339,7 +339,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 										</h5>
 										<select id="userMajorId" name="userMajorId" class="form-control">
 											<?php foreach ($majors as $major) {
-												include(ROOT_PATH . "app/views/partials/major-select-options-view.html.php");
+												include(ROOT_PATH . "app/views/partials/major/select-options-view.html.php");
 											}
 											?>
 										</select>
@@ -569,7 +569,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 										</h5>
 										<select id="newStudentMajorId" name="newStudentMajorId" class="form-control">
 											<?php foreach ($majors as $major) {
-												include(ROOT_PATH . "app/views/partials/major-select-options-view.html.php");
+												include(ROOT_PATH . "app/views/partials/major/select-options-view.html.php");
 											}
 											?>
 										</select>
