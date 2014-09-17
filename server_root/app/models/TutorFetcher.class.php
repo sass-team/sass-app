@@ -47,7 +47,7 @@ class TutorFetcher
 	}
 
 
-	public static function retrieve($db, $id) {
+	public static function retrieveSingle($db, $id) {
 		$query = "SELECT `" . self::DB_COLUMN_MAJOR_ID . "`, `" . self::DB_COLUMN_USER_ID . "`
 		FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
 		WHERE `" . self::DB_COLUMN_USER_ID . "`=:id";
@@ -60,6 +60,24 @@ class TutorFetcher
 			return $query->fetch(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
 			throw new Exception("Something terrible happened . Could not retrieve tutor data from database .: ");
+		} // end catch
+	}
+
+	public static function retrieveAll($db) {
+		$query =
+			"SELECT `" . UserFetcher::DB_COLUMN_FIRST_NAME . "`, `" . UserFetcher::DB_COLUMN_LAST_NAME . "`,  `" .
+			self::DB_COLUMN_USER_ID . "`
+				FROM `" . DB_NAME . "`.`" . UserFetcher::DB_TABLE . "`
+				INNER JOIN `" . self::DB_TABLE . "`
+				ON `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_USER_ID . "`=`" . UserFetcher::DB_TABLE . "`.`" .
+			UserFetcher::DB_COLUMN_ID . "`";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->execute();
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			throw new Exception("Something terrible happened . Could not data from database .: ");
 		} // end catch
 	}
 

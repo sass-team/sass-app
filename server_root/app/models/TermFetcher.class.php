@@ -35,8 +35,7 @@ class TermFetcher
 	const DB_COLUMN_NAME = "name";
 	const DB_COLUMN_START_DATE = "start_date";
 	const DB_COLUMN_END_DATE = "end_date";
-	const DATE_FORMAT_IN = "Y-m-d H:i:s";
-	const DATE_FORMAT_OUT = "m/d/Y g:i A";
+
 
 //m-d-Y h:i A
 	public static function retrieveAll($db) {
@@ -110,8 +109,8 @@ class TermFetcher
 	public static function insert($db, $name, $startDate, $endDate) {
 		date_default_timezone_set('Europe/Athens');
 
-		$startDate = $startDate->format(self::DATE_FORMAT_IN);
-		$endDate = $endDate->format(self::DATE_FORMAT_IN);
+		$startDate = $startDate->format(Dates::DATE_FORMAT_IN);
+		$endDate = $endDate->format(Dates::DATE_FORMAT_IN);
 
 		try {
 			$query = "INSERT INTO `" . DB_NAME . "`.`" . self::DB_TABLE . "` (`" . self::DB_COLUMN_NAME .

@@ -82,7 +82,7 @@ class Term
 	public static function updateStartingDate($db, $id, $newStartingDate, $oldStartingDate) {
 		if (strcmp($newStartingDate, $oldStartingDate) === 0) return false;
 
-		Dates::validateSingleAsString($newStartingDate, $oldStartingDate);
+		Dates::initDateTime($newStartingDate, $oldStartingDate);
 		TermFetcher::updateStartingDate($db, $id, $newStartingDate);
 
 		return true;
@@ -93,7 +93,7 @@ class Term
 	public static function updateEndingDate($db, $id, $newEndingDate, $oldEndingDate) {
 		if (strcmp($newEndingDate, $oldEndingDate) === 0) return false;
 
-		Dates::validateSingleAsString($newEndingDate, $oldEndingDate);
+		Dates::initDateTime($newEndingDate, $oldEndingDate);
 		TermFetcher::updateSingleColumn($db, $id, TermFetcher::DB_COLUMN_END_DATE, $newEndingDate, PDO::PARAM_STR);
 		return true;
 	}
