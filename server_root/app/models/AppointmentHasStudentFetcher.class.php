@@ -35,7 +35,8 @@ class AppointmentHasStudentFetcher
 			$queryInsertUser->execute();
 
 		} catch (Exception $e) {
-			throw new Exception("Could not insert user into database.");}
+			throw new Exception("Could not insert user into database.");
+		}
 
 	}
 
@@ -55,19 +56,21 @@ class AppointmentHasStudentFetcher
 		}
 	}
 
-	public static function retrieveJoinReport($db) {
+	public static function retrieveJoinReport($db, $appointmentId) {
 		$query =
 			"SELECT `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_APPOINTMENT_ID . "` , `" . self::DB_COLUMN_STUDENT_ID . "`,
 			 `" . self::DB_COLUMN_REPORT_ID . "`,  `" . self::DB_COLUMN_INSTRUCTOR_ID . "`
-			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`";
+			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+			WHERE `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_APPOINTMENT_ID . "`=:appointemt_id";
 
 		try {
 			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':appointemt_id', $appointmentId, PDO::PARAM_INT);
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
-			throw new Exception("Could not retrieve data from database.");
+			throw new Exception("Could not retrieve data from database." . $e->getMessage());
 		}
 	}
 
