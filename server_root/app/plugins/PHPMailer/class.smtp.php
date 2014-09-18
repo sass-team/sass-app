@@ -53,7 +53,7 @@ class SMTP
     /**
      * The PHPMailer SMTP Version number.
      * @type string
-     * @deprecated Use the constant instead
+     * @deprecated Use the `VERSION` constant instead
      * @see SMTP::VERSION
      */
     public $Version = '5.2.8';
@@ -61,7 +61,7 @@ class SMTP
     /**
      * SMTP server port number.
      * @type integer
-     * @deprecated This is only ever used as a default value, so use the constant instead
+     * @deprecated This is only ever used as a default value, so use the `DEFAULT_SMTP_PORT` constant instead
      * @see SMTP::DEFAULT_SMTP_PORT
      */
     public $SMTP_PORT = 25;
@@ -69,7 +69,7 @@ class SMTP
     /**
      * SMTP reply line ending.
      * @type string
-     * @deprecated Use the constant instead
+     * @deprecated Use the `CRLF` constant instead
      * @see SMTP::CRLF
      */
     public $CRLF = "\r\n";
@@ -90,9 +90,14 @@ class SMTP
      * How to handle debug output.
      * Options:
      * * `echo` Output plain-text as-is, appropriate for CLI
-     * * `html` Output escaped, line breaks converted to <br>, appropriate for browser output
+     * * `html` Output escaped, line breaks converted to `<br>`, appropriate for browser output
      * * `error_log` Output to error log as configured in php.ini
-     * @type string
+     *
+     * Alternatively, you can provide a callable expecting two params: a message string and the debug level:
+     * <code>
+     * $smtp->Debugoutput = function($str, $level) {echo "debug level $level; message: $str";};
+     * </code>
+     * @type string|callable
      */
     public $Debugoutput = 'echo';
 
@@ -146,11 +151,17 @@ class SMTP
 
     /**
      * Output debugging info via a user-selected method.
+     * @see SMTP::$Debugoutput
+     * @see SMTP::$do_debug
      * @param string $str Debug string to output
      * @return void
      */
     protected function edebug($str)
     {
+        if (is_callable($this->Debugoutput)) {
+            call_user_func($this->Debugoutput, $str, $this->do_debug);
+            return;
+        }
         switch ($this->Debugoutput) {
             case 'error_log':
                 //Don't output, just log
@@ -167,7 +178,13 @@ class SMTP
                 break;
             case 'echo':
             default:
-                echo gmdate('Y-m-d H:i:s')."\t".trim($str)."\n";
+                //Normalize line breaks
+                $str = preg_replace('/(\r\n|\r|\n)/ms', "\n", $str);
+                echo gmdate('Y-m-d H:i:s') . "\t" . str_replace(
+                    "\n",
+                    "\n                   \t                  ",
+                    trim($str)
+                )."\n";
         }
     }
 
@@ -424,7 +441,7 @@ class SMTP
         // RFC 2104 HMAC implementation for php.
         // Creates an md5 HMAC.
         // Eliminates the need to install mhash to compute a HMAC
-        // Hacked by Lance Rushing
+        // by Lance Rushing
 
         $bytelen = 64; // byte length for md5
         if (strlen($key) > $bytelen) {
@@ -687,29 +704,27 @@ class SMTP
         }
         $this->client_send($commandstring . self::CRLF);
 
-        $reply = $this->get_lines();
-        $code = substr($reply, 0, 3);
+        $this->last_reply = $this->get_lines();
+        $code = substr($this->last_reply, 0, 3);
 
         if ($this->do_debug >= 2) {
-            $this->edebug('SERVER -> CLIENT: ' . $reply);
+            $this->edebug('SERVER -> CLIENT: ' . $this->last_reply);
         }
 
         if (!in_array($code, (array)$expect)) {
-            $this->last_reply = null;
             $this->error = array(
                 'error' => "$command command failed",
                 'smtp_code' => $code,
-                'detail' => substr($reply, 4)
+                'detail' => substr($this->last_reply, 4)
             );
             if ($this->do_debug >= 1) {
                 $this->edebug(
-                    'SMTP ERROR: ' . $this->error['error'] . ': ' . $reply
+                    'SMTP ERROR: ' . $this->error['error'] . ': ' . $this->last_reply
                 );
             }
             return false;
         }
 
-        $this->last_reply = $reply;
         $this->error = array();
         return true;
     }

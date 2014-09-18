@@ -28,7 +28,7 @@ require_once ROOT_PATH . "app/models/Term.class.php";
 require_once ROOT_PATH . "app/models/Appointment.class.php";
 require_once ROOT_PATH . "app/models/AppointmentFetcher.class.php";
 require_once ROOT_PATH . "app/models/AppointmentHasStudentFetcher.class.php";
-require_once ROOT_PATH . "app/models/Report.php";
+require_once ROOT_PATH . "app/models/ReportFetcher.php";
 
 require_once ROOT_PATH . "app/models/Secretary.class.php";
 

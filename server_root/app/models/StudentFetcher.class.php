@@ -74,14 +74,14 @@ class StudentFetcher extends Person
 
 
 			$query = $db->getConnection()->prepare($query);
-			$query->bindParam(':student_id', $studentId, PDO::PARAM_STR);
+			$query->bindParam(':student_id', $studentId, PDO::PARAM_INT);
 			$query->bindParam(':email', $email, PDO::PARAM_STR);
 			$query->bindParam(':first_name', $firstName, PDO::PARAM_STR);
 			$query->bindParam(':last_name', $lastName, PDO::PARAM_STR);
 			$query->bindParam(':mobile', $mobileNum, PDO::PARAM_INT);
-			$query->bindParam(':ci', $ci, PDO::PARAM_INT);
+			$query->bindParam(':ci', $ci, PDO::PARAM_STR);
 			$query->bindParam(':credits', $credits, PDO::PARAM_INT);
-			$query->bindParam(':major_id', $majorId, PDO::PARAM_STR);
+			$query->bindParam(':major_id', $majorId, PDO::PARAM_INT);
 
 			$query->execute();
 			return true;

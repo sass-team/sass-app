@@ -40,6 +40,44 @@ class AppointmentHasStudentFetcher
 
 	}
 
+	public static function update($db, $id, $reportId) {
+		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+					SET `" . self::DB_COLUMN_REPORT_ID . "`= :report_id
+					WHERE `" . self::DB_COLUMN_ID . "` = :appointment_id";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':appointment_id', $id, PDO::PARAM_INT);
+			$query->bindParam(':report_id', $reportId, PDO::PARAM_INT);
+
+			$query->execute();
+
+			if ($query->rowCount() == 0) {
+				throw new Exception();
+			}
+			return true;
+		} catch (Exception $e) {
+			throw new Exception("Could not update data." . $e->getMessage());
+		}
+		return false;
+	}
+
+	public static function existsId($db, $id) {
+		try {
+			$sql = "SELECT COUNT(" . self::DB_COLUMN_ID . ") FROM `" . DB_NAME . "`.`" .
+				self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :id";
+			$query = $db->getConnection()->prepare($sql);
+			$query->bindParam(':id', $id, PDO::PARAM_INT);
+			$query->execute();
+
+			if ($query->fetchColumn() === 0) return false;
+		} catch (Exception $e) {
+			throw new Exception("Could not check if data already exists.");
+		}
+
+		return true;
+	}
+
 	public static function retrieveAll($db) {
 		$query =
 			"SELECT `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_APPOINTMENT_ID . "` , `" . self::DB_COLUMN_STUDENT_ID . "`,

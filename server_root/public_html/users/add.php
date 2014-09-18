@@ -32,7 +32,7 @@ if (isSaveBttnPressed()) {
 	$user_type = trim($_POST['user_type']);
 	$userMajorId = (isset($_POST['userMajor']) ? trim($_POST['userMajor']) : "");
 	$teachingCoursesIds = isset($_POST['teachingCoursesMulti']) ? $_POST['teachingCoursesMulti'] : NULL;
-	$termIds = $_POST['termIds'];
+	$termIds = isset($_POST['termIds']) ? $_POST['termIds'] : NULL;
 
 	try {
 		$newUserId = Admin::createUser($db, $first_name, $last_name, $email, $user_type, $userMajorId, $teachingCoursesIds, $termIds);
@@ -273,7 +273,6 @@ require ROOT_PATH . 'app/views/sidebar.php';
 									</div>
 
 
-
 									<div class="form-group">
 
 										<h5>
@@ -356,7 +355,6 @@ require ROOT_PATH . 'app/views/sidebar.php';
 		$("#userMajor").select2();
 		$("#teachingCoursesMulti").select2();
 		$("#termIds").select2();
-
 
 
 		// TODO: add error messages
