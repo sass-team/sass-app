@@ -19,6 +19,13 @@ function auto_copyright($year = 'auto') {
 ?>
 
 <div id="footer">
+	<ul class="nav pull-left">
+		<li>
+			For bugs, improvements, proposals and tasks please create an issue at <a
+				href="https://bitbucket.org/geoif-rdok/sass-ms/issues?status=new&status=open"
+				target="_blank">SASS App Public Issues</a>.
+		</li>
+	</ul>
 	<ul class="nav pull-right">
 		<li>
 			Copyright &copy; <?php echo auto_copyright('2014'); // 2010 - 2011 ?>, <a

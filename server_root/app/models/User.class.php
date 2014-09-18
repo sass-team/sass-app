@@ -464,12 +464,17 @@ abstract class User extends Person
 		return $generatedString;
 	}
 
+	public static function isUserTypeTutor($userType) {
+		if (strcmp($userType, TutorFetcher::DB_TABLE) === 0) return true;
+		return false;
+	}
+
 	/**
 	 * @return mixed
 	 */
 	public function getAccountActiveStatus() {
 		return $this->accountActiveStatus;
-	}
+	} // end getAllData
 
 	/**
 	 * @param mixed $accountActiveStatus
@@ -483,7 +488,7 @@ abstract class User extends Person
 	 */
 	public function isActive() {
 		return $this->active;
-	} // end getAllData
+	}
 
 	public function updateAvatarImg($avatar_img_loc) {
 		$id = $this->getId();

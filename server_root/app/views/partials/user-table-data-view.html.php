@@ -11,12 +11,12 @@
  */
 
 
-$first_name = $curUser['f_name'];
-$last_name = $curUser['l_name'];
-$email = $curUser['email'];
-$position = $curUser['type'];
-$mobile = $curUser['mobile'];
-$id = $curUser['id'];
+$first_name = $curUser[UserFetcher::DB_COLUMN_FIRST_NAME];
+$last_name = $curUser[UserFetcher::DB_COLUMN_LAST_NAME];
+$email = $curUser[UserFetcher::DB_COLUMN_EMAIL];
+$position = $curUser[UserTypes::DB_COLUMN_TYPE];
+$mobile = $curUser[UserFetcher::DB_COLUMN_MOBILE];
+$id = $curUser[UserFetcher::DB_COLUMN_ID];
 ?>
 <tr>
 	<td class="text-center"><?php echo $first_name . " " . $last_name; ?></td>
@@ -31,31 +31,32 @@ $id = $curUser['id'];
 		</a>
 	</td>
 
-	<?php if (!$user->isTutor()): ?>
-		<td class="text-center">
-			<a class="btn btn-default btn-sm center-block ui-popover" data-toggle="tooltip" data-placement="right" data-trigger="hover" 
-					data-content="Sed posuere consectetur est at lobortis. Aenean eu leo quam." title="Teaching Courses">
-			        <i class="fa fa-book"></i> Courses
+	<td class="text-center">
+		<?php if (!$user->isTutor() && User::isUserTypeTutor($position)): ?>
+			<a class="btn btn-default btn-sm center-block ui-popover" data-toggle="tooltip" data-placement="right"
+			   data-trigger="hover"
+			   data-content="Sed posuere consectetur est at lobortis. Aenean eu leo quam." title="Teaching Courses">
+				<i class="fa fa-book"></i> Courses
 			</a>
-		</td>
-	<?php endif; ?>
+		<?php endif; ?>
+	</td>
 
-	<?php if (!$user->isTutor()): ?>
-		<td class="text-center">
+	<td class="text-center">
+		<?php if (!$user->isTutor()): ?>
 			<a data-toggle="modal" href="#" class="btn btn-default btn-sm center-block">
 				<i class="fa fa-calendar"></i> View
 			</a>
-		</td>
-	<?php endif; ?>
+		<?php endif; ?>
+	</td>
 
-	<?php if ($user->isAdmin()): ?>
-		<td class="text-center">
+	<td class="text-center">
+		<?php if ($user->isAdmin()): ?>
 			<a data-toggle="modal" href="<?php echo BASE_URL . "users/edit/:" . $id; ?>"
 			   class="btn btn-default btn-sm center-block edit-user">
 				<i class="fa fa-edit"></i> Edit
 			</a>
 			<input type="hidden" value=""/>
-		</td>
-	<?php endif; ?>
+		<?php endif; ?>
+	</td>
 
 </tr>
