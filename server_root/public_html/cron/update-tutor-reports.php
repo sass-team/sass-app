@@ -7,10 +7,13 @@
  */
 
 require __DIR__ . '/../../app/init.php';
-$appointments = AppointmentFetcher::retrieveAllCompleted($db);
+$appointments = AppointmentFetcher::retrieveCompletedWithoutReports($db);
 var_dump($appointments);
 
 foreach ($appointments as $appointment) {
+	$appointmentHasStudents = AppointmentHasStudentFetcher::retrieve($db, $appointment[AppointmentFetcher::DB_COLUMN_ID]);
+	foreach()
 	// create report -- tutor can edit on his page
+	Report::insert($db, $appointment[AppointmentFetcher::DB_COLUMN_ID], $appointment[AppointmentFetcher::DB])
 	// mail tutor
 }

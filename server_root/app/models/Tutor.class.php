@@ -66,8 +66,8 @@ class Tutor extends User
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 
 		} catch (PDOException $e) {
-			throw new Exception("Could not retrieve teaching courses data from database." . $e->getMessage());
-		}
+			throw new Exception("Could not retrieve teaching courses data from database.");}
+
 	}
 
 	public static function updateTeachingCourse($db, $id, $newCourseId, $oldCourseId) {

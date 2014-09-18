@@ -802,18 +802,18 @@ require ROOT_PATH . 'app/views/sidebar.php';
 		});
 
 		$("#teachingCourse").select2({
-			placeholder: "Select..."
-		});
+			placeholder: "Select...");
+);
 
 		$("#teachingCoursesMulti").select2({
-			placeholder: "Select courses..."
-		});
+			placeholder: "Select courses...");
+);
 
 		$("#term").select2();
 
 		$("#majorId").select2({
-			placeholder: "Select courses..."
-		});
+			placeholder: "Select courses...");
+);
 
 		$("#majorId").select2("val", "<?php echo $curUser->getMajorId(); ?>");
 

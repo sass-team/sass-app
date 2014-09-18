@@ -147,8 +147,8 @@ class CourseFetcher
 
 			return true;
 		} catch (Exception $e) {
-			throw new Exception("Something terrible happened. Could not update course code" . $e->getMessage());
-		}
+			throw new Exception("Something terrible happened. Could not update course code");}
+
 	}
 
 	public static function codeExists($db, $courseCode) {

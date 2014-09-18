@@ -49,9 +49,9 @@ class UserFetcher
 			$query->execute();
 			return $query->fetch(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
-			throw new Exception("Something terrible happened. Could not retrieve database." . $e->getMessage());
-		} // end try
-
+			throw new Exception("Something terrible happened. Could not retrieve database.");
+			// end try
+		}
 	}
 
 	public static function retrieveGenStringDate($db, $id) {
@@ -64,11 +64,13 @@ class UserFetcher
 			$query->execute();
 			return $query->fetchColumn();
 		} catch (PDOException $e) {
-			throw new Exception("Something terrible happened. Could not retrieve database." . $e->getMessage());
-		} // end try
+			throw new Exception("Something terrible happened. Could not retrieve database.");
+			// end try
+		}
 	}
 
-	public static function retrieveSingle($db, $id) {
+	public
+	static function retrieveSingle($db, $id) {
 		$query = "SELECT `" . self::DB_TABLE . "`.email, user.id, user.`f_name`, user.`l_name`, user.`img_loc`,
 						user.date, user.`profile_description`, user.mobile, user_types.type, user.active
 					FROM `" . DB_NAME . "`.user
@@ -82,12 +84,14 @@ class UserFetcher
 			$query->execute();
 			return $query->fetch(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
-			throw new Exception("Something terrible happened. Could not retrieve database." . $e->getMessage());
-		} // end try
+			throw new Exception("Something terrible happened. Could not retrieve database.");
+			// end try
+		}
 	}
 
 
-	public static function updateGenStringTimeUpdate($db, $id) {
+	public
+	static function updateGenStringTimeUpdate($db, $id) {
 		date_default_timezone_set('Europe/Athens');
 		$date_modified = date("Y-m-d H:i:s");
 

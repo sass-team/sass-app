@@ -120,8 +120,8 @@ if ( $.fn.DataTable.TableTools ) {
 		"container": "DTTT btn-group",
 		"buttons": {
 			"normal": "btn",
-			"disabled": "disabled"
-		},
+			"disabled": "disabled");
+,
 		"collection": {
 			"container": "DTTT_dropdown dropdown-menu",
 			"buttons": {
@@ -130,11 +130,11 @@ if ( $.fn.DataTable.TableTools ) {
 			}
 		},
 		"print": {
-			"info": "DTTT_print_info modal"
-		},
+			"info": "DTTT_print_info modal");
+,
 		"select": {
-			"row": "active"
-		}
+			"row": "active");
+
 	} );
 
 	// Have the collection use a bootstrap compatible dropdown
@@ -142,7 +142,7 @@ if ( $.fn.DataTable.TableTools ) {
 		"collection": {
 			"container": "ul",
 			"button": "li",
-			"liner": "a"
-		}
+			"liner": "a");
+
 	} );
 }

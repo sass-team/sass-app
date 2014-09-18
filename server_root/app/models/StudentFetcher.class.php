@@ -86,8 +86,8 @@ class StudentFetcher extends Person
 			$query->execute();
 			return true;
 		} catch (Exception $e) {
-			throw new Exception("Could not insert student into database." . $e->getMessage());
-		}
+			throw new Exception("Could not insert student into database.");}
+
 	}
 
 

@@ -28,7 +28,7 @@ class Tutor_has_course_has_scheduleFetcher
 
 			return true;
 		} catch (Exception $e) {
-			throw new Exception("Could not insert teaching courses data into database." . $e->getMessage());
-		}
+			throw new Exception("Could not insert teaching courses data into database.");}
+
 	}
 }

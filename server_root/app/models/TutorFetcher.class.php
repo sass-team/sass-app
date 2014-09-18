@@ -43,10 +43,11 @@ class TutorFetcher
 			$query->execute();
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
-			throw new Exception("Something terrible happened . Could not retrieve data from database." . $e->getMessage());
-		} // end catch
+			throw new Exception("Something terrible happened . Could not retrieve data from database.");
+			// end catch
 
-		return null;
+			return null;
+		}
 	}
 
 	public static function replaceMajorId($db, $id, $newMajorId) {

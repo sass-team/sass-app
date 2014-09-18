@@ -119,7 +119,7 @@ abstract class User extends Person
 //
 //			return true;
 //		} catch (PDOException $e) {
-//			throw new Exception("Something terrible happened. Could not retrieve users data from database.: " . $e->getMessage());
+//			throw new Exception("Something terrible happened. Could not retrieve users data from database.: "
 //		} // end catch
 	}
 
@@ -154,8 +154,9 @@ abstract class User extends Person
 
 			return true;
 		} catch (Exception $e) {
-			throw new Exception("Something terrible happened. Could not update profile." . $e->getMessage());
+			throw new Exception("Something terrible happened. Could not update profile.");
 		}
+
 	}
 
 	public static function updateName($db, $id, $column, $newFirstName) {
@@ -177,8 +178,9 @@ abstract class User extends Person
 
 			return true;
 		} catch (Exception $e) {
-			throw new Exception("Something terrible happened. Could not update profile." . $e->getMessage());
+			throw new Exception("Something terrible happened. Could not update profile.");
 		}
+
 	}
 
 	public static function updateProfileDescription($db, $id, $newProfileDescription) {
@@ -219,8 +221,9 @@ abstract class User extends Person
 
 			return true;
 		} catch (Exception $e) {
-			throw new Exception("Something terrible happened. Could not update profile." . $e->getMessage());
+			throw new Exception("Something terrible happened. Could not update profile.");
 		}
+
 	}
 
 	/**
@@ -322,8 +325,9 @@ abstract class User extends Person
 
 			return $rows;
 		} catch (PDOException $e) {
-			throw new Exception("Something terrible happened. Could not retrieve users data from database.: " . $e->getMessage());
-		} // end catch
+			throw new Exception("Something terrible happened. Could not retrieve users data from database.: ");
+			// end catch
+		}
 	}
 
 	/**

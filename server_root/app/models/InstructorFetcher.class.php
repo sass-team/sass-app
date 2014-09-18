@@ -86,8 +86,8 @@ class InstructorFetcher extends Person
 
 			return true;
 		} catch (Exception $e) {
-			throw new Exception("Something terrible happened. Could not update instructor." . $e->getMessage());
-		}
+			throw new Exception("Something terrible happened. Could not update instructor.");}
+
 	}
 
 	public static function updateLname($db, $id, $newLname) {
@@ -105,8 +105,8 @@ class InstructorFetcher extends Person
 
 			return true;
 		} catch (Exception $e) {
-			throw new Exception("Something terrible happened. Could not update instructor last name" . $e->getMessage());
-		}
+			throw new Exception("Something terrible happened. Could not update instructor last name");}
+
 	}
 
 	public static function updateFname($db, $id, $newFname) {
@@ -124,8 +124,8 @@ class InstructorFetcher extends Person
 
 			return true;
 		} catch (Exception $e) {
-			throw new Exception("Something terrible happened. Could not update instructor first name" . $e->getMessage());
-		}
+			throw new Exception("Something terrible happened. Could not update instructor first name");}
+
 	}
 
 	public static function delete($db, $id) {

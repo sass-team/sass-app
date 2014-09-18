@@ -49,14 +49,14 @@ class AppointmentFetcher
 
 
 			for ($i = 0; $i < sizeof($studentsIds); $i++) {
-				Report::insert($db, $appointmentId, $studentsIds[$i], $instructorsIds[$i]);
+				AppointmentHasStudentFetcher::insert($db, $appointmentId, $studentsIds[$i], $instructorsIds[$i]);
 			}
 
 			$db->getConnection()->commit();
 			return $appointmentId;
 		} catch (Exception $e) {
 			$db->getConnection()->rollback();
-			throw new Exception("Could not insert data into database.");
+			throw new Exception("Could not insert data into database." . $e->getMessage());
 		}
 
 	}
@@ -137,7 +137,7 @@ class AppointmentFetcher
 	 * @param $db
 	 * @throws Exception
 	 */
-	public static function  retrieveAllCompleted($db) {
+	public static function  retrieveCompletedWithoutReports($db) {
 		$query =
 			"SELECT `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_START_TIME . "` , `" . self::DB_COLUMN_END_TIME . "`,
 			 `" . self::DB_COLUMN_COURSE_ID . "`,  `" . self::DB_COLUMN_TUTOR_USER_ID . "`,  `" .
