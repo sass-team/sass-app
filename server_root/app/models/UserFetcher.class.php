@@ -71,11 +71,19 @@ class UserFetcher
 
 	public
 	static function retrieveSingle($db, $id) {
-		$query = "SELECT `" . self::DB_TABLE . "`.email, user.id, user.`f_name`, user.`l_name`, user.`img_loc`,
-						user.date, user.`profile_description`, user.mobile, user_types.type, user.active
-					FROM `" . DB_NAME . "`.user
-						LEFT OUTER JOIN user_types ON user.`user_types_id` = `user_types`.id
-					WHERE user.id = :id";
+		$query =
+			"SELECT email, user.id, user.`f_name`, user.`l_name`, user.`img_loc`,
+				user.date, user.`profile_description`, user.mobile, user_types.type, user.active, `" .
+			MajorFetcher::DB_TABLE . "`.`" . MajorFetcher::DB_COLUMN_NAME . "`
+			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+			INNER JOIN user_types
+				ON user.`user_types_id` = `user_types`.id
+			INNER JOIN `" . TutorFetcher::DB_TABLE . "`
+			ON `" . TutorFetcher::DB_TABLE . "`.`" . TutorFetcher::DB_COLUMN_USER_ID . "` = `user`.id
+			INNER JOIN `" . MajorFetcher::DB_TABLE . "`
+			ON `" . MajorFetcher::DB_TABLE . "`.`" . MajorFetcher::DB_COLUMN_ID . "` = `" . TutorFetcher::DB_TABLE . "`.`"
+			. TutorFetcher::DB_COLUMN_MAJOR_ID . "`
+			WHERE user.id = :id";
 
 		try {
 			$query = $db->getConnection()->prepare($query);
@@ -84,7 +92,7 @@ class UserFetcher
 			$query->execute();
 			return $query->fetch(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
-			throw new Exception("Something terrible happened. Could not retrieve database.");
+			throw new Exception("Could not retrieve data." . $e->getMessage());
 			// end try
 		}
 	}

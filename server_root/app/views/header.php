@@ -28,6 +28,7 @@
  * @since 8/15/14.
  */
 
+var_dump($errors);
 ?>
 
 

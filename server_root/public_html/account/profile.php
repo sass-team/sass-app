@@ -75,11 +75,11 @@ $section = "account";
 
 							<ul class="icons-list">
 								<li><i class="icon-li fa fa-envelope"></i> <?php echo $user->getEmail(); ?></li>
-								<li><i class="icon-li fa fa-phone"></i> <?php echo $user->getMobileNum(); ?></li>
+								<li><i class="icon-li fa fa-phone"></i>Mobile: <?php echo $user->getMobileNum(); ?>
+									<?php if ($user->isTutor()) { ?>
 
-							<?php if ($user->isTutor()) { ?>
-
-								<li><i class="icon-li fa fa-book"></i>Major: <strong><?php echo $user->getMajorId(); ?></strong></li>
+								<li><i class="icon-li fa fa-book"></i>Major: <strong><?php echo $user->getMajorId(); ?></strong>
+								</li>
 
 							<?php } ?>
 							</ul>
@@ -109,77 +109,88 @@ $section = "account";
 					<h3 class="heading">Special Information</h3>
 
 
-						<div class="panel-group accordion" id="accordion">
+					<div class="panel-group accordion" id="accordion">
 
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title">
-										<a class="accordion-toggle" data-toggle="collapse" data-parent=".accordion" href="#collapseOne">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title">
+									<a class="accordion-toggle" data-toggle="collapse" data-parent=".accordion"
+									   href="#collapseOne">
 										<i class="fa fa-book"></i> Current Teaching Courses
-										</a>
-									</h4>
-								</div>
+									</a>
+								</h4>
+							</div>
 
-								<div id="collapseOne" class="panel-collapse collapse in">
-									<div class="panel-body">
-										<table class="table table-hover">
-											<thead>
-												<tr>
-													<th>#</th>
-													<th>Course Code</th>
-													<th>Course Name</th>
-													<th>Status</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<td>1</td>
-													<td>Larry</td>
-													<td>Smith</td>
-													<td>
-														<span class="label label-success">In progress</span>
-													</td>
-												</tr>
-												<tr>
-													<td>2</td>
-													<td>Mark</td>
-													<td>Williams</td>
-													<td>
-														<span class="label label-success">In progress</span>
-													</td>
-												</tr>
-												<tr>
-													<td>3</td>
-													<td>Jeremy</td>
-													<td>Jones</td>
-													<td>
-														<span class="label label-success">In progress</span>
-													</td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
+							<div id="collapseOne" class="panel-collapse collapse in">
+								<div class="panel-body">
+									<table class="table table-hover">
+										<thead>
+										<tr>
+											<th>#</th>
+											<th>Course Code</th>
+											<th>Course Name</th>
+											<th>Status</th>
+										</tr>
+										</thead>
+										<tbody>
+										<tr>
+											<td>1</td>
+											<td>Larry</td>
+											<td>Smith</td>
+											<td>
+												<span class="label label-success">In progress</span>
+											</td>
+										</tr>
+										<tr>
+											<td>2</td>
+											<td>Mark</td>
+											<td>Williams</td>
+											<td>
+												<span class="label label-success">In progress</span>
+											</td>
+										</tr>
+										<tr>
+											<td>3</td>
+											<td>Jeremy</td>
+											<td>Jones</td>
+											<td>
+												<span class="label label-success">In progress</span>
+											</td>
+										</tr>
+										</tbody>
+									</table>
 								</div>
-							</div> <!-- /.panel-default -->
+							</div>
+						</div>
+						<!-- /.panel-default -->
 
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title">
-										<a class="accordion-toggle" data-toggle="collapse" data-parent=".accordion" href="#collapseTwo">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title">
+									<a class="accordion-toggle" data-toggle="collapse" data-parent=".accordion"
+									   href="#collapseTwo">
 										<i class="fa fa-clock-o"></i> Current Schedule
-										</a>
-									</h4>
-								</div>
+									</a>
+								</h4>
+							</div>
 
-								<div id="collapseTwo" class="panel-collapse collapse">
-									<div class="panel-body">
-										<div class="well">
-										Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-										</div>
+							<div id="collapseTwo" class="panel-collapse collapse">
+								<div class="panel-body">
+									<div class="well">
+										Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad
+										squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa
+										nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
+										single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft
+										beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher
+										vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt
+										you probably haven't heard of them accusamus labore sustainable VHS.
 									</div>
 								</div>
-							</div> <!-- /.panel-default -->
-					</div> <!-- /.accordion -->
+							</div>
+						</div>
+						<!-- /.panel-default -->
+					</div>
+					<!-- /.accordion -->
 				</div>
 
 			</div>

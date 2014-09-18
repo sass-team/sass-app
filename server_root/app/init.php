@@ -67,7 +67,8 @@ try {
 
 		if (strcmp($data['type'], 'tutor') === 0) {
 			$tutor = Tutor::getSingle($db, $id);
-			$user = new Tutor($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active'], TutorFetcher::DB_COLUMN_MAJOR_ID);
+			$user = new Tutor($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active'], $tutor[MajorFetcher::DB_COLUMN_NAME]);
+			throw new Exception(var_dump($user));
 		} else if (strcmp($data['type'], 'secretary') === 0) {
 			$user = new Secretary($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active']);
 		} else if (strcmp($data['type'], 'admin') === 0) {
@@ -81,8 +82,8 @@ try {
 (Exception $e) {
 	// if no database connection available this app is not able to work.
 	$errors[] = $e->getMessage();
-	header('Location: ' . BASE_URL . 'error-500.php');
-	exit();
+//	header('Location: ' . BASE_URL . 'error-500.php');
+//	exit();
 }
 
 
