@@ -6,9 +6,9 @@
  * Date: 9/17/2014
  * Time: 6:28 AM
  */
-class Appointment_has_student_has_report_has_instructor
+class Report
 {
-	const DB_TABLE = "appointment_has_student_has_report_has_instructor";
+	const DB_TABLE = "report";
 	const DB_COLUMN_ID = "id";
 	const DB_COLUMN_APPOINTMENT_ID = "appointment_id";
 	const DB_COLUMN_STUDENT_ID = "student_id";

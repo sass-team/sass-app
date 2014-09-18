@@ -49,7 +49,7 @@ class AppointmentFetcher
 
 
 			for ($i = 0; $i < sizeof($studentsIds); $i++) {
-				Appointment_has_student_has_report_has_instructor::insert($db, $appointmentId, $studentsIds[$i], $instructorsIds[$i]);
+				Report::insert($db, $appointmentId, $studentsIds[$i], $instructorsIds[$i]);
 			}
 
 			$db->getConnection()->commit();
@@ -77,7 +77,6 @@ class AppointmentFetcher
 		return true;
 	}
 
-
 	public static function belongsToTutor($db, $id, $tutorId) {
 		try {
 			$sql = "SELECT COUNT(" . self::DB_COLUMN_ID . ")
@@ -97,7 +96,6 @@ class AppointmentFetcher
 		return true;
 	}
 
-
 	public static function retrieveSingle($db, $id) {
 		$query = "SELECT `" . self::DB_COLUMN_START_TIME . "`, `" . self::DB_COLUMN_END_TIME . "`, `" .
 			self::DB_COLUMN_COURSE_ID . "`, `" . self::DB_COLUMN_TUTOR_USER_ID . "`,  `" . self::DB_COLUMN_TUTOR_USER_ID .
@@ -116,15 +114,37 @@ class AppointmentFetcher
 		} // end catch
 	}
 
-
 	public static function retrieveAll($db) {
 		$query =
 			"SELECT `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_START_TIME . "` , `" . self::DB_COLUMN_END_TIME . "`,
 			 `" . self::DB_COLUMN_COURSE_ID . "`,  `" . self::DB_COLUMN_TUTOR_USER_ID . "`,  `" .
 			self::DB_COLUMN_TUTOR_USER_ID . "`
-			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "` order by `" . self::DB_TABLE . "`.`" .
+			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "` ORDER BY `" . self::DB_TABLE . "`.`" .
 			self::DB_COLUMN_START_TIME . "` DESC";
 
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->execute();
+
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			throw new Exception("Could not retrieve data from database.");
+		}
+	}
+
+	/**
+	 * Appointments are considered completed if 30 minutes have from the passing of it's start time.
+	 * @param $db
+	 * @throws Exception
+	 */
+	public static function  retrieveAllCompleted($db) {
+		$query =
+			"SELECT `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_START_TIME . "` , `" . self::DB_COLUMN_END_TIME . "`,
+			 `" . self::DB_COLUMN_COURSE_ID . "`,  `" . self::DB_COLUMN_TUTOR_USER_ID . "`,  `" .
+			self::DB_COLUMN_TUTOR_USER_ID . "`
+			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+			WHERE TIME_TO_SEC(TIMEDIFF(NOW(),  `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "`))/60 >= 30
+			ORDER BY `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "` DESC";
 		try {
 			$query = $db->getConnection()->prepare($query);
 			$query->execute();
