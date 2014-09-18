@@ -70,6 +70,11 @@ class Term
 			throw new Exception("Minimum acceptable term period is 20 days.");
 	}
 
+	public static function retrieveCurrent($db) {
+		$allTerms = TermFetcher::retrieveAll($db);
+
+	}
+
 	public static function updateName($db, $id, $newName, $oldName) {
 		if (strcmp($newName, $oldName) === 0) return false;
 
@@ -87,7 +92,6 @@ class Term
 
 		return true;
 	}
-
 
 
 	public static function updateEndingDate($db, $id, $newEndingDate, $oldEndingDate) {

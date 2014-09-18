@@ -11,12 +11,15 @@
  */
 
 
+$id = $curUser[UserFetcher::DB_COLUMN_ID];
 $first_name = $curUser[UserFetcher::DB_COLUMN_FIRST_NAME];
 $last_name = $curUser[UserFetcher::DB_COLUMN_LAST_NAME];
 $email = $curUser[UserFetcher::DB_COLUMN_EMAIL];
 $position = $curUser[UserTypes::DB_COLUMN_TYPE];
+if (User::isUserTypeTutor($position)) {
+	//$courses = get($courses, $id, TutorFetcher::)
+}
 $mobile = $curUser[UserFetcher::DB_COLUMN_MOBILE];
-$id = $curUser[UserFetcher::DB_COLUMN_ID];
 ?>
 <tr>
 	<td class="text-center"><?php echo $first_name . " " . $last_name; ?></td>

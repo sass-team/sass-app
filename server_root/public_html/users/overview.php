@@ -40,10 +40,19 @@ $section = "users";
 
 try {
 	$users = User::retrieveAll($db);
+	$courses = CourseFetcher::retrieveAll($db);
+
 } catch (Exception $e) {
 	$errors[] = $e->getMessage();
 }
 
+function get($objects, $findId, $column) {
+	foreach ($objects as $object) {
+		if ($object[$column] === $findId) return $object;
+	}
+
+	return false;
+}
 
 function isEditBttnPressed() {
 	return isset($_GET['id']) && preg_match('/^[0-9]+$/', $_GET['id']);
@@ -121,18 +130,24 @@ function isModifyBttnPressed() {
 									>
 									<thead>
 									<tr>
-										<th class="text-center" data-filterable="true" data-sortable="true" data-direction="desc">Name</th>
-										<th class="text-center" data-direction="asc" data-filterable="true" data-sortable="false">Email</th>
+										<th class="text-center" data-filterable="true" data-sortable="true" data-direction="desc">
+											Name
+										</th>
+										<th class="text-center" data-direction="asc" data-filterable="true" data-sortable="false">
+											Email
+										</th>
 										<th class="text-center" data-filterable="true" data-sortable="true">Position</th>
 										<th class="text-center" data-filterable="true" data-sortable="false">Mobile</th>
 										<th class="text-center" data-filterable="false" class="hidden-xs hidden-sm">Profile</th>
 
 										<?php if (!$user->isTutor()): ?>
-											<th class="text-center" data-filterable="false" class="hidden-xs hidden-sm">Teaching</th>
+											<th class="text-center" data-filterable="false" class="hidden-xs hidden-sm">Teaching
+											</th>
 										<?php endif; ?>
 
 										<?php if (!$user->isTutor()): ?>
-											<th class="text-center" data-filterable="false" class="hidden-xs hidden-sm">Schedule</th>
+											<th class="text-center" data-filterable="false" class="hidden-xs hidden-sm">Schedule
+											</th>
 										<?php endif; ?>
 
 
