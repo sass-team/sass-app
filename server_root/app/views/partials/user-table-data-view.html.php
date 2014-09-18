@@ -34,32 +34,33 @@ $mobile = $curUser[UserFetcher::DB_COLUMN_MOBILE];
 		</a>
 	</td>
 
-	<td class="text-center">
-		<?php if (!$user->isTutor() && User::isUserTypeTutor($position)): ?>
+	<?php if (!$user->isTutor() && User::isUserTypeTutor($position)): ?>
+		<td class="text-center">
 			<a class="btn btn-default btn-sm center-block ui-popover" data-toggle="tooltip" data-placement="right"
 			   data-trigger="hover"
 			   data-content="Sed posuere consectetur est at lobortis. Aenean eu leo quam." title="Teaching Courses">
 				<i class="fa fa-book"></i> Courses
 			</a>
-		<?php endif; ?>
-	</td>
+		</td>
+	<?php endif; ?>
 
-	<td class="text-center">
-		<?php if (!$user->isTutor()): ?>
+	<?php if (!$user->isTutor()): ?>
+		<td class="text-center">
 			<a data-toggle="modal" href="#" class="btn btn-default btn-sm center-block">
 				<i class="fa fa-calendar"></i> View
 			</a>
-		<?php endif; ?>
-	</td>
+		</td>
+	<?php endif; ?>
 
-	<td class="text-center">
-		<?php if ($user->isAdmin()): ?>
+
+	<?php if ($user->isAdmin()): ?>
+		<td class="text-center">
 			<a data-toggle="modal" href="<?php echo BASE_URL . "users/edit/:" . $id; ?>"
 			   class="btn btn-default btn-sm center-block edit-user">
 				<i class="fa fa-edit"></i> Edit
 			</a>
 			<input type="hidden" value=""/>
-		<?php endif; ?>
-	</td>
+		</td>
+	<?php endif; ?>
 
 </tr>

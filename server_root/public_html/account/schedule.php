@@ -4,7 +4,7 @@ $general->loggedOutProtect();
 
 // viewers
 $page_title = "Dashboard - SASS Management System";
-$section = "dashboard";
+$section = "account";
 ?>
 
 

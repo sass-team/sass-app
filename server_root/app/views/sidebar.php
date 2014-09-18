@@ -36,7 +36,7 @@
 		} ?>">
 			<a href="javascript:;">
 				<i class="fa fa-calendar"></i>
-				Workshop Sessions
+				Appointments
 				<span class="caret"></span>
 			</a>
 
@@ -70,7 +70,7 @@
 
 			<ul class="sub-nav">
 				<li>
-					<a href="<?php echo BASE_URL; ?>reports/overview">
+					<a href="<?php echo BASE_URL; ?>reports/">
 						<i class="fa fa-dashboard"></i>
 						Overview
 					</a>
@@ -98,7 +98,7 @@
 		} ?>">
 			<a href="javascript:;">
 				<i class="fa fa-group"></i>
-				Users
+				SASS Stuff
 				<span class="caret"></span>
 			</a>
 
@@ -204,7 +204,7 @@
 					<li>
 						<a href="<?php echo BASE_URL; ?>account/schedule">
 							<i class="fa fa-calendar"></i>
-							My Schedule
+							Schedule
 						</a>
 					</li>
 				<?php } ?>
