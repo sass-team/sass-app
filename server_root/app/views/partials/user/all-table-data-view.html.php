@@ -36,33 +36,36 @@ $mobile = $curUser[UserFetcher::DB_COLUMN_MOBILE];
 	</td>
 
 	<!--- teaching -->
-	<td class="text-center">
-		<?php if (!$user->isTutor() && Tutor::isUserTypeTutor($position)): ?>
-
-			<a class="btn btn-default btn-sm center-block ui-popover" data-toggle="tooltip" data-placement="right"
-			   data-trigger="hover"
-			   data-content="
+	<?php if (!$user->isTutor()): ?>
+		<td class="text-center">
+			<?php if (Tutor::isUserTypeTutor($position)): ?>
+				<a class="btn btn-default btn-sm center-block ui-popover" data-toggle="tooltip" data-placement="right"
+				   data-trigger="hover"
+				   data-content="
 			   <?php
-			   if ((sizeof($courses) > 0)) {
-				   for ($i = 0; $i < (sizeof($courses) - 1); $i++) {
-					   echo $courses[$i][CourseFetcher::DB_COLUMN_CODE] . " |";
+				   if ((sizeof($courses) > 0)) {
+					   for ($i = 0; $i < (sizeof($courses) - 1); $i++) {
+						   echo $courses[$i][CourseFetcher::DB_COLUMN_CODE] . " |";
+					   }
+					   echo " " . $courses[sizeof($courses) - 1][CourseFetcher::DB_COLUMN_CODE];
 				   }
-				   echo " " . $courses[sizeof($courses) - 1][CourseFetcher::DB_COLUMN_CODE];
-			   }
-			   ?>" title="Teaching Courses">
-				<i class="fa fa-book"></i> Courses
-			</a>
-		<?php endif; ?>
-	</td>
+				   ?>" title="Teaching Courses">
+					<i class="fa fa-book"></i> Courses
+				</a>
+			<?php endif; ?>
+		</td>
+	<?php endif; ?>
 
-	<td class="text-center">
-		<?php if (!$user->isTutor() && Tutor::isUserTypeTutor($position)): ?>
+	<?php if (!$user->isTutor()): ?>
+		<td class="text-center">
+			<?php if (Tutor::isUserTypeTutor($position)): ?>
+				<a data-toggle="modal" href="#" class="btn btn-default btn-sm center-block">
+					<i class="fa fa-calendar"></i> View
+				</a>
+			<?php endif; ?>
+		</td>
+	<?php endif; ?>
 
-			<a data-toggle="modal" href="#" class="btn btn-default btn-sm center-block">
-				<i class="fa fa-calendar"></i> View
-			</a>
-		<?php endif; ?>
-	</td>
 
 
 	<?php if ($user->isAdmin()): ?>

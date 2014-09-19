@@ -62,7 +62,7 @@ try {
 		}
 
 	} else if (empty($_GET)) {
-		$pageTitle = "All Users";
+		$pageTitle = "All Staff Members";
 		$users = User::retrieveAll($db);
 		$courses = CourseFetcher::retrieveAll($db);
 	} else {
