@@ -321,6 +321,14 @@ require ROOT_PATH . 'app/views/sidebar.php';
 									</div>
 
 									<div class="form-group">
+										<div class="alert alert-warning">
+											<a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
+											<strong>Warning!</strong><i> Make sure new working hours do not conflict with
+												others existing one.</i>
+										</div>
+									</div>
+
+									<div class="form-group">
 										<div class='input-group date' id='dateTimePickerStart'>
 											<span class="input-group-addon"><label for="dateTimePickerStart">
 													Starts At</label></span>

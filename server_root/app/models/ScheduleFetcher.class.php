@@ -86,4 +86,38 @@ class ScheduleFetcher
 			throw new Exception("Could not retrieve data from database.");
 		}
 	}
-} 
+
+	/**
+	 * NEEDS TESTING
+	 * @param $db
+	 * @param $dateStart
+	 * @param $dateEnd
+	 * @param $tutorId
+	 * @return bool
+	 * @throws Exception
+	 */
+	public static function existDatesBetween($db, $dateStart, $dateEnd, $tutorId) {
+		date_default_timezone_set('Europe/Athens');
+		$dateStart = $dateStart->format(Dates::DATE_FORMAT_IN);
+		$dateEnd = $dateEnd->format(Dates::DATE_FORMAT_IN);
+
+		$query = "SELECT COUNT(`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`),`" . CourseFetcher::DB_TABLE . "`
+			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+			WHERE `" . self::DB_COLUMN_TUTOR_USER_ID . "` = :tutor_id
+			AND(`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "`  BETWEEN $dateStart AND $dateEnd)";
+
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':tutor_id', $tutorId, PDO::PARAM_INT);
+
+			$query->execute();
+			if ($query->fetchColumn() === '0') return false;
+
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			throw new Exception("Could not retrieve teaching courses data from database." . $e->getMessage());
+		}
+		return true;
+	}
+}

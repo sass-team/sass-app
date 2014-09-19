@@ -206,7 +206,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 			</div>
 			<!-- /.col -->
-			</div>
+		</div>
 		<!-- /.row -->
 
 	</div>
@@ -441,18 +441,20 @@ require ROOT_PATH . 'app/views/sidebar.php';
 	jQuery(function () {
 		// prepare course id for delete on modal
 		$(".btnDeleteCourse").click(function () {
-			$inputVal = $(this).next('input').val();
-			$("#delCourseIdModal").val($inputVal);
+			var inputVal = $(this).next('input').val();
+			$("#delCourseIdModal").val(inputVal);
 		});
 
 		$(".btnUpdateCourse").click(function () {
-			$courseId = $(this).next().next('input').val();
-			$courseName = ($(this).parent().prev().text());
-			$courseCode = ($(this).parent().prev().prev().text());
+			var courseId = $(this).next().next('input').val();
+			alert(courseId);
+			var courseName = ($(this).parent().prev().text());
 
-			$("#updateCourseIdModal").val($courseId);
-			$("#nameUpdate").val($courseCode);
-			$("#dateStartUpdate").val($courseName);
+			var courseCode = ($(this).parent().prev().prev().text());
+
+			$("#courseCodeUpdate").val(courseId);
+			$("#courseNameUpdate").val(courseName);
+			$("#courseCodeUpdate").val(courseCode);
 
 		});
 
