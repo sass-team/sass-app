@@ -76,7 +76,8 @@ try {
 		$teachingCourses = TutorFetcher::retrieveCurrTermTeachingCourses($db, $curUser->getId());
 		$notTeachingCourses = Tutor::retrieveCoursesNotTeaching($db, $curUser->getId());
 		$majors = MajorFetcher::retrieveMajors($db);
-		$terms = TermFetcher::retrieveAll($db);
+		$terms = TermFetcher::retrieveAllButCur($db);
+		$curTerm = TermFetcher::retrieveCurrent($db);
 	}
 
 
@@ -638,6 +639,9 @@ require ROOT_PATH . 'app/views/sidebar.php';
 										<select id="term" name="term" class="form-control">
 
 											<?php
+											$term = $curTerm;
+											include(ROOT_PATH . "app/views/partials/term/select-options-view.html.php");
+
 											foreach ($terms as $term) {
 												include(ROOT_PATH . "app/views/partials/term/select-options-view.html.php");
 											}

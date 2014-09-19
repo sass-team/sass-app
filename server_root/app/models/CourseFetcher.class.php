@@ -55,6 +55,29 @@ class CourseFetcher
 		}
 	}
 
+	public static function retrieveTutors($db, $courseId) {
+
+		$query =
+			"SELECT DISTINCT `" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "`, `" . UserFetcher::DB_TABLE
+			. "`.`" . UserFetcher::DB_COLUMN_FIRST_NAME . "`, `" . UserFetcher::DB_TABLE . "`.`" .
+			UserFetcher::DB_COLUMN_LAST_NAME . "`
+			FROM `" . DB_NAME . "`.`" . UserFetcher::DB_TABLE . "`
+			INNER JOIN  `" . DB_NAME . "`.`" . Tutor_has_course_has_termFetcher::DB_TABLE . "`
+			ON `" . DB_NAME . "`.`" . Tutor_has_course_has_termFetcher::DB_TABLE . "`.`" . Tutor_has_course_has_termFetcher::DB_COLUMN_TUTOR_USER_ID . "`  = `" .
+			UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "`
+			INNER JOIN  `" . DB_NAME . "`.`" . CourseFetcher::DB_TABLE . "`
+			ON `" . DB_NAME . "`.`" . Tutor_has_course_has_termFetcher::DB_TABLE . "`.`" . Tutor_has_course_has_termFetcher::DB_COLUMN_COURSE_ID . "`  = `" .
+			CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_ID . "`";
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->execute();
+
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			throw new Exception("Could not retrieve data from database.");
+		}
+	}
+
 
 	public static function retrieveSingle($db, $id) {
 		$query = "SELECT `" . self::DB_COLUMN_CODE . "`, `" . self::DB_COLUMN_NAME . "`, `" . self::DB_COLUMN_ID . "`
@@ -147,7 +170,8 @@ class CourseFetcher
 
 			return true;
 		} catch (Exception $e) {
-			throw new Exception("Something terrible happened. Could not update course code");}
+			throw new Exception("Something terrible happened. Could not update course code");
+		}
 
 	}
 

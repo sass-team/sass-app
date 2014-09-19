@@ -15,7 +15,7 @@ try {
 		$appointments = TutorFetcher::retrieveAllAppointments($db, $user->getId());
 
 	} else {
-		$terms = TermFetcher::retrieveAll($db);
+		$terms = TermFetcher::retrieveAllButCur($db);
 		$instructors = InstructorFetcher::retrieveAll($db);
 		$students = StudentFetcher::retrieveAll($db);
 		$tutors = TutorFetcher::retrieveAll($db);
