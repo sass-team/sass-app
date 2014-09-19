@@ -44,7 +44,7 @@ if (!$user->isAdmin()) {
 
 // protect again any sql injections on url
 if (!isset($_GET['id']) || !preg_match("/^[0-9]+$/", $_GET['id'])) {
-	header('Location: ' . BASE_URL . 'error-404');
+//	header('Location: ' . BASE_URL . 'error-404');
 	exit();
 } else {
 	$userId = $_GET['id'];
@@ -54,7 +54,7 @@ if (!isset($_GET['id']) || !preg_match("/^[0-9]+$/", $_GET['id'])) {
 try {
 
 	if (($data = User::getSingle($db, $userId)) === FALSE) {
-		header('Location: ' . BASE_URL . 'error-404');
+//		header('Location: ' . BASE_URL . 'error-404');
 		exit();
 	}
 

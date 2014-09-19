@@ -45,10 +45,10 @@
 	      type="text/css"/>
 
 	<style type="text/css">
-		#wrap {
+		#wrapper {
 			min-height: 100%;
 			height: auto !important;
-			margin: 0 auto -60px;
+			margin: 0 auto -30px;
 		}
 	</style>
 </head>

@@ -189,10 +189,11 @@ function isModifyBttnPressed() {
 	</div>
 	<!-- /#content -->
 
+	<?php include ROOT_PATH . "app/views/footer.php"; ?>
+
 </div>
 <!-- #wrapper -->
 
-<?php include ROOT_PATH . "app/views/footer.php"; ?>
 <?php include ROOT_PATH . "app/views/assets/footer_common.php"; ?>
 
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/datatables/jquery.dataTables.min.js"></script>

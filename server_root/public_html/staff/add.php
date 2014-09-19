@@ -313,10 +313,10 @@ require ROOT_PATH . 'app/views/sidebar.php';
 	<!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
+<?php include ROOT_PATH . "app/views/footer.php"; ?>
 
 </div>
 <!-- /#wrapper -->
-<?php include ROOT_PATH . "app/views/footer.php"; ?>
 
 <?php include ROOT_PATH . "app/views/assets/footer_common.php"; ?>
 

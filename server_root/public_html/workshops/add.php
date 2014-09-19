@@ -269,25 +269,8 @@ function get($objects, $findId, $column) {
 </div>
 <!-- #wrapper<!-- #content -->
 
-</body>
-</html>
 
 <?php include ROOT_PATH . "app/views/assets/footer_common.php"; ?>
-
-<!-- dashboard assets -->
-<!--<script src="--><?php //echo BASE_URL; ?><!--assets/js/plugins/icheck/jquery.icheck.min.js"></script>-->
-<!--<script src="--><?php //echo BASE_URL; ?><!--assets/js/plugins/tableCheckable/jquery.tableCheckable.js"></script>-->
-
-<!--<script src="--><?php //echo BASE_URL; ?><!--assets/js/libs/raphael-2.1.2.min.js"></script>-->
-<!--<script src="--><?php //echo BASE_URL; ?><!--assets/js/plugins/morris/morris.min.js"></script>-->
-
-<!--<script src="--><?php //echo BASE_URL; ?><!--assets/js/demos/charts/morris/area.js"></script>-->
-<!--<script src="--><?php //echo BASE_URL; ?><!--assets/js/demos/charts/morris/donut.js"></script>-->
-
-<!--<script src="--><?php //echo BASE_URL; ?><!--assets/js/plugins/sparkline/jquery.sparkline.min.js"></script>-->
-
-
-<!--<script src="--><?php //echo BASE_URL; ?><!--assets/js/plugins/simplecolorpicker/jquery.simplecolorpicker.js"></script>-->
 
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/autosize/jquery.autosize.min.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/textarea-counter/jquery.textarea-counter.js"></script>
@@ -375,3 +358,6 @@ function get($objects, $findId, $column) {
 	})
 	;
 </script>
+
+</body>
+</html>
