@@ -73,16 +73,10 @@ class UserFetcher
 	static function retrieveSingle($db, $id) {
 		$query =
 			"SELECT email, user.id, user.`f_name`, user.`l_name`, user.`img_loc`,
-				user.date, user.`profile_description`, user.mobile, user_types.type, user.active, `" .
-			MajorFetcher::DB_TABLE . "`.`" . MajorFetcher::DB_COLUMN_NAME . "`
+				user.date, user.`profile_description`, user.mobile, user_types.type, user.active
 			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
 			INNER JOIN user_types
 				ON user.`user_types_id` = `user_types`.id
-			INNER JOIN `" . TutorFetcher::DB_TABLE . "`
-			ON `" . TutorFetcher::DB_TABLE . "`.`" . TutorFetcher::DB_COLUMN_USER_ID . "` = `user`.id
-			INNER JOIN `" . MajorFetcher::DB_TABLE . "`
-			ON `" . MajorFetcher::DB_TABLE . "`.`" . MajorFetcher::DB_COLUMN_ID . "` = `" . TutorFetcher::DB_TABLE . "`.`"
-			. TutorFetcher::DB_COLUMN_MAJOR_ID . "`
 			WHERE user.id = :id";
 
 		try {

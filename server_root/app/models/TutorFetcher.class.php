@@ -69,9 +69,14 @@ class TutorFetcher
 
 
 	public static function retrieveSingle($db, $id) {
-		$query = "SELECT `" . self::DB_COLUMN_MAJOR_ID . "`, `" . self::DB_COLUMN_USER_ID . "`
+		$query =
+			"SELECT `" . self::DB_COLUMN_MAJOR_ID . "`, `" . self::DB_COLUMN_USER_ID . "`, `" . MajorFetcher::DB_TABLE .
+			"`.`" . MajorFetcher::DB_COLUMN_CODE . "`,`" . MajorFetcher::DB_TABLE . "`.`" . MajorFetcher::DB_COLUMN_NAME . "`
 		FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
-		WHERE `" . self::DB_COLUMN_USER_ID . "`=:id";
+		INNER JOIN `" . MajorFetcher::DB_TABLE . "`
+			ON `" . MajorFetcher::DB_TABLE . "`.`" . MajorFetcher::DB_COLUMN_ID . "` = `" . TutorFetcher::DB_TABLE . "`.`"
+			. TutorFetcher::DB_COLUMN_MAJOR_ID . "`
+		WHERE `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_USER_ID . "`=:id";
 
 		try {
 			$query = $db->getConnection()->prepare($query);
@@ -80,7 +85,7 @@ class TutorFetcher
 			$query->execute();
 			return $query->fetch(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
-			throw new Exception("Something terrible happened . Could not retrieve tutor data from database .: ");
+			throw new Exception("Something terrible happened . Could not retrieve tutor data from database." . $e->getMessage());
 		} // end catch
 	}
 

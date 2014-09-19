@@ -57,8 +57,11 @@ class ReportFetcher
 		date_default_timezone_set('Europe/Athens');
 
 		$query =
-			"SELECT `" . self::DB_COLUMN_CODE . "`, `" . self::DB_COLUMN_NAME . "`, `" . self::DB_COLUMN_ID . "`
-			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "` order by `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` desc";
+			"SELECT `" . self::DB_COLUMN_STUDENT_ID . "`, `" . self::DB_COLUMN_INSTRUCTOR_ID . "`,
+			`" . self::DB_COLUMN_STUDENT_CONCERNS . "`			, `" . self::DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES . "`
+			, `" . self::DB_COLUMN_ADDITIONAL_COMMENTS . "`
+			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+			ORDER BY `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` DESC";
 
 		try {
 			$query = $db->getConnection()->prepare($query);

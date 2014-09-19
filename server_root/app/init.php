@@ -73,13 +73,13 @@ try {
 		} else if (strcmp($data['type'], 'admin') === 0) {
 			$user = new Admin($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active']);
 		} else {
-			throw new Exception("Something terrible has happened with the database. <br/>The software developers will tremble with fear.");
+			throw new Exception("Something terrible has happened with the database. <br/>The software developers will tremble with fear." . var_dump($id));
 		}
 	}
 
 } catch (Exception $e) {
 	// if no database connection available this app is not able to work.
 	$errors[] = $e->getMessage();
-	header('Location: ' . BASE_URL . 'error-500.php');
-	exit();
+//	header('Location: ' . BASE_URL . 'error-500.php');
+//	exit();
 }
