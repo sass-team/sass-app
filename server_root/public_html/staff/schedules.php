@@ -331,7 +331,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 										<div class='input-group date' id='dateTimePickerStart'>
 											<span class="input-group-addon"><label for="dateTimePickerStart">
 													Starts At</label></span>
-											<input type='text' name='dateTimePickerStart' class="form-control" required data-date-format="DD"/>
+											<input type='text' name='dateTimePickerStart' class="form-control" required />
                                  <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
 										</div>
 									</div>

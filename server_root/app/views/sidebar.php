@@ -31,7 +31,7 @@
 			</a>
 		</li>
 
-		<li class="dropdown <?php if ($section == "workshops") {
+		<li class="dropdown <?php if ($section == "appointments") {
 			echo "active";
 		} ?>">
 			<a href="javascript:;">
@@ -42,7 +42,7 @@
 
 			<ul class="sub-nav">
 				<li>
-					<a href="<?php echo BASE_URL; ?>workshops/overview">
+					<a href="<?php echo BASE_URL; ?>appointments/">
 						<i class="fa fa-dashboard"></i>
 						All
 					</a>
@@ -50,7 +50,7 @@
 
 				<?php if (!$user->isTutor()): ?>
 					<li>
-						<a href="<?php echo BASE_URL; ?>workshops/add">
+						<a href="<?php echo BASE_URL; ?>appointments/add">
 							<i class="fa fa-plus-square"></i>
 							Add
 						</a>

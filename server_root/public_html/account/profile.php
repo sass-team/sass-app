@@ -226,7 +226,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 									<div class="portlet-content">
 
-										<div id="workshops-calendar"></div>
+										<div id="appointments-calendar"></div>
 									</div>
 								</div>
 							</div>
@@ -266,7 +266,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 <script type="text/javascript">
 	$(function () {
-		$("#workshops-calendar").fullCalendar({
+		$("#appointments-calendar").fullCalendar({
 			header: {
 				left: 'prev,next',
 				center: 'title',

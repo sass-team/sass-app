@@ -11,7 +11,7 @@ if ($user->isTutor()) {
 
 // viewers
 $pageTitle = "New Workshop";
-$section = "workshops";
+$section = "appointments";
 
 try {
 	$courses = CourseFetcher::retrieveAll($db);
@@ -24,7 +24,7 @@ try {
 	if (isBtnAddStudentPrsd()) {
 		Appointment::add($db, $_POST['dateTimePickerStart'], $_POST['dateTimePickerEnd'], $_POST['courseId'],
 			$_POST['studentsIds'], $_POST['tutorId'], $_POST['instructorId'], $_POST['termId']);
-		header('Location: ' . BASE_URL . 'workshops/add/success');
+		header('Location: ' . BASE_URL . 'appointments/add/success');
 		exit();
 	}
 } catch (Exception $e) {
@@ -127,7 +127,7 @@ function get($objects, $findId, $column) {
 						<div class="portlet-content">
 
 							<div class="form-group">
-								<form method="post" id="add-student-form" action="<?php echo BASE_URL . 'workshops/add'; ?>"
+								<form method="post" id="add-student-form" action="<?php echo BASE_URL . 'appointments/add'; ?>"
 								      class="form">
 
 									<div class="form-group">
@@ -247,7 +247,7 @@ function get($objects, $findId, $column) {
 
 						<div class="portlet-content">
 
-							<div id="workshops-calendar"></div>
+							<div id="appointments-calendar"></div>
 						</div>
 					</div>
 
@@ -294,7 +294,7 @@ function get($objects, $findId, $column) {
 		$("#instructorId").select2();
 		$("#studentsIds").select2();
 		$("#tutorId").select2();
-		$("#workshops-calendar").fullCalendar({
+		$("#appointments-calendar").fullCalendar({
 			header: {
 				left: 'prev,next',
 				center: 'title',
@@ -308,17 +308,17 @@ function get($objects, $findId, $column) {
 				<?php	if(sizeof($appointments) <= 1){
 					foreach($appointments as $appointment){
 						$course = get($courses, $appointment[AppointmentFetcher::DB_COLUMN_COURSE_ID], CourseFetcher::DB_COLUMN_ID);
-						include(ROOT_PATH . "app/views/partials/workshops/fullcalendar-single.php");
+						include(ROOT_PATH . "app/views/partials/appointments/fullcalendar-single.php");
 					}
 				 }else{
 				   for($i = 0; $i < (sizeof($appointments) - 1); $i++){
 				   $course = get($courses, $appointments[$i][AppointmentFetcher::DB_COLUMN_COURSE_ID], CourseFetcher::DB_COLUMN_ID);
-				      include(ROOT_PATH . "app/views/partials/workshops/fullcalendar-multi.php");
+				      include(ROOT_PATH . "app/views/partials/appointments/fullcalendar-multi.php");
 					}
 					$lastAppointmentIndex = sizeof($appointments)-1;
 					$id = $lastAppointmentIndex;
 					$course = get($courses, $appointments[$i][AppointmentFetcher::DB_COLUMN_COURSE_ID], CourseFetcher::DB_COLUMN_ID);
-					include(ROOT_PATH . "app/views/partials/workshops/fullcalendar-multi.php");
+					include(ROOT_PATH . "app/views/partials/appointments/fullcalendar-multi.php");
 
 				}
 				?>
@@ -326,37 +326,57 @@ function get($objects, $findId, $column) {
 			timeFormat: 'H(:mm)' // uppercase H for 24-hour clock
 		});
 
+		var startDateDefault;
+
+		if (moment().minute() >= 30) {
+			startDateDefault = moment().add('1', 'hours');
+			startDateDefault.minutes(0);
+		} else {
+			startDateDefault = moment();
+			startDateDefault.minutes(30);
+		}
+		var minimumStartDate = startDateDefault.clone();
+		minimumStartDate.subtract('31', 'minutes')
+		var minimumMaxDate = moment().add('14', 'day');
+
+		var endDateDefault = startDateDefault.clone();
+		endDateDefault.add('30', 'minutes');
+		var minimumEndDate = endDateDefault.clone();
+		minimumEndDate.subtract('31', 'minutes')
+
 		$('#dateTimePickerStart').datetimepicker({
-			defaultDate: moment(),
-			minDate: moment().subtract('1', 'day'),
-			minuteStepping: 10,
+			defaultDate: startDateDefault,
+			minDate: minimumStartDate,
+			maxDate: minimumMaxDate,
+			minuteStepping: 30,
 			daysOfWeekDisabled: [0, 6],
-			sideBySide: true
+			sideBySide: true,
+			strict: true
 		});
-		var $startSessionMoment = moment($('#dateTimePickerStart').data("DateTimePicker").getDate());
-		var dateEnd = moment().add(30, 'minutes');
-
 		$('#dateTimePickerEnd').datetimepicker({
-			defaultDate: dateEnd,
-			minDate: $startSessionMoment,
-			minuteStepping: 10,
+			defaultDate: endDateDefault,
+			minDate: minimumEndDate,
+			minuteStepping: 30,
 			daysOfWeekDisabled: [0, 6],
-			sideBySide: true
+			sideBySide: true,
+			strict: true
 		});
-		var $endSessionMoment = moment($('#dateTimePickerEnd').data("DateTimePicker").getDate());
-
 		$("#dateTimePickerStart").on("dp.change", function (e) {
-			var momentStart = $endSessionMoment;
-			var momentEnd = momentStart.clone();
-			var momentMinEnd = momentStart.clone();
+			var newEndDateDefault = startDateDefault.clone();
+			newEndDateDefault.add('30', 'minutes');
+			var newMinimumEndDate = newEndDateDefault.clone();
+			newMinimumEndDate.subtract('31', 'minutes')
 
-			$('#dateTimePickerEnd').data("DateTimePicker").setMinDate(momentMinEnd.add(20, 'minutes'));
-			$('#dateTimePickerEnd').data("DateTimePicker").setDate(momentEnd.add(30, 'minutes'));
+			$('#dateTimePickerEnd').data("DateTimePicker").setMinDate(newMinimumEndDate);
+			$('#dateTimePickerEnd').data("DateTimePicker").setDate(newEndDateDefault);
 		});
+		//		var startSessionMoment = moment($('#dateTimePickerStart').data("DateTimePicker").getDate());
+//		var dateEnd = startSessionMoment.add(30, 'minutes');
+//
+//		var endSessionMoment = moment($('#dateTimePickerEnd').data("DateTimePicker").getDate());
 
 
-	})
-	;
+	});
 </script>
 
 </body>

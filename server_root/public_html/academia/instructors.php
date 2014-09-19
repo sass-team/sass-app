@@ -49,7 +49,7 @@ try {
 
 		} else {
 			throw new Exception("Either you're trying to hack this app or something wrong went. In either case the
-            developers we just notified about this");
+            developers were just notified about this.");
 		}
 
 	} else if (isBtnSavePrsd()) {
