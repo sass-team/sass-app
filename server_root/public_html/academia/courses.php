@@ -23,9 +23,9 @@ try {
 		$newCourseName = trim($_POST['courseNameUpdate']);
 		$updateDone = false;
 
-		if (($course = getCourse($courseId, $courses)) !== false) {
-			$oldCourseCodeName = $course[CourseFetcher::DB_COLUMN_CODE];
-			$oldCourseName = $course[CourseFetcher::DB_COLUMN_NAME];
+		if (($schedule = getCourse($courseId, $courses)) !== false) {
+			$oldCourseCodeName = $schedule[CourseFetcher::DB_COLUMN_CODE];
+			$oldCourseName = $schedule[CourseFetcher::DB_COLUMN_NAME];
 
 
 			$updateDone = $updateDone || Course::updateName($db, $courseId, $newCourseName, $oldCourseName);
@@ -190,7 +190,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 								<tbody>
 
 								<?php
-								foreach ($courses as $course) {
+								foreach ($courses as $schedule) {
 									include(ROOT_PATH . "app/views/partials/course/table-data-view.html.php");
 								} ?>
 								</tbody>

@@ -7,7 +7,7 @@
  */
 ?>
 <?php
-$courseName = $course[CourseFetcher::DB_COLUMN_NAME];
+$courseName = $schedule[CourseFetcher::DB_COLUMN_NAME];
 $dateStart = new DateTime($appointment[AppointmentFetcher::DB_COLUMN_START_TIME]);
 $dateEnd = new DateTime($appointment[AppointmentFetcher::DB_COLUMN_END_TIME]);
 ?>

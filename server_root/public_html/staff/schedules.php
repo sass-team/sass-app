@@ -72,7 +72,6 @@ try {
 	} else if (isUrlRequestingSchedules($user)) {
 
 		if (isBtnAddStudentPrsd()) {
-			var_dump($_POST);
 			Schedule::add($db, $_POST['dateTimePickerStart'], $_POST['dateTimePickerEnd'], $_POST['tutorId'],
 				$_POST['termId']);
 			header('Location: ' . BASE_URL . 'staff/schedules/success');

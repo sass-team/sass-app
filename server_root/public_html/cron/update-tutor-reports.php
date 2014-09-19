@@ -7,11 +7,11 @@
  */
 
 require __DIR__ . '/../../app/init.php';
-$appointments = AppointmentFetcher::retrieveCompletedWithoutReports($db);
-var_dump($appointments);
+$schedules = AppointmentFetcher::retrieveCompletedWithoutReports($db);
+var_dump($schedules);
 
-foreach ($appointments as $appointment) {
-	$appointment = $appointments[0];
+foreach ($schedules as $appointment) {
+	$appointment = $schedules[0];
 
 	$reportId = ReportFetcher::insert($db, $appointment[AppointmentHasStudentFetcher::DB_COLUMN_STUDENT_ID],
 		$appointment[AppointmentHasStudentFetcher::DB_TABLE . "_" . AppointmentHasStudentFetcher::DB_COLUMN_ID],
