@@ -363,7 +363,8 @@ function get($objects, $findId, $column) {
 			strict: true
 		});
 		$("#dateTimePickerStart").on("dp.change", function (e) {
-			var newEndDateDefault = startDateDefault.clone();
+			var newEndDateDefault =$('#dateTimePickerStart').data("DateTimePicker").getDate().clone();
+
 			newEndDateDefault.add('30', 'minutes');
 			var newMinimumEndDate = newEndDateDefault.clone();
 			newMinimumEndDate.subtract('31', 'minutes')
