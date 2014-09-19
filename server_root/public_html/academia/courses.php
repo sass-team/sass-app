@@ -190,7 +190,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 								<tbody>
 
 								<?php
-								foreach ($courses as $schedule) {
+								foreach ($courses as $course) {
 									include(ROOT_PATH . "app/views/partials/course/table-data-view.html.php");
 								} ?>
 								</tbody>
@@ -447,7 +447,6 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 		$(".btnUpdateCourse").click(function () {
 			var courseId = $(this).next().next('input').val();
-			alert(courseId);
 			var courseName = ($(this).parent().prev().text());
 
 			var courseCode = ($(this).parent().prev().prev().text());

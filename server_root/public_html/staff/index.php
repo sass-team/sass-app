@@ -186,7 +186,10 @@ $section = "staff";
 
 			</div>
 			<!-- /#content-container -->
-		<?php else: ?>
+
+		<?php
+		// show all users
+		else: ?>
 
 			<div id="content-container">
 				<?php
@@ -263,7 +266,7 @@ $section = "staff";
 										<?php
 										if (empty($errors) === true) {
 											foreach (array_reverse($users) as $curUser) {
-												include(ROOT_PATH . "app/views/partials/user-table-data-view.html.php");
+												include(ROOT_PATH . "app/views/partials/user/all-table-data-view.html.php");
 											}
 										} ?>
 										</tbody>
