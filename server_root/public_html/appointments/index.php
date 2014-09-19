@@ -4,8 +4,8 @@ $general->loggedOutProtect();
 
 
 // viewers
-$pageTitle = "Workshops";
-$section = "workshops";
+$pageTitle = "Appointments";
+$section = "appointments";
 
 try {
 	$courses = CourseFetcher::retrieveAll($db);
@@ -44,8 +44,8 @@ function get($objects, $findId, $column) {
 }
 
 // viewers
-$pageTitle = "Workshops";
-$section = "workshops";
+$pageTitle = "All Appointments";
+$section = "appointments";
 ?>
 
 
@@ -73,8 +73,10 @@ $section = "workshops";
 
 			<h1>
 				<i class="fa fa-calendar"></i>
-				Full Workshop Session Calendar
+				New Workshop Session
+
 			</h1>
+
 
 		</div>
 		<!-- #content-header -->
@@ -104,7 +106,7 @@ $section = "workshops";
 						<!-- /.portlet-header -->
 						<div class="portlet-content">
 
-							<div id="workshops-calendar"></div>
+							<div id="appointments-calendar"></div>
 						</div>
 
 					</div>
@@ -114,21 +116,16 @@ $section = "workshops";
 		</div>
 		<!-- /#content-container -->
 
-
+		<div id="push"></div>
 	</div>
 	<!-- #content -->
-
 
 	<?php include ROOT_PATH . "app/views/footer.php"; ?>
 </div>
 <!-- #wrapper<!-- #content -->
 
-</body>
-</html>
-
 <?php include ROOT_PATH . "app/views/assets/footer_common.php"; ?>
 
-<!-- dashboard assets -->
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/autosize/jquery.autosize.min.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/textarea-counter/jquery.textarea-counter.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/select2/select2.js"></script>
@@ -139,11 +136,15 @@ $section = "workshops";
 </script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/fullcalendar/fullcalendar.min.js"></script>
 
+
 <script type="text/javascript">
 	$(function () {
+		// http://momentjs.com/docs/#/manipulating/add/
+		// http://eonasdan.github.io/bootstrap-datetimepicker
 		moment().format();
 
-		$("#workshops-calendar").fullCalendar({
+
+		$("#appointments-calendar").fullCalendar({
 			header: {
 				left: 'prev,next',
 				center: 'title',
@@ -157,17 +158,17 @@ $section = "workshops";
 				<?php	if(sizeof($appointments) <= 1){
 					foreach($appointments as $appointment){
 						$course = get($courses, $appointment[AppointmentFetcher::DB_COLUMN_COURSE_ID], CourseFetcher::DB_COLUMN_ID);
-						include(ROOT_PATH . "app/views/partials/workshops/fullcalendar-single.php");
+						include(ROOT_PATH . "app/views/partials/appointments/fullcalendar-single.php");
 					}
 				 }else{
 				   for($i = 0; $i < (sizeof($appointments) - 1); $i++){
 				   $course = get($courses, $appointments[$i][AppointmentFetcher::DB_COLUMN_COURSE_ID], CourseFetcher::DB_COLUMN_ID);
-				      include(ROOT_PATH . "app/views/partials/workshops/fullcalendar-multi.php");
+				      include(ROOT_PATH . "app/views/partials/appointments/fullcalendar-multi.php");
 					}
 					$lastAppointmentIndex = sizeof($appointments)-1;
 					$id = $lastAppointmentIndex;
 					$course = get($courses, $appointments[$i][AppointmentFetcher::DB_COLUMN_COURSE_ID], CourseFetcher::DB_COLUMN_ID);
-					include(ROOT_PATH . "app/views/partials/workshops/fullcalendar-multi.php");
+					include(ROOT_PATH . "app/views/partials/appointments/fullcalendar-multi.php");
 
 				}
 				?>
@@ -175,7 +176,10 @@ $section = "workshops";
 			timeFormat: 'H(:mm)' // uppercase H for 24-hour clock
 		});
 
-	});
 
-
+	})
+	;
 </script>
+
+</body>
+</html>
