@@ -124,7 +124,11 @@ $section = "account";
 										<a class="accordion-toggle" data-toggle="collapse" data-parent=".accordion"
 										   href="#collapseOne">
 											<i class="fa fa-book"></i> Current Teaching Courses
-											- <?php echo $teachingCourses[0][TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_NAME]; ?>
+											- <?php
+											if (!empty($teachingCourses)):
+												echo $teachingCourses[0][TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_NAME];
+											endif;
+											?>
 										</a>
 									</h4>
 								</div>
