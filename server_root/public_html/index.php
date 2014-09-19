@@ -627,7 +627,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 	<div class="portlet-content">
 
 
-		<div id="workshops-calendar"></div>
+		<div id="appointments-calendar"></div>
 
 
 	</div>
@@ -694,7 +694,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 			});
 		}
 
-		$("#workshops-calendar").fullCalendar({
+		$("#appointments-calendar").fullCalendar({
 			header: {
 				left: 'prev,next',
 				center: 'title',
@@ -708,17 +708,17 @@ require ROOT_PATH . 'app/views/sidebar.php';
 				<?php	if(sizeof($appointments) <= 1){
 					foreach($appointments as $appointment){
 						$course = get($courses, $appointment[AppointmentFetcher::DB_COLUMN_COURSE_ID], CourseFetcher::DB_COLUMN_ID);
-						include(ROOT_PATH . "app/views/partials/workshops/fullcalendar-single.php");
+						include(ROOT_PATH . "app/views/partials/appointments/fullcalendar-single.php");
 					}
 				 }else{
 				   for($i = 0; $i < (sizeof($appointments) - 1); $i++){
 				   $course = get($courses, $appointments[$i][AppointmentFetcher::DB_COLUMN_COURSE_ID], CourseFetcher::DB_COLUMN_ID);
-				      include(ROOT_PATH . "app/views/partials/workshops/fullcalendar-multi.php");
+				      include(ROOT_PATH . "app/views/partials/appointments/fullcalendar-multi.php");
 					}
 					$lastAppointmentIndex = sizeof($appointments)-1;
 					$id = $lastAppointmentIndex;
 					$course = get($courses, $appointments[$i][AppointmentFetcher::DB_COLUMN_COURSE_ID], CourseFetcher::DB_COLUMN_ID);
-					include(ROOT_PATH . "app/views/partials/workshops/fullcalendar-multi.php");
+					include(ROOT_PATH . "app/views/partials/appointments/fullcalendar-multi.php");
 
 				}
 				?>
