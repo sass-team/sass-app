@@ -43,6 +43,7 @@ class Tutor extends User
 		}
 	}
 
+
 	public static function retrieveCoursesNotTeaching($db, $id) {
 		$query =
 			"SELECT `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_CODE . "` AS 'code', `" . CourseFetcher::DB_TABLE . "`.`" .

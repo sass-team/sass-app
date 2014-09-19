@@ -27,6 +27,7 @@ $mobile = $curUser[UserFetcher::DB_COLUMN_MOBILE];
 	<td class="text-center"><?php echo $position ?></td>
 	<td class="text-center"><?php echo $mobile ?></td>
 
+	<!-- profile -->
 	<td class="text-center">
 		<a data-toggle="modal" href="<?php echo BASE_URL . "users/" . $id; ?>"
 		   class="btn btn-default btn-sm center-block">
@@ -34,11 +35,12 @@ $mobile = $curUser[UserFetcher::DB_COLUMN_MOBILE];
 		</a>
 	</td>
 
-	<?php if (!$user->isTutor() && User::isUserTypeTutor($position)): ?>
+	<!--- teaching -->
+	<?php if (!$user->isTutor()): ?>
 		<td class="text-center">
 			<a class="btn btn-default btn-sm center-block ui-popover" data-toggle="tooltip" data-placement="right"
 			   data-trigger="hover"
-			   data-content="Sed posuere consectetur est at lobortis. Aenean eu leo quam." title="Teaching Courses">
+			   data-content="course1 | course2 | course3" title="Teaching Courses">
 				<i class="fa fa-book"></i> Courses
 			</a>
 		</td>

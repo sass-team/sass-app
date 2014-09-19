@@ -13,7 +13,7 @@ class Tutor_has_course_has_schedule
 	public static function addCourses($db, $id, $coursesIds, $termId) {
 		self::validateCoursesId($db, $coursesIds);
 		Term::validateId($db, $termId);
-		Tutor_has_course_has_scheduleFetcher::insertMany($db, $id, $coursesIds, $termId);
+		Tutor_has_course_has_termFetcher::insertMany($db, $id, $coursesIds, $termId);
 	}
 
 	public static function validateCoursesId($db, $coursesId) {

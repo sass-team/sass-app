@@ -2,6 +2,15 @@
 require __DIR__ . '/../../app/init.php';
 $general->loggedOutProtect();
 
+try {
+
+	$curUser = $user;
+	if ($curUser->isTutor()) {
+		$teachingCourses = TutorFetcher::retrieveCurrTermTeachingCourses($db, $curUser->getId());
+	}
+} catch (Exception $e) {
+	$errors[] = $e->getMessage();
+}
 $page_title = "My Account - Profile";
 $section = "account";
 ?>
@@ -62,13 +71,9 @@ $section = "account";
 
 							<h4>Position: <?php echo ucfirst($user->getUserType()) ?></h4>
 
-							<hr/>
-
-							<p>
-								<a href="javascript:;" class="btn btn-primary">Follow Rod</a>
-								&nbsp;&nbsp;
-								<a href="javascript:;" class="btn btn-secondary">Send Message</a>
-							</p>
+							<?php
+							//							TODO: add functionality instant messages
+							?>
 
 							<hr/>
 
@@ -81,7 +86,7 @@ $section = "account";
 								<li><i class="icon-li fa fa-book"></i>Major: <strong><?php echo $user->getMajorId(); ?></strong>
 								</li>
 
-							<?php } ?>
+								<?php } ?>
 							</ul>
 							<br/>
 							<br/>
@@ -102,98 +107,91 @@ $section = "account";
 				</div>
 
 			</div>
-			<!-- /.row -->
-			<div class="row">
 
-				<div class="col-md-10">
-					<h3 class="heading">Special Information</h3>
+			<?php if ($curUser->isTutor()): ?>
+				<!-- /.row -->
+				<div class="row">
+
+					<div class="col-md-10">
+						<h3 class="heading">Special Information</h3>
 
 
-					<div class="panel-group accordion" id="accordion">
+						<div class="panel-group accordion" id="accordion">
 
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<h4 class="panel-title">
-									<a class="accordion-toggle" data-toggle="collapse" data-parent=".accordion"
-									   href="#collapseOne">
-										<i class="fa fa-book"></i> Current Teaching Courses
-									</a>
-								</h4>
-							</div>
-
-							<div id="collapseOne" class="panel-collapse collapse in">
-								<div class="panel-body">
-									<table class="table table-hover">
-										<thead>
-										<tr>
-											<th>#</th>
-											<th>Course Code</th>
-											<th>Course Name</th>
-											<th>Status</th>
-										</tr>
-										</thead>
-										<tbody>
-										<tr>
-											<td>1</td>
-											<td>Larry</td>
-											<td>Smith</td>
-											<td>
-												<span class="label label-success">In progress</span>
-											</td>
-										</tr>
-										<tr>
-											<td>2</td>
-											<td>Mark</td>
-											<td>Williams</td>
-											<td>
-												<span class="label label-success">In progress</span>
-											</td>
-										</tr>
-										<tr>
-											<td>3</td>
-											<td>Jeremy</td>
-											<td>Jones</td>
-											<td>
-												<span class="label label-success">In progress</span>
-											</td>
-										</tr>
-										</tbody>
-									</table>
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title">
+										<a class="accordion-toggle" data-toggle="collapse" data-parent=".accordion"
+										   href="#collapseOne">
+											<i class="fa fa-book"></i> Current Teaching Courses
+											- <?php echo $teachingCourses[0][TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_NAME]; ?>
+										</a>
+									</h4>
 								</div>
-							</div>
-						</div>
-						<!-- /.panel-default -->
 
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<h4 class="panel-title">
-									<a class="accordion-toggle" data-toggle="collapse" data-parent=".accordion"
-									   href="#collapseTwo">
-										<i class="fa fa-clock-o"></i> Current Schedule
-									</a>
-								</h4>
-							</div>
+								<div id="collapseOne" class="panel-collapse collapse in">
+									<div class="panel-body">
+										<table class="table table-hover">
+											<thead>
+											<tr>
+												<th class="text-center">#</th>
+												<th class="text-center">Course Code</th>
+												<th class="text-center">Course Name</th>
+												<th class="text-center">Status</th>
+											</tr>
+											</thead>
+											<tbody>
 
-							<div id="collapseTwo" class="panel-collapse collapse">
-								<div class="panel-body">
-									<div class="well">
-										Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad
-										squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa
-										nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
-										single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft
-										beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher
-										vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt
-										you probably haven't heard of them accusamus labore sustainable VHS.
+											<?php
+											if (empty($errors) === true) {
+												$counter = 1;
+												foreach ($teachingCourses as $course) {
+													include(ROOT_PATH . "app/views/partials/course/table-data-profile-view.html.php");
+													$counter = $counter + 1;
+												}
+											} ?>
+											</tbody>
+										</table>
 									</div>
 								</div>
 							</div>
-						</div>
-						<!-- /.panel-default -->
-					</div>
-					<!-- /.accordion -->
-				</div>
+							<!-- /.panel-default -->
 
-			</div>
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title">
+										<a class="accordion-toggle" data-toggle="collapse" data-parent=".accordion"
+										   href="#collapseTwo">
+											<i class="fa fa-clock-o"></i> Current Schedule
+										</a>
+									</h4>
+								</div>
+
+								<div id="collapseTwo" class="panel-collapse collapse">
+									<div class="panel-body">
+										<div class="well">
+											Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson
+											ad
+											squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck
+											quinoa
+											nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
+											single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica,
+											craft
+											beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher
+											vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth
+											nesciunt
+											you probably haven't heard of them accusamus labore sustainable VHS.
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- /.panel-default -->
+						</div>
+						<!-- /.accordion -->
+					</div>
+
+				</div>
+			<?php endif; ?>
 		</div>
 		<!-- /#content-container -->
 

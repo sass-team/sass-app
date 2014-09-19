@@ -51,11 +51,15 @@ try {
 
 	if (strcmp($data['type'], 'tutor') === 0) {
 		$tutor = TutorFetcher::retrieveSingle($db, $userId);
-		$curUser = new Tutor($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active'], $tutor[TutorFetcher::DB_COLUMN_MAJOR_ID]);
+		$curUser = new Tutor($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'],
+			$data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active'],
+			$tutor[MajorFetcher::DB_COLUMN_NAME]);
 	} else if (strcmp($data['type'], 'secretary') === 0) {
-		$curUser = new Secretary($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active']);
+		$curUser = new Secretary($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'],
+			$data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active']);
 	} else if (strcmp($data['type'], 'admin') === 0) {
-		$curUser = new Admin($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active']);
+		$curUser = new Admin($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'],
+			$data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active']);
 	} else {
 		throw new Exception("Something terrible has happened with the database. <br/>The software developers will tremble with fear.");
 	}
@@ -127,18 +131,11 @@ $section = "users";
 
 							<hr/>
 
-							<p>
-								<a href="javascript:;" class="btn btn-primary">Follow Rod</a>
-								&nbsp;&nbsp;
-								<a href="javascript:;" class="btn btn-secondary">Send Message</a>
-							</p>
-
-							<hr/>
 
 
 							<ul class="icons-list">
 								<li><i class="icon-li fa fa-envelope"></i> <?php echo $curUser->getEmail(); ?></li>
-								<li><i class="icon-li fa fa-phone"></i> <?php echo $curUser->getMobileNum() ?></li>
+								<li><i class="icon-li fa fa-phone"></i>Mobile: <?php echo $curUser->getMobileNum() ?></li>
 							</ul>
 							<?php if ($curUser->isTutor()) { ?>
 

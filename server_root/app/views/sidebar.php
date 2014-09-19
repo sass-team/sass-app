@@ -44,7 +44,7 @@
 				<li>
 					<a href="<?php echo BASE_URL; ?>workshops/overview">
 						<i class="fa fa-dashboard"></i>
-						Overview
+						All
 					</a>
 				</li>
 
@@ -72,7 +72,7 @@
 				<li>
 					<a href="<?php echo BASE_URL; ?>reports/">
 						<i class="fa fa-dashboard"></i>
-						Overview
+						All
 					</a>
 				</li>
 
@@ -104,9 +104,9 @@
 
 			<ul class="sub-nav">
 				<li>
-					<a href="<?php echo BASE_URL; ?>users/overview">
+					<a href="<?php echo BASE_URL; ?>users/">
 						<i class="fa fa-dashboard"></i>
-						Overview
+						All
 					</a>
 				</li>
 
@@ -114,7 +114,7 @@
 					<li>
 						<a href="<?php echo BASE_URL; ?>users#schedule">
 							<i class="fa fa-calendar"></i>
-							Schedule
+							Schedules
 						</a>
 					</li>
 				<?php endif; ?>
@@ -133,10 +133,10 @@
 
 
 		<?php if (!$user->isTutor()) { ?>
-			<li class="dropdown <?php if ($section == "academia") {
+			<li class="dropdown <?php if (strcmp($section, "academia") === 0) {
 				echo "active";
 			} ?>">
-				<a href="javascript:;">
+				<a href="javascript:">
 					<i class="fa fa-university"></i>
 					Academia
 					<span class="caret"></span>

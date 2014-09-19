@@ -73,7 +73,7 @@ try {
 
 	// retrieve courses data only user type is tutor
 	if ($curUser->isTutor()) {
-		$teachingCourses = Tutor::retrieveTeachingCourses($db, $curUser->getId());
+		$teachingCourses = TutorFetcher::retrieveCurrTermTeachingCourses($db, $curUser->getId());
 		$notTeachingCourses = Tutor::retrieveCoursesNotTeaching($db, $curUser->getId());
 		$majors = MajorFetcher::retrieveMajors($db);
 		$terms = TermFetcher::retrieveAll($db);
@@ -207,7 +207,9 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 <div id="content-header">
 	<h1>Settings
-		- <?php echo "<strong>" . $curUser->getFirstName() . " " . $curUser->getLastName() . "</strong>"; ?></h1>
+		- <?php echo "<strong>" . $curUser->getFirstName() . " " . $curUser->getLastName() . "</strong>";
+		?>
+	</h1>
 </div>
 <!-- #content-header -->
 
@@ -287,6 +289,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 					<h3>
 						<i class="fa fa-table"></i>
 						Teaching Courses
+						- <?php echo $teachingCourses[0][TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_NAME]; ?>
 					</h3>
 
 				</div>
@@ -316,8 +319,8 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 							<?php
 							if (empty($errors) === true) {
-								foreach ($teachingCourses as $teachingCourse) {
-									include(ROOT_PATH . "app/views/partials/tutor/table-data-view.html.php");
+								foreach ($teachingCourses as $course) {
+									include(ROOT_PATH . "app/views/partials/course/table-data-view.html.php");
 
 								}
 							} ?>
@@ -607,7 +610,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 										        multiple>
 
 											<?php
-											foreach ($notTeachingCourses as $teachingCourse) {
+											foreach ($notTeachingCourses as $course) {
 												include(ROOT_PATH . "app/views/partials/course/select-options-view.html.php");
 											}
 											?>
@@ -728,7 +731,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 								        class="form-control">
 
 
-									<?php foreach ($notTeachingCourses as $teachingCourse) {
+									<?php foreach ($notTeachingCourses as $course) {
 										include(ROOT_PATH . "app/views/partials/course/select-options-view.html.php");
 									}
 									?>
@@ -802,18 +805,20 @@ require ROOT_PATH . 'app/views/sidebar.php';
 		});
 
 		$("#teachingCourse").select2({
-			placeholder: "Select...");
-);
+			placeholder: "Select..."
+		});
 
 		$("#teachingCoursesMulti").select2({
-			placeholder: "Select courses...");
-);
+			placeholder: "Select courses..."
+		})
+		;
 
 		$("#term").select2();
 
 		$("#majorId").select2({
-			placeholder: "Select courses...");
-);
+			placeholder: "Select courses..."
+		})
+		;
 
 		$("#majorId").select2("val", "<?php echo $curUser->getMajorId(); ?>");
 
@@ -831,7 +836,8 @@ require ROOT_PATH . 'app/views/sidebar.php';
 			$courseId = $(this).next().next('input');
 			$("#hiddenUpdateCourseOldId").val($courseId.val());
 		});
-	});
+	})
+	;
 
 
 </script>

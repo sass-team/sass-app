@@ -49,8 +49,8 @@ $(function () {
 			value: value,
 			range: "min",
 			animate: true,
-			orientation: "vertical");
-);
+			orientation: "vertical"
+		});
 	});
     
 

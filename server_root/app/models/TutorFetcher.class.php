@@ -29,6 +29,34 @@ class TutorFetcher
 		}
 	}
 
+	public static function retrieveCurrTermTeachingCourses($db, $id) {
+		$query = "SELECT `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_ID . "`,
+		`" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_CODE . "` , `" . CourseFetcher::DB_TABLE . "`.`" .
+			CourseFetcher::DB_COLUMN_NAME . "`,	`" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_NAME . "` AS
+						" . TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_NAME . "
+			FROM `" . DB_NAME . "`.`" . CourseFetcher::DB_TABLE . "`
+			INNER JOIN `" . DB_NAME . "`.`" . Tutor_has_course_has_termFetcher::DB_TABLE . "`
+				ON `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_ID . "` = `" .
+			Tutor_has_course_has_termFetcher::DB_TABLE . "`.`" . Tutor_has_course_has_termFetcher::DB_COLUMN_COURSE_ID . "`
+			INNER JOIN `" . TermFetcher::DB_TABLE . "`
+				ON `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "` = `" .
+			Tutor_has_course_has_termFetcher::DB_TABLE . "`.`" . Tutor_has_course_has_termFetcher::DB_COLUMN_TERM_ID . "`
+			WHERE `" . Tutor_has_course_has_termFetcher::DB_COLUMN_TUTOR_USER_ID . "` = :tutorId
+			AND
+			(NOW() BETWEEN `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_END_DATE . "`)";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':tutorId', $id, PDO::PARAM_INT);
+
+			$query->execute();
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+
+		} catch (PDOException $e) {
+			throw new Exception("Could not retrieve teaching courses data from database.");
+		}
+	}
+
 	public static function retrieveAllAppointments($db, $id) {
 		$query =
 			"SELECT `" . AppointmentFetcher::DB_COLUMN_START_TIME . "`, `" . AppointmentFetcher::DB_COLUMN_END_TIME . "`,

@@ -21,8 +21,8 @@ require_once ROOT_PATH . "app/models/UserFetcher.class.php";
 require_once ROOT_PATH . "app/models/Admin.class.php";
 require_once ROOT_PATH . "app/models/Tutor.class.php";
 require_once ROOT_PATH . "app/models/TutorFetcher.class.php";
-require_once ROOT_PATH . "app/models/Tutor_has_course_has_schedule.class.php";
-require_once ROOT_PATH . "app/models/Tutor_has_course_has_scheduleFetcher.class.php";
+require_once ROOT_PATH . "app/models/TutorHasCourseHasTerm.class.php";
+require_once ROOT_PATH . "app/models/TutorHasCourseHasTermFetcher.class.php";
 require_once ROOT_PATH . "app/models/TermFetcher.class.php";
 require_once ROOT_PATH . "app/models/Term.class.php";
 require_once ROOT_PATH . "app/models/Appointment.class.php";
@@ -67,11 +67,15 @@ try {
 
 		if (strcmp($data['type'], 'tutor') === 0) {
 			$tutor = Tutor::getSingle($db, $id);
-			$user = new Tutor($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active'], $tutor[MajorFetcher::DB_COLUMN_NAME]);
+			$user = new Tutor($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'],
+				$data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active'],
+				$tutor[MajorFetcher::DB_COLUMN_NAME]);
 		} else if (strcmp($data['type'], 'secretary') === 0) {
-			$user = new Secretary($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active']);
+			$user = new Secretary($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'],
+				$data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active']);
 		} else if (strcmp($data['type'], 'admin') === 0) {
-			$user = new Admin($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active']);
+			$user = new Admin($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'],
+				$data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active']);
 		} else {
 			throw new Exception("Something terrible has happened with the database. <br/>The software developers will tremble with fear." . var_dump($id));
 		}
@@ -80,6 +84,6 @@ try {
 } catch (Exception $e) {
 	// if no database connection available this app is not able to work.
 	$errors[] = $e->getMessage();
-//	header('Location: ' . BASE_URL . 'error-500.php');
-//	exit();
+	header('Location: ' . BASE_URL . 'error-500.php');
+	exit();
 }

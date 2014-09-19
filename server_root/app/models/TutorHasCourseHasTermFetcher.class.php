@@ -6,7 +6,7 @@
  * Date: 9/14/2014
  * Time: 5:02 AM
  */
-class Tutor_has_course_has_scheduleFetcher
+class Tutor_has_course_has_termFetcher
 {
 	const DB_TABLE = "tutor_has_course_has_term";
 	const DB_COLUMN_TUTOR_USER_ID = "tutor_user_id";
