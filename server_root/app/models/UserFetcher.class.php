@@ -19,6 +19,7 @@ class UserFetcher
 	const DB_COLUMN_GEN_STRING = "gen_string";
 	const DB_COLUMN_USER_TYPES_ID = "user_types_id";
 	const DB_COLUMN_GEN_STRING_UPDATE_AT = "gen_string_update_at";
+	const DB_COLUMN_ACTIVE = "active";
 
 	public static function existsMobileNum($db, $newMobileNum) {
 
@@ -40,7 +41,9 @@ class UserFetcher
 
 	public static function retrieveUsingEmail($db, $email) {
 		$query = "SELECT `" . self::DB_COLUMN_ID . "`, `" . self::DB_COLUMN_FIRST_NAME . "`, `" .
-			self::DB_COLUMN_LAST_NAME . "` FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "` WHERE `" .
+			self::DB_COLUMN_LAST_NAME . "` , `" . self::DB_COLUMN_ACTIVE . "`
+			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+			WHERE `" .
 			self::DB_COLUMN_EMAIL . "`=:email";
 		try {
 			$query = $db->getConnection()->prepare($query);

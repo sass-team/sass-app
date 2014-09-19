@@ -99,28 +99,21 @@ abstract class User extends Person
 		}
 	}
 
-	public static function updateActiveStatus($db, $id, $newStatus, $oldStatus) {
-		throw new Exception("status changed has been disabled");
-//		$oldStatus = ($oldStatus == self::PASSWORD_EXPIRATION_TIME_HOURS) ? self::ACTIVE_STRING : self::DEACTIVE_STRING;
-//
-//		if ((strcmp($newStatus, $oldStatus) === 0) || (strcmp($newStatus, self::ACTIVE_STRING) !== 0 && strcmp($newStatus, self::DEACTIVE_STRING))) {
-//			throw new Exception("Tampered data detected. Aborting.");
-//		}
-//
-//		$accountStatus = strcmp($newStatus, self::ACTIVE_STRING) === 0 ? self::ACTIVE_STATUS : self::DEACTIVE_STATUS;
-//
-//		try {
-//			$query = "UPDATE `" . DB_NAME . "`.`user` SET `active`= :accountStatus WHERE `id`=:id";
-//			$query = $db->getConnection()->prepare($query);
-//			$query->bindParam(':accountStatus', $accountStatus, PDO::PARAM_INT);
-//			$query->bindParam(':id', $id, PDO::PARAM_INT);
-//
-//			$query->execute();
-//
-//			return true;
-//		} catch (PDOException $e) {
-//			throw new Exception("Something terrible happened. Could not retrieve users data from database.: "
-//		} // end catch
+	public static function updateActiveStatus($db, $id, $oldStatus) {
+		$newStatus = $oldStatus == 1 ? 0 : 1;
+
+		try {
+			$query = "UPDATE `" . DB_NAME . "`.`user` SET `active`= :accountStatus WHERE `id`=:id";
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':accountStatus', $newStatus, PDO::PARAM_INT);
+			$query->bindParam(':id', $id, PDO::PARAM_INT);
+
+			$query->execute();
+
+			return true;
+		} catch (PDOException $e) {
+			throw new Exception("Could not update database.");
+		} // end catch
 	}
 
 	static function updateProfile($db, $id, $firstName, $lastName, $prevMobileNum, $newMobileNum, $description) {

@@ -82,12 +82,12 @@ try {
 
 	if (isBtnAddTeachingCoursesPrsd()) {
 		Tutor_has_course_has_schedule::addCourses($db, $userId, $_POST['teachingCourses'], $_POST['term']);
-		header('Location: ' . BASE_URL . 'users/edit/:' . $userId . '/success');
+		header('Location: ' . BASE_URL . 'users/edit/' . $userId . '/success');
 		exit();
 
 	} else if (isBtnSubmitReplaceCourse()) {
 		Tutor::updateTeachingCourse($db, $curUser->getId(), $_POST['teachingCourse'], $_POST['hiddenUpdateCourseOldId']);
-		header('Location: ' . BASE_URL . 'users/edit/:' . $userId . '/success');
+		header('Location: ' . BASE_URL . 'users/edit/' . $userId . '/success');
 		exit();
 
 	} else if (isSaveBttnProfilePressed()) {
@@ -96,12 +96,11 @@ try {
 		$newFirstName = $_POST['firstName'];
 		$newLastName = $_POST['lastName'];
 		$newEmail = $_POST['email'];
-		$newMajorId = $_POST['majorId'];
 
 		$oldFirstName = $curUser->getFirstName();
 		$oldLastName = $curUser->getLastName();
 		$oldEmail = $curUser->getEmail();
-		$oldMajorId = $curUser->getMajorId();
+
 
 		if (strcmp($newFirstName, $oldFirstName) !== 0) {
 			$user->validateName($newFirstName);
@@ -121,26 +120,30 @@ try {
 			$newDataAdded = true;
 		}
 
-		$newDataAdded = Tutor::replaceMajorId($db, $userId, $newMajorId, $oldMajorId) || $newDataAdded;
+		if ($curUser->isTutor()) {
+			$newMajorId = isset($_POST['majorId']) ? $_POST['majorId'] : NULL;
+			$oldMajorId = $curUser->getMajorId();
+			$newDataAdded = Tutor::replaceMajorId($db, $userId, $newMajorId, $oldMajorId) || $newDataAdded;
+		}
 
 
 		if (!$newDataAdded) {
 			throw new Exception("No new data. No modifications were done.");
 		} else {
-			header('Location: ' . BASE_URL . 'users/edit/:' . $userId . '/success');
+			header('Location: ' . BASE_URL . 'users/edit/' . $userId . '/success');
 			exit();
 		}
 	} else if (isBtnDelTeachingCoursesPressed()) {
 		$curUser->deleteTeachingCourse($_POST['delCourseIdModal']);
-		header('Location: ' . BASE_URL . 'users/edit/:' . $userId . '/success');
+		header('Location: ' . BASE_URL . 'users/edit/' . $userId . '/success');
 		exit();
 	} else if (isBtnSbmtChangeuserTypePrsd()) {
 		$curUser->updateUserType($_POST['changeuserType']);
-		header('Location: ' . BASE_URL . 'users/edit/:' . $userId . '/success');
+		header('Location: ' . BASE_URL . 'users/edit/' . $userId . '/success');
 		exit();
 	} else if (isBtnSbmtChangeUserActivate()) {
-		User::updateActiveStatus($db, $curUser->getId(), $_POST['changeUserActive'], $curUser->isActive());
-		header('Location: ' . BASE_URL . 'users/edit/:' . $userId . '/success');
+		User::updateActiveStatus($db, $curUser->getId(), $curUser->isActive());
+		header('Location: ' . BASE_URL . 'users/edit/' . $userId . '/success');
 		exit();
 	}
 } catch (Exception $e) {
@@ -179,7 +182,7 @@ function isBtnSubmitReplaceCourse() {
 }
 
 
-$page_title = "Edit";
+$pageTitle = "Edit User";
 $section = "users";
 
 ?>
@@ -363,7 +366,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 	<br/>
 
-	<form action="<?php echo BASE_URL . 'users/edit/:' . $curUser->getId(); ?>"
+	<form action="<?php echo BASE_URL . 'users/edit/' . $curUser->getId(); ?>"
 	      class="form-horizontal" method="post">
 
 		<div class="form-group">

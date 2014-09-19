@@ -277,6 +277,7 @@ class Mailer
 	public static function sendRecover($db, $email) {
 		User::validateExistingEmail($db, $email, UserFetcher::DB_TABLE);
 		$user = UserFetcher::retrieveUsingEmail($db, $email);
+		if ($user[UserFetcher::DB_COLUMN_ACTIVE] != 1) throw new Exception("Sorry, you account has been activated.");
 		$id = $user[UserFetcher::DB_COLUMN_ID];
 		$name = $user[UserFetcher::DB_COLUMN_FIRST_NAME] . " " . $user[UserFetcher::DB_COLUMN_LAST_NAME];
 		$genString = User::generateNewPasswordString($db, $id);
