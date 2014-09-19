@@ -1,10 +1,39 @@
 <?php
 require __DIR__ . '/../app/init.php';
 $general->loggedOutProtect();
+try {
+	if (!$user->isTutor()) {
+		$courses = CourseFetcher::retrieveAll($db);
+		$appointments = AppointmentFetcher::retrieveAll($db);
+	} else {
+		$appointments = TutorFetcher::retrieveAllAppointments($db, $user->getId());
+		$courses = TutorFetcher::retrieveAllAppointments($db, $user->getId());
+	}
+
+} catch (Exception $e) {
+	$errors[] = $e->getMessage();
+}
 
 // viewers
-$pageTitle = "Dashboard - SASS Management System";
+$pageTitle = "Dashboard - SASS App";
 $section = "dashboard";
+
+
+/**
+ * http://stackoverflow.com/a/4128377/2790481
+ *
+ * @param $findId
+ * @param $objects
+ * @return bool
+ */
+function get($objects, $findId, $column) {
+	foreach ($objects as $object) {
+		if ($object[$column] === $findId) return $object;
+	}
+
+	return false;
+}
+
 ?>
 
 
@@ -55,6 +84,15 @@ require ROOT_PATH . 'app/views/sidebar.php';
 			<li><a href="javascript:;">Separated link</a></li>
 		</ul>
 	</div>
+	<?php
+	if (empty($errors) === false) {
+		?>
+		<div class="alert alert-danger">
+			<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+			<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
+			?>
+		</div>
+	<?php } ?>
 </div>
 
 <br/>
@@ -589,7 +627,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 	<div class="portlet-content">
 
 
-		<div id="full-calendar"></div>
+		<div id="workshops-calendar"></div>
 
 
 	</div>
@@ -609,9 +647,6 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <?php include ROOT_PATH . "app/views/footer.php"; ?>
 </div>
 <!-- #wrapper<!-- #content -->
-
-</body>
-</html>
 
 <?php include ROOT_PATH . "app/views/assets/footer_common.php"; ?>
 
@@ -640,23 +675,60 @@ require ROOT_PATH . 'app/views/sidebar.php';
 		}
 		workshop();
 		$(window).resize(App.debounce(workshop, 325));
-	});
 
-	function workshop() {
-		$('#workshop-chart').empty();
+		function workshop() {
+			$('#workshop-chart').empty();
 
-		Morris.Donut({
-			element: 'workshop-chart',
-			data: [
-				{label: 'Successful', value: 60},
-				{label: 'Canceled', value: 30},
-				{label: 'Unkown', value: 10}
+			Morris.Donut({
+				element: 'workshop-chart',
+				data: [
+					{label: 'Successful', value: 60},
+					{label: 'Canceled', value: 30},
+					{label: 'Unkown', value: 10}
+				],
+				colors: ['#0BA462', '#f0ad4e', '#888888'],
+				hideHover: true,
+				formatter: function (y) {
+					return y + "%"
+				}
+			});
+		}
+
+		$("#workshops-calendar").fullCalendar({
+			header: {
+				left: 'prev,next',
+				center: 'title',
+				right: 'agendaWeek,month,agendaDay'
+			},
+			weekends: false, // will hide Saturdays and Sundays
+			defaultView: "month",
+			editable: false,
+			droppable: false,
+			events: [
+				<?php	if(sizeof($appointments) <= 1){
+					foreach($appointments as $appointment){
+						$course = get($courses, $appointment[AppointmentFetcher::DB_COLUMN_COURSE_ID], CourseFetcher::DB_COLUMN_ID);
+						include(ROOT_PATH . "app/views/partials/workshops/fullcalendar-single.php");
+					}
+				 }else{
+				   for($i = 0; $i < (sizeof($appointments) - 1); $i++){
+				   $course = get($courses, $appointments[$i][AppointmentFetcher::DB_COLUMN_COURSE_ID], CourseFetcher::DB_COLUMN_ID);
+				      include(ROOT_PATH . "app/views/partials/workshops/fullcalendar-multi.php");
+					}
+					$lastAppointmentIndex = sizeof($appointments)-1;
+					$id = $lastAppointmentIndex;
+					$course = get($courses, $appointments[$i][AppointmentFetcher::DB_COLUMN_COURSE_ID], CourseFetcher::DB_COLUMN_ID);
+					include(ROOT_PATH . "app/views/partials/workshops/fullcalendar-multi.php");
+
+				}
+				?>
 			],
-			colors: ['#0BA462', '#f0ad4e', '#888888'],
-			hideHover: true,
-			formatter: function (y) {
-				return y + "%";
-			}
+			timeFormat: 'H(:mm)' // uppercase H for 24-hour clock
 		});
-	}
+
+
+	});
 </script>
+
+</body>
+</html>
