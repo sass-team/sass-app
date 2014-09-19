@@ -4,7 +4,7 @@
  */
 ob_start();
 
-#starting the stuff session
+#starting the staff session
 session_start();
 
 require "config/app.php";
@@ -53,7 +53,7 @@ $errors = array();
 
 try {
 	$db = new Database();
-//	$stuff = new Users($db->getDbConnection());
+//	$staff = new Users($db->getDbConnection());
 	$general = new General();
 
 

@@ -50,8 +50,8 @@ function isSaveBttnPressed() {
 	return isset($_POST['hidden_submit_pressed']) && empty($_POST['hidden_submit_pressed']);
 }
 
-$pageTitle = "Add Stuff Member";
-$section = "stuff";
+$pageTitle = "Add staff Member";
+$section = "staff";
 ?>
 
 
@@ -76,7 +76,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <div id="content">
 
 	<div id="content-header">
-		<h1>Add SASS Stuff Member</h1>
+		<h1>Add SASS staff Member</h1>
 
 	</div>
 	<!-- #content-header -->
@@ -93,7 +93,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 				<ul id="myTab" class="nav nav-pills nav-stacked">
 					<li class="active"><a href="#add" data-toggle="tab"><i class="fa fa-plus"></i> &nbsp;&nbsp;Add
-							Stuff Member</a></li>
+							staff Member</a></li>
 					<!--	<li><a href="#profile-3" data-toggle="tab"><i class="fa fa-user"></i> &nbsp;&nbsp;Profile</a></li>
 								 <li class="dropdown">
 										<a href="javascript:;" id="myTabDrop3" class="dropdown-toggle" data-toggle="dropdown"><i
@@ -120,7 +120,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 						<p>
 							<a data-toggle="modal" id="btnAddUserModal" href="#styledModal" class="btn btn-primary">
-								Add new stuff member</a>
+								Add new staff member</a>
 						</p>
 					</div>
 
@@ -147,7 +147,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h3 class="modal-title">Create Stuff Member Form</h3>
+					<h3 class="modal-title">Create staff Member Form</h3>
 				</div>
 				<div class="modal-body">
 					<div class="portlet">
@@ -164,7 +164,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 							?>
 							<div class="alert alert-success">
 								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-								<strong>STuff member successfully created!</strong> <br/>
+								<strong>staff member successfully created!</strong> <br/>
 								An email is being sent to the email you just specified, with next steps to follow.
 							</div>
 						<?php } ?>

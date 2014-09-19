@@ -249,7 +249,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 				<ul class="portlet-tools pull-right">
 					<li>
-						<a href="/users/create" name="forgot" class="btn btn-sm btn-default">
+						<a href="<?php echo BASE_URL . "staff/add"; ?>" name="forgot" class="btn btn-sm btn-default">
 							Add User
 						</a>
 
@@ -655,7 +655,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 			colors: ['#0BA462', '#f0ad4e', '#888888'],
 			hideHover: true,
 			formatter: function (y) {
-				return y + "%"
+				return y + "%";
 			}
 		});
 	}

@@ -93,26 +93,26 @@
 			</ul>
 		</li>
 
-		<li class="dropdown <?php if ($section == "stuff") {
+		<li class="dropdown <?php if ($section == "staff") {
 			echo "active";
 		} ?>">
 			<a href="javascript:;">
 				<i class="fa fa-group"></i>
-				SASS Stuff
+				SASS Staff
 				<span class="caret"></span>
 			</a>
 
 			<ul class="sub-nav">
 				<li>
-					<a href="<?php echo BASE_URL; ?>stuff/">
+					<a href="<?php echo BASE_URL; ?>staff/">
 						<i class="fa fa-dashboard"></i>
-						All
+						Personnel
 					</a>
 				</li>
 
 				<?php if (!$user->isTutor()): ?>
 					<li>
-						<a href="<?php echo BASE_URL; ?>stuff#schedule">
+						<a href="<?php echo BASE_URL; ?>staff/schedules">
 							<i class="fa fa-calendar"></i>
 							Schedules
 						</a>
@@ -121,9 +121,9 @@
 
 				<?php if ($user->isAdmin()): ?>
 					<li>
-						<a href="<?php echo BASE_URL; ?>stuff/add">
+						<a href="<?php echo BASE_URL; ?>staff/add">
 							<i class="fa fa-edit"></i>
-							Add
+							Add Personnel
 						</a>
 					</li>
 				<?php endif; ?>

@@ -26,10 +26,10 @@
 /**
  * @author Rizart Dokollari
  * @author George Skarlatos
- * @since 8/16/14.
+ * @since 9/19/2014
  */
-
 ?>
+
 <?php
 require __DIR__ . '/../../app/init.php';
 $general->loggedOutProtect();
@@ -40,7 +40,7 @@ try {
 // protect again any sql injections on url
 	if (isset($_GET['id']) && preg_match("/^[0-9]+$/", $_GET['id'])) {
 		$userId = $_GET['id'];
-		$pageTitle = "Profile";
+		$pageTitle = "My Schedules";
 		if (($data = User::getSingle($db, $userId)) === FALSE) {
 			header('Location: ' . BASE_URL . 'error-404');
 			exit();
@@ -62,7 +62,7 @@ try {
 		}
 
 	} else if (empty($_GET)) {
-		$pageTitle = "All Users";
+		$pageTitle = "All Schedules";
 		$users = User::retrieveAll($db);
 		$courses = CourseFetcher::retrieveAll($db);
 	} else {
@@ -92,7 +92,7 @@ function isModifyBttnPressed() {
 	return isset($_POST['hidden_submit_pressed']) && empty($_POST['hidden_submit_pressed']);
 }
 
-$section = "stuff";
+$section = "staff";
 ?>
 
 <!DOCTYPE html>
@@ -208,8 +208,9 @@ $section = "stuff";
 
 								<h3>
 									<i class="fa fa-table"></i>
-									Users
+									Schedules
 								</h3>
+
 
 							</div>
 							<!-- /.portlet-header -->
@@ -229,26 +230,22 @@ $section = "stuff";
 										<thead>
 										<tr>
 											<th class="text-center" data-filterable="true" data-sortable="true"
-											    data-direction="desc">
-												Name
+											    data-direction="asc">
+												First Name
 											</th>
 											<th class="text-center" data-direction="asc" data-filterable="true"
-											    data-sortable="false">
-												Email
+											    data-sortable="true">
+												Last Name
 											</th>
-											<th class="text-center" data-filterable="true" data-sortable="true">Position</th>
-											<th class="text-center" data-filterable="true" data-sortable="false">Mobile</th>
-											<th class="text-center" data-filterable="false" class="hidden-xs hidden-sm">Profile
+											<th class="text-center" data-filterable="true" data-sortable="true"
+											    data-sortable="true">Starting time
 											</th>
+											<th class="text-center" data-filterable="true" data-sortable="false"
+											    data-sortable="true">Ending time
 
-											<?php if (!$user->isTutor()): ?>
-												<th class="text-center" data-filterable="false" class="hidden-xs hidden-sm">Teaching
-												</th>
-											<?php endif; ?>
-
-											<?php if (!$user->isTutor()): ?>
-												<th class="text-center" data-filterable="false" class="hidden-xs hidden-sm">Schedule
-												</th>
+												<?php if (!$user->isTutor()): ?>
+											<th class="text-center" data-filterable="false" class="hidden-xs hidden-sm">Calendar
+											</th>
 											<?php endif; ?>
 
 
@@ -259,13 +256,14 @@ $section = "stuff";
 										</tr>
 										</thead>
 										<tbody>
-
-										<?php
-										if (empty($errors) === true) {
-											foreach (array_reverse($users) as $curUser) {
-												include(ROOT_PATH . "app/views/partials/user-table-data-view.html.php");
-											}
-										} ?>
+										<!---->
+										<!--										--><?php
+										//										if (empty($errors) === true) {
+										//											foreach (array_reverse($users) as $curUser) {
+										//												include(ROOT_PATH . "app/views/partials/user-table-data-view.html.php");
+										//											}
+										//										}
+										?>
 										</tbody>
 									</table>
 								</div>
@@ -294,10 +292,21 @@ $section = "stuff";
 
 </div>
 <!-- #wrapper -->
+<?php include ROOT_PATH . "app/views/assets/footer_common.php"; ?>
+<script src="<?php echo BASE_URL; ?>assets/js/plugins/select2/select2.js"></script>
+<script src="<?php echo BASE_URL; ?>assets/js/plugins/icheck/jquery.icheck.js"></script>
+
+<script src="<?php echo BASE_URL; ?>assets/js/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="<?php echo BASE_URL; ?>assets/js/plugins/datatables/DT_bootstrap.js"></script>
+
+<script src="<?php echo BASE_URL; ?>assets/js/plugins/datepicker/bootstrap-datepicker.js"></script>
+<script src="<?php echo BASE_URL; ?>assets/js/plugins/timepicker/bootstrap-timepicker.js"></script>
+<script src="<?php echo BASE_URL; ?>assets/js/plugins/simplecolorpicker/jquery.simplecolorpicker.js"></script>
+<script src="<?php echo BASE_URL; ?>assets/js/plugins/textarea-counter/jquery.textarea-counter.js"></script>
+<script src="<?php echo BASE_URL; ?>assets/js/plugins/autosize/jquery.autosize.min.js"></script>
+<script src="<?php echo BASE_URL; ?>assets/js/demos/form-extended.js"></script>
 
 </body>
 </html>
 
-<?php include ROOT_PATH . "app/views/assets/footer_common.php"; ?>
-<script src="<?php echo BASE_URL; ?>assets/js/plugins/fileupload/bootstrap-fileupload.js"></script>
 

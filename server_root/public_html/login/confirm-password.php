@@ -61,7 +61,7 @@ function isVerified() {
 	return isset($_GET['success']) === true && empty ($_GET['success']);
 }
 
-// $stuff->email_exists($_POST['email'])) {
+// $staff->email_exists($_POST['email'])) {
 if (isContinueBtnPressed()) {
 	try {
 		$email = $_POST['email'];

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class User will contain prototype for stuff; tutors, secretary and admin.
+ * Class User will contain prototype for staff; tutors, secretary and admin.
  * Log In, Log Out.
  */
 abstract class User extends Person
