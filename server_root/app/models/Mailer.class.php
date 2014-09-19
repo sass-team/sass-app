@@ -137,12 +137,12 @@ class Mailer
 			$subject = self::NEW_SASS_APP_APPOINTMENT_SUBJECT;
 			$alternativeEmail = self::DEV_SASS_GMAIL;
 			$alternativeName = self::SASS_APP_AUTOMATIC_SYSTEM_ALTERNATIVE_NAME;
-			$setViewScheduleLink = "<a href='http://" . $_SERVER['SERVER_NAME'] . "/reports/" . $appointemnt[AppointmentFetcher::DB_COLUMN_ID] . "' target='_blank' >View Schedule</a><br/>";
+			$setViewScheduleLink = "<a href='http://" . $_SERVER['SERVER_NAME'] . "/appointments/" . $appointemnt[AppointmentFetcher::DB_COLUMN_ID] . "' target='_blank' >View Schedule</a><br/>";
 
 			$senderEmail = self::NO_REPLY_EMAIL_PREFIX . $_SERVER['SERVER_NAME'];
 			$senderName = self::SASS_APP_AUTOMATIC_SYSTEM_ALTERNATIVE_NAME;
 			$receiverEmail = $tutorUser[UserFetcher::DB_COLUMN_EMAIL];
-			$receiverName = $tutorUser[UserFetcher::DB_COLUMN_FIRST_NAME] . " " . $tutorUser[UserFetcher::DB_COLUMN_LAST_NAME];;
+			$receiverName = $tutorUser[UserFetcher::DB_COLUMN_FIRST_NAME] . " " . $tutorUser[UserFetcher::DB_COLUMN_LAST_NAME];
 
 
 			//Create a new PHPMailer instance

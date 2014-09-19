@@ -45,7 +45,7 @@ try {
 
 		} else {
 			throw new Exception("Either you're trying to hack this app or something wrong went. In either case the
-            developers we just notified about this");
+            developers were just notified about this");
 		}
 
 	} else if (isBtnSavePrsd()) {
@@ -451,7 +451,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 			var courseCode = ($(this).parent().prev().prev().text());
 
-			$("#courseCodeUpdate").val(courseId);
+			$("#updateCourseIdModal").val(courseId);
 			$("#courseNameUpdate").val(courseName);
 			$("#courseCodeUpdate").val(courseCode);
 
