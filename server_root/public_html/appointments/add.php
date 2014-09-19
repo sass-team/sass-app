@@ -15,7 +15,7 @@ $section = "appointments";
 
 try {
 	$courses = CourseFetcher::retrieveAll($db);
-	$terms = TermFetcher::retrieveAll($db);
+	$terms = TermFetcher::retrieveCurrTerm($db);
 	$instructors = InstructorFetcher::retrieveAll($db);
 	$students = StudentFetcher::retrieveAll($db);
 	$tutors = TutorFetcher::retrieveAll($db);

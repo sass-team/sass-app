@@ -76,7 +76,7 @@ try {
 		$teachingCourses = TutorFetcher::retrieveCurrTermTeachingCourses($db, $curUser->getId());
 		$notTeachingCourses = Tutor::retrieveCoursesNotTeaching($db, $curUser->getId());
 		$majors = MajorFetcher::retrieveMajors($db);
-		$terms = TermFetcher::retrieveAll($db);
+		$terms = TermFetcher::retrieveCurrTerm($db);
 	}
 
 
