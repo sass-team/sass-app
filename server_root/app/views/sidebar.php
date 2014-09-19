@@ -93,7 +93,7 @@
 			</ul>
 		</li>
 
-		<li class="dropdown <?php if ($section == "users") {
+		<li class="dropdown <?php if ($section == "stuff") {
 			echo "active";
 		} ?>">
 			<a href="javascript:;">
@@ -104,7 +104,7 @@
 
 			<ul class="sub-nav">
 				<li>
-					<a href="<?php echo BASE_URL; ?>users/">
+					<a href="<?php echo BASE_URL; ?>stuff/">
 						<i class="fa fa-dashboard"></i>
 						All
 					</a>
@@ -112,7 +112,7 @@
 
 				<?php if (!$user->isTutor()): ?>
 					<li>
-						<a href="<?php echo BASE_URL; ?>users#schedule">
+						<a href="<?php echo BASE_URL; ?>stuff#schedule">
 							<i class="fa fa-calendar"></i>
 							Schedules
 						</a>
@@ -121,7 +121,7 @@
 
 				<?php if ($user->isAdmin()): ?>
 					<li>
-						<a href="<?php echo BASE_URL; ?>users/add">
+						<a href="<?php echo BASE_URL; ?>stuff/add">
 							<i class="fa fa-edit"></i>
 							Add
 						</a>

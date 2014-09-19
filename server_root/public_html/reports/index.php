@@ -35,7 +35,7 @@
 require __DIR__ . '/../../app/init.php';
 $general->loggedOutProtect();
 
-$page_title = "All Reports";
+$pageTitle = "All Reports";
 $section = "reports";
 
 try {

@@ -102,7 +102,7 @@ function isBtnUpdatePrsd() {
 	return isset($_POST['hiddenUpdatePrsd']) && empty($_POST['hiddenUpdatePrsd']);
 }
 
-$page_title = "Manage Courses";
+$pageTitle = "Academia - Courses";
 $section = "academia";
 ?>
 

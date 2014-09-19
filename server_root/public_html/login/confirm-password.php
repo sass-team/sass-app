@@ -45,7 +45,7 @@ $privateKey = ReCAPTCHA::retrievePrivateKey();;
 // if there is an active log in process redirect to students.class.php; load page only if no
 // logged in user exists
 $general->loggedInProtect();
-$page_title = "Log In";
+$pageTitle = "Log In";
 
 /**
  * @return bool
@@ -61,7 +61,7 @@ function isVerified() {
 	return isset($_GET['success']) === true && empty ($_GET['success']);
 }
 
-// $users->email_exists($_POST['email'])) {
+// $stuff->email_exists($_POST['email'])) {
 if (isContinueBtnPressed()) {
 	try {
 		$email = $_POST['email'];

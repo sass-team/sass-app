@@ -10,7 +10,7 @@ if ($user->isTutor()) {
 
 
 // viewers
-$page_title = "Workshops";
+$pageTitle = "New Workshop";
 $section = "workshops";
 
 try {

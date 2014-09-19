@@ -9,7 +9,7 @@ if ($user->isTutor()) {
 }
 
 
-$page_title = "Manage Students";
+$pageTitle = "Academia - Students";
 $section = "academia";
 
 try {

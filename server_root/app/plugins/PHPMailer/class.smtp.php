@@ -6,7 +6,7 @@
  * @link https://github.com/PHPMailer/PHPMailer/ The PHPMailer GitHub project
  * @author Marcus Bointon (Synchro/coolbru) <phpmailer@synchromedia.co.uk>
  * @author Jim Jagielski (jimjag) <jimjag@gmail.com>
- * @author Andy Prevost (codeworxtech) <codeworxtech@users.sourceforge.net>
+ * @author Andy Prevost (codeworxtech) <codeworxtech@stuff.sourceforge.net>
  * @author Brent R. Matzelle (original founder)
  * @copyright 2014 Marcus Bointon
  * @copyright 2010 - 2012 Jim Jagielski
@@ -735,7 +735,7 @@ class SMTP
      * Returns true if successful or false otherwise. If True
      * the mail transaction is started and then one or more recipient
      * commands may be called followed by a data command. This command
-     * will send the message to the users terminal if they are logged
+     * will send the message to the stuff terminal if they are logged
      * in and send them an email.
      * Implements rfc 821: SAML <SP> FROM:<reverse-path> <CRLF>
      * @param string $from The address the message is from

@@ -11,7 +11,7 @@ try {
 } catch (Exception $e) {
 	$errors[] = $e->getMessage();
 }
-$page_title = "My Account - Profile";
+$pageTitle = "Account - Profile";
 $section = "account";
 ?>
 

@@ -29,7 +29,7 @@ $mobile = $curUser[UserFetcher::DB_COLUMN_MOBILE];
 
 	<!-- profile -->
 	<td class="text-center">
-		<a data-toggle="modal" href="<?php echo BASE_URL . "users/" . $id; ?>"
+		<a data-toggle="modal" href="<?php echo BASE_URL . "stuff/" . $id; ?>"
 		   class="btn btn-default btn-sm center-block">
 			<i class="fa fa-user"></i> View
 		</a>
@@ -57,7 +57,7 @@ $mobile = $curUser[UserFetcher::DB_COLUMN_MOBILE];
 
 	<?php if ($user->isAdmin()): ?>
 		<td class="text-center">
-			<a data-toggle="modal" href="<?php echo BASE_URL . "users/edit/" . $id; ?>"
+			<a data-toggle="modal" href="<?php echo BASE_URL . "stuff/edit/" . $id; ?>"
 			   class="btn btn-default btn-sm center-block edit-user">
 				<i class="fa fa-edit"></i> Edit
 			</a>

@@ -30,7 +30,7 @@ function isUrlIdValid() {
 
 
 // viewers
-$page_title = "Workshops";
+$pageTitle = "Workshops";
 $section = "workshops";
 
 

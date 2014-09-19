@@ -82,12 +82,12 @@ try {
 
 	if (isBtnAddTeachingCoursesPrsd()) {
 		Tutor_has_course_has_schedule::addCourses($db, $userId, $_POST['teachingCourses'], $_POST['term']);
-		header('Location: ' . BASE_URL . 'users/edit/' . $userId . '/success');
+		header('Location: ' . BASE_URL . 'stuff/edit/' . $userId . '/success');
 		exit();
 
 	} else if (isBtnSubmitReplaceCourse()) {
 		Tutor::updateTeachingCourse($db, $curUser->getId(), $_POST['teachingCourse'], $_POST['hiddenUpdateCourseOldId']);
-		header('Location: ' . BASE_URL . 'users/edit/' . $userId . '/success');
+		header('Location: ' . BASE_URL . 'stuff/edit/' . $userId . '/success');
 		exit();
 
 	} else if (isSaveBttnProfilePressed()) {
@@ -130,20 +130,20 @@ try {
 		if (!$newDataAdded) {
 			throw new Exception("No new data. No modifications were done.");
 		} else {
-			header('Location: ' . BASE_URL . 'users/edit/' . $userId . '/success');
+			header('Location: ' . BASE_URL . 'stuff/edit/' . $userId . '/success');
 			exit();
 		}
 	} else if (isBtnDelTeachingCoursesPressed()) {
 		$curUser->deleteTeachingCourse($_POST['delCourseIdModal']);
-		header('Location: ' . BASE_URL . 'users/edit/' . $userId . '/success');
+		header('Location: ' . BASE_URL . 'stuff/edit/' . $userId . '/success');
 		exit();
 	} else if (isBtnSbmtChangeuserTypePrsd()) {
 		$curUser->updateUserType($_POST['changeuserType']);
-		header('Location: ' . BASE_URL . 'users/edit/' . $userId . '/success');
+		header('Location: ' . BASE_URL . 'stuff/edit/' . $userId . '/success');
 		exit();
 	} else if (isBtnSbmtChangeUserActivate()) {
 		User::updateActiveStatus($db, $curUser->getId(), $curUser->isActive());
-		header('Location: ' . BASE_URL . 'users/edit/' . $userId . '/success');
+		header('Location: ' . BASE_URL . 'stuff/edit/' . $userId . '/success');
 		exit();
 	}
 } catch (Exception $e) {
@@ -183,7 +183,7 @@ function isBtnSubmitReplaceCourse() {
 
 
 $pageTitle = "Edit User";
-$section = "users";
+$section = "stuff";
 
 ?>
 
@@ -366,7 +366,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 	<br/>
 
-	<form action="<?php echo BASE_URL . 'users/edit/' . $curUser->getId(); ?>"
+	<form action="<?php echo BASE_URL . 'stuff/edit/' . $curUser->getId(); ?>"
 	      class="form-horizontal" method="post">
 
 		<div class="form-group">
@@ -478,7 +478,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 				<button type="submit" class="btn btn-primary"> Save Changes</button>
 				<input type="hidden" name="hiddenSaveBttnProfile" value=""/>
 				&nbsp;
-				<a type="reset" class="btn btn-default" href="<?php echo BASE_URL . "users/overview"; ?>">
+				<a type="reset" class="btn btn-default" href="<?php echo BASE_URL . "stuff/overview"; ?>">
 					Cancel</a>
 			</div>
 			<!-- /.col-->

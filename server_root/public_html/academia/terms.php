@@ -108,7 +108,7 @@ function isBtnUpdatePrsd() {
 	return isset($_POST['hiddenUpdatePrsd']) && empty($_POST['hiddenUpdatePrsd']);
 }
 
-$page_title = "Manage Terms";
+$pageTitle = "Academia - Terms";
 $section = "academia";
 ?>
 
@@ -132,7 +132,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <div id="content">
 
 	<div id="content-header">
-		<h1><?php echo $page_title; ?></h1>
+		<h1>All Terms</h1>
 	</div>
 	<!-- #content-header -->
 
@@ -214,7 +214,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 			</div>
 			<!-- /.col -->
-			
+
 		</div>
 		<!-- /.row -->
 

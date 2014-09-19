@@ -4,7 +4,7 @@ $general->loggedOutProtect();
 
 
 // viewers
-$page_title = "Workshops";
+$pageTitle = "Workshops";
 $section = "workshops";
 
 try {
@@ -44,7 +44,7 @@ function get($objects, $findId, $column) {
 }
 
 // viewers
-$page_title = "Workshops";
+$pageTitle = "Workshops";
 $section = "workshops";
 ?>
 

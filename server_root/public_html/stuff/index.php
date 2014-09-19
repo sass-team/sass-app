@@ -92,7 +92,7 @@ function isModifyBttnPressed() {
 	return isset($_POST['hidden_submit_pressed']) && empty($_POST['hidden_submit_pressed']);
 }
 
-$section = "users";
+$section = "stuff";
 ?>
 
 <!DOCTYPE html>
