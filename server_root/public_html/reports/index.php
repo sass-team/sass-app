@@ -161,7 +161,7 @@ function isModifyBttnPressed() {
 									<?php
 									if (empty($errors) === true) {
 										foreach (array_reverse($users) as $curUser) {
-											include(ROOT_PATH . "app/views/partials/table-data-view.html.php");
+											include(ROOT_PATH . "app/views/partials/user/table-data-view.html.php");
 										}
 									} ?>
 									</tbody>
