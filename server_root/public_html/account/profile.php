@@ -277,17 +277,19 @@ require ROOT_PATH . 'app/views/sidebar.php';
 			editable: false,
 			droppable: false,
 			events: [
-				<?php	if(sizeof($schedules) <= 1){
-					foreach($schedules as $schedule){
-						include(ROOT_PATH . "app/views/partials/schedule/fullcalendar-single.php");
+				<?php if($curUser->isTutor()){
+					if(sizeof($schedules) <= 1){
+						foreach($schedules as $schedule){
+							include(ROOT_PATH . "app/views/partials/schedule/fullcalendar-single.php");
+						}
+					 }else{
+					   for($i = 0; $i < (sizeof($schedules) - 1); $i++){
+					      include(ROOT_PATH . "app/views/partials/schedule/fullcalendar-multi.php");
+						}
+						$lastScheduleIndex = sizeof($schedules)-1;
+						$schedule = $schedules[$lastScheduleIndex];
+						include(ROOT_PATH . "app/views/partials/schedule/fullcalendar-multi.php");
 					}
-				 }else{
-				   for($i = 0; $i < (sizeof($schedules) - 1); $i++){
-				      include(ROOT_PATH . "app/views/partials/schedule/fullcalendar-multi.php");
-					}
-					$lastScheduleIndex = sizeof($schedules)-1;
-					$schedule = $schedules[$lastScheduleIndex];
-					include(ROOT_PATH . "app/views/partials/schedule/fullcalendar-multi.php");
 				}
 				?>
 			],
