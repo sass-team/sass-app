@@ -153,6 +153,7 @@ function get($objects, $findId, $column) {
 										<div class="input-group">
 											<span class="input-group-addon"><label for="courseId">Course</label></span>
 											<select id="courseId" name="courseId" class="form-control" required>
+												<option></option>
 												<?php foreach ($courses as $course) {
 													include(ROOT_PATH . "app/views/partials/course/select-options-view.html.php");
 												}
@@ -289,7 +290,32 @@ function get($objects, $findId, $column) {
 		// http://eonasdan.github.io/bootstrap-datetimepicker
 		moment().format();
 
-		$("#courseId").select2();
+		$("#courseId").select2({
+			placeholder: "Select a Course"
+		});
+		$("#courseId").click(function () {
+			var courseId = $(this).select2("val");
+			alert("Selected value is: " + courseId);
+			var data = {
+				"action": courseId
+			};
+			data = $(this).serialize() + "&" + $.param(data);
+			$.ajax({
+				type: "POST",
+				dataType: "json",
+				url: "<?php echo BASE_URL; ?>/api/response.php",
+				data: data,
+				success: function(data) {
+					$(".the-return").html(
+						"Favorite beverage: " + data["favorite_beverage"] + "<br />Favorite restaurant: " + data["favorite_restaurant"] + "<br />Gender: " + data["gender"] + "<br />JSON: " + data["json"]
+					);
+
+					alert("Form submitted successfully.\nReturned json: " + data["json"]);
+				}
+			});
+			return false;
+		});
+
 		$("#termId").select2();
 		$("#instructorId").select2();
 		$("#studentsIds").select2();
@@ -327,7 +353,6 @@ function get($objects, $findId, $column) {
 		});
 
 		var startDateDefault;
-
 		if (moment().minute() >= 30) {
 			startDateDefault = moment().add('1', 'hours');
 			startDateDefault.minutes(0);
