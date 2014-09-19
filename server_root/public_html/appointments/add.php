@@ -289,7 +289,9 @@ function get($objects, $findId, $column) {
 		// http://eonasdan.github.io/bootstrap-datetimepicker
 		moment().format();
 
-		$("#courseId").select2();
+		$("#courseId").select2({
+			placeholder: "Select a State"
+		});
 		$("#termId").select2();
 		$("#instructorId").select2();
 		$("#studentsIds").select2();
@@ -327,7 +329,6 @@ function get($objects, $findId, $column) {
 		});
 
 		var startDateDefault;
-
 		if (moment().minute() >= 30) {
 			startDateDefault = moment().add('1', 'hours');
 			startDateDefault.minutes(0);
@@ -370,12 +371,28 @@ function get($objects, $findId, $column) {
 			$('#dateTimePickerEnd').data("DateTimePicker").setMinDate(newMinimumEndDate);
 			$('#dateTimePickerEnd').data("DateTimePicker").setDate(newEndDateDefault);
 		});
-		//		var startSessionMoment = moment($('#dateTimePickerStart').data("DateTimePicker").getDate());
-//		var dateEnd = startSessionMoment.add(30, 'minutes');
-//
-//		var endSessionMoment = moment($('#dateTimePickerEnd').data("DateTimePicker").getDate());
 
 
+		$(".js-ajax-php-json").submit(function () {
+			var data = {
+				"action": "test"
+			};
+			data = $(this).serialize() + "&" + $.param(data);
+			$.ajax({
+				type: "POST",
+				dataType: "json",
+				url: "<?php echo BASE_URL . "api/courses.php"; ?>", //Relative or absolute path to response.php file
+				data: data,
+				success: function (data) {
+					$(".the-return").html(
+						"Favorite beverage: " + data["favorite_beverage"] + "<br />Favorite restaurant: " + data["favorite_restaurant"] + "<br />Gender: " + data["gender"] + "<br />JSON: " + data["json"]
+					);
+
+					alert("Form submitted successfully.\nReturned json: " + data["json"]);
+				}
+			});
+			return false;
+		});
 	});
 </script>
 
