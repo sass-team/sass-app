@@ -1,7 +1,7 @@
 <?php
 /**
  * This file displays a single user  in a table data views. It needs to receive
- * the following product details (as elements of an array named $jobs):
+ * the following tutor details (as elements of an array named $jobs):
  *
  *
  * Created by PhpStorm.

@@ -6,8 +6,8 @@ if (is_ajax()) {
 	if (isset($_GET["action"]) && !empty($_GET["action"])) { //Checks if action value exists
 		$action = $_GET["action"];
 		switch ($action) { //Switch case for value of action
-			case "tutor_has_courses":
-				printTutorHasCourses($db);
+			case "tutors":
+				printTutors($db);
 				break;
 		}
 	}
@@ -18,7 +18,7 @@ function is_ajax() {
 	return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
 }
 
-function printTutorHasCourses($db) {
+function printTutors($db) {
 	$tutors = Course::getTutors($db, $_GET['courseId']);
 	$return["tutors"] = json_encode($tutors);
 	echo json_encode($tutors);

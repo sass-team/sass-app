@@ -71,206 +71,205 @@ function get($objects, $findId, $column) {
 <?php require ROOT_PATH . 'app/views/head.php'; ?>
 <body>
 <div id="wrapper">
-<?php
-require ROOT_PATH . 'app/views/header.php';
-require ROOT_PATH . 'app/views/sidebar.php';
-?>
+	<?php
+	require ROOT_PATH . 'app/views/header.php';
+	require ROOT_PATH . 'app/views/sidebar.php';
+	?>
 
 
-<div id="content">
+	<div id="content">
 
-	<div id="content-header">
+		<div id="content-header">
 
-		<h1>
-			<i class="fa fa-calendar"></i>
-			New Workshop Session
+			<h1>
+				<i class="fa fa-calendar"></i>
+				New Workshop Session
 
-		</h1>
-
-
-	</div>
-	<!-- #content-header -->
-
-
-	<div id="content-container">
-		<?php
-		if (empty($errors) === false) {
-			?>
-			<div class="alert alert-danger">
-				<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-				<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
-				?>
-			</div>
-		<?php
-		} else if (isModificationSuccess()) {
-			?>
-			<div class="alert alert-success">
-				<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-				<strong>Data successfully modified!</strong> <br/>
-			</div>
-		<?php } ?>
-		<div class="portlet">
-
-			<div class="row">
-
-
-				<div class="col-md-5">
-					<div class="portlet-header">
-
-						<h3>
-							<i class="fa fa-calendar"></i>
-							New Workshop Session
-						</h3>
-
-					</div>
-					<!-- /.portlet-header -->
-
-					<div class="portlet-content">
-
-						<div class="form-group">
-							<form method="post" id="add-student-form" action="<?php echo BASE_URL . 'appointments/add'; ?>"
-							      class="form">
-
-								<div class="form-group">
-									<div class='input-group date' id='dateTimePickerStart'>
-											<span class="input-group-addon"><label for="dateTimePickerStart">
-													Starts At</label></span>
-										<input type='text' name='dateTimePickerStart' class="form-control" required/>
-                                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
-									</div>
-								</div>
-
-								<div class="form-group">
-									<div class='input-group date' id='dateTimePickerEnd'>
-										<span class="input-group-addon"><label for="dateTimePickerEnd">Ends At</label></span>
-										<input type='text' name='dateTimePickerEnd' class="form-control" required/>
-										<span class="input-group-addon">
-											<span class="glyphicon glyphicon-calendar">
-										</span>
-									</div>
-								</div>
-
-								<div class="form-group">
-									<div class="input-group">
-										<span class="input-group-addon"><label for="courseId">Course</label></span>
-										<select id="courseId" name="courseId" class="form-control" required>
-											<option></option>
-											<?php foreach ($courses as $course) {
-												include(ROOT_PATH . "app/views/partials/course/select-options-view.html.php");
-											}
-											?>
-										</select>
-									</div>
-								</div>
-
-								<div class="form-group">
-									<div class="input-group">
-										<span class="input-group-addon"><label for="tutorId">Tutors</label></span>
-										<select id="tutorId" name="tutorId" class="form-control" required>
-											<?php foreach ($tutors as $tutor) {
-												include(ROOT_PATH . "app/views/partials/tutor/select-options-view.html.php");
-											}
-											?>
-										</select>
-									</div>
-								</div>
-
-								<div class="form-group">
-									<div class="input-group">
-										<span class="input-group-addon"><label for="studentsIds">Students</label></span>
-										<select id="studentsIds" name="studentsIds[]" class="form-control" multiple required>
-
-											<?php
-											foreach ($students as $student):
-												include(ROOT_PATH . "app/views/partials/student/select-options-view.html.php");
-											endforeach;
-											?>
-
-										</select>
-									</div>
-								</div>
-
-								<div class="form-group">
-									<div class="alert alert-warning">
-										<a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
-										<strong>Warning!</strong><i> Make sure to specify instructors order insertion same as
-											of that students order insertion.</i>
-									</div>
-								</div>
-
-
-								<div class="form-group">
-									<div class="input-group">
-										<span class="input-group-addon"><label for="instructorId">Instructor</label></span>
-										<select id="instructorId" name="instructorId[]" class="form-control" multiple required>
-											<?php foreach ($instructors as $instructor) {
-												include(ROOT_PATH . "app/views/partials/instructor/select-options-view.html.php");
-											}
-											?>
-										</select>
-									</div>
-								</div>
-
-
-								<div class="form-group">
-									<div class="input-group">
-										<span class="input-group-addon"><label for="termId">Term</label></span>
-										<select id="termId" name="termId" class="form-control" required>
-											<?php
-											$term = $curTerm;
-											include(ROOT_PATH . "app/views/partials/term/select-options-view.html.php");
-											foreach ($terms as $term) {
-												include(ROOT_PATH . "app/views/partials/term/select-options-view.html.php");
-											}
-											?>
-										</select>
-									</div>
-								</div>
-
-								<div class="form-group">
-									<button type="submit" class="btn btn-block btn-primary">Add</button>
-									<input type="hidden" name="hiddenSubmitPrsd" value="">
-								</div>
-							</form>
-						</div>
-						<!-- /.form-group -->
-
-					</div>
-				</div>
-
-
-				<div class="col-md-7">
-					<div class="portlet-header">
-
-						<h3>
-							<i class="fa fa-calendar"></i>
-							Date Picker
-						</h3>
-
-					</div>
-					<!-- /.portlet-header -->
-
-					<div class="portlet-content">
-
-						<div id="appointments-calendar"></div>
-					</div>
-				</div>
-
-			</div>
-			<!-- /.row -->
+			</h1>
 
 
 		</div>
-		<!-- /.portlet -->
+		<!-- #content-header -->
 
+
+		<div id="content-container">
+			<?php
+			if (empty($errors) === false) {
+				?>
+				<div class="alert alert-danger">
+					<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+					<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
+					?>
+				</div>
+			<?php
+			} else if (isModificationSuccess()) {
+				?>
+				<div class="alert alert-success">
+					<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+					<strong>Data successfully modified!</strong> <br/>
+				</div>
+			<?php } ?>
+			<div class="portlet">
+
+				<div class="row">
+
+
+					<div class="col-md-5">
+						<div class="portlet-header">
+
+							<h3>
+								<i class="fa fa-calendar"></i>
+								New Workshop Session
+							</h3>
+
+						</div>
+						<!-- /.portlet-header -->
+
+						<div class="portlet-content">
+
+							<div class="form-group">
+								<form method="post" id="add-student-form" action="<?php echo BASE_URL . 'appointments/add'; ?>"
+								      class="form">
+
+									<div class="form-group">
+										<div class='input-group date' id='dateTimePickerStart'>
+											<span class="input-group-addon"><label for="dateTimePickerStart">
+													Starts At</label></span>
+											<input type='text' name='dateTimePickerStart' class="form-control" required/>
+                                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<div class='input-group date' id='dateTimePickerEnd'>
+											<span class="input-group-addon"><label for="dateTimePickerEnd">Ends At</label></span>
+											<input type='text' name='dateTimePickerEnd' class="form-control" required/>
+										<span class="input-group-addon">
+											<span class="glyphicon glyphicon-calendar">
+										</span>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<div class="input-group">
+											<span class="input-group-addon"><label for="courseId">Course</label></span>
+											<select id="courseId" name="courseId" class="form-control" required>
+												<option></option>
+												<?php foreach ($courses as $course) {
+													include(ROOT_PATH . "app/views/partials/course/select-options-view.html.php");
+												}
+												?>
+											</select>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<div class="input-group">
+										<span class="input-group-addon"><label id="label-instructor-text"
+										                                       for="tutorId">Tutors</label></span>
+											<select id="tutorId" name="tutorId" class="form-control" required>
+												<option></option>
+											</select>
+											<input id="value" type="hidden" style="width:300px"/>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<div class="input-group">
+											<span class="input-group-addon"><label for="studentsIds">Students</label></span>
+											<select id="studentsIds" name="studentsIds[]" class="form-control" multiple required>
+
+												<?php
+												foreach ($students as $student):
+													include(ROOT_PATH . "app/views/partials/student/select-options-view.html.php");
+												endforeach;
+												?>
+
+											</select>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<div class="alert alert-warning">
+											<a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
+											<strong>Warning!</strong><i> Make sure to specify instructors order insertion same as
+												of that students order insertion.</i>
+										</div>
+									</div>
+
+
+									<div class="form-group">
+										<div class="input-group">
+											<span class="input-group-addon"><label for="instructorId">Instructor</label></span>
+											<select id="instructorId" name="instructorId[]" class="form-control" multiple required>
+												<?php foreach ($instructors as $instructor) {
+													include(ROOT_PATH . "app/views/partials/instructor/select-options-view.html.php");
+												}
+												?>
+											</select>
+										</div>
+									</div>
+
+
+									<div class="form-group">
+										<div class="input-group">
+											<span class="input-group-addon"><label for="termId">Term</label></span>
+											<select id="termId" name="termId" class="form-control" required>
+												<?php
+												$term = $curTerm;
+												include(ROOT_PATH . "app/views/partials/term/select-options-view.html.php");
+												foreach ($terms as $term) {
+													include(ROOT_PATH . "app/views/partials/term/select-options-view.html.php");
+												}
+												?>
+											</select>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<button type="submit" class="btn btn-block btn-primary">Add</button>
+										<input type="hidden" name="hiddenSubmitPrsd" value="">
+									</div>
+								</form>
+							</div>
+							<!-- /.form-group -->
+
+						</div>
+					</div>
+
+
+					<div class="col-md-7">
+						<div class="portlet-header">
+
+							<h3>
+								<i class="fa fa-calendar"></i>
+								Date Picker
+							</h3>
+
+						</div>
+						<!-- /.portlet-header -->
+
+						<div class="portlet-content">
+
+							<div id="appointments-calendar"></div>
+						</div>
+					</div>
+
+				</div>
+				<!-- /.row -->
+
+
+			</div>
+			<!-- /.portlet -->
+
+		</div>
+		<!-- /#content-container -->
+
+		<div id="push"></div>
 	</div>
-	<!-- /#content-container -->
+	<!-- #content -->
 
-	<div id="push"></div>
-</div>
-<!-- #content -->
-
-<?php include ROOT_PATH . "app/views/footer.php"; ?>
+	<?php include ROOT_PATH . "app/views/footer.php"; ?>
 </div>
 <!-- #wrapper<!-- #content -->
 
@@ -295,12 +294,15 @@ require ROOT_PATH . 'app/views/sidebar.php';
 		moment().format();
 
 		$("#courseId").select2({
-			placeholder: "Select a Course",
+			placeholder: "Select a course",
 			allowClear: false
 		});
 		$("#courseId").click(function () {
 			var courseId = $(this).select2("val");
 			var termId = $("#termId").select2("val");
+
+			$('#label-instructor-text').text("");
+			$('#label-instructor-text').append("<i class='fa fa-circle-o-notch fa-spin'></i>");
 
 			var data = {
 				"action": "tutor_has_courses",
@@ -309,37 +311,44 @@ require ROOT_PATH . 'app/views/sidebar.php';
 			}
 			data = $(this).serialize() + "&" + $.param(data);
 
-			var dataSel = [{id: 0, tag: 'enhancement'}, {id: 1, tag: 'bug'}, {id: 2, tag: 'duplicate'}, {
-				id: 3,
-				tag: 'invalid'
-			}, {id: 4, tag: 'wontfix'}];
-
-
 			$.ajax({
 				type: "GET",
 				dataType: "json",
 				url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/courses",
 				data: data,
-				success: function (data) {
-					console.log(data);
+				success: function (inData) {
+					// reset label test
+					$('#label-instructor-text').text("Tutors");
 
-					$("#e10").select2({
-//							data: [
-//								$.each(data, function (idx, obj) {
-//									{
-//										id: obj['id'], text:obj['f_name'] + ' ' + obj['l_name']
-//									}
-////									$.each(obj, function (key, value) {
-////										console.log(key + ": " + value);
-////									});
-//								});
-//						]
-					})
+					// prepare new data for options
+					var newTutors = [];
+					$.each(inData, function (idx, obj) {
+						newTutors.push({
+							id: obj.id,
+							text: obj.f_name + " " + obj.l_name
+						});
+					});
 
+					// clear options
+					var $el = $("#tutorId");
+					$el.empty(); // remove old options
+
+					// add new options
+					$el.append("<option></option>");
+					$.each(newTutors, function (key, value) {
+						$el.append($("<option></option>")
+							.attr("value", value.id).text(value.text));
+					});
+
+					var placeHolder = jQuery.isEmptyObject(inData) ? "No tutors found" : "Select a tutor"
+					$el.select2({
+						placeholder: placeHolder,
+						allowClear: false
+					});
 
 				},
 				error: function (e) {
-
+					$('#label-instructor-text').text("Connection erros.");
 				}
 			});
 		});
@@ -388,12 +397,20 @@ require ROOT_PATH . 'app/views/sidebar.php';
 			$('#dateTimePickerEnd').data("DateTimePicker").setMinDate(newMinimumEndDate);
 			$('#dateTimePickerEnd').data("DateTimePicker").setDate(newEndDateDefault);
 		});
-
-
 		$("#termId").select2();
-		$("#instructorId").select2();
-		$("#studentsIds").select2();
-		$("#tutorId").select2();
+		$("#instructorId").select2({
+			placeholder: "Select an instructor for each student"
+		});
+		$("#studentsIds").select2({
+			placeholder: "Select at least one"
+		});
+		$("#tutorId").select2({
+			placeholder: "First select a course"
+		});
+		$("#tutorId").click(function () {
+
+		});
+
 		$("#appointments-calendar").fullCalendar({
 			header: {
 				left: 'prev,next',

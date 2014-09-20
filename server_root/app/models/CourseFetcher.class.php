@@ -67,9 +67,11 @@ class CourseFetcher
 			UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "`
 			INNER JOIN  `" . DB_NAME . "`.`" . CourseFetcher::DB_TABLE . "`
 			ON `" . DB_NAME . "`.`" . Tutor_has_course_has_termFetcher::DB_TABLE . "`.`" . Tutor_has_course_has_termFetcher::DB_COLUMN_COURSE_ID . "`  = `" .
-			CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_ID . "`";
+			CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_ID . "`
+			WHERE `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_ID . "` = :courseId";
 		try {
 			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':courseId', $courseId, PDO::PARAM_INT);
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
