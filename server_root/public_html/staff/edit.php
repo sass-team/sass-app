@@ -292,13 +292,12 @@ require ROOT_PATH . 'app/views/sidebar.php';
 					<h3>
 						<i class="fa fa-table"></i>
 						Teaching Courses
-						- <?php
-						if (!empty($teachingCourses)):
+						<?php
+						foreach ($terms as $term) {
+							echo " - " . $term[TermFetcher::DB_COLUMN_NAME];
+						}
+						if (empty($term)) "No courses in current term in database";
 
-							echo $teachingCourses[0][TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_NAME];
-						else:
-							echo "No courses in current term in database";
-						endif;
 						?>
 					</h3>
 
