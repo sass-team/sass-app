@@ -35,7 +35,7 @@
 			echo "active";
 		} ?>">
 			<a href="javascript:;">
-				<i class="fa fa-calendar"></i>
+				<i class="fa fa-table"></i>
 				Appointments
 				<span class="caret"></span>
 			</a>
