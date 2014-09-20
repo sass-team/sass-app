@@ -41,6 +41,8 @@ if ($user->isTutor()) {
 
 try {
 	$terms = TermFetcher::retrieveAllButCur($db);
+	$curTerm = TermFetcher::retrieveCurrent($db);
+
 	if (isBtnUpdatePrsd()) {
 		$updateDone = FALSE;
 		$termId = $_POST['updateTermIdModal'];
@@ -197,6 +199,8 @@ require ROOT_PATH . 'app/views/sidebar.php';
 								<tbody>
 
 								<?php
+								$term = $curTerm;
+								include(ROOT_PATH . "app/views/partials/term/table-data-view.html.php");
 								foreach ($terms as $term) {
 									include(ROOT_PATH . "app/views/partials/term/table-data-view.html.php");
 								} ?>

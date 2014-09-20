@@ -34,7 +34,7 @@ class Mailer
 
 	const DEV_SASS_GMAIL = "dev.sass.ms@gmail.com";
 
-	const SASS_APP_AUTOMATIC_SYSTEM_ALTERNATIVE_NAME = "SASS App | Automatic System";
+	const SASS_APP_AUTOMATIC_SYSTEM_ALTERNATIVE_NAME = "SASS App | Developers";
 
 	const NEW_SASS_APP_APPOINTMENT_SUBJECT = "New Appointment";
 	const NEW_SASS_APP_REPORT_PENDING = "New Report Pending";
@@ -282,7 +282,7 @@ class Mailer
 		$name = $user[UserFetcher::DB_COLUMN_FIRST_NAME] . " " . $user[UserFetcher::DB_COLUMN_LAST_NAME];
 		$genString = User::generateNewPasswordString($db, $id);
 
-		$subject = "SASS App Password Recovery";
+		$subject = "Password Recovery";
 		$alternativeEmail = self::DEV_SASS_GMAIL;
 		$alternativeName = self::SASS_APP_AUTOMATIC_SYSTEM_ALTERNATIVE_NAME;
 		$passwordRecoveryLink = "<a href='http://" . $_SERVER['SERVER_NAME'] . "/login/recover/" . $id . "/" . $genString . "' target='_blank' >Reset Password</a>";
