@@ -133,11 +133,13 @@ require ROOT_PATH . 'app/views/sidebar.php';
 						<h4 class="panel-title">
 							<a class="accordion-toggle" data-toggle="collapse" data-parent=".accordion"
 							   href="#collapseOne">
-								<i class="fa fa-book"></i> Current Teaching Courses
-								- <?php
-								if (!empty($teachingCourses)):
-									echo $teachingCourses[0][TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_NAME];
-								endif;
+								<i class="fa fa-book"></i>
+								<?php
+								if (empty($teachingCourses)){
+									echo 'The list of Teaching Courses of the current term is empty!';
+								}else{
+									echo 'Current Teaching Courses - ' . $teachingCourses[0][TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_NAME];
+								}
 								?>
 							</a>
 						</h4>

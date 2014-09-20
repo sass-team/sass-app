@@ -14,12 +14,12 @@ $pageTitle = "New Workshop";
 $section = "appointments";
 
 try {
-	$courses = CourseFetcher::retrieveAll($db);
 	$terms = TermFetcher::retrieveAllButCur($db);
 	$curTerm = TermFetcher::retrieveCurrent($db);
+	$courses = CourseFetcher::retrieveAll($db);
 	$instructors = InstructorFetcher::retrieveAll($db);
 	$students = StudentFetcher::retrieveAll($db);
-	$tutors = TutorFetcher::retrieveAll($db);
+
 	$appointments = AppointmentFetcher::retrieveAll($db);
 
 	if (isBtnAddStudentPrsd()) {
@@ -351,7 +351,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 			startDateDefault = moment();
 			startDateDefault.minutes(30);
 		}
-		
+
 		var minimumStartDate = startDateDefault.clone();
 		minimumStartDate.subtract('31', 'minutes')
 		var minimumMaxDate = moment().add('14', 'day');
@@ -405,7 +405,8 @@ require ROOT_PATH . 'app/views/sidebar.php';
 			editable: false,
 			droppable: false,
 			events: [
-				<?php	if(sizeof($appointments) <= 1){
+				<?php if(isset($appointments) && !empty($appointments)){
+					if(sizeof($appointments) <= 1){
 					foreach($appointments as $appointment){
 						$course = get($courses, $appointment[AppointmentFetcher::DB_COLUMN_COURSE_ID], CourseFetcher::DB_COLUMN_ID);
 						include(ROOT_PATH . "app/views/partials/appointments/fullcalendar-single.php");
@@ -421,7 +422,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 					include(ROOT_PATH . "app/views/partials/appointments/fullcalendar-multi.php");
 
 				}
-				?>
+				}?>
 			],
 			timeFormat: 'H(:mm)' // uppercase H for 24-hour clock
 		});

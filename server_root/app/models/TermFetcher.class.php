@@ -58,6 +58,23 @@ class TermFetcher
 		}
 	}
 
+	public static function retrieveCurrTerm($db) {
+		$query =
+			"SELECT `" . self::DB_COLUMN_ID . "` ,
+					`" . self::DB_COLUMN_NAME . "`
+			 	FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "` 
+			 	WHERE CURRENT_TIMESTAMP() BETWEEN `" . self::DB_COLUMN_START_DATE . "` AND `" . self::DB_COLUMN_END_DATE . "`";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->execute();
+
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			throw new Exception("Could not retrieve current term from database.");
+		}
+	}
+
 
 	public static function retrieveSingle($db, $id) {
 		$query = "SELECT  `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_NAME . "` , `" . self::DB_COLUMN_START_DATE

@@ -76,8 +76,8 @@ try {
 		$teachingCourses = TutorFetcher::retrieveCurrTermTeachingCourses($db, $curUser->getId());
 		$notTeachingCourses = Tutor::retrieveCoursesNotTeaching($db, $curUser->getId());
 		$majors = MajorFetcher::retrieveMajors($db);
-		$terms = TermFetcher::retrieveAllButCur($db);
 		$curTerm = TermFetcher::retrieveCurrent($db);
+		$terms = TermFetcher::retrieveAllButCur($db);
 	}
 
 
@@ -350,6 +350,12 @@ require ROOT_PATH . 'app/views/sidebar.php';
 			<br/>
 
 			<div class="form-group">
+
+				<div class="alert alert-info" role="alert">
+					Have in mind! you will be able to add courses to tutors once the
+					<a href="<?php echo BASE_URL; ?>academia/terms" class="alert-link">start date of the specific term</a>
+					has come!
+				</div>
 
 				<a data-toggle="modal" id="bttn-coursesModal" href="#coursesModal" class="btn btn-primary">
 					Add Teaching Courses

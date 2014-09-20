@@ -42,7 +42,6 @@ if ($user->isTutor()) {
 try {
 	$terms = TermFetcher::retrieveAllButCur($db);
 	if (isBtnUpdatePrsd()) {
-		var_dump($_POST);
 		$updateDone = FALSE;
 		$termId = $_POST['updateTermIdModal'];
 		$termName = $_POST['nameUpdate'];

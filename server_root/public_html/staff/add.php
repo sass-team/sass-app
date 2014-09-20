@@ -12,7 +12,11 @@ if (!$user->isAdmin()) {
 try {
 	$courses = CourseFetcher::retrieveAll($db);
 	$majors = MajorFetcher::retrieveMajors($db);
+<<<<<<< HEAD
 	$terms = TermFetcher::retrieveAllButCur($db);
+=======
+	$terms = TermFetcher::retrieveCurrTerm($db);
+>>>>>>> 321c322327199fc85308426a8b86ff789e4dc5bb
 
 	//$majors = array_unique(array_column($courses, 'Major'));
 	//$majors_extensions = array_unique(array_column($courses, 'Extension'));

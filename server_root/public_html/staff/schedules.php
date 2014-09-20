@@ -211,12 +211,10 @@ require ROOT_PATH . 'app/views/sidebar.php';
 								<thead>
 								<tr>
 									<th class="text-center" data-filterable="true" data-sortable="true"
-									    data-direction="asc">
-										First Name
+									    data-direction="asc">First Name
 									</th>
 									<th class="text-center" data-direction="asc" data-filterable="true"
-									    data-sortable="true">
-										Last Name
+									    data-sortable="true">Last Name
 									</th>
 									<th class="text-center" data-filterable="true" data-sortable="true"
 									    data-sortable="true">Starting time
@@ -331,7 +329,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 										<div class='input-group date' id='dateTimePickerStart'>
 											<span class="input-group-addon"><label for="dateTimePickerStart">
 													Starts At</label></span>
-											<input type='text' name='dateTimePickerStart' class="form-control" required />
+											<input type='text' name='dateTimePickerStart' class="form-control" required/>
                                  <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
 										</div>
 									</div>

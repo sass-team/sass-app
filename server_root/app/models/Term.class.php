@@ -101,7 +101,7 @@ class Term
 	public static function delete($db, $id) {
 		self::validateId($db, $id);
 		if (!TermFetcher::idExists($db, $id)) {
-			throw new Exception("Could not retrieve course to be deleted from database. <br/>
+			throw new Exception("Could not retrieve term to be deleted from database. <br/>
                 Maybe some other administrator just deleted it?");
 		}
 
