@@ -177,31 +177,17 @@ function get($objects, $findId, $column) {
 									<div class="form-group">
 										<div class="input-group">
 											<span class="input-group-addon"><label for="studentsIds">Students</label></span>
-											<select id="studentsIds" name="studentsIds[]" class="form-control" multiple required>
-
+											<select id="studentsIds" name="studentsIds" class="form-control" required>
+												<option></option>
 												<?php
 												foreach ($students as $student):
 													include(ROOT_PATH . "app/views/partials/student/select-options-view.html.php");
 												endforeach;
 												?>
-
 											</select>
-										</div>
-									</div>
-
-									<div class="form-group">
-										<div class="alert alert-warning">
-											<a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
-											<strong>Warning!</strong><i> Make sure to specify instructors order insertion same as
-												of that students order insertion.</i>
-										</div>
-									</div>
-
-
-									<div class="form-group">
-										<div class="input-group">
 											<span class="input-group-addon"><label for="instructorId">Instructor</label></span>
-											<select id="instructorId" name="instructorId[]" class="form-control" multiple required>
+											<select id="instructorId" name="instructorId" class="form-control" required>
+												<option></option>
 												<?php foreach ($instructors as $instructor) {
 													include(ROOT_PATH . "app/views/partials/instructor/select-options-view.html.php");
 												}
@@ -210,6 +196,20 @@ function get($objects, $findId, $column) {
 										</div>
 									</div>
 
+									<div class="form-group">
+										<div class="input-group">
+											<button type="button" class="btn btn-default btn-sm addButton"
+											        data-template="textbox">
+												Add One More Student
+											</button>
+										</div>
+									</div>
+
+									<div class="form-group hide" id="textboxTemplate">
+										<div class="input-group">
+											<button type="button" class="btn btn-default btn-sm removeButton">Remove</button>
+										</div>
+									</div>
 
 									<div class="form-group">
 										<div class="input-group">
@@ -285,166 +285,241 @@ function get($objects, $findId, $column) {
 	src="<?php echo BASE_URL; ?>assets/js/plugins/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js">
 </script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/fullcalendar/fullcalendar.min.js"></script>
-
+<script type="text/javascript"
+        src="//cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.1/js/bootstrapValidator.min.js"></script>
 
 <script type="text/javascript">
-	$(function () {
-		// http://momentjs.com/docs/#/manipulating/add/
-		// http://eonasdan.github.io/bootstrap-datetimepicker
-		moment().format();
+$(function () {
+	// http://momentjs.com/docs/#/manipulating/add/
+	// http://eonasdan.github.io/bootstrap-datetimepicker
+	moment().format();
 
-		$("#courseId").select2({
-			placeholder: "Select a course",
-			allowClear: false
-		});
-		$("#courseId").click(function () {
-			var courseId = $(this).select2("val");
-			var termId = $("#termId").select2("val");
+	$("#courseId").select2({
+		placeholder: "Select a course",
+		allowClear: false
+	});
+	$("#courseId").click(function () {
+		var courseId = $(this).select2("val");
+		var termId = $("#termId").select2("val");
 
-			$('#label-instructor-text').text("");
-			$('#label-instructor-text').append("<i class='fa fa-circle-o-notch fa-spin'></i>");
+		$('#label-instructor-text').text("");
+		$('#label-instructor-text').append("<i class='fa fa-circle-o-notch fa-spin'></i>");
 
-			var data = {
-				"action": "tutor_has_courses",
-				"courseId": courseId,
-				"termId": termId
-			}
-			data = $(this).serialize() + "&" + $.param(data);
-
-			$.ajax({
-				type: "GET",
-				dataType: "json",
-				url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/courses",
-				data: data,
-				success: function (inData) {
-					// reset label test
-					$('#label-instructor-text').text("Tutors");
-
-					// prepare new data for options
-					var newTutors = [];
-					$.each(inData, function (idx, obj) {
-						newTutors.push({
-							id: obj.id,
-							text: obj.f_name + " " + obj.l_name
-						});
-					});
-
-					// clear options
-					var $el = $("#tutorId");
-					$el.empty(); // remove old options
-
-					// add new options
-					$el.append("<option></option>");
-					$.each(newTutors, function (key, value) {
-						$el.append($("<option></option>")
-							.attr("value", value.id).text(value.text));
-					});
-
-					var placeHolder = jQuery.isEmptyObject(inData) ? "No tutors found" : "Select a tutor"
-					$el.select2({
-						placeholder: placeHolder,
-						allowClear: false
-					});
-
-				},
-				error: function (e) {
-					$('#label-instructor-text').text("Connection erros.");
-				}
-			});
-		});
-		var startDateDefault;
-		if (moment().minute() >= 30) {
-			startDateDefault = moment().add('1', 'hours');
-			startDateDefault.minutes(0);
-		} else {
-			startDateDefault = moment();
-			startDateDefault.minutes(30);
+		var data = {
+			"action": "tutor_has_courses",
+			"courseId": courseId,
+			"termId": termId
 		}
+		data = $(this).serialize() + "&" + $.param(data);
 
-		var minimumStartDate = startDateDefault.clone();
-		minimumStartDate.subtract('31', 'minutes')
-		var minimumMaxDate = moment().add('14', 'day');
+		$.ajax({
+			type: "GET",
+			dataType: "json",
+			url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/courses",
+			data: data,
+			success: function (inData) {
+				// reset label test
+				$('#label-instructor-text').text("Tutors");
 
-		var endDateDefault = startDateDefault.clone();
-		endDateDefault.add('30', 'minutes');
-		var minimumEndDate = endDateDefault.clone();
-		minimumEndDate.subtract('31', 'minutes')
+				// prepare new data for options
+				var newTutors = [];
+				$.each(inData, function (idx, obj) {
+					newTutors.push({
+						id: obj.id,
+						text: obj.f_name + " " + obj.l_name
+					});
+				});
 
-		$('#dateTimePickerStart').datetimepicker({
-			defaultDate: startDateDefault,
-			minDate: minimumStartDate,
-			maxDate: minimumMaxDate,
-			minuteStepping: 30,
-			daysOfWeekDisabled: [0, 6],
-			sideBySide: true,
-			strict: true
-		});
-		$('#dateTimePickerEnd').datetimepicker({
-			defaultDate: endDateDefault,
-			minDate: minimumEndDate,
-			minuteStepping: 30,
-			daysOfWeekDisabled: [0, 6],
-			sideBySide: true,
-			strict: true
-		});
-		$("#dateTimePickerStart").on("dp.change", function (e) {
-			var newEndDateDefault = $('#dateTimePickerStart').data("DateTimePicker").getDate().clone();
+				// clear options
+				var $el = $("#tutorId");
+				$el.empty(); // remove old options
 
-			newEndDateDefault.add('30', 'minutes');
-			var newMinimumEndDate = newEndDateDefault.clone();
-			newMinimumEndDate.subtract('31', 'minutes')
+				// add new options
+				$el.append("<option></option>");
+				$.each(newTutors, function (key, value) {
+					$el.append($("<option></option>")
+						.attr("value", value.id).text(value.text));
+				});
 
-			$('#dateTimePickerEnd').data("DateTimePicker").setMinDate(newMinimumEndDate);
-			$('#dateTimePickerEnd').data("DateTimePicker").setDate(newEndDateDefault);
-		});
-		$("#termId").select2();
-		$("#instructorId").select2({
-			placeholder: "Select an instructor for each student"
-		});
-		$("#studentsIds").select2({
-			placeholder: "Select at least one"
-		});
-		$("#tutorId").select2({
-			placeholder: "First select a course"
-		});
-		$("#tutorId").click(function () {
+				var placeHolder = jQuery.isEmptyObject(inData) ? "No tutors found" : "Select a tutor"
+				$el.select2({
+					placeholder: placeHolder,
+					allowClear: false
+				});
 
-		});
-
-		$("#appointments-calendar").fullCalendar({
-			header: {
-				left: 'prev,next',
-				center: 'title',
-				right: 'agendaWeek,month,agendaDay'
 			},
-			weekends: false, // will hide Saturdays and Sundays
-			defaultView: "agendaWeek",
-			editable: false,
-			droppable: false,
-			events: [
-				<?php if(isset($appointments) && !empty($appointments)){
-					if(sizeof($appointments) <= 1){
-					foreach($appointments as $appointment){
-						$course = get($courses, $appointment[AppointmentFetcher::DB_COLUMN_COURSE_ID], CourseFetcher::DB_COLUMN_ID);
-						include(ROOT_PATH . "app/views/partials/appointments/fullcalendar-single.php");
-					}
-				 }else{
-					for($i = 0; $i < (sizeof($appointments) - 1); $i++){
-					$course = get($courses, $appointments[$i][AppointmentFetcher::DB_COLUMN_COURSE_ID], CourseFetcher::DB_COLUMN_ID);
-						include(ROOT_PATH . "app/views/partials/appointments/fullcalendar-multi.php");
-					}
-					$lastAppointmentIndex = sizeof($appointments)-1;
-					$id = $lastAppointmentIndex;
-					$course = get($courses, $appointments[$i][AppointmentFetcher::DB_COLUMN_COURSE_ID], CourseFetcher::DB_COLUMN_ID);
-					include(ROOT_PATH . "app/views/partials/appointments/fullcalendar-multi.php");
-
-				}
-				}?>
-			],
-			timeFormat: 'H(:mm)' // uppercase H for 24-hour clock
+			error: function (e) {
+				$('#label-instructor-text').text("Connection erros.");
+			}
 		});
+	});
+	var startDateDefault;
+	if (moment().minute() >= 30) {
+		startDateDefault = moment().add('1', 'hours');
+		startDateDefault.minutes(0);
+	} else {
+		startDateDefault = moment();
+		startDateDefault.minutes(30);
+	}
+
+	var minimumStartDate = startDateDefault.clone();
+	minimumStartDate.subtract('31', 'minutes')
+	var minimumMaxDate = moment().add('14', 'day');
+
+	var endDateDefault = startDateDefault.clone();
+	endDateDefault.add('30', 'minutes');
+	var minimumEndDate = endDateDefault.clone();
+	minimumEndDate.subtract('31', 'minutes')
+
+	$('#dateTimePickerStart').datetimepicker({
+		defaultDate: startDateDefault,
+		minDate: minimumStartDate,
+		maxDate: minimumMaxDate,
+		minuteStepping: 30,
+		daysOfWeekDisabled: [0, 6],
+		sideBySide: true,
+		strict: true
+	});
+	$('#dateTimePickerEnd').datetimepicker({
+		defaultDate: endDateDefault,
+		minDate: minimumEndDate,
+		minuteStepping: 30,
+		daysOfWeekDisabled: [0, 6],
+		sideBySide: true,
+		strict: true
+	});
+	$("#dateTimePickerStart").on("dp.change", function (e) {
+		var newEndDateDefault = $('#dateTimePickerStart').data("DateTimePicker").getDate().clone();
+
+		newEndDateDefault.add('30', 'minutes');
+		var newMinimumEndDate = newEndDateDefault.clone();
+		newMinimumEndDate.subtract('31', 'minutes')
+
+		$('#dateTimePickerEnd').data("DateTimePicker").setMinDate(newMinimumEndDate);
+		$('#dateTimePickerEnd').data("DateTimePicker").setDate(newEndDateDefault);
+	});
+	$("#termId").select2();
+	$("#instructorId").select2({
+		placeholder: "Select an instructor"
+	});
+	$("#studentsIds").select2({
+		placeholder: "Select at least one"
+	});
+	$("#tutorId").select2({
+		placeholder: "First select a course"
+	});
+	$("#tutorId").click(function () {
 
 	});
+
+	$("#appointments-calendar").fullCalendar({
+		header: {
+			left: 'prev,next',
+			center: 'title',
+			right: 'agendaWeek,month,agendaDay'
+		},
+		weekends: false, // will hide Saturdays and Sundays
+		defaultView: "agendaWeek",
+		editable: false,
+		droppable: false,
+		events: [
+			<?php if(isset($appointments) && !empty($appointments)){
+				if(sizeof($appointments) <= 1){
+				foreach($appointments as $appointment){
+					$course = get($courses, $appointment[AppointmentFetcher::DB_COLUMN_COURSE_ID], CourseFetcher::DB_COLUMN_ID);
+					include(ROOT_PATH . "app/views/partials/appointments/fullcalendar-single.php");
+				}
+			 }else{
+				for($i = 0; $i < (sizeof($appointments) - 1); $i++){
+				$course = get($courses, $appointments[$i][AppointmentFetcher::DB_COLUMN_COURSE_ID], CourseFetcher::DB_COLUMN_ID);
+					include(ROOT_PATH . "app/views/partials/appointments/fullcalendar-multi.php");
+				}
+				$lastAppointmentIndex = sizeof($appointments)-1;
+				$id = $lastAppointmentIndex;
+				$course = get($courses, $appointments[$i][AppointmentFetcher::DB_COLUMN_COURSE_ID], CourseFetcher::DB_COLUMN_ID);
+				include(ROOT_PATH . "app/views/partials/appointments/fullcalendar-multi.php");
+
+			}
+			}?>
+		],
+		timeFormat: 'H(:mm)' // uppercase H for 24-hour clock
+	});
+
+	$('.addButton').on('click', function () {
+		var index = $(this).data('index');
+		if (!index) {
+			index = 1;
+			$(this).data('index', 1);
+		}
+		index++;
+		$(this).data('index', index);
+
+		var template = $(this).attr('data-template'),
+			$templateEle = $('#' + template + 'Template'),
+			$row = $templateEle.clone().removeAttr('id').insertBefore($templateEle).removeClass('hide'),
+			$el = $row.find('input').eq(0).attr('name', template + '[]');
+		$('#defaultForm').bootstrapValidator('addField', $el);
+
+		// Set random value for checkbox and textbox
+		if ('checkbox' == $el.attr('type') || 'radio' == $el.attr('type')) {
+			$el.val('Choice #' + index)
+				.parent().find('span.lbl').html('Choice #' + index);
+		} else {
+			$el.attr('placeholder', 'Textbox #' + index);
+		}
+
+		$row.on('click', '.removeButton', function (e) {
+			$('#defaultForm').bootstrapValidator('removeField', $el);
+			$row.remove();
+		});
+	});
+
+	$('#defaultForm')
+		.bootstrapValidator({
+			message: 'This value is not valid',
+			feedbackIcons: {
+				valid: 'glyphicon glyphicon-ok',
+				invalid: 'glyphicon glyphicon-remove',
+				validating: 'glyphicon glyphicon-refresh'
+			},
+			fields: {
+				'textbox[]': {
+					validators: {
+						notEmpty: {
+							message: 'The textbox field is required'
+						}
+					}
+				},
+				'checkbox[]': {
+					validators: {
+						notEmpty: {
+							message: 'The checkbox field is required'
+						}
+					}
+				},
+				'radio[]': {
+					validators: {
+						notEmpty: {
+							message: 'The radio field is required'
+						}
+					}
+				}
+			}
+		})
+		.on('error.field.bv', function (e, data) {
+			//console.log('error.field.bv -->', data.element);
+		})
+		.on('success.field.bv', function (e, data) {
+			//console.log('success.field.bv -->', data.element);
+		})
+		.on('added.field.bv', function (e, data) {
+			//console.log('Added element -->', data.field, data.element);
+		})
+		.on('removed.field.bv', function (e, data) {
+			//console.log('Removed element -->', data.field, data.element);
+		});
+
+});
 </script>
 
 </body>
