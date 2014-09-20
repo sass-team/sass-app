@@ -40,8 +40,7 @@ if ($user->isTutor()) {
 
 
 try {
-	$terms = TermFetcher::retrieveAllButCur($db);
-	$curTerm = TermFetcher::retrieveCurrent($db);
+	$terms = TermFetcher::retrieveAll($db);
 
 	if (isBtnUpdatePrsd()) {
 		$updateDone = FALSE;
@@ -190,8 +189,8 @@ require ROOT_PATH . 'app/views/sidebar.php';
 								<thead>
 								<tr>
 									<th class="text-center" data-filterable="true" data-sortable="true">Name</th>
-									<th class="text-center" data-filterable="false" data-sortable="false">Starting Date</th>
-									<th class="text-center" data-filterable="false" data-sortable="false">Ending Date</th>
+									<th class="text-center" data-filterable="true" data-sortable="true">Starting Date</th>
+									<th class="text-center" data-filterable="true" data-sortable="true">Ending Date</th>
 									<th class="text-center">Action</th>
 
 								</tr>
@@ -199,8 +198,6 @@ require ROOT_PATH . 'app/views/sidebar.php';
 								<tbody>
 
 								<?php
-								$term = $curTerm;
-								include(ROOT_PATH . "app/views/partials/term/table-data-view.html.php");
 								foreach ($terms as $term) {
 									include(ROOT_PATH . "app/views/partials/term/table-data-view.html.php");
 								} ?>

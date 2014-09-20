@@ -14,8 +14,7 @@ $pageTitle = "New Workshop";
 $section = "appointments";
 
 try {
-	$terms = TermFetcher::retrieveAllButCur($db);
-	$curTerm = TermFetcher::retrieveCurrent($db);
+	$terms = TermFetcher::retrieveCurrTerm($db);
 	$courses = CourseFetcher::retrieveAll($db);
 	$instructors = InstructorFetcher::retrieveAll($db);
 	$students = StudentFetcher::retrieveAll($db);
@@ -210,14 +209,11 @@ function get($objects, $findId, $column) {
 											<button type="button" class="btn btn-default btn-sm removeButton">Remove</button>
 										</div>
 									</div>
-
 									<div class="form-group">
 										<div class="input-group">
 											<span class="input-group-addon"><label for="termId">Term</label></span>
 											<select id="termId" name="termId" class="form-control" required>
 												<?php
-												$term = $curTerm;
-												include(ROOT_PATH . "app/views/partials/term/select-options-view.html.php");
 												foreach ($terms as $term) {
 													include(ROOT_PATH . "app/views/partials/term/select-options-view.html.php");
 												}

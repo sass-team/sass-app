@@ -76,8 +76,7 @@ try {
 		$teachingCourses = TutorFetcher::retrieveCurrTermTeachingCourses($db, $curUser->getId());
 		$notTeachingCourses = Tutor::retrieveCoursesNotTeaching($db, $curUser->getId());
 		$majors = MajorFetcher::retrieveMajors($db);
-		$curTerm = TermFetcher::retrieveCurrent($db);
-		$terms = TermFetcher::retrieveAllButCur($db);
+		$terms = TermFetcher::retrieveCurrTerm($db);
 	}
 
 
@@ -351,12 +350,6 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 			<div class="form-group">
 
-				<div class="alert alert-info" role="alert">
-					Have in mind! you will be able to add courses to tutors once the
-					<a href="<?php echo BASE_URL; ?>academia/terms" class="alert-link">start date of the specific term</a>
-					has come!
-				</div>
-
 				<a data-toggle="modal" id="bttn-coursesModal" href="#coursesModal" class="btn btn-primary">
 					Add Teaching Courses
 				</a>
@@ -608,6 +601,11 @@ require ROOT_PATH . 'app/views/sidebar.php';
 							</div>
 						<?php } ?>
 
+						<div class="alert alert-info" role="alert">
+							Your are able to add courses to courses
+							<a href="<?php echo BASE_URL; ?>academia/terms" class="alert-link">during the duration of terms</a>!
+						</div>
+
 						<div class="portlet-content">
 
 							<div class="row">
@@ -645,9 +643,6 @@ require ROOT_PATH . 'app/views/sidebar.php';
 										<select id="term" name="term" class="form-control">
 
 											<?php
-											$term = $curTerm;
-											include(ROOT_PATH . "app/views/partials/term/select-options-view.html.php");
-
 											foreach ($terms as $term) {
 												include(ROOT_PATH . "app/views/partials/term/select-options-view.html.php");
 											}
