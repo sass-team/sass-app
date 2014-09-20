@@ -90,5 +90,9 @@ class Course
 		CourseFetcher::delete($db, $id);
 	}
 
+	public static function getTutors($db, $courseId){
+		self::validateId($db, $courseId);
+		return CourseFetcher::retrieveTutors($db, $courseId);
+	}
 
 }

@@ -40,7 +40,7 @@ if ($user->isTutor()) {
 
 
 try {
-	$terms = TermFetcher::retrieveAll($db);
+	$terms = TermFetcher::retrieveAllButCur($db);
 	if (isBtnUpdatePrsd()) {
 		var_dump($_POST);
 		$updateDone = FALSE;

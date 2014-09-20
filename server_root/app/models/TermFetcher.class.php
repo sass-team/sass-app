@@ -38,10 +38,14 @@ class TermFetcher
 
 
 //m-d-Y h:i A
-	public static function retrieveAll($db) {
+	public static function retrieveAllButCur($db) {
 		$query =
 			"SELECT `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_NAME . "` , `" . self::DB_COLUMN_START_DATE . "`,
-			 `" . self::DB_COLUMN_END_DATE . "` FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "` order by `" .
+			 `" . self::DB_COLUMN_END_DATE . "`
+			 FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+			 WHERE (NOW() NOT BETWEEN `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" .
+			TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_END_DATE . "`)
+			 order by `" .
 			self::DB_TABLE . "`.`" . self::DB_COLUMN_START_DATE . "` DESC";
 
 		try {
@@ -64,6 +68,25 @@ class TermFetcher
 		try {
 			$query = $db->getConnection()->prepare($query);
 			$query->bindParam(':id', $id, PDO::PARAM_INT);
+
+			$query->execute();
+			return $query->fetch(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			throw new Exception("Could not retrieve data from database .: ");
+		} // end catch
+	}
+
+
+	public static function retrieveCurrent($db) {
+		$query = "SELECT  `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_NAME . "` , `" . self::DB_COLUMN_START_DATE
+			. "`,		 `" . self::DB_COLUMN_END_DATE . "`
+			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+			WHERE
+			(NOW() BETWEEN `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" .
+			TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_END_DATE . "`)";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
 
 			$query->execute();
 			return $query->fetch(PDO::FETCH_ASSOC);
