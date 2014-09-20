@@ -295,60 +295,32 @@ $(function () {
 		allowClear: false
 	});
 	$("#courseId").click(function () {
-		var courseId = $(this).select2("val");
-		var termId = $("#termId").select2("val");
-
-		$('#label-instructor-text').text("");
-		$('#label-instructor-text').append("<i class='fa fa-circle-o-notch fa-spin'></i>");
-
-		var data = {
-			"action": "tutor_has_courses",
-			"courseId": courseId,
-			"termId": termId
+		try {
+			retrieveTutors();
 		}
-		data = $(this).serialize() + "&" + $.param(data);
-
-		$.ajax({
-			type: "GET",
-			dataType: "json",
-			url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/courses",
-			data: data,
-			success: function (inData) {
-				// reset label test
-				$('#label-instructor-text').text("Tutors");
-
-				// prepare new data for options
-				var newTutors = [];
-				$.each(inData, function (idx, obj) {
-					newTutors.push({
-						id: obj.id,
-						text: obj.f_name + " " + obj.l_name
-					});
-				});
-
-				// clear options
-				var $el = $("#tutorId");
-				$el.empty(); // remove old options
-
-				// add new options
-				$el.append("<option></option>");
-				$.each(newTutors, function (key, value) {
-					$el.append($("<option></option>")
-						.attr("value", value.id).text(value.text));
-				});
-
-				var placeHolder = jQuery.isEmptyObject(inData) ? "No tutors found" : "Select a tutor"
-				$el.select2({
-					placeholder: placeHolder,
-					allowClear: false
-				});
-
-			},
-			error: function (e) {
-				$('#label-instructor-text').text("Connection erros.");
-			}
-		});
+		catch (err) {
+			$("#tutorId").select2({
+				placeholder: err.message
+			});
+		}
 	});
+	$("#termId").click(function () {
+
+		try {
+			retrieveTutors();
+		}
+		catch (err) {
+			// clear options
+			var $el = $("#tutorId");
+			$el.empty(); // remove old options
+			// add new options
+			$el.append("<option></option>");
+			$el.select2({
+				placeholder: err.message
+			});
+		}
+	});
+
 	var startDateDefault;
 	if (moment().minute() >= 30) {
 		startDateDefault = moment().add('1', 'hours');
@@ -399,7 +371,7 @@ $(function () {
 		placeholder: "Select an instructor"
 	});
 	$("#studentsIds").select2({
-		placeholder: "Select at least one"
+		placeholder: "Select one"
 	});
 	$("#tutorId").select2({
 		placeholder: "First select a course"
@@ -515,6 +487,65 @@ $(function () {
 			//console.log('Removed element -->', data.field, data.element);
 		});
 
+	function retrieveTutors() {
+		var courseId = $("#courseId").select2("val");
+		var termId = $("#termId").select2("val");
+
+
+		if (!courseId.match(/^[0-9]+$/)) throw new Error("Course is missing");
+		if (!termId.match(/^[0-9]+$/)) throw new Error("Term is missing");
+
+		$('#label-instructor-text').text("");
+		$('#label-instructor-text').append("<i class='fa fa-circle-o-notch fa-spin'></i>");
+
+		var data = {
+			"action": "tutor_has_courses",
+			"courseId": courseId,
+			"termId": termId
+		}
+		data = $(this).serialize() + "&" + $.param(data);
+
+		$.ajax({
+			type: "GET",
+			dataType: "json",
+			url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/courses",
+			data: data,
+			success: function (inData) {
+				// reset label test
+				$('#label-instructor-text').text("Tutors");
+
+				// prepare new data for options
+				var newTutors = [];
+				$.each(inData, function (idx, obj) {
+					newTutors.push({
+						id: obj.id,
+						text: obj.f_name + " " + obj.l_name
+					});
+				});
+
+				// clear options
+				var $el = $("#tutorId");
+				$el.empty(); // remove old options
+
+				// add new options
+				$el.append("<option></option>");
+				$.each(newTutors, function (key, value) {
+					$el.append($("<option></option>")
+						.attr("value", value.id).text(value.text));
+				});
+
+				var placeHolder = jQuery.isEmptyObject(inData) ? "No tutors found" : "Select a tutor"
+				$el.select2({
+					placeholder: placeHolder,
+					allowClear: false
+				});
+
+			},
+			error: function (e) {
+				$('#label-instructor-text').text("Connection errors.");
+			}
+		});
+	}
 });
 </script>
 
