@@ -17,7 +17,6 @@
 	</form>
 </div>
 <!-- #search -->
-
 <nav id="sidebar">
 
 	<ul id="main-nav" class="open-active">
