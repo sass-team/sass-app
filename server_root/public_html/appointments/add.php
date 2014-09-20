@@ -23,7 +23,7 @@ try {
 
 	if (isBtnAddStudentPrsd()) {
 		Appointment::add($db, $_POST['dateTimePickerStart'], $_POST['dateTimePickerEnd'], $_POST['courseId'],
-			$_POST['studentsIds'], $_POST['tutorId'], $_POST['instructorId'], $_POST['termId']);
+			$_POST['studentsIds'], $_POST['tutorId'], $_POST['instructorIds'], $_POST['termId']);
 		header('Location: ' . BASE_URL . 'appointments/add/success');
 		exit();
 	}
@@ -173,10 +173,10 @@ function get($objects, $findId, $column) {
 										</div>
 									</div>
 
-									<div class="form-group">
+									<div class="form-group" id="student-instructor">
 										<div class="input-group">
-											<span class="input-group-addon"><label for="studentsIds">Students</label></span>
-											<select id="studentsIds" name="studentsIds" class="form-control" required>
+											<span class="input-group-addon"><label for="studentId1">Students</label></span>
+											<select id="studentId1" name="studentsIds[]" class="form-control" required>
 												<option></option>
 												<?php
 												foreach ($students as $student):
@@ -184,8 +184,8 @@ function get($objects, $findId, $column) {
 												endforeach;
 												?>
 											</select>
-											<span class="input-group-addon"><label for="instructorId">Instructor</label></span>
-											<select id="instructorId" name="instructorId" class="form-control" required>
+											<span class="input-group-addon"><label for="instructorId1">Instructor</label></span>
+											<select id="instructorId1" name="instructorIds[]" class="form-control" required>
 												<option></option>
 												<?php foreach ($instructors as $instructor) {
 													include(ROOT_PATH . "app/views/partials/instructor/select-options-view.html.php");
@@ -295,60 +295,32 @@ $(function () {
 		allowClear: false
 	});
 	$("#courseId").click(function () {
-		var courseId = $(this).select2("val");
-		var termId = $("#termId").select2("val");
-
-		$('#label-instructor-text').text("");
-		$('#label-instructor-text').append("<i class='fa fa-circle-o-notch fa-spin'></i>");
-
-		var data = {
-			"action": "tutor_has_courses",
-			"courseId": courseId,
-			"termId": termId
+		try {
+			retrieveTutors();
 		}
-		data = $(this).serialize() + "&" + $.param(data);
-
-		$.ajax({
-			type: "GET",
-			dataType: "json",
-			url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/courses",
-			data: data,
-			success: function (inData) {
-				// reset label test
-				$('#label-instructor-text').text("Tutors");
-
-				// prepare new data for options
-				var newTutors = [];
-				$.each(inData, function (idx, obj) {
-					newTutors.push({
-						id: obj.id,
-						text: obj.f_name + " " + obj.l_name
-					});
-				});
-
-				// clear options
-				var $el = $("#tutorId");
-				$el.empty(); // remove old options
-
-				// add new options
-				$el.append("<option></option>");
-				$.each(newTutors, function (key, value) {
-					$el.append($("<option></option>")
-						.attr("value", value.id).text(value.text));
-				});
-
-				var placeHolder = jQuery.isEmptyObject(inData) ? "No tutors found" : "Select a tutor"
-				$el.select2({
-					placeholder: placeHolder,
-					allowClear: false
-				});
-
-			},
-			error: function (e) {
-				$('#label-instructor-text').text("Connection erros.");
-			}
-		});
+		catch (err) {
+			$("#tutorId").select2({
+				placeholder: err.message
+			});
+		}
 	});
+	$("#termId").click(function () {
+
+		try {
+			retrieveTutors();
+		}
+		catch (err) {
+			// clear options
+			var $el = $("#tutorId");
+			$el.empty(); // remove old options
+			// add new options
+			$el.append("<option></option>");
+			$el.select2({
+				placeholder: err.message
+			});
+		}
+	});
+
 	var startDateDefault;
 	if (moment().minute() >= 30) {
 		startDateDefault = moment().add('1', 'hours');
@@ -395,11 +367,11 @@ $(function () {
 		$('#dateTimePickerEnd').data("DateTimePicker").setDate(newEndDateDefault);
 	});
 	$("#termId").select2();
-	$("#instructorId").select2({
+	$("#instructorId1").select2({
 		placeholder: "Select an instructor"
 	});
-	$("#studentsIds").select2({
-		placeholder: "Select at least one"
+	$("#studentId1").select2({
+		placeholder: "Select one"
 	});
 	$("#tutorId").select2({
 		placeholder: "First select a course"
@@ -442,6 +414,8 @@ $(function () {
 	});
 
 	$('.addButton').on('click', function () {
+
+
 		var index = $(this).data('index');
 		if (!index) {
 			index = 1;
@@ -456,17 +430,36 @@ $(function () {
 			$el = $row.find('input').eq(0).attr('name', template + '[]');
 		$('#defaultForm').bootstrapValidator('addField', $el);
 
-		// Set random value for checkbox and textbox
-		if ('checkbox' == $el.attr('type') || 'radio' == $el.attr('type')) {
-			$el.val('Choice #' + index)
-				.parent().find('span.lbl').html('Choice #' + index);
-		} else {
-			$el.attr('placeholder', 'Textbox #' + index);
-		}
+		var newStudentId = 'studentId' + index;
+		var newInstructorId = 'instructorId' + index;
+
+		var $curStudentRow = $('#student-instructor');
+		$("#studentId1").select2("destroy");
+		$("#instructorId1").select2("destroy");
+
+		var newRow = $curStudentRow.clone();
+		$('#studentId1', newRow).attr('id', newStudentId);
+		$('#instructorId1', newRow).attr('id', newInstructorId);
+
+		$row.prepend(newRow);
+
+		$("#studentId1").select2({
+			placeholder: "Select one"
+		});
+		$("#instructorId1").select2({
+			placeholder: "Select one"
+		});
+		$("#" + newStudentId).select2({
+			placeholder: "Select one"
+		});
+		$("#" + newInstructorId).select2({
+			placeholder: "Select one"
+		});
 
 		$row.on('click', '.removeButton', function (e) {
 			$('#defaultForm').bootstrapValidator('removeField', $el);
 			$row.remove();
+			newRow.remove();
 		});
 	});
 
@@ -515,6 +508,65 @@ $(function () {
 			//console.log('Removed element -->', data.field, data.element);
 		});
 
+	function retrieveTutors() {
+		var courseId = $("#courseId").select2("val");
+		var termId = $("#termId").select2("val");
+
+
+		if (!courseId.match(/^[0-9]+$/)) throw new Error("Course is missing");
+		if (!termId.match(/^[0-9]+$/)) throw new Error("Term is missing");
+
+		$('#label-instructor-text').text("");
+		$('#label-instructor-text').append("<i class='fa fa-circle-o-notch fa-spin'></i>");
+
+		var data = {
+			"action": "tutor_has_courses",
+			"courseId": courseId,
+			"termId": termId
+		}
+		data = $(this).serialize() + "&" + $.param(data);
+
+		$.ajax({
+			type: "GET",
+			dataType: "json",
+			url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/courses",
+			data: data,
+			success: function (inData) {
+				// reset label test
+				$('#label-instructor-text').text("Tutors");
+
+				// prepare new data for options
+				var newTutors = [];
+				$.each(inData, function (idx, obj) {
+					newTutors.push({
+						id: obj.id,
+						text: obj.f_name + " " + obj.l_name
+					});
+				});
+
+				// clear options
+				var $el = $("#tutorId");
+				$el.empty(); // remove old options
+
+				// add new options
+				$el.append("<option></option>");
+				$.each(newTutors, function (key, value) {
+					$el.append($("<option></option>")
+						.attr("value", value.id).text(value.text));
+				});
+
+				var placeHolder = jQuery.isEmptyObject(inData) ? "No tutors found" : "Select a tutor"
+				$el.select2({
+					placeholder: placeHolder,
+					allowClear: false
+				});
+
+			},
+			error: function (e) {
+				$('#label-instructor-text').text("Connection errors.");
+			}
+		});
+	}
 });
 </script>
 
