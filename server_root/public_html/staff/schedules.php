@@ -44,10 +44,9 @@ try {
 	$terms = TermFetcher::retrieveCurrTerm($db);
 	$schedules = ScheduleFetcher::retrieveTutorsOnCurrTerms($db);
 
-	
 
 // protect again any sql injections on url
-	 if (isBtnUpdatePrsd()) {
+	if (isBtnUpdatePrsd()) {
 		$updateDone = FALSE;
 		$scheduleId = $_POST['updateScheduleIdModal'];
 
@@ -55,22 +54,21 @@ try {
 
 		$updateDone = $updateDone || Schedule::updateStartingDate($db, $scheduleId, $_POST['dateStartUpdate'], $schedule[ScheduleFetcher::DB_COLUMN_START_TIME]);
 		$updateDone = $updateDone || Schedule::updateEndingDate($db, $scheduleId, $_POST['dateEndUpdate'], $schedule[ScheduleFetcher::DB_COLUMN_END_TIME]);
-	
-	}	else if (isBtnAddSchedulePrsd()) {
-			Schedule::add($db, $_POST['dateTimePickerStart'], $_POST['dateTimePickerEnd'], $_POST['tutorId'],
-				$_POST['termId']);
-			header('Location: ' . BASE_URL . 'staff/schedules/success');
-			exit();
 
-		} else if (isBtnDeletePrsd()) {
-			Schedule::delete($db, $_POST['delScheduleIdModal']);
-			header('Location: ' . BASE_URL . 'staff/schedules/success');
-			exit();
-	} 
-
-	else if (!isModificationSuccessful()) {
-		header('Location: ' . BASE_URL . 'error-404');
+	} else if (isBtnAddSchedulePrsd()) {
+		Schedule::add($db, $_POST['dateTimePickerStart'], $_POST['dateTimePickerEnd'], $_POST['tutorId'],
+			$_POST['termId']);
+		header('Location: ' . BASE_URL . 'staff/schedules/success');
 		exit();
+
+	} else if (isBtnDeletePrsd()) {
+		var_dump($_POST);
+//		Schedule::delete($db, $_POST['delScheduleIdModal']);
+//		header('Location: ' . BASE_URL . 'staff/schedules/success');
+//		exit();
+	} else if (!isModificationSuccessful()) {
+//		header('Location: ' . BASE_URL . 'error-404');
+//		exit();
 	}
 
 
@@ -89,18 +87,23 @@ function getSchedule($needle, $schedules, $strict = false) {
 
 	return false;
 }
+
 function isBtnAddSchedulePrsd() {
 	return isset($_POST['hiddenSubmitPrsd']) && empty($_POST['hiddenSubmitPrsd']);
 }
+
 function isModificationSuccessful() {
 	return isset($_GET['success']) && strcmp($_GET['success'], 'y1!qp!' === 0);
 }
+
 function isBtnDeletePrsd() {
 	return isset($_POST['hiddenSubmitDeleteSchedule']) && empty($_POST['hiddenSubmitDeleteSchedule']);
 }
+
 function isBtnUpdatePrsd() {
 	return isset($_POST['hiddenUpdatePrsd']) && empty($_POST['hiddenUpdatePrsd']);
 }
+
 /**
  * @return bool
  */
@@ -123,12 +126,6 @@ function isBtnUpdatePrsd() {
 
 // 	return false;
 // }
-
-
-
-
-
-
 
 
 $section = "staff";
@@ -207,7 +204,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 								data-info="true"
 								data-search="true"
 								data-length-change="true"
-								data-paginate="true"
+								data-paginate="false"
 								id="usersTable"
 								>
 								<thead>
@@ -455,7 +452,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 										<h4>Name </h4>
 										<input type="text" id="nameUpdate" name="nameUpdate" class="form-control"
 										       value="<?php if (isset($_POST['nameUpdate'])) echo
-										       htmlentities($_POST['nameUpdate']); ?>"
+									htmlentities($_POST['nameUpdate']); ?>"
 										       required>
 									</div> -->
 
@@ -468,25 +465,27 @@ require ROOT_PATH . 'app/views/sidebar.php';
 											<div class="input-group">
 												<div class='input-group date' id='dateStartUpdate'>
 													<span class="input-group-addon"><label for="dateStartUpdate">Starts
-														At&#32; </label></span>
-														<input type='text' class="form-control" name="dateStartUpdate"
-														data-date-format="YYYY-MM-DD HH:mm:ss"/>
-														<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
-													</div>
-												</div>
-											</div>
-											<div class="form-group">
-												<div class="input-group">
-													<div class='input-group date' id='dateEndUpdate'>
-														<span class="input-group-addon"><label for="dateEndUpdate">Ends
 															At&#32; </label></span>
-															<input type='text' class="form-control" name="dateEndUpdate"
-															data-date-format="YYYY-MM-DD HH:mm:ss"/>
-															<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
-														</div>
-													</div>
+													<input type='text' class="form-control" name="dateStartUpdate"
+													       data-date-format="YYYY-MM-DD HH:mm:ss"/>
+														<span class="input-group-addon"><span
+																class="glyphicon glyphicon-calendar"></span>
 												</div>
 											</div>
+										</div>
+										<div class="form-group">
+											<div class="input-group">
+												<div class='input-group date' id='dateEndUpdate'>
+														<span class="input-group-addon"><label for="dateEndUpdate">Ends
+																At&#32; </label></span>
+													<input type='text' class="form-control" name="dateEndUpdate"
+													       data-date-format="YYYY-MM-DD HH:mm:ss"/>
+															<span class="input-group-addon"><span
+																	class="glyphicon glyphicon-calendar"></span>
+												</div>
+											</div>
+										</div>
+									</div>
 
 
 								</div>
@@ -526,7 +525,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/simplecolorpicker/jquery.simplecolorpicker.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/textarea-counter/jquery.textarea-counter.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/autosize/jquery.autosize.min.js"></script>
-<script src="<?php echo BASE_URL; ?>assets/js/demos/form-extended.js"></script>
+<!--<script src="--><?php //echo BASE_URL; ?><!--assets/js/demos/form-extended.js"></script>-->
 
 <script
 	src="<?php echo BASE_URL; ?>assets/js/plugins/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js">
@@ -538,10 +537,11 @@ require ROOT_PATH . 'app/views/sidebar.php';
 		moment().format();
 
 		$("#tutorId").select2();
+		$("#termId").select2();
 
 
 		$('#dateTimePickerStart').datetimepicker({
-			defaultDate:moment(),
+			defaultDate: moment(),
 			minDate: moment().subtract('1', 'day'),
 			minuteStepping: 10,
 			daysOfWeekDisabled: [0, 6],
@@ -569,19 +569,20 @@ require ROOT_PATH . 'app/views/sidebar.php';
 		});
 
 		// prepare course id for delete on modal
-		$(".btnDeleteCourse").click(function () {
-			$inputVal = $(this).next('input').val();
-			$("#delCourseIdModal").val($inputVal);
+		$(".btnDeleteSchedule").click(function () {
+			var inputVal = $(this).next('input').val();
+			$("#delScheduleIdModal").val(inputVal);
 		});
 
-		$(".btnUpdateCourse").click(function () {
+		$(".btnUpdateSchedule").click(function () {
 			$courseId = $(this).next().next('input').val();
+
 			$courseName = ($(this).parent().prev().text());
 			$courseCode = ($(this).parent().prev().prev().text());
 
-			$("#updateCourseIdModal").val($courseId);
-			$("#nameUpdate").val($courseCode);
-			$("#dateStartUpdate").val($courseName);
+//			$("#updateCourseIdModal").val($courseId);
+//			$("#nameUpdate").val($courseCode);
+//			$("#dateStartUpdate").val($courseName);
 
 		});
 	});
