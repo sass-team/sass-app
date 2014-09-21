@@ -6,7 +6,7 @@
  * @link https://github.com/PHPMailer/PHPMailer/
  * @author Marcus Bointon (Synchro/coolbru) <phpmailer@synchromedia.co.uk>
  * @author Jim Jagielski (jimjag) <jimjag@gmail.com>
- * @author Andy Prevost (codeworxtech) <codeworxtech@users.sourceforge.net>
+ * @author Andy Prevost (codeworxtech) <codeworxtech@stuff.sourceforge.net>
  * @author Brent R. Matzelle (original founder)
  * @copyright 2012 - 2014 Marcus Bointon
  * @copyright 2010 - 2012 Jim Jagielski
@@ -25,7 +25,7 @@
  * @author Richard Davey (original author) <rich@corephp.co.uk>
  * @author Marcus Bointon (Synchro/coolbru) <phpmailer@synchromedia.co.uk>
  * @author Jim Jagielski (jimjag) <jimjag@gmail.com>
- * @author Andy Prevost (codeworxtech) <codeworxtech@users.sourceforge.net>
+ * @author Andy Prevost (codeworxtech) <codeworxtech@stuff.sourceforge.net>
  */
 class POP3
 {
@@ -154,28 +154,28 @@ class POP3
      * A connect, login, disconnect sequence
      * appropriate for POP-before SMTP authorisation.
      * @access public
-     * @param string $host
-     * @param integer|boolean $port
-     * @param integer|boolean $tval
+     * @param string $host The hostname to connect to
+     * @param integer|boolean $port The port number to connect to
+     * @param integer|boolean $timeout The timeout value
      * @param string $username
      * @param string $password
      * @param integer $debug_level
      * @return boolean
      */
-    public function authorise($host, $port = false, $tval = false, $username = '', $password = '', $debug_level = 0)
+    public function authorise($host, $port = false, $timeout = false, $username = '', $password = '', $debug_level = 0)
     {
         $this->host = $host;
         // If no port value provided, use default
         if ($port === false) {
             $this->port = $this->POP3_PORT;
         } else {
-            $this->port = $port;
+            $this->port = (integer)$port;
         }
         // If no timeout value provided, use default
-        if ($tval === false) {
+        if ($timeout === false) {
             $this->tval = $this->POP3_TIMEOUT;
         } else {
-            $this->tval = $tval;
+            $this->tval = (integer)$timeout;
         }
         $this->do_debug = $debug_level;
         $this->username = $username;

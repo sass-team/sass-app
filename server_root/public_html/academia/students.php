@@ -2,7 +2,14 @@
 require __DIR__ . '/../../app/init.php';
 $general->loggedOutProtect();
 
-$page_title = "Manage Students";
+// redirect if user elevation is not that of secretary or admin
+if ($user->isTutor()) {
+	header('Location: ' . BASE_URL . "error-403");
+	exit();
+}
+
+
+$pageTitle = "Academia - Students";
 $section = "academia";
 
 try {
@@ -61,10 +68,9 @@ try {
  *
  * @param $needle
  * @param $students
- * @param bool $strict
  * @return bool
  */
-function getStudent($needle, $students, $strict = false) {
+function getStudent($needle, $students) {
 	foreach ($students as $student) {
 		if ($student[StudentFetcher::DB_COLUMN_ID] === $needle) return $student;
 	}
@@ -141,27 +147,39 @@ require ROOT_PATH . 'app/views/sidebar.php';
 			</div>
 		<?php } ?>
 		<div class="row">
+
 			<div class="col-md-12">
 
-				<div class="btn-group navbar-right">
-					<a data-toggle="modal" id="btn-styledModal" href="#addStudentModal"
-					   class="btn btn-primary">
-						Add Student</a>
-					<a data-toggle="modal" id="btn-styledModal" href="#addMajorModal"
-					   class="btn btn-primary">
-						Add Major</a>
-				</div>
+				<div class="portlet">
 
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-12">
+					<div class="portlet-header">
+
+						<h3>
+							<i class="fa fa-users"></i>
+							View and Manage Students
+						</h3>
+
+						<ul class="portlet-tools pull-right">
+								<li>
+									<div class="btn-group">
+									  <button data-toggle="dropdown" class="btn btn-md btn-primary dropdown-toggle">Add <span class="caret"></span></button>
+									  <ul class="dropdown-menu" role="menu">
+									    <li><a data-toggle="modal" href="#addStudentModal">Student</a></li>
+									    <li class="divider"></li>
+									    <li><a data-toggle="modal" href="#addMajorModal">Major</a></li>
+									  </ul>
+									</div>
+								</li>
+						</ul>
+
+					</div>
+					<!-- /.portlet-header -->
 
 				<div class="portlet-content">
 
 					<div class="table-responsive">
 						<table
-							class="table table-striped table-bordered table-hover table-highlight table-checkable"
+							class="table table-striped table-bordered table-hover table-highlight"
 							data-provide="datatable"
 							data-display-rows="10"
 							data-info="true"
@@ -172,21 +190,21 @@ require ROOT_PATH . 'app/views/sidebar.php';
 							>
 							<thead>
 							<tr>
-								<th data-filterable="true" data-sortable="true" data-direction="desc">Name</th>
-								<th data-filterable="true" data-sortable="true" data-direction="desc">ID</th>
-								<th data-direction="asc" data-filterable="true" data-sortable="false">Email</th>
-								<th data-filterable="true" data-sortable="false">Mobile</th>
-								<th data-filterable="true" data-sortable="true">Major</th>
-								<th data-filterable="true" data-sortable="true">CI</th>
-								<th data-filterable="true" data-sortable="true">Credits</th>
+								<th class="text-center" data-filterable="true" data-sortable="true" data-direction="desc">Name</th>
+								<th class="text-center" data-filterable="true" data-sortable="true" data-direction="desc">ID</th>
+								<th class="text-center" data-direction="asc" data-filterable="true" data-sortable="false">Email</th>
+								<th class="text-center" data-filterable="true" data-sortable="false">Mobile</th>
+								<th class="text-center" data-filterable="true" data-sortable="true">Major</th>
+								<th class="text-center" data-filterable="true" data-sortable="true">CI</th>
+								<th class="text-center" data-filterable="true" data-sortable="true">Credits</th>
 
 								<?php if (!$user->isTutor()): ?>
-									<th data-filterable="false" class="hidden-xs hidden-sm">Schedule</th>
+									<th class="text-center" data-filterable="false" class="hidden-xs hidden-sm">Schedule</th>
 								<?php endif; ?>
 
 
 								<?php if ($user->isAdmin()): ?>
-									<th data-filterable="false" class="hidden-xs hidden-sm">Action</th>
+									<th class="text-center" data-filterable="false" class="hidden-xs hidden-sm">Action</th>
 								<?php endif; ?>
 							</tr>
 							</thead>
@@ -194,13 +212,14 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 							<?php
 							foreach (array_reverse($students) as $student) {
-								include(ROOT_PATH . "app/views/partials/student-table-data-view.html.php");
+								include(ROOT_PATH . "app/views/partials/student/table-data-view.html.php");
 							} ?>
 							</tbody>
 						</table>
 					</div>
 					<!-- /.table-responsive -->
-
+					</div>
+					<!-- /.portlet-content -->
 
 				</div>
 				<!-- /.portlet -->
@@ -317,7 +336,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 										</h5>
 										<select id="userMajorId" name="userMajorId" class="form-control">
 											<?php foreach ($majors as $major) {
-												include(ROOT_PATH . "app/views/partials/major-select-options-view.html.php");
+												include(ROOT_PATH . "app/views/partials/major/select-options-view.html.php");
 											}
 											?>
 										</select>
@@ -547,7 +566,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 										</h5>
 										<select id="newStudentMajorId" name="newStudentMajorId" class="form-control">
 											<?php foreach ($majors as $major) {
-												include(ROOT_PATH . "app/views/partials/major-select-options-view.html.php");
+												include(ROOT_PATH . "app/views/partials/major/select-options-view.html.php");
 											}
 											?>
 										</select>

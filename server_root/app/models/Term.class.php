@@ -46,9 +46,9 @@ class Term
 			self::validateDateTypes($startDate, $endDate);
 			TermFetcher::insert($db, $name, $startDate, $endDate);
 		} catch (Exception $e) {
-			throw new Exception("Dates have been malformed." . $e->getMessage());
-		}
+			throw new Exception("Dates have been malformed.");
 
+		}
 	}
 
 	public static function  validateName($db, $name) {
@@ -70,6 +70,7 @@ class Term
 			throw new Exception("Minimum acceptable term period is 20 days.");
 	}
 
+
 	public static function updateName($db, $id, $newName, $oldName) {
 		if (strcmp($newName, $oldName) === 0) return false;
 
@@ -82,29 +83,17 @@ class Term
 	public static function updateStartingDate($db, $id, $newStartingDate, $oldStartingDate) {
 		if (strcmp($newStartingDate, $oldStartingDate) === 0) return false;
 
-		self::validateDateAsStrings($newStartingDate, $oldStartingDate);
+		Dates::initDateTime($newStartingDate, $oldStartingDate);
 		TermFetcher::updateStartingDate($db, $id, $newStartingDate);
 
 		return true;
 	}
 
-	public static function validateDateAsStrings($startDate, $endDate) {
-
-		try {
-
-			$startDate = new DateTime($startDate);
-			$endDate = new DateTime($endDate);
-
-		} catch (Exception $e) {
-			throw new Exception("Dates have been malformed.");
-		}
-
-	}
 
 	public static function updateEndingDate($db, $id, $newEndingDate, $oldEndingDate) {
 		if (strcmp($newEndingDate, $oldEndingDate) === 0) return false;
 
-		self::validateDateAsStrings($newEndingDate, $oldEndingDate);
+		Dates::initDateTime($newEndingDate, $oldEndingDate);
 		TermFetcher::updateSingleColumn($db, $id, TermFetcher::DB_COLUMN_END_DATE, $newEndingDate, PDO::PARAM_STR);
 		return true;
 	}
@@ -112,7 +101,7 @@ class Term
 	public static function delete($db, $id) {
 		self::validateId($db, $id);
 		if (!TermFetcher::idExists($db, $id)) {
-			throw new Exception("Could not retrieve course to be deleted from database. <br/>
+			throw new Exception("Could not retrieve term to be deleted from database. <br/>
                 Maybe some other administrator just deleted it?");
 		}
 

@@ -43,7 +43,6 @@
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/moment/moment.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/libs/bootstrap.min.js"></script>
 
-
 <script src="<?php echo BASE_URL; ?>assets/js/App.js"></script>
 
 <!--<script src="--><?php //echo BASE_URL; ?><!--app/assets/js/plugins/datatables/jquery.dataTables.min.js"></script>-->

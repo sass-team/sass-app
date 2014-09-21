@@ -85,8 +85,8 @@ class MajorFetcher
 			$query->execute();
 			return true;
 		} catch (Exception $e) {
-			throw new Exception("Could not insert major into database." . $e->getMessage());
-		}
+			throw new Exception("Could not insert major into database.");}
+
 	}
 
 
@@ -107,8 +107,8 @@ class MajorFetcher
 
 			return true;
 		} catch (Exception $e) {
-			throw new Exception("Something terrible happened. Could not update major." . $e->getMessage());
-		}
+			throw new Exception("Something terrible happened. Could not update major.");}
+
 	}
 
 	public static function updateName($db, $id, $newName) {
@@ -126,8 +126,8 @@ class MajorFetcher
 
 			return true;
 		} catch (Exception $e) {
-			throw new Exception("Something terrible happened. Could not update major name" . $e->getMessage());
-		}
+			throw new Exception("Something terrible happened. Could not update major name");}
+
 	}
 
 	public static function updateCode($db, $id, $newCode) {
@@ -145,8 +145,8 @@ class MajorFetcher
 
 			return true;
 		} catch (Exception $e) {
-			throw new Exception("Something terrible happened. Could not update major code" . $e->getMessage());
-		}
+			throw new Exception("Something terrible happened. Could not update major code");}
+
 	}
 
 	public static function codeExists($db, $majorCode) {

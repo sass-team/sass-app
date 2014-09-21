@@ -35,14 +35,17 @@ class TermFetcher
 	const DB_COLUMN_NAME = "name";
 	const DB_COLUMN_START_DATE = "start_date";
 	const DB_COLUMN_END_DATE = "end_date";
-	const DATE_FORMAT_IN = "Y-m-d H:i:s";
-	const DATE_FORMAT_OUT = "m/d/Y g:i A";
+
 
 //m-d-Y h:i A
-	public static function retrieveAll($db) {
+	public static function retrieveAllButCur($db) {
 		$query =
 			"SELECT `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_NAME . "` , `" . self::DB_COLUMN_START_DATE . "`,
-			 `" . self::DB_COLUMN_END_DATE . "` FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "` order by `" .
+			 `" . self::DB_COLUMN_END_DATE . "`
+			 FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+			 WHERE (NOW() NOT BETWEEN `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" .
+			TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_END_DATE . "`)
+			 order by `" .
 			self::DB_TABLE . "`.`" . self::DB_COLUMN_START_DATE . "` DESC";
 
 		try {
@@ -53,6 +56,61 @@ class TermFetcher
 		} catch (PDOException $e) {
 			throw new Exception("Could not retrieve terms data from database.");
 		}
+	}
+
+	//m-d-Y h:i A
+	public static function retrieveAll($db) {
+		$query =
+			"SELECT `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_NAME . "` , `" . self::DB_COLUMN_START_DATE . "`,
+			 `" . self::DB_COLUMN_END_DATE . "`
+			 FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+			order by `" .
+			self::DB_TABLE . "`.`" . self::DB_COLUMN_START_DATE . "` DESC";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->execute();
+
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			throw new Exception("Could not retrieve terms data from database.");
+		}
+	}
+
+
+	public static function retrieveCurrTerm($db) {
+		$query =
+			"SELECT `" . self::DB_COLUMN_ID . "` ,
+					`" . self::DB_COLUMN_NAME . "`
+			 	FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+			 	WHERE CURRENT_TIMESTAMP() BETWEEN `" . self::DB_COLUMN_START_DATE . "` AND `" . self::DB_COLUMN_END_DATE . "`";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->execute();
+
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			throw new Exception("Could not retrieve current term from database.");
+		}
+	}
+
+
+	public static function retrieveSingle($db, $id) {
+		$query = "SELECT  `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_NAME . "` , `" . self::DB_COLUMN_START_DATE
+			. "`,		 `" . self::DB_COLUMN_END_DATE . "`
+			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+			WHERE `" . self::DB_COLUMN_ID . "`=:id";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':id', $id, PDO::PARAM_INT);
+
+			$query->execute();
+			return $query->fetch(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			throw new Exception("Could not retrieve data from database .: ");
+		} // end catch
 	}
 
 	public static function updateName($db, $id, $newName) {
@@ -85,12 +143,12 @@ class TermFetcher
 
 			return true;
 		} catch (Exception $e) {
-			throw new Exception("Something terrible happened. Could not update term name");
+			throw new Exception("Something terrible happened. Could not update starting date");
 		}
 	}
 
 
-	public static function updateSingleColumn($db, $id, $column, $value, $valueType){
+	public static function updateSingleColumn($db, $id, $column, $value, $valueType) {
 		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
 					SET	`" . $column . "`= :column
 					WHERE `id`= :id";
@@ -110,8 +168,8 @@ class TermFetcher
 	public static function insert($db, $name, $startDate, $endDate) {
 		date_default_timezone_set('Europe/Athens');
 
-		$startDate = $startDate->format(self::DATE_FORMAT_IN);
-		$endDate = $endDate->format(self::DATE_FORMAT_IN);
+		$startDate = $startDate->format(Dates::DATE_FORMAT_IN);
+		$endDate = $endDate->format(Dates::DATE_FORMAT_IN);
 
 		try {
 			$query = "INSERT INTO `" . DB_NAME . "`.`" . self::DB_TABLE . "` (`" . self::DB_COLUMN_NAME .

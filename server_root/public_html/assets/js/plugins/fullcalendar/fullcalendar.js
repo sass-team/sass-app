@@ -355,7 +355,7 @@ function Calendar(element, options, eventSources) {
 		header.activateButton(newViewName);
 
 		currentView = new fcViews[newViewName](
-			$("<div class='fc-views fc-views-" + newViewName + "' style='position:relative'/>")
+			$("<div class='fc-view fc-view-" + newViewName + "' style='position:relative'/>")
 				.appendTo(content),
 			t // the calendar object
 		);
@@ -389,7 +389,7 @@ function Calendar(element, options, eventSources) {
 		}
 
 		freezeContentHeight();
-		currentView.render(date, inc || 0); // the views's render method ONLY renders the skeleton, nothing else
+		currentView.render(date, inc || 0); // the view's render method ONLY renders the skeleton, nothing else
 		setSize();
 		unfreezeContentHeight();
 		(currentView.afterRender || noop)();
@@ -454,7 +454,7 @@ function Calendar(element, options, eventSources) {
 	
 	function windowResize() {
 		if (!ignoreWindowResize) {
-			if (currentView.start) { // views has already been rendered
+			if (currentView.start) { // view has already been rendered
 				var uid = ++resizeUID;
 				setTimeout(function() { // add a delay
 					if (uid == resizeUID && !ignoreWindowResize && elementVisible()) {
@@ -477,7 +477,7 @@ function Calendar(element, options, eventSources) {
 	
 	/* Event Fetching/Rendering
 	-----------------------------------------------------------------------------*/
-	// TODO: going forward, most of this stuff should be directly handled by the views
+	// TODO: going forward, most of this stuff should be directly handled by the view
 
 
 	function refetchEvents() { // can be called as an API method
@@ -3271,7 +3271,7 @@ function AgendaView(element, calendar, viewName) {
 	}
 
 
-	function afterRender() { // after the views has been freshly rendered and sized
+	function afterRender() { // after the view has been freshly rendered and sized
 		resetScroll();
 	}
 	
@@ -4040,7 +4040,7 @@ function AgendaEventRenderer() {
 		var snapMinutes = getSnapMinutes();
 		var minMinute = getMinMinute();
 		eventElement.draggable({
-			opacity: opt('dragOpacity', 'month'), // use whatever the month views was using
+			opacity: opt('dragOpacity', 'month'), // use whatever the month view was using
 			revertDuration: opt('dragRevertDuration'),
 			start: function(ev, ui) {
 				trigger('eventDragStart', eventElement, event, ev, ui);
@@ -4665,7 +4665,7 @@ function View(element, calendar, viewName) {
 	------------------------------------------------------------------------------*/
 	
 	
-	// report when views creates an element for an event
+	// report when view creates an element for an event
 	function reportEventElement(event, element) {
 		eventElementCouples.push({ event: event, element: element });
 		if (eventElementsByID[event._id]) {
@@ -4824,7 +4824,7 @@ function View(element, calendar, viewName) {
 	// 1. Convert the "cell" (row and column) into a "cell offset" (the # of the cell, cronologically from the first).
 	//    Keep in mind that column indices are inverted with isRTL. This is taken into account.
 	//
-	// 2. Convert the "cell offset" to a "day offset" (the # of days since the first visible day in the views).
+	// 2. Convert the "cell offset" to a "day offset" (the # of days since the first visible day in the view).
 	//
 	// 3. Convert the "day offset" into a "date" (a JavaScript Date object).
 	//
@@ -5032,7 +5032,7 @@ function View(element, calendar, viewName) {
 		var rangeCellOffsetFirst = dayOffsetToCellOffset(rangeDayOffsetStart);
 		var rangeCellOffsetLast = dayOffsetToCellOffset(rangeDayOffsetEnd) - 1;
 
-		// loop through all the rows in the views
+		// loop through all the rows in the view
 		for (var row=0; row<rowCnt; row++) {
 
 			// first and last cell offset for the row
@@ -5043,14 +5043,14 @@ function View(element, calendar, viewName) {
 			var segmentCellOffsetFirst = Math.max(rangeCellOffsetFirst, rowCellOffsetFirst);
 			var segmentCellOffsetLast = Math.min(rangeCellOffsetLast, rowCellOffsetLast);
 
-			// make sure segment's offsets are valid and in views
+			// make sure segment's offsets are valid and in view
 			if (segmentCellOffsetFirst <= segmentCellOffsetLast) {
 
 				// translate to cells
 				var segmentCellFirst = cellOffsetToCell(segmentCellOffsetFirst);
 				var segmentCellLast = cellOffsetToCell(segmentCellOffsetLast);
 
-				// views might be RTL, so order by leftmost column
+				// view might be RTL, so order by leftmost column
 				var cols = [ segmentCellFirst.col, segmentCellLast.col ].sort();
 
 				// Determine if segment's first/last cell is the beginning/end of the date range.
@@ -5218,7 +5218,7 @@ function DayEventRenderer() {
 		resolveElements(segments, elements);
 
 		// Calculate the left and right padding+margin for each element.
-		// We need this for setting each element's desired outer width, because of the W3C box models.
+		// We need this for setting each element's desired outer width, because of the W3C box model.
 		// It's important we do this in a separate pass from acually setting the width on the DOM elements
 		// because alternating reading/writing dimensions causes reflow for every iteration.
 		segmentElementEach(segments, function(segment, element) {
@@ -5278,7 +5278,7 @@ function DayEventRenderer() {
 			var segment = segments[i];
 
 			// Determine functions used for calulating the elements left/right coordinates,
-			// depending on whether the views is RTL or not.
+			// depending on whether the view is RTL or not.
 			// NOTE:
 			// colLeft/colRight returns the coordinate butting up the edge of the cell.
 			// colContentLeft/colContentRight is indented a little bit from the edge.
@@ -6067,7 +6067,7 @@ function HoverListener(coordinateGrid) {
 
 // this fix was only necessary for jQuery UI 1.8.16 (and jQuery 1.7 or 1.7.1)
 // upgrading to jQuery UI 1.8.17 (and using either jQuery 1.7 or 1.7.1) fixed the problem
-// but keep this in here for 1.8.16 users
+// but keep this in here for 1.8.16 stuff
 // and maybe remove it down the line
 
 function _fixUIEvent(event) { // for issue 1168

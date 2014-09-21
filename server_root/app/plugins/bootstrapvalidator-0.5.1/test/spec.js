@@ -4131,7 +4131,7 @@ describe('uri', function() {
         'http://foo.com/unicode_(✪)_in_parens',
         'http://foo.com/(something)?after=parens',
         'http://☺.damowmow.com/',
-        'http://code.google.com/events/#&product=browser',
+        'http://code.google.com/events/#&tutor=browser',
         'http://j.mp',
         'ftp://foo.bar/baz',
         'http://foo.bar/?q=Test%20URL-encoded%20stuff',

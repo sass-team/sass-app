@@ -19,6 +19,7 @@ class UserFetcher
 	const DB_COLUMN_GEN_STRING = "gen_string";
 	const DB_COLUMN_USER_TYPES_ID = "user_types_id";
 	const DB_COLUMN_GEN_STRING_UPDATE_AT = "gen_string_update_at";
+	const DB_COLUMN_ACTIVE = "active";
 
 	public static function existsMobileNum($db, $newMobileNum) {
 
@@ -40,7 +41,9 @@ class UserFetcher
 
 	public static function retrieveUsingEmail($db, $email) {
 		$query = "SELECT `" . self::DB_COLUMN_ID . "`, `" . self::DB_COLUMN_FIRST_NAME . "`, `" .
-			self::DB_COLUMN_LAST_NAME . "` FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "` WHERE `" .
+			self::DB_COLUMN_LAST_NAME . "` , `" . self::DB_COLUMN_ACTIVE . "`
+			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+			WHERE `" .
 			self::DB_COLUMN_EMAIL . "`=:email";
 		try {
 			$query = $db->getConnection()->prepare($query);
@@ -49,9 +52,9 @@ class UserFetcher
 			$query->execute();
 			return $query->fetch(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
-			throw new Exception("Something terrible happened. Could not retrieve database." . $e->getMessage());
-		} // end try
-
+			throw new Exception("Something terrible happened. Could not retrieve database.");
+			// end try
+		}
 	}
 
 	public static function retrieveGenStringDate($db, $id) {
@@ -64,16 +67,20 @@ class UserFetcher
 			$query->execute();
 			return $query->fetchColumn();
 		} catch (PDOException $e) {
-			throw new Exception("Something terrible happened. Could not retrieve database." . $e->getMessage());
-		} // end try
+			throw new Exception("Something terrible happened. Could not retrieve database.");
+			// end try
+		}
 	}
 
-	public static function retrieveSingle($db, $id) {
-		$query = "SELECT `" . self::DB_TABLE . "`.email, user.id, user.`f_name`, user.`l_name`, user.`img_loc`,
-						user.date, user.`profile_description`, user.mobile, user_types.type, user.active
-					FROM `" . DB_NAME . "`.user
-						LEFT OUTER JOIN user_types ON user.`user_types_id` = `user_types`.id
-					WHERE user.id = :id";
+	public
+	static function retrieveSingle($db, $id) {
+		$query =
+			"SELECT email, user.id, user.`f_name`, user.`l_name`, user.`img_loc`,
+				user.date, user.`profile_description`, user.mobile, user_types.type, user.active
+			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+			INNER JOIN user_types
+				ON user.`user_types_id` = `user_types`.id
+			WHERE user.id = :id";
 
 		try {
 			$query = $db->getConnection()->prepare($query);
@@ -82,12 +89,14 @@ class UserFetcher
 			$query->execute();
 			return $query->fetch(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
-			throw new Exception("Something terrible happened. Could not retrieve database." . $e->getMessage());
-		} // end try
+			throw new Exception("Could not retrieve data." . $e->getMessage());
+			// end try
+		}
 	}
 
 
-	public static function updateGenStringTimeUpdate($db, $id) {
+	public
+	static function updateGenStringTimeUpdate($db, $id) {
 		date_default_timezone_set('Europe/Athens');
 		$date_modified = date("Y-m-d H:i:s");
 

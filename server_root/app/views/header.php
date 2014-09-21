@@ -27,60 +27,59 @@
  * @author Rizart Dokollari
  * @since 8/15/14.
  */
-
 ?>
 
 
-	<header id="header">
+<header id="header">
 
-		<h1 id="site-logo">
-			<a href="<?php echo BASE_URL; ?>">
-				<img src="<?php echo BASE_URL; ?>assets/img/logos/logo.png" alt="Site Logo"/>
+	<h1 id="site-logo">
+		<a href="<?php echo BASE_URL; ?>">
+			<img src="<?php echo BASE_URL; ?>assets/img/logos/logo.png" alt="Site Logo"/>
+		</a>
+	</h1>
+
+	<a href="javascript:;" data-toggle="collapse" data-target=".top-bar-collapse" id="top-bar-toggle"
+	   class="navbar-toggle collapsed">
+		<i class="fa fa-cog"></i>
+	</a>
+
+	<a href="javascript:;" data-toggle="collapse" data-target=".sidebar-collapse" id="sidebar-toggle"
+	   class="navbar-toggle collapsed">
+		<i class="fa fa-reorder"></i>
+	</a>
+
+</header>
+<!-- header -->
+
+<nav id="top-bar" class="collapse top-bar-collapse">
+	<ul class="nav navbar-nav pull-right">
+		<li class="dropdown">
+			<a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
+				<i class="fa fa-user"></i>
+				<?php echo "Welcome " . $user->getFirstName(); ?>
+				<span class="caret"></span>
 			</a>
-		</h1>
 
-		<a href="javascript:;" data-toggle="collapse" data-target=".top-bar-collapse" id="top-bar-toggle"
-		   class="navbar-toggle collapsed">
-			<i class="fa fa-cog"></i>
-		</a>
-
-		<a href="javascript:;" data-toggle="collapse" data-target=".sidebar-collapse" id="sidebar-toggle"
-		   class="navbar-toggle collapsed">
-			<i class="fa fa-reorder"></i>
-		</a>
-
-	</header>
-	<!-- header -->
-
-	<nav id="top-bar" class="collapse top-bar-collapse">
-		<ul class="nav navbar-nav pull-right">
-			<li class="dropdown">
-				<a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
-					<i class="fa fa-user"></i>
-					<?php echo "Welcome " . $user->getFirstName(); ?>
-					<span class="caret"></span>
-				</a>
-
-				<ul class="dropdown-menu" role="menu">
-					<!-- "My schedule" choice is shown only to type tutor -->
-					<?php if ($user->isTutor()) { ?>
-						<li>
-							<a href="<?php echo BASE_URL; ?>account/schedule">
-								<i class="fa fa-calendar"></i>
-								&nbsp;&nbsp;My Schedule
-							</a>
-						</li>
-						<li class="divider"></li>2
-					<?php } ?>
+			<ul class="dropdown-menu" role="menu">
+				<!-- "My schedule" choice is shown only to type tutor -->
+				<?php if ($user->isTutor()) { ?>
 					<li>
-						<a href="<?php echo BASE_URL; ?>logout">
-							<i class="fa fa-sign-out"></i>
-							&nbsp;&nbsp;Logout
+						<a href="<?php echo BASE_URL; ?>account/schedule">
+							<i class="fa fa-calendar"></i>
+							&nbsp;&nbsp;My Schedule
 						</a>
 					</li>
-				</ul>
-			</li>
-		</ul>
+					<li class="divider"></li>2
+				<?php } ?>
+				<li>
+					<a href="<?php echo BASE_URL; ?>logout">
+						<i class="fa fa-sign-out"></i>
+						&nbsp;&nbsp;Logout
+					</a>
+				</li>
+			</ul>
+		</li>
+	</ul>
 
-	</nav>
-	<!-- /top-bar -->
+</nav>
+<!-- /top-bar -->

@@ -137,7 +137,7 @@ if (isBtnUpdateProfilePrsd()) {
 	}
 }
 
-$page_title = "My Account - Settings";
+$pageTitle = "Account - Settings";
 $section = "account";
 
 ?>

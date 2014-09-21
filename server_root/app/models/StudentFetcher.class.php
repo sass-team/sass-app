@@ -48,7 +48,7 @@ class StudentFetcher extends Person
 
 			return $rows;
 		} catch (PDOException $e) {
-			throw new Exception("Something terrible happened. Could not retrieve users data from database.: ");
+			throw new Exception("Something terrible happened. Could not retrieve students data from database.: ");
 		} // end catch
 	}
 
@@ -74,27 +74,27 @@ class StudentFetcher extends Person
 
 
 			$query = $db->getConnection()->prepare($query);
-			$query->bindParam(':student_id', $studentId, PDO::PARAM_STR);
+			$query->bindParam(':student_id', $studentId, PDO::PARAM_INT);
 			$query->bindParam(':email', $email, PDO::PARAM_STR);
 			$query->bindParam(':first_name', $firstName, PDO::PARAM_STR);
 			$query->bindParam(':last_name', $lastName, PDO::PARAM_STR);
 			$query->bindParam(':mobile', $mobileNum, PDO::PARAM_INT);
-			$query->bindParam(':ci', $ci, PDO::PARAM_INT);
+			$query->bindParam(':ci', $ci, PDO::PARAM_STR);
 			$query->bindParam(':credits', $credits, PDO::PARAM_INT);
-			$query->bindParam(':major_id', $majorId, PDO::PARAM_STR);
+			$query->bindParam(':major_id', $majorId, PDO::PARAM_INT);
 
 			$query->execute();
 			return true;
 		} catch (Exception $e) {
-			throw new Exception("Could not insert student into database." . $e->getMessage());
-		}
+			throw new Exception("Could not insert student into database.");}
+
 	}
 
 
 	public static function existsMobileNum($db, $newMobileNum) {
 		try {
-			$sql = "SELECT COUNT(" . StudentFetcher::DB_COLUMN_MOBILE . ") FROM `" . DB_NAME . "`.`" .
-				StudentFetcher::DB_TABLE . "` WHERE `" . StudentFetcher::DB_COLUMN_MOBILE . "` = :mobileNum";
+			$sql = "SELECT COUNT(" . self::DB_COLUMN_MOBILE . ") FROM `" . DB_NAME . "`.`" .
+				self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_MOBILE . "` = :mobileNum";
 			$query = $db->getConnection()->prepare($sql);
 			$query->bindParam(':mobileNum', $newMobileNum, PDO::PARAM_INT);
 			$query->execute();
@@ -102,6 +102,22 @@ class StudentFetcher extends Person
 			if ($query->fetchColumn() === '0') return false;
 		} catch (Exception $e) {
 			throw new Exception("Could not check if new mobile number already exists on database.");
+		}
+
+		return true;
+	}
+
+	public static function exists($db, $column, $value, $type) {
+		try {
+			$sql = "SELECT COUNT(" . self::DB_COLUMN_ID . ") FROM `" . DB_NAME . "`.`" .
+				self::DB_TABLE . "` WHERE `" . $column . "` = :column_value";
+			$query = $db->getConnection()->prepare($sql);
+			$query->bindParam(':column_value', $value, $type);
+			$query->execute();
+
+			if ($query->fetchColumn() === '0') return false;
+		} catch (Exception $e) {
+			throw new Exception("Could not verify data on database.");
 		}
 
 		return true;
@@ -266,17 +282,17 @@ class StudentFetcher extends Person
 	}
 
 
-	public static function existsStudentId($db, $newMobileNum) {
+	public static function existsStudentId($db, $studentId) {
 		try {
-			$sql = "SELECT COUNT(" . StudentFetcher::DB_COLUMN_STUDENT_ID . ") FROM `" . DB_NAME . "`.`" .
-				StudentFetcher::DB_TABLE . "` WHERE `" . StudentFetcher::DB_COLUMN_STUDENT_ID . "` = :mobileNum";
+			$sql = "SELECT COUNT(" . self::DB_COLUMN_STUDENT_ID . ") FROM `" . DB_NAME . "`.`" .
+				self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_STUDENT_ID . "` = :studentId";
 			$query = $db->getConnection()->prepare($sql);
-			$query->bindParam(':mobileNum', $newMobileNum, PDO::PARAM_INT);
+			$query->bindParam(':studentId', $studentId, PDO::PARAM_INT);
 			$query->execute();
 
 			if ($query->fetchColumn() === '0') return false;
 		} catch (Exception $e) {
-			throw new Exception("Could not check if new mobile number already exists on database.");
+			throw new Exception("Could not check if stuent id already exists on database.");
 		}
 
 		return true;

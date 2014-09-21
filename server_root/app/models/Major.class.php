@@ -19,8 +19,8 @@ class Major
 	public static function  validateCode($db, $majorCode) {
 		$majorCode = trim($majorCode);
 
-		if (!preg_match("/^[A-Z]{1,10}$/", $majorCode)) {
-			throw new Exception("Major code can only contain capital letters in the range of A-Z and of length 1-10.");
+		if (!preg_match("/^[A-Z0-9]{1,10}$/", $majorCode)) {
+			throw new Exception("Major code can only contain capital letters in the range of A-Z, 0-9 and of length 1-10.");
 		}
 
 		if (MajorFetcher::codeExists($db, $majorCode)) {
@@ -38,7 +38,7 @@ class Major
 		}
 
 		if (MajorFetcher::nameExists($db, $majorName)) {
-			throw new Exception("Course name already exists on database. Please insert a different one.");
+			throw new Exception("Major name already exists on database. Please insert a different one.");
 		}
 
 		return $majorName;

@@ -9,7 +9,7 @@
 class Tutor extends User
 {
 	const DB_TABLE = "tutor";
-	const DB_TABLE_TUTOR_HAS_COURSE_HAS_SCHEDULE = "tutor_has_course_has_schedule";
+	const DB_TABLE_TUTOR_HAS_COURSE_HAS_SCHEDULE = "tutor_has_course_has_term";
 	const DB_TABLE_TUTOR_HAS_COURSE_TUTOR_USER_ID = "tutor_user_id";
 	const DB_COLUMN_USER_ID = "user_id";
 	const DB_COLUMN_COURSE_ID = "course_id";
@@ -23,6 +23,26 @@ class Tutor extends User
 		parent::__construct($db, $id, $firstName, $lastName, $email, $mobileNum, $avatarImgLoc, $profileDescription, $dateAccountCreated, $userType, $accountActiveStatus);
 		$this->setMajorId($majorId);
 	}
+
+	/**
+	 * Returns all information of a user given his email.
+	 * @param $db
+	 * @param $id
+	 * @throws Exception
+	 */
+	public static function  getSingle($db, $id) {
+		self::validateId($db, $id);
+
+		return TutorFetcher::retrieveSingle($db, $id);
+	}
+
+	public static function validateId($db, $id) {
+		if (!preg_match('/^[0-9]+$/', $id) || !TutorFetcher::existsUserId($db, $id)) {
+			throw new Exception("Data tempering detected.
+			<br/>You&#39;re trying to hack this app.<br/>Developers are being notified about this.<br/>Expect Us.");
+		}
+	}
+
 
 	public static function retrieveCoursesNotTeaching($db, $id) {
 		$query =
@@ -66,8 +86,9 @@ class Tutor extends User
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 
 		} catch (PDOException $e) {
-			throw new Exception("Could not retrieve teaching courses data from database." . $e->getMessage());
+			throw new Exception("Could not retrieve teaching courses data from database.");
 		}
+
 	}
 
 	public static function updateTeachingCourse($db, $id, $newCourseId, $oldCourseId) {
@@ -125,13 +146,6 @@ class Tutor extends User
 
 		TutorFetcher::replaceMajorId($db, $id, $newMajorId);
 		return true;
-	}
-
-	public static function validateId($db, $id) {
-		if (!preg_match('/^[0-9]+$/', $id) || !TutorFetcher::existsUserId($db, $id)) {
-			throw new Exception("Data tempering detected.
-			<br/>You&#39;re trying to hack this app.<br/>Developers are being notified about this.<br/>Expect Us.");
-		}
 	}
 
 	/**

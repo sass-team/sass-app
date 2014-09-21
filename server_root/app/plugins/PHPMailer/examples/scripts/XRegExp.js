@@ -131,7 +131,7 @@ if (XRegExp) {
 
     // Lets you extend or change XRegExp syntax and create custom flags. This is used internally by
     // the XRegExp library and can be used to create XRegExp plugins. This function is intended for
-    // users with advanced knowledge of JavaScript's regular expression syntax and behavior. It can
+    // stuff with advanced knowledge of JavaScript's regular expression syntax and behavior. It can
     // be disabled by `XRegExp.freezeTokens`
     XRegExp.addToken = function (regex, handler, scope, trigger) {
         tokens.push({

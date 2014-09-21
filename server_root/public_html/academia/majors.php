@@ -46,7 +46,7 @@ try {
 
 		} else {
 			throw new Exception("Either you're trying to hack this app or something wrong went. In either case the
-            developers we just notified about this");
+            developers were just notified about this.");
 		}
 
 	} else if (isBtnSavePrsd()) {
@@ -103,7 +103,7 @@ function isBtnUpdatePrsd() {
 	return isset($_POST['hiddenUpdatePrsd']) && empty($_POST['hiddenUpdatePrsd']);
 }
 
-$page_title = "Manage Majors";
+$pageTitle = "Academia - Majors";
 $section = "academia";
 ?>
 
@@ -148,16 +148,22 @@ require ROOT_PATH . 'app/views/sidebar.php';
 		<?php endif; ?>
 		<div class="row">
 
-			<div class="col-md-8">
+			<div class="col-md-12">
 
 				<div class="portlet">
 
 					<div class="portlet-header">
 
 						<h3>
-							<i class="fa fa-table"></i>
+							<i class="fa fa-book"></i>
 							View and Manage Majors
 						</h3>
+
+						<ul class="portlet-tools pull-right">
+							<li>
+								<a data-toggle="modal" href="#addMajorModal" class="btn btn-sm btn-default">Add Major</a>
+							</li>
+						</ul>
 
 					</div>
 					<!-- /.portlet-header -->
@@ -167,7 +173,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 						<div class="table-responsive">
 
 							<table
-								class="table table-striped table-bordered table-hover table-highlight table-checkable"
+								class="table table-striped table-bordered table-hover table-highlight"
 								data-provide="datatable"
 								data-display-rows="10"
 								data-info="true"
@@ -186,7 +192,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 								<?php
 								foreach ($majors as $major) {
-									include(ROOT_PATH . "app/views/partials/major-table-data-view.html.php");
+									include(ROOT_PATH . "app/views/partials/major/table-data-view.html.php");
 								} ?>
 								</tbody>
 							</table>
@@ -201,21 +207,14 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 			</div>
 			<!-- /.col -->
-			<div class="col-md-4 col-sidebar-right">
-				<h2>Add a new Major</h2>
-
-				<p class="lead"> You can also add a new major that is not already in the list.</p>
-				<a data-toggle="modal" href="#addMajorModal" class="btn btn-danger btn-jumbo btn-block">Add Major</a>
-
 			</div>
-		</div>
 		<!-- /.row -->
 
 	</div>
 	<!-- /#content-container -->
 
 </div>
-<!-- /.col -->
+<!-- /content -->
 
 <div id="addMajorModal" class="modal modal-styled fade">
 	<div class="modal-dialog modal-sm">

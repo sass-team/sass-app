@@ -16,16 +16,15 @@ try {
 	$courses = CourseFetcher::retrieveAll($db);
 
 	if (isBtnUpdatePrsd()) {
-		$updateDone = 0;
 		$courseId = trim($_POST['updateCourseIdModal']);
 
 		$newCourseCode = trim($_POST['courseCodeUpdate']);
 		$newCourseName = trim($_POST['courseNameUpdate']);
 		$updateDone = false;
 
-		if (($course = getCourse($courseId, $courses)) !== false) {
-			$oldCourseCodeName = $course[CourseFetcher::DB_COLUMN_CODE];
-			$oldCourseName = $course[CourseFetcher::DB_COLUMN_NAME];
+		if (($schedule = getCourse($courseId, $courses)) !== false) {
+			$oldCourseCodeName = $schedule[CourseFetcher::DB_COLUMN_CODE];
+			$oldCourseName = $schedule[CourseFetcher::DB_COLUMN_NAME];
 
 
 			$updateDone = $updateDone || Course::updateName($db, $courseId, $newCourseName, $oldCourseName);
@@ -45,7 +44,7 @@ try {
 
 		} else {
 			throw new Exception("Either you're trying to hack this app or something wrong went. In either case the
-            developers we just notified about this");
+            developers were just notified about this");
 		}
 
 	} else if (isBtnSavePrsd()) {
@@ -102,7 +101,7 @@ function isBtnUpdatePrsd() {
 	return isset($_POST['hiddenUpdatePrsd']) && empty($_POST['hiddenUpdatePrsd']);
 }
 
-$page_title = "Manage Courses";
+$pageTitle = "Academia - Courses";
 $section = "academia";
 ?>
 
@@ -147,16 +146,22 @@ require ROOT_PATH . 'app/views/sidebar.php';
 		<?php endif; ?>
 		<div class="row">
 
-			<div class="col-md-8">
+			<div class="col-md-12">
 
 				<div class="portlet">
 
 					<div class="portlet-header">
 
 						<h3>
-							<i class="fa fa-table"></i>
+							<i class="fa fa-book"></i>
 							View and Manage Courses
 						</h3>
+
+						<ul class="portlet-tools pull-right">
+							<li>
+								<a data-toggle="modal" href="#addCourseModal" class="btn btn-sm btn-default">Add Course</a>
+							</li>
+						</ul>
 
 					</div>
 					<!-- /.portlet-header -->
@@ -166,9 +171,9 @@ require ROOT_PATH . 'app/views/sidebar.php';
 						<div class="table-responsive">
 
 							<table
-								class="table table-striped table-bordered table-hover table-highlight table-checkable"
+								class="table table-striped table-bordered table-hover table-highlight"
 								data-provide="datatable"
-								data-display-rows="10"
+								data-display-rows="100"
 								data-info="true"
 								data-search="true"
 								data-length-change="true"
@@ -185,7 +190,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 								<?php
 								foreach ($courses as $course) {
-									include(ROOT_PATH . "app/views/partials/course-table-data-view.html.php");
+									include(ROOT_PATH . "app/views/partials/course/table-data-view.html.php");
 								} ?>
 								</tbody>
 							</table>
@@ -200,13 +205,6 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 			</div>
 			<!-- /.col -->
-			<div class="col-md-4 col-sidebar-right">
-				<h2>Add a new Course</h2>
-
-				<p class="lead"> You can also add a new course that is not already in the list.</p>
-				<a data-toggle="modal" href="#addCourseModal" class="btn btn-danger btn-jumbo btn-block">Add Course</a>
-
-			</div>
 		</div>
 		<!-- /.row -->
 
@@ -214,7 +212,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 	<!-- /#content-container -->
 
 </div>
-<!-- /.col -->
+<!-- /content -->
 
 <div id="addCourseModal" class="modal modal-styled fade">
 	<div class="modal-dialog modal-sm">
@@ -442,18 +440,19 @@ require ROOT_PATH . 'app/views/sidebar.php';
 	jQuery(function () {
 		// prepare course id for delete on modal
 		$(".btnDeleteCourse").click(function () {
-			$inputVal = $(this).next('input').val();
-			$("#delCourseIdModal").val($inputVal);
+			var inputVal = $(this).next('input').val();
+			$("#delCourseIdModal").val(inputVal);
 		});
 
 		$(".btnUpdateCourse").click(function () {
-			$courseId = $(this).next().next('input').val();
-			$courseName = ($(this).parent().prev().text());
-			$courseCode = ($(this).parent().prev().prev().text());
+			var courseId = $(this).next().next('input').val();
+			var courseName = ($(this).parent().prev().text());
 
-			$("#updateCourseIdModal").val($courseId);
-			$("#nameUpdate").val($courseCode);
-			$("#dateStartUpdate").val($courseName);
+			var courseCode = ($(this).parent().prev().prev().text());
+
+			$("#updateCourseIdModal").val(courseId);
+			$("#courseNameUpdate").val(courseName);
+			$("#courseCodeUpdate").val(courseCode);
 
 		});
 

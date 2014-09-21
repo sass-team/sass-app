@@ -19,7 +19,7 @@ class Instructor
 	public static function  validateName($db, $name) {
 		$name = trim($name);
 		if (!preg_match("/^[a-zA-Z\\ ]{1,50}$/", $name)) {
-			throw new Exception("Name can only contain <a href='http://www.regular-expressions.info/shorthand.html'
+			throw new Exception("Instructor name can only contain <a href='http://www.regular-expressions.info/shorthand.html'
             target='_blank'>word characters</a> and spaces of length 1-50");
 		}
 
@@ -41,6 +41,12 @@ class Instructor
 		if (!InstructorFetcher::idExists($db, $id)) {
 			// TODO: sent email to developer relevant to this error.
 			throw new Exception("Either something went wrong with a database query, or you're trying to hack this app. In either case, the developers were just notified about this.");
+		}
+	}
+
+	public static function validateIds($db, $ids) {
+		foreach ($ids as $id) {
+			self::validateId($db, $id);
 		}
 	}
 

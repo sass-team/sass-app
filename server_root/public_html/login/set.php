@@ -35,7 +35,7 @@ require __DIR__ . '/../../app/init.php';
 // if there is an active log in process redirect to students.class.php; load page only if no
 // logged in user exists
 $general->loggedInProtect();
-$page_title = "Log In";
+$pageTitle = "Log In";
 
 
 if (isUpdatePasswordBtnPressed()) {
