@@ -43,7 +43,7 @@ class Course
 
 
 		if (!preg_match("/^[\\w\\ ]{1,50}$/", $courseName)) {
-			throw new Exception("Course code can only contain <a href='http://www.regular-expressions.info/shorthand.html'
+			throw new Exception("Course name can only contain <a href='http://www.regular-expressions.info/shorthand.html'
             target='_blank'>word characters</a> and spaces of length 1-50");
 		}
 
