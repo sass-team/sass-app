@@ -201,11 +201,10 @@ require ROOT_PATH . 'app/views/sidebar.php';
 							<table
 								class="table table-striped table-bordered table-hover table-highlight table-checkable"
 								data-provide="datatable"
-								data-display-rows="10"
+								data-display-rows="150"
 								data-info="true"
 								data-search="true"
 								data-length-change="true"
-								data-paginate="true"
 								id="usersTable"
 								>
 								<thead>
