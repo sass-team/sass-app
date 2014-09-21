@@ -91,22 +91,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 	<!-- #content-header -->
 
 	<div id="content-container">
-		<?php
-		if (empty($errors) === false) {
-			?>
-			<div class="alert alert-danger">
-				<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-				<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
-				?>
-			</div>
-		<?php
-		} else if (isModificationSuccess()) {
-			?>
-			<div class="alert alert-success">
-				<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-				<strong>Data successfully modified!</strong> <br/>
-			</div>
-		<?php } ?>
+
 		<div class="portlet">
 			<div class="row">
 
@@ -226,6 +211,23 @@ require ROOT_PATH . 'app/views/sidebar.php';
 								</div>
 
 								<div class="form-group">
+									<?php
+									if (empty($errors) === false) {
+										?>
+										<div class="alert alert-danger">
+											<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+											<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
+											?>
+										</div>
+									<?php
+									} else if (isModificationSuccess()) {
+										?>
+										<div class="alert alert-success">
+											<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+											<strong>Workshop successfully created!</strong> <br/>
+										</div>
+									<?php } ?>
+
 									<button type="submit" class="btn btn-block btn-primary">Add</button>
 									<input type="hidden" name="hiddenSubmitPrsd" value="">
 								</div>
@@ -390,6 +392,16 @@ $(function () {
 	});
 	$("#tutorId").click(function () {
 		try {
+			var $tutorId = $("#tutorId");
+			var $termId = $("#termId");
+
+			var tutorName = $tutorId.select2('data').text;
+			var tutorId = $tutorId.select2('val');
+			var termId = $termId.select2('val');
+
+			if (!tutorId.match(/^[0-9]+$/)) throw new Error("Tutor is missing");
+			if (!termId.match(/^[0-9]+$/)) throw new Error("Term is missing");
+
 
 			$('#calendar-title').text("");
 			$('#calendar-title').append("<i class='fa fa-circle-o-notch fa-spin'></i>");
@@ -401,7 +413,63 @@ $(function () {
 			if (!courseId.match(/^[0-9]+$/)) throw new Error("Course is missing");
 			if (!termId.match(/^[0-9]+$/)) throw new Error("Term is missing");
 
-		} catch (err) {
+
+			$("#appointments-schedule-calendar").fullCalendar('destroy');
+			$("#appointments-schedule-calendar").fullCalendar({
+				header: {
+					left: 'prev,next',
+					center: 'title',
+					right: 'agendaWeek,month,agendaDay'
+				},
+				weekends: false, // will hide Saturdays and Sundays
+				defaultView: "agendaWeek",
+				editable: false,
+				droppable: false,
+				eventSources: [
+					{
+						url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/schedules",
+						type: 'GET',
+						dataType: "json",
+						data: {
+							action: 'single_tutor_working_hours',
+							tutorId: tutorId,
+							termId: termId
+						},
+						error: function (xhr, status, error) {
+							$('#calendar-title').text("there was an error while fetching events");
+						},
+						success: function (r) {
+							$('#calendar-title').text("");
+							$('#calendar-title').append("<i class='fa fa-circle-o-notch fa-spin'></i>");
+							$('#calendar-title').text(tutorName + "'s schedule");
+
+						}
+					},
+					{
+						url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/appointments",
+						type: 'GET',
+						dataType: "json",
+						data: {
+							action: 'single_tutor_working_hours',
+							tutorId: tutorId,
+							termId: termId
+						},
+						error: function (xhr, status, error) {
+							$('#calendar-title').text("there was an error while fetching events");
+							console.log(error);
+						},
+						success: function (r) {
+							$('#calendar-title').text(tutorName + "'s schedule/appointments");
+							console.log(r);
+						}
+					}
+				]
+			});
+			$("#appointments-schedule-calendar").fullCalendar('refetchEvents')
+
+		}
+		catch
+			(err) {
 			// clear options
 			var $el = $("#tutorId");
 			$el.empty(); // remove old options
@@ -413,52 +481,61 @@ $(function () {
 		}
 	});
 
-	$("#appointments-schedule-calendar").fullCalendar({
-		header: {
-			left: 'prev,next',
-			center: 'title',
-			right: 'agendaWeek,month,agendaDay'
-		},
-		weekends: false, // will hide Saturdays and Sundays
-		defaultView: "agendaWeek",
-		editable: false,
-		droppable: false,
-		eventSources: [
-			{
-				url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/schedules",
-				type: 'GET',
-				dataType: "json",
-				data: {
-					action: 'all_tutors_working_hours',
-					tutorId: 'somethingelse'
-				},
-				error: function (xhr, status, error) {
-					$('#calendar-title').text("there was an error while fetching events");
-				},
-				success: function (r) {
-					$('#calendar-title').text("All Tutors Schedule");
-				}
+	var $termId = $("#termId");
+	if ($termId.val().match(/^[0-9]+$/)) {
+		$("#appointments-schedule-calendar").fullCalendar({
+			header: {
+				left: 'prev,next',
+				center: 'title',
+				right: 'agendaWeek,month,agendaDay'
 			},
-			{
-				url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/appointments",
-				type: 'GET',
-				dataType: "json",
-				data: {
-					action: 'all_tutors_appointments',
-					tutorId: 'somethingelse'
-				},
-				error: function (xhr, status, error) {
-					$('#calendar-title').text("there was an error while fetching events");
-				},
-				success: function (r) {
-					$('#calendar-title').text("All Tutors Schedule/Appointments");
-				}
-			}
-			// any other sources...
-		],
+			weekends: false, // will hide Saturdays and Sundays
+			defaultView: "agendaWeek",
+			editable: false,
+			droppable: false,
+			eventSources: [
+				{
+					url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/schedules",
+					type: 'GET',
+					dataType: "json",
+					data: {
+						action: 'all_tutors_working_hours',
+						termId: $termId.val()
+					},
+					error: function (xhr, status, error) {
+						$('#calendar-title').text("there was an error while fetching events");
+					},
+					success: function (r) {
+						$('#calendar-title').text("");
+						$('#calendar-title').append("<i class='fa fa-circle-o-notch fa-spin'></i>");
+						$('#calendar-title').text("All Tutors Schedule");
 
-		timeFormat: 'H(:mm)' // uppercase H for 24-hour clock
-	});
+					}
+				},
+				{
+					url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/appointments",
+					type: 'GET',
+					dataType: "json",
+					data: {
+						action: 'all_tutors_appointments',
+						termId: $termId.val()
+					},
+					error: function (xhr, status, error) {
+						$('#calendar-title').text("there was an error while fetching events");
+					},
+					success: function (r) {
+						$('#calendar-title').text("All Tutors Schedule/Appointments");
+					}
+				}
+				// any other sources...
+			],
+
+			timeFormat: 'H(:mm)' // uppercase H for 24-hour clock
+		});
+	} else {
+		$('#calendar-title').text("No term has started");
+
+	}
 
 	$('.addButton').on('click', function () {
 
@@ -510,50 +587,6 @@ $(function () {
 		});
 	});
 
-	$('#defaultForm')
-		.bootstrapValidator({
-			message: 'This value is not valid',
-			feedbackIcons: {
-				valid: 'glyphicon glyphicon-ok',
-				invalid: 'glyphicon glyphicon-remove',
-				validating: 'glyphicon glyphicon-refresh'
-			},
-			fields: {
-				'textbox[]': {
-					validators: {
-						notEmpty: {
-							message: 'The textbox field is required'
-						}
-					}
-				},
-				'checkbox[]': {
-					validators: {
-						notEmpty: {
-							message: 'The checkbox field is required'
-						}
-					}
-				},
-				'radio[]': {
-					validators: {
-						notEmpty: {
-							message: 'The radio field is required'
-						}
-					}
-				}
-			}
-		})
-		.on('error.field.bv', function (e, data) {
-			//console.log('error.field.bv -->', data.element);
-		})
-		.on('success.field.bv', function (e, data) {
-			//console.log('success.field.bv -->', data.element);
-		})
-		.on('added.field.bv', function (e, data) {
-			//console.log('Added element -->', data.field, data.element);
-		})
-		.on('removed.field.bv', function (e, data) {
-			//console.log('Removed element -->', data.field, data.element);
-		});
 
 	function retrieveTutors() {
 		var courseId = $("#courseId").select2("val");
@@ -614,7 +647,8 @@ $(function () {
 			}
 		});
 	}
-});
+})
+;
 </script>
 
 </body>
