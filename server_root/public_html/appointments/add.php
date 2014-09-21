@@ -433,9 +433,7 @@ $(function () {
 				success: function (r) {
 					$('#calendar-title').text("All Tutors Schedule");
 					console.log(r);
-				},
-				color: 'yellow',   // a non-ajax option
-				textColor: 'black' // a non-ajax option
+				}
 			}
 			// any other sources...
 		],
