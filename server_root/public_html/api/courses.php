@@ -11,6 +11,9 @@ if (is_ajax()) {
 				break;
 		}
 	}
+} else {
+	header('Location: ' . BASE_URL . "error-403");
+	exit();
 }
 
 //Function to check if the request is an AJAX request
@@ -20,6 +23,5 @@ function is_ajax() {
 
 function printTutorHasCourses($db) {
 	$tutors = Course::getTutors($db, $_GET['courseId']);
-	$return["tutors"] = json_encode($tutors);
 	echo json_encode($tutors);
 }
