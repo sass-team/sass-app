@@ -28,4 +28,39 @@ class Schedule
 //		}
 		return $date;
 	}
+
+	public static function updateStartingDate($db, $id, $newStartingDate, $oldStartingDate) {
+		if (strcmp($newStartingDate, $oldStartingDate) === 0) return false;
+
+		Dates::initDateTime($newStartingDate, $oldStartingDate);
+		ScheduleFetcher::updateStartingDate($db, $id, $newStartingDate);
+
+		return true;
+	}
+
+
+	public static function updateEndingDate($db, $id, $newEndingDate, $oldEndingDate) {
+		if (strcmp($newEndingDate, $oldEndingDate) === 0) return false;
+
+		Dates::initDateTime($newEndingDate, $oldEndingDate);
+		ScheduleFetcher::updateSingleColumn($db, $id, ScheduleFetcher::DB_COLUMN_END_TIME, $newEndingDate, PDO::PARAM_STR);
+		return true;
+	}
+
+	public static function delete($db, $id) {
+		self::validateId($db, $id);
+		if (!ScheduleFetcher::idExists($db, $id)) {
+			throw new Exception("Could not retrieve schedule to be deleted from database. <br/>
+                Maybe some other administrator just deleted it?");
+		}
+
+		ScheduleFetcher::delete($db, $id);
+	}
+
+	public static function validateId($db, $id) {
+		if (!preg_match('/^[0-9]+$/', $id) || (!ScheduleFetcher::idExists($db, $id))) {
+			throw new Exception("Data tempering detected.
+			<br/>You&#39;re trying to hack this app.<br/>Developers are being notified about this.<br/>Expect Us.");
+		}
+	}
 } 

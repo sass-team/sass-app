@@ -143,7 +143,7 @@ class TermFetcher
 
 			return true;
 		} catch (Exception $e) {
-			throw new Exception("Something terrible happened. Could not update starting");
+			throw new Exception("Something terrible happened. Could not update starting date");
 		}
 	}
 

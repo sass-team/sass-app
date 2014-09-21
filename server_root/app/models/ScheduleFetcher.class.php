@@ -129,6 +129,69 @@ class ScheduleFetcher
 		} // end catch
 	}
 
+	public static function  updateStartingDate($db, $id, $newStartingDate) {
+		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+					SET	`" . self::DB_COLUMN_START_TIME . "`= :newName
+					WHERE `id`= :id";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':id', $id, PDO::PARAM_INT);
+			$query->bindParam(':newName', $newStartingDate, PDO::PARAM_STR);
+			$query->execute();
+
+			return true;
+		} catch (Exception $e) {
+			throw new Exception("Something terrible happened. Could not update starting time.");
+		}
+	}
+
+	public static function updateSingleColumn($db, $id, $column, $value, $valueType) {
+		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+					SET	`" . $column . "`= :column
+					WHERE `id`= :id";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':id', $id, PDO::PARAM_INT);
+			$query->bindParam(':column', $value, $valueType);
+			$query->execute();
+
+			return true;
+		} catch (Exception $e) {
+			throw new Exception("Something went wrong. Could not update schedules table.");
+		}
+	}
+
+	public static function idExists($db, $id) {
+		try {
+			$sql = "SELECT COUNT(" . self::DB_COLUMN_ID . ") FROM `" . DB_NAME . "`.`" .
+				self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :id";
+			$query = $db->getConnection()->prepare($sql);
+			$query->bindParam(':id', $id, PDO::PARAM_INT);
+			$query->execute();
+
+			if ($query->fetchColumn() === 0) return false;
+		} catch (Exception $e) {
+			throw new Exception("Could not check if schedule id already exists on database. <br/> Aborting process.");
+		}
+
+		return true;
+	}
+
+	public static function delete($db, $id) {
+		try {
+			$query = "DELETE FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :id";
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':id', $id, PDO::PARAM_INT);
+			$query->execute();
+			return true;
+		} catch (Exception $e) {
+			throw new Exception("Could not delete schedule from database.");
+		}
+	}
+
+
 	/**
 	 * NEEDS TESTING
 	 * @param $db

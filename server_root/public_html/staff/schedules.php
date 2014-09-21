@@ -171,7 +171,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 			?>
 			<div class="alert alert-success">
 				<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-				<strong>Course successfully created!</strong> <br/>
+				<strong>Data successfully modified</strong> <br/>
 			</div>
 		<?php } ?>
 		<div class="row">
@@ -184,7 +184,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 						<h3>
 							<i class="fa fa-table"></i>
-							Schedules
+							View and Manage Schedules
 						</h3>
 						<ul class="portlet-tools pull-right">
 							<li>
@@ -221,7 +221,10 @@ require ROOT_PATH . 'app/views/sidebar.php';
 									</th>
 									<th class="text-center" data-filterable="true" data-sortable="false"
 									    data-sortable="true">Ending time
-
+									</th>
+									<th class="text-center" data-filterable="true" data-sortable="true"
+									    data-sortable="true">Current Term
+									</th>
 
 										<?php if ($user->isAdmin()): ?>
 									<th class="text-center" data-filterable="false" class="hidden-xs hidden-sm">Data
