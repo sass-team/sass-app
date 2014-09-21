@@ -387,7 +387,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 
 		$('#dateTimePickerStart').datetimepicker({
-			defaultDate: moment(),
+			defaultDate:'day',
 			minDate: moment().subtract('1', 'day'),
 			minuteStepping: 10,
 			daysOfWeekDisabled: [0, 6],

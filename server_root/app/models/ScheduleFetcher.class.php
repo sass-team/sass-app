@@ -87,6 +87,27 @@ class ScheduleFetcher
 		}
 	}
 
+	public static function retrieveWorkingHours($db, $tutorId, $termId) {
+		$query =
+			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`, `" . self::DB_COLUMN_START_TIME . "`, `" .
+			self::DB_COLUMN_END_TIME . "`, `" . self::DB_COLUMN_TUTOR_USER_ID . "`, `" . self::DB_COLUMN_TERM_ID . "`
+			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+			WHERE `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "`=:tutor_id
+			AND `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`=:term_id";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':tutor_id', $tutorId, PDO::PARAM_INT);
+			$query->bindParam(':term_id', $termId, PDO::PARAM_INT);
+
+			$query->execute();
+
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			throw new Exception("Could not retrieve data from database." );
+		}
+	}
+
 	/**
 	 * NEEDS TESTING
 	 * @param $db
