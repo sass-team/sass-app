@@ -51,6 +51,9 @@ try {
 			$curUser = new Tutor($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'],
 				$data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active'],
 				$tutor[MajorFetcher::DB_COLUMN_NAME]);
+
+			$schedules = ScheduleFetcher::retrieveTutors($db);
+			$teachingCourses = TutorFetcher::retrieveCurrTermTeachingCourses($db, $curUser->getId());
 		} else if (strcmp($data['type'], 'secretary') === 0) {
 			$curUser = new Secretary($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'],
 				$data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active']);
@@ -183,6 +186,138 @@ $section = "staff";
 
 				</div>
 				<!-- /.row -->
+
+<?php if (!$user->isTutor()): ?>
+<?php if ($curUser->isTutor()): ?>
+
+	<!-- /.row -->
+	<div class="row">
+
+		<div class="col-md-10">
+			<h3 class="heading">Special Information</h3>
+
+
+			<div class="panel-group accordion" id="accordion">
+
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a class="accordion-toggle" data-toggle="collapse" data-parent=".accordion"
+							   href="#collapseOne">
+								<i class="fa fa-book"></i>
+								<?php
+								if (empty($teachingCourses)){
+									echo 'The list of Teaching Courses of the current term is empty!';
+								}else{
+									echo 'Current Teaching Courses - ' . $teachingCourses[0][TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_NAME];
+								}
+								?>
+							</a>
+						</h4>
+					</div>
+
+					<div id="collapseOne" class="panel-collapse collapse in">
+						<div class="panel-body">
+							<table class="table table-hover">
+								<thead>
+								<tr>
+									<th class="text-center">#</th>
+									<th class="text-center">Course Code</th>
+									<th class="text-center">Course Name</th>
+									<th class="text-center">Status</th>
+								</tr>
+								</thead>
+								<tbody>
+
+								<?php
+								if (empty($errors) === true) {
+									$counter = 1;
+									foreach ($teachingCourses as $course) {
+										include(ROOT_PATH . "app/views/partials/course/table-data-profile-view.html.php");
+										$counter = $counter + 1;
+									}
+								} ?>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<!-- #collapseOne -->
+				</div>
+				<!-- /.panel-default -->
+
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a class="accordion-toggle" data-toggle="collapse" data-parent=".accordion"
+							   href="#collapseTwo">
+								<i class="fa fa-clock-o"></i> Current Schedule
+							</a>
+						</h4>
+					</div>
+
+					<div id="collapseTwo" class="panel-collapse collapse">
+						<div class="panel-body">
+							<div class="row">
+
+								<div class="col-md-3">
+
+									<div class="table-responsive">
+										<table class="table table-hover">
+
+											<thead>
+											<tr>
+												<th class="text-center" data-filterable="true" data-sortable="true"
+												    data-sortable="true">Starting time
+												</th>
+												<th class="text-center" data-filterable="true" data-sortable="false"
+												    data-sortable="true">Ending time
+
+											</tr>
+											</thead>
+											<tbody>
+
+											<?php
+											if (empty($errors) === true) {
+												foreach (array_reverse($schedules) as $schedule) {
+													include(ROOT_PATH . "app/views/partials/schedule/profile-table-data-view.html.php");
+												}
+											}
+											?>
+											</tbody>
+										</table>
+									</div>
+									<!-- /.table-responsive -->
+
+
+								</div>
+								<!-- /.col -->
+								<div class="col-md-9">
+									<div class="portlet-header">
+
+									</div>
+									<!-- /.portlet-header -->
+
+									<div class="portlet-content">
+
+										<div id="appointments-calendar"></div>
+									</div>
+								</div>
+							</div>
+							<!-- /.row -->
+
+						</div>
+						<!-- /.panel-default -->
+					</div>
+					<!-- #collapseTwo -->
+				</div>
+				<!-- /.panel-default -->
+			</div>
+			<!-- /.accordion -->
+		</div>
+
+	</div>
+<?php endif; ?>
+<?php endif; ?>
 
 			</div>
 			<!-- /#content-container -->

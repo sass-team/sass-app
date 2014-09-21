@@ -41,7 +41,7 @@ try {
 	//		$users = User::retrieveAll($db);
 	$tutors = TutorFetcher::retrieveAll($db);
 //		$courses = CourseFetcher::retrieveAll($db);
-	$terms = TermFetcher::retrieveAllButCur($db);
+	$terms = TermFetcher::retrieveCurrTerm($db);
 	$schedules = ScheduleFetcher::retrieveTutors($db);
 
 // protect again any sql injections on url
