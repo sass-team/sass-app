@@ -22,6 +22,7 @@ class Schedule
 
 	public static function validateDate($db, $date, $tutorId) {
 		$date = Dates::initDateTime($date);
+//maybe in 	existDatesBetween you should consider also termId as a parameter?	
 //		if (ScheduleFetcher::existDatesBetween($db, $dateStart, $dateEnd, $tutorId)) {
 //			throw new Exception("Sorry, the days/hours you inputted conflict with existing working hours.");
 //		}

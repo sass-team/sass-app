@@ -185,6 +185,26 @@ class ScheduleFetcher
 		}
 	}
 
+	public static function retrieveSingle($db, $id) {
+		$query = "SELECT  `" . self::DB_COLUMN_ID . "` , 
+						  `" . self::DB_COLUMN_TERM_ID . "`, 
+						  `" . self::DB_COLUMN_TUTOR_USER_ID . "` , 
+						  `" . self::DB_COLUMN_START_TIME. "`, 
+						  `" . self::DB_COLUMN_END_TIME . "`
+			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+			WHERE `" . self::DB_COLUMN_ID . "`=:id";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':id', $id, PDO::PARAM_INT);
+
+			$query->execute();
+			return $query->fetch(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			throw new Exception("Could not retrieve data from database .: ");
+		} // end catch
+	}
+
 	/**
 	 * NEEDS TESTING
 	 * @param $db
