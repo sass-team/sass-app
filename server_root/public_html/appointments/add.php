@@ -245,6 +245,13 @@ require ROOT_PATH . 'app/views/sidebar.php';
 							<span id="calendar-title">
 								<i class='fa fa-circle-o-notch fa-spin'></i>
 							</span>
+
+							<div class="external-event label ui-draggable fc-yellow" data-category="fc-yellow"
+							     style="position: relative;">Schedule
+							</div>
+							<div class="external-event label ui-draggable fc-red" data-category="fc-red"
+							     style="position: relative;">Appointments
+							</div>
 						</h3>
 
 					</div>
@@ -417,7 +424,6 @@ $(function () {
 		editable: false,
 		droppable: false,
 		eventSources: [
-			// your event source
 			{
 				url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/schedules",
 				type: 'GET',
@@ -427,12 +433,25 @@ $(function () {
 					tutorId: 'somethingelse'
 				},
 				error: function (xhr, status, error) {
-					alert('there was an error while fetching events: ' + error.message);
-					console.log(error);
+					$('#calendar-title').text("there was an error while fetching events");
 				},
 				success: function (r) {
 					$('#calendar-title').text("All Tutors Schedule");
-					console.log(r);
+				}
+			},
+			{
+				url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/appointments",
+				type: 'GET',
+				dataType: "json",
+				data: {
+					action: 'all_tutors_appointments',
+					tutorId: 'somethingelse'
+				},
+				error: function (xhr, status, error) {
+					$('#calendar-title').text("there was an error while fetching events");
+				},
+				success: function (r) {
+					$('#calendar-title').text("All Tutors Schedule/Appointments");
 				}
 			}
 			// any other sources...

@@ -26,13 +26,13 @@ function printTutors($db) {
 	$workingHours = ScheduleFetcher::retrieveTutors($db);
 	$workingHoursJSON = array();
 	foreach ($workingHours as $workingHour) {
-		$tutorName = $workingHour[UserFetcher::DB_COLUMN_FIRST_NAME] . " " . $workingHour[StudentFetcher::DB_COLUMN_LAST_NAME];
+		$tutorName = $workingHour[UserFetcher::DB_COLUMN_FIRST_NAME] . " " . $workingHour[UserFetcher::DB_COLUMN_LAST_NAME];
 		$startDate = new DateTime($workingHour[ScheduleFetcher::DB_COLUMN_START_TIME]);
 		$endDate = new DateTime($workingHour[ScheduleFetcher::DB_COLUMN_END_TIME]);
 		$tutorsUrl = "http://" . $_SERVER['SERVER_NAME'] . "/staff/edit/" . $workingHour[UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_ID];
 
 		$workingHoursJSON[] = array('title' => $tutorName, 'start' => $startDate->format('Y-m-d H:i:s'), 'end' =>
-			$endDate->format('Y-m-d H:i:s'), 'allDay' => false, 'url' => $tutorsUrl);
+			$endDate->format('Y-m-d H:i:s'), 'allDay' => false, 'url' => $tutorsUrl, 'color' => '#f0ad4e');
 	}
 
 	echo json_encode($workingHoursJSON);
