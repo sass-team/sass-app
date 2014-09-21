@@ -10,7 +10,7 @@ if ($user->isTutor()) {
 
 
 // viewers
-$pageTitle = "New Workshop";
+$pageTitle = "New Appointment";
 $section = "appointments";
 
 try {
@@ -82,7 +82,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 		<h1>
 			<i class="fa fa-calendar"></i>
-			New Workshop Session
+			New Appointment
 
 		</h1>
 
@@ -249,7 +249,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 							</span>
 
 							<div class="external-event label ui-draggable fc-yellow" data-category="fc-yellow"
-							     style="position: relative;">Schedule
+							     style="position: relative;">Working Hours
 							</div>
 							<div class="external-event label ui-draggable fc-red" data-category="fc-red"
 							     style="position: relative;">Appointments
