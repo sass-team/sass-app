@@ -14,6 +14,9 @@ try {
 }
 $pageTitle = "Account - Profile";
 $section = "account";
+
+$mobileNum = $user->getMobileNum();
+
 ?>
 
 <!DOCTYPE html>
@@ -47,11 +50,15 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 
 <div class="row">
-
+			<?php 
+				if ($mobileNum == '') {
+					echo '<div class="alert alert-warning" role="alert"><strong>Warning!</strong> Please fill in your mobile number!</div>';
+				}
+			?>
 	<div class="col-md-9">
 
 		<div class="row">
-
+			
 			<div class="col-md-4 col-sm-5">
 
 				<div class="thumbnail">

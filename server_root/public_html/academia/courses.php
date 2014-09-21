@@ -177,6 +177,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 								data-info="true"
 								data-search="true"
 								data-length-change="true"
+								data-paginate="false"
 								>
 								<thead>
 								<tr>
