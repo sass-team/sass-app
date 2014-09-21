@@ -86,7 +86,7 @@ class ScheduleFetcher
 
 	public static function retrieveTutors($db) {
 		$query =
-			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`, `" . self::DB_COLUMN_START_TIME . "`, `" .
+			"SELECT `" . TermFetcher::DB_COLUMN_NAME . "`, `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`, `" . self::DB_COLUMN_START_TIME . "`, `" .
 			self::DB_COLUMN_END_TIME . "`, `" . self::DB_COLUMN_TUTOR_USER_ID . "`, `" . self::DB_COLUMN_TERM_ID . "`,
 			`" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_FIRST_NAME . "`, `" . UserFetcher::DB_TABLE . "`.`"
 			. UserFetcher::DB_COLUMN_LAST_NAME . "`, `" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "`  AS
@@ -97,8 +97,9 @@ class ScheduleFetcher
 			UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "`
 			INNER JOIN  `" . DB_NAME . "`.`" . TermFetcher::DB_TABLE . "`
 			ON `" . DB_NAME . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`  = `" .
-			UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "`
-			";
+			TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "`
+			WHERE CURRENT_TIMESTAMP() BETWEEN `" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" . TermFetcher::DB_COLUMN_END_DATE . "`";
+
 
 		try {
 			$query = $db->getConnection()->prepare($query);
