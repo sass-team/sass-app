@@ -108,11 +108,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 			</div>
 		<?php } ?>
 		<div class="portlet">
-			<?php
-			var_dump(ScheduleFetcher::retrieveWorkingHours($db, 11, 3));
-			?>
 			<div class="row">
-
 
 				<div class="col-md-5">
 					<div class="portlet-header">

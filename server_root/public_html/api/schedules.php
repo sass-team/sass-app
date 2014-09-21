@@ -30,7 +30,7 @@ function printTutors($db) {
 		$startDate = new DateTime($workingHour[ScheduleFetcher::DB_COLUMN_START_TIME]);
 		$endDate = new DateTime($workingHour[ScheduleFetcher::DB_COLUMN_END_TIME]);
 
-		$workingHoursJSON = array('title' => $tutorName, 'start' => $startDate->format('Y-m-d H:i:s'), 'end' => $endDate->format('Y-m-d H:i:s'));
+		$workingHoursJSON[] = array('title' => $tutorName, 'start' => $startDate->format('Y-m-d H:i:s'), 'end' => $endDate->format('Y-m-d H:i:s'));
 	}
 
 	echo json_encode($workingHoursJSON);
