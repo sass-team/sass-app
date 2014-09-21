@@ -16,7 +16,6 @@ try {
 	$courses = CourseFetcher::retrieveAll($db);
 
 	if (isBtnUpdatePrsd()) {
-		$updateDone = 0;
 		$courseId = trim($_POST['updateCourseIdModal']);
 
 		$newCourseCode = trim($_POST['courseCodeUpdate']);
@@ -174,7 +173,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 							<table
 								class="table table-striped table-bordered table-hover table-highlight"
 								data-provide="datatable"
-								data-display-rows="10"
+								data-display-rows="100"
 								data-info="true"
 								data-search="true"
 								data-length-change="true"
