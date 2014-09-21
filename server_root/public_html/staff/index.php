@@ -361,7 +361,7 @@ $section = "staff";
 										data-info="true"
 										data-search="true"
 										data-length-change="true"
-										data-paginate="true"
+										data-paginate="false"
 										id="usersTable"
 										>
 										<thead>
