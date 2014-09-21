@@ -94,7 +94,11 @@ class ScheduleFetcher
 			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
 			INNER JOIN  `" . DB_NAME . "`.`" . UserFetcher::DB_TABLE . "`
 			ON `" . DB_NAME . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "`  = `" .
-			UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "`";
+			UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "`
+			INNER JOIN  `" . DB_NAME . "`.`" . TermFetcher::DB_TABLE . "`
+			ON `" . DB_NAME . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`  = `" .
+			UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "`
+			";
 
 		try {
 			$query = $db->getConnection()->prepare($query);
