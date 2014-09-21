@@ -57,7 +57,6 @@ class Schedule
 		ScheduleFetcher::delete($db, $id);
 	}
 
-} 
 	public static function validateId($db, $id) {
 		if (is_null($id) || !preg_match("/^[0-9]+$/", $id)) {
 			throw new Exception("Data has been tempered. Aborting process.");
