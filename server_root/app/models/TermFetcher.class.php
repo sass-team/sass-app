@@ -113,25 +113,6 @@ class TermFetcher
 		} // end catch
 	}
 
-
-	public static function retrieveCurrent($db) {
-		$query = "SELECT  `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_NAME . "` , `" . self::DB_COLUMN_START_DATE
-			. "`,		 `" . self::DB_COLUMN_END_DATE . "`
-			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
-			WHERE
-			(NOW() BETWEEN `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" .
-			TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_END_DATE . "`)";
-
-		try {
-			$query = $db->getConnection()->prepare($query);
-
-			$query->execute();
-			return $query->fetch(PDO::FETCH_ASSOC);
-		} catch (PDOException $e) {
-			throw new Exception("Could not retrieve data from database .: ");
-		} // end catch
-	}
-
 	public static function updateName($db, $id, $newName) {
 		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
 					SET	`" . self::DB_COLUMN_NAME . "`= :newName
@@ -162,7 +143,7 @@ class TermFetcher
 
 			return true;
 		} catch (Exception $e) {
-			throw new Exception("Something terrible happened. Could not update term name");
+			throw new Exception("Something terrible happened. Could not update starting date");
 		}
 	}
 

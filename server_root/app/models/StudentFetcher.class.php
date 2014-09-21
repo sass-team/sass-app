@@ -48,7 +48,7 @@ class StudentFetcher extends Person
 
 			return $rows;
 		} catch (PDOException $e) {
-			throw new Exception("Something terrible happened. Could not retrieve users data from database.: ");
+			throw new Exception("Something terrible happened. Could not retrieve students data from database.: ");
 		} // end catch
 	}
 
@@ -117,7 +117,7 @@ class StudentFetcher extends Person
 
 			if ($query->fetchColumn() === '0') return false;
 		} catch (Exception $e) {
-			throw new Exception("Could verify data on database.");
+			throw new Exception("Could not verify data on database.");
 		}
 
 		return true;
@@ -292,7 +292,7 @@ class StudentFetcher extends Person
 
 			if ($query->fetchColumn() === '0') return false;
 		} catch (Exception $e) {
-			throw new Exception("Could not check if new mobile number already exists on database.");
+			throw new Exception("Could not check if stuent id already exists on database.");
 		}
 
 		return true;

@@ -19,7 +19,7 @@ class Instructor
 	public static function  validateName($db, $name) {
 		$name = trim($name);
 		if (!preg_match("/^[a-zA-Z\\ ]{1,50}$/", $name)) {
-			throw new Exception("Name can only contain <a href='http://www.regular-expressions.info/shorthand.html'
+			throw new Exception("Instructor name can only contain <a href='http://www.regular-expressions.info/shorthand.html'
             target='_blank'>word characters</a> and spaces of length 1-50");
 		}
 

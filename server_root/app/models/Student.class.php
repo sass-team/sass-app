@@ -51,7 +51,7 @@ class Student extends Person
 
 			return $rows;
 		} catch (PDOException $e) {
-			throw new Exception("Something terrible happened. Could not retrieve users data from database.: ");
+			throw new Exception("Something terrible happened. Could not retrieve students data from database.: ");
 		} // end catch
 	}
 
