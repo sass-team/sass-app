@@ -15,8 +15,12 @@ try {
         $appointmentId = $_GET['appointmentId'];
         $students = Appointment::getAllStudentsWithAppointment($db, $appointmentId);
         $course = Course::get($db, $students[0][AppointmentFetcher::DB_COLUMN_COURSE_ID]);
-        var_dump($course);
-//        $appointment =
+        $term = TermFetcher::retrieveSingle($db, $students[0][AppointmentFetcher::DB_COLUMN_TERM_ID]);
+        $tutorName = $students[0][UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_FIRST_NAME] . " " .
+            $students[0][UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_LAST_NAME];
+        $startTime = $students[0][AppointmentFetcher::DB_COLUMN_START_TIME];
+        $endTime = $students[0][AppointmentFetcher::DB_COLUMN_END_TIME];
+        
         if (!$user->isTutor()) {
 
         }
@@ -116,137 +120,132 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
                 <div class="form-group">
 
-
-                </div>
-
-
-                <div class="row">
-                    <div class="col-md-6 col-sm-6">
-                        <h4>Students</h4>
-
-                        <table class="table">
-                            <tbody>
-                            <?php foreach ($students as $student):
-                                include(ROOT_PATH . "app/views/partials/student/name-table-data-view.html.php");
-                            endforeach; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- /.col -->
-
-                    <div class="col-md-6 col-sm-6">
-
-                        <h4>Instructors</h4>
-
-                        <table class="table">
-                            <tbody>
-                            <tr>
-                                <td>
-                                    <strong>Maira Kotsovoulou</strong>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- /.col -->
-
-
-                </div>
-                <!-- /.row -->
-
-                <div class="row">
-
                     <div class="form-group">
-                        <div class="col-md-6 col-sm-6">
-                            <span class="input-group-addon"><label for="courseId">Course</label></span>
-                            <?php echo $course[CourseFetcher::DB_COLUMN_CODE] . " " . $course[CourseFetcher::DB_COLUMN_NAME]; ?>
+
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6">
+                                <h4>Student</h4>
+
+                                <table class="table">
+                                    <tbody>
+                                    <?php foreach ($students as $student):
+                                        include(ROOT_PATH . "app/views/partials/student/name-table-data-view.html.php");
+                                    endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.col -->
+
+                            <div class="col-md-6 col-sm-6">
+
+                                <h4>Instructor</h4>
+
+                                <table class="table">
+                                    <tbody>
+                                    <?php foreach ($students as $student):
+                                        $instructor = $student;
+                                        include(ROOT_PATH . "app/views/partials/instructor/name-table-data-view.html.php");
+                                    endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.col -->
+
+
                         </div>
+                        <!-- /.row -->
                     </div>
 
                     <div class="form-group">
-                        <div class="col-md-6 col-sm-6">
-										<span class="input-group-addon"><label id="label-instructor-text"
-                                                                               for="tutorId">Tutors</label></span>
-                            <select id="tutorId" name="tutorId" class="form-control" required>
-                                <option></option>
-                            </select>
-                            <input id="value" type="hidden" style="width:300px"/>
+
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6">
+                                <h4>Course</h4>
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                <input type='text' value="<?php echo $course[CourseFetcher::DB_COLUMN_CODE] . " " .
+                                    $course[CourseFetcher::DB_COLUMN_NAME]; ?>" name='dateTimePickerStart' class="
+                                       form-control" disabled/>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <div class='input-group date' id='dateTimePickerStart'>
-											<span class="input-group-addon"><label for="dateTimePickerStart">
-                                                    Starts At</label></span>
-                        <input type='text' name='dateTimePickerStart' class="form-control" required/>
-                                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                    <div class="form-group">
+                        <div class="row">
+
+                            <div class="col-md-6 col-sm-6">
+                                <h4>Tutor</h4>
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                <input type='text' value="<?php echo $tutorName; ?>" name='dateTimePickerStart'
+                                       class="
+                                       form-control" disabled/>
+                            </div>
+                        </div>
                     </div>
-                </div>
+
+                    <div class="form-group">
+
+                        <div class="row">
+
+                            <div class="col-md-6 col-sm-6">
+                                <h4>Starting Date</h4>
+                            </div>
 
 
-                <div class="form-group">
-                    <div class='input-group date' id='dateTimePickerEnd'>
-                                        <span class="input-group-addon"><label for="dateTimePickerEnd">Ends
-                                                At</label></span>
-                        <input type='text' name='dateTimePickerEnd' class="form-control" required/>
-										<span class="input-group-addon">
-											<span class="glyphicon glyphicon-calendar">
-										</span>
+                            <div class="col-md-6 col-sm-6">
+                                <input type='text' value="<?php echo $startTime; ?>" class="form-control" disabled/>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                    <div class="form-group">
+
+                        <div class="row">
+
+                            <div class="col-md-6 col-sm-6">
+                                <h4>Ending Date</h4>
+                            </div>
 
 
-                <div class="form-group">
-                    <div class="input-group">
-                        <button type="button" class="btn btn-default btn-sm addButton"
-                                data-template="textbox">
-                            Add One More Student
-                        </button>
+                            <div class="col-md-6 col-sm-6">
+                                <input type='text' value="<?php echo $endTime; ?>"
+                                       class="form-control" disabled/>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                    <div class="form-group">
 
-                <div class="form-group hide" id="textboxTemplate">
-                    <div class="input-group">
-                        <button type="button" class="btn btn-default btn-sm removeButton">Remove
-                        </button>
+                        <div class="row">
+
+                            <div class="col-md-6 col-sm-6">
+                                <h4>Term</h4>
+                            </div>
+
+
+                            <div class="col-md-6 col-sm-6">
+                                <input type='text' value="<?php echo $term[TermFetcher::DB_COLUMN_NAME]; ?>" class="
+                                       form-control" disabled/>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <div class="input-group">
-                        <span class="input-group-addon"><label for="termId">Term</label></span>
-                        <select id="termId" name="termId" class="form-control" required>
-                            <?php
-                            foreach ($curTerms as $term) {
-                                include(ROOT_PATH . "app/views/partials/term/select-options-view.html.php");
-                            }
+
+
+                    <div class="form-group">
+                        <?php
+                        if (empty($errors) === false) {
                             ?>
-                        </select>
+                            <div class="alert alert-danger">
+                                <a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+                                <strong>Oh
+                                    snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
+                                ?>
+                            </div>
+                        <?php
+                        }  ?>
+
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <?php
-                    if (empty($errors) === false) {
-                        ?>
-                        <div class="alert alert-danger">
-                            <a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-                            <strong>Oh
-                                snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
-                            ?>
-                        </div>
-                    <?php
-                    } else if (isModificationSuccess()) {
-                        ?>
-                        <div class="alert alert-success">
-                            <a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-                            <strong>Workshop successfully created!</strong> <br/>
-                        </div>
-                    <?php } ?>
-
-                    <button type="submit" class="btn btn-block btn-primary">Add</button>
-                    <input type="hidden" name="hiddenSubmitPrsd" value="">
-                </div>
             </div>
             <!-- /.form-group -->
 

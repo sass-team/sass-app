@@ -121,7 +121,18 @@ class AppointmentHasStudentFetcher
     public static function retrieveStudentsWithAppointment($db, $appointmentId)
     {
         $query =
-            "SELECT `" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_COURSE_ID . "`,
+            "SELECT `" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_FIRST_NAME . "` AS
+            " . UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_FIRST_NAME . ",
+            `" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_START_TIME . "`,
+            `" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_END_TIME . "`,
+            `" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_LAST_NAME . "` AS
+            " . UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_LAST_NAME . ",
+            `" . InstructorFetcher::DB_TABLE . "`.`" . InstructorFetcher::DB_COLUMN_FIRST_NAME . "` AS
+            " . InstructorFetcher::DB_TABLE . "_" . InstructorFetcher::DB_COLUMN_FIRST_NAME . ",
+            `" . InstructorFetcher::DB_TABLE . "`.`" . InstructorFetcher::DB_COLUMN_LAST_NAME . "` AS
+            " . InstructorFetcher::DB_TABLE . "_" . InstructorFetcher::DB_COLUMN_LAST_NAME . ",
+            `" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_COURSE_ID . "`,
+             `" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_TERM_ID . "`,
             `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` , `" . self::DB_TABLE . "`.`" .
             self::DB_COLUMN_APPOINTMENT_ID . "` ,  `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_STUDENT_ID . "`,
             `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_REPORT_ID . "`,  `" . self::DB_TABLE . "`.`" .
@@ -135,6 +146,12 @@ class AppointmentHasStudentFetcher
             INNER JOIN  `" . DB_NAME . "`.`" . AppointmentFetcher::DB_TABLE . "`
 			ON `" . DB_NAME . "`.`" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_ID . "`  = `" .
             self::DB_TABLE . "`.`" . self::DB_COLUMN_APPOINTMENT_ID . "`
+            INNER JOIN  `" . DB_NAME . "`.`" . UserFetcher::DB_TABLE . "`
+			ON `" . DB_NAME . "`.`" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_TUTOR_USER_ID
+            . "`  = `" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "`
+            INNER JOIN  `" . DB_NAME . "`.`" . InstructorFetcher::DB_TABLE . "`
+			ON `" . DB_NAME . "`.`" . InstructorFetcher::DB_TABLE . "`.`" . InstructorFetcher::DB_COLUMN_ID . "`  = `" .
+            self::DB_TABLE . "`.`" . self::DB_COLUMN_INSTRUCTOR_ID . "`
 			WHERE `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_APPOINTMENT_ID . "`=:appointemt_id";
 
         try {
