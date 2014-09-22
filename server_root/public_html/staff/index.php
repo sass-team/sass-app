@@ -342,76 +342,73 @@ else: ?>
 
 				<div class="portlet">
 
-					<div class="portlet-header">
+							<div class="portlet-header">
 
-						<h3>
-							<i class="fa fa-table"></i>
-							Users
-						</h3>
+								<h3>
+									<i class="fa fa-group"></i>
+									All Users
+								</h3>
+							</div>
+							<!-- /.portlet-header -->
 
-					</div>
-					<!-- /.portlet-header -->
+							<div class="portlet-content">
+								<div class="table-responsive">
+									<table
+										class="table table-striped table-bordered table-hover table-highlight table-checkable"
+										data-provide="datatable"
+										data-display-rows="10"
+										data-info="true"
+										data-search="true"
+										data-length-change="true"
+										data-paginate="false"
+										id="usersTable"
+										>
+										<thead>
+										<tr>
+											<th class="text-center" data-filterable="true" data-sortable="true"
+											    data-direction="desc">
+												Name
+											</th>
+											<th class="text-center" data-direction="asc" data-filterable="true"
+											    data-sortable="false">
+												Email
+											</th>
+											<th class="text-center" data-filterable="true" data-sortable="true">Position</th>
+											<th class="text-center" data-filterable="true" data-sortable="false">Mobile</th>
+											<th class="text-center" data-filterable="false" class="hidden-xs hidden-sm">Profile
+											</th>
 
-					<div class="portlet-content">
-						<div class="table-responsive">
-							<table
-								class="table table-striped table-bordered table-hover table-highlight table-checkable"
-								data-provide="datatable"
-								data-display-rows="10"
-								data-info="true"
-								data-search="true"
-								data-length-change="true"
-								data-paginate="false"
-								id="usersTable"
-								>
-								<thead>
-								<tr>
-									<th class="text-center" data-filterable="true" data-sortable="true"
-									    data-direction="desc">
-										Name
-									</th>
-									<th class="text-center" data-direction="asc" data-filterable="true"
-									    data-sortable="false">
-										Email
-									</th>
-									<th class="text-center" data-filterable="true" data-sortable="true">Position</th>
-									<th class="text-center" data-filterable="true" data-sortable="false">Mobile</th>
-									<th class="text-center" data-filterable="false" class="hidden-xs hidden-sm">Profile
-									</th>
+											<?php if (!$user->isTutor()): ?>
+												<th class="text-center" data-filterable="false" class="hidden-xs hidden-sm">Teaching
+												</th>
+											<?php endif; ?>
 
-									<?php if (!$user->isTutor()): ?>
-										<th class="text-center" data-filterable="false" class="hidden-xs hidden-sm">Teaching
-										</th>
-									<?php endif; ?>
-
-									<?php if (!$user->isTutor()): ?>
-										<th class="text-center" data-filterable="false" class="hidden-xs hidden-sm">Schedule
-										</th>
-									<?php endif; ?>
+											<?php if (!$user->isTutor()): ?>
+												<th class="text-center" data-filterable="false" class="hidden-xs hidden-sm">Schedule
+												</th>
+											<?php endif; ?>
 
 
-									<?php if ($user->isAdmin()): ?>
-										<th class="text-center" data-filterable="false" class="hidden-xs hidden-sm">Data
-										</th>
-									<?php endif; ?>
-								</tr>
-								</thead>
-								<tbody>
+											<?php if ($user->isAdmin()): ?>
+												<th class="text-center" data-filterable="false" class="hidden-xs hidden-sm">Data
+												</th>
+											<?php endif; ?>
+										</tr>
+										</thead>
+										<tbody>
 
-								<?php
-								if (empty($errors) === true) {
-									foreach (array_reverse($users) as $curUser) {
-										include(ROOT_PATH . "app/views/partials/user/all-table-data-view.html.php");
-									}
-								} ?>
-								</tbody>
-							</table>
-						</div>
-						<!-- /.table-responsive -->
+										<?php
+										if (empty($errors) === true) {
+											foreach (array_reverse($users) as $curUser) {
+												include(ROOT_PATH . "app/views/partials/user/all-table-data-view.html.php");
+											}
+										} ?>
+										</tbody>
+									</table>
+								</div>
+								<!-- /.table-responsive -->
 
-					</div>
-					<!-- /.portlet-content -->
-
+							</div>
 
 				</div>
 				<!-- /.portlet -->
