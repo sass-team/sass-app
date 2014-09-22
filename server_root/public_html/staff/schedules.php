@@ -177,7 +177,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 						<h3>
 							<i class="fa fa-table"></i>
-							View and Manage Schedules
+							Working hours
 							<?php
 							foreach ($currentTerms as $currentTerm) {
 								echo " - " . $currentTerm[TermFetcher::DB_COLUMN_NAME];
@@ -327,21 +327,39 @@ require ROOT_PATH . 'app/views/sidebar.php';
 									</div>
 
 									<div class="form-group">
-										<div class='input-group date' id='dateTimePickerStart'>
-											<span class="input-group-addon"><label for="dateTimePickerStart">
-													Starts At</label></span>
-											<input type='text' name='dateTimePickerStart' class="form-control" required/>
-                                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+										<label>Working days</label>
+
+										<div class="form-group">
+											<label class="checkbox-inline">
+												<input type="checkbox" id="inlineCheckbox1" name="days[]" value="1"> Monday
+											</label>
+											<label class="checkbox-inline">
+												<input type="checkbox" id="inlineCheckbox2" name="days[]" value="2"> Tuesday
+											</label>
+											<label class="checkbox-inline">
+												<input type="checkbox" id="inlineCheckbox3" name="days[]" value="3"> Wednesday
+											</label>
+											<label class="checkbox-inline">
+												<input type="checkbox" id="inlineCheckbox3" name="days[]" value="4"> Thursday
+											</label><label class="checkbox-inline">
+												<input type="checkbox" id="inlineCheckbox3" name="days[]" value="5"> Friday
+											</label>
 										</div>
 									</div>
-
 									<div class="form-group">
-										<div class='input-group date' id='dateTimePickerEnd'>
+
+										<div class='col-md-5 pull-left'>
+											<span class="input-group-addon"><label for="dateTimePickerStart">
+													Starts At</label></span>
+											<input type='text' name='dateTimePickerStart' class="form-control"
+											       placeholder="HH:MM (24H)" required/>
+										</div>
+
+										<div class='col-md-5 pull-right'>
 											<span class="input-group-addon"><label for="dateTimePickerEnd">Ends At</label></span>
-											<input type='text' name='dateTimePickerEnd' class="form-control" required/>
-										<span class="input-group-addon">
-											<span class="glyphicon glyphicon-calendar">
-										</span>
+											<input type='text' name='dateTimePickerEnd' class="form-control"
+											       placeholder="HH:MM (24H)"
+											       required/>
 										</div>
 									</div>
 								</div>
@@ -425,7 +443,6 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/datatables/DT_bootstrap.js"></script>
 
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/datepicker/bootstrap-datepicker.js"></script>
-<script src="<?php echo BASE_URL; ?>assets/js/plugins/timepicker/bootstrap-timepicker.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/simplecolorpicker/jquery.simplecolorpicker.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/textarea-counter/jquery.textarea-counter.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/autosize/jquery.autosize.min.js"></script>
@@ -445,33 +462,14 @@ require ROOT_PATH . 'app/views/sidebar.php';
 		$("#tutorUpdateId").select2();
 		$("#termUpdateId").select2();
 
-		$('#dateTimePickerStart').datetimepicker({
-			defaultDate: moment(),
-			minDate: moment().subtract('1', 'day'),
-			minuteStepping: 10,
-			daysOfWeekDisabled: [0, 6],
-			sideBySide: true
+		var checkedAtLeastOne = false;
+		$('input[type="checkbox"]').each(function() {
+			if ($(this).is(":checked")) {
+				checkedAtLeastOne = true;
+				alert("checked");
+			}
 		});
-		var $startSessionMoment = moment($('#dateTimePickerStart').data("DateTimePicker").getDate());
-		var dateEnd = moment().add(30, 'minutes');
 
-		$('#dateTimePickerEnd').datetimepicker({
-			defaultDate: dateEnd,
-			minDate: $startSessionMoment,
-			minuteStepping: 10,
-			daysOfWeekDisabled: [0, 6],
-			sideBySide: true
-		});
-		var $endSessionMoment = moment($('#dateTimePickerEnd').data("DateTimePicker").getDate());
-
-		$("#dateTimePickerStart").on("dp.change", function (e) {
-			var momentStart = $endSessionMoment;
-			var momentEnd = momentStart.clone();
-			var momentMinEnd = momentStart.clone();
-
-			$('#dateTimePickerEnd').data("DateTimePicker").setMinDate(momentMinEnd.add(20, 'minutes'));
-			$('#dateTimePickerEnd').data("DateTimePicker").setDate(momentEnd.add(30, 'minutes'));
-		});
 
 		// prepare course id for delete on modal
 		$(".btnDeleteSchedule").click(function () {
