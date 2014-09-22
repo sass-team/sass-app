@@ -29,7 +29,7 @@ class Appointment
         Mailer::sendTutorNewAppointment($db, $appointmentId, $secretaryName);
     }
 
-    public static function  printTutorsAppointments($db, $termId)
+    public static function  getCalendarAllAppointmentsOnTerm($db, $termId)
     {
         Term::validateId($db, $termId);
 
@@ -46,7 +46,7 @@ class Appointment
                 $endDate->format('Y-m-d H:i:s'), 'allDay' => false, 'url' => $appointmentUrl, 'color' => '#e5412d');
         }
 
-        echo json_encode($appointmentHoursJSON);
+        return json_encode($appointmentHoursJSON);
     }
 
     public static function getTutorsOnTerm($db, $termId)
@@ -55,7 +55,7 @@ class Appointment
         return AppointmentFetcher::retrieveTutors($db, $termId);
     }
 
-    public static function printSingleTutorAppointmentsJSON($db, $tutorId, $termId)
+    public static function getCalendarSingleTutorAppointments($db, $termId, $tutorId)
     {
         Tutor::validateId($db, $tutorId);
         Term::validateId($db, $termId);
@@ -81,7 +81,7 @@ class Appointment
                 $endDate->format('Y-m-d H:i:s'), 'allDay' => false, 'url' => $appointmentUrl, 'color' => '#e5412d');
         }
 
-        echo json_encode($appointmentHoursJSON);
+        return json_encode($appointmentHoursJSON);
     }
 
     public static function getSingleTutor($db, $tutorId, $termId)

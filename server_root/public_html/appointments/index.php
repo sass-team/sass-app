@@ -2,11 +2,11 @@
 require __DIR__ . '/../../app/init.php';
 $general->loggedOutProtect();
 
-$pageTitle = "All Appointments";
 $section = "appointments";
 
 try {
     if (isUrlRequestingSingleAppointment()) {
+        $pageTitle = "Single Appointments";
         $appointmentId = $_GET['appointmentId'];
 
         // redirect if user elevation is not that of secretary or admin
@@ -25,11 +25,17 @@ try {
 
 
     } else if (isUrlRequestingAllAppointments()) {
+        $pageTitle = "All Appointments";
 
         $curTerms = TermFetcher::retrieveCurrTerm($db);
-        $courses = CourseFetcher::retrieveAll($db);
-        $instructors = InstructorFetcher::retrieveAll($db);
-        $appointments = AppointmentFetcher::retrieveAll($db);
+
+        if (!$user->isTutor()) {
+            $appointmentsJSON = Appointment::getCalendarAllAppointmentsOnTerm($db, $curTerms[0][TermFetcher::DB_COLUMN_ID]);
+        } else {
+            $appointmentsJSON = Appointment::getCalendarSingleTutorAppointments($db, $curTerms[0][TermFetcher::DB_COLUMN_ID], $user->getId());
+        }
+
+
     } else {
         header('Location: ' . BASE_URL . "error-403");
         exit();
@@ -95,8 +101,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
     <h1>
         <i class="fa fa-calendar"></i>
-        Registered Workshop Session
-
+        <?php echo $pageTitle; ?>
     </h1>
 
 
@@ -109,191 +114,195 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
         <?php if (isUrlRequestingSingleAppointment()) { ?>
 
-        <div class="col-md-12">
-            <div class="portlet-header">
+            <div class="col-md-12">
+                <div class="portlet-header">
 
-                <h3>
-                    <i class="fa fa-calendar"></i>
-                    Details
-                </h3>
+                    <h3>
+                        <i class="fa fa-calendar"></i>
+                        Details
+                    </h3>
 
-            </div>
-            <!-- /.portlet-header -->
-
-            <div class="portlet-content">
-
-                <div class="form-group">
-
-                    <div class="form-group">
-
-                        <div class="row">
-                            <div class="col-md-6 col-sm-6">
-                                <h4>Student</h4>
-
-                                <table class="table">
-                                    <tbody>
-                                    <?php foreach ($students as $student):
-                                        include(ROOT_PATH . "app/views/partials/student/name-table-data-view.html.php");
-                                    endforeach; ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <!-- /.col -->
-
-                            <div class="col-md-6 col-sm-6">
-
-                                <h4>Instructor</h4>
-
-                                <table class="table">
-                                    <tbody>
-                                    <?php foreach ($students as $student):
-                                        $instructor = $student;
-                                        include(ROOT_PATH . "app/views/partials/instructor/name-table-data-view.html.php");
-                                    endforeach; ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <!-- /.col -->
-
-
-                        </div>
-                        <!-- /.row -->
-                    </div>
-
-                    <div class="form-group">
-
-                        <div class="row">
-                            <div class="col-md-6 col-sm-6">
-                                <h4>Course</h4>
-                            </div>
-                            <div class="col-md-6 col-sm-6">
-                                <input type='text' value="<?php echo $course[CourseFetcher::DB_COLUMN_CODE] . " " .
-                                    $course[CourseFetcher::DB_COLUMN_NAME]; ?>" name='dateTimePickerStart' class="
-                                       form-control" disabled/>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="row">
-
-                            <div class="col-md-6 col-sm-6">
-                                <h4>Tutor</h4>
-                            </div>
-                            <div class="col-md-6 col-sm-6">
-                                <input type='text' value="<?php echo $tutorName; ?>" name='dateTimePickerStart'
-                                       class="
-                                       form-control" disabled/>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-
-                        <div class="row">
-
-                            <div class="col-md-6 col-sm-6">
-                                <h4>Starting Date</h4>
-                            </div>
-
-
-                            <div class="col-md-6 col-sm-6">
-                                <input type='text' value="<?php echo $startTime; ?>" class="form-control" disabled/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-
-                        <div class="row">
-
-                            <div class="col-md-6 col-sm-6">
-                                <h4>Ending Date</h4>
-                            </div>
-
-
-                            <div class="col-md-6 col-sm-6">
-                                <input type='text' value="<?php echo $endTime; ?>"
-                                       class="form-control" disabled/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-
-                        <div class="row">
-
-                            <div class="col-md-6 col-sm-6">
-                                <h4>Term</h4>
-                            </div>
-
-
-                            <div class="col-md-6 col-sm-6">
-                                <input type='text' value="<?php echo $term[TermFetcher::DB_COLUMN_NAME]; ?>" class="
-                                       form-control" disabled/>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="form-group">
-                        <?php
-                        if (empty($errors) === false) {
-                            ?>
-                            <div class="alert alert-danger">
-                                <a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-                                <strong>Oh
-                                    snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
-                                ?>
-                            </div>
-                        <?php
-                        }  ?>
-
-                    </div>
                 </div>
+                <!-- /.portlet-header -->
+
+                <div class="portlet-content">
+
+                    <div class="form-group">
+
+                        <div class="form-group">
+
+                            <div class="row">
+                                <div class="col-md-6 col-sm-6">
+                                    <h4>Student</h4>
+
+                                    <table class="table">
+                                        <tbody>
+                                        <?php foreach ($students as $student):
+                                            include(ROOT_PATH . "app/views/partials/student/name-table-data-view.html.php");
+                                        endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.col -->
+
+                                <div class="col-md-6 col-sm-6">
+
+                                    <h4>Instructor</h4>
+
+                                    <table class="table">
+                                        <tbody>
+                                        <?php foreach ($students as $student):
+                                            $instructor = $student;
+                                            include(ROOT_PATH . "app/views/partials/instructor/name-table-data-view.html.php");
+                                        endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.col -->
+
+
+                            </div>
+                            <!-- /.row -->
+                        </div>
+
+                        <div class="form-group">
+
+                            <div class="row">
+                                <div class="col-md-6 col-sm-6">
+                                    <h4>Course</h4>
+                                </div>
+                                <div class="col-md-6 col-sm-6">
+                                    <input type='text' value="<?php echo $course[CourseFetcher::DB_COLUMN_CODE] . " " .
+                                        $course[CourseFetcher::DB_COLUMN_NAME]; ?>" name='dateTimePickerStart' class="
+                                       form-control" disabled/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+
+                                <div class="col-md-6 col-sm-6">
+                                    <h4>Tutor</h4>
+                                </div>
+                                <div class="col-md-6 col-sm-6">
+                                    <input type='text' value="<?php echo $tutorName; ?>" name='dateTimePickerStart'
+                                           class="
+                                       form-control" disabled/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+
+                            <div class="row">
+
+                                <div class="col-md-6 col-sm-6">
+                                    <h4>Starting Date</h4>
+                                </div>
+
+
+                                <div class="col-md-6 col-sm-6">
+                                    <input type='text' value="<?php echo $startTime; ?>" class="form-control" disabled/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+
+                            <div class="row">
+
+                                <div class="col-md-6 col-sm-6">
+                                    <h4>Ending Date</h4>
+                                </div>
+
+
+                                <div class="col-md-6 col-sm-6">
+                                    <input type='text' value="<?php echo $endTime; ?>"
+                                           class="form-control" disabled/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+
+                            <div class="row">
+
+                                <div class="col-md-6 col-sm-6">
+                                    <h4>Term</h4>
+                                </div>
+
+
+                                <div class="col-md-6 col-sm-6">
+                                    <input type='text' value="<?php echo $term[TermFetcher::DB_COLUMN_NAME]; ?>" class="
+                                       form-control" disabled/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <?php
+                            if (empty($errors) === false) {
+                                ?>
+                                <div class="alert alert-danger">
+                                    <a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+                                    <strong>Oh
+                                        snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
+                                    ?>
+                                </div>
+                            <?php
+                            }  ?>
+
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.form-group -->
 
             </div>
-            <!-- /.form-group -->
 
-        </div>
-    </div>
+        <?php } else { ?>
+            <div class="row">
 
-    <?php } else { ?>
-
-        <div class="col-md-12">
-            <div class="portlet-header">
-
-                <h3>
-                    <i class="fa fa-calendar"></i>
-							<span id="calendar-title">
-								<i class='fa fa-circle-o-notch fa-spin'></i>
+                <div class="col-md-12">
+                    <div class="portlet-header">
+                        <h3>
+                            <i class="fa fa-calendar"></i>Term
+                            <?php
+                            foreach ($curTerms as $currentTerm) {
+                                echo " - " . $currentTerm[TermFetcher::DB_COLUMN_NAME];
+                            }
+                            ?>
+                            <span id="calendar-title">
 							</span>
 
-                    <div class="external-event label ui-draggable fc-yellow" data-category="fc-yellow"
-                         style="position: relative;">Working Hours
+                            <!--                        <div class="external-event label ui-draggable fc-yellow" data-category="fc-yellow"-->
+                            <!--                             style="position: relative;">Working Hours-->
+                            <!--                        </div>-->
+                            <div class="external-event label ui-draggable fc-red" data-category="fc-red"
+                                 style="position: relative;">Appointments
+                            </div>
+                        </h3>
+
                     </div>
-                    <div class="external-event label ui-draggable fc-red" data-category="fc-red"
-                         style="position: relative;">Appointments
+                    <!-- /.portlet-header -->
+
+                    <div class="portlet-content">
+
+                        <div id="appointments-schedule-calendar"></div>
                     </div>
-                </h3>
-
+                </div>
+                <!-- ./col -->
             </div>
-            <!-- /.portlet-header -->
-
-            <div class="portlet-content">
-
-                <div id="appointments-schedule-calendar"></div>
-            </div>
-        </div>
-
-    <?php } ?>
+        <?php } ?>
 
 
-</div>
-<!-- /.portlet -->
+    </div>
+    <!-- /.portlet -->
 
 </div>
 <!-- /#content-container -->
 
 <div id="push"></div>
+
 </div>
 <!-- #content -->
 
@@ -330,7 +339,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
             defaultView: "agendaWeek",
             editable: false,
             droppable: false,
-            eventSources: [<?php AppointmentFetcher::printTutorsAppointments($db, $curTerms[0]); ?>],
+            events: <?php echo $appointmentsJSON; ?>,
             timeFormat: 'H(:mm)' // uppercase H for 24-hour clock
         });
     });

@@ -4,17 +4,17 @@ header('Content-Type: application/json');
 
 if (is_ajax()) {
 
-	if (isset($_GET["action"]) && !empty($_GET["action"])) { //Checks if action value exists
-		$action = $_GET["action"];
-		switch ($action) { //Switch case for value of action
-			case "all_tutors_appointments":
-				Appointment::printTutorsAppointments($db, $_GET["termId"]);
-				break;
-			case "single_tutor_working_hours":
-                Appointment::printSingleTutorAppointmentsJSON($db, $_GET["tutorId"],  $_GET["termId"]);
-				break;
-		}
-	}
+    if (isset($_GET["action"]) && !empty($_GET["action"])) { //Checks if action value exists
+        $action = $_GET["action"];
+        switch ($action) { //Switch case for value of action
+            case "all_tutors_appointments":
+                echo Appointment::getCalendarAllAppointmentsOnTerm($db, $_GET["termId"]);
+                break;
+            case "single_tutor_working_hours":
+                echo Appointment::getCalendarSingleTutorAppointments($db, $_GET["tutorId"], $_GET["termId"]);
+                break;
+        }
+    }
 } else {
     header('Location: ' . BASE_URL . "error-403");
     exit();
