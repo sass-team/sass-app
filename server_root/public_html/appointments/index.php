@@ -2,17 +2,19 @@
 require __DIR__ . '/../../app/init.php';
 $general->loggedOutProtect();
 
-// redirect if user elevation is not that of secretary or admin
-if ($user->isTutor()) {
-    header('Location: ' . BASE_URL . "error-403");
-    exit();
-}
 $pageTitle = "All Appointments";
 $section = "appointments";
 
 try {
     if (isUrlRequestingSingleAppointment()) {
         $appointmentId = $_GET['appointmentId'];
+
+        // redirect if user elevation is not that of secretary or admin
+        if ($user->isTutor() && !Tutor::hasAppointmentWithId($db, $user->getId(), $appointmentId)) {
+            header('Location: ' . BASE_URL . "error-403");
+            exit();
+        }
+
         $students = Appointment::getAllStudentsWithAppointment($db, $appointmentId);
         $course = Course::get($db, $students[0][AppointmentFetcher::DB_COLUMN_COURSE_ID]);
         $term = TermFetcher::retrieveSingle($db, $students[0][AppointmentFetcher::DB_COLUMN_TERM_ID]);
@@ -20,15 +22,17 @@ try {
             $students[0][UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_LAST_NAME];
         $startTime = $students[0][AppointmentFetcher::DB_COLUMN_START_TIME];
         $endTime = $students[0][AppointmentFetcher::DB_COLUMN_END_TIME];
-        
-        if (!$user->isTutor()) {
 
-        }
+
     } else if (isUrlRequestingAllAppointments()) {
+
         $curTerms = TermFetcher::retrieveCurrTerm($db);
         $courses = CourseFetcher::retrieveAll($db);
         $instructors = InstructorFetcher::retrieveAll($db);
         $appointments = AppointmentFetcher::retrieveAll($db);
+    } else {
+        header('Location: ' . BASE_URL . "error-403");
+        exit();
     }
 
 
@@ -45,7 +49,7 @@ function isUrlRequestingSingleAppointment()
 
 function isUrlRequestingAllAppointments()
 {
-    return !isset($_GET) && !isset($_POST);
+    return !isset($_GET['appointmentId']);
 }
 
 /**

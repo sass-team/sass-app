@@ -41,6 +41,6 @@
 <!--<script src="--><?php //echo BASE_URL; ?><!--assets/js/libs/jquery.min.js"></script>-->
 <!--<script src="--><?php //echo BASE_URL; ?><!--assets/js/libs/jquery-ui.min.js"></script>-->
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/moment/moment.js"></script>
-<script src="<?php echo BASE_URL; ?>assets/js/libs/bootstrap.min.js"></script>
+<!--<script src="--><?php //echo BASE_URL; ?><!--assets/js/libs/bootstrap.min.js"></script>-->
 
 <script src="<?php echo BASE_URL; ?>assets/js/App.js"></script>

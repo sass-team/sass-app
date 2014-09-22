@@ -24,6 +24,12 @@ class Tutor extends User
 		$this->setMajorId($majorId);
 	}
 
+
+    public static function hasAppointmentWithId($db, $tutorId, $appointmentId){
+        self::validateId($db, $tutorId);
+        Appointment::validateId($db, $appointmentId);
+        return TutorFetcher::hasAppointmentWithId($db, $tutorId, $appointmentId);
+    }
 	/**
 	 * Returns all information of a user given his email.
 	 * @param $db
