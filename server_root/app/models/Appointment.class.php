@@ -48,4 +48,44 @@ class Appointment
 		return AppointmentFetcher::retrieveTutors($db, $termId);
 	}
 
+    public static function printSingleTutorAppointments($db, $tutorId, $termId)
+    {
+        Tutor::validateId($db, $tutorId);
+        Term::validateId($db, $termId);
+        $appointmentHours = Appointment::getSingleTutor($db, $tutorId, $termId);
+        $appointmentHoursJSON = array();
+        foreach ($appointmentHours as $appointmentHour) {
+            $tutorName = $appointmentHour[CourseFetcher::DB_COLUMN_CODE] . " - " .
+                $appointmentHour[UserFetcher::DB_COLUMN_FIRST_NAME] . " " . $appointmentHour[UserFetcher::DB_COLUMN_LAST_NAME];
+            $startDate = new DateTime($appointmentHour[AppointmentFetcher::DB_COLUMN_START_TIME]);
+            $endDate = new DateTime($appointmentHour[AppointmentFetcher::DB_COLUMN_END_TIME]);
+            $appointmentUrl = "http://" . $_SERVER['SERVER_NAME'] . "/appointments/" . $appointmentHour[UserFetcher::DB_COLUMN_ID];
+
+            $appointmentHoursJSON[] = array('title' => $tutorName, 'start' => $startDate->format('Y-m-d H:i:s'), 'end' =>
+                $endDate->format('Y-m-d H:i:s'), 'allDay' => false, 'url' => $appointmentUrl, 'color' => '#e5412d');
+        }
+
+        echo json_encode($appointmentHoursJSON);
+    }
+
+
+    public static function  printTutorsAppointments($db, $termId)
+    {
+        Term::validateId($db, $termId);
+        $appointmentHours = Appointment::getTutorsOnTerm($db, $termId);
+        $appointmentHoursJSON = array();
+        foreach ($appointmentHours as $appointmentHour) {
+            $tutorName = $appointmentHour[CourseFetcher::DB_COLUMN_CODE] . " - " .
+                $appointmentHour[UserFetcher::DB_COLUMN_FIRST_NAME] . " " . $appointmentHour[UserFetcher::DB_COLUMN_LAST_NAME];
+            $startDate = new DateTime($appointmentHour[AppointmentFetcher::DB_COLUMN_START_TIME]);
+            $endDate = new DateTime($appointmentHour[AppointmentFetcher::DB_COLUMN_END_TIME]);
+            $appointmentUrl = "http://" . $_SERVER['SERVER_NAME'] . "/appointments/" . $appointmentHour[UserFetcher::DB_COLUMN_ID];
+
+            $appointmentHoursJSON[] = array('title' => $tutorName, 'start' => $startDate->format('Y-m-d H:i:s'), 'end' =>
+                $endDate->format('Y-m-d H:i:s'), 'allDay' => false, 'url' => $appointmentUrl, 'color' => '#e5412d');
+        }
+
+        echo json_encode($appointmentHoursJSON);
+    }
+
 }
