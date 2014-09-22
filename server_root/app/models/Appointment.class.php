@@ -9,7 +9,8 @@
 class Appointment
 {
 
-	public static function add($db, $dateStart, $dateEnd, $courseId, $studentsIds, $tutorId, $instructorsIds, $termId) {
+	public static function add($db, $dateStart, $dateEnd, $courseId, $studentsIds, $tutorId, $instructorsIds, $termId,
+                               $secretaryName) {
 		$dateStart = Dates::initDateTime($dateStart);
 		$dateEnd = Dates::initDateTime($dateEnd);
 		Course::validateId($db, $courseId);
@@ -24,7 +25,7 @@ class Appointment
 		Term::validateId($db, $termId);
 
 		$appointmentId = AppointmentFetcher::insert($db, $dateStart, $dateEnd, $courseId, $studentsIds, $tutorId, $instructorsIds, $termId);
-		Mailer::sendTutorNewAppointment($db, $appointmentId);
+		Mailer::sendTutorNewAppointment($db, $appointmentId, $secretaryName);
 	}
 
 	public static function getSingleTutor($db, $tutorId, $termId) {

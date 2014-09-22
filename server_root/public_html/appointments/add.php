@@ -22,8 +22,9 @@ try {
     $appointments = AppointmentFetcher::retrieveAll($db);
 
     if (isBtnAddStudentPrsd()) {
+        $secretaryName = $user->getFirstName() . " " . $user->getLastName();
         Appointment::add($db, $_POST['dateTimePickerStart'], $_POST['dateTimePickerEnd'], $_POST['courseId'],
-            $_POST['studentsIds'], $_POST['tutorId'], $_POST['instructorIds'], $_POST['termId']);
+            $_POST['studentsIds'], $_POST['tutorId'], $_POST['instructorIds'], $_POST['termId'], $secretaryName);
         header('Location: ' . BASE_URL . 'appointments/add/success');
         exit();
     }
@@ -116,7 +117,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 
                             <div class="form-group" id="student-instructor">
-                                <div class="input-group">
+                                <div class="input-group col-md-10 pull-left">
                                     <span class="input-group-addon"><label for="studentId1">Students</label></span>
                                     <select id="studentId1" name="studentsIds[]" class="form-control" required>
                                         <option></option>
@@ -126,6 +127,8 @@ require ROOT_PATH . 'app/views/sidebar.php';
                                         endforeach;
                                         ?>
                                     </select>
+                                </div>
+                                <div class="input-group col-md-10 pull-right">
                                         <span class="input-group-addon"><label
                                                 for="instructorId1">Instructor</label></span>
                                     <select id="instructorId1" name="instructorIds[]" class="form-control" required>
@@ -137,8 +140,11 @@ require ROOT_PATH . 'app/views/sidebar.php';
                                     </select>
                                 </div>
                             </div>
-
-
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <hr/>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <div class="input-group">
                                     <span class="input-group-addon"><label for="courseId">Course</label></span>
