@@ -120,9 +120,9 @@
 
 				<?php if (!$user->isTutor()): ?>
 					<li>
-						<a href="<?php echo BASE_URL; ?>staff/teachingcourses">
+						<a href="<?php echo BASE_URL; ?>staff/facilitating-courses">
 							<i class="fa fa-table"></i>
-							Teaching Courses
+							Facilitating Courses
 						</a>
 					</li>
 				<?php endif; ?>

@@ -4,7 +4,11 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
+<<<<<<< HEAD
 -- Generation Time: Sep 22, 2014 at 07:16 AM
+=======
+-- Generation Time: Sep 22, 2014 at 03:07 AM
+>>>>>>> fbef3db3a249fe6292b0a6f0feaae60364301d99
 -- Server version: 10.0.12-MariaDB
 -- PHP Version: 5.2.17
 
