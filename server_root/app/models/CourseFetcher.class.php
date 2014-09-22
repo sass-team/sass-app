@@ -80,7 +80,6 @@ class CourseFetcher
 		}
 	}
 
-
 	public static function retrieveSingle($db, $id) {
 		$query = "SELECT `" . self::DB_COLUMN_CODE . "`, `" . self::DB_COLUMN_NAME . "`, `" . self::DB_COLUMN_ID . "`
 		FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`

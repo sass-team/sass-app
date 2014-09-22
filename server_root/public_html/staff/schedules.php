@@ -42,45 +42,33 @@ try {
 	$tutors = TutorFetcher::retrieveAll($db);
 //		$courses = CourseFetcher::retrieveAll($db);
 	$terms = TermFetcher::retrieveCurrTerm($db);
-	$schedules = ScheduleFetcher::retrieveTutors($db);
+	$schedules = ScheduleFetcher::retrieveTutorsOnCurrTerms($db);
+
 
 // protect again any sql injections on url
-	if (isUrlRequestingSchedule()) {
-		$userId = $_GET['id'];
-		$pageTitle = "My Schedules";
-		if (($data = User::getSingle($db, $userId)) === FALSE) {
-			header('Location: ' . BASE_URL . 'error-404');
-			exit();
-		}
+	if (isBtnUpdatePrsd()) {
+		$updateDone = FALSE;
+		$scheduleId = $_POST['updateScheduleIdModal'];
 
-		if (strcmp($data['type'], 'tutor') === 0) {
-			$tutor = TutorFetcher::retrieveSingle($db, $userId);
-			$curUser = new Tutor($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'],
-				$data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active'],
-				$tutor[MajorFetcher::DB_COLUMN_NAME]);
-		} else if (strcmp($data['type'], 'secretary') === 0) {
-			$curUser = new Secretary($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'],
-				$data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active']);
-		} else if (strcmp($data['type'], 'admin') === 0) {
-			$curUser = new Admin($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'],
-				$data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active']);
-		} else {
-			throw new Exception("Something terrible has happened with the database. <br/>The software developers will
-				tremble with fear.");
-		}
+		if (($schedule = getSchedule($scheduleId, $schedules)) === FALSE) throw new Exception("Data tempering detected. Aborting.");
 
-	} else if (isUrlRequestingSchedules($user)) {
+		$updateDone = $updateDone || Schedule::updateStartingDate($db, $scheduleId, $_POST['dateStartUpdate'], $schedule[ScheduleFetcher::DB_COLUMN_START_TIME]);
+		$updateDone = $updateDone || Schedule::updateEndingDate($db, $scheduleId, $_POST['dateEndUpdate'], $schedule[ScheduleFetcher::DB_COLUMN_END_TIME]);
 
-		if (isBtnAddStudentPrsd()) {
-			Schedule::add($db, $_POST['dateTimePickerStart'], $_POST['dateTimePickerEnd'], $_POST['tutorId'],
-				$_POST['termId']);
-			header('Location: ' . BASE_URL . 'staff/schedules/success');
-			exit();
-		}
-
-	} else if (!isModificationSuccessful()) {
-		header('Location: ' . BASE_URL . 'error-404');
+	} else if (isBtnAddSchedulePrsd()) {
+		Schedule::add($db, $_POST['dateTimePickerStart'], $_POST['dateTimePickerEnd'], $_POST['tutorId'],
+			$_POST['termId']);
+		header('Location: ' . BASE_URL . 'staff/schedules/success');
 		exit();
+
+	} else if (isBtnDeletePrsd()) {
+		var_dump($_POST);
+//		Schedule::delete($db, $_POST['delScheduleIdModal']);
+//		header('Location: ' . BASE_URL . 'staff/schedules/success');
+//		exit();
+	} else if (!isModificationSuccessful()) {
+//		header('Location: ' . BASE_URL . 'error-404');
+//		exit();
 	}
 
 
@@ -88,46 +76,57 @@ try {
 	$errors[] = $e->getMessage();
 }
 
-
-function isBtnAddStudentPrsd() {
-	return isset($_POST['hiddenSubmitPrsd']) && empty($_POST['hiddenSubmitPrsd']);
-}
-
-
-/**
- * @return bool
- */
-function isUrlRequestingSchedule() {
-	return isset($_GET['id']) && preg_match("/^[0-9]+$/", $_GET['id']);
-}
-
-/**
- * @param $user
- * @return bool
- */
-function isUrlRequestingSchedules($user) {
-	return empty($_GET) && !$user->isTutor();
-}
-
-function get($objects, $findId, $column) {
-	foreach ($objects as $object) {
-		if ($object[$column] === $findId) return $object;
+function getSchedule($needle, $schedules, $strict = false) {
+	foreach ($schedules as $schedule) {
+		if (($strict ? $schedule === $needle : $schedule == $needle) ||
+			(is_array($schedule) && getSchedule($needle, $schedule, $strict))
+		) {
+			return $schedule;
+		}
 	}
 
 	return false;
 }
 
-function isEditBttnPressed() {
-	return isset($_GET['id']) && preg_match('/^[0-9]+$/', $_GET['id']);
-}
-
-function isModifyBttnPressed() {
-	return isset($_POST['hidden_submit_pressed']) && empty($_POST['hidden_submit_pressed']);
+function isBtnAddSchedulePrsd() {
+	return isset($_POST['hiddenSubmitPrsd']) && empty($_POST['hiddenSubmitPrsd']);
 }
 
 function isModificationSuccessful() {
 	return isset($_GET['success']) && strcmp($_GET['success'], 'y1!qp!' === 0);
 }
+
+function isBtnDeletePrsd() {
+	return isset($_POST['hiddenSubmitDeleteSchedule']) && empty($_POST['hiddenSubmitDeleteSchedule']);
+}
+
+function isBtnUpdatePrsd() {
+	return isset($_POST['hiddenUpdatePrsd']) && empty($_POST['hiddenUpdatePrsd']);
+}
+
+/**
+ * @return bool
+ */
+// function isUrlRequestingSchedule() {
+// 	return isset($_GET['id']) && preg_match("/^[0-9]+$/", $_GET['id']);
+// }
+
+/**
+ * @param $user
+ * @return bool
+ */
+// function isUrlRequestingSchedules($user) {
+// 	return empty($_GET) && !$user->isTutor();
+// }
+
+// function get($objects, $findId, $column) {
+// 	foreach ($objects as $object) {
+// 		if ($object[$column] === $findId) return $object;
+// 	}
+
+// 	return false;
+// }
+
 
 $section = "staff";
 ?>
@@ -184,7 +183,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 						<h3>
 							<i class="fa fa-table"></i>
-							View and Manage Schedules
+							View and Manage Schedules of the Current Terms
 						</h3>
 						<ul class="portlet-tools pull-right">
 							<li>
@@ -205,7 +204,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 								data-info="true"
 								data-search="true"
 								data-length-change="true"
-								data-paginate="true"
+								data-paginate="false"
 								id="usersTable"
 								>
 								<thead>
@@ -226,9 +225,9 @@ require ROOT_PATH . 'app/views/sidebar.php';
 									    data-sortable="true">Current Term
 									</th>
 
-										<?php if ($user->isAdmin()): ?>
-									<th class="text-center" data-filterable="false" class="hidden-xs hidden-sm">Data
-									</th>
+									<?php if ($user->isAdmin()): ?>
+										<th class="text-center" data-filterable="false" class="hidden-xs hidden-sm">Action
+										</th>
 									<?php endif; ?>
 								</tr>
 								</thead>
@@ -367,6 +366,150 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <!-- /.modal -->
 
 
+<div id="deleteSchedule" class="modal modal-styled fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form method="post" id="delete-form" action="<?php echo BASE_URL . 'staff/schedules'; ?>" class="form">
+
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h3 class="modal-title">Remove Schedule
+					</h3>
+				</div>
+				<div class="modal-body">
+					<div class="portlet">
+						<?php
+						if (empty($errors) === false) {
+							?>
+							<div class="alert alert-danger">
+								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+								<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
+							</div>
+						<?php } ?>
+
+						<div class="portlet-content">
+
+							<div class="row">
+								<div class="alert alert-warning">
+									<a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
+									<strong>Warning!</strong><br/>Are you sure you want to delete this schedule?
+								</div>
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-tertiary" data-dismiss="modal">Cancel</button>
+					<input type="hidden" id="delScheduleIdModal" name="delScheduleIdModal" value=""/>
+					<input type="hidden" name="hiddenSubmitDeleteSchedule">
+					<button type="submit" class="btn btn-primary">Delete</button>
+				</div>
+			</form>
+
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<div id="updateSchedule" class="modal modal-styled fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form method="post" id="create-form" action="<?php echo BASE_URL . 'staff/schedules'; ?>" class="form">
+
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h3 class="modal-title">Update Schedule</h3>
+				</div>
+				<div class="modal-body">
+					<div class="portlet">
+						<?php
+						if (empty($errors) === false) {
+							?>
+							<div class="alert alert-danger">
+								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+								<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
+								?>
+							</div>
+						<?php
+						} else if (isModificationSuccessful()) {
+							?>
+							<div class="alert alert-success">
+								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+								<strong>Schedule successfully updated!</strong> <br/>
+							</div>
+						<?php } ?>
+						<div class="portlet-content">
+							<div class="row">
+								<div class="col-sm-12">
+
+
+									<!-- <div class="form-group col-md-12">
+										<h4>Name </h4>
+										<input type="text" id="nameUpdate" name="nameUpdate" class="form-control"
+										       value="<?php if (isset($_POST['nameUpdate'])) echo
+									htmlentities($_POST['nameUpdate']); ?>"
+										       required>
+									</div> -->
+
+
+									<div class="form-group col-md-12">
+										<h4>Term Period</h4>
+
+
+										<div class="form-group">
+											<div class="input-group">
+												<div class='input-group date' id='dateStartUpdate'>
+													<span class="input-group-addon"><label for="dateStartUpdate">Starts
+															At&#32; </label></span>
+													<input type='text' class="form-control" name="dateStartUpdate"
+													       data-date-format="YYYY-MM-DD HH:mm:ss"/>
+														<span class="input-group-addon"><span
+																class="glyphicon glyphicon-calendar"></span>
+												</div>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="input-group">
+												<div class='input-group date' id='dateEndUpdate'>
+														<span class="input-group-addon"><label for="dateEndUpdate">Ends
+																At&#32; </label></span>
+													<input type='text' class="form-control" name="dateEndUpdate"
+													       data-date-format="YYYY-MM-DD HH:mm:ss"/>
+															<span class="input-group-addon"><span
+																	class="glyphicon glyphicon-calendar"></span>
+												</div>
+											</div>
+										</div>
+									</div>
+
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-tertiary" data-dismiss="modal">Close</button>
+					<input type="hidden" name="hiddenUpdatePrsd">
+					<input type="hidden" id="updateTermIdModal" name="updateTermIdModal" value=""/>
+
+					<button type="submit" class="btn btn-primary">Update</button>
+				</div>
+			</form>
+
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
 
 <?php include ROOT_PATH . "app/views/footer.php"; ?>
 </div>
@@ -376,6 +519,13 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/select2/select2.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/datatables/DT_bootstrap.js"></script>
+
+<script src="<?php echo BASE_URL; ?>assets/js/plugins/datepicker/bootstrap-datepicker.js"></script>
+<script src="<?php echo BASE_URL; ?>assets/js/plugins/timepicker/bootstrap-timepicker.js"></script>
+<script src="<?php echo BASE_URL; ?>assets/js/plugins/simplecolorpicker/jquery.simplecolorpicker.js"></script>
+<script src="<?php echo BASE_URL; ?>assets/js/plugins/textarea-counter/jquery.textarea-counter.js"></script>
+<script src="<?php echo BASE_URL; ?>assets/js/plugins/autosize/jquery.autosize.min.js"></script>
+<!--<script src="--><?php //echo BASE_URL; ?><!--assets/js/demos/form-extended.js"></script>-->
 
 <script
 	src="<?php echo BASE_URL; ?>assets/js/plugins/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js">
@@ -387,10 +537,11 @@ require ROOT_PATH . 'app/views/sidebar.php';
 		moment().format();
 
 		$("#tutorId").select2();
+		$("#termId").select2();
 
 
 		$('#dateTimePickerStart').datetimepicker({
-			defaultDate:moment(),
+			defaultDate: moment(),
 			minDate: moment().subtract('1', 'day'),
 			minuteStepping: 10,
 			daysOfWeekDisabled: [0, 6],
@@ -418,19 +569,20 @@ require ROOT_PATH . 'app/views/sidebar.php';
 		});
 
 		// prepare course id for delete on modal
-		$(".btnDeleteCourse").click(function () {
-			$inputVal = $(this).next('input').val();
-			$("#delCourseIdModal").val($inputVal);
+		$(".btnDeleteSchedule").click(function () {
+			var inputVal = $(this).next('input').val();
+			$("#delScheduleIdModal").val(inputVal);
 		});
 
-		$(".btnUpdateCourse").click(function () {
+		$(".btnUpdateSchedule").click(function () {
 			$courseId = $(this).next().next('input').val();
+
 			$courseName = ($(this).parent().prev().text());
 			$courseCode = ($(this).parent().prev().prev().text());
 
-			$("#updateCourseIdModal").val($courseId);
-			$("#nameUpdate").val($courseCode);
-			$("#dateStartUpdate").val($courseName);
+//			$("#updateCourseIdModal").val($courseId);
+//			$("#nameUpdate").val($courseCode);
+//			$("#dateStartUpdate").val($courseName);
 
 		});
 	});

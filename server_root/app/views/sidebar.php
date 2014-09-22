@@ -118,6 +118,15 @@
 					</li>
 				<?php endif; ?>
 
+				<?php if (!$user->isTutor()): ?>
+					<li>
+						<a href="<?php echo BASE_URL; ?>staff/teachingcourses">
+							<i class="fa fa-table"></i>
+							Teaching Courses
+						</a>
+					</li>
+				<?php endif; ?>
+
 				<?php if ($user->isAdmin()): ?>
 					<li>
 						<a href="<?php echo BASE_URL; ?>staff/add">
