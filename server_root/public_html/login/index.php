@@ -5,7 +5,7 @@ require __DIR__ . '/../../app/init.php';
 // if there is an active log in process redirect to students.class.php; load page only if no
 // logged in user exists
 $general->loggedInProtect();
-$page_title = "Log In";
+$pageTitle = "Log In";
 
 ?>
 
@@ -82,11 +82,10 @@ function isForgotBtnPressed() {
 		<link rel="stylesheet"
 		      href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,800italic,400,600,800"
 		      type="text/css">
-		<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/font-awesome.min.css" type="text/css"/>
-		<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/bootstrap.min.css" type="text/css"/>
-		<link rel="stylesheet"
-		      href="<?php echo BASE_URL; ?>assets/js/libs/css/ui-lightness/jquery-ui-1.9.2.custom.css"
-		      type="text/css"/>
+		<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+		<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.0/themes/smoothness/jquery-ui.css"/>
+
 
 		<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/App.css" type="text/css"/>
 		<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/Login.css" type="text/css"/>
@@ -201,6 +200,12 @@ function isForgotBtnPressed() {
 		<!-- /#login-container -->
 
 		<footer id="footer" class="navbar navbar-fixed-bottom">
+			<ul class="nav pull-left">
+				<li>
+					For bugs, improvements, proposals and tasks please create a new issue at <a href="https://github.com/sass-team/sass-app/issues"
+					                                                                 target="_blank">SASS App GitHub</a>.
+				</li>
+			</ul>
 			<ul class="nav pull-right">
 				<li>
 					Copyright &copy; <?php auto_copyright('2014'); // 2010 - 2011 ?>,

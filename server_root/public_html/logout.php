@@ -30,7 +30,7 @@
 require __DIR__ . '/../app/init.php';
 // do not allow access to user that have not logged in.
 $general->loggedOutProtect();
-$page_title = "Log Out";
+$pageTitle = "Log Out";
 
 session_unset();     // unset $_SESSION variable for the run-time
 session_destroy();

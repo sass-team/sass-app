@@ -3,8 +3,8 @@ require __DIR__ . '/../../app/init.php';
 $general->loggedOutProtect();
 
 // viewers
-$page_title = "Dashboard - SASS Management System";
-$section = "dashboard";
+$pageTitle = "Dashboard - SASS Management System";
+$section = "account";
 ?>
 
 

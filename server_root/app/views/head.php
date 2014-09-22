@@ -1,23 +1,25 @@
 <head>
-	<title><?php echo $page_title; ?></title>
+	<title><?php echo $pageTitle; ?></title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	<meta name="description" content="">
 	<meta name="author" content=""/>
-	<link rel="shortcut icon" href="<?php echo BASE_URL; ?>app/assets/img/logos/favicon.ico">
+	<link rel="shortcut icon" href="<?php echo BASE_URL; ?>assets/img/logos/favicon.ico">
 
 	<link rel="stylesheet"
 	      href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,800italic,400,600,800"
 	      type="text/css">
 	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-	<!--	<!-- Latest compiled and minified CSS -->
+	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 	<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.0/themes/smoothness/jquery-ui.css"/>
+	<link rel="stylesheet"
+	      href="//cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.1/css/bootstrapValidator.min.css"/>
 
 	<!-- remove when on production server, and uncomment above. -->
-	<!--	<link href="--><?php //echo BASE_URL; ?><!--app/assets/css/font-awesome.min.css" rel="stylesheet">-->
-	<!--	<link href="--><?php //echo BASE_URL; ?><!--app/assets/css/bootstrap.min.css" rel="stylesheet">-->
-	<!--	<link href="--><?php //echo BASE_URL; ?><!--app/assets/js/libs/css/jquery-ui.css" rel="stylesheet">-->
+	<!--	<link href="--><?php //echo BASE_URL; ?><!--assets/css/font-awesome.min.css" rel="stylesheet">-->
+	<!--	<link href="--><?php //echo BASE_URL; ?><!--assets/css/bootstrap.min.css" rel="stylesheet">-->
+	<!--	<link href="--><?php //echo BASE_URL; ?><!--assets/js/libs/css/jquery-ui.css" rel="stylesheet">-->
 
 
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/js/plugins/icheck/skins/minimal/blue.css"
@@ -39,16 +41,17 @@
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/App.css" type="text/css"/>
 
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/custom.css" type="text/css"/>
+	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/js/plugins/timepicker/bootstrap-timepicker.css"/>
 
 	<link rel="stylesheet"
 	      href="<?php echo BASE_URL; ?>assets/js/plugins/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css"
 	      type="text/css"/>
 
 	<style type="text/css">
-		#wrap {
+		#wrapper {
 			min-height: 100%;
 			height: auto !important;
-			margin: 0 auto -60px;
+			margin: 0 auto -30px;
 		}
 	</style>
 </head>

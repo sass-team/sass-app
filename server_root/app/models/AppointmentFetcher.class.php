@@ -49,14 +49,14 @@ class AppointmentFetcher
 
 
 			for ($i = 0; $i < sizeof($studentsIds); $i++) {
-				Appointment_has_student_has_report_has_instructor::insert($db, $appointmentId, $studentsIds[$i], $instructorsIds[$i]);
+				AppointmentHasStudentFetcher::insert($db, $appointmentId, $studentsIds[$i], $instructorsIds[$i]);
 			}
 
 			$db->getConnection()->commit();
 			return $appointmentId;
 		} catch (Exception $e) {
 			$db->getConnection()->rollback();
-			throw new Exception("Could not insert data into database.");
+			throw new Exception("Could not insert data into database." . $e->getMessage());
 		}
 
 	}
@@ -77,7 +77,6 @@ class AppointmentFetcher
 		return true;
 	}
 
-
 	public static function belongsToTutor($db, $id, $tutorId) {
 		try {
 			$sql = "SELECT COUNT(" . self::DB_COLUMN_ID . ")
@@ -97,8 +96,25 @@ class AppointmentFetcher
 		return true;
 	}
 
-
 	public static function retrieveSingle($db, $id) {
+		$query = "SELECT `" . self::DB_COLUMN_START_TIME . "`, `" . self::DB_COLUMN_END_TIME . "`, `" .
+			self::DB_COLUMN_COURSE_ID . "`, `" . self::DB_COLUMN_TUTOR_USER_ID . "`,  `" . self::DB_COLUMN_TUTOR_USER_ID .
+			"`,  `" . self::DB_COLUMN_ID . "`,  `" . self::DB_COLUMN_TERM_ID . "`
+			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+			WHERE `" . self::DB_COLUMN_ID . "`=:id";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':id', $id, PDO::PARAM_INT);
+
+			$query->execute();
+			return $query->fetch(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			throw new Exception("Something terrible happened . Could not retrieve data from database .: ");
+		} // end catch
+	}
+
+	public static function retrieveReport($db, $id) {
 		$query = "SELECT `" . self::DB_COLUMN_START_TIME . "`, `" . self::DB_COLUMN_END_TIME . "`, `" .
 			self::DB_COLUMN_COURSE_ID . "`, `" . self::DB_COLUMN_TUTOR_USER_ID . "`,  `" . self::DB_COLUMN_TUTOR_USER_ID .
 			"`,  `" . self::DB_COLUMN_ID . "`,  `" . self::DB_COLUMN_TERM_ID . "`
@@ -122,7 +138,7 @@ class AppointmentFetcher
 			"SELECT `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_START_TIME . "` , `" . self::DB_COLUMN_END_TIME . "`,
 			 `" . self::DB_COLUMN_COURSE_ID . "`,  `" . self::DB_COLUMN_TUTOR_USER_ID . "`,  `" .
 			self::DB_COLUMN_TUTOR_USER_ID . "`
-			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "` order by `" . self::DB_TABLE . "`.`" .
+			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "` ORDER BY `" . self::DB_TABLE . "`.`" .
 			self::DB_COLUMN_START_TIME . "` DESC";
 
 		try {
@@ -132,6 +148,106 @@ class AppointmentFetcher
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
 			throw new Exception("Could not retrieve data from database.");
+		}
+	}
+
+	public static function retrieveTutors($db, $termId) {
+		$query =
+			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_START_TIME . "` , `" .
+			self::DB_COLUMN_END_TIME . "`, `" . self::DB_COLUMN_COURSE_ID . "`,  `" . self::DB_COLUMN_TUTOR_USER_ID . "`,
+			`" . self::DB_COLUMN_TUTOR_USER_ID . "`, `" . UserFetcher::DB_COLUMN_FIRST_NAME . "` , `" .
+			UserFetcher::DB_COLUMN_LAST_NAME . "`, `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_CODE . "`
+			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+			INNER JOIN  `" . DB_NAME . "`.`" . UserFetcher::DB_TABLE . "`
+			ON `" . DB_NAME . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "`  = `" .
+			UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "`
+			INNER JOIN  `" . DB_NAME . "`.`" . CourseFetcher::DB_TABLE . "`
+			ON `" . DB_NAME . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_COURSE_ID . "`  = `" .
+			CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_ID . "`
+			INNER JOIN  `" . DB_NAME . "`.`" . TermFetcher::DB_TABLE . "`
+			ON `" . DB_NAME . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`  = `" .
+			TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "`
+			WHERE `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "` = :term_id
+			ORDER BY `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "` DESC";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':term_id', $termId, PDO::PARAM_INT);
+
+			$query->execute();
+
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			throw new Exception("Could not retrieve data from database." . $e->getMessage());
+		}
+	}
+
+
+	public static function retrieveSingleTutor($db, $tutorId, $termId) {
+		$query =
+			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_START_TIME . "` , `" .
+			self::DB_COLUMN_END_TIME . "`, `" . self::DB_COLUMN_COURSE_ID . "`,  `" . self::DB_COLUMN_TUTOR_USER_ID . "`,
+			`" . self::DB_COLUMN_TUTOR_USER_ID . "`, `" . UserFetcher::DB_COLUMN_FIRST_NAME . "` , `" .
+			UserFetcher::DB_COLUMN_LAST_NAME . "`, `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_CODE . "`
+			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+			INNER JOIN  `" . DB_NAME . "`.`" . UserFetcher::DB_TABLE . "`
+			ON `" . DB_NAME . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "`  = `" .
+			UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "`
+			INNER JOIN  `" . DB_NAME . "`.`" . CourseFetcher::DB_TABLE . "`
+			ON `" . DB_NAME . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_COURSE_ID . "`  = `" .
+			CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_ID . "`
+			INNER JOIN  `" . DB_NAME . "`.`" . TermFetcher::DB_TABLE . "`
+			ON `" . DB_NAME . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`  = `" .
+			TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "`
+			WHERE `" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "` = :tutor_id
+			AND `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "` = :term_id
+			ORDER BY `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "` DESC";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':tutor_id', $tutorId, PDO::PARAM_INT);
+			$query->bindParam(':term_id', $termId, PDO::PARAM_INT);
+
+			$query->execute();
+
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			throw new Exception("Could not retrieve data from database." . $e->getMessage());
+		}
+	}
+
+
+	/**
+	 * Appointments are considered completed if 30 minutes have from the passing of it's start time.
+	 * @param $db
+	 * @throws Exception
+	 */
+	public static function  retrieveCompletedWithoutReports($db) {
+		$query =
+			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` , `" . self::DB_TABLE . "`.`" .
+			self::DB_COLUMN_START_TIME . "` , `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_END_TIME . "`, `" .
+			self::DB_TABLE . "`.`" . self::DB_COLUMN_COURSE_ID . "`, `" . self::DB_TABLE . "`.`" .
+			self::DB_COLUMN_TUTOR_USER_ID . "`,  `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "`,
+			`" . AppointmentHasStudentFetcher::DB_TABLE . "`.`" . AppointmentHasStudentFetcher::DB_COLUMN_STUDENT_ID . "`,
+			`" . AppointmentHasStudentFetcher::DB_TABLE . "`.`" . AppointmentHasStudentFetcher::DB_COLUMN_ID . "` AS
+			 " . AppointmentHasStudentFetcher::DB_TABLE . "_" . AppointmentHasStudentFetcher::DB_COLUMN_ID . ",
+			`" . AppointmentHasStudentFetcher::DB_TABLE . "`.`" . AppointmentHasStudentFetcher::DB_COLUMN_INSTRUCTOR_ID . "`
+			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+			INNER JOIN  `" . DB_NAME . "`.`" . AppointmentHasStudentFetcher::DB_TABLE . "`
+			ON `" . DB_NAME . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`  = `" .
+			AppointmentHasStudentFetcher::DB_TABLE . "`.`" . AppointmentHasStudentFetcher::DB_COLUMN_APPOINTMENT_ID . "`
+			WHERE TIME_TO_SEC(TIMEDIFF(NOW(),  `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "`))/60 > 30
+			AND `" . AppointmentHasStudentFetcher::DB_TABLE . "`.`" .
+			AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID . "` IS NULL
+			ORDER BY `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "` DESC";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->execute();
+
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			throw new Exception("Could not retrieve data from database." . $e->getMessage());
 		}
 	}
 

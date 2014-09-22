@@ -38,7 +38,7 @@ class Major
 		}
 
 		if (MajorFetcher::nameExists($db, $majorName)) {
-			throw new Exception("Course name already exists on database. Please insert a different one.");
+			throw new Exception("Major name already exists on database. Please insert a different one.");
 		}
 
 		return $majorName;

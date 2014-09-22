@@ -32,6 +32,3 @@
 <option value="<?php echo $term[TermFetcher::DB_COLUMN_ID]; ?>">
 	<?php echo $term[TermFetcher::DB_COLUMN_NAME]; ?>
 </option>
-
-
-

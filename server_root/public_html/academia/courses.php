@@ -16,16 +16,15 @@ try {
 	$courses = CourseFetcher::retrieveAll($db);
 
 	if (isBtnUpdatePrsd()) {
-		$updateDone = 0;
 		$courseId = trim($_POST['updateCourseIdModal']);
 
 		$newCourseCode = trim($_POST['courseCodeUpdate']);
 		$newCourseName = trim($_POST['courseNameUpdate']);
 		$updateDone = false;
 
-		if (($course = getCourse($courseId, $courses)) !== false) {
-			$oldCourseCodeName = $course[CourseFetcher::DB_COLUMN_CODE];
-			$oldCourseName = $course[CourseFetcher::DB_COLUMN_NAME];
+		if (($schedule = getCourse($courseId, $courses)) !== false) {
+			$oldCourseCodeName = $schedule[CourseFetcher::DB_COLUMN_CODE];
+			$oldCourseName = $schedule[CourseFetcher::DB_COLUMN_NAME];
 
 
 			$updateDone = $updateDone || Course::updateName($db, $courseId, $newCourseName, $oldCourseName);
@@ -45,7 +44,7 @@ try {
 
 		} else {
 			throw new Exception("Either you're trying to hack this app or something wrong went. In either case the
-            developers we just notified about this");
+            developers were just notified about this");
 		}
 
 	} else if (isBtnSavePrsd()) {
@@ -102,7 +101,7 @@ function isBtnUpdatePrsd() {
 	return isset($_POST['hiddenUpdatePrsd']) && empty($_POST['hiddenUpdatePrsd']);
 }
 
-$page_title = "Manage Courses";
+$pageTitle = "Academia - Courses";
 $section = "academia";
 ?>
 
@@ -174,11 +173,11 @@ require ROOT_PATH . 'app/views/sidebar.php';
 							<table
 								class="table table-striped table-bordered table-hover table-highlight"
 								data-provide="datatable"
-								data-display-rows="10"
+								data-display-rows="100"
 								data-info="true"
 								data-search="true"
 								data-length-change="true"
-								data-paginate="true"
+								data-paginate="false"
 								>
 								<thead>
 								<tr>
@@ -206,7 +205,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 			</div>
 			<!-- /.col -->
-			</div>
+		</div>
 		<!-- /.row -->
 
 	</div>
@@ -441,18 +440,19 @@ require ROOT_PATH . 'app/views/sidebar.php';
 	jQuery(function () {
 		// prepare course id for delete on modal
 		$(".btnDeleteCourse").click(function () {
-			$inputVal = $(this).next('input').val();
-			$("#delCourseIdModal").val($inputVal);
+			var inputVal = $(this).next('input').val();
+			$("#delCourseIdModal").val(inputVal);
 		});
 
 		$(".btnUpdateCourse").click(function () {
-			$courseId = $(this).next().next('input').val();
-			$courseName = ($(this).parent().prev().text());
-			$courseCode = ($(this).parent().prev().prev().text());
+			var courseId = $(this).next().next('input').val();
+			var courseName = ($(this).parent().prev().text());
 
-			$("#updateCourseIdModal").val($courseId);
-			$("#nameUpdate").val($courseCode);
-			$("#dateStartUpdate").val($courseName);
+			var courseCode = ($(this).parent().prev().prev().text());
+
+			$("#updateCourseIdModal").val(courseId);
+			$("#courseNameUpdate").val(courseName);
+			$("#courseCodeUpdate").val(courseCode);
 
 		});
 

@@ -38,10 +38,14 @@ class TermFetcher
 
 
 //m-d-Y h:i A
-	public static function retrieveAll($db) {
+	public static function retrieveAllButCur($db) {
 		$query =
 			"SELECT `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_NAME . "` , `" . self::DB_COLUMN_START_DATE . "`,
-			 `" . self::DB_COLUMN_END_DATE . "` FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "` order by `" .
+			 `" . self::DB_COLUMN_END_DATE . "`
+			 FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+			 WHERE (NOW() NOT BETWEEN `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" .
+			TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_END_DATE . "`)
+			 order by `" .
 			self::DB_TABLE . "`.`" . self::DB_COLUMN_START_DATE . "` DESC";
 
 		try {
@@ -51,6 +55,43 @@ class TermFetcher
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
 			throw new Exception("Could not retrieve terms data from database.");
+		}
+	}
+
+	//m-d-Y h:i A
+	public static function retrieveAll($db) {
+		$query =
+			"SELECT `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_NAME . "` , `" . self::DB_COLUMN_START_DATE . "`,
+			 `" . self::DB_COLUMN_END_DATE . "`
+			 FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+			order by `" .
+			self::DB_TABLE . "`.`" . self::DB_COLUMN_START_DATE . "` DESC";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->execute();
+
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			throw new Exception("Could not retrieve terms data from database.");
+		}
+	}
+
+
+	public static function retrieveCurrTerm($db) {
+		$query =
+			"SELECT `" . self::DB_COLUMN_ID . "` ,
+					`" . self::DB_COLUMN_NAME . "`
+			 	FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+			 	WHERE CURRENT_TIMESTAMP() BETWEEN `" . self::DB_COLUMN_START_DATE . "` AND `" . self::DB_COLUMN_END_DATE . "`";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->execute();
+
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			throw new Exception("Could not retrieve current term from database.");
 		}
 	}
 
@@ -102,7 +143,7 @@ class TermFetcher
 
 			return true;
 		} catch (Exception $e) {
-			throw new Exception("Something terrible happened. Could not update term name");
+			throw new Exception("Something terrible happened. Could not update starting date");
 		}
 	}
 

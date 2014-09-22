@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class User will contain prototype for users; tutors, secretary and admin.
+ * Class User will contain prototype for staff; tutors, secretary and admin.
  * Log In, Log Out.
  */
 abstract class User extends Person
@@ -99,28 +99,21 @@ abstract class User extends Person
 		}
 	}
 
-	public static function updateActiveStatus($db, $id, $newStatus, $oldStatus) {
-		throw new Exception("status changed has been disabled");
-//		$oldStatus = ($oldStatus == self::PASSWORD_EXPIRATION_TIME_HOURS) ? self::ACTIVE_STRING : self::DEACTIVE_STRING;
-//
-//		if ((strcmp($newStatus, $oldStatus) === 0) || (strcmp($newStatus, self::ACTIVE_STRING) !== 0 && strcmp($newStatus, self::DEACTIVE_STRING))) {
-//			throw new Exception("Tampered data detected. Aborting.");
-//		}
-//
-//		$accountStatus = strcmp($newStatus, self::ACTIVE_STRING) === 0 ? self::ACTIVE_STATUS : self::DEACTIVE_STATUS;
-//
-//		try {
-//			$query = "UPDATE `" . DB_NAME . "`.`user` SET `active`= :accountStatus WHERE `id`=:id";
-//			$query = $db->getConnection()->prepare($query);
-//			$query->bindParam(':accountStatus', $accountStatus, PDO::PARAM_INT);
-//			$query->bindParam(':id', $id, PDO::PARAM_INT);
-//
-//			$query->execute();
-//
-//			return true;
-//		} catch (PDOException $e) {
-//			throw new Exception("Something terrible happened. Could not retrieve users data from database.: " . $e->getMessage());
-//		} // end catch
+	public static function updateActiveStatus($db, $id, $oldStatus) {
+		$newStatus = $oldStatus == 1 ? 0 : 1;
+
+		try {
+			$query = "UPDATE `" . DB_NAME . "`.`user` SET `active`= :accountStatus WHERE `id`=:id";
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':accountStatus', $newStatus, PDO::PARAM_INT);
+			$query->bindParam(':id', $id, PDO::PARAM_INT);
+
+			$query->execute();
+
+			return true;
+		} catch (PDOException $e) {
+			throw new Exception("Could not update database.");
+		} // end catch
 	}
 
 	static function updateProfile($db, $id, $firstName, $lastName, $prevMobileNum, $newMobileNum, $description) {
@@ -154,8 +147,9 @@ abstract class User extends Person
 
 			return true;
 		} catch (Exception $e) {
-			throw new Exception("Something terrible happened. Could not update profile." . $e->getMessage());
+			throw new Exception("Something terrible happened. Could not update profile.");
 		}
+
 	}
 
 	public static function updateName($db, $id, $column, $newFirstName) {
@@ -177,8 +171,9 @@ abstract class User extends Person
 
 			return true;
 		} catch (Exception $e) {
-			throw new Exception("Something terrible happened. Could not update profile." . $e->getMessage());
+			throw new Exception("Something terrible happened. Could not update profile.");
 		}
+
 	}
 
 	public static function updateProfileDescription($db, $id, $newProfileDescription) {
@@ -219,8 +214,9 @@ abstract class User extends Person
 
 			return true;
 		} catch (Exception $e) {
-			throw new Exception("Something terrible happened. Could not update profile." . $e->getMessage());
+			throw new Exception("Something terrible happened. Could not update profile.");
 		}
+
 	}
 
 	/**
@@ -322,8 +318,9 @@ abstract class User extends Person
 
 			return $rows;
 		} catch (PDOException $e) {
-			throw new Exception("Something terrible happened. Could not retrieve users data from database.: " . $e->getMessage());
-		} // end catch
+			throw new Exception("Something terrible happened. Could not retrieve users data from database.: ");
+			// end catch
+		}
 	}
 
 	/**
@@ -464,12 +461,17 @@ abstract class User extends Person
 		return $generatedString;
 	}
 
+	public static function isUserTypeTutor($userType) {
+		if (strcmp($userType, TutorFetcher::DB_TABLE) === 0) return true;
+		return false;
+	}
+
 	/**
 	 * @return mixed
 	 */
 	public function getAccountActiveStatus() {
 		return $this->accountActiveStatus;
-	}
+	} // end getAllData
 
 	/**
 	 * @param mixed $accountActiveStatus
@@ -483,7 +485,7 @@ abstract class User extends Person
 	 */
 	public function isActive() {
 		return $this->active;
-	} // end getAllData
+	}
 
 	public function updateAvatarImg($avatar_img_loc) {
 		$id = $this->getId();

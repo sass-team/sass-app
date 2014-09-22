@@ -46,9 +46,9 @@ class Term
 			self::validateDateTypes($startDate, $endDate);
 			TermFetcher::insert($db, $name, $startDate, $endDate);
 		} catch (Exception $e) {
-			throw new Exception("Dates have been malformed." . $e->getMessage());
-		}
+			throw new Exception($e->getMessage());
 
+		}
 	}
 
 	public static function  validateName($db, $name) {
@@ -70,6 +70,7 @@ class Term
 			throw new Exception("Minimum acceptable term period is 20 days.");
 	}
 
+
 	public static function updateName($db, $id, $newName, $oldName) {
 		if (strcmp($newName, $oldName) === 0) return false;
 
@@ -89,7 +90,6 @@ class Term
 	}
 
 
-
 	public static function updateEndingDate($db, $id, $newEndingDate, $oldEndingDate) {
 		if (strcmp($newEndingDate, $oldEndingDate) === 0) return false;
 
@@ -101,7 +101,7 @@ class Term
 	public static function delete($db, $id) {
 		self::validateId($db, $id);
 		if (!TermFetcher::idExists($db, $id)) {
-			throw new Exception("Could not retrieve course to be deleted from database. <br/>
+			throw new Exception("Could not retrieve term to be deleted from database. <br/>
                 Maybe some other administrator just deleted it?");
 		}
 

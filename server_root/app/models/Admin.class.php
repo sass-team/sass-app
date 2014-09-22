@@ -54,8 +54,8 @@ class Admin extends User
 			return $userId;
 		} catch (Exception $e) {
 			$db->getConnection()->rollback();
-			throw new Exception("Could not insert user into database." . $e->getMessage());
-		}
+			throw new Exception("Could not insert user into database.");}
+
 	}
 
 	public function isAdmin() {

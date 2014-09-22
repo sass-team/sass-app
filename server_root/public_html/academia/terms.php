@@ -41,8 +41,8 @@ if ($user->isTutor()) {
 
 try {
 	$terms = TermFetcher::retrieveAll($db);
+
 	if (isBtnUpdatePrsd()) {
-		var_dump($_POST);
 		$updateDone = FALSE;
 		$termId = $_POST['updateTermIdModal'];
 		$termName = $_POST['nameUpdate'];
@@ -108,7 +108,7 @@ function isBtnUpdatePrsd() {
 	return isset($_POST['hiddenUpdatePrsd']) && empty($_POST['hiddenUpdatePrsd']);
 }
 
-$page_title = "Manage Terms";
+$pageTitle = "Academia - Terms";
 $section = "academia";
 ?>
 
@@ -132,7 +132,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <div id="content">
 
 	<div id="content-header">
-		<h1><?php echo $page_title; ?></h1>
+		<h1>All Terms</h1>
 	</div>
 	<!-- #content-header -->
 
@@ -184,13 +184,13 @@ require ROOT_PATH . 'app/views/sidebar.php';
 								data-info="true"
 								data-search="true"
 								data-length-change="true"
-								data-paginate="true"
+								data-paginate="false"
 								>
 								<thead>
 								<tr>
 									<th class="text-center" data-filterable="true" data-sortable="true">Name</th>
-									<th class="text-center" data-filterable="false" data-sortable="false">Starting Date</th>
-									<th class="text-center" data-filterable="false" data-sortable="false">Ending Date</th>
+									<th class="text-center" data-filterable="true" data-sortable="true">Starting Date</th>
+									<th class="text-center" data-filterable="true" data-sortable="true">Ending Date</th>
 									<th class="text-center">Action</th>
 
 								</tr>
@@ -214,7 +214,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 			</div>
 			<!-- /.col -->
-			
+
 		</div>
 		<!-- /.row -->
 

@@ -46,7 +46,7 @@ try {
 
 		} else {
 			throw new Exception("Either you're trying to hack this app or something wrong went. In either case the
-            developers we just notified about this");
+            developers were just notified about this.");
 		}
 
 	} else if (isBtnSavePrsd()) {
@@ -103,7 +103,7 @@ function isBtnUpdatePrsd() {
 	return isset($_POST['hiddenUpdatePrsd']) && empty($_POST['hiddenUpdatePrsd']);
 }
 
-$page_title = "Manage Majors";
+$pageTitle = "Academia - Majors";
 $section = "academia";
 ?>
 
@@ -179,7 +179,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 								data-info="true"
 								data-search="true"
 								data-length-change="true"
-								data-paginate="true"
+								data-paginate="false"
 								>
 								<thead>
 								<tr>
@@ -192,7 +192,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 								<?php
 								foreach ($majors as $major) {
-									include(ROOT_PATH . "app/views/partials/major/table-data-view.html.php");
+									include(ROOT_PATH . "app/views/partials/major/data-view.html.php");
 								} ?>
 								</tbody>
 							</table>

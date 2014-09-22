@@ -9,7 +9,7 @@ if ($user->isTutor()) {
 }
 
 
-$page_title = "Manage Students";
+$pageTitle = "Academia - Students";
 $section = "academia";
 
 try {
@@ -185,26 +185,26 @@ require ROOT_PATH . 'app/views/sidebar.php';
 							data-info="true"
 							data-search="true"
 							data-length-change="true"
-							data-paginate="true"
+							data-paginate="false"
 							id="usersTable"
 							>
 							<thead>
 							<tr>
-								<th data-filterable="true" data-sortable="true" data-direction="desc">Name</th>
-								<th data-filterable="true" data-sortable="true" data-direction="desc">ID</th>
-								<th data-direction="asc" data-filterable="true" data-sortable="false">Email</th>
-								<th data-filterable="true" data-sortable="false">Mobile</th>
-								<th data-filterable="true" data-sortable="true">Major</th>
-								<th data-filterable="true" data-sortable="true">CI</th>
-								<th data-filterable="true" data-sortable="true">Credits</th>
+								<th class="text-center" data-filterable="true" data-sortable="true" data-direction="desc">Name</th>
+								<th class="text-center" data-filterable="true" data-sortable="true" data-direction="desc">ID</th>
+								<th class="text-center" data-direction="asc" data-filterable="true" data-sortable="false">Email</th>
+								<th class="text-center" data-filterable="true" data-sortable="false">Mobile</th>
+								<th class="text-center" data-filterable="true" data-sortable="true">Major</th>
+								<th class="text-center" data-filterable="true" data-sortable="true">CI</th>
+								<th class="text-center" data-filterable="true" data-sortable="true">Credits</th>
 
 								<?php if (!$user->isTutor()): ?>
-									<th data-filterable="false" class="hidden-xs hidden-sm">Schedule</th>
+									<th class="text-center" data-filterable="false" class="hidden-xs hidden-sm">Schedule</th>
 								<?php endif; ?>
 
 
 								<?php if ($user->isAdmin()): ?>
-									<th data-filterable="false" class="hidden-xs hidden-sm">Action</th>
+									<th class="text-center" data-filterable="false" class="hidden-xs hidden-sm">Action</th>
 								<?php endif; ?>
 							</tr>
 							</thead>
@@ -212,7 +212,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 							<?php
 							foreach (array_reverse($students) as $student) {
-								include(ROOT_PATH . "app/views/partials/student/table-data-view.html.php");
+								include(ROOT_PATH . "app/views/partials/student/update-table-data-view.html.php");
 							} ?>
 							</tbody>
 						</table>

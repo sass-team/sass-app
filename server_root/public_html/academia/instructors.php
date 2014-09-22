@@ -24,8 +24,8 @@ try {
 		$updateDone = false;
 
 		if (($instructor = getInstructor($instructorId, $instructors)) !== false) {
-			$oldInstructorFname = $instructor[InstructorFetcher::DB_FIRST_NAME];
-			$oldInstructorLname = $instructor[InstructorFetcher::DB_LAST_NAME];
+			$oldInstructorFname = $instructor[InstructorFetcher::DB_COLUMN_FIRST_NAME];
+			$oldInstructorLname = $instructor[InstructorFetcher::DB_COLUMN_LAST_NAME];
 
 
 			$updateDone = $updateDone || Instructor::updateLname($db, $instructorId, $newInstructorLname, $oldInstructorLname);
@@ -49,7 +49,7 @@ try {
 
 		} else {
 			throw new Exception("Either you're trying to hack this app or something wrong went. In either case the
-            developers we just notified about this");
+            developers were just notified about this.");
 		}
 
 	} else if (isBtnSavePrsd()) {
@@ -106,7 +106,7 @@ function isBtnUpdatePrsd() {
 	return isset($_POST['hiddenUpdatePrsd']) && empty($_POST['hiddenUpdatePrsd']);
 }
 
-$page_title = "Manage Instructors";
+$pageTitle = "Academia - Instructors";
 $section = "academia";
 ?>
 
@@ -182,7 +182,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 								data-info="true"
 								data-search="true"
 								data-length-change="true"
-								data-paginate="true"
+								data-paginate="false"
 								>
 								<thead>
 								<tr>
