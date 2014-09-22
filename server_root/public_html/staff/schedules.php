@@ -36,24 +36,19 @@ $general->loggedOutProtect();
 
 
 try {
-	$pageTitle = "All Schedules";
+
 
 	//		$users = User::retrieveAll($db);
 	$tutors = TutorFetcher::retrieveAll($db);
 //		$courses = CourseFetcher::retrieveAll($db);
-	$terms = TermFetcher::retrieveCurrTerm($db);
-	$schedules = ScheduleFetcher::retrieveTutorsOnCurrTerms($db);
+	$currentTerms = TermFetcher::retrieveCurrTerm($db);
+	$schedules = ScheduleFetcher::retrieveTutorsOnCurrentTerms($db);
 
 
-// protect again any sql injections on url
-	if (isBtnUpdatePrsd()) {
-		$updateDone = FALSE;
-		$scheduleId = $_POST['updateScheduleIdModal'];
+	if (isUrlRequestingAllSchedules($user)) {
 
-		if (($schedule = getSchedule($scheduleId, $schedules)) === FALSE) throw new Exception("Data tempering detected. Aborting.");
+		$pageTitle = "All Schedules";
 
-		$updateDone = $updateDone || Schedule::updateStartingDate($db, $scheduleId, $_POST['dateStartUpdate'], $schedule[ScheduleFetcher::DB_COLUMN_START_TIME]);
-		$updateDone = $updateDone || Schedule::updateEndingDate($db, $scheduleId, $_POST['dateEndUpdate'], $schedule[ScheduleFetcher::DB_COLUMN_END_TIME]);
 
 	} else if (isBtnAddSchedulePrsd()) {
 		Schedule::add($db, $_POST['dateTimePickerStart'], $_POST['dateTimePickerEnd'], $_POST['tutorId'],
@@ -62,13 +57,12 @@ try {
 		exit();
 
 	} else if (isBtnDeletePrsd()) {
-		var_dump($_POST);
-//		Schedule::delete($db, $_POST['delScheduleIdModal']);
-//		header('Location: ' . BASE_URL . 'staff/schedules/success');
-//		exit();
-	} else if (!isModificationSuccessful()) {
-//		header('Location: ' . BASE_URL . 'error-404');
-//		exit();
+		Schedule::delete($db, $_POST['delScheduleIdModal']);
+		header('Location: ' . BASE_URL . 'staff/schedules/success');
+		exit();
+	} else {
+		header('Location: ' . BASE_URL . 'error-404');
+		exit();
 	}
 
 
@@ -107,25 +101,25 @@ function isBtnUpdatePrsd() {
 /**
  * @return bool
  */
-// function isUrlRequestingSchedule() {
-// 	return isset($_GET['id']) && preg_match("/^[0-9]+$/", $_GET['id']);
-// }
+function isUrlRequestingSingleSchedule() {
+	return isset($_GET['id']) && preg_match("/^[0-9]+$/", $_GET['id']);
+}
 
 /**
  * @param $user
  * @return bool
  */
-// function isUrlRequestingSchedules($user) {
-// 	return empty($_GET) && !$user->isTutor();
-// }
+function isUrlRequestingAllSchedules($user) {
+	return empty($_GET) && !$user->isTutor() && empty($_POST);
+}
 
-// function get($objects, $findId, $column) {
-// 	foreach ($objects as $object) {
-// 		if ($object[$column] === $findId) return $object;
-// 	}
+function get($objects, $findId, $column) {
+	foreach ($objects as $object) {
+		if ($object[$column] === $findId) return $object;
+	}
 
-// 	return false;
-// }
+	return false;
+}
 
 
 $section = "staff";
@@ -183,7 +177,12 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 						<h3>
 							<i class="fa fa-table"></i>
-							View and Manage Schedules of the Current Terms
+							View and Manage Schedules
+							<?php
+							foreach ($currentTerms as $currentTerm) {
+								echo " - " . $currentTerm[TermFetcher::DB_COLUMN_NAME];
+							}
+							?>
 						</h3>
 						<ul class="portlet-tools pull-right">
 							<li>
@@ -311,7 +310,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 										<div class="input-group">
 											<span class="input-group-addon"><label for="termId">Term</label></span>
 											<select id="termId" name="termId" class="form-control" required>
-												<?php foreach ($terms as $term) {
+												<?php foreach ($currentTerms as $term) {
 													include(ROOT_PATH . "app/views/partials/term/select-options-view.html.php");
 												}
 												?>
@@ -416,101 +415,6 @@ require ROOT_PATH . 'app/views/sidebar.php';
 </div>
 <!-- /.modal -->
 
-<div id="updateSchedule" class="modal modal-styled fade">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<form method="post" id="create-form" action="<?php echo BASE_URL . 'staff/schedules'; ?>" class="form">
-
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h3 class="modal-title">Update Schedule</h3>
-				</div>
-				<div class="modal-body">
-					<div class="portlet">
-						<?php
-						if (empty($errors) === false) {
-							?>
-							<div class="alert alert-danger">
-								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-								<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
-								?>
-							</div>
-						<?php
-						} else if (isModificationSuccessful()) {
-							?>
-							<div class="alert alert-success">
-								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-								<strong>Schedule successfully updated!</strong> <br/>
-							</div>
-						<?php } ?>
-						<div class="portlet-content">
-							<div class="row">
-								<div class="col-sm-12">
-
-
-									<!-- <div class="form-group col-md-12">
-										<h4>Name </h4>
-										<input type="text" id="nameUpdate" name="nameUpdate" class="form-control"
-										       value="<?php if (isset($_POST['nameUpdate'])) echo
-									htmlentities($_POST['nameUpdate']); ?>"
-										       required>
-									</div> -->
-
-
-									<div class="form-group col-md-12">
-										<h4>Term Period</h4>
-
-
-										<div class="form-group">
-											<div class="input-group">
-												<div class='input-group date' id='dateStartUpdate'>
-													<span class="input-group-addon"><label for="dateStartUpdate">Starts
-															At&#32; </label></span>
-													<input type='text' class="form-control" name="dateStartUpdate"
-													       data-date-format="YYYY-MM-DD HH:mm:ss"/>
-														<span class="input-group-addon"><span
-																class="glyphicon glyphicon-calendar"></span>
-												</div>
-											</div>
-										</div>
-										<div class="form-group">
-											<div class="input-group">
-												<div class='input-group date' id='dateEndUpdate'>
-														<span class="input-group-addon"><label for="dateEndUpdate">Ends
-																At&#32; </label></span>
-													<input type='text' class="form-control" name="dateEndUpdate"
-													       data-date-format="YYYY-MM-DD HH:mm:ss"/>
-															<span class="input-group-addon"><span
-																	class="glyphicon glyphicon-calendar"></span>
-												</div>
-											</div>
-										</div>
-									</div>
-
-
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div class="modal-footer">
-					<button type="button" class="btn btn-tertiary" data-dismiss="modal">Close</button>
-					<input type="hidden" name="hiddenUpdatePrsd">
-					<input type="hidden" id="updateTermIdModal" name="updateTermIdModal" value=""/>
-
-					<button type="submit" class="btn btn-primary">Update</button>
-				</div>
-			</form>
-
-		</div>
-		<!-- /.modal-content -->
-	</div>
-	<!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-
-
 <?php include ROOT_PATH . "app/views/footer.php"; ?>
 </div>
 <!-- #wrapper -->
@@ -538,7 +442,8 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 		$("#tutorId").select2();
 		$("#termId").select2();
-
+		$("#tutorUpdateId").select2();
+		$("#termUpdateId").select2();
 
 		$('#dateTimePickerStart').datetimepicker({
 			defaultDate: moment(),
@@ -575,9 +480,9 @@ require ROOT_PATH . 'app/views/sidebar.php';
 		});
 
 		$(".btnUpdateSchedule").click(function () {
-			$courseId = $(this).next().next('input').val();
-
+			var scheduleId = $(this).next().next('input').val();
 			$courseName = ($(this).parent().prev().text());
+			alert($courseName);
 			$courseCode = ($(this).parent().prev().prev().text());
 
 //			$("#updateCourseIdModal").val($courseId);
