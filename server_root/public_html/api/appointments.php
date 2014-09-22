@@ -11,7 +11,7 @@ if (is_ajax()) {
 				Appointment::printTutorsAppointments($db, $_GET["termId"]);
 				break;
 			case "single_tutor_working_hours":
-                Appointment::printSingleTutorAppointments($db, $_GET["tutorId"],  $_GET["termId"]);
+                Appointment::printSingleTutorAppointmentsJSON($db, $_GET["tutorId"],  $_GET["termId"]);
 				break;
 		}
 	}

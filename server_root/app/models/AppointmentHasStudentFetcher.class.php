@@ -118,10 +118,11 @@ class AppointmentHasStudentFetcher
     }
 
 
-    public static function retrieveJoinStudent($db, $appointmentId)
+    public static function retrieveStudentsWithAppointment($db, $appointmentId)
     {
         $query =
-            "SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` , `" . self::DB_TABLE . "`.`" .
+            "SELECT `" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_COURSE_ID . "`,
+            `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` , `" . self::DB_TABLE . "`.`" .
             self::DB_COLUMN_APPOINTMENT_ID . "` ,  `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_STUDENT_ID . "`,
             `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_REPORT_ID . "`,  `" . self::DB_TABLE . "`.`" .
             self::DB_COLUMN_INSTRUCTOR_ID . "`, `" . StudentFetcher::DB_TABLE . "`.`" .
@@ -131,6 +132,9 @@ class AppointmentHasStudentFetcher
 			INNER JOIN  `" . DB_NAME . "`.`" . StudentFetcher::DB_TABLE . "`
 			ON `" . DB_NAME . "`.`" . StudentFetcher::DB_TABLE . "`.`" . StudentFetcher::DB_COLUMN_ID . "`  = `" .
             self::DB_TABLE . "`.`" . self::DB_COLUMN_STUDENT_ID . "`
+            INNER JOIN  `" . DB_NAME . "`.`" . AppointmentFetcher::DB_TABLE . "`
+			ON `" . DB_NAME . "`.`" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_ID . "`  = `" .
+            self::DB_TABLE . "`.`" . self::DB_COLUMN_APPOINTMENT_ID . "`
 			WHERE `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_APPOINTMENT_ID . "`=:appointemt_id";
 
         try {
