@@ -13,11 +13,12 @@ class Schedule
         Term::validateId($db, $termId);
         self::validateRepeatingDays($repeatingDays);
 
-        $timeStart = self::validateDate($db, $timeStart, $tutorId);
-        $timeEnd = self::validateDate($db, $timeEnd, $tutorId);
+        $timeStart = self::convertDate($timeStart);
+        $timeEnd = self::convertDate($timeEnd);
 
-//        $appointmentId = ScheduleFetcher::insert($db, $timeStart, $timeEnd, $tutorId, $termId);
+        $appointmentId = ScheduleFetcher::insert($db, $tutorId, $termId, $repeatingDays, $timeStart, $timeEnd);
         // TODO: add option for admin to check if he wants an automatic email to be said on said user on his email
+        return $appointmentId;
     }
 
     public static function validateRepeatingDays($repeatingDays) {
@@ -27,9 +28,27 @@ class Schedule
         }
     }
 
+    /**
+     * @param $timeStart
+     * @return DateTime|string
+     * @throws Exception
+     */
+    public static function convertDate($timeStart) {
+        date_default_timezone_set('Europe/Athens');
+        try {
+            $timeStart = new DateTime($timeStart);
+            $timeStart = $timeStart->format('Y-m-d H:i:s');
+
+            return $timeStart;
+        } catch (Exception $e) {
+            throw new Exception("Date have been malformed" . $e->getMessage());
+        }
+        return $timeStart;
+    }
+
     public static function validateDate($db, $date, $tutorId) {
         $date = Dates::initDateTime($date);
-//maybe in 	existDatesBetween you should consider also termId as a parameter?	
+//maybe in 	existDatesBetween you should consider also termId as a parameter?
 //		if (ScheduleFetcher::existDatesBetween($db, $dateStart, $dateEnd, $tutorId)) {
 //			throw new Exception("Sorry, the days/hours you inputted conflict with existing working hours.");
 //		}
@@ -44,7 +63,6 @@ class Schedule
 
         return true;
     }
-
 
     public static function updateEndingDate($db, $id, $newEndingDate, $oldEndingDate) {
         if (strcmp($newEndingDate, $oldEndingDate) === 0) return false;

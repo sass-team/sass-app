@@ -51,17 +51,17 @@ try {
 
 
     } else if (isBtnAddSchedulePrsd()) {
-        var_dump($_POST);
         $pageTitle = "Add schedule";
         $days = isset($_POST['day']) ? $_POST['day'] : NULL;
         Schedule::add($db, $_POST['tutorId'], $_POST['termId'], $days, $_POST['startsAt'], $_POST['endsAt']);
-//        header('Location: ' . BASE_URL . 'staff/schedules/success');
-//        exit();
-
+        header('Location: ' . BASE_URL . 'staff/schedules/success');
+        exit();
     } else if (isBtnDeletePrsd()) {
         Schedule::delete($db, $_POST['delScheduleIdModal']);
         header('Location: ' . BASE_URL . 'staff/schedules/success');
         exit();
+    } else if (isModificationSuccessful()) {
+        $pageTitle = "Schedule added - Success";
     } else {
         header('Location: ' . BASE_URL . 'error-404');
         exit();
@@ -72,8 +72,7 @@ try {
     $errors[] = $e->getMessage();
 }
 
-function getSchedule($needle, $schedules, $strict = false)
-{
+function getSchedule($needle, $schedules, $strict = false) {
     foreach ($schedules as $schedule) {
         if (($strict ? $schedule === $needle : $schedule == $needle) ||
             (is_array($schedule) && getSchedule($needle, $schedule, $strict))
@@ -85,31 +84,26 @@ function getSchedule($needle, $schedules, $strict = false)
     return false;
 }
 
-function isBtnAddSchedulePrsd()
-{
+function isBtnAddSchedulePrsd() {
     return isset($_POST['hiddenSubmitPrsd']) && empty($_POST['hiddenSubmitPrsd']);
 }
 
-function isModificationSuccessful()
-{
+function isModificationSuccessful() {
     return isset($_GET['success']) && strcmp($_GET['success'], 'y1!qp!' === 0);
 }
 
-function isBtnDeletePrsd()
-{
+function isBtnDeletePrsd() {
     return isset($_POST['hiddenSubmitDeleteSchedule']) && empty($_POST['hiddenSubmitDeleteSchedule']);
 }
 
-function isBtnUpdatePrsd()
-{
+function isBtnUpdatePrsd() {
     return isset($_POST['hiddenUpdatePrsd']) && empty($_POST['hiddenUpdatePrsd']);
 }
 
 /**
  * @return bool
  */
-function isUrlRequestingSingleSchedule()
-{
+function isUrlRequestingSingleSchedule() {
     return isset($_GET['id']) && preg_match("/^[0-9]+$/", $_GET['id']);
 }
 
@@ -117,13 +111,11 @@ function isUrlRequestingSingleSchedule()
  * @param $user
  * @return bool
  */
-function isUrlRequestingAllSchedules($user)
-{
+function isUrlRequestingAllSchedules($user) {
     return empty($_GET) && !$user->isTutor() && empty($_POST);
 }
 
-function get($objects, $findId, $column)
-{
+function get($objects, $findId, $column) {
     foreach ($objects as $object) {
         if ($object[$column] === $findId) return $object;
     }
@@ -225,10 +217,10 @@ require ROOT_PATH . 'app/views/sidebar.php';
                                         data-sortable="true">Last Name
                                     </th>
                                     <th class="text-center" data-filterable="true" data-sortable="true"
-                                        data-sortable="true">Starting time
+                                        data-sortable="true">Days
                                     </th>
                                     <th class="text-center" data-filterable="true" data-sortable="false"
-                                        data-sortable="true">Ending time
+                                        data-sortable="true">Hours
                                     </th>
                                     <th class="text-center" data-filterable="true" data-sortable="true"
                                         data-sortable="true">Current Term
