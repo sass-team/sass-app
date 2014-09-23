@@ -15,8 +15,7 @@ class AppointmentHasStudentFetcher
     const DB_COLUMN_REPORT_ID = "report_id";
     const DB_COLUMN_INSTRUCTOR_ID = "instructor_id";
 
-    public static function insert($db, $appointmentId, $studentId, $instructorId)
-    {
+    public static function insert($db, $appointmentId, $studentId, $instructorId) {
         try {
             $queryInsertUser = "INSERT INTO `" . DB_NAME . "`.`" . self::DB_TABLE . "` (`" . self::DB_COLUMN_APPOINTMENT_ID
                 . "`,	`" . self::DB_COLUMN_STUDENT_ID . "`, `" . self::DB_COLUMN_INSTRUCTOR_ID . "`
@@ -41,8 +40,7 @@ class AppointmentHasStudentFetcher
 
     }
 
-    public static function update($db, $id, $reportId)
-    {
+    public static function update($db, $id, $reportId) {
         $query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
 					SET `" . self::DB_COLUMN_REPORT_ID . "`= :report_id
 					WHERE `" . self::DB_COLUMN_ID . "` = :appointment_id";
@@ -64,8 +62,7 @@ class AppointmentHasStudentFetcher
         return false;
     }
 
-    public static function existsId($db, $id)
-    {
+    public static function existsId($db, $id) {
         try {
             $sql = "SELECT COUNT(" . self::DB_COLUMN_ID . ") FROM `" . DB_NAME . "`.`" .
                 self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :id";
@@ -81,8 +78,7 @@ class AppointmentHasStudentFetcher
         return true;
     }
 
-    public static function retrieveAll($db)
-    {
+    public static function retrieveAll($db) {
         $query =
             "SELECT `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_APPOINTMENT_ID . "` , `" . self::DB_COLUMN_STUDENT_ID . "`,
 			 `" . self::DB_COLUMN_REPORT_ID . "`,  `" . self::DB_COLUMN_INSTRUCTOR_ID . "`
@@ -98,8 +94,7 @@ class AppointmentHasStudentFetcher
         }
     }
 
-    public static function retrieveJoinReport($db, $appointmentId)
-    {
+    public static function retrieveJoinReport($db, $appointmentId) {
         $query =
             "SELECT `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_APPOINTMENT_ID . "` , `" . self::DB_COLUMN_STUDENT_ID . "`,
 			 `" . self::DB_COLUMN_REPORT_ID . "`,  `" . self::DB_COLUMN_INSTRUCTOR_ID . "`
@@ -118,8 +113,7 @@ class AppointmentHasStudentFetcher
     }
 
 
-    public static function retrieveStudentsWithAppointment($db, $appointmentId)
-    {
+    public static function retrieveStudentsWithAppointment($db, $appointmentId) {
         $query =
             "SELECT `" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_FIRST_NAME . "` AS
             " . UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_FIRST_NAME . ",
@@ -137,8 +131,10 @@ class AppointmentHasStudentFetcher
             self::DB_COLUMN_APPOINTMENT_ID . "` ,  `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_STUDENT_ID . "`,
             `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_REPORT_ID . "`,  `" . self::DB_TABLE . "`.`" .
             self::DB_COLUMN_INSTRUCTOR_ID . "`, `" . StudentFetcher::DB_TABLE . "`.`" .
-            StudentFetcher::DB_COLUMN_FIRST_NAME . "`, `" . StudentFetcher::DB_TABLE . "`.`" .
-            StudentFetcher::DB_COLUMN_LAST_NAME . "`
+            StudentFetcher::DB_COLUMN_FIRST_NAME . "` AS " . StudentFetcher::DB_TABLE . "_" .
+            StudentFetcher::DB_COLUMN_FIRST_NAME . ", `" . StudentFetcher::DB_TABLE . "`.`" .
+            StudentFetcher::DB_COLUMN_LAST_NAME . "` AS " . StudentFetcher::DB_TABLE . "_" .
+            StudentFetcher::DB_COLUMN_LAST_NAME . "
 			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
 			INNER JOIN  `" . DB_NAME . "`.`" . StudentFetcher::DB_TABLE . "`
 			ON `" . DB_NAME . "`.`" . StudentFetcher::DB_TABLE . "`.`" . StudentFetcher::DB_COLUMN_ID . "`  = `" .

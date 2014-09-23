@@ -32,14 +32,12 @@ try {
     $errors[] = $e->getMessage();
 }
 
-function isBtnAddStudentPrsd()
-{
+function isBtnAddStudentPrsd() {
     return isset($_POST['hiddenSubmitPrsd']) && empty($_POST['hiddenSubmitPrsd']);
 }
 
 
-function isModificationSuccess()
-{
+function isModificationSuccess() {
     return isset($_GET['success']) && strcmp($_GET['success'], 'y1!q' === 0);
 }
 
@@ -50,8 +48,7 @@ function isModificationSuccess()
  * @param $objects
  * @return bool
  */
-function get($objects, $findId, $column)
-{
+function get($objects, $findId, $column) {
     foreach ($objects as $object) {
         if ($object[$column] === $findId) return $object;
     }
@@ -117,34 +114,36 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 
                             <div class="form-group" id="student-instructor">
-                                <div class="input-group col-md-10 pull-left">
-                                    <span class="input-group-addon"><label for="studentId1">Students</label></span>
-                                    <select id="studentId1" name="studentsIds[]" class="form-control" required>
-                                        <option></option>
-                                        <?php
-                                        foreach ($students as $student):
-                                            include(ROOT_PATH . "app/views/partials/student/select-options-view.html.php");
-                                        endforeach;
-                                        ?>
-                                    </select>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><label for="studentId1">Student</label></span>
+                                        <select id="studentId1" name="studentsIds[]" class="form-control" required>
+                                            <option></option>
+                                            <?php
+                                            foreach ($students as $student):
+                                                include(ROOT_PATH . "app/views/partials/student/select-options-view.html.php");
+                                            endforeach;
+                                            ?>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="input-group col-md-10 pull-right">
+                                <div class="form-group">
+                                    <div class="input-group">
+
                                         <span class="input-group-addon"><label
                                                 for="instructorId1">Instructor</label></span>
-                                    <select id="instructorId1" name="instructorIds[]" class="form-control" required>
-                                        <option></option>
-                                        <?php foreach ($instructors as $instructor) {
-                                            include(ROOT_PATH . "app/views/partials/instructor/select-options-view.html.php");
-                                        }
-                                        ?>
-                                    </select>
+                                        <select id="instructorId1" name="instructorIds[]" class="form-control" required>
+                                            <option></option>
+                                            <?php foreach ($instructors as $instructor) {
+                                                include(ROOT_PATH . "app/views/partials/instructor/select-options-view.html.php");
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <hr/>
-                                </div>
-                            </div>
+                            <hr/>
+
                             <div class="form-group">
                                 <div class="input-group">
                                     <span class="input-group-addon"><label for="courseId">Course</label></span>

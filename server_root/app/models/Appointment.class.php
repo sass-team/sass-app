@@ -65,7 +65,8 @@ class Appointment
             $students = AppointmentHasStudentFetcher::retrieveStudentsWithAppointment($db, $appointmentHour[AppointmentFetcher::DB_COLUMN_ID]);
             $appointmentTitle .= " - ";
             foreach ($students as $student) {
-                $appointmentTitle .= $student[StudentFetcher::DB_COLUMN_FIRST_NAME] . " " . StudentFetcher::DB_COLUMN_LAST_NAME . ", ";
+                $appointmentTitle .= $student[StudentFetcher::DB_TABLE . "_" . StudentFetcher::DB_COLUMN_LAST_NAME] . " " .
+                    $student[StudentFetcher::DB_TABLE . "_" . StudentFetcher::DB_COLUMN_LAST_NAME] . ", ";
             }
             $appointmentTitle = rtrim($appointmentTitle, ", ");
 
