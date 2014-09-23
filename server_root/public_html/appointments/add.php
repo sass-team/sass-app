@@ -438,7 +438,7 @@ $(function () {
                             termId: termId
                         },
                         error: function (xhr, status, error) {
-                            $('#calendar-title').text("there was an error while schedules");
+                            $('#calendar-title').text("there was an error while retrieving schedules");
                             console.log(xhr.responseText);
                         },
                         success: function (r) {
@@ -508,7 +508,9 @@ $(function () {
                         termId: $termId.val()
                     },
                     error: function (xhr, status, error) {
-                        $('#calendar-title').text("there was an error while schedules");
+                        $('#calendar-title').text("there was an error while retrieving schedules");
+                        console.log(xhr.responseText);
+
                     },
                     success: function (r) {
                         $('#calendar-title').text("");

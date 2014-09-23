@@ -152,7 +152,13 @@ class ScheduleFetcher
             self::DB_COLUMN_END_TIME . "`, `" . self::DB_COLUMN_TUTOR_USER_ID . "`, `" . self::DB_COLUMN_TERM_ID . "`,
 			`" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_FIRST_NAME . "`, `" . UserFetcher::DB_TABLE . "`.`"
             . UserFetcher::DB_COLUMN_LAST_NAME . "`, `" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "`  AS
-			" . UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_ID . "
+			" . UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_ID . ", `" . TermFetcher::DB_TABLE . "`.`" .
+            TermFetcher::DB_COLUMN_START_DATE . "` AS " . TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_START_DATE
+            . ", `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_END_DATE . "`  AS " . TermFetcher::DB_TABLE
+            . "_" . TermFetcher::DB_COLUMN_END_DATE . ",
+            `" . self::DB_COLUMN_MONDAY . "`, `" .
+            self::DB_COLUMN_TUESDAY . "`, `" . self::DB_COLUMN_WEDNESDAY . "`,`" . self::DB_COLUMN_THURSDAY . "`,`" .
+            self::DB_COLUMN_FRIDAY . "`
 			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
 			INNER JOIN  `" . DB_NAME . "`.`" . UserFetcher::DB_TABLE . "`
 			ON `" . DB_NAME . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "`  = `" .
@@ -214,7 +220,8 @@ class ScheduleFetcher
 			" . UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_ID . ", `" . TermFetcher::DB_TABLE . "`.`" .
             TermFetcher::DB_COLUMN_START_DATE . "` AS " . TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_START_DATE
             . ", `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_END_DATE . "`  AS " . TermFetcher::DB_TABLE
-            . "_" . TermFetcher::DB_COLUMN_END_DATE . "
+            . "_" . TermFetcher::DB_COLUMN_END_DATE . ",`" . self::DB_COLUMN_MONDAY . "`, `" . self::DB_COLUMN_TUESDAY .
+            "`, `" . self::DB_COLUMN_WEDNESDAY . "`,`" . self::DB_COLUMN_THURSDAY . "`,`" . self::DB_COLUMN_FRIDAY . "`
 			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
 			INNER JOIN  `" . DB_NAME . "`.`" . UserFetcher::DB_TABLE . "`
 			ON `" . DB_NAME . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "`  = `" .
