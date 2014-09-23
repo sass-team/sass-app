@@ -10,8 +10,7 @@ class Appointment
 {
 
     public static function add($db, $dateStart, $dateEnd, $courseId, $studentsIds, $tutorId, $instructorsIds, $termId,
-                               $secretaryName)
-    {
+                               $secretaryName) {
         $dateStart = Dates::initDateTime($dateStart);
         $dateEnd = Dates::initDateTime($dateEnd);
         Course::validateId($db, $courseId);
@@ -29,8 +28,7 @@ class Appointment
         Mailer::sendTutorNewAppointment($db, $appointmentId, $secretaryName);
     }
 
-    public static function  getCalendarAllAppointmentsOnTerm($db, $termId)
-    {
+    public static function  getCalendarAllAppointmentsOnTerm($db, $termId) {
         Term::validateId($db, $termId);
 
         $appointmentHours = Appointment::getTutorsOnTerm($db, $termId);
@@ -49,14 +47,12 @@ class Appointment
         return json_encode($appointmentHoursJSON);
     }
 
-    public static function getTutorsOnTerm($db, $termId)
-    {
+    public static function getTutorsOnTerm($db, $termId) {
         Term::validateId($db, $termId);
         return AppointmentFetcher::retrieveTutors($db, $termId);
     }
 
-    public static function getCalendarSingleTutorAppointments($db, $termId, $tutorId)
-    {
+    public static function getCalendarSingleTutorAppointments($db, $tutorId, $termId) {
         Tutor::validateId($db, $tutorId);
         Term::validateId($db, $termId);
 
@@ -84,21 +80,18 @@ class Appointment
         return json_encode($appointmentHoursJSON);
     }
 
-    public static function getSingleTutor($db, $tutorId, $termId)
-    {
+    public static function getSingleTutor($db, $tutorId, $termId) {
         Tutor::validateId($db, $tutorId);
         Term::validateId($db, $termId);
         return AppointmentFetcher::retrieveSingleTutor($db, $tutorId, $termId);
     }
 
-    public static function getAllStudentsWithAppointment($db, $id)
-    {
+    public static function getAllStudentsWithAppointment($db, $id) {
         self::validateId($db, $id);
         return AppointmentHasStudentFetcher::retrieveStudentsWithAppointment($db, $id);
     }
 
-    public static function validateId($db, $id)
-    {
+    public static function validateId($db, $id) {
         if (is_null($id) || !preg_match("/^[0-9]+$/", $id)) throw new Exception("Data has been tempered. Aborting process.");
 
         if (!AppointmentFetcher::existsId($db, $id)) {

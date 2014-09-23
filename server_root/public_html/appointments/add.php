@@ -407,7 +407,6 @@ $(function () {
             var tutorId = $("#tutorId").select2('val');
             var termId = $("#termId").select2('val');
             var courseId = $("#courseId").select2("val");
-            var termId = $("#termId").select2("val");
             var tutorName = $("#tutorId").select2('data').text;
 
             if (!tutorId.match(/^[0-9]+$/)) throw new Error("Tutor is missing");
@@ -440,6 +439,7 @@ $(function () {
                         },
                         error: function (xhr, status, error) {
                             $('#calendar-title').text("there was an error while schedules");
+                            console.log(xhr.responseText);
                         },
                         success: function (r) {
                             $('#calendar-title').text("");
@@ -458,8 +458,10 @@ $(function () {
                             termId: termId
                         },
                         error: function (xhr, status, error) {
-                            $('#calendar-title').text("there was an error while appoints");
-                            console.log(error);
+                            $('#calendar-title').text("there was an error while fetching appointments");
+//                            console.log(error);
+//                            console.log(status);
+                            console.log(xhr.responseText);
                         },
                         success: function (r) {
                             $('#calendar-title').text(tutorName + "'s schedule/appointments");

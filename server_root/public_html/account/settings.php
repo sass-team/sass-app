@@ -17,7 +17,6 @@ function uploadAvatarImage($user) {
 		$uploaddir = ROOT_PATH . "public_html/assets/img/avatars/";
 		$uploadfile = $uploaddir . basename($_FILES['fileupload-avatar']['name']);
 
-		var_dump($uploadfile);
 		$path = $_FILES['fileupload-avatar']['name'];
 		$allowed = array('gif', 'png', 'jpg');
 		$ext = pathinfo($path, PATHINFO_EXTENSION);
