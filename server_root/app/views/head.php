@@ -13,7 +13,8 @@
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 	<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.0/themes/smoothness/jquery-ui.css"/>
-	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.1/css/bootstrapValidator.min.css"/>
+	<link rel="stylesheet"
+	      href="//cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.1/css/bootstrapValidator.min.css"/>
 
 	<!-- remove when on production server, and uncomment above. -->
 	<!--	<link href="--><?php //echo BASE_URL; ?><!--assets/css/font-awesome.min.css" rel="stylesheet">-->
@@ -40,6 +41,7 @@
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/App.css" type="text/css"/>
 
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/custom.css" type="text/css"/>
+	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/js/plugins/timepicker/bootstrap-timepicker.css"/>
 
 	<link rel="stylesheet"
 	      href="<?php echo BASE_URL; ?>assets/js/plugins/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css"

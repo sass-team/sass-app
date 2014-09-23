@@ -33,33 +33,14 @@
 
 
 <!-- TODO: load library only when needed. Currently loads no matter the page. -->
-<!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>-->
-<!--<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.0/jquery-ui.min.js"></script>-->
-<!--<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>-->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.0/jquery-ui.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
 <!-- remove on production branch, and un-comment above. -->
-<script src="<?php echo BASE_URL; ?>assets/js/libs/jquery.min.js"></script>
-<script src="<?php echo BASE_URL; ?>assets/js/libs/jquery-ui.min.js"></script>
+<!--<script src="--><?php //echo BASE_URL; ?><!--assets/js/libs/jquery.min.js"></script>-->
+<!--<script src="--><?php //echo BASE_URL; ?><!--assets/js/libs/jquery-ui.min.js"></script>-->
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/moment/moment.js"></script>
-<script src="<?php echo BASE_URL; ?>assets/js/libs/bootstrap.min.js"></script>
+<!--<script src="--><?php //echo BASE_URL; ?><!--assets/js/libs/bootstrap.min.js"></script>-->
 
 <script src="<?php echo BASE_URL; ?>assets/js/App.js"></script>
-
-<!--<script src="--><?php //echo BASE_URL; ?><!--app/assets/js/plugins/datatables/jquery.dataTables.min.js"></script>-->
-<!--<script src="--><?php //echo BASE_URL; ?><!--app/assets/js/plugins/datatables/DT_bootstrap.js"></script>-->
-<!---->
-<!---->
-<!--<script src="--><?php //echo BASE_URL; ?><!--app/assets/js/plugins/icheck/jquery.icheck.js"></script>-->
-<!--<script src="--><?php //echo BASE_URL; ?><!--app/assets/js/plugins/datepicker/bootstrap-datepicker.js"></script>-->
-<!--<script src="--><?php //echo BASE_URL; ?><!--app/assets/js/plugins/timepicker/bootstrap-timepicker.js"></script>-->
-<!--<script src="--><?php //echo BASE_URL; ?><!--app/assets/js/plugins/simplecolorpicker/jquery.simplecolorpicker.js"></script>-->
-<!---->
-<!--<script src="--><?php //echo BASE_URL; ?><!--app/assets/js/plugins/autosize/jquery.autosize.min.js"></script>-->
-<!--<script src="--><?php //echo BASE_URL; ?><!--app/assets/js/plugins/fileupload/bootstrap-fileupload.js"></script>-->
-<!--<script src="--><?php //echo BASE_URL; ?><!--app/assets/js/plugins/textarea-counter/jquery.textarea-counter.js"></script>-->
-
-<!---->
-<!---->
-<!---->
-<!--<script src="--><?php //echo BASE_URL; ?><!--app/assets/js/demos/form-extended.js"></script>-->
-

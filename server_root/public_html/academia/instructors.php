@@ -24,8 +24,8 @@ try {
 		$updateDone = false;
 
 		if (($instructor = getInstructor($instructorId, $instructors)) !== false) {
-			$oldInstructorFname = $instructor[InstructorFetcher::DB_FIRST_NAME];
-			$oldInstructorLname = $instructor[InstructorFetcher::DB_LAST_NAME];
+			$oldInstructorFname = $instructor[InstructorFetcher::DB_COLUMN_FIRST_NAME];
+			$oldInstructorLname = $instructor[InstructorFetcher::DB_COLUMN_LAST_NAME];
 
 
 			$updateDone = $updateDone || Instructor::updateLname($db, $instructorId, $newInstructorLname, $oldInstructorLname);

@@ -46,7 +46,7 @@ class Term
 			self::validateDateTypes($startDate, $endDate);
 			TermFetcher::insert($db, $name, $startDate, $endDate);
 		} catch (Exception $e) {
-			throw new Exception("Dates have been malformed.");
+			throw new Exception($e->getMessage());
 
 		}
 	}

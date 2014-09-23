@@ -138,7 +138,7 @@ class ScheduleFetcher
 		}
 	}
 
-	public static function retrieveTutorsOnCurrTerms($db) {
+	public static function retrieveTutorsOnCurrentTerms($db) {
 		$query =
 			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`, 
 					`" . self::DB_COLUMN_START_TIME . "`, 
