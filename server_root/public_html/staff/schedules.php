@@ -53,9 +53,8 @@ try {
     } else if (isBtnAddSchedulePrsd()) {
         var_dump($_POST);
         $pageTitle = "Add schedule";
-
-//        Schedule::add($db, $_POST['dateTimePickerStart'], $_POST['dateTimePickerEnd'], $_POST['tutorId'],
-//            $_POST['termId']);
+        $days = isset($_POST['day']) ? $_POST['day'] : NULL;
+        Schedule::add($db, $_POST['tutorId'], $_POST['termId'], $days, $_POST['startsAt'], $_POST['endsAt']);
 //        header('Location: ' . BASE_URL . 'staff/schedules/success');
 //        exit();
 
@@ -211,7 +210,6 @@ require ROOT_PATH . 'app/views/sidebar.php';
                             <table
                                 class="table table-striped table-bordered table-hover table-highlight table-checkable"
                                 data-provide="datatable"
-                                data-display-rows="150"
                                 data-info="true"
                                 data-search="true"
                                 data-length-change="true"
@@ -342,50 +340,54 @@ require ROOT_PATH . 'app/views/sidebar.php';
                                     </div>
 
                                     <div class="form-group">
-                                        <label>Working days</label>
+                                        <h4>Working days</h4>
 
                                         <div class="form-group">
                                             <label class="checkbox-inline">
-                                                <input type="checkbox" id="inlineCheckbox1" name="day[]">
+                                                <input type="checkbox" id="inlineCheckbox1" name="day[]" value="1">
                                                 Monday
                                             </label>
                                             <label class="checkbox-inline">
-                                                <input type="checkbox" id="inlineCheckbox2" name="day[]">
+                                                <input type="checkbox" id="inlineCheckbox2" name="day[]" value="2">
                                                 Tuesday
                                             </label>
                                             <label class="checkbox-inline">
-                                                <input type="checkbox" id="inlineCheckbox3" name="day[]">
+                                                <input type="checkbox" id="inlineCheckbox3" name="day[]" value="3">
                                                 Wednesday
                                             </label>
                                             <label class="checkbox-inline">
-                                                <input type="checkbox" id="inlineCheckbox3" name="day[]">
+                                                <input type="checkbox" id="inlineCheckbox3" name="day[]" value="4">
                                                 Thursday
                                             </label><label class="checkbox-inline">
-                                                <input type="checkbox" id="inlineCheckbox3" name="day[]">
+                                                <input type="checkbox" id="inlineCheckbox3" name="day[]" value="5">
                                                 Friday
                                             </label>
                                         </div>
                                     </div>
-                                    <!--                                    <div class="form-group">-->
-                                    <!---->
-                                    <!--                                        <div class="col-sm-6 pull-left">-->
-                                    <!--                                            <h4>Starts at</h4>-->
-                                    <!---->
-                                    <!--                                            <div class="input-group bootstrap-timepicker">-->
-                                    <!--                                                <input id="tp-ex-1" type="text" class="form-control" name="startAt">-->
-                                    <!--                                                <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>-->
-                                    <!--                                            </div>-->
-                                    <!--                                        </div>-->
-                                    <!---->
-                                    <!--                                        <div class="col-sm-6 pull-right">-->
-                                    <!--                                            <h4>Ends at</h4>-->
-                                    <!---->
-                                    <!--                                            <div class="input-group bootstrap-timepicker">-->
-                                    <!--                                                <input id="tp-ex-2" type="text" class="form-control" name="endAt">-->
-                                    <!--                                                <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>-->
-                                    <!--                                            </div>-->
-                                    <!--                                        </div>-->
-                                    <!--                                    </div>-->
+                                    <hr/>
+                                    <div class="form-group">
+                                        <div class="col-md-6 pull-left">
+
+                                            <h4>Starts at</h4>
+
+                                            <div class="input-group bootstrap-timepicker">
+                                                <input id="tp-ex-1" type="text" class="form-control"
+                                                       name="startsAt">
+                                                <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 pull-right">
+
+                                            <h4>Ends at</h4>
+
+                                            <div class="input-group bootstrap-timepicker">
+                                                <input id="tp-ex-2" type="text" class="form-control"
+                                                       name="endsAt">
+                                                        <span class="input-group-addon"><i
+                                                                class="fa fa-clock-o"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -473,9 +475,6 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/autosize/jquery.autosize.min.js"></script>
 <!--<script src="--><?php //echo BASE_URL; ?><!--assets/js/demos/form-extended.js"></script>-->
 
-<script
-    src="<?php echo BASE_URL; ?>assets/js/plugins/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js">
-</script>
 <script type="text/javascript">
     $(function () {
         // http://momentjs.com/docs/#/manipulating/add/
