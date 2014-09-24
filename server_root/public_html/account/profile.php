@@ -186,7 +186,14 @@ require ROOT_PATH . 'app/views/sidebar.php';
 						<h4 class="panel-title">
 							<a class="accordion-toggle" data-toggle="collapse" data-parent=".accordion"
 							   href="#collapseTwo">
-								<i class="fa fa-clock-o"></i> Current Schedule
+								<i class="fa fa-clock-o"></i>
+								<?php
+								if (empty($schedules)){
+									echo 'Current schedule is empty!';
+								}else{
+									echo 'Current Schedule - ' . $teachingCourses[0][TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_NAME];
+								}
+								?>
 							</a>
 						</h4>
 					</div>
