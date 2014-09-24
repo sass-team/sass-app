@@ -7,11 +7,11 @@ $hourEnd = new DateTime($schedule[ScheduleFetcher::DB_COLUMN_END_TIME]);
 $hourEnd = $hourEnd->format("l g:ia");
 $hourEnd = date('h:i A', strtotime($hourEnd));
 
-$days = $schedule[ScheduleFetcher::DB_COLUMN_MONDAY] == 1 ? "Mon" : "";
-$days .= $schedule[ScheduleFetcher::DB_COLUMN_TUESDAY] == 1 ? ", Tue" : "";
-$days .= $schedule[ScheduleFetcher::DB_COLUMN_WEDNESDAY] == 1 ? ", Wed" : "";
-$days .= $schedule[ScheduleFetcher::DB_COLUMN_THURSDAY] == 1 ? ", Thur" : "";
-$days .= $schedule[ScheduleFetcher::DB_COLUMN_FRIDAY] == 1 ? ", Fri" : "";
+$days = $schedule[ScheduleFetcher::DB_COLUMN_MONDAY] == 1 ? "[Mon] " : "";
+$days .= $schedule[ScheduleFetcher::DB_COLUMN_TUESDAY] == 1 ? "[Tue] " : "";
+$days .= $schedule[ScheduleFetcher::DB_COLUMN_WEDNESDAY] == 1 ? "[Wed] " : "";
+$days .= $schedule[ScheduleFetcher::DB_COLUMN_THURSDAY] == 1 ? "[Thur] " : "";
+$days .= $schedule[ScheduleFetcher::DB_COLUMN_FRIDAY] == 1 ? "[Fri]" : "";
 
 
 ?>
