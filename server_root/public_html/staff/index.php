@@ -346,7 +346,7 @@ else: ?>
 
 								<h3>
 									<i class="fa fa-group"></i>
-									All Terms
+									View and Manage Members
 								</h3>
 							</div>
 							<!-- /.portlet-header -->
