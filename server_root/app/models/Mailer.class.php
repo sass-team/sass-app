@@ -319,12 +319,12 @@ class Mailer
 
             $message .= "<div style='margin:20px auto!important;width:510px;padding:20px 20px 20px 20px!important;border:1px solid #ddd!important;border-radius:3px!important;background:#ffffff!important'>";
             $message .= "<p style='margin:5px 0 15px 0;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;font-weight:normal;color:#333;line-height:20px'>";
-            $message .= "But don&#39;t worry! You can use the following link within the next hour to reset your password:";
+            $message .= "But don&#39;t worry! You can use the following link within the next hour to reset your password.";
             $message .= "<br/>" . $passwordRecoveryLink . "</p>";
             $message .= "<p style='margin:0 0 30px 0;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:17px;font-weight:300;color:#555'>";
             $message .= "You will be prompted for a password for your account.<br/>When you are done, you can $sassPageLogin at SASS App <br/>using this email address and the new password you choose.</p>";
             $message .= "<p style='margin:0 0 30px 0;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:17px;font-weight:300;color:#555'>";
-            $message .= "If you don&#39;t use this link within 1 hour, it will expire. Please check your spam folder if the email does not appear within a few minutes. To get a new password reset link, please visit and insert your email: ";
+            $message .= "If you don&#39;t use this link within 1 hour, it will expire. Please check your spam folder if the<br/> email does not appear within a few minutes. To get a new password reset link, please visit <br/>and insert your email: ";
             $message .= "<br/>" . $sassPageRecover . "</p>";
             $message .= "<div style='margin:20px 0;border-top:1px solid #ddd'></div>";
             $message .= "<p style='margin:0 0 30px 0;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:17px;font-weight:300;color:#555'>Thanks,<br/><strong>$senderName</strong></p>";
