@@ -547,7 +547,7 @@ $(function () {
 //            eventSources: data
 //        });
 //        $appointments.fullCalendar('refetchEvents');
-        
+
 //        $appointments.fullCalendar('removeEventSource');
 
         if (!$tutorId.select2('val').match(/^[0-9]+$/)) {
