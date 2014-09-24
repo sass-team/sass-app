@@ -83,7 +83,7 @@ $courses = Tutor_has_course_has_termFetcher::retrieveCurrTermAllTeachingCourses(
 								$currentTermNames = "";
 
 								if (sizeof($currentTerms) == 0) {
-									echo "To term currently in duration.";
+									echo "No term currently in duration.";
 								} else {
 									foreach ($currentTerms as $currentTerm) {
 										$currentTermNames .= $currentTerm[TermFetcher::DB_COLUMN_NAME] . " - ";
