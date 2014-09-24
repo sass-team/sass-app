@@ -123,7 +123,7 @@ function get($objects, $findId, $column) {
     return false;
 }
 
-
+$pageTitle = "All schedules";
 $section = "staff";
 ?>
 
