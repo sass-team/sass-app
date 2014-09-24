@@ -258,7 +258,8 @@ require ROOT_PATH . 'app/views/sidebar.php';
 							<span id="calendar-title">
 								<i class='fa fa-circle-o-notch fa-spin'></i>
 							</span>
-                        <button id="show-only-working-hours" type="button" class="btn btn-primary btn-xs btn-secondary">Working Hours
+                        <button id="show-only-working-hours" type="button" class="btn btn-primary btn-xs btn-secondary">
+                            Working Hours
                         </button>
                         <button id="show-only-appointments" type="button" class="btn btn-primary btn-xs">Appointments
                         </button>
@@ -494,30 +495,34 @@ $(function () {
         };
 
 
+        $appointments.fullCalendar('removeEventSource', singleTutorScheduleCalendar);
+        $appointments.fullCalendar('removeEventSource', singleTutorAppointmentsCalendar);
+        $appointments.fullCalendar('removeEventSource', allSchedulesCalendar);
+        $appointments.fullCalendar('removeEventSource', allAppointmentsCalendar);
+
         switch (choice) {
             case 'all_appointments_schedule':
-                data.push(allSchedulesCalendar);
-                data.push(allAppointmentsCalendar);
+                $appointments.fullCalendar('addEventSource', allAppointmentsCalendar);
+                $appointments.fullCalendar('addEventSource', allSchedulesCalendar);
                 break;
             case 'single_tutor_appointment_and_schedule':
                 if (!$tutorId.select2('val').match(/^[0-9]+$/)) throw new Error("Tutor is missing");
                 if (!$courseId.select2("val").match(/^[0-9]+$/)) throw new Error("Course is missing");
-                data.push(singleTutorScheduleCalendar);
-                data.push(singleTutorAppointmentsCalendar);
+                $appointments.fullCalendar('addEventSource', singleTutorScheduleCalendar);
+                $appointments.fullCalendar('addEventSource', singleTutorAppointmentsCalendar);
                 break;
             case 'working_hours_only':
-
                 if (!$tutorId.select2('val').match(/^[0-9]+$/)) {
-                    data.push(allSchedulesCalendar);
+                    $appointments.fullCalendar('addEventSource', allSchedulesCalendar);
                 } else {
-                    data.push(singleTutorScheduleCalendar);
+                    $appointments.fullCalendar('addEventSource', singleTutorScheduleCalendar);
                 }
                 break;
             case 'appointments_only':
                 if (!$tutorId.select2('val').match(/^[0-9]+$/)) {
-                    data.push(allAppointmentsCalendar);
+                    $appointments.fullCalendar('addEventSource', allAppointmentsCalendar);
                 } else {
-                    data.push(allAppointmentsCalendar);
+                    $appointments.fullCalendar('addEventSource', singleTutorAppointmentsCalendar);
                 }
 
                 break;
@@ -525,20 +530,26 @@ $(function () {
                 break;
         }
 
-        $appointments.fullCalendar('destroy');
-        $appointments.fullCalendar({
-            header: {
-                left: 'prev,next',
-                center: 'title',
-                right: 'agendaWeek,month,agendaDay'
-            },
-            weekends: false, // will hide Saturdays and Sundays
-            defaultView: "agendaWeek",
-            editable: false,
-            droppable: false,
-            eventSources: data
-        });
         $appointments.fullCalendar('refetchEvents');
+
+
+//        $appointments.fullCalendar('destroy');
+//        $appointments.fullCalendar({
+//            header: {
+//                left: 'prev,next',
+//                center: 'title',
+//                right: 'agendaWeek,month,agendaDay'
+//            },
+//            weekends: false, // will hide Saturdays and Sundays
+//            defaultView: "agendaWeek",
+//            editable: false,
+//            droppable: false,
+//            eventSources: data
+//        });
+//        $appointments.fullCalendar('refetchEvents');
+        
+//        $appointments.fullCalendar('removeEventSource');
+
         if (!$tutorId.select2('val').match(/^[0-9]+$/)) {
             $calendarId.text("All");
         } else {
@@ -553,6 +564,19 @@ $(function () {
             $calendarId.text(err);
         }
     }
+
+    $appointments.fullCalendar({
+        header: {
+            left: 'prev,next',
+            center: 'title',
+            right: 'agendaWeek,month,agendaDay'
+        },
+        weekends: false, // will hide Saturdays and Sundays
+        defaultView: "agendaWeek",
+        editable: false,
+        droppable: false,
+        eventSources: []
+    });
 
     loadAllCalendars();
 
@@ -605,6 +629,66 @@ $(function () {
             newRow.remove();
         });
     });
+
+    function retrieveTutors() {
+        var courseId = $("#courseId").select2("val");
+        var termId = $("#termId").select2("val");
+
+
+        if (!courseId.match(/^[0-9]+$/)) throw new Error("Course is missing");
+        if (!termId.match(/^[0-9]+$/)) throw new Error("Term is missing");
+
+        $('#label-instructor-text').text("");
+        $('#label-instructor-text').append("<i class='fa fa-circle-o-notch fa-spin'></i>");
+
+        var data = {
+            "action": "tutor_has_courses",
+            "courseId": courseId,
+            "termId": termId
+        }
+        data = $(this).serialize() + "&" + $.param(data);
+
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/courses",
+            data: data,
+            success: function (inData) {
+                // reset label test
+                $('#label-instructor-text').text("Tutors");
+
+                // prepare new data for options
+                var newTutors = [];
+                $.each(inData, function (idx, obj) {
+                    newTutors.push({
+                        id: obj.id,
+                        text: obj.f_name + " " + obj.l_name
+                    });
+                });
+
+                // clear options
+                var $el = $("#tutorId");
+                $el.empty(); // remove old options
+
+                // add new options
+                $el.append("<option></option>");
+                $.each(newTutors, function (key, value) {
+                    $el.append($("<option></option>")
+                        .attr("value", value.id).text(value.text));
+                });
+
+                var placeHolder = jQuery.isEmptyObject(inData) ? "No tutors found" : "Select a tutor"
+                $el.select2({
+                    placeholder: placeHolder,
+                    allowClear: false
+                });
+
+            },
+            error: function (e) {
+                $('#label-instructor-text').text("Connection errors.");
+            }
+        });
+    }
 });
 </script>
 
