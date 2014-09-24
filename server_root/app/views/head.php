@@ -46,6 +46,8 @@
 	<link rel="stylesheet"
 	      href="<?php echo BASE_URL; ?>assets/js/plugins/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css"
 	      type="text/css"/>
+	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/font-awesome-animation.min.css">
+
 
 	<style type="text/css">
 		#wrapper {
