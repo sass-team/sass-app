@@ -258,13 +258,10 @@ require ROOT_PATH . 'app/views/sidebar.php';
 							<span id="calendar-title">
 								<i class='fa fa-circle-o-notch fa-spin'></i>
 							</span>
-
-                        <div class="external-event label ui-draggable fc-yellow" data-category="fc-yellow"
-                             style="position: relative;">Working Hours
-                        </div>
-                        <div class="external-event label ui-draggable fc-red" data-category="fc-red"
-                             style="position: relative;">Appointments
-                        </div>
+                        <button id="show-only-working-hours" type="button" class="btn btn-primary btn-xs btn-secondary">Working Hours
+                        </button>
+                        <button id="show-only-appointments" type="button" class="btn btn-primary btn-xs">Appointments
+                        </button>
                     </h3>
 
                 </div>
@@ -315,32 +312,44 @@ $(function () {
     // http://eonasdan.github.io/bootstrap-datetimepicker
     moment().format();
 
-    $("#courseId").select2({
+    var $courseId = $("#courseId");
+    var $termId = $("#termId");
+    var $tutorId = $("#tutorId");
+    var $dateTimePickerStart = $('#dateTimePickerStart');
+    var $dateTimePickerEnd = $('#dateTimePickerEnd');
+    var $dateTimePickerEnd2 = $('#dateTimePickerEnd');
+    var $instructorId = $("#instructorId1");
+    var $studentId = $("#studentId1");
+    var $calendar = $('#calendar-title');
+    var $appointments = $("#appointments-schedule-calendar");
+    var $calendarId = $('#calendar-title');
+
+
+    $courseId.select2({
         placeholder: "Select a course",
         allowClear: false
     });
-    $("#courseId").click(function () {
+    $courseId.click(function () {
         try {
             retrieveTutors();
         }
         catch (err) {
-            $("#tutorId").select2({
+            $tutorId.select2({
                 placeholder: err.message
             });
         }
     });
-    $("#termId").click(function () {
+    $termId.click(function () {
 
         try {
             retrieveTutors();
         }
         catch (err) {
             // clear options
-            var $el = $("#tutorId");
-            $el.empty(); // remove old options
+            $tutorId.empty(); // remove old options
             // add new options
-            $el.append("<option></option>");
-            $el.select2({
+            $tutorId.append("<option></option>");
+            $tutorId.select2({
                 placeholder: err.message
             });
         }
@@ -364,7 +373,7 @@ $(function () {
     var minimumEndDate = endDateDefault.clone();
     minimumEndDate.subtract('31', 'minutes')
 
-    $('#dateTimePickerStart').datetimepicker({
+    $dateTimePickerStart.datetimepicker({
         defaultDate: startDateDefault,
         minDate: minimumStartDate,
         maxDate: minimumMaxDate,
@@ -373,7 +382,7 @@ $(function () {
         sideBySide: true,
         strict: true
     });
-    $('#dateTimePickerEnd').datetimepicker({
+    $dateTimePickerEnd.datetimepicker({
         defaultDate: endDateDefault,
         minDate: minimumEndDate,
         minuteStepping: 30,
@@ -381,113 +390,143 @@ $(function () {
         sideBySide: true,
         strict: true
     });
-    $("#dateTimePickerStart").on("dp.change", function (e) {
+    $dateTimePickerStart.on("dp.change", function (e) {
         var newEndDateDefault = $('#dateTimePickerStart').data("DateTimePicker").getDate().clone();
 
         newEndDateDefault.add('30', 'minutes');
         var newMinimumEndDate = newEndDateDefault.clone();
         newMinimumEndDate.subtract('31', 'minutes')
 
-        $('#dateTimePickerEnd').data("DateTimePicker").setMinDate(newMinimumEndDate);
-        $('#dateTimePickerEnd').data("DateTimePicker").setDate(newEndDateDefault);
+        $dateTimePickerEnd2.data("DateTimePicker").setMinDate(newMinimumEndDate);
+        $dateTimePickerEnd2.data("DateTimePicker").setDate(newEndDateDefault);
     });
-    $("#termId").select2();
-    $("#instructorId1").select2({
+    $termId.select2();
+    $instructorId.select2({
         placeholder: "Select an instructor"
     });
-    $("#studentId1").select2({
+    $studentId.select2({
         placeholder: "Select one"
     });
-    $("#tutorId").select2({
+    $tutorId.select2({
         placeholder: "First select a course"
     });
-    $("#tutorId").click(function () {
+
+    $tutorId.click(function () {
         try {
-            var tutorId = $("#tutorId").select2('val');
-            var termId = $("#termId").select2('val');
-            var courseId = $("#courseId").select2("val");
-            var tutorName = $("#tutorId").select2('data').text;
-
-            if (!tutorId.match(/^[0-9]+$/)) throw new Error("Tutor is missing");
-            if (!courseId.match(/^[0-9]+$/)) throw new Error("Course is missing");
-            if (!termId.match(/^[0-9]+$/)) throw new Error("Term is missing");
-
-            $('#calendar-title').text("");
-            $('#calendar-title').append("<i class='fa fa-circle-o-notch fa-spin'></i>");
-
-            $("#appointments-schedule-calendar").fullCalendar('destroy');
-            $("#appointments-schedule-calendar").fullCalendar({
-                header: {
-                    left: 'prev,next',
-                    center: 'title',
-                    right: 'agendaWeek,month,agendaDay'
-                },
-                weekends: false, // will hide Saturdays and Sundays
-                defaultView: "agendaWeek",
-                editable: false,
-                droppable: false,
-                eventSources: [
-                    {
-                        url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/schedules",
-                        type: 'GET',
-                        dataType: "json",
-                        data: {
-                            action: 'single_tutor_working_hours',
-                            tutorId: tutorId,
-                            termId: termId
-                        },
-                        error: function (xhr, status, error) {
-                            $('#calendar-title').text("there was an error while retrieving schedules");
-                            console.log(xhr.responseText);
-                        },
-                        success: function (r) {
-                            $('#calendar-title').text("");
-                            $('#calendar-title').append("<i class='fa fa-circle-o-notch fa-spin'></i>");
-                            $('#calendar-title').text(tutorName + "'s schedule");
-
-                        }
-                    },
-                    {
-                        url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/appointments",
-                        type: 'GET',
-                        dataType: "json",
-                        data: {
-                            action: 'single_tutor_working_hours',
-                            tutorId: tutorId,
-                            termId: termId
-                        },
-                        error: function (xhr, status, error) {
-                            $('#calendar-title').text("there was an error while fetching appointments");
-//                            console.log(error);
-//                            console.log(status);
-                            console.log(xhr.responseText);
-                        },
-                        success: function (r) {
-                            $('#calendar-title').text(tutorName + "'s schedule/appointments");
-                            console.log(r);
-                        }
-                    }
-                ]
-            });
-            $("#appointments-schedule-calendar").fullCalendar('refetchEvents')
-
-        }
-        catch
-            (err) {
+            reloadCalendar('single_tutor_appointment_and_schedule');
+        } catch (err) {
             // clear options
-            var $el = $("#tutorId");
-            $el.empty(); // remove old options
-            // add new options
-            $el.append("<option></option>");
-            $el.select2({
+            $tutorId.empty().append("<option></option>");
+            $tutorId.select2({
                 placeholder: err.message
             });
         }
     });
 
-    var $termId = $("#termId");
-    if ($termId.val().match(/^[0-9]+$/)) {
-        $("#appointments-schedule-calendar").fullCalendar({
+    $("#show-only-working-hours").on('click', function () {
+        reloadCalendar("working_hours_only");
+    });
+
+    $("#show-only-appointments").on('click', function () {
+        reloadCalendar("appointments_only");
+    });
+
+    function reloadCalendar(choice) {
+        $calendarId.text("");
+        $calendarId.append("<i class='fa fa-circle-o-notch fa-spin'></i>");
+
+        if (!$termId.select2('val').match(/^[0-9]+$/)) throw new Error("Term is missing");
+        $calendar.text("").append("<i class='fa fa-circle-o-notch fa-spin'></i>")
+
+        var data = [];
+        var singleTutorScheduleCalendar = {
+            url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/schedules",
+            type: 'GET',
+            dataType: "json",
+            data: {
+                action: 'single_tutor_working_hours',
+                tutorId: $tutorId.select2('val'),
+                termId: $termId.select2('val')
+            },
+            error: function (xhr, status, error) {
+                $calendarId.text("there was an error while retrieving schedules");
+                console.log(xhr.responseText);
+            }
+        };
+        var singleTutorAppointmentsCalendar = {
+            url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/appointments",
+            type: 'GET',
+            dataType: "json",
+            data: {
+                action: 'single_tutor_working_hours',
+                tutorId: $tutorId.select2('val'),
+                termId: $termId.select2('val')
+            },
+            error: function (xhr, status, error) {
+                $calendarId.text("there was an error while fetching appointments");
+            }
+        };
+        var allSchedulesCalendar = {
+            url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/schedules",
+            type: 'GET',
+            dataType: "json",
+            data: {
+                action: 'all_tutors_working_hours',
+                termId: $termId.val()
+            },
+            error: function (xhr, status, error) {
+                $('#calendar-title').text("there was an error while retrieving schedules");
+                console.log(xhr.responseText);
+
+            }
+        };
+        var allAppointmentsCalendar = {
+            url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/appointments",
+            type: 'GET',
+            dataType: "json",
+            data: {
+                action: 'all_tutors_appointments',
+                termId: $termId.val()
+            },
+            error: function (xhr, status, error) {
+                $('#calendar-title').text("there was an error while fetching appointments");
+            }
+        };
+
+
+        switch (choice) {
+            case 'all_appointments_schedule':
+                data.push(allSchedulesCalendar);
+                data.push(allAppointmentsCalendar);
+                break;
+            case 'single_tutor_appointment_and_schedule':
+                if (!$tutorId.select2('val').match(/^[0-9]+$/)) throw new Error("Tutor is missing");
+                if (!$courseId.select2("val").match(/^[0-9]+$/)) throw new Error("Course is missing");
+                data.push(singleTutorScheduleCalendar);
+                data.push(singleTutorAppointmentsCalendar);
+                break;
+            case 'working_hours_only':
+
+                if (!$tutorId.select2('val').match(/^[0-9]+$/)) {
+                    data.push(allSchedulesCalendar);
+                } else {
+                    data.push(singleTutorScheduleCalendar);
+                }
+                break;
+            case 'appointments_only':
+                if (!$tutorId.select2('val').match(/^[0-9]+$/)) {
+                    data.push(allAppointmentsCalendar);
+                } else {
+                    data.push(allAppointmentsCalendar);
+                }
+
+                break;
+            default:
+                break;
+        }
+
+        $appointments.fullCalendar('destroy');
+        $appointments.fullCalendar({
             header: {
                 left: 'prev,next',
                 center: 'title',
@@ -497,51 +536,25 @@ $(function () {
             defaultView: "agendaWeek",
             editable: false,
             droppable: false,
-            eventSources: [
-                {
-                    url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/schedules",
-                    type: 'GET',
-                    dataType: "json",
-                    data: {
-                        action: 'all_tutors_working_hours',
-                        termId: $termId.val()
-                    },
-                    error: function (xhr, status, error) {
-                        $('#calendar-title').text("there was an error while retrieving schedules");
-                        console.log(xhr.responseText);
-
-                    },
-                    success: function (r) {
-                        $('#calendar-title').text("");
-                        $('#calendar-title').append("<i class='fa fa-circle-o-notch fa-spin'></i>");
-                        $('#calendar-title').text("All Tutors Schedule");
-
-                    }
-                },
-                {
-                    url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/appointments",
-                    type: 'GET',
-                    dataType: "json",
-                    data: {
-                        action: 'all_tutors_appointments',
-                        termId: $termId.val()
-                    },
-                    error: function (xhr, status, error) {
-                        $('#calendar-title').text("there was an error while fetching appointments");
-                    },
-                    success: function (r) {
-                        $('#calendar-title').text("All Tutors Schedule/Appointments");
-                    }
-                }
-                // any other sources...
-            ],
-
-            timeFormat: 'H(:mm)' // uppercase H for 24-hour clock
+            eventSources: data
         });
-    } else {
-        $('#calendar-title').text("No term has started");
-
+        $appointments.fullCalendar('refetchEvents');
+        if (!$tutorId.select2('val').match(/^[0-9]+$/)) {
+            $calendarId.text("All");
+        } else {
+            $calendarId.text($tutorId.select2('data').text);
+        }
     }
+
+    function loadAllCalendars() {
+        try {
+            reloadCalendar('all_appointments_schedule');
+        } catch (err) {
+            $calendarId.text(err);
+        }
+    }
+
+    loadAllCalendars();
 
     $('.addButton').on('click', function () {
 
@@ -592,69 +605,7 @@ $(function () {
             newRow.remove();
         });
     });
-
-
-    function retrieveTutors() {
-        var courseId = $("#courseId").select2("val");
-        var termId = $("#termId").select2("val");
-
-
-        if (!courseId.match(/^[0-9]+$/)) throw new Error("Course is missing");
-        if (!termId.match(/^[0-9]+$/)) throw new Error("Term is missing");
-
-        $('#label-instructor-text').text("");
-        $('#label-instructor-text').append("<i class='fa fa-circle-o-notch fa-spin'></i>");
-
-        var data = {
-            "action": "tutor_has_courses",
-            "courseId": courseId,
-            "termId": termId
-        }
-        data = $(this).serialize() + "&" + $.param(data);
-
-        $.ajax({
-            type: "GET",
-            dataType: "json",
-            url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/courses",
-            data: data,
-            success: function (inData) {
-                // reset label test
-                $('#label-instructor-text').text("Tutors");
-
-                // prepare new data for options
-                var newTutors = [];
-                $.each(inData, function (idx, obj) {
-                    newTutors.push({
-                        id: obj.id,
-                        text: obj.f_name + " " + obj.l_name
-                    });
-                });
-
-                // clear options
-                var $el = $("#tutorId");
-                $el.empty(); // remove old options
-
-                // add new options
-                $el.append("<option></option>");
-                $.each(newTutors, function (key, value) {
-                    $el.append($("<option></option>")
-                        .attr("value", value.id).text(value.text));
-                });
-
-                var placeHolder = jQuery.isEmptyObject(inData) ? "No tutors found" : "Select a tutor"
-                $el.select2({
-                    placeholder: placeHolder,
-                    allowClear: false
-                });
-
-            },
-            error: function (e) {
-                $('#label-instructor-text').text("Connection errors.");
-            }
-        });
-    }
-})
-;
+});
 </script>
 
 </body>
