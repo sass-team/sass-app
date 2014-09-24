@@ -63,23 +63,27 @@ function generateCalendarData($start, $end, $workingHours) {
             $endTerm->format("W");
 
         while ($weekStart <= $weekEnd) {
+	        if ($workingHour[ScheduleFetcher::DB_COLUMN_MONDAY] == 1) {
+		        $dayOfWeek = 1;
+		        $workingHoursJSON[] = generateDay($startTerm, $endTerm, $weekStart, $dayOfWeek, $workingHour);
+	        }
             if ($workingHour[ScheduleFetcher::DB_COLUMN_TUESDAY] == 1) {
-                $dayOfWeek = 1;
-                $workingHoursJSON[] = generateDay($startTerm, $endTerm, $weekStart, $dayOfWeek, $workingHour);
-            }
-
-            if ($workingHour[ScheduleFetcher::DB_COLUMN_WEDNESDAY] == 1) {
                 $dayOfWeek = 2;
                 $workingHoursJSON[] = generateDay($startTerm, $endTerm, $weekStart, $dayOfWeek, $workingHour);
             }
 
-            if ($workingHour[ScheduleFetcher::DB_COLUMN_THURSDAY] == 1) {
+            if ($workingHour[ScheduleFetcher::DB_COLUMN_WEDNESDAY] == 1) {
                 $dayOfWeek = 3;
                 $workingHoursJSON[] = generateDay($startTerm, $endTerm, $weekStart, $dayOfWeek, $workingHour);
             }
 
-            if ($workingHour[ScheduleFetcher::DB_COLUMN_FRIDAY] == 1) {
+            if ($workingHour[ScheduleFetcher::DB_COLUMN_THURSDAY] == 1) {
                 $dayOfWeek = 4;
+                $workingHoursJSON[] = generateDay($startTerm, $endTerm, $weekStart, $dayOfWeek, $workingHour);
+            }
+
+            if ($workingHour[ScheduleFetcher::DB_COLUMN_FRIDAY] == 1) {
+                $dayOfWeek = 5;
                 $workingHoursJSON[] = generateDay($startTerm, $endTerm, $weekStart, $dayOfWeek, $workingHour);
             }
 
