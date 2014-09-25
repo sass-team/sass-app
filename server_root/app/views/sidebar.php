@@ -122,7 +122,7 @@
 				<?php if ($user->isAdmin()): ?>
 					<li>
 						<a href="<?php echo BASE_URL; ?>staff/add">
-							<i class="fa fa-edit"></i>
+							<i class="fa fa-plus-square"></i>
 							Add Personnel
 						</a>
 					</li>

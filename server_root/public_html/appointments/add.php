@@ -90,6 +90,23 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <!-- #content-header -->
 
 <div id="content-container">
+	<?php
+	if (empty($errors) === false) {
+		?>
+		<div class="alert alert-danger">
+			<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+			<strong>Oh
+				snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
+				?>
+			</div>
+			<?php
+		} else if (isModificationSuccess()) {
+			?>
+			<div class="alert alert-success">
+				<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+				<strong>Workshop successfully created!</strong> <br/>
+			</div>
+	<?php } ?>
 
 	<div class="portlet">
 		<div class="row">
@@ -226,24 +243,6 @@ require ROOT_PATH . 'app/views/sidebar.php';
 							</div>
 
 							<div class="form-group">
-								<?php
-								if (empty($errors) === false) {
-									?>
-									<div class="alert alert-danger">
-										<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-										<strong>Oh
-											snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
-										?>
-									</div>
-								<?php
-								} else if (isModificationSuccess()) {
-									?>
-									<div class="alert alert-success">
-										<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-										<strong>Workshop successfully created!</strong> <br/>
-									</div>
-								<?php } ?>
-
 								<button type="submit" class="btn btn-block btn-primary">Add</button>
 								<input type="hidden" name="hiddenSubmitPrsd" value="">
 							</div>
