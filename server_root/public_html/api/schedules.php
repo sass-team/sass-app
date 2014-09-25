@@ -1,42 +1,44 @@
 <?php
 require 'init.php';
 header('Content-Type: application/json');
-
 if (is_ajax()) {
-    if (isset($_GET["action"]) && !empty($_GET["action"])) { //Checks if action value exists
-        $action = $_GET["action"];
-        switch ($action) { //Switch case for value of action
-            case "all_tutors_working_hours":
-                printAllTutorsSchedules($db, $_GET["termId"], $_GET["start"], $_GET["end"]);
-                break;
-            case "single_tutor_working_hours":
-                printSingleTutorSchedules($db, $_GET["tutorId"], $_GET["termId"], $_GET["start"], $_GET["end"]);
-                break;
-        }
-    }
+	if (isset($_GET["action"]) && !empty($_GET["action"])) { //Checks if action value exists
+		$action = $_GET["action"];
+		switch ($action) { //Switch case for value of action
+			case "all_tutors_working_hours":
+				printAllTutorsSchedules($db, $_GET["termId"], $_GET["start"], $_GET["end"]);
+				break;
+			case "single_tutor_working_hours":
+				printSingleTutorSchedules($db, $_GET["tutorId"], $_GET["termId"], $_GET["start"], $_GET["end"]);
+				break;
+		}
+	}
 } else {
-    header('Location: ' . BASE_URL . "error-403");
-    exit();
+	header('Location: ' . BASE_URL . "error-403");
+	exit();
 }
+
+//printAllTutorsSchedules($db, 4, 1409582384, 1412087984);
+
 
 //Function to check if the request is an AJAX request
 function is_ajax() {
-    return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
+	return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
 }
 
 function printAllTutorsSchedules($db, $termId, $start, $end) {
-    $workingHours = Schedule::getTutorsOnTerm($db, $termId);
+	$workingHours = Schedule::getTutorsOnTerm($db, $termId);
 
-    $workingHoursJSON = generateCalendarData($start, $end, $workingHours);
+	$workingHoursJSON = generateCalendarData($start, $end, $workingHours);
 
-    echo json_encode($workingHoursJSON);
+	echo json_encode($workingHoursJSON);
 }
 
 function printSingleTutorSchedules($db, $tutorId, $termId, $start, $end) {
-    $workingHours = Schedule::getSingleTutor($db, $tutorId, $termId);
-    $workingHoursJSON = generateCalendarData($start, $end, $workingHours);
+	$workingHours = Schedule::getSingleTutor($db, $tutorId, $termId);
+	$workingHoursJSON = generateCalendarData($start, $end, $workingHours);
 
-    echo json_encode($workingHoursJSON);
+	echo json_encode($workingHoursJSON);
 }
 
 /**
@@ -46,52 +48,76 @@ function printSingleTutorSchedules($db, $tutorId, $termId, $start, $end) {
  * @return array
  */
 function generateCalendarData($start, $end, $workingHours) {
-    $requestedStart = new DateTime();
-    $requestedEnd = new DateTime();
-    $requestedStart->setTimestamp($start);
-    $requestedEnd->setTimestamp($end);
+	date_default_timezone_set('Europe/Athens');
 
-    $workingHoursJSON = array();
-    foreach ($workingHours as $workingHour) {
-        $startTerm = new DateTime($workingHour[TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_START_DATE]);
-        $endTerm = new DateTime($workingHour[TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_END_DATE]);
+	$requestedStart = new DateTime();
+	$requestedEnd = new DateTime();
+	$requestedStart->setTimestamp($start);
+	$requestedEnd->setTimestamp($end);
 
-        // only retrieve from requested weeks
-        $weekStart = $requestedStart->format('W') > $startTerm->format("W") ? $requestedStart->format('W') :
-            $startTerm->format("W");
-        $weekEnd = $requestedEnd->format('W') < $endTerm->format("W") ? $requestedEnd->format('W') :
-            $endTerm->format("W");
+	$workingHoursJSON = array();
+	foreach ($workingHours as $workingHour) {
+		$startTerm = new DateTime($workingHour[TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_START_DATE]);
+		$endTerm = new DateTime($workingHour[TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_END_DATE]);
 
-        while ($weekStart <= $weekEnd) {
-	        if ($workingHour[ScheduleFetcher::DB_COLUMN_MONDAY] == 1) {
-		        $dayOfWeek = 1;
-		        $workingHoursJSON[] = generateDay($startTerm, $endTerm, $weekStart, $dayOfWeek, $workingHour);
-	        }
-            if ($workingHour[ScheduleFetcher::DB_COLUMN_TUESDAY] == 1) {
-                $dayOfWeek = 2;
-                $workingHoursJSON[] = generateDay($startTerm, $endTerm, $weekStart, $dayOfWeek, $workingHour);
-            }
+		$dayOfYearStartTerm = intval($startTerm->format("z")) + 1;
+		$dayOfYearEndTerm = intval($endTerm->format("z")) + 1;
+		$dayOfYearStartRequested = intval($requestedStart->format("z")) + 1;
+		$dayOfYearEndRequested = intval($requestedEnd->format("z")) + 1;
 
-            if ($workingHour[ScheduleFetcher::DB_COLUMN_WEDNESDAY] == 1) {
-                $dayOfWeek = 3;
-                $workingHoursJSON[] = generateDay($startTerm, $endTerm, $weekStart, $dayOfWeek, $workingHour);
-            }
+		$dayOfYearStart = $dayOfYearStartRequested < $dayOfYearStartTerm ? $dayOfYearStartTerm : $dayOfYearStartRequested;
+		$dayOfYearEnd = $dayOfYearEndRequested > $dayOfYearEndTerm ? $dayOfYearEndRequested : $dayOfYearEndTerm;
 
-            if ($workingHour[ScheduleFetcher::DB_COLUMN_THURSDAY] == 1) {
-                $dayOfWeek = 4;
-                $workingHoursJSON[] = generateDay($startTerm, $endTerm, $weekStart, $dayOfWeek, $workingHour);
-            }
-
-            if ($workingHour[ScheduleFetcher::DB_COLUMN_FRIDAY] == 1) {
-                $dayOfWeek = 5;
-                $workingHoursJSON[] = generateDay($startTerm, $endTerm, $weekStart, $dayOfWeek, $workingHour);
-            }
+		while ($dayOfYearStart <= $dayOfYearEnd + 1) {
+			$weekOfYearStart = $dayOfYearStart / 7 + 1;
+			$dayOfWeek = $dayOfYearStart % 7 + 1;
 
 
-            $weekStart++;
-        }
-    }
-    return $workingHoursJSON;
+			switch ($dayOfWeek) {
+				case 1:
+					if ($workingHour[ScheduleFetcher::DB_COLUMN_MONDAY] == 1) {
+						$workingHoursJSON[] = generateDay($startTerm, $endTerm, $weekOfYearStart, $dayOfWeek, $workingHour);
+					}
+					break;
+				case 2:
+					if ($workingHour[ScheduleFetcher::DB_COLUMN_TUESDAY] == 1) {
+						$workingHoursJSON[] = generateDay($startTerm, $endTerm, $weekOfYearStart, $dayOfWeek, $workingHour);
+					}
+					break;
+				case 3:
+					if ($workingHour[ScheduleFetcher::DB_COLUMN_WEDNESDAY] == 1) {
+						$workingHoursJSON[] = generateDay($startTerm, $endTerm, $weekOfYearStart, $dayOfWeek, $workingHour);
+					}
+					break;
+				case 4:
+					if ($workingHour[ScheduleFetcher::DB_COLUMN_THURSDAY] == 1) {
+						$workingHoursJSON[] = generateDay($startTerm, $endTerm, $weekOfYearStart, $dayOfWeek, $workingHour);
+					}
+					break;
+				case 5:
+					if ($workingHour[ScheduleFetcher::DB_COLUMN_FRIDAY] == 1) {
+						$workingHoursJSON[] = generateDay($startTerm, $endTerm, $weekOfYearStart, $dayOfWeek, $workingHour);
+					}
+					break;
+				default:
+					$dayOfYearStart++;
+			}
+			$dayOfYearStart++;
+		}
+	}
+	return $workingHoursJSON;
+}
+
+/**
+ * http://stackoverflow.com/a/9018728/2790481
+ * @param $year
+ * @return int
+ */
+function getIsoWeeksInYear($year) {
+	date_default_timezone_set('Europe/Athens');
+	$date = new DateTime;
+	$date->setISODate($year, 53);
+	return ($date->format("W") === "53" ? 53 : 52);
 }
 
 /**
@@ -104,20 +130,20 @@ function generateCalendarData($start, $end, $workingHours) {
  * @return array
  */
 function generateDay($startTerm, $endTerm, $weekStart, $dayOfWeek, $workingHour) {
-    $dayScheduleStart = new DateTime($workingHour[ScheduleFetcher::DB_COLUMN_START_TIME]);
-    $dayScheduleEnd = new DateTime($workingHour[ScheduleFetcher::DB_COLUMN_END_TIME]);
+	$dayScheduleStart = new DateTime($workingHour[ScheduleFetcher::DB_COLUMN_START_TIME]);
+	$dayScheduleEnd = new DateTime($workingHour[ScheduleFetcher::DB_COLUMN_END_TIME]);
 
-    $dayScheduleYearStart = $startTerm->format("Y");
-    $dayScheduleYearEnd = $endTerm->format("Y");
+	$dayScheduleYearStart = $startTerm->format("Y");
+	$dayScheduleYearEnd = $endTerm->format("Y");
 
-    $dayScheduleStart->setISODate($dayScheduleYearStart, $weekStart, $dayOfWeek);
-    $dayScheduleEnd->setISODate($dayScheduleYearEnd, $weekStart, $dayOfWeek);
+	$dayScheduleStart->setISODate($dayScheduleYearStart, $weekStart, $dayOfWeek);
+	$dayScheduleEnd->setISODate($dayScheduleYearEnd, $weekStart, $dayOfWeek);
 
-    $tutorName = $workingHour[UserFetcher::DB_COLUMN_FIRST_NAME] . " " . $workingHour[UserFetcher::DB_COLUMN_LAST_NAME];
-    $tutorsUrl = "http://" . $_SERVER['SERVER_NAME'] . "/staff/edit/" . $workingHour[UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_ID];
+	$tutorName = $workingHour[UserFetcher::DB_COLUMN_FIRST_NAME] . " " . $workingHour[UserFetcher::DB_COLUMN_LAST_NAME];
+	$tutorsUrl = "http://" . $_SERVER['SERVER_NAME'] . "/staff/edit/" . $workingHour[UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_ID];
 
-    return array('title' => $tutorName, 'start' => $dayScheduleStart->format('Y-m-d H:i:s'), 'end' =>
-        $dayScheduleEnd->format('Y-m-d H:i:s'), 'allDay' => false, 'url' => $tutorsUrl, 'color' => '#f0ad4e');
+	return array('title' => $tutorName, 'start' => $dayScheduleStart->format('Y-m-d H:i:s'), 'end' =>
+		$dayScheduleEnd->format('Y-m-d H:i:s'), 'allDay' => false, 'url' => $tutorsUrl, 'color' => '#f0ad4e');
 }
 
 
