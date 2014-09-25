@@ -6,8 +6,8 @@ try {
 
 	$curUser = $user;
 	if ($curUser->isTutor()) {
-		$schedules = ScheduleFetcher::retrieveTutors($db);
 		$teachingCourses = TutorFetcher::retrieveCurrTermTeachingCourses($db, $curUser->getId());
+		$schedules = ScheduleFetcher::retrieveCurrWorkingHours($db, $curUser->getId());
 	}
 } catch (Exception $e) {
 	$errors[] = $e->getMessage();
@@ -202,7 +202,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 						<div class="panel-body">
 							<div class="row">
 
-								<div class="col-md-3">
+								<div class="col-md-10">
 
 									<div class="table-responsive">
 										<table class="table table-hover">
@@ -210,18 +210,22 @@ require ROOT_PATH . 'app/views/sidebar.php';
 											<thead>
 											<tr>
 												<th class="text-center" data-filterable="true" data-sortable="true"
-												    data-sortable="true">Starting time
+												    data-sortable="true">Days
 												</th>
 												<th class="text-center" data-filterable="true" data-sortable="false"
-												    data-sortable="true">Ending time
-
+												    data-sortable="true">Start - End
+												</th>
+												<th class="text-center" data-filterable="true" data-sortable="false"
+												    data-sortable="true">Term
+												</th>
+												<th class="text-center">Status</th>
 											</tr>
 											</thead>
 											<tbody>
 
 											<?php
 											if (empty($errors) === true) {
-												foreach (array_reverse($schedules) as $schedule) {
+												foreach ($schedules as $schedule) {
 													include(ROOT_PATH . "app/views/partials/schedule/profile-table-data-view.html.php");
 												}
 											}
@@ -234,17 +238,21 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 								</div>
 								<!-- /.col -->
-								<div class="col-md-9">
+
+
+								<!-- <div class="col-md-7">
 									<div class="portlet-header">
 
-									</div>
+									</div> -->
 									<!-- /.portlet-header -->
 
-									<div class="portlet-content">
+									<!-- <div class="portlet-content">
 
 										<div id="appointments-calendar"></div>
 									</div>
-								</div>
+								</div> -->
+
+
 							</div>
 							<!-- /.row -->
 

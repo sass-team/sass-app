@@ -267,6 +267,40 @@ class ScheduleFetcher
         }
     }
 
+    public static function retrieveCurrWorkingHours($db, $tutorId) {
+        $query =
+            "SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "`, 
+                    `" . self::DB_COLUMN_END_TIME . "`, 
+                    `" . self::DB_COLUMN_TUTOR_USER_ID . "`, 
+                    `" . self::DB_COLUMN_TERM_ID . "`, 
+                    `" . self::DB_COLUMN_MONDAY . "`, 
+                    `" . self::DB_COLUMN_TUESDAY . "`, 
+                    `" . self::DB_COLUMN_WEDNESDAY . "`,
+                    `" . self::DB_COLUMN_THURSDAY . "`,
+                    `" . self::DB_COLUMN_FRIDAY . "`,
+                    `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_NAME . "`,
+                    `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "`  AS
+                    " . TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_ID . "
+            FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+            INNER JOIN  `" . DB_NAME . "`.`" . TermFetcher::DB_TABLE . "`
+            ON `" . DB_NAME . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`  = `" .
+            TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "`
+            WHERE `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "`=:tutor_id
+            AND CURRENT_TIMESTAMP() BETWEEN `" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" . TermFetcher::DB_COLUMN_END_DATE . "`
+            ORDER BY `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_NAME . "`";
+
+        try {
+            $query = $db->getConnection()->prepare($query);
+            $query->bindParam(':tutor_id', $tutorId, PDO::PARAM_INT);
+
+            $query->execute();
+
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new Exception("Could not retrieve data from database.");
+        }
+    }
+
     public static function retrieveSingle($db, $id) {
         $query = "SELECT  `" . self::DB_COLUMN_ID . "` ,
 						  `" . self::DB_COLUMN_TERM_ID . "`, 

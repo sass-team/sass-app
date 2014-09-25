@@ -52,7 +52,7 @@ try {
 				$data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active'],
 				$tutor[MajorFetcher::DB_COLUMN_NAME]);
 
-			$schedules = ScheduleFetcher::retrieveTutors($db);
+			$schedules = ScheduleFetcher::retrieveCurrWorkingHours($db, $curUser->getId());
 			$teachingCourses = TutorFetcher::retrieveCurrTermTeachingCourses($db, $curUser->getId());
 		} else if (strcmp($data['type'], 'secretary') === 0) {
 			$curUser = new Secretary($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'],
@@ -250,7 +250,14 @@ require ROOT_PATH . 'app/views/sidebar.php';
 									<h4 class="panel-title">
 										<a class="accordion-toggle" data-toggle="collapse" data-parent=".accordion"
 										   href="#collapseTwo">
-											<i class="fa fa-clock-o"></i> Current Schedule
+											<i class="fa fa-clock-o"></i>
+											<?php
+											if (empty($schedules)){
+												echo 'Current schedule is empty!';
+											}else{
+												echo 'Current Schedule - ' . $teachingCourses[0][TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_NAME];
+											}
+											?>
 										</a>
 									</h4>
 								</div>
@@ -259,26 +266,30 @@ require ROOT_PATH . 'app/views/sidebar.php';
 									<div class="panel-body">
 										<div class="row">
 
-											<div class="col-md-3">
+											<div class="col-md-10">
 
 												<div class="table-responsive">
 													<table class="table table-hover">
 
 														<thead>
-														<tr>
-															<th class="text-center" data-filterable="true" data-sortable="true"
-															    data-sortable="true">Starting time
-															</th>
-															<th class="text-center" data-filterable="true" data-sortable="false"
-															    data-sortable="true">Ending time
-
+															<tr>
+																<th class="text-center" data-filterable="true" data-sortable="true"
+																data-sortable="true">Days
+																</th>
+																<th class="text-center" data-filterable="true" data-sortable="false"
+																data-sortable="true">Start - End
+																</th>
+																<th class="text-center" data-filterable="true" data-sortable="false"
+																data-sortable="true">Term
+																</th>
+																<th class="text-center">Status</th>
 														</tr>
 														</thead>
 														<tbody>
 
 														<?php
 														if (empty($errors) === true) {
-															foreach (array_reverse($schedules) as $schedule) {
+															foreach ($schedules as $schedule) {
 																include(ROOT_PATH . "app/views/partials/schedule/profile-table-data-view.html.php");
 															}
 														}
@@ -291,17 +302,21 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 											</div>
 											<!-- /.col -->
-											<div class="col-md-9">
+
+
+											<!-- <div class="col-md-9">
 												<div class="portlet-header">
 
-												</div>
+												</div> -->
 												<!-- /.portlet-header -->
 
-												<div class="portlet-content">
+												<!-- <div class="portlet-content">
 
 													<div id="appointments-calendar"></div>
 												</div>
-											</div>
+											</div> -->
+
+
 										</div>
 										<!-- /.row -->
 
