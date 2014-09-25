@@ -8,8 +8,8 @@
 
 ?>
 <tr>
-    <td>
-        <strong><?php echo $student[StudentFetcher::DB_COLUMN_FIRST_NAME] . " " .
-                $student[StudentFetcher::DB_COLUMN_LAST_NAME];?></strong>
-    </td>
+	<td>
+		<strong><?php echo $student[StudentFetcher::DB_TABLE . "_" . StudentFetcher::DB_COLUMN_FIRST_NAME] . " " .
+				$student[StudentFetcher::DB_TABLE . "_" . StudentFetcher::DB_COLUMN_LAST_NAME];?></strong>
+	</td>
 </tr>

@@ -601,7 +601,6 @@ $(function () {
 			$templateEle = $('#' + template + 'Template'),
 			$row = $templateEle.clone().removeAttr('id').insertBefore($templateEle).removeClass('hide'),
 			$el = $row.find('input').eq(0).attr('name', template + '[]');
-		$('#defaultForm').bootstrapValidator('addField', $el);
 
 		var newStudentId = 'studentId' + index;
 		var newInstructorId = 'instructorId' + index;
@@ -630,7 +629,6 @@ $(function () {
 		});
 
 		$row.on('click', '.removeButton', function (e) {
-			$('#defaultForm').bootstrapValidator('removeField', $el);
 			$row.remove();
 			newRow.remove();
 		});
