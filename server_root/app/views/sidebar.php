@@ -40,12 +40,6 @@
 			</a>
 
 			<ul class="sub-nav">
-				<li>
-					<a href="<?php echo BASE_URL; ?>appointments/">
-						<i class="fa fa-dashboard"></i>
-						All
-					</a>
-				</li>
 
 				<?php if (!$user->isTutor()): ?>
 					<li>
@@ -55,6 +49,18 @@
 						</a>
 					</li>
 				<?php endif; ?>
+				<li>
+					<a href="<?php echo BASE_URL; ?>appointments/calendar">
+						<i class="fa fa-calendar"></i>
+						Calendar
+					</a>
+				</li>
+				<li>
+					<a href="<?php echo BASE_URL; ?>appointments/reports">
+						<i class="fa fa-list"></i>
+						List
+					</a>
+				</li>
 			</ul>
 		</li>
 
@@ -75,20 +81,6 @@
 					</a>
 				</li>
 
-				<?php if (!$user->isTutor()): ?>
-					<li>
-						<a href="<?php echo BASE_URL; ?>reports/settings">
-							<i class="fa fa fa-cogs"></i>
-							Settings
-						</a>
-					</li>
-					<li>
-						<a href="<?php echo BASE_URL; ?>reports/exports">
-							<i class="fa fa-floppy-o"></i>
-							Exports
-						</a>
-					</li>
-				<?php endif; ?>
 			</ul>
 		</li>
 
