@@ -4,7 +4,7 @@ $general->loggedOutProtect();
 
 // viewers
 $pageTitle = "New Appointment";
-$section = "appointments";
+$section = "account";
 
 try {
 	$terms = TermFetcher::retrieveCurrTerm($db);
