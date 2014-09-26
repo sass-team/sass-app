@@ -35,7 +35,7 @@ function printAllTutorsSchedules($db, $termId, $start, $end) {
 }
 
 function printSingleTutorSchedules($db, $tutorId, $termId, $start, $end) {
-	$workingHours = Schedule::getSingleTutor($db, $tutorId, $termId);
+	$workingHours = Schedule::getSingleTutorOnTerm($db, $tutorId, $termId);
 	$workingHoursJSON = generateCalendarData($start, $end, $workingHours);
 
 	echo json_encode($workingHoursJSON);
@@ -62,7 +62,7 @@ function generateCalendarData($start, $end, $workingHours) {
 
 		$dayOfYearStartTerm = intval($startTerm->format("z")) + 1;
 		$dayOfYearEndTerm = intval($endTerm->format("z")) + 1;
-		$dayOfYearStartRequested = intval($requestedStart->format("z")) + 1;
+		$dayOfYearStartRequested = intval($requestedStart->format("z"));
 		$dayOfYearEndRequested = intval($requestedEnd->format("z")) + 1;
 
 		$dayOfYearStart = $dayOfYearStartRequested < $dayOfYearStartTerm ? $dayOfYearStartTerm : $dayOfYearStartRequested;

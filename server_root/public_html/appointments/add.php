@@ -362,6 +362,7 @@ $(function () {
 		}
 	});
 	$termId.click(function () {
+		reloadCalendar('term_change');
 
 		try {
 			retrieveTutors();
@@ -523,6 +524,7 @@ $(function () {
 
 		switch (choice) {
 			case 'all_appointments_schedule':
+			case 'term_change':
 				$calendar.fullCalendar('addEventSource', allAppointmentsCalendar);
 				$calendar.fullCalendar('addEventSource', allSchedulesCalendar);
 				break;
@@ -545,7 +547,6 @@ $(function () {
 				} else {
 					$calendar.fullCalendar('addEventSource', singleTutorAppointmentsCalendar);
 				}
-
 				break;
 			default:
 				break;

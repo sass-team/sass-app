@@ -306,7 +306,6 @@ require ROOT_PATH . 'app/views/sidebar.php';
 			</div>
 
 		</div>
-	</div>
 
 </div>
 <!-- /#content-container -->

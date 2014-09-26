@@ -94,17 +94,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 				<ul id="myTab" class="nav nav-pills nav-stacked">
 					<li class="active"><a href="#add" data-toggle="tab"><i class="fa fa-plus"></i> &nbsp;&nbsp;Add
 							staff Member</a></li>
-					<!--	<li><a href="#profile-3" data-toggle="tab"><i class="fa fa-user"></i> &nbsp;&nbsp;Profile</a></li>
-								 <li class="dropdown">
-										<a href="javascript:;" id="myTabDrop3" class="dropdown-toggle" data-toggle="dropdown"><i
-													  class="fa fa-chevron-sign-down"></i> &nbsp;&nbsp;Dropdown <b class="caret"></b></a>
-										<ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">
-											  <li><a href="#dropdown5" tabindex="-1" data-toggle="tab">@fat</a></li>
-											  <li><a href="#dropdown6" tabindex="-1" data-toggle="tab">@mdo</a></li>
-										</ul>
-								 </li>
-								 -->
-				</ul>
+						</ul>
 
 			</div>
 			<!-- /.col -->
@@ -261,7 +251,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 										<h5>
 											<i class="fa fa-tasks"></i>
-											<label for="termIds">Term</label>
+											<label for="termIds">Current Terms</label>
 										</h5>
 										<select id="termIds" name="termIds" class="form-control" required>
 											<?php foreach ($terms as $term) {

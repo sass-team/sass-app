@@ -5,6 +5,7 @@ RewriteBase /
 RewriteRule ^([a-z\-]+)/([a-z\-]+)$ /$1/$2.php [L]
 RewriteRule ^([a-z]+)$ /$1.php [L]
 RewriteRule ^appointments/([0-9]+)$ /appointments/index.php?appointmentId=$1 [L]
+RewriteRule ^appointments/calendar/([0-9]+)$ /appointments/calendar.php?tutorId=$1 [L]
 RewriteRule ^appointments/add/success$ /appointments/add.php?success=y1!q [L]
 RewriteRule ^academia/students/success$ /academia/students.php?success=y1!q [L]
 RewriteRule ^academia/courses/success$ /academia/courses.php?success=y1!qp [L]

@@ -94,10 +94,10 @@ class Schedule
         }
     }
 
-    public static function getSingleTutor($db, $tutorId, $termId) {
+    public static function getSingleTutorOnTerm($db, $tutorId, $termId) {
         Tutor::validateId($db, $tutorId);
         Term::validateId($db, $termId);
-        return ScheduleFetcher::retrieveSingleTutor($db, $tutorId, $termId);
+        return ScheduleFetcher::retrieveSingleTutorOnTerm($db, $tutorId, $termId);
     }
 
     public static function getTutorsOnTerm($db, $termId) {

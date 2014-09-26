@@ -8,6 +8,7 @@ try {
 	if ($curUser->isTutor()) {
 		$teachingCourses = TutorFetcher::retrieveCurrTermTeachingCourses($db, $curUser->getId());
 		$schedules = ScheduleFetcher::retrieveCurrWorkingHours($db, $curUser->getId());
+		$currentTerms = TermFetcher::retrieveCurrTerm($db);
 	}
 } catch (Exception $e) {
 	$errors[] = $e->getMessage();
@@ -41,24 +42,26 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <div id="content">
 
 <div id="content-header">
-	<h1>Profile</h1>
+	<h1>
+		<i class="fa fa-cloud"></i>
+		Profile
+	</h1>
 </div>
 <!-- #content-header -->
-
 
 <div id="content-container">
 
 
 <div class="row">
-			<?php 
-				if ($mobileNum == '') {
-					echo '<div class="alert alert-warning" role="alert"><strong>Warning!</strong> Please fill in your mobile number!</div>';
-				}
-			?>
+	<?php
+	if ($mobileNum == '') {
+		echo '<div class="alert alert-warning" role="alert"><strong>Warning!</strong> Please fill in your mobile number!</div>';
+	}
+	?>
 	<div class="col-md-9">
 
 		<div class="row">
-			
+
 			<div class="col-md-4 col-sm-5">
 
 				<div class="thumbnail">
@@ -142,10 +145,13 @@ require ROOT_PATH . 'app/views/sidebar.php';
 							   href="#collapseOne">
 								<i class="fa fa-book"></i>
 								<?php
-								if (empty($teachingCourses)){
-									echo 'The list of Teaching Courses of the current term is empty!';
-								}else{
-									echo 'Current Teaching Courses - ' . $teachingCourses[0][TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_NAME];
+								if (empty($teachingCourses)) {
+									echo 'The list of Teaching Courses for the current terms is empty!';
+								} else {
+									echo 'Facilitated Courses';
+									foreach ($currentTerms as $currentTerm) {
+										echo " - " . $currentTerm[TermFetcher::DB_COLUMN_NAME];
+									}
 								}
 								?>
 							</a>
@@ -188,10 +194,13 @@ require ROOT_PATH . 'app/views/sidebar.php';
 							   href="#collapseTwo">
 								<i class="fa fa-clock-o"></i>
 								<?php
-								if (empty($schedules)){
+								if (empty($schedules)) {
 									echo 'Current schedule is empty!';
-								}else{
-									echo 'Current Schedule - ' . $teachingCourses[0][TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_NAME];
+								} else {
+									echo 'Current Schedule';
+									foreach ($currentTerms as $currentTerm) {
+										echo " - " . $currentTerm[TermFetcher::DB_COLUMN_NAME];
+									}
 								}
 								?>
 							</a>
@@ -244,13 +253,13 @@ require ROOT_PATH . 'app/views/sidebar.php';
 									<div class="portlet-header">
 
 									</div> -->
-									<!-- /.portlet-header -->
+								<!-- /.portlet-header -->
 
-									<!-- <div class="portlet-content">
+								<!-- <div class="portlet-content">
 
-										<div id="appointments-calendar"></div>
-									</div>
-								</div> -->
+									<div id="appointments-calendar"></div>
+								</div>
+							</div> -->
 
 
 							</div>
@@ -271,6 +280,8 @@ require ROOT_PATH . 'app/views/sidebar.php';
 </div>
 <!-- /#content-container -->
 
+<div id="push"></div>
+
 </div>
 <!-- #content -->
 
@@ -278,6 +289,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 </div>
 <!-- #wrapper -->
+
 <?php include ROOT_PATH . "app/views/assets/footer_common.php"; ?>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/autosize/jquery.autosize.min.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/textarea-counter/jquery.textarea-counter.js"></script>

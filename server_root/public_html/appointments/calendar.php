@@ -5,57 +5,57 @@ $general->loggedOutProtect();
 $section = "appointments";
 
 try {
-    if (isUrlRequestingSingleAppointment()) {
-        $pageTitle = "Single Appointments";
-        $appointmentId = $_GET['appointmentId'];
-
-        // redirect if user elevation is not that of secretary or admin
-        if ($user->isTutor() && !Tutor::hasAppointmentWithId($db, $user->getId(), $appointmentId)) {
-            header('Location: ' . BASE_URL . "error-403");
-            exit();
-        }
-
-        $students = Appointment::getAllStudentsWithAppointment($db, $appointmentId);
-        $course = Course::get($db, $students[0][AppointmentFetcher::DB_COLUMN_COURSE_ID]);
-        $term = TermFetcher::retrieveSingle($db, $students[0][AppointmentFetcher::DB_COLUMN_TERM_ID]);
-        $tutorName = $students[0][UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_FIRST_NAME] . " " .
-            $students[0][UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_LAST_NAME];
-        $startTime = $students[0][AppointmentFetcher::DB_COLUMN_START_TIME];
-        $endTime = $students[0][AppointmentFetcher::DB_COLUMN_END_TIME];
-
-
-    } else if (isUrlRequestingAllAppointments()) {
-        $pageTitle = "All Appointments";
-
-        $curTerms = TermFetcher::retrieveCurrTerm($db);
-
-        if (!$user->isTutor()) {
-            $appointmentsJSON = Appointment::getCalendarAllAppointmentsOnTerm($db, $curTerms[0][TermFetcher::DB_COLUMN_ID]);
-        } else {
-            $appointmentsJSON = Appointment::getCalendarSingleTutorAppointments($db, $curTerms[0][TermFetcher::DB_COLUMN_ID], $user->getId());
-        }
+	if (isUrlRequestingSingleTutorAppointments()) {
+		//TODO: change appointmentId to tutorId view appointments
+//		$pageTitle = "Single Appointments";
+//		$appointmentId = $_GET['appointmentId'];
+//
+//		// redirect if user elevation is not that of secretary or admin
+//		if ($user->isTutor() && !Tutor::hasAppointmentWithId($db, $user->getId(), $appointmentId)) {
+//			header('Location: ' . BASE_URL . "error-403");
+//			exit();
+//		}
+//
+//		$students = Appointment::getAllStudentsWithAppointment($db, $appointmentId);
+//		$course = Course::get($db, $students[0][AppointmentFetcher::DB_COLUMN_COURSE_ID]);
+//		$term = TermFetcher::retrieveSingle($db, $students[0][AppointmentFetcher::DB_COLUMN_TERM_ID]);
+//
+//		$tutorName = $students[0][UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_FIRST_NAME] . " " .
+//			$students[0][UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_LAST_NAME];
+//		$startTime = $students[0][AppointmentFetcher::DB_COLUMN_START_TIME];
+//		$endTime = $students[0][AppointmentFetcher::DB_COLUMN_END_TIME];
 
 
-    } else {
-        header('Location: ' . BASE_URL . "error-403");
-        exit();
-    }
+	} else if (isUrlRequestingAllAppointments()) {
+		$pageTitle = "All appointments";
+
+		$terms = TermFetcher::retrieveCurrTerm($db);
+
+		if ($user->isTutor()) {
+			$pageTitle = "All my appointments";
+			$requestedTutorId = $user->getId();
+		} else {
+			$requestedTutorName = $user->getFirstName() . " " . $user->getLastName();
+			$requestedTutorId = $user->getId();
+		}
+	} else {
+		header('Location: ' . BASE_URL . "error-403");
+		exit();
+	}
 
 
 } catch (Exception $e) {
-    $errors[] = $e->getMessage();
+	$errors[] = $e->getMessage();
 }
 
 
-function isUrlRequestingSingleAppointment()
-{
-    return isset($_GET['appointmentId']) && preg_match("/^[0-9]+$/", $_GET['appointmentId']);
+function isUrlRequestingSingleTutorAppointments() {
+	return isset($_GET['appointmentId']) && preg_match("/^[0-9]+$/", $_GET['appointmentId']);
 }
 
 
-function isUrlRequestingAllAppointments()
-{
-    return !isset($_GET['appointmentId']);
+function isUrlRequestingAllAppointments() {
+	return sizeof($_GET) === 0;
 }
 
 /**
@@ -65,13 +65,12 @@ function isUrlRequestingAllAppointments()
  * @param $objects
  * @return bool
  */
-function get($objects, $findId, $column)
-{
-    foreach ($objects as $object) {
-        if ($object[$column] === $findId) return $object;
-    }
+function get($objects, $findId, $column) {
+	foreach ($objects as $object) {
+		if ($object[$column] === $findId) return $object;
+	}
 
-    return false;
+	return false;
 }
 
 ?>
@@ -99,10 +98,10 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 <div id="content-header">
 
-    <h1>
-        <i class="fa fa-calendar"></i>
-        <?php echo $pageTitle; ?>
-    </h1>
+	<h1>
+		<i class="fa fa-calendar"></i>
+		<?php echo $pageTitle; ?>
+	</h1>
 
 
 </div>
@@ -110,193 +109,201 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 <div id="content-container">
 
-    <div class="portlet">
+	<div class="portlet">
 
-        <?php if (isUrlRequestingSingleAppointment()) { ?>
+		<?php if (isUrlRequestingSingleTutorAppointments()) { ?>
 
-            <div class="col-md-12">
-                <div class="portlet-header">
+		<div class="col-md-12">
+			<div class="portlet-header">
 
-                    <h3>
-                        <i class="fa fa-calendar"></i>
-                        Details
-                    </h3>
-
-                </div>
-                <!-- /.portlet-header -->
-
-                <div class="portlet-content">
-
-                    <div class="form-group">
-
-                        <div class="form-group">
-
-                            <div class="row">
-                                <div class="col-md-6 col-sm-6">
-                                    <h4>Student</h4>
-
-                                    <table class="table">
-                                        <tbody>
-                                        <?php foreach ($students as $student):
-                                            include(ROOT_PATH . "app/views/partials/student/name-table-data-view.html.php");
-                                        endforeach; ?>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <!-- /.col -->
-
-                                <div class="col-md-6 col-sm-6">
-
-                                    <h4>Instructor</h4>
-
-                                    <table class="table">
-                                        <tbody>
-                                        <?php foreach ($students as $student):
-                                            $instructor = $student;
-                                            include(ROOT_PATH . "app/views/partials/instructor/name-table-data-view.html.php");
-                                        endforeach; ?>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <!-- /.col -->
+				<h3>
+					<i class="fa fa-calendar"></i>
+					<span id="calendar-title">
+						Details
+					</span>
+				</h3>
 
 
-                            </div>
-                            <!-- /.row -->
-                        </div>
+			</div>
 
-                        <div class="form-group">
+		</div>
+		<!-- /.portlet-header -->
 
-                            <div class="row">
-                                <div class="col-md-6 col-sm-6">
-                                    <h4>Course</h4>
-                                </div>
-                                <div class="col-md-6 col-sm-6">
-                                    <input type='text' value="<?php echo $course[CourseFetcher::DB_COLUMN_CODE] . " " .
-                                        $course[CourseFetcher::DB_COLUMN_NAME]; ?>" name='dateTimePickerStart' class="
+		<div class="portlet-content">
+
+			<div class="form-group">
+
+				<div class="form-group">
+
+					<div class="row">
+						<div class="col-md-6 col-sm-6">
+							<h4>Student</h4>
+
+							<table class="table">
+								<tbody>
+								<?php foreach ($students as $student):
+									include(ROOT_PATH . "app/views/partials/student/name-table-data-view.html.php");
+								endforeach; ?>
+								</tbody>
+							</table>
+						</div>
+						<!-- /.col -->
+
+						<div class="col-md-6 col-sm-6">
+
+							<h4>Instructor</h4>
+
+							<table class="table">
+								<tbody>
+								<?php foreach ($students as $student):
+									$instructor = $student;
+									include(ROOT_PATH . "app/views/partials/instructor/name-table-data-view.html.php");
+								endforeach; ?>
+								</tbody>
+							</table>
+						</div>
+						<!-- /.col -->
+
+
+					</div>
+					<!-- /.row -->
+				</div>
+
+				<div class="form-group">
+
+					<div class="row">
+						<div class="col-md-6 col-sm-6">
+							<h4>Course</h4>
+						</div>
+						<div class="col-md-6 col-sm-6">
+							<input type='text' value="<?php echo $course[CourseFetcher::DB_COLUMN_CODE] . " " .
+								$course[CourseFetcher::DB_COLUMN_NAME]; ?>" name='dateTimePickerStart' class="
                                        form-control" disabled/>
-                                </div>
-                            </div>
-                        </div>
+						</div>
+					</div>
+				</div>
 
-                        <div class="form-group">
-                            <div class="row">
+				<div class="form-group">
+					<div class="row">
 
-                                <div class="col-md-6 col-sm-6">
-                                    <h4>Tutor</h4>
-                                </div>
-                                <div class="col-md-6 col-sm-6">
-                                    <input type='text' value="<?php echo $tutorName; ?>" name='dateTimePickerStart'
-                                           class="
+						<div class="col-md-6 col-sm-6">
+							<h4>Tutor</h4>
+						</div>
+						<div class="col-md-6 col-sm-6">
+							<input type='text' value="<?php echo $tutorName; ?>" name='dateTimePickerStart'
+							       class="
                                        form-control" disabled/>
-                                </div>
-                            </div>
-                        </div>
+						</div>
+					</div>
+				</div>
 
-                        <div class="form-group">
+				<div class="form-group">
 
-                            <div class="row">
+					<div class="row">
 
-                                <div class="col-md-6 col-sm-6">
-                                    <h4>Starting Date</h4>
-                                </div>
-
-
-                                <div class="col-md-6 col-sm-6">
-                                    <input type='text' value="<?php echo $startTime; ?>" class="form-control" disabled/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-
-                            <div class="row">
-
-                                <div class="col-md-6 col-sm-6">
-                                    <h4>Ending Date</h4>
-                                </div>
+						<div class="col-md-6 col-sm-6">
+							<h4>Starting Date</h4>
+						</div>
 
 
-                                <div class="col-md-6 col-sm-6">
-                                    <input type='text' value="<?php echo $endTime; ?>"
-                                           class="form-control" disabled/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
+						<div class="col-md-6 col-sm-6">
+							<input type='text' value="<?php echo $startTime; ?>" class="form-control" disabled/>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
 
-                            <div class="row">
+					<div class="row">
 
-                                <div class="col-md-6 col-sm-6">
-                                    <h4>Term</h4>
-                                </div>
+						<div class="col-md-6 col-sm-6">
+							<h4>Ending Date</h4>
+						</div>
 
 
-                                <div class="col-md-6 col-sm-6">
-                                    <input type='text' value="<?php echo $term[TermFetcher::DB_COLUMN_NAME]; ?>" class="
+						<div class="col-md-6 col-sm-6">
+							<input type='text' value="<?php echo $endTime; ?>"
+							       class="form-control" disabled/>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+
+					<div class="row">
+
+						<div class="col-md-6 col-sm-6">
+							<h4>Term</h4>
+						</div>
+
+
+						<div class="col-md-6 col-sm-6">
+							<input type='text' value="<?php echo $term[TermFetcher::DB_COLUMN_NAME]; ?>" class="
                                        form-control" disabled/>
-                                </div>
-                            </div>
-                        </div>
+						</div>
+					</div>
+				</div>
 
-                        <div class="form-group">
-                            <?php
-                            if (empty($errors) === false) {
-                                ?>
-                                <div class="alert alert-danger">
-                                    <a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-                                    <strong>Oh
-                                        snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
-                                    ?>
-                                </div>
-                            <?php
-                            }  ?>
+				<div class="form-group">
+					<?php
+					if (empty($errors) === false) {
+						?>
+						<div class="alert alert-danger">
+							<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+							<strong>Oh
+								snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
+							?>
+						</div>
+					<?php
+					}  ?>
 
-                        </div>
-                    </div>
+				</div>
+			</div>
 
-                </div>
-                <!-- /.form-group -->
+		</div>
+		<!-- /.form-group -->
 
-            </div>
+	</div>
+	<!-- /.portlet -->
+	<?php } else { ?>
+		<div class="row">
 
-        <?php } else { ?>
-            <div class="row">
+			<div class="col-md-12">
+				<div class="portlet-header">
+					<h3>
+						<i class="fa fa-calendar"></i>
 
-                <div class="col-md-12">
-                    <div class="portlet-header">
-                        <h3>
-                            <i class="fa fa-calendar"></i>Term
-                            <?php
-                            foreach ($curTerms as $currentTerm) {
-                                echo " - " . $currentTerm[TermFetcher::DB_COLUMN_NAME];
-                            }
-                            ?>
-                            <span id="calendar-title">
+							<span id="calendar-title">
+								Details
 							</span>
 
-                            <!--                        <div class="external-event label ui-draggable fc-yellow" data-category="fc-yellow"-->
-                            <!--                             style="position: relative;">Working Hours-->
-                            <!--                        </div>-->
-                            <div class="external-event label ui-draggable fc-red" data-category="fc-red"
-                                 style="position: relative;">Appointments
-                            </div>
-                        </h3>
+						<span class="label label-danger">Working Hours</span>
 
-                    </div>
-                    <!-- /.portlet-header -->
+					</h3>
 
-                    <div class="portlet-content">
+					<div class="col-md-6">
+						<select id="termId" name="termId" class="form-control" required>
+							<?php
+							foreach ($terms as $term) {
+								include(ROOT_PATH . "app/views/partials/term/select-options-view.html.php");
+							}
+							?>
+						</select>
+					</div>
 
-                        <div id="appointments-schedule-calendar"></div>
-                    </div>
-                </div>
-                <!-- ./col -->
-            </div>
-        <?php } ?>
+				</div>
+				<!-- /.portlet-header -->
+
+				<div class="portlet-content">
+
+					<div id="appointments-calendar"></div>
+				</div>
+			</div>
+			<!-- ./col -->
+		</div>
+	<?php } ?>
 
 
-    </div>
-    <!-- /.portlet -->
+</div>
+<!-- /.portlet -->
 
 </div>
 <!-- /#content-container -->
@@ -316,33 +323,155 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/autosize/jquery.autosize.min.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/textarea-counter/jquery.textarea-counter.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/select2/select2.js"></script>
+<script src="<?php echo BASE_URL; ?>assets/js/plugins/spin/spin.min.js"></script>
 
 
 <script
-    src="<?php echo BASE_URL; ?>assets/js/plugins/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js">
+	src="<?php echo BASE_URL; ?>assets/js/plugins/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js">
 </script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/fullcalendar/fullcalendar.min.js"></script>
 <script type="text/javascript"
         src="//cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.1/js/bootstrapValidator.min.js"></script>
 
 <script type="text/javascript">
-    $(function () {
-        // http://momentjs.com/docs/#/manipulating/add/
-        // http://eonasdan.github.io/bootstrap-datetimepicker
-        $("#appointments-schedule-calendar").fullCalendar({
-            header: {
-                left: 'prev,next',
-                center: 'title',
-                right: 'agendaWeek,month,agendaDay'
-            },
-            weekends: false, // will hide Saturdays and Sundays
-            defaultView: "agendaWeek",
-            editable: false,
-            droppable: false,
-            events: <?php echo $appointmentsJSON; ?>,
-            timeFormat: 'H(:mm)' // uppercase H for 24-hour clock
-        });
-    });
+	// http://momentjs.com/docs/#/manipulating/add/
+	// http://eonasdan.github.io/bootstrap-datetimepicker
+	$(function () {
+		var $calendar = $("#appointments-calendar");
+		var $termId = $('#termId');
+		$termId.select2();
+		var $calendarTitle = $('#calendar-title');
+		var opts = {
+			lines: 13, // The number of lines to draw
+			length: 20, // The length of each line
+			width: 10, // The line thickness
+			radius: 30, // The radius of the inner circle
+			corners: 1, // Corner roundness (0..1)
+			rotate: 0, // The rotation offset
+			direction: 1, // 1: clockwise, -1: counterclockwise
+			color: '#000', // #rgb or #rrggbb or array of colors
+			speed: 2.2, // Rounds per second
+			trail: 60, // Afterglow percentage
+			shadow: false, // Whether to render a shadow
+			hwaccel: false, // Whether to use hardware acceleration
+			className: 'spinner', // The CSS class to assign to the spinner
+			zIndex: 2e9, // The z-index (defaults to 2000000000)
+			top: '50%', // Top position relative to parent
+			left: '50%' // Left position relative to parent
+		};
+
+		function loadAllCalendars() {
+			try {
+				reloadCalendar();
+			} catch (err) {
+				$calendarTitle.text(err);
+			}
+		}
+
+		function reloadCalendar(choice) {
+			var spinner;
+			var calendar = document.getElementById('appointments-calendar');
+
+			if ($termId.val() === null || !$termId.select2('val').match(/^[0-9]+$/)) throw new Error("Term is missing");
+
+			var singleTutorAppointmentsCalendar = {
+				url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/appointments",
+				type: 'GET',
+				dataType: "json",
+				data: {
+					action: 'single_tutor_working_hours',
+					tutorId: <?php echo $requestedTutorId; ?>,
+					termId: $termId.select2('val')
+				},
+				error: function (xhr, status, error) {
+					$calendarTitle.text("there was an error while fetching appointments");
+				},
+				success: function () {
+					$calendarTitle.text();
+				},
+				beforeSend: function () {
+					if (spinner == null) {
+						spinner = new Spinner(opts).spin(calendar);
+					}
+
+				},
+				complete: function () {
+					if (spinner != null) {
+						spinner.stop();
+						spinner = null;
+					}
+				}
+			};
+
+			var allTutorsAppointmentsCalendar = {
+				url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/appointments",
+				type: 'GET',
+				dataType: "json",
+				data: {
+					action: 'all_tutors_appointments',
+					termId: $termId.select2('val')
+				},
+				error: function (xhr, status, error) {
+					$('#calendar-title').text("there was an error while fetching appointments");
+				},
+				success: function () {
+					$calendarTitle.text("All tutors appointments");
+				},
+				beforeSend: function () {
+					if (spinner == null) {
+						spinner = new Spinner(opts).spin(calendar);
+					}
+
+				},
+				complete: function () {
+					if (spinner != null) {
+						spinner.stop();
+						spinner = null;
+					}
+				}
+			};
+
+			$calendar.fullCalendar('removeEventSource', allTutorsAppointmentsCalendar);
+			$calendar.fullCalendar('removeEventSource', singleTutorAppointmentsCalendar);
+
+			switch (choice) {
+				case 'all_appointments':
+				case 'term_change':
+					$calendar.fullCalendar('addEventSource', allTutorsAppointmentsCalendar);
+					break;
+				case 'single_tutor_appointment':
+					$calendar.fullCalendar('addEventSource', singleTutorAppointmentsCalendar);
+					break;
+				default:
+					break;
+			}
+			$calendar.fullCalendar('refetchEvents');
+
+		}
+
+
+		$("#appointments-calendar").fullCalendar({
+			header: {
+				left: 'prev,next',
+				center: 'title',
+				right: 'agendaWeek,month,agendaDay'
+			},
+			weekends: false, // will hide Saturdays and Sundays
+			defaultView: "agendaWeek",
+			editable: false,
+			droppable: false,
+			eventSources: []
+		});
+
+		<?php if(isUrlRequestingAllAppointments()){
+			if( $user->isTutor()) {?>
+		reloadCalendar('single_tutor_appointment');
+		<?php }else { ?>
+		reloadCalendar('all_appointments');
+		<?php }?>
+		<?php }?>
+
+	});
 </script>
 
 </body>
