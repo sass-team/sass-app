@@ -85,7 +85,6 @@ require ROOT_PATH . 'app/views/header.php';
 require ROOT_PATH . 'app/views/sidebar.php';
 ?>
 
-
 <div id="content">
 
 <div id="content-header">
@@ -102,10 +101,10 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <div id="content-container">
 <div class="row">
 
-<div class="col-md-3">
+<div class="col-md-3 col-sm-4">
 	<div class="list-group">
 
-		<a href="javascript:;" class="list-group-item active">
+		<a href="#appointment-tab" class="list-group-item active" data-toggle="tab">
 			<h5><i class="fa fa-file-text-o"></i>
 				&nbsp;&nbsp;A-<?php echo $appointmentData[0][AppointmentFetcher::DB_COLUMN_ID]; ?>
 				<span
@@ -115,29 +114,34 @@ require ROOT_PATH . 'app/views/sidebar.php';
 			</h5>
 		</a>
 
-		<?php foreach ($appointmentData as $report): ?>
-			<a href="javascript:;" class="list-group-item">
+		<?php for ($i = 0; $i < sizeof($appointmentData); $i++) { ?>
+			<a href="#report-tab<?php echo $i; ?>" class="list-group-item" data-toggle="tab">
 				<h5>
 					<i class="fa fa-file-text-o"></i> &nbsp;&nbsp;R
 
-					<?php if ($report[AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID] !== NULL): ?>
-						<?php echo "-" . $report[AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID]; ?>
-						<span class="label label-<?php echo $report[AppointmentFetcher::DB_COLUMN_LABEL_COLOR]; ?>">
-							<?php echo $report[AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE]; ?>
+					<?php if ($appointmentData[$i][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID] !== NULL): ?>
+						<?php echo "-" . $appointmentData[$i][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID]; ?>
+						<span
+							class="label label-<?php echo $appointmentData[$i][AppointmentFetcher::DB_COLUMN_LABEL_COLOR]; ?>">
+							<?php echo $appointmentData[$i][AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE]; ?>
 						</span>
 					<?php else: ?>
 						<span class="label label-default">disabled</span>
 					<?php endif; ?>
 				</h5>
-				<?php echo $report[UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_FIRST_NAME] . " " .
-					$report[UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_LAST_NAME]; ?>
+				<?php echo $appointmentData[$i][UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_FIRST_NAME] . " " .
+					$appointmentData[$i][UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_LAST_NAME]; ?>
 			</a>
-		<?php endforeach; ?>
+		<?php } ?>
 
 	</div>
-
+	<!-- /.list-group -->
 </div>
-<div class="col-md-9 col-sidebar-right">
+
+<div class="col-md-9 col-sm-8">
+<div class="tab-content stacked-content">
+
+<div class="tab-pane fade in active" id="appointment-tab">
 
 	<div class="portlet">
 		<div class="portlet-header">
@@ -303,8 +307,88 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 </div>
 
-</div>
 
+<?php
+for ($i = 0; $i < sizeof($appointmentData); $i++) {
+	?>
+
+	<div class="tab-pane fade" id="report-tab<?php echo $i; ?>">
+
+		<h3 class="">Change Your Password</h3>
+
+
+		<form action="<?php echo BASE_URL; ?>account/settings" class="form-horizontal" method="post">
+
+			<div class="form-group">
+
+				<label class="col-md-3" for="oldPassword">Old Password</label>
+
+				<div class="col-md-7">
+					<input type="password" name="oldPassword" id="oldPassword" class="form-control"/>
+				</div>
+				<!-- /.col -->
+
+			</div>
+			<!-- /.form-group -->
+
+
+			<hr/>
+
+
+			<div class="form-group">
+
+				<label class="col-md-3" for="newPassword1">New Password</label>
+
+				<div class="col-md-7">
+					<input type="password" name="newPassword1" id="newPassword1" class="form-control"/>
+				</div>
+				<!-- /.col -->
+
+			</div>
+			<!-- /.form-group -->
+
+			<div class="form-group">
+
+				<label class="col-md-3" for="newPassword2">New Password Confirm</label>
+
+				<div class="col-md-7">
+					<input type="password" name="newPassword2" id="newPassword2" class="form-control"/>
+				</div>
+				<!-- /.col -->
+
+			</div>
+			<!-- /.form-group -->
+
+			<br/>
+
+			<div class="form-group">
+
+				<div class="col-md-7 col-md-push-3">
+					<button type="submit" class="btn btn-primary">Save Changes</button>
+					<input type="hidden" name="form_action_update_password" value="">
+					&nbsp;
+					<button type="reset" class="btn btn-default">Cancel</button>
+				</div>
+				<!-- /.col -->
+
+			</div>
+			<!-- /.form-group -->
+
+		</form>
+	</div>
+	<!-- /.tab-pane fade -->
+
+<?php } ?>
+
+</div>
+<!-- ./tab-content -->
+
+
+</div>
+<!-- /.col -->
+
+</div>
+<!-- /.row -->
 </div>
 <!-- /#content-container -->
 
@@ -351,9 +435,14 @@ require ROOT_PATH . 'app/views/sidebar.php';
 		$("#instructorId<?php echo $i;?>").select2("val", '<?php echo $appointmentData[$i][AppointmentHasStudentFetcher::DB_COLUMN_INSTRUCTOR_ID]?>');
 		$("#studentId<?php echo $i;?>").select2("enable", false);
 		$("#instructorId<?php echo $i;?>").select2("enable", false);
-
 		<?php } ?>
 
+		$('.list-group-item').on('click', function () {
+			if ($(this).attr('class') != 'list-group-item active') {
+				$('.list-group-item.active').removeClass('active');
+				$(this).addClass('active');
+			}
+		});
 		$courseId.select2();
 		$courseId.select2("val", '<?php echo $appointmentData[0][AppointmentFetcher::DB_COLUMN_COURSE_ID]?>');
 		$tutorId.select2();
