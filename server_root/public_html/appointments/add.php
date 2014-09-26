@@ -500,7 +500,8 @@ $(function () {
 				termId: $termId.select2('val')
 			},
 			error: function (xhr, status, error) {
-				$calendarTitle.text("there was an error while fetching appointments");
+				$calendarTitle.text("there was an error while fetching tutor's appointments");
+				console.log(xhr.responseText);
 			},
 			beforeSend: function () {
 				if (spinner == null) {
@@ -550,7 +551,7 @@ $(function () {
 				termId: $termId.val()
 			},
 			error: function (xhr, status, error) {
-				$('#calendar-title').text("there was an error while fetching appointments");
+				$('#calendar-title').text("there was an error while fetching all appointments");
 			},
 			beforeSend: function () {
 				if (spinner == null) {
@@ -579,6 +580,7 @@ $(function () {
 			case 'single_tutor_appointment_and_schedule':
 				if (!$tutorId.select2('val').match(/^[0-9]+$/)) throw new Error("Tutor is missing");
 				if (!$courseId.select2("val").match(/^[0-9]+$/)) throw new Error("Course is missing");
+				if (!$termId.select2("val").match(/^[0-9]+$/)) throw new Error("Course is missing");
 				$calendar.fullCalendar('addEventSource', singleTutorScheduleCalendar);
 				$calendar.fullCalendar('addEventSource', singleTutorAppointmentsCalendar);
 				break;

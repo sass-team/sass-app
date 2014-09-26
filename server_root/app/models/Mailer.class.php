@@ -52,7 +52,7 @@ class Mailer
 //			$tutorUser = UserFetcher::retrieveSingle($db, $appointment[AppointmentFetcher::DB_COLUMN_TUTOR_USER_ID]);
 //			$course = CourseFetcher::retrieveSingle($db, $courseId);
 
-			$appointment = AppointmentFetcher::retrieveSingleTutor($db, $tutorId, $termId);
+			$appointment = AppointmentFetcher::retrieveAllForSingleTutor($db, $tutorId, $termId);
 			$subject = self::SASS_SUBJECT_PREFIX . self::SASS_SUBJECT_PREFIX;
 			$alternativeEmail = self::DEV_SASS_GMAIL;
 			$alternativeName = self::SASS_APP_AUTOMATIC_SYSTEM_ALTERNATIVE_NAME;

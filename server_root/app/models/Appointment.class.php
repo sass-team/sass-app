@@ -68,7 +68,7 @@ class Appointment
 		Tutor::validateId($db, $tutorId);
 		Term::validateId($db, $termId);
 
-		$appointmentHours = Appointment::getSingleTutor($db, $tutorId, $termId);
+		$appointmentHours = Appointment::getAllForSingleTutor($db, $tutorId, $termId);
 		$appointmentHoursJSON = array();
 		foreach ($appointmentHours as $appointmentHour) {
 			$appointmentTitle = $appointmentHour[CourseFetcher::DB_COLUMN_CODE] . " - " .
@@ -93,10 +93,10 @@ class Appointment
 		return json_encode($appointmentHoursJSON);
 	}
 
-	public static function getSingleTutor($db, $tutorId, $termId) {
+	public static function getAllForSingleTutor($db, $tutorId, $termId) {
 		Tutor::validateId($db, $tutorId);
 		Term::validateId($db, $termId);
-		return AppointmentFetcher::retrieveSingleTutor($db, $tutorId, $termId);
+		return AppointmentFetcher::retrieveAllForSingleTutor($db, $tutorId, $termId);
 	}
 
 	public static function getAllStudentsWithAppointment($db, $id) {

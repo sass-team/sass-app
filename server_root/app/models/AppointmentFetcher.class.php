@@ -203,7 +203,7 @@ class AppointmentFetcher
 	}
 
 
-	public static function retrieveSingleTutor($db, $tutorId, $termId) {
+	public static function retrieveAllForSingleTutor($db, $tutorId, $termId) {
 		$query =
 			"SELECT `" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_EMAIL . "`, `" . self::DB_TABLE . "`.`" .
 			self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_START_TIME . "` , `" . self::DB_COLUMN_END_TIME . "`, `" .
@@ -232,7 +232,7 @@ class AppointmentFetcher
 
 			$query->execute();
 
-			return $query->fetch(PDO::FETCH_ASSOC);
+			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
 			throw new Exception("Could not retrieve data from database." . $e->getMessage());
 		}
