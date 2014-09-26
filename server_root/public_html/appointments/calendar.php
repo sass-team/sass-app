@@ -360,6 +360,10 @@ require ROOT_PATH . 'app/views/sidebar.php';
 			left: '50%' // Left position relative to parent
 		};
 
+		$termId.click(function () {
+			reloadCalendar('term_change');
+		});
+
 		function loadAllCalendars() {
 			try {
 				reloadCalendar();
