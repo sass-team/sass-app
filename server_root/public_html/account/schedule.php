@@ -40,9 +40,7 @@ function get($objects, $findId, $column) {
 
 	return false;
 }
-
 ?>
-
 
 <!DOCTYPE html>
 <!--[if lt IE 7]>

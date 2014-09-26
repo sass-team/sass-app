@@ -15,6 +15,8 @@ class AppointmentFetcher
 	const DB_COLUMN_COURSE_ID = "course_id";
 	const DB_COLUMN_TUTOR_USER_ID = "tutor_user_id";
 	const DB_COLUMN_TERM_ID = "term_id";
+	const DB_COLUMN_LABEL_MESSAGE = "label_message";
+	const DB_COLUMN_LABEL_COLOR = "label_color";
 
 	public static function insert($db, $dateStart, $dateEnd, $courseId, $studentsIds, $tutorId, $instructorsIds, $termId) {
 		date_default_timezone_set('Europe/Athens');

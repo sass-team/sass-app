@@ -97,15 +97,15 @@ require ROOT_PATH . 'app/views/sidebar.php';
 			<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
 			<strong>Oh
 				snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
-				?>
-			</div>
-			<?php
-		} else if (isModificationSuccess()) {
 			?>
-			<div class="alert alert-success">
-				<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-				<strong>Workshop successfully created!</strong> <br/>
-			</div>
+		</div>
+	<?php
+	} else if (isModificationSuccess()) {
+		?>
+		<div class="alert alert-success">
+			<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+			<strong>Workshop successfully created!</strong> <br/>
+		</div>
 	<?php } ?>
 
 	<div class="portlet">
@@ -456,7 +456,7 @@ $(function () {
 
 	function reloadCalendar(choice) {
 		var calendar = document.getElementById('appointments-schedule-calendar');
-		var spinner = new Spinner(opts).spin(calendar);
+		var spinner;
 
 		$calendarTitle.text("");
 //		$calendarTitle.append("<i class='fa fa-circle-o-notch fa-spin'></i>");
@@ -476,6 +476,18 @@ $(function () {
 			error: function (xhr, status, error) {
 				$calendarTitle.text("there was an error while retrieving schedules");
 				console.log(xhr.responseText);
+			},
+			beforeSend: function () {
+				if (spinner == null) {
+					spinner = new Spinner(opts).spin(calendar);
+				}
+
+			},
+			complete: function () {
+				if (spinner != null) {
+					spinner.stop();
+					spinner = null;
+				}
 			}
 		};
 		var singleTutorAppointmentsCalendar = {
@@ -489,6 +501,18 @@ $(function () {
 			},
 			error: function (xhr, status, error) {
 				$calendarTitle.text("there was an error while fetching appointments");
+			},
+			beforeSend: function () {
+				if (spinner == null) {
+					spinner = new Spinner(opts).spin(calendar);
+				}
+
+			},
+			complete: function () {
+				if (spinner != null) {
+					spinner.stop();
+					spinner = null;
+				}
 			}
 		};
 		var allSchedulesCalendar = {
@@ -503,6 +527,18 @@ $(function () {
 				$('#calendar-title').text("there was an error while retrieving schedules");
 				console.log(xhr.responseText);
 
+			},
+			beforeSend: function () {
+				if (spinner == null) {
+					spinner = new Spinner(opts).spin(calendar);
+				}
+
+			},
+			complete: function () {
+				if (spinner != null) {
+					spinner.stop();
+					spinner = null;
+				}
 			}
 		};
 		var allAppointmentsCalendar = {
@@ -515,6 +551,18 @@ $(function () {
 			},
 			error: function (xhr, status, error) {
 				$('#calendar-title').text("there was an error while fetching appointments");
+			},
+			beforeSend: function () {
+				if (spinner == null) {
+					spinner = new Spinner(opts).spin(calendar);
+				}
+
+			},
+			complete: function () {
+				if (spinner != null) {
+					spinner.stop();
+					spinner = null;
+				}
 			}
 		};
 		$calendar.fullCalendar('removeEventSource', singleTutorScheduleCalendar);
@@ -560,7 +608,6 @@ $(function () {
 			$calendarTitle.text($tutorId.select2('data').text);
 		}
 
-		spinner.stop();
 	}
 
 	function loadAllCalendars() {
