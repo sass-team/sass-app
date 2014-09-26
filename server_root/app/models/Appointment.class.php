@@ -8,6 +8,7 @@
  */
 class Appointment
 {
+	const STATUS_PENDING = "pending";
 
 	public static function add($db, $dateStart, $dateEnd, $courseId, $studentsIds, $tutorId, $instructorsIds, $termId,
 	                           $secretaryName) {

@@ -14,12 +14,18 @@ try {
 			exit();
 		}
 
+		$appointmentData = Appointment::getAllStudentsWithAppointment($db, $appointmentId);
+		$terms = TermFetcher::retrieveAll($db);
+
+		var_dump($appointmentData);
 //		$students = Appointment::getAllStudentsWithAppointment($db, $appointmentId);
 
 		$students = StudentFetcher::retrieveAll($db);
 		$courses = CourseFetcher::retrieveAll($db);
 		$instructors = InstructorFetcher::retrieveAll($db);
-
+		$tutors = TutorFetcher::retrieveAll($db);
+		$startTime = new DateTime($appointmentData[0][AppointmentFetcher::DB_COLUMN_START_TIME]);
+		$endTime = new DateTime($appointmentData[0][AppointmentFetcher::DB_COLUMN_END_TIME]);
 //		$course = Course::get($db, $students[0][AppointmentFetcher::DB_COLUMN_COURSE_ID]);
 //		$term = TermFetcher::retrieveSingle($db, $students[0][AppointmentFetcher::DB_COLUMN_TERM_ID]);
 //		$tutorName = $students[0][UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_FIRST_NAME] . " " .
@@ -94,85 +100,73 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <!-- #content-header -->
 
 <div id="content-container">
-	<div class="row">
+<div class="row">
 
-		<div class="col-md-3">
-			<div class="list-group">
+<div class="col-md-3">
+	<div class="list-group">
 
-				<a href="javascript:;" class="list-group-item active">
-					<h5><i class="fa fa-file-text-o"></i> &nbsp;&nbsp;A-12
-						<span class="label label-default">pending</span>
-						<span class="label label-warning">pending tutor</span>
-						<span class="label label-warning">pending secretary</span>
-						<span class="label label-success">completed</span>
-					</h5>
-				</a>
-				<a href="javascript:;" class="list-group-item">
-					<h5><i class="fa fa-file-text-o"></i> &nbsp;&nbsp;R-036582
+		<a href="javascript:;" class="list-group-item active">
+			<h5><i class="fa fa-file-text-o"></i>
+				&nbsp;&nbsp;A-<?php echo $appointmentData[0][AppointmentFetcher::DB_COLUMN_ID]; ?>
+				<span
+					class="label label-<?php echo $appointmentData[0][AppointmentFetcher::DB_COLUMN_LABEL_COLOR]; ?>">
+							<?php echo $appointmentData[0][AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE]; ?>
+						</span>
+			</h5>
+		</a>
+
+		<?php foreach ($appointmentData as $report): ?>
+			<a href="javascript:;" class="list-group-item">
+				<h5>
+					<i class="fa fa-file-text-o"></i> &nbsp;&nbsp;R
+
+					<?php if ($report[AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID] !== NULL): ?>
+						<?php echo "-" . $report[AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID]; ?>
+						<span class="label label-<?php echo $report[AppointmentFetcher::DB_COLUMN_LABEL_COLOR]; ?>">
+							<?php echo $report[AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE]; ?>
+						</span>
+					<?php else: ?>
 						<span class="label label-default">disabled</span>
-						<span class="label label-warning">pending fill</span>
-						<span class="label label-warning">pending approval</span>
-						<span class="label label-success">completed</span>
+					<?php endif; ?>
+				</h5>
+				<?php echo $report[UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_FIRST_NAME] . " " .
+					$report[UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_LAST_NAME]; ?>
+			</a>
+		<?php endforeach; ?>
 
-					</h5>
-					George Papadopoulos
-				</a>
-			</div>
+	</div>
+
+</div>
+<div class="col-md-9 col-sidebar-right">
+
+	<div class="portlet">
+		<div class="portlet-header">
+
+			<h3>
+				<i class="fa fa-file-text"></i>
+				Appointment Details
+			</h3>
 
 		</div>
-		<div class="col-md-9 col-sidebar-right">
+		<!-- /.portlet-header -->
 
-			<div class="portlet">
-				<div class="portlet-header">
+		<div class="portlet-content">
 
-					<h3>
-						<i class="fa fa-file-text"></i>
-						Appointment Details
-					</h3>
-
-				</div>
-				<!-- /.portlet-header -->
-
-				<div class="portlet-content">
-
-					<div class="form-group">
-						<form method="post" id="add-student-form"
-						      action="<?php echo BASE_URL . 'appointments/add'; ?>"
-						      class="form">
+			<div class="form-group">
+				<form method="post" id="add-student-form"
+				      action="<?php echo BASE_URL . 'appointments/add'; ?>"
+				      class="form">
 
 
-							<div class="form-group" id="student-instructor">
-								<div class="form-group">
-									<div class="input-group">
-										<span class="input-group-addon">Student</span>
-										<select name="studentsIds[]" class="form-control students" required>
-											<option></option>
-											<?php
-											foreach ($students as $student):
-												include(ROOT_PATH . "app/views/partials/student/select-options-view.html.php");
-											endforeach;
-											?>
-										</select>
-									</div>
-
-								</div>
-								<div class="form-group">
-									<div class="input-group">
-										<span class="input-group-addon">Instructor</span>
-										<select name="instructorIds[]" class="form-control instructors" required>
-											<option></option>
-											<?php foreach ($instructors as $instructor) {
-												include(ROOT_PATH . "app/views/partials/instructor/select-options-view.html.php");
-											}
-											?>
-										</select>
-									</div>
-								</div>
-							</div>
+					<div class="form-group" id="student-instructor">
+						<?php
+						for ($i = 0; $i < sizeof($appointmentData); $i++) {
+							?>
 							<div class="form-group">
 								<div class="input-group">
 									<span class="input-group-addon">Student</span>
-									<select name="studentsIds[]" class="form-control students" required>
+									<select name="studentsIds[]" id="studentId<?php echo $i; ?>" class="form-control"
+									        required>
 										<option></option>
 										<?php
 										foreach ($students as $student):
@@ -186,7 +180,8 @@ require ROOT_PATH . 'app/views/sidebar.php';
 							<div class="form-group">
 								<div class="input-group">
 									<span class="input-group-addon">Instructor</span>
-									<select  name="instructorIds[]" class="form-control instructors" required>
+									<select name="instructorIds[]" id="instructorId<?php echo $i; ?>"
+									        class="form-control" required disabled>
 										<option></option>
 										<?php foreach ($instructors as $instructor) {
 											include(ROOT_PATH . "app/views/partials/instructor/select-options-view.html.php");
@@ -195,117 +190,120 @@ require ROOT_PATH . 'app/views/sidebar.php';
 									</select>
 								</div>
 							</div>
+						<?php } ?>
 					</div>
-							<hr/>
+			</div>
+			<hr/>
 
-							<div class="form-group">
-								<div class="input-group">
-									<span class="input-group-addon"><label for="courseId">Course</label></span>
-									<select id="courseId" name="courseId" class="form-control" required>
-										<option></option>
-										<?php foreach ($courses as $course) {
-											include(ROOT_PATH . "app/views/partials/course/select-options-view.html.php");
-										}
-										?>
-									</select>
-								</div>
-							</div>
+			<div class="form-group">
+				<div class="input-group">
+					<span class="input-group-addon"><label for="courseId">Course</label></span>
+					<select id="courseId" name="courseId" class="form-control" required disabled>
+						<?php foreach ($courses as $course) {
+							include(ROOT_PATH . "app/views/partials/course/select-options-view.html.php");
+						}
+						?>
+					</select>
+				</div>
+			</div>
 
 
-							<div class="form-group">
-								<div class="input-group">
+			<div class="form-group">
+				<div class="input-group">
 										<span class="input-group-addon"><label id="label-instructor-text"
 										                                       for="tutorId">Tutors</label></span>
-									<select id="tutorId" name="tutorId" class="form-control" required>
-										<option></option>
-									</select>
-									<input id="value" type="hidden" style="width:300px"/>
-								</div>
-							</div>
+					<select id="tutorId" name="tutorId" class="form-control" required disabled>
+						<?php foreach ($tutors as $tutor) {
+							include(ROOT_PATH . "app/views/partials/tutor/select-options-view.html.php");
+						}
+						?>               </select>
+					<input id="value" type="hidden" style="width:300px"/>
+				</div>
+			</div>
 
 
-							<div class="form-group">
-								<div class='input-group date' id='dateTimePickerStart'>
+			<div class="form-group">
+				<div class='input-group date' id='dateTimePickerStart'>
 											<span class="input-group-addon"><label for="dateTimePickerStart">
 													Starts At</label></span>
-									<input type='text' name='dateTimePickerStart' class="form-control" required/>
+					<input type='text' name='dateTimePickerStart' class="form-control" required disabled/>
                                  <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
-								</div>
-							</div>
+				</div>
+			</div>
 
 
-							<div class="form-group">
-								<div class='input-group date' id='dateTimePickerEnd'>
+			<div class="form-group">
+				<div class='input-group date' id='dateTimePickerEnd'>
                                         <span class="input-group-addon"><label for="dateTimePickerEnd">Ends
 		                                        At</label></span>
-									<input type='text' name='dateTimePickerEnd' class="form-control" required/>
+					<input type='text' name='dateTimePickerEnd' class="form-control" required disabled/>
 										<span class="input-group-addon">
 											<span class="glyphicon glyphicon-calendar">
 										</span>
-								</div>
-							</div>
-
-
-							<div class="form-group">
-								<div class="input-group">
-									<button type="button" class="btn btn-default btn-sm addButton"
-									        data-template="textbox">
-										Add One More Student
-									</button>
-								</div>
-							</div>
-
-							<div class="form-group hide" id="textboxTemplate">
-								<div class="input-group">
-									<button type="button" class="btn btn-default btn-sm removeButton">Remove
-									</button>
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="input-group">
-									<span class="input-group-addon"><label for="termId">Term</label></span>
-									<select id="termId" name="termId" class="form-control" required>
-										<?php
-										foreach ($terms as $term) {
-											include(ROOT_PATH . "app/views/partials/term/select-options-view.html.php");
-										}
-										?>
-									</select>
-								</div>
-							</div>
-
-							<div class="form-group">
-								<?php
-								if (empty($errors) === false) {
-									?>
-									<div class="alert alert-danger">
-										<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-										<strong>Oh
-											snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
-										?>
-									</div>
-								<?php
-								} else if (isModificationSuccess()) {
-									?>
-									<div class="alert alert-success">
-										<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-										<strong>Workshop successfully created!</strong> <br/>
-									</div>
-								<?php } ?>
-
-								<button type="submit" class="btn btn-block btn-primary">Update</button>
-								<input type="hidden" name="hiddenSubmitPrsd" value="">
-							</div>
-						</form>
-					</div>
-					<!-- /.form-group -->
-
 				</div>
-				<!-- /.form-group -->
-
 			</div>
 
+
+			<div class="form-group">
+				<div class="input-group">
+					<button type="button" class="btn btn-default btn-sm addButton"
+					        data-template="textbox" disabled>
+						Add One More Student
+					</button>
+				</div>
+			</div>
+
+			<div class="form-group hide" id="textboxTemplate">
+				<div class="input-group">
+					<button type="button" class="btn btn-default btn-sm removeButton">Remove
+					</button>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="input-group">
+					<span class="input-group-addon"><label for="termId">Term</label></span>
+					<select id="termId" name="termId" class="form-control" required disabled>
+						<?php
+						foreach ($terms as $term) {
+							include(ROOT_PATH . "app/views/partials/term/select-options-view.html.php");
+						}
+						?>
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<?php
+				if (empty($errors) === false) {
+					?>
+					<div class="alert alert-danger">
+						<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+						<strong>Oh
+							snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
+						?>
+					</div>
+				<?php
+				} else if (isModificationSuccess()) {
+					?>
+					<div class="alert alert-success">
+						<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+						<strong>Workshop successfully created!</strong> <br/>
+					</div>
+				<?php } ?>
+
+				<button type="submit" class="btn btn-block btn-primary" disabled>Update</button>
+				<input type="hidden" name="hiddenSubmitPrsd" value="">
+			</div>
+			</form>
 		</div>
+		<!-- /.form-group -->
+
+	</div>
+	<!-- /.form-group -->
+
+</div>
+
+</div>
 
 </div>
 <!-- /#content-container -->
@@ -336,6 +334,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 <script type="text/javascript">
 	$(function () {
+		var $dateTimePickerStart = $('#dateTimePickerStart');
 		var $courseId = $("#courseId");
 		var $termId = $("#termId");
 		var $tutorId = $("#tutorId");
@@ -345,8 +344,59 @@ require ROOT_PATH . 'app/views/sidebar.php';
 		var $instructors = $(".instructors");
 		var $students = $(".students");
 
-		$students.select2();
-		$instructors.select2();
+		<?php for($i = 0; $i < sizeof($appointmentData); $i++){?>
+		$("#studentId<?php echo $i;?>").select2();
+		$("#instructorId<?php echo $i;?>").select2();
+		$("#studentId<?php echo $i;?>").select2("val", '<?php echo $appointmentData[$i][AppointmentHasStudentFetcher::DB_COLUMN_STUDENT_ID]?>');
+		$("#instructorId<?php echo $i;?>").select2("val", '<?php echo $appointmentData[$i][AppointmentHasStudentFetcher::DB_COLUMN_INSTRUCTOR_ID]?>');
+		$("#studentId<?php echo $i;?>").select2("enable", false);
+		$("#instructorId<?php echo $i;?>").select2("enable", false);
+
+		<?php } ?>
+
+		$courseId.select2();
+		$courseId.select2("val", '<?php echo $appointmentData[0][AppointmentFetcher::DB_COLUMN_COURSE_ID]?>');
+		$tutorId.select2();
+		$tutorId.select2("val", '<?php echo $appointmentData[0][UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_ID]?>');
+
+
+		var startDateDefault;
+		if (moment().minute() >= 30) {
+			startDateDefault = moment().add('1', 'hours');
+			startDateDefault.minutes(0);
+		} else {
+			startDateDefault = moment();
+			startDateDefault.minutes(30);
+		}
+
+		var minimumStartDate = startDateDefault.clone();
+		minimumStartDate.subtract('31', 'minutes');
+		var minimumMaxDate = moment().add('14', 'day');
+
+		var endDateDefault = startDateDefault.clone();
+		endDateDefault.add('30', 'minutes');
+		var minimumEndDate = endDateDefault.clone();
+		minimumEndDate.subtract('31', 'minutes');
+
+		$dateTimePickerStart.datetimepicker({
+			defaultDate: '<?php echo $startTime->format('m/d/Y g:i A');?>',
+			minDate: minimumStartDate,
+			maxDate: minimumMaxDate,
+			minuteStepping: 30,
+			daysOfWeekDisabled: [0, 6],
+			sideBySide: true,
+			strict: true
+		});
+
+		$dateTimePickerEnd.datetimepicker({
+			defaultDate: '<?php echo $endTime->format('m/d/Y g:i A');?>',
+			minDate: minimumEndDate,
+			minuteStepping: 30,
+			daysOfWeekDisabled: [0, 6],
+			sideBySide: true,
+			strict: true
+		});
+
 	});
 </script>
 
