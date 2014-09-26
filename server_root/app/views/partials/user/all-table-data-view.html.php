@@ -39,7 +39,7 @@ $mobile = $curUser[UserFetcher::DB_COLUMN_MOBILE];
 	<?php if (!$user->isTutor()): ?>
 		<td class="text-center">
 			<?php if (Tutor::isUserTypeTutor($position)) { ?>
-				<a class="btn btn-default btn-sm center-block ui-popover" data-toggle="tooltip" data-placement="right"
+				<a class="btn btn-default btn-sm center-block ui-popover" data-toggle="tooltip" data-placement="top"
 				   data-trigger="hover"
 				   data-content="
 			   <?php
@@ -64,7 +64,7 @@ $mobile = $curUser[UserFetcher::DB_COLUMN_MOBILE];
 	<?php if (!$user->isTutor()): ?>
 		<td class="text-center">
 			<?php if (Tutor::isUserTypeTutor($position)) { ?>
-				<a class="btn btn-default btn-sm center-block ui-popover" data-toggle="tooltip" data-placement="right"
+				<a class="btn btn-default btn-sm center-block ui-popover" data-toggle="tooltip" data-placement="top"
 				   data-trigger="hover"
 				   data-html="true"
 				   data-content="
