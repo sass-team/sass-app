@@ -53,6 +53,7 @@ class ReportFetcher
 	}
 
 
+
 	public static function retrieveAll($db) {
 		date_default_timezone_set('Europe/Athens');
 

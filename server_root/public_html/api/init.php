@@ -31,7 +31,8 @@ require_once ROOT_PATH . "app/models/AppointmentHasStudentFetcher.class.php";
 require_once ROOT_PATH . "app/models/Schedule.class.php";
 require_once ROOT_PATH . "app/models/ScheduleFetcher.class.php";
 
-require_once ROOT_PATH . "app/models/ReportFetcher.php";
+require_once ROOT_PATH . "app/models/ReportFetcher.class.php";
+require_once ROOT_PATH . "app/models/Report.class.php";
 
 require_once ROOT_PATH . "app/models/Secretary.class.php";
 
@@ -50,5 +51,6 @@ require_once ROOT_PATH . "app/models/Student.class.php";
 require_once ROOT_PATH . "app/models/Dates.class.php";
 
 require_once ROOT_PATH . "app/models/Mailer.class.php";
+
 $db = new Database();
 

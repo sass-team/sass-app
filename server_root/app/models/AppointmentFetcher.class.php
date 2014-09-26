@@ -184,13 +184,33 @@ class AppointmentFetcher
 		}
 	}
 
+	public static function updateLabel($db, $labelMessage, $labelColor) {
+		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+					SET `" . self::DB_COLUMN_LABEL_MESSAGE . "`= :label_message
+					WHERE `" . self::DB_COLUMN_LABEL_COLOR . "` = :label_color";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':label_message', $labelMessage, PDO::PARAM_STR);
+			$query->bindParam(':label_color', $labelColor, PDO::PARAM_STR);
+
+			$query->execute();
+			return true;
+		} catch (Exception $e) {
+			throw new Exception("Could not update data.");
+		}
+		return false;
+	}
+
 
 	public static function retrieveSingleTutor($db, $tutorId, $termId) {
 		$query =
-			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_START_TIME . "` , `" .
-			self::DB_COLUMN_END_TIME . "`, `" . self::DB_COLUMN_COURSE_ID . "`,  `" . self::DB_COLUMN_TUTOR_USER_ID . "`,
-			`" . self::DB_COLUMN_TUTOR_USER_ID . "`, `" . UserFetcher::DB_COLUMN_FIRST_NAME . "` , `" .
-			UserFetcher::DB_COLUMN_LAST_NAME . "`, `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_CODE . "`
+			"SELECT `" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_EMAIL . "`, `" . self::DB_TABLE . "`.`" .
+			self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_START_TIME . "` , `" . self::DB_COLUMN_END_TIME . "`, `" .
+			self::DB_COLUMN_COURSE_ID . "`,  `" . self::DB_COLUMN_TUTOR_USER_ID . "`, `" . self::DB_COLUMN_TUTOR_USER_ID .
+			"`, `" . UserFetcher::DB_COLUMN_FIRST_NAME . "` , `" . UserFetcher::DB_COLUMN_LAST_NAME . "`, `" .
+			CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_CODE . "`, `" . CourseFetcher::DB_TABLE . "`.`" .
+			CourseFetcher::DB_COLUMN_NAME . "`
 			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
 			INNER JOIN  `" . DB_NAME . "`.`" . UserFetcher::DB_TABLE . "`
 			ON `" . DB_NAME . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "`  = `" .
@@ -212,23 +232,23 @@ class AppointmentFetcher
 
 			$query->execute();
 
-			return $query->fetchAll(PDO::FETCH_ASSOC);
+			return $query->fetch(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
 			throw new Exception("Could not retrieve data from database." . $e->getMessage());
 		}
 	}
-
 
 	/**
 	 * Appointments are considered completed if 30 minutes have from the passing of it's start time.
 	 * @param $db
 	 * @throws Exception
 	 */
-	public static function  retrieveCompletedWithoutReports($db) {
+	public static function  retrieveCmpltWithoutRptsOnCurTerms($db) {
 		$query =
 			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` , `" . self::DB_TABLE . "`.`" .
-			self::DB_COLUMN_START_TIME . "` , `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_END_TIME . "`, `" .
-			self::DB_TABLE . "`.`" . self::DB_COLUMN_COURSE_ID . "`, `" . self::DB_TABLE . "`.`" .
+			self::DB_COLUMN_START_TIME . "` , `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_END_TIME . "`,
+			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`,
+			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_COURSE_ID . "`, `" . self::DB_TABLE . "`.`" .
 			self::DB_COLUMN_TUTOR_USER_ID . "`,  `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "`,
 			`" . AppointmentHasStudentFetcher::DB_TABLE . "`.`" . AppointmentHasStudentFetcher::DB_COLUMN_STUDENT_ID . "`,
 			`" . AppointmentHasStudentFetcher::DB_TABLE . "`.`" . AppointmentHasStudentFetcher::DB_COLUMN_ID . "` AS
@@ -238,9 +258,13 @@ class AppointmentFetcher
 			INNER JOIN  `" . DB_NAME . "`.`" . AppointmentHasStudentFetcher::DB_TABLE . "`
 			ON `" . DB_NAME . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`  = `" .
 			AppointmentHasStudentFetcher::DB_TABLE . "`.`" . AppointmentHasStudentFetcher::DB_COLUMN_APPOINTMENT_ID . "`
+			INNER JOIN  `" . DB_NAME . "`.`" . TermFetcher::DB_TABLE . "`
+			ON `" . DB_NAME . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`  = `" .
+			TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "`
 			WHERE TIME_TO_SEC(TIMEDIFF(NOW(),  `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "`))/60 > 30
 			AND `" . AppointmentHasStudentFetcher::DB_TABLE . "`.`" .
 			AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID . "` IS NULL
+			AND CURRENT_TIMESTAMP() BETWEEN `" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" . TermFetcher::DB_COLUMN_END_DATE . "`
 			ORDER BY `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "` DESC";
 
 		try {

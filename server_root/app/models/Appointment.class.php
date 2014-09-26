@@ -8,7 +8,9 @@
  */
 class Appointment
 {
-	const STATUS_PENDING = "pending";
+	const LABEL_MESSAGE_PENDING = "pending";
+	const LABEL_COLOR_WARNING = "warning";
+	const LABEL_MESSAGE_PENDING_TUTOR = "pending tutor";
 
 	public static function add($db, $dateStart, $dateEnd, $courseId, $studentsIds, $tutorId, $instructorsIds, $termId,
 	                           $secretaryName) {
