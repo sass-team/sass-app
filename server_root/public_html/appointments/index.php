@@ -17,7 +17,6 @@ try {
 		$appointmentData = Appointment::getAllStudentsWithAppointment($db, $appointmentId);
 		$terms = TermFetcher::retrieveAll($db);
 
-		var_dump($appointmentData);
 //		$students = Appointment::getAllStudentsWithAppointment($db, $appointmentId);
 
 		$students = StudentFetcher::retrieveAll($db);
@@ -314,67 +313,209 @@ for ($i = 0; $i < sizeof($appointmentData); $i++) {
 
 	<div class="tab-pane fade" id="report-tab<?php echo $i; ?>">
 
-		<h3 class="">Change Your Password</h3>
+	<form action="<?php echo BASE_URL . "appointments/" .
+		$appointmentData[$i][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID]; ?>"
+	      class="form-horizontal parsley-form"
+	      method="post">
+	<h3>Assignment Details</h3>
+
+	<div class="form-group">
 
 
-		<form action="<?php echo BASE_URL; ?>account/settings" class="form-horizontal" method="post">
+		<div class="col-md-8">
+			<label for="project-topic-other">Project / Topic / Other</label>
+			<textarea type="password" name="oldPassword" id="project-topic-other" class="form-control"></textarea>
+		</div>
+		<!-- /.col -->
+		<div class="col-md-4">
+			<label for="other">Other</label>
+			<textarea type="password" name="oldPassword" id="other" class="form-control"></textarea>
+		</div>
+		<!-- /.col -->
 
-			<div class="form-group">
-
-				<label class="col-md-3" for="oldPassword">Old Password</label>
-
-				<div class="col-md-7">
-					<input type="password" name="oldPassword" id="oldPassword" class="form-control"/>
-				</div>
-				<!-- /.col -->
-
-			</div>
-			<!-- /.form-group -->
+	</div>
+	<!-- /.form-group -->
 
 
+	<hr/>
+
+	<h3>Focus of Conference</h3>
+
+	<div class="form-group">
+
+		<div class="col-md-6">
+			<label for="focus-of-conference-1">What were the <strong>student&#39;s concerns&#63;</strong> (Please
+				indicate briefly)</label>
+			<textarea type="password" name="oldPassword" id="focus-of-conference-1" class="form-control"
+			          placeholder="Maximization/Preparation for Final"></textarea>
+		</div>
+
+		<div class="col-md-6">
+			<label for="focus-of-conference-2">Briefly mention any <strong>relevant feedback or guidelines</strong>
+				the instructor has
+				provided &#40;if applicable&#41;</label>
+			<textarea type="password" name="oldPassword" id="focus-of-conference-2" class="form-control"></textarea>
+		</div>
+
+		<div class="col-md-6">
 			<hr/>
+			<label for="focus-of-conference-1">What did the <strong>student bring along?</strong></label>
 
-
-			<div class="form-group">
-
-				<label class="col-md-3" for="newPassword1">New Password</label>
-
-				<div class="col-md-7">
-					<input type="password" name="newPassword1" id="newPassword1" class="form-control"/>
-				</div>
-				<!-- /.col -->
-
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" name="checkbox-1" class="" data-mincheck="1">
+					Assignment &#40;graded&#41;
+				</label>
 			</div>
-			<!-- /.form-group -->
-
-			<div class="form-group">
-
-				<label class="col-md-3" for="newPassword2">New Password Confirm</label>
-
-				<div class="col-md-7">
-					<input type="password" name="newPassword2" id="newPassword2" class="form-control"/>
-				</div>
-				<!-- /.col -->
-
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" name="checkbox-1" class="" data-mincheck="1">
+					Draft
+				</label>
 			</div>
-			<!-- /.form-group -->
-
-			<br/>
-
-			<div class="form-group">
-
-				<div class="col-md-7 col-md-push-3">
-					<button type="submit" class="btn btn-primary">Save Changes</button>
-					<input type="hidden" name="form_action_update_password" value="">
-					&nbsp;
-					<button type="reset" class="btn btn-default">Cancel</button>
-				</div>
-				<!-- /.col -->
-
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" name="checkbox-1" class="" data-mincheck="1">
+					Instructor&#39;s feedback
+				</label>
 			</div>
-			<!-- /.form-group -->
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" name="checkbox-1" class="" data-mincheck="1">
+					Textbook
+				</label>
+			</div>
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" name="checkbox-1" class="" data-mincheck="1">
+					Students Notes
+				</label>
+			</div>
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" name="checkbox-1" class="" data-mincheck="1">
+					Assignment sheet
+				</label>
+			</div>
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" name="checkbox-1" class="" data-mincheck="1">
+					Exercise on <input type="text" name="focus-conference-3-exercise"/>
+				</label>
+			</div>
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" name="checkbox-1" class="" data-mincheck="1">
+					Other <input type="text" name="focus-conference-3-other"/>
+				</label>
+			</div>
+		</div>
 
-		</form>
+		<div class="col-md-6">
+			<hr/>
+			<label for="focus-of-conference-2">What was the <strong>primary focus of the
+					conference&#63;</strong></label>
+
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" name="checkbox-2" class="" data-mincheck="1">
+					Discussion of concepts
+				</label>
+			</div>
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" name="checkbox-2" class="" data-mincheck="1">
+					Organization of thoughts/ideas
+				</label>
+			</div>
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" name="checkbox-2" class="" data-mincheck="1">
+					Expression &#40;grammar, syntax, diction, etc.&#41;
+				</label>
+			</div>
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" name="checkbox-2" class="" data-mincheck="1">
+					Exercises
+				</label>
+			</div>
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" name="checkbox-2" class="" data-mincheck="1">
+					Academic skills
+				</label>
+			</div>
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" name="checkbox-2" class="" data-mincheck="1">
+					Citations &#38; Referencing
+				</label>
+			</div>
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" name="checkbox-2" class="" data-mincheck="1">
+					Other
+				</label>
+			</div>
+		</div>
+	</div>
+	<!-- /.form-group -->
+
+
+	<hr/>
+	<h3>Conclusion/Wrap-up</h3>
+
+	<div class="form-group">
+		<div class="col-md-12">
+			<label for="focus-of-conference-1">Overall <strong>outcome of session</strong> &#40;please check all that
+				apply
+				&#41;</label>
+
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" name="checkbox-3">
+					The student reported that his/her questions/concerns had been addressed
+				</label>
+			</div>
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" name="checkbox-3">
+					The student asked to schedule another session to discuss issues further
+				</label>
+			</div>
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" name="checkbox-3">
+					The student was advised to return after clarifying her/his concerns
+				</label>
+			</div>
+		</div>
+		<div class="col-md-12">
+			<div class="col-md-6">
+				<hr/>
+			</div>
+			<label class="col-md-12" for="focus-of-conference-1">Additional comments</label>
+			<textarea class="col-md-12" name="conclusion-additional-comments"></textarea>
+		</div>
+	</div>
+
+	<br/>
+
+	<div class="form-group">
+
+		<div class="col-md-12">
+			<button type="submit" class="btn btn-primary">Complete report</button>
+			<input type="hidden" name="form_action_update_password" value="">
+			&nbsp;
+			<button type="reset" class="btn btn-default">Cancel</button>
+		</div>
+		<!-- /.col -->
+
+	</div>
+	<!-- /.form-group -->
+
+	</form>
 	</div>
 	<!-- /.tab-pane fade -->
 
@@ -408,6 +549,7 @@ for ($i = 0; $i < sizeof($appointmentData); $i++) {
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/textarea-counter/jquery.textarea-counter.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/select2/select2.js"></script>
 
+<script src="<?php echo BASE_URL; ?>assets/js/plugins/parsley/parsley.js"></script>
 
 <script
 	src="<?php echo BASE_URL; ?>assets/js/plugins/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js">
