@@ -197,12 +197,12 @@ $section = "staff";
 <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!-->
 <html class="no-js"> <!--<![endif]-->
-<?php require ROOT_PATH . 'app/views/head.php'; ?>
+<?php require ROOT_PATH . 'views/head.php'; ?>
 <body>
 <div id="wrapper">
 <?php
-require ROOT_PATH . 'app/views/header.php';
-require ROOT_PATH . 'app/views/sidebar.php';
+require ROOT_PATH . 'views/header.php';
+require ROOT_PATH . 'views/sidebar.php';
 ?>
 
 
@@ -329,7 +329,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 							<?php
 							if (empty($errors) === true) {
 								foreach ($teachingCourses as $course) {
-									include(ROOT_PATH . "app/views/partials/course/table-data-view.html.php");
+									include(ROOT_PATH . "views/partials/course/table-data-view.html.php");
 
 								}
 							} ?>
@@ -439,7 +439,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 					<select id="majorId" name="majorId" class="form-control">
 						<?php foreach ($majors as $major) {
-							include(ROOT_PATH . "app/views/partials/major/select-options-view.html.php");
+							include(ROOT_PATH . "views/partials/major/select-options-view.html.php");
 						}
 						?>
 					</select>
@@ -625,7 +625,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 											<?php
 											foreach ($notTeachingCourses as $course) {
-												include(ROOT_PATH . "app/views/partials/course/select-options-view.html.php");
+												include(ROOT_PATH . "views/partials/course/select-options-view.html.php");
 											}
 											?>
 
@@ -643,7 +643,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 											<?php
 											foreach ($terms as $term) {
-												include(ROOT_PATH . "app/views/partials/term/select-options-view.html.php");
+												include(ROOT_PATH . "views/partials/term/select-options-view.html.php");
 											}
 											?>
 
@@ -746,7 +746,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 
 									<?php foreach ($notTeachingCourses as $course) {
-										include(ROOT_PATH . "app/views/partials/course/select-options-view.html.php");
+										include(ROOT_PATH . "views/partials/course/select-options-view.html.php");
 									}
 									?>
 
@@ -792,12 +792,12 @@ require ROOT_PATH . 'app/views/sidebar.php';
 </div>
 <!-- /.modal -->
 
-<?php include ROOT_PATH . "app/views/footer.php"; ?>
+<?php include ROOT_PATH . "views/footer.php"; ?>
 </div>
 <!-- #wrapper -->
 
 
-<?php include ROOT_PATH . "app/views/assets/footer_common.php"; ?>
+<?php include ROOT_PATH . "views/assets/footer_common.php"; ?>
 
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/select2/select2.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/icheck/jquery.icheck.js"></script>

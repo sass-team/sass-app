@@ -107,12 +107,12 @@ $section = "staff";
 <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!-->
 <html class="no-js"> <!--<![endif]-->
-<?php require ROOT_PATH . 'app/views/head.php'; ?>
+<?php require ROOT_PATH . 'views/head.php'; ?>
 <body>
 <div id="wrapper">
 <?php
-require ROOT_PATH . 'app/views/header.php';
-require ROOT_PATH . 'app/views/sidebar.php';
+require ROOT_PATH . 'views/header.php';
+require ROOT_PATH . 'views/sidebar.php';
 ?>
 
 
@@ -233,7 +233,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 											if (empty($errors) === true) {
 												$counter = 1;
 												foreach ($teachingCourses as $course) {
-													include(ROOT_PATH . "app/views/partials/course/table-data-profile-view.html.php");
+													include(ROOT_PATH . "views/partials/course/table-data-profile-view.html.php");
 													$counter = $counter + 1;
 												}
 											} ?>
@@ -290,7 +290,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 														<?php
 														if (empty($errors) === true) {
 															foreach ($schedules as $schedule) {
-																include(ROOT_PATH . "app/views/partials/schedule/profile-table-data-view.html.php");
+																include(ROOT_PATH . "views/partials/schedule/profile-table-data-view.html.php");
 															}
 														}
 														?>
@@ -415,7 +415,7 @@ else: ?>
 										<?php
 										if (empty($errors) === true) {
 											foreach (array_reverse($users) as $curUser) {
-												include(ROOT_PATH . "app/views/partials/user/all-table-data-view.html.php");
+												include(ROOT_PATH . "views/partials/user/all-table-data-view.html.php");
 											}
 										} ?>
 										</tbody>
@@ -440,12 +440,12 @@ else: ?>
 </div>
 <!-- #content -->
 
-<?php include ROOT_PATH . "app/views/footer.php"; ?>
+<?php include ROOT_PATH . "views/footer.php"; ?>
 
 </div>
 <!-- #wrapper -->
 
-<?php include ROOT_PATH . "app/views/assets/footer_common.php"; ?>
+<?php include ROOT_PATH . "views/assets/footer_common.php"; ?>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/select2/select2.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/icheck/jquery.icheck.js"></script>
 

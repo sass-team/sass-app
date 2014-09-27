@@ -29,12 +29,12 @@ $mobileNum = $user->getMobileNum();
 <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!-->
 <html class="no-js"> <!--<![endif]-->
-<?php require ROOT_PATH . 'app/views/head.php'; ?>
+<?php require ROOT_PATH . 'views/head.php'; ?>
 <body>
 <div id="wrapper">
 <?php
-require ROOT_PATH . 'app/views/header.php';
-require ROOT_PATH . 'app/views/sidebar.php';
+require ROOT_PATH . 'views/header.php';
+require ROOT_PATH . 'views/sidebar.php';
 ?>
 
 
@@ -175,7 +175,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 								if (empty($errors) === true) {
 									$counter = 1;
 									foreach ($teachingCourses as $course) {
-										include(ROOT_PATH . "app/views/partials/course/table-data-profile-view.html.php");
+										include(ROOT_PATH . "views/partials/course/table-data-profile-view.html.php");
 										$counter = $counter + 1;
 									}
 								} ?>
@@ -235,7 +235,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 											<?php
 											if (empty($errors) === true) {
 												foreach ($schedules as $schedule) {
-													include(ROOT_PATH . "app/views/partials/schedule/profile-table-data-view.html.php");
+													include(ROOT_PATH . "views/partials/schedule/profile-table-data-view.html.php");
 												}
 											}
 											?>
@@ -285,12 +285,12 @@ require ROOT_PATH . 'app/views/sidebar.php';
 </div>
 <!-- #content -->
 
-<?php include ROOT_PATH . "app/views/footer.php"; ?>
+<?php include ROOT_PATH . "views/footer.php"; ?>
 
 </div>
 <!-- #wrapper -->
 
-<?php include ROOT_PATH . "app/views/assets/footer_common.php"; ?>
+<?php include ROOT_PATH . "views/assets/footer_common.php"; ?>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/autosize/jquery.autosize.min.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/textarea-counter/jquery.textarea-counter.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/select2/select2.js"></script>
@@ -316,15 +316,15 @@ require ROOT_PATH . 'app/views/sidebar.php';
 				<?php if($curUser->isTutor()){
 					if(sizeof($schedules) <= 1){
 						foreach($schedules as $schedule){
-							include(ROOT_PATH . "app/views/partials/schedule/fullcalendar-single.php");
+							include(ROOT_PATH . "views/partials/schedule/fullcalendar-single.php");
 						}
 					 }else{
 					   for($i = 0; $i < (sizeof($schedules) - 1); $i++){
-					      include(ROOT_PATH . "app/views/partials/schedule/fullcalendar-multi.php");
+					      include(ROOT_PATH . "views/partials/schedule/fullcalendar-multi.php");
 						}
 						$lastScheduleIndex = sizeof($schedules)-1;
 						$schedule = $schedules[$lastScheduleIndex];
-						include(ROOT_PATH . "app/views/partials/schedule/fullcalendar-multi.php");
+						include(ROOT_PATH . "views/partials/schedule/fullcalendar-multi.php");
 					}
 				}
 				?>

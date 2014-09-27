@@ -5,34 +5,52 @@ $general->loggedOutProtect();
 $section = "appointments";
 
 try {
-	if (isUrlRequestingSingleAppointment()) {
-		$pageTitle = "Single Appointment";
-		$appointmentId = $_GET['appointmentId'];
+	if (!isUrlValid() || ($user->isTutor() && !Tutor::hasAppointmentWithId($db, $user->getId(), $_GET['appointmentId']))) {
+		header('Location: ' . BASE_URL . "error-403");
+		exit();
+	}
 
-		if ($user->isTutor() && !Tutor::hasAppointmentWithId($db, $user->getId(), $appointmentId)) {
-			header('Location: ' . BASE_URL . "error-403");
-			exit();
+	$pageTitle = "Single Appointment";
+	$appointmentId = $_GET['appointmentId'];
+	$studentsAppointmentData = Appointment::getAllStudentsWithAppointment($db, $appointmentId);
+	$terms = TermFetcher::retrieveAll($db);
+	$students = StudentFetcher::retrieveAll($db);
+	$courses = CourseFetcher::retrieveAll($db);
+	$instructors = InstructorFetcher::retrieveAll($db);
+	$tutors = TutorFetcher::retrieveAll($db);
+	$startDateTime = new DateTime($studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_START_TIME]);
+	$endDateTime = new DateTime($studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_END_TIME]);
+	$nowDateTime = new DateTime();
+
+
+	if ($studentsAppointmentData[0][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID] !== NULL) {
+		$reports = Report::getAllWithAppointmentId($db, $appointmentId);
+		var_dump($reports);
+	}
+
+//	if (($studentsAppointmentData[0][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID] === NULL)){
+//
+//	}
+	if (isUrlRqstngManualReportCreation()) {
+		var_dump($studentsAppointmentData);
+
+		if (($studentsAppointmentData[0][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID] === NULL) &&
+			($nowDateTime > $startDateTime)
+		) {
+			$students = AppointmentHasStudentFetcher::retrieveStudentsWithAppointment($db, $appointmentId);
+			$appointment = Appointment::getSingle($db, $appointmentId);
+			foreach ($students as $student) {
+				$reportId = ReportFetcher::insert($db, $student[AppointmentHasStudentFetcher::DB_COLUMN_STUDENT_ID],
+					$student[AppointmentHasStudentFetcher::DB_COLUMN_ID],
+					$student[AppointmentHasStudentFetcher::DB_COLUMN_INSTRUCTOR_ID]);
+			}
+			AppointmentFetcher::updateLabel($db, $appointmentId, Appointment::LABEL_MESSAGE_PENDING_TUTOR,
+				Appointment::LABEL_COLOR_WARNING);
+
+			if (!$user->isTutor()) Mailer::sendTutorNewReportsCronOnly($db, $appointment);
 		}
 
-		$appointmentData = Appointment::getAllStudentsWithAppointment($db, $appointmentId);
-		$terms = TermFetcher::retrieveAll($db);
-
-//		$students = Appointment::getAllStudentsWithAppointment($db, $appointmentId);
-
-		$students = StudentFetcher::retrieveAll($db);
-		$courses = CourseFetcher::retrieveAll($db);
-		$instructors = InstructorFetcher::retrieveAll($db);
-		$tutors = TutorFetcher::retrieveAll($db);
-		$startTime = new DateTime($appointmentData[0][AppointmentFetcher::DB_COLUMN_START_TIME]);
-		$endTime = new DateTime($appointmentData[0][AppointmentFetcher::DB_COLUMN_END_TIME]);
-//		$course = Course::get($db, $students[0][AppointmentFetcher::DB_COLUMN_COURSE_ID]);
-//		$term = TermFetcher::retrieveSingle($db, $students[0][AppointmentFetcher::DB_COLUMN_TERM_ID]);
-//		$tutorName = $students[0][UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_FIRST_NAME] . " " .
-//			$students[0][UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_LAST_NAME];
-//		$startTime = $students[0][AppointmentFetcher::DB_COLUMN_START_TIME];
-//		$endTime = $students[0][AppointmentFetcher::DB_COLUMN_END_TIME];
-	} else {
-		header('Location: ' . BASE_URL . "error-403");
+		header('Location: ' . BASE_URL . 'appointments/' . $appointmentId . '/success');
 		exit();
 	}
 
@@ -41,9 +59,19 @@ try {
 }
 
 
-function isUrlRequestingSingleAppointment() {
+function isUrlValid() {
 	return isset($_GET['appointmentId']) && preg_match("/^[0-9]+$/", $_GET['appointmentId']);
 }
+
+function isUrlRequestingSingleAppointment() {
+	return isset($_GET['appointmentId']) && preg_match("/^[0-9]+$/", $_GET['appointmentId']) && empty($_POST['hiddenCreateReports']);
+}
+
+function isUrlRqstngManualReportCreation() {
+	return isset($_GET['appointmentId']) && preg_match("/^[0-9]+$/", $_GET['appointmentId']) &&
+	isset($_POST['hiddenCreateReports']) && empty($_POST['hiddenCreateReports']);
+}
+
 
 function isModificationSuccess() {
 	return isset($_GET['success']) && strcmp($_GET['success'], 'y1!q' === 0);
@@ -76,12 +104,12 @@ function get($objects, $findId, $column) {
 <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!-->
 <html class="no-js"> <!--<![endif]-->
-<?php require ROOT_PATH . 'app/views/head.php'; ?>
+<?php require ROOT_PATH . 'views/head.php'; ?>
 <body>
 <div id="wrapper">
 <?php
-require ROOT_PATH . 'app/views/header.php';
-require ROOT_PATH . 'app/views/sidebar.php';
+require ROOT_PATH . 'views/header.php';
+require ROOT_PATH . 'views/sidebar.php';
 ?>
 
 <div id="content">
@@ -100,44 +128,54 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <div id="content-container">
 <div class="row">
 
-<div class="col-md-3 col-sm-4">
+<div class="col-md-3 col-sm-12">
 	<div class="list-group">
 
 		<a href="#appointment-tab" class="list-group-item active" data-toggle="tab">
 			<h5><i class="fa fa-file-text-o"></i>
-				&nbsp;&nbsp;A-<?php echo $appointmentData[0][AppointmentFetcher::DB_COLUMN_ID]; ?>
+				&nbsp;&nbsp;A-<?php echo $studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_ID]; ?>
 				<span
-					class="label label-<?php echo $appointmentData[0][AppointmentFetcher::DB_COLUMN_LABEL_COLOR]; ?>">
-							<?php echo $appointmentData[0][AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE]; ?>
+					class="label label-<?php echo $studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_LABEL_COLOR]; ?>">
+							<?php echo $studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE]; ?>
 						</span>
 			</h5>
 		</a>
 
-		<?php for ($i = 0; $i < sizeof($appointmentData); $i++) { ?>
-			<a href="#report-tab<?php echo $i; ?>" class="list-group-item" data-toggle="tab">
-				<h5>
-					<i class="fa fa-file-text-o"></i> &nbsp;&nbsp;R
-
-					<?php if ($appointmentData[$i][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID] !== NULL): ?>
-						<?php echo "-" . $appointmentData[$i][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID]; ?>
-						<span
-							class="label label-<?php echo $appointmentData[$i][AppointmentFetcher::DB_COLUMN_LABEL_COLOR]; ?>">
-							<?php echo $appointmentData[$i][AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE]; ?>
-						</span>
-					<?php else: ?>
+		<?php for ($i = 0; $i < sizeof($studentsAppointmentData); $i++) { ?>
+			<?php if ($studentsAppointmentData[$i][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID] === NULL): ?>
+				<a href="#report-tab" class="list-group-item" data-toggle="tab">
+					<h5>
+						<i class="fa fa-file-text-o"></i> &nbsp;&nbsp;R
 						<span class="label label-default">disabled</span>
-					<?php endif; ?>
-				</h5>
-				<?php echo $appointmentData[$i][UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_FIRST_NAME] . " " .
-					$appointmentData[$i][UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_LAST_NAME]; ?>
-			</a>
+					</h5>
+					<?php echo $studentsAppointmentData[$i][UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_FIRST_NAME] . " " .
+						$studentsAppointmentData[$i][UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_LAST_NAME]; ?>
+				</a>
+
+			<?php else: ?>
+				<a href="#report-tab<?php echo $i; ?>" class="list-group-item" data-toggle="tab">
+					<h5>
+
+						<i class="fa fa-file-text-o"></i> &nbsp;&nbsp;R
+						<?php echo "-" . $studentsAppointmentData[$i][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID]; ?>
+						<span
+							class="label label-<?php echo $studentsAppointmentData[$i][AppointmentFetcher::DB_COLUMN_LABEL_COLOR]; ?>">
+							<?php echo $studentsAppointmentData[$i][AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE]; ?>
+						</span>
+					</h5>
+					<?php echo $studentsAppointmentData[$i][UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_FIRST_NAME] . " " .
+						$studentsAppointmentData[$i][UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_LAST_NAME]; ?>
+
+				</a>
+			<?php endif; ?>
+
 		<?php } ?>
 
 	</div>
 	<!-- /.list-group -->
 </div>
 
-<div class="col-md-9 col-sm-8">
+<div class="col-md-9 col-sm-12">
 <div class="tab-content stacked-content">
 
 <div class="tab-pane fade in active" id="appointment-tab">
@@ -157,13 +195,12 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 			<div class="form-group">
 				<form method="post" id="add-student-form"
-				      action="<?php echo BASE_URL . 'appointments/add'; ?>"
+				      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
 				      class="form">
-
 
 					<div class="form-group" id="student-instructor">
 						<?php
-						for ($i = 0; $i < sizeof($appointmentData); $i++) {
+						for ($i = 0; $i < sizeof($studentsAppointmentData); $i++) {
 							?>
 							<div class="form-group">
 								<div class="input-group">
@@ -173,7 +210,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 										<option></option>
 										<?php
 										foreach ($students as $student):
-											include(ROOT_PATH . "app/views/partials/student/select-options-view.html.php");
+											include(ROOT_PATH . "views/partials/student/select-options-view.html.php");
 										endforeach;
 										?>
 									</select>
@@ -187,7 +224,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 									        class="form-control" required disabled>
 										<option></option>
 										<?php foreach ($instructors as $instructor) {
-											include(ROOT_PATH . "app/views/partials/instructor/select-options-view.html.php");
+											include(ROOT_PATH . "views/partials/instructor/select-options-view.html.php");
 										}
 										?>
 									</select>
@@ -195,126 +232,149 @@ require ROOT_PATH . 'app/views/sidebar.php';
 							</div>
 						<?php } ?>
 					</div>
-			</div>
-			<hr/>
 
-			<div class="form-group">
-				<div class="input-group">
-					<span class="input-group-addon"><label for="courseId">Course</label></span>
-					<select id="courseId" name="courseId" class="form-control" required disabled>
-						<?php foreach ($courses as $course) {
-							include(ROOT_PATH . "app/views/partials/course/select-options-view.html.php");
-						}
-						?>
-					</select>
-				</div>
-			</div>
+					<hr/>
+
+					<div class="form-group">
+						<div class="input-group">
+							<span class="input-group-addon"><label for="courseId">Course</label></span>
+							<select id="courseId" name="courseId" class="form-control" required disabled>
+								<?php foreach ($courses as $course) {
+									include(ROOT_PATH . "views/partials/course/select-options-view.html.php");
+								}
+								?>
+							</select>
+						</div>
+					</div>
 
 
-			<div class="form-group">
-				<div class="input-group">
+					<div class="form-group">
+						<div class="input-group">
 										<span class="input-group-addon"><label id="label-instructor-text"
 										                                       for="tutorId">Tutors</label></span>
-					<select id="tutorId" name="tutorId" class="form-control" required disabled>
-						<?php foreach ($tutors as $tutor) {
-							include(ROOT_PATH . "app/views/partials/tutor/select-options-view.html.php");
-						}
-						?>               </select>
-					<input id="value" type="hidden" style="width:300px"/>
-				</div>
-			</div>
+							<select id="tutorId" name="tutorId" class="form-control" required disabled>
+								<?php foreach ($tutors as $tutor) {
+									include(ROOT_PATH . "views/partials/tutor/select-options-view.html.php");
+								}
+								?>               </select>
+							<input id="value" type="hidden" style="width:300px"/>
+						</div>
+					</div>
 
 
-			<div class="form-group">
-				<div class='input-group date' id='dateTimePickerStart'>
+					<div class="form-group">
+						<div class='input-group date' id='dateTimePickerStart'>
 											<span class="input-group-addon"><label for="dateTimePickerStart">
 													Starts At</label></span>
-					<input type='text' name='dateTimePickerStart' class="form-control" required disabled/>
+							<input type='text' name='dateTimePickerStart' class="form-control" required disabled/>
                                  <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
-				</div>
-			</div>
+						</div>
+					</div>
 
 
-			<div class="form-group">
-				<div class='input-group date' id='dateTimePickerEnd'>
+					<div class="form-group">
+						<div class='input-group date' id='dateTimePickerEnd'>
                                         <span class="input-group-addon"><label for="dateTimePickerEnd">Ends
 		                                        At</label></span>
-					<input type='text' name='dateTimePickerEnd' class="form-control" required disabled/>
+							<input type='text' name='dateTimePickerEnd' class="form-control" required disabled/>
 										<span class="input-group-addon">
 											<span class="glyphicon glyphicon-calendar">
 										</span>
-				</div>
-			</div>
+						</div>
+					</div>
 
 
-			<div class="form-group">
-				<div class="input-group">
-					<button type="button" class="btn btn-default btn-sm addButton"
-					        data-template="textbox" disabled>
-						Add One More Student
-					</button>
-				</div>
-			</div>
+					<div class="form-group">
+						<div class="input-group">
+							<button type="button" class="btn btn-default btn-sm addButton"
+							        data-template="textbox" disabled>
+								Add One More Student
+							</button>
+						</div>
+					</div>
 
-			<div class="form-group hide" id="textboxTemplate">
-				<div class="input-group">
-					<button type="button" class="btn btn-default btn-sm removeButton">Remove
-					</button>
-				</div>
-			</div>
-			<div class="form-group">
-				<div class="input-group">
-					<span class="input-group-addon"><label for="termId">Term</label></span>
-					<select id="termId" name="termId" class="form-control" required disabled>
+					<div class="form-group hide" id="textboxTemplate">
+						<div class="input-group">
+							<button type="button" class="btn btn-default btn-sm removeButton">Remove
+							</button>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="input-group">
+							<span class="input-group-addon"><label for="termId">Term</label></span>
+							<select id="termId" name="termId" class="form-control" required disabled>
+								<?php
+								foreach ($terms as $term) {
+									include(ROOT_PATH . "views/partials/term/select-options-view.html.php");
+								}
+								?>
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
 						<?php
-						foreach ($terms as $term) {
-							include(ROOT_PATH . "app/views/partials/term/select-options-view.html.php");
-						}
-						?>
-					</select>
-				</div>
-			</div>
+						if (empty($errors) === false) {
+							?>
+							<div class="alert alert-danger">
+								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+								<strong>Oh
+									snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
+								?>
+							</div>
+						<?php
+						} else if (isModificationSuccess()) {
+							?>
+							<div class="alert alert-success">
+								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+								<strong>Data successfully modified.!</strong> <br/>
+							</div>
+						<?php } ?>
 
-			<div class="form-group">
-				<?php
-				if (empty($errors) === false) {
-					?>
-					<div class="alert alert-danger">
-						<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-						<strong>Oh
-							snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
-						?>
-					</div>
-				<?php
-				} else if (isModificationSuccess()) {
-					?>
-					<div class="alert alert-success">
-						<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-						<strong>Workshop successfully created!</strong> <br/>
-					</div>
-				<?php } ?>
+						<div class="form-group">
 
-				<button type="submit" class="btn btn-block btn-primary" disabled>Update</button>
-				<input type="hidden" name="hiddenSubmitPrsd" value="">
+							<button type="submit" class="btn btn-block btn-primary" disabled>Update</button>
+							<input type="hidden" name="hiddenSubmitPrsd" value="">
+
+						</div>
+					</div>
+				</form>
+
+				<?php if ($studentsAppointmentData[0][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID] === NULL
+					&& $nowDateTime > $startDateTime
+				): ?>
+					<form method="post" id="add-student-form"
+					      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
+					      class="form">
+						<div class="form-group">
+							<div class="form-group">
+								<button type="submit" class="btn btn-block btn-default">Manually create reports</button>
+								<input type="hidden" name="hiddenCreateReports" value="">
+							</div>
+						</div>
+					</form>
+				<?php endif; ?>
+
 			</div>
-			</form>
+			<!-- /.form-group -->
+
 		</div>
 		<!-- /.form-group -->
 
 	</div>
-	<!-- /.form-group -->
 
 </div>
-
-
 <?php
-for ($i = 0; $i < sizeof($appointmentData); $i++) {
+for ($i = 0;
+     $i < sizeof($studentsAppointmentData);
+     $i++) {
 	?>
 
 	<div class="tab-pane fade" id="report-tab<?php echo $i; ?>">
 
 	<form action="<?php echo BASE_URL . "appointments/" .
-		$appointmentData[$i][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID]; ?>"
+		$studentsAppointmentData[$i][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID];
+	?>"
 	      class="form-horizontal parsley-form"
 	      method="post">
 	<h3>Assignment Details</h3>
@@ -538,12 +598,12 @@ for ($i = 0; $i < sizeof($appointmentData); $i++) {
 </div>
 <!-- #content -->
 
-<?php include ROOT_PATH . "app/views/footer.php"; ?>
+<?php include ROOT_PATH . "views/footer.php"; ?>
 </div>
 <!-- #wrapper<!-- #content -->
 
 
-<?php include ROOT_PATH . "app/views/assets/footer_common.php"; ?>
+<?php include ROOT_PATH . "views/assets/footer_common.php"; ?>
 
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/autosize/jquery.autosize.min.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/textarea-counter/jquery.textarea-counter.js"></script>
@@ -570,25 +630,28 @@ for ($i = 0; $i < sizeof($appointmentData); $i++) {
 		var $instructors = $(".instructors");
 		var $students = $(".students");
 
-		<?php for($i = 0; $i < sizeof($appointmentData); $i++){?>
+		<?php for($i = 0; $i < sizeof($studentsAppointmentData); $i++){?>
 		$("#studentId<?php echo $i;?>").select2();
 		$("#instructorId<?php echo $i;?>").select2();
-		$("#studentId<?php echo $i;?>").select2("val", '<?php echo $appointmentData[$i][AppointmentHasStudentFetcher::DB_COLUMN_STUDENT_ID]?>');
-		$("#instructorId<?php echo $i;?>").select2("val", '<?php echo $appointmentData[$i][AppointmentHasStudentFetcher::DB_COLUMN_INSTRUCTOR_ID]?>');
+		$("#studentId<?php echo $i;?>").select2("val", '<?php echo $studentsAppointmentData[$i][AppointmentHasStudentFetcher::DB_COLUMN_STUDENT_ID]?>');
+		$("#instructorId<?php echo $i;?>").select2("val", '<?php echo $studentsAppointmentData[$i][AppointmentHasStudentFetcher::DB_COLUMN_INSTRUCTOR_ID]?>');
 		$("#studentId<?php echo $i;?>").select2("enable", false);
 		$("#instructorId<?php echo $i;?>").select2("enable", false);
 		<?php } ?>
 
+		<?php if ($studentsAppointmentData[0][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID] !== NULL): ?>
 		$('.list-group-item').on('click', function () {
 			if ($(this).attr('class') != 'list-group-item active') {
 				$('.list-group-item.active').removeClass('active');
 				$(this).addClass('active');
 			}
 		});
+		<?php endif; ?>
+
 		$courseId.select2();
-		$courseId.select2("val", '<?php echo $appointmentData[0][AppointmentFetcher::DB_COLUMN_COURSE_ID]?>');
+		$courseId.select2("val", '<?php echo $studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_COURSE_ID]?>');
 		$tutorId.select2();
-		$tutorId.select2("val", '<?php echo $appointmentData[0][UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_ID]?>');
+		$tutorId.select2("val", '<?php echo $studentsAppointmentData[0][UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_ID]?>');
 
 
 		var startDateDefault;
@@ -610,7 +673,7 @@ for ($i = 0; $i < sizeof($appointmentData); $i++) {
 		minimumEndDate.subtract('31', 'minutes');
 
 		$dateTimePickerStart.datetimepicker({
-			defaultDate: '<?php echo $startTime->format('m/d/Y g:i A');?>',
+			defaultDate: '<?php echo $startDateTime->format('m/d/Y g:i A');?>',
 			minDate: minimumStartDate,
 			maxDate: minimumMaxDate,
 			minuteStepping: 30,
@@ -620,7 +683,7 @@ for ($i = 0; $i < sizeof($appointmentData); $i++) {
 		});
 
 		$dateTimePickerEnd.datetimepicker({
-			defaultDate: '<?php echo $endTime->format('m/d/Y g:i A');?>',
+			defaultDate: '<?php echo $endDateTime->format('m/d/Y g:i A');?>',
 			minDate: minimumEndDate,
 			minuteStepping: 30,
 			daysOfWeekDisabled: [0, 6],

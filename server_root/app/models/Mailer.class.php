@@ -49,7 +49,7 @@ class Mailer
 	const DATE_FORMAT = "M j Y";
 	const HOUR_FORMAT = "g:i A";
 
-	public static function sendTutorNewReports($db, $appointmentData) {
+	public static function sendTutorNewReportsCronOnly($db, $appointmentData) {
 
 		try {
 			//			$report = ReportFetcher::retrieveSingle($db, $reportId);
@@ -64,16 +64,16 @@ class Mailer
 			$reportLink = "<a style='background-color:#008dd0;color:#fff;border-radius:4px;display:block;
 		text-decoration:none;margin-top:30px;margin-bottom:15px;margin-right:0px;margin-left:0px;padding-top:20px;
 		padding-bottom:20px;padding-right:20px;padding-left:20px;text-align:center'
-		href='http://" . $_SERVER['SERVER_NAME'] . "/appointments/" .
+		href='http://" . (isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : "sass.hol.es") . "/appointments/" .
 				$appointmentData[AppointmentFetcher::DB_COLUMN_ID] . "' target='_blank' >View Report</a><br/>";
 			$appointmentStart = new DateTime($appointmentData[AppointmentFetcher::DB_COLUMN_START_TIME]);
 			$appointmentEnd = new DateTime($appointmentData[AppointmentFetcher::DB_COLUMN_END_TIME]);
-			$senderEmail = self::NO_REPLY_EMAIL_PREFIX . $_SERVER['SERVER_NAME'];
+			$senderEmail = self::NO_REPLY_EMAIL_PREFIX . (isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'sass.hol.es');
 			$senderName = self::SASS_APP_AUTOMATIC_SYSTEM;
 			$receiverEmail = $tutorUser[UserFetcher::DB_COLUMN_EMAIL];
 			$receiverName = $tutorUser[UserFetcher::DB_COLUMN_FIRST_NAME] . " " . $tutorUser[UserFetcher::DB_COLUMN_LAST_NAME];;
 
-			require_once ROOT_PATH . "app/plugins/PHPMailer/PHPMailerAutoload.php";
+			require_once ROOT_PATH . "plugins/PHPMailer/PHPMailerAutoload.php";
 
 			//Create a new PHPMailer instance
 			$mail = new PHPMailer();
@@ -118,12 +118,12 @@ class Mailer
 		} catch (phpmailerException $e) {
 			throw new Exception("PHPMailer error: " . $e->errorMessage()); //Pretty error messages from PHPMailer
 		} catch (Exception $e) {
-			throw new Exception("Something went wrong with mail. Please re-send mail to user for setting password."); //Pretty error messages from PHPMailer
+			throw new Exception("Something went wrong with mail. Email was not send to tutor for reports."); //Pretty error messages from PHPMailer
 		}
 	}
 
 	public static function sendTutorNewAppointment($db, $tutorId, $secretaryName) {
-		require_once ROOT_PATH . "app/plugins/PHPMailer/PHPMailerAutoload.php";
+		require_once ROOT_PATH . "plugins/PHPMailer/PHPMailerAutoload.php";
 
 
 		try {
@@ -210,7 +210,7 @@ class Mailer
 	}
 
 	public static function sendNewAccount($db, $id, $senderEmail, $senderName, $receiverEmail, $receiverName) {
-		require_once ROOT_PATH . "app/plugins/PHPMailer/PHPMailerAutoload.php";
+		require_once ROOT_PATH . "plugins/PHPMailer/PHPMailerAutoload.php";
 
 		$getString = User::generateNewPasswordString($db, $id);
 		$subject = "New Account";
@@ -302,7 +302,7 @@ class Mailer
 		$receiverEmail = $email;
 		$receiverName = $name;
 		try {
-			require_once ROOT_PATH . "app/plugins/PHPMailer/PHPMailerAutoload.php";
+			require_once ROOT_PATH . "plugins/PHPMailer/PHPMailerAutoload.php";
 			//Create a new PHPMailer instance
 			$mail = new PHPMailer();
 			// Set PHPMailer to use the sendmail transport
@@ -365,7 +365,7 @@ class Mailer
 			$receiverEmail = self::EMAIL_DEV_SASS;
 			$receiverName = self::EMAIL_DEV_NAME_SASS;
 
-			require_once ROOT_PATH . "app/plugins/PHPMailer/PHPMailerAutoload.php";
+			require_once ROOT_PATH . "plugins/PHPMailer/PHPMailerAutoload.php";
 
 			//Create a new PHPMailer instance
 			$mail = new PHPMailer();

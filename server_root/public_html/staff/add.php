@@ -64,12 +64,12 @@ $section = "staff";
 <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!-->
 <html class="no-js"> <!--<![endif]-->
-<?php require ROOT_PATH . 'app/views/head.php'; ?>
+<?php require ROOT_PATH . 'views/head.php'; ?>
 <body>
 <div id="wrapper">
 <?php
-require ROOT_PATH . 'app/views/header.php';
-require ROOT_PATH . 'app/views/sidebar.php';
+require ROOT_PATH . 'views/header.php';
+require ROOT_PATH . 'views/sidebar.php';
 ?>
 
 
@@ -240,7 +240,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 										</h5>
 										<select id="userMajor" name="userMajor" class="form-control">
 											<?php foreach ($majors as $major) {
-												include(ROOT_PATH . "app/views/partials/major/select-options-view.html.php");
+												include(ROOT_PATH . "views/partials/major/select-options-view.html.php");
 											}
 											?>
 										</select>
@@ -255,7 +255,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 										</h5>
 										<select id="termIds" name="termIds" class="form-control" required>
 											<?php foreach ($terms as $term) {
-												include(ROOT_PATH . "app/views/partials/term/select-options-view.html.php");
+												include(ROOT_PATH . "s/partials/term/select-options-view.html.php");
 											}
 											?>
 										</select>
@@ -274,7 +274,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 										        multiple>
 
 											<?php foreach ($courses as $course) {
-												include(ROOT_PATH . "app/views/partials/course/select-options-view.html.php");
+												include(ROOT_PATH . "views/partials/course/select-options-view.html.php");
 											}
 											?>
 
@@ -303,12 +303,12 @@ require ROOT_PATH . 'app/views/sidebar.php';
 	<!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
-<?php include ROOT_PATH . "app/views/footer.php"; ?>
+<?php include ROOT_PATH . "views/footer.php"; ?>
 
 </div>
 <!-- /#wrapper -->
 
-<?php include ROOT_PATH . "app/views/assets/footer_common.php"; ?>
+<?php include ROOT_PATH . "views/assets/footer_common.php"; ?>
 
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/select2/select2.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/icheck/jquery.icheck.js"></script>

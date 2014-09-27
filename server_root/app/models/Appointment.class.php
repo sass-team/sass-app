@@ -104,6 +104,11 @@ class Appointment
 		return AppointmentHasStudentFetcher::retrieveStudentsWithAppointment($db, $id);
 	}
 
+	public static function getSingle($db, $id) {
+		self::validateId($db, $id);
+		return AppointmentFetcher::retrieveSingle($db, $id);
+	}
+
 	public static function validateId($db, $id) {
 		if (is_null($id) || !preg_match("/^[0-9]+$/", $id)) throw new Exception("Data has been tempered. Aborting process.");
 

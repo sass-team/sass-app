@@ -136,12 +136,12 @@ $section = "staff";
 <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!-->
 <html class="no-js"> <!--<![endif]-->
-<?php require ROOT_PATH . 'app/views/head.php'; ?>
+<?php require ROOT_PATH . 'views/head.php'; ?>
 <body>
 <div id="wrapper">
 <?php
-require ROOT_PATH . 'app/views/header.php';
-require ROOT_PATH . 'app/views/sidebar.php';
+require ROOT_PATH . 'views/header.php';
+require ROOT_PATH . 'views/sidebar.php';
 ?>
 
 
@@ -238,7 +238,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
                                 <?php
                                 if (empty($errors) === true) {
                                     foreach (array_reverse($schedules) as $schedule) {
-                                        include(ROOT_PATH . "app/views/partials/schedule/table-data-view.html.php");
+                                        include(ROOT_PATH . "views/partials/schedule/table-data-view.html.php");
                                     }
                                 }
                                 ?>
@@ -302,7 +302,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
                                             <span class="input-group-addon"><label for="tutorId">Tutors</label></span>
                                             <select id="tutorId" name="tutorId" class="form-control" required>
                                                 <?php foreach ($tutors as $tutor) {
-                                                    include(ROOT_PATH . "app/views/partials/tutor/select-options-view.html.php");
+                                                    include(ROOT_PATH . "views/partials/tutor/select-options-view.html.php");
                                                 }
                                                 ?>
                                             </select>
@@ -314,7 +314,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
                                             <span class="input-group-addon"><label for="termId">Term</label></span>
                                             <select id="termId" name="termId" class="form-control" required>
                                                 <?php foreach ($currentTerms as $term) {
-                                                    include(ROOT_PATH . "app/views/partials/term/select-options-view.html.php");
+                                                    include(ROOT_PATH . "views/partials/term/select-options-view.html.php");
                                                 }
                                                 ?>
                                             </select>
@@ -451,11 +451,11 @@ require ROOT_PATH . 'app/views/sidebar.php';
 </div>
 <!-- /.modal -->
 
-<?php include ROOT_PATH . "app/views/footer.php"; ?>
+<?php include ROOT_PATH . "views/footer.php"; ?>
 </div>
 <!-- #wrapper -->
 
-<?php include ROOT_PATH . "app/views/assets/footer_common.php"; ?>
+<?php include ROOT_PATH . "views/assets/footer_common.php"; ?>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/select2/select2.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/datatables/DT_bootstrap.js"></script>

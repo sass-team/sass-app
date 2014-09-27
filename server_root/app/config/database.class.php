@@ -71,7 +71,7 @@ class Database
 			$message .= "Thanks,<br/>SASS Automatic System";
 
 			// mailer process
-			require_once(ROOT_PATH . "app/plugins/PHPMailer/class.phpmailer.php");
+			require_once(ROOT_PATH . "plugins/PHPMailer/class.phpmailer.php");
 			//Create a new PHPMailer instance
 			$mail = new PHPMailer();
 

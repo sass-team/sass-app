@@ -99,11 +99,11 @@ class AppointmentHasStudentFetcher
 			"SELECT `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_APPOINTMENT_ID . "` , `" . self::DB_COLUMN_STUDENT_ID . "`,
 			 `" . self::DB_COLUMN_REPORT_ID . "`,  `" . self::DB_COLUMN_INSTRUCTOR_ID . "`
 			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
-			WHERE `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_APPOINTMENT_ID . "`=:appointemt_id";
+			WHERE `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_APPOINTMENT_ID . "`=:appointment_id";
 
 		try {
 			$query = $db->getConnection()->prepare($query);
-			$query->bindParam(':appointemt_id', $appointmentId, PDO::PARAM_INT);
+			$query->bindParam(':appointment_id', $appointmentId, PDO::PARAM_INT);
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -152,11 +152,11 @@ class AppointmentHasStudentFetcher
             INNER JOIN  `" . DB_NAME . "`.`" . InstructorFetcher::DB_TABLE . "`
 			ON `" . DB_NAME . "`.`" . InstructorFetcher::DB_TABLE . "`.`" . InstructorFetcher::DB_COLUMN_ID . "`  = `" .
 			self::DB_TABLE . "`.`" . self::DB_COLUMN_INSTRUCTOR_ID . "`
-			WHERE `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_APPOINTMENT_ID . "`=:appointemt_id";
+			WHERE `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_APPOINTMENT_ID . "`=:appointment_id";
 
 		try {
 			$query = $db->getConnection()->prepare($query);
-			$query->bindParam(':appointemt_id', $appointmentId, PDO::PARAM_INT);
+			$query->bindParam(':appointment_id', $appointmentId, PDO::PARAM_INT);
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);

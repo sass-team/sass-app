@@ -46,12 +46,12 @@ function get($objects, $findId, $column) {
 <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!-->
 <html class="no-js"> <!--<![endif]-->
-<?php require ROOT_PATH . 'app/views/head.php'; ?>
+<?php require ROOT_PATH . 'views/head.php'; ?>
 <body>
 <div id="wrapper">
 <?php
-require ROOT_PATH . 'app/views/header.php';
-require ROOT_PATH . 'app/views/sidebar.php';
+require ROOT_PATH . 'views/header.php';
+require ROOT_PATH . 'views/sidebar.php';
 ?>
 
 
@@ -644,11 +644,11 @@ require ROOT_PATH . 'app/views/sidebar.php';
 <!-- #content -->
 
 
-<?php include ROOT_PATH . "app/views/footer.php"; ?>
+<?php include ROOT_PATH . "views/footer.php"; ?>
 </div>
 <!-- #wrapper<!-- #content -->
 
-<?php include ROOT_PATH . "app/views/assets/footer_common.php"; ?>
+<?php include ROOT_PATH . "views/assets/footer_common.php"; ?>
 
 <!-- dashboard assets -->
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/icheck/jquery.icheck.min.js"></script>
@@ -708,17 +708,17 @@ require ROOT_PATH . 'app/views/sidebar.php';
 				<?php	if(sizeof($appointments) <= 1){
 					foreach($appointments as $appointment){
 						$course = get($courses, $appointment[AppointmentFetcher::DB_COLUMN_COURSE_ID], CourseFetcher::DB_COLUMN_ID);
-						include(ROOT_PATH . "app/views/partials/appointments/fullcalendar-single.php");
+						include(ROOT_PATH . "views/partials/appointments/fullcalendar-single.php");
 					}
 				 }else{
 				   for($i = 0; $i < (sizeof($appointments) - 1); $i++){
 				   $course = get($courses, $appointments[$i][AppointmentFetcher::DB_COLUMN_COURSE_ID], CourseFetcher::DB_COLUMN_ID);
-				      include(ROOT_PATH . "app/views/partials/appointments/fullcalendar-multi.php");
+				      include(ROOT_PATH . "views/partials/appointments/fullcalendar-multi.php");
 					}
 					$lastAppointmentIndex = sizeof($appointments)-1;
 					$id = $lastAppointmentIndex;
 					$course = get($courses, $appointments[$i][AppointmentFetcher::DB_COLUMN_COURSE_ID], CourseFetcher::DB_COLUMN_ID);
-					include(ROOT_PATH . "app/views/partials/appointments/fullcalendar-multi.php");
+					include(ROOT_PATH . "views/partials/appointments/fullcalendar-multi.php");
 
 				}
 				?>

@@ -39,10 +39,10 @@ define("ROOT_PATH", __DIR__ . "/../");
 
 // removed for safety reasons.
 
-define("DB_HOST", "localhost");
-define("DB_NAME", "sass-ms_db");
+define("DB_HOST", "mysql.hostinger.gr");
+define("DB_NAME", "u587110284_sassd");
 define("DB_PORT", "3306"); // default port.
-define("DB_USER", "root");
-define("DB_PASS", "");
+define("DB_USER", "u587110284_sassu");
+define("DB_PASS", "X`q&,5A<&a-cMPn*");
 
 ?>

@@ -73,12 +73,12 @@ function isModifyBttnPressed() {
 <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!-->
 <html class="no-js"> <!--<![endif]-->
-<?php require ROOT_PATH . 'app/views/head.php'; ?>
+<?php require ROOT_PATH . 'views/head.php'; ?>
 <body>
 <div id="wrapper">
 	<?php
-	require ROOT_PATH . 'app/views/header.php';
-	require ROOT_PATH . 'app/views/sidebar.php';
+	require ROOT_PATH . 'views/header.php';
+	require ROOT_PATH . 'views/sidebar.php';
 	?>
 
 
@@ -161,7 +161,7 @@ function isModifyBttnPressed() {
 									<?php
 									if (empty($errors) === true) {
 										foreach (array_reverse($users) as $curUser) {
-											include(ROOT_PATH . "app/views/partials/user/table-data-view.html.php");
+											include(ROOT_PATH . "views/partials/user/table-data-view.html.php");
 										}
 									} ?>
 									</tbody>
@@ -189,12 +189,12 @@ function isModifyBttnPressed() {
 	</div>
 	<!-- /#content -->
 
-	<?php include ROOT_PATH . "app/views/footer.php"; ?>
+	<?php include ROOT_PATH . "views/footer.php"; ?>
 
 </div>
 <!-- #wrapper -->
 
-<?php include ROOT_PATH . "app/views/assets/footer_common.php"; ?>
+<?php include ROOT_PATH . "views/assets/footer_common.php"; ?>
 
 
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/select2/select2.js"></script>
