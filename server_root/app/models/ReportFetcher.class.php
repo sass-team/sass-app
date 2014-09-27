@@ -21,7 +21,9 @@ class ReportFetcher
 
 	public static function retrieveAllAllWithAppointmentId($db, $appointmentId) {
 		$query =
-			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` , `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_STUDENT_ID . "` AS
+			"SELECT `" . StudentFetcher::DB_TABLE . "`.`" . StudentFetcher::DB_COLUMN_FIRST_NAME . "` , `" .
+			StudentFetcher::DB_TABLE . "`.`" . StudentFetcher::DB_COLUMN_LAST_NAME . "` ,`" . self::DB_TABLE . "`.`" .
+			self::DB_COLUMN_ID . "` , `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_STUDENT_ID . "` AS
 			 " . StudentFetcher::DB_TABLE . "_" . StudentFetcher::DB_COLUMN_ID . ", `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_INSTRUCTOR_ID .
 			"` AS " . InstructorFetcher::DB_TABLE . "_" . InstructorFetcher::DB_COLUMN_ID . ", `" .
 			self::DB_COLUMN_STUDENT_CONCERNS . "`,  `" . self::DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES . "`, `" .
@@ -30,6 +32,9 @@ class ReportFetcher
 			INNER JOIN  `" . DB_NAME . "`.`" . AppointmentHasStudentFetcher::DB_TABLE . "`
 			ON `" . DB_NAME . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`  = `" .
 			AppointmentHasStudentFetcher::DB_TABLE . "`.`" . AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID . "`
+			INNER JOIN  `" . DB_NAME . "`.`" . StudentFetcher::DB_TABLE . "`
+			ON `" . DB_NAME . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_STUDENT_ID . "`  = `" .
+			StudentFetcher::DB_TABLE . "`.`" . StudentFetcher::DB_COLUMN_ID . "`
 			WHERE `" . AppointmentHasStudentFetcher::DB_TABLE . "`.`" .
 			AppointmentHasStudentFetcher::DB_COLUMN_APPOINTMENT_ID . "` = :appointment_id";
 

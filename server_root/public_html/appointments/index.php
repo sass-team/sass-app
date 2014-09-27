@@ -25,12 +25,9 @@ try {
 
 	if ($studentsAppointmentData[0][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID] !== NULL) {
 		$reports = Report::getAllWithAppointmentId($db, $appointmentId);
-		var_dump($reports);
+//		var_dump($reports);
 	}
 
-//	if (($studentsAppointmentData[0][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID] === NULL)){
-//
-//	}
 	if (isUrlRqstngManualReportCreation()) {
 		var_dump($studentsAppointmentData);
 
@@ -141,8 +138,8 @@ require ROOT_PATH . 'views/sidebar.php';
 			</h5>
 		</a>
 
-		<?php for ($i = 0; $i < sizeof($studentsAppointmentData); $i++) { ?>
-			<?php if ($studentsAppointmentData[$i][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID] === NULL): ?>
+		<?php if ($studentsAppointmentData[0][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID] === NULL): ?>
+			<?php for ($i = 0; $i < sizeof($studentsAppointmentData); $i++) { ?>
 				<a href="#report-tab" class="list-group-item" data-toggle="tab">
 					<h5>
 						<i class="fa fa-file-text-o"></i> &nbsp;&nbsp;R
@@ -151,25 +148,24 @@ require ROOT_PATH . 'views/sidebar.php';
 					<?php echo $studentsAppointmentData[$i][UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_FIRST_NAME] . " " .
 						$studentsAppointmentData[$i][UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_LAST_NAME]; ?>
 				</a>
-
-			<?php else: ?>
+			<?php } ?>
+		<?php else: ?>
+			<?php for ($i = 0; $i < sizeof($reports); $i++) { ?>
 				<a href="#report-tab<?php echo $i; ?>" class="list-group-item" data-toggle="tab">
 					<h5>
-
 						<i class="fa fa-file-text-o"></i> &nbsp;&nbsp;R
-						<?php echo "-" . $studentsAppointmentData[$i][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID]; ?>
+						<?php echo "-" . $reports[$i][ReportFetcher::DB_COLUMN_ID]; ?>
 						<span
-							class="label label-<?php echo $studentsAppointmentData[$i][AppointmentFetcher::DB_COLUMN_LABEL_COLOR]; ?>">
-							<?php echo $studentsAppointmentData[$i][AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE]; ?>
+							class="label label-<?php echo $reports[$i][ReportFetcher::DB_COLUMN_LABEL_COLOR]; ?>">
+							<?php echo $reports[$i][ReportFetcher::DB_COLUMN_LABEL_MESSAGE]; ?>
 						</span>
 					</h5>
-					<?php echo $studentsAppointmentData[$i][UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_FIRST_NAME] . " " .
-						$studentsAppointmentData[$i][UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_LAST_NAME]; ?>
-
+					<?php echo $reports[$i][StudentFetcher::DB_COLUMN_FIRST_NAME] . " " .
+						$reports[$i][StudentFetcher::DB_COLUMN_LAST_NAME]; ?>
 				</a>
-			<?php endif; ?>
+			<?php } ?>
+		<?php endif; ?>
 
-		<?php } ?>
 
 	</div>
 	<!-- /.list-group -->
