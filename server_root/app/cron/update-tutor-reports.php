@@ -6,7 +6,7 @@
  * Time: 2:35 PM
  */
 
-require __DIR__ . '/../../app/init.php';
+require __DIR__ . '/../app/init.php';
 
 
 try {

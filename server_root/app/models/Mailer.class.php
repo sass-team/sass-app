@@ -61,7 +61,10 @@ class Mailer
 			$subject = self::SUBJECT_PREFIX . self::SUBJECT_NEW_SASS_APP_REPORT_PENDING;
 			$alternativeEmail = self::EMAIL_DEV_SASS;
 			$alternativeName = self::SASS_APP_AUTOMATIC_SYSTEM_DEVELOPERS;
-			$reportLink = "<a href='http://" . $_SERVER['SERVER_NAME'] . "/appointments/" .
+			$reportLink = "<a style='background-color:#008dd0;color:#fff;border-radius:4px;display:block;
+		text-decoration:none;margin-top:30px;margin-bottom:15px;margin-right:0px;margin-left:0px;padding-top:20px;
+		padding-bottom:20px;padding-right:20px;padding-left:20px;text-align:center'
+		href='http://" . $_SERVER['SERVER_NAME'] . "/appointments/" .
 				$appointmentData[AppointmentFetcher::DB_COLUMN_ID] . "' target='_blank' >View Report</a><br/>";
 			$appointmentStart = new DateTime($appointmentData[AppointmentFetcher::DB_COLUMN_START_TIME]);
 			$appointmentEnd = new DateTime($appointmentData[AppointmentFetcher::DB_COLUMN_END_TIME]);
@@ -133,7 +136,10 @@ class Mailer
 			$subject = self::SUBJECT_PREFIX . self::SUBJECT_NEW_SASS_APP_APPOINTMENT;
 			$alternativeEmail = self::EMAIL_DEV_SASS;
 			$alternativeName = self::SASS_APP_AUTOMATIC_SYSTEM_DEVELOPERS;
-			$setViewScheduleLink = "<a href='http://" . $_SERVER['SERVER_NAME'] . "/appointments/" . $appointment[AppointmentFetcher::DB_COLUMN_ID] . "' target='_blank' >Appointment Details</a><br/>";
+			$setViewScheduleLink = "<a style='background-color:#008dd0;color:#fff;border-radius:4px;display:block;
+		text-decoration:none;margin-top:30px;margin-bottom:15px;margin-right:0px;margin-left:0px;padding-top:20px;
+		padding-bottom:20px;padding-right:20px;padding-left:20px;text-align:center'
+		href='http://" . $_SERVER['SERVER_NAME'] . "/appointments/" . $appointment[AppointmentFetcher::DB_COLUMN_ID] . "' target='_blank' >Appointment Details</a>";
 
 			$senderEmail = self::NO_REPLY_EMAIL_PREFIX . $_SERVER['SERVER_NAME'];
 			$senderName = $secretaryName;
@@ -169,7 +175,7 @@ class Mailer
 			$message .= "<br/><strong>Hour:</strong> " . $appointmentStart->format(self::HOUR_FORMAT) . " - " . $appointmentEnd->format(self::HOUR_FORMAT) . "</p>";
 
 			$message .= "<p style='margin:0 0 30px 0;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:17px;font-weight:300;color:#555'>
-							For more details you can visit your $setViewScheduleLink.</p>";
+							For more details you can visit your $setViewScheduleLink</p>";
 			$message .= "<div style='margin:20px 0;border-top:1px solid #ddd'></div>";
 			$message .= "<p style='margin:0 0 30px 0;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:17px;font-weight:300;color:#555'>Thanks,<br/><strong>$senderName</strong></p>";
 			$message .= "</div>";
@@ -210,7 +216,10 @@ class Mailer
 		$subject = "New Account";
 		$alternativeEmail = self::EMAIL_DEV_SASS;
 		$alternativeName = self::SASS_APP_AUTOMATIC_SYSTEM_DEVELOPERS;
-		$setPasswordLink = "<a href='http://" . $_SERVER['SERVER_NAME'] . "/login/set/" . $id . "/" . $getString . "' target='_blank' >Set SASS App Password</a><br/>";
+		$setPasswordLink = "<a style='background-color:#008dd0;color:#fff;border-radius:4px;display:block;
+		text-decoration:none;margin-top:30px;margin-bottom:15px;margin-right:0px;margin-left:0px;padding-top:20px;
+		padding-bottom:20px;padding-right:20px;padding-left:20px;text-align:center'
+		href='http://" . $_SERVER['SERVER_NAME'] . "/login/set/" . $id . "/" . $getString . "' target='_blank' >Set SASS App Password</a><br/>";
 		$sassPageLogin = "<a href='http://" . $_SERVER['SERVER_NAME'] . "/login/' target='_blank' >log in</a>";
 
 		try {
@@ -237,7 +246,7 @@ class Mailer
 			$message .= "<p style='margin:5px 0 15px 0;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;font-weight:normal;color:#333;line-height:20px'>You can use the following link to activate your account. ";
 			$message .= "<br/>" . $setPasswordLink . "</p>";
 			$message .= "<p style='margin:0 0 30px 0;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:17px;font-weight:300;color:#555'>
-							You will be prompted for a password for your account.<br/>When you are done, you can $sassPageLogin at SASS App<br/> using this email address and the password you choose.</p>";
+							You will be prompted for a password for your account.<br/>When you are done, you can $sassPageLogin at SASS App using this email address and the password you choose.</p>";
 			$message .= "<div style='margin:20px 0;border-top:1px solid #ddd'></div>";
 			$message .= "<p style='margin:0 0 30px 0;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:17px;font-weight:300;color:#555'>Thanks,<br/><strong>$senderName</strong></p>";
 			$message .= "</div>";
@@ -282,7 +291,10 @@ class Mailer
 		$subject = "Password Recovery";
 		$alternativeEmail = self::EMAIL_DEV_SASS;
 		$alternativeName = self::SASS_APP_AUTOMATIC_SYSTEM_DEVELOPERS;
-		$passwordRecoveryLink = "<a href='http://" . $_SERVER['SERVER_NAME'] . "/login/recover/" . $id . "/" . $genString . "' target='_blank' >Reset Password</a>";
+		$passwordRecoveryLink = "<a style='background-color:#008dd0;color:#fff;border-radius:4px;display:block;
+		text-decoration:none;margin-top:30px;margin-bottom:15px;margin-right:0px;margin-left:0px;padding-top:20px;
+		padding-bottom:20px;padding-right:20px;padding-left:20px;text-align:center' href='http://" .
+			$_SERVER['SERVER_NAME'] . "/login/recover/" . $id . "/" . $genString . "' target='_blank' >Reset Password</a>";
 		$sassPageLogin = "<a href='http://" . $_SERVER['SERVER_NAME'] . "/login/' target='_blank' >log in</a>";
 		$sassPageRecover = "<a href='http://" . $_SERVER['SERVER_NAME'] . "/login/confirm-password' target='_blank' >password recovery</a>";
 		$senderEmail = self::NO_REPLY_EMAIL_PREFIX . $_SERVER['SERVER_NAME'];
@@ -315,9 +327,9 @@ class Mailer
 			$message .= "But don&#39;t worry! You can use the following link within the next hour to reset your password.";
 			$message .= "<br/>" . $passwordRecoveryLink . "</p>";
 			$message .= "<p style='margin:0 0 30px 0;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:17px;font-weight:300;color:#555'>";
-			$message .= "You will be prompted for a password for your account.<br/>When you are done, you can $sassPageLogin at SASS App <br/>using this email address and the new password you choose.</p>";
+			$message .= "You will be prompted for a password for your account.<br/>When you are done, you can $sassPageLogin at SASS App using this email address and the new password you choose.</p>";
 			$message .= "<p style='margin:0 0 30px 0;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:17px;font-weight:300;color:#555'>";
-			$message .= "If you don&#39;t use this link within 1 hour, it will expire. Please check your spam folder if the<br/> email does not appear within a few minutes. To get a new password reset link, please visit <br/>and insert your email: ";
+			$message .= "If you don&#39;t use this link within 1 hour, it will expire. Please check your spam folder if the email does not appear within a few minutes. To get a new password reset link, please visit and insert your email: ";
 			$message .= "<br/>" . $sassPageRecover . "</p>";
 			$message .= "<div style='margin:20px 0;border-top:1px solid #ddd'></div>";
 			$message .= "<p style='margin:0 0 30px 0;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:17px;font-weight:300;color:#555'>Thanks,<br/><strong>$senderName</strong></p>";
