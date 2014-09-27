@@ -49,6 +49,8 @@ try {
 
 		header('Location: ' . BASE_URL . 'appointments/' . $appointmentId . '/success');
 		exit();
+	} else if (isBtnFillReportPrsd()) {
+		var_dump($_POST);
 	}
 
 } catch (Exception $e) {
@@ -69,6 +71,10 @@ function isUrlRqstngManualReportCreation() {
 	isset($_POST['hiddenCreateReports']) && empty($_POST['hiddenCreateReports']);
 }
 
+function isBtnFillReportPrsd() {
+	return isset($_GET['appointmentId']) && preg_match("/^[0-9]+$/", $_GET['appointmentId']) &&
+	isset($_POST['form-update-report-id']) && preg_match("/^[0-9]+$/", $_POST['form-update-report-id']);
+}
 
 function isModificationSuccess() {
 	return isset($_GET['success']) && strcmp($_GET['success'], 'y1!q' === 0);
@@ -189,6 +195,7 @@ require ROOT_PATH . 'views/sidebar.php';
 
 		<div class="portlet-content">
 
+			<!-- Appointment details. -->
 			<div class="form-group">
 				<form method="post" id="add-student-form"
 				      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
@@ -361,221 +368,225 @@ require ROOT_PATH . 'views/sidebar.php';
 
 </div>
 <?php
-for ($i = 0;
-     $i < sizeof($studentsAppointmentData);
-     $i++) {
-	?>
+if ($studentsAppointmentData[0][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID] !== NULL) {
 
-	<div class="tab-pane fade" id="report-tab<?php echo $i; ?>">
+	for ($i = 0;
+	     $i < sizeof($reports);
+	     $i++) {
+		?>
 
-	<form action="<?php echo BASE_URL . "appointments/" .
-		$studentsAppointmentData[$i][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID];
-	?>"
-	      class="form-horizontal parsley-form"
-	      method="post">
-	<h3>Assignment Details</h3>
+		<div class="tab-pane fade" id="report-tab<?php echo $i; ?>">
 
-	<div class="form-group">
+		<form action="<?php echo BASE_URL . "appointments/" . $appointmentId; ?>" class="form-horizontal parsley-form"
+		      method="post">
+		<h3>Assignment Details</h3>
+
+		<div class="form-group">
 
 
-		<div class="col-md-8">
-			<label for="project-topic-other">Project / Topic / Other</label>
-			<textarea type="password" name="oldPassword" id="project-topic-other" class="form-control"></textarea>
+			<div class="col-md-8">
+				<label for="project-topic-other">Project / Topic / Other</label>
+				<textarea name="project-topic-other" id="project-topic-other" class="form-control" data-required></textarea>
+			</div>
+			<!-- /.col -->
+			<div class="col-md-4">
+				<label for="other">Other</label>
+				<textarea name="other" id="other" class="form-control"></textarea>
+			</div>
+			<!-- /.col -->
+
 		</div>
-		<!-- /.col -->
-		<div class="col-md-4">
-			<label for="other">Other</label>
-			<textarea type="password" name="oldPassword" id="other" class="form-control"></textarea>
-		</div>
-		<!-- /.col -->
-
-	</div>
-	<!-- /.form-group -->
+		<!-- /.form-group -->
 
 
-	<hr/>
+		<hr/>
 
-	<h3>Focus of Conference</h3>
+		<h3>Focus of Conference</h3>
 
-	<div class="form-group">
+		<div class="form-group">
 
-		<div class="col-md-6">
-			<label for="focus-of-conference-1">What were the <strong>student&#39;s concerns&#63;</strong> (Please
-				indicate briefly)</label>
-			<textarea type="password" name="oldPassword" id="focus-of-conference-1" class="form-control"
-			          placeholder="Maximization/Preparation for Final"></textarea>
-		</div>
+			<div class="col-md-6">
+				<label for="focus-of-conference-1">What were the <strong>student&#39;s concerns&#63;</strong> (Please
+					indicate briefly)</label>
+				<textarea name="focus-of-conference-1" id="focus-of-conference-1" class="form-control"
+				          placeholder="Maximization/Preparation for Final" data-required='true'></textarea>
+			</div>
 
-		<div class="col-md-6">
-			<label for="focus-of-conference-2">Briefly mention any <strong>relevant feedback or guidelines</strong>
-				the instructor has
-				provided &#40;if applicable&#41;</label>
-			<textarea type="password" name="oldPassword" id="focus-of-conference-2" class="form-control"></textarea>
-		</div>
+			<div class="col-md-6">
+				<label for="focus-of-conference-2">Briefly mention any <strong>relevant feedback or guidelines</strong>
+					the instructor has
+					provided &#40;if applicable&#41;</label>
+				<textarea name="focus-of-conference-2" id="focus-of-conference-2" class="form-control" data-required></textarea>
+			</div>
 
-		<div class="col-md-6">
-			<hr/>
-			<label for="focus-of-conference-1">What did the <strong>student bring along?</strong></label>
-
-			<div class="checkbox">
-				<label>
-					<input type="checkbox" name="checkbox-1" class="" data-mincheck="1">
-					Assignment &#40;graded&#41;
-				</label>
-			</div>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox" name="checkbox-1" class="" data-mincheck="1">
-					Draft
-				</label>
-			</div>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox" name="checkbox-1" class="" data-mincheck="1">
-					Instructor&#39;s feedback
-				</label>
-			</div>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox" name="checkbox-1" class="" data-mincheck="1">
-					Textbook
-				</label>
-			</div>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox" name="checkbox-1" class="" data-mincheck="1">
-					Students Notes
-				</label>
-			</div>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox" name="checkbox-1" class="" data-mincheck="1">
-					Assignment sheet
-				</label>
-			</div>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox" name="checkbox-1" class="" data-mincheck="1">
-					Exercise on <input type="text" name="focus-conference-3-exercise"/>
-				</label>
-			</div>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox" name="checkbox-1" class="" data-mincheck="1">
-					Other <input type="text" name="focus-conference-3-other"/>
-				</label>
-			</div>
-		</div>
-
-		<div class="col-md-6">
-			<hr/>
-			<label for="focus-of-conference-2">What was the <strong>primary focus of the
-					conference&#63;</strong></label>
-
-			<div class="checkbox">
-				<label>
-					<input type="checkbox" name="checkbox-2" class="" data-mincheck="1">
-					Discussion of concepts
-				</label>
-			</div>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox" name="checkbox-2" class="" data-mincheck="1">
-					Organization of thoughts/ideas
-				</label>
-			</div>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox" name="checkbox-2" class="" data-mincheck="1">
-					Expression &#40;grammar, syntax, diction, etc.&#41;
-				</label>
-			</div>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox" name="checkbox-2" class="" data-mincheck="1">
-					Exercises
-				</label>
-			</div>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox" name="checkbox-2" class="" data-mincheck="1">
-					Academic skills
-				</label>
-			</div>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox" name="checkbox-2" class="" data-mincheck="1">
-					Citations &#38; Referencing
-				</label>
-			</div>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox" name="checkbox-2" class="" data-mincheck="1">
-					Other
-				</label>
-			</div>
-		</div>
-	</div>
-	<!-- /.form-group -->
-
-
-	<hr/>
-	<h3>Conclusion/Wrap-up</h3>
-
-	<div class="form-group">
-		<div class="col-md-12">
-			<label for="focus-of-conference-1">Overall <strong>outcome of session</strong> &#40;please check all that
-				apply
-				&#41;</label>
-
-			<div class="checkbox">
-				<label>
-					<input type="checkbox" name="checkbox-3">
-					The student reported that his/her questions/concerns had been addressed
-				</label>
-			</div>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox" name="checkbox-3">
-					The student asked to schedule another session to discuss issues further
-				</label>
-			</div>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox" name="checkbox-3">
-					The student was advised to return after clarifying her/his concerns
-				</label>
-			</div>
-		</div>
-		<div class="col-md-12">
 			<div class="col-md-6">
 				<hr/>
+				<label for="focus-of-conference-3">What did the <strong>student bring along?</strong></label>
+
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" name="focus-of-conference-3" class="" data-mincheck="1">
+						Assignment &#40;graded&#41;
+					</label>
+				</div>
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" name="focus-of-conference-3" class="" data-mincheck="1">
+						Draft
+					</label>
+				</div>
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" name="focus-of-conference-3" class="" data-mincheck="1">
+						Instructor&#39;s feedback
+					</label>
+				</div>
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" name="focus-of-conference-3" class="" data-mincheck="1">
+						Textbook
+					</label>
+				</div>
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" name="focus-of-conference-3" class="" data-mincheck="1">
+						Students Notes
+					</label>
+				</div>
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" name="focus-of-conference-3" class="" data-mincheck="1">
+						Assignment sheet
+					</label>
+				</div>
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" name="focus-of-conference-3" class="" data-mincheck="1">
+						Exercise on <input type="text" name="focus-conference-3-exercise"/>
+					</label>
+				</div>
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" name="focus-of-conference-3" class="" data-mincheck="1">
+						Other <input type="text" name="focus-conference-3-other"/>
+					</label>
+				</div>
 			</div>
-			<label class="col-md-12" for="focus-of-conference-1">Additional comments</label>
-			<textarea class="col-md-12" name="conclusion-additional-comments"></textarea>
+
+			<div class="col-md-6">
+				<hr/>
+				<label for="checkbox-2">What was the <strong>primary focus of the
+						conference&#63;</strong></label>
+
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" name="checkbox-2" class="" data-mincheck="1">
+						Discussion of concepts
+					</label>
+				</div>
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" name="checkbox-2" class="" data-mincheck="1">
+						Organization of thoughts/ideas
+					</label>
+				</div>
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" name="checkbox-2" class="" data-mincheck="1">
+						Expression &#40;grammar, syntax, diction, etc.&#41;
+					</label>
+				</div>
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" name="checkbox-2" class="" data-mincheck="1">
+						Exercises
+					</label>
+				</div>
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" name="checkbox-2" class="" data-mincheck="1">
+						Academic skills
+					</label>
+				</div>
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" name="checkbox-2" class="" data-mincheck="1">
+						Citations &#38; Referencing
+					</label>
+				</div>
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" name="checkbox-2" class="" data-mincheck="1">
+						Other
+					</label>
+				</div>
+			</div>
 		</div>
-	</div>
+		<!-- /.form-group -->
 
-	<br/>
 
-	<div class="form-group">
+		<hr/>
+		<h3>Conclusion/Wrap-up</h3>
 
-		<div class="col-md-12">
-			<button type="submit" class="btn btn-primary">Complete report</button>
-			<input type="hidden" name="form_action_update_password" value="">
-			&nbsp;
-			<button type="reset" class="btn btn-default">Cancel</button>
+		<div class="form-group">
+			<div class="col-md-12">
+				<label for="focus-of-conference-1">Overall <strong>outcome of session</strong> &#40;please check all that
+					apply
+					&#41;</label>
+
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" name="checkbox-3" data-mincheck="1">
+						The student reported that his/her questions/concerns had been addressed
+					</label>
+				</div>
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" name="checkbox-3" data-mincheck="1">
+						The student asked to schedule another session to discuss issues further
+					</label>
+				</div>
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" name="checkbox-3" data-mincheck="1">
+						The student was advised to return after clarifying her/his concerns
+					</label>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div class="col-md-6">
+					<hr/>
+				</div>
+				<label class="col-md-12" for="focus-of-conference-1">Additional comments</label>
+				<textarea name="conclusion-additional-comments" id="other" class="form-control" ></textarea>
+
+			</div>
 		</div>
-		<!-- /.col -->
 
-	</div>
-	<!-- /.form-group -->
+		<br/>
 
-	</form>
-	</div>
-	<!-- /.tab-pane fade -->
+		<div class="form-group">
 
-<?php } ?>
+			<div class="col-md-12">
+				<button type="submit" class="btn btn-primary">Complete report</button>
+				<input type="hidden" name="form-update-report-id"
+				       value="<?php echo $reports[$i][ReportFetcher::DB_COLUMN_ID]; ?>">
+				&nbsp;
+				<button type="reset" class="btn btn-default">Cancel</button>
+			</div>
+			<!-- /.col -->
+
+		</div>
+		<!-- /.form-group -->
+
+		</form>
+		</div>
+		<!-- /.tab-pane fade -->
+
+	<?php
+	}
+
+}?>
 
 </div>
 <!-- ./tab-content -->
