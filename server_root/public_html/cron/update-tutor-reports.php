@@ -10,27 +10,40 @@ require __DIR__ . '/../../app/init.php';
 
 
 try {
-	$schedules = AppointmentFetcher::retrieveCmpltWithoutRptsOnCurTerms($db);
-	var_dump($schedules);
-	$proccessDone = false;
+	date_default_timezone_set('Europe/Athens');
 
-	foreach ($schedules as $appointment) {
+	$curWorkingDate = new DateTime();
+	$curWorkingHour = intval($curWorkingDate->format('H'));
+
+	if($curWorkingHour < 10 || $curWorkingHour > 18){
+		exit();
+	}
+
+	$appointments = AppointmentFetcher::retrieveCmpltWithoutRptsOnCurTerms($db);
+//	var_dump($appointments);
+	$proccessDone = false;
+	$message = "";
+
+	foreach ($appointments as $appointment) {
 		$proccessDone = true;
 
-		$reportId = ReportFetcher::insert($db, $appointment[AppointmentHasStudentFetcher::DB_COLUMN_STUDENT_ID],
-			$appointment[AppointmentHasStudentFetcher::DB_TABLE . "_" . AppointmentHasStudentFetcher::DB_COLUMN_ID],
-			$appointment[AppointmentHasStudentFetcher::DB_COLUMN_INSTRUCTOR_ID]);
-//		AppointmentFetcher::updateLabel($db, Appointment::LABEL_MESSAGE_PENDING_TUTOR, Appointment::LABEL_COLOR_WARNING);
-		Mailer::sendTutorNewReport($db, $reportId, $appointment[AppointmentFetcher::DB_COLUMN_TUTOR_USER_ID],
-			$appointment[AppointmentFetcher::DB_COLUMN_COURSE_ID], $appointment[AppointmentFetcher::DB_COLUMN_TERM_ID]);
-		echo "Report with $reportId created.<br/>Mail sent.";
-		throw new Exception("stop");
+		$students = AppointmentHasStudentFetcher::retrieveStudentsWithAppointment($db, $appointment[AppointmentFetcher::DB_COLUMN_ID]);
+
+
+		foreach ($students as $student) {
+			$reportId = ReportFetcher::insert($db, $student[AppointmentHasStudentFetcher::DB_COLUMN_STUDENT_ID],
+				$student[AppointmentHasStudentFetcher::DB_COLUMN_ID],
+				$student[AppointmentHasStudentFetcher::DB_COLUMN_INSTRUCTOR_ID]);
+		}
+
+		AppointmentFetcher::updateLabel($db, $appointment[AppointmentFetcher::DB_COLUMN_ID],
+			Appointment::LABEL_MESSAGE_PENDING_TUTOR, Appointment::LABEL_COLOR_WARNING);
+		Mailer::sendTutorNewReports($db, $appointment);
+		$message .= "Report with $reportId created. Mail sent. <br/>";
 	}
 
 } catch (Exception $e) {
-	echo $e->getMessage();
+	$message = $e;
+	Mailer::sendDevelopers($message, __FILE__);
 }
 
-//if (!$proccessDone) {
-//	echo "No appointment have been completed up to this time";
-//}

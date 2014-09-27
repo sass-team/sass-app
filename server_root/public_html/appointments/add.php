@@ -116,7 +116,7 @@ require ROOT_PATH . 'app/views/sidebar.php';
 
 					<h3 class="col-md-10 pull-left">
 						<i class="fa fa-calendar"></i>
-						New Workshop Session
+						Details
 
 					</h3>
 

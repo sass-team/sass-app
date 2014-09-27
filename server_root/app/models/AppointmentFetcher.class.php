@@ -184,13 +184,15 @@ class AppointmentFetcher
 		}
 	}
 
-	public static function updateLabel($db, $labelMessage, $labelColor) {
+	public static function updateLabel($db, $appointmentId, $labelMessage, $labelColor) {
 		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
-					SET `" . self::DB_COLUMN_LABEL_MESSAGE . "`= :label_message
-					WHERE `" . self::DB_COLUMN_LABEL_COLOR . "` = :label_color";
+					SET `" . self::DB_COLUMN_LABEL_MESSAGE . "`= :label_message, `" . self::DB_COLUMN_LABEL_COLOR . "` =
+					:label_color
+					WHERE `" . self::DB_COLUMN_ID . "` = :id";
 
 		try {
 			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':id', $appointmentId, PDO::PARAM_INT);
 			$query->bindParam(':label_message', $labelMessage, PDO::PARAM_STR);
 			$query->bindParam(':label_color', $labelColor, PDO::PARAM_STR);
 
@@ -245,20 +247,16 @@ class AppointmentFetcher
 	 */
 	public static function  retrieveCmpltWithoutRptsOnCurTerms($db) {
 		$query =
-			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` , `" . self::DB_TABLE . "`.`" .
+			"SELECT DISTINCT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` , `" . self::DB_TABLE . "`.`" .
 			self::DB_COLUMN_START_TIME . "` , `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_END_TIME . "`,
 			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`,
 			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_COURSE_ID . "`, `" . self::DB_TABLE . "`.`" .
-			self::DB_COLUMN_TUTOR_USER_ID . "`,  `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "`,
-			`" . AppointmentHasStudentFetcher::DB_TABLE . "`.`" . AppointmentHasStudentFetcher::DB_COLUMN_STUDENT_ID . "`,
-			`" . AppointmentHasStudentFetcher::DB_TABLE . "`.`" . AppointmentHasStudentFetcher::DB_COLUMN_ID . "` AS
-			 " . AppointmentHasStudentFetcher::DB_TABLE . "_" . AppointmentHasStudentFetcher::DB_COLUMN_ID . ",
-			`" . AppointmentHasStudentFetcher::DB_TABLE . "`.`" . AppointmentHasStudentFetcher::DB_COLUMN_INSTRUCTOR_ID . "`
+			self::DB_COLUMN_TUTOR_USER_ID . "`,  `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "`
 			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
-			INNER JOIN  `" . DB_NAME . "`.`" . AppointmentHasStudentFetcher::DB_TABLE . "`
+			LEFT JOIN  `" . DB_NAME . "`.`" . AppointmentHasStudentFetcher::DB_TABLE . "`
 			ON `" . DB_NAME . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`  = `" .
 			AppointmentHasStudentFetcher::DB_TABLE . "`.`" . AppointmentHasStudentFetcher::DB_COLUMN_APPOINTMENT_ID . "`
-			INNER JOIN  `" . DB_NAME . "`.`" . TermFetcher::DB_TABLE . "`
+			LEFT JOIN  `" . DB_NAME . "`.`" . TermFetcher::DB_TABLE . "`
 			ON `" . DB_NAME . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`  = `" .
 			TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "`
 			WHERE TIME_TO_SEC(TIMEDIFF(NOW(),  `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "`))/60 > 30

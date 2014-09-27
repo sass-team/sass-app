@@ -7,8 +7,8 @@
  */
 ?>
 <?php
-$dateStart = new DateTime($schedules[$i][ScheduleFetcher::DB_COLUMN_START_TIME]);
-$dateEnd = new DateTime($schedules[$i][ScheduleFetcher::DB_COLUMN_END_TIME]);
+$dateStart = new DateTime($appointments[$i][ScheduleFetcher::DB_COLUMN_START_TIME]);
+$dateEnd = new DateTime($appointments[$i][ScheduleFetcher::DB_COLUMN_END_TIME]);
 ?>
 {
 title: '<?php echo "Working Hours"; ?>',

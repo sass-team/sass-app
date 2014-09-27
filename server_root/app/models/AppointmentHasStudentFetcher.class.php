@@ -40,14 +40,14 @@ class AppointmentHasStudentFetcher
 
 	}
 
-	public static function update($db, $id, $reportId) {
+	public static function update($db, $appointmentId, $reportId) {
 		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
 					SET `" . self::DB_COLUMN_REPORT_ID . "`= :report_id
 					WHERE `" . self::DB_COLUMN_ID . "` = :appointment_id";
 
 		try {
 			$query = $db->getConnection()->prepare($query);
-			$query->bindParam(':appointment_id', $id, PDO::PARAM_INT);
+			$query->bindParam(':appointment_id', $appointmentId, PDO::PARAM_INT);
 			$query->bindParam(':report_id', $reportId, PDO::PARAM_INT);
 
 			$query->execute();

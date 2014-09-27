@@ -32,38 +32,43 @@ class Mailer
 {
 
 
-	const DEV_SASS_GMAIL = "dev.sass.ms@gmail.com";
+	const EMAIL_DEV_SASS = "dev.sass.ms@gmail.com";
+	const EMAIL_DEV_NAME_SASS = "SASS Developers";
 
-	const SASS_APP_AUTOMATIC_SYSTEM_ALTERNATIVE_NAME = "SASS App | Developers";
+	const SASS_APP_AUTOMATIC_SYSTEM_DEVELOPERS = "SASS App | Developers";
 	const SASS_APP_AUTOMATIC_SYSTEM = "SASS App | Automatic System";
 
-	const NEW_SASS_APP_APPOINTMENT_SUBJECT = "New Appointment";
-	const NEW_SASS_APP_REPORT_PENDING = "New Report Pending";
+	const SUBJECT_NEW_SASS_APP_APPOINTMENT = "New Appointment";
+	const SUBJECT_NEW_SASS_APP_REPORT_PENDING = "New Report Pending";
+	const SUBJECT_SYSTEM_MESSAGE = "System message";
 
-	const SASS_SUBJECT_PREFIX = 'SASS App | ';
+	const SUBJECT_PREFIX = 'SASS App | ';
 
 	const NO_REPLY_EMAIL_PREFIX = "no-reply@";
 
-	public static function sendTutorNewReport($db, $reportId, $tutorId, $courseId, $termId) {
+	const DATE_FORMAT = "M j Y";
+	const HOUR_FORMAT = "g:i A";
+
+	public static function sendTutorNewReports($db, $appointmentData) {
 
 		try {
 			//			$report = ReportFetcher::retrieveSingle($db, $reportId);
 //			$appointment = Appointment::getSingle($db, $tutorId);
-//			$tutorUser = UserFetcher::retrieveSingle($db, $appointment[AppointmentFetcher::DB_COLUMN_TUTOR_USER_ID]);
-//			$course = CourseFetcher::retrieveSingle($db, $courseId);
+			$tutorUser = UserFetcher::retrieveSingle($db, $appointmentData[AppointmentFetcher::DB_COLUMN_TUTOR_USER_ID]);
+			$course = CourseFetcher::retrieveSingle($db, $appointmentData[AppointmentFetcher::DB_COLUMN_COURSE_ID]);
 
-			$appointment = AppointmentFetcher::retrieveAllForSingleTutor($db, $tutorId, $termId);
-			$subject = self::SASS_SUBJECT_PREFIX . self::SASS_SUBJECT_PREFIX;
-			$alternativeEmail = self::DEV_SASS_GMAIL;
-			$alternativeName = self::SASS_APP_AUTOMATIC_SYSTEM_ALTERNATIVE_NAME;
+//			$appointment = AppointmentFetcher::retrieveAllForSingleTutor($db, $tutorId, $termId);
+			$subject = self::SUBJECT_PREFIX . self::SUBJECT_NEW_SASS_APP_REPORT_PENDING;
+			$alternativeEmail = self::EMAIL_DEV_SASS;
+			$alternativeName = self::SASS_APP_AUTOMATIC_SYSTEM_DEVELOPERS;
 			$reportLink = "<a href='http://" . $_SERVER['SERVER_NAME'] . "/appointments/" .
-				$appointment[AppointmentFetcher::DB_COLUMN_ID] . "' target='_blank' >View Report</a><br/>";
-			$appointmentStart = new DateTime($appointment[AppointmentFetcher::DB_COLUMN_START_TIME]);
-			$appointmentEnd = new DateTime($appointment[AppointmentFetcher::DB_COLUMN_END_TIME]);
+				$appointmentData[AppointmentFetcher::DB_COLUMN_ID] . "' target='_blank' >View Report</a><br/>";
+			$appointmentStart = new DateTime($appointmentData[AppointmentFetcher::DB_COLUMN_START_TIME]);
+			$appointmentEnd = new DateTime($appointmentData[AppointmentFetcher::DB_COLUMN_END_TIME]);
 			$senderEmail = self::NO_REPLY_EMAIL_PREFIX . $_SERVER['SERVER_NAME'];
 			$senderName = self::SASS_APP_AUTOMATIC_SYSTEM;
-			$receiverEmail = $appointment[UserFetcher::DB_COLUMN_EMAIL];
-			$receiverName = $appointment[UserFetcher::DB_COLUMN_FIRST_NAME] . " " . $appointment[UserFetcher::DB_COLUMN_LAST_NAME];;
+			$receiverEmail = $tutorUser[UserFetcher::DB_COLUMN_EMAIL];
+			$receiverName = $tutorUser[UserFetcher::DB_COLUMN_FIRST_NAME] . " " . $tutorUser[UserFetcher::DB_COLUMN_LAST_NAME];;
 
 			require_once ROOT_PATH . "app/plugins/PHPMailer/PHPMailerAutoload.php";
 
@@ -92,9 +97,9 @@ class Mailer
 					Please follow the below link and fill in the report(s).<br/>$reportLink</p>";
 			$message .= "<p style='margin:0 0 30px 0;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:17px;font-weight:300;color:#555'>
 							The report(s) is intended for the appointment with data:";
-			$message .= "<br/><strong>Course:</strong> " . $appointment[CourseFetcher::DB_COLUMN_CODE] . " " . $appointment[CourseFetcher::DB_COLUMN_NAME];
-			$message .= "<br/><strong>Date:</strong> " . $appointmentStart->format("M j Y");
-			$message .= "<br/><strong>Hour:</strong> " . $appointmentStart->format("g:i A") . " - " . $appointmentEnd->format("g:i A") . "</p>";
+			$message .= "<br/><strong>Course:</strong> " . $course[CourseFetcher::DB_COLUMN_CODE] . " " . $course[CourseFetcher::DB_COLUMN_NAME];
+			$message .= "<br/><strong>Date:</strong> " . $appointmentStart->format(self::DATE_FORMAT);
+			$message .= "<br/><strong>Hour:</strong> " . $appointmentStart->format(self::HOUR_FORMAT) . " - " . $appointmentEnd->format(self::HOUR_FORMAT) . "</p>";
 
 			$message .= "<div style='margin:20px 0;border-top:1px solid #ddd'></div>";
 			$message .= "<p style='margin:0 0 30px 0;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:17px;font-weight:300;color:#555'>Thanks,<br/><strong>$senderName</strong></p>";
@@ -119,14 +124,16 @@ class Mailer
 
 
 		try {
-			$appointemnt = AppointmentFetcher::retrieveSingle($db, $tutorId);
-			$tutorUser = UserFetcher::retrieveSingle($db, $appointemnt[AppointmentFetcher::DB_COLUMN_TUTOR_USER_ID]);
-			$course = CourseFetcher::retrieveSingle($db, $appointemnt[AppointmentFetcher::DB_COLUMN_COURSE_ID]);
+			$appointment = AppointmentFetcher::retrieveSingle($db, $tutorId);
+			$appointmentStart = new DateTime($appointment[AppointmentFetcher::DB_COLUMN_START_TIME]);
+			$appointmentEnd = new DateTime($appointment[AppointmentFetcher::DB_COLUMN_END_TIME]);
+			$tutorUser = UserFetcher::retrieveSingle($db, $appointment[AppointmentFetcher::DB_COLUMN_TUTOR_USER_ID]);
+			$course = CourseFetcher::retrieveSingle($db, $appointment[AppointmentFetcher::DB_COLUMN_COURSE_ID]);
 
-			$subject = self::NEW_SASS_APP_APPOINTMENT_SUBJECT;
-			$alternativeEmail = self::DEV_SASS_GMAIL;
-			$alternativeName = self::SASS_APP_AUTOMATIC_SYSTEM_ALTERNATIVE_NAME;
-			$setViewScheduleLink = "<a href='http://" . $_SERVER['SERVER_NAME'] . "/appointments/" . $appointemnt[AppointmentFetcher::DB_COLUMN_ID] . "' target='_blank' >View Schedule</a><br/>";
+			$subject = self::SUBJECT_PREFIX . self::SUBJECT_NEW_SASS_APP_APPOINTMENT;
+			$alternativeEmail = self::EMAIL_DEV_SASS;
+			$alternativeName = self::SASS_APP_AUTOMATIC_SYSTEM_DEVELOPERS;
+			$setViewScheduleLink = "<a href='http://" . $_SERVER['SERVER_NAME'] . "/appointments/" . $appointment[AppointmentFetcher::DB_COLUMN_ID] . "' target='_blank' >Appointment Details</a><br/>";
 
 			$senderEmail = self::NO_REPLY_EMAIL_PREFIX . $_SERVER['SERVER_NAME'];
 			$senderName = $secretaryName;
@@ -157,9 +164,10 @@ class Mailer
 			$message .= "<div style='margin:20px auto!important;width:510px;padding:20px 20px 20px 20px!important;border:1px solid #ddd!important;border-radius:3px!important;background:#ffffff!important'>";
 			$message .= "<p style='margin:5px 0 15px 0;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;font-weight:normal;color:#333;line-height:20px'>
 					Here is an overview the appointment";
-			$message .= "<br/><strong>Course name:</strong> " . $course[CourseFetcher::DB_COLUMN_NAME];
-			$message .= "<br/><strong>Starts at:</strong> " . $appointemnt[AppointmentFetcher::DB_COLUMN_START_TIME];
-			$message .= "<br/><strong>Ends at:</strong> " . $appointemnt[AppointmentFetcher::DB_COLUMN_END_TIME];
+			$message .= "<br/><strong>Course:</strong> " . $course[CourseFetcher::DB_COLUMN_CODE] . " " . $course[CourseFetcher::DB_COLUMN_NAME];
+			$message .= "<br/><strong>Date:</strong> " . $appointmentStart->format(self::DATE_FORMAT);
+			$message .= "<br/><strong>Hour:</strong> " . $appointmentStart->format(self::HOUR_FORMAT) . " - " . $appointmentEnd->format(self::HOUR_FORMAT) . "</p>";
+
 			$message .= "<p style='margin:0 0 30px 0;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:17px;font-weight:300;color:#555'>
 							For more details you can visit your $setViewScheduleLink.</p>";
 			$message .= "<div style='margin:20px 0;border-top:1px solid #ddd'></div>";
@@ -178,7 +186,7 @@ class Mailer
 			//Set who the message is to be sent to
 			$mail->addAddress($receiverEmail, $receiverName);
 			//Set the subject line
-			$mail->Subject = self::SASS_SUBJECT_PREFIX . self::SASS_SUBJECT_PREFIX . $subject;
+			$mail->Subject = $subject;
 			//Read an HTML message body from an external file, convert referenced images to embedded,
 			//convert HTML into a basic plain-text alternative body
 			$mail->msgHTML($email_body);
@@ -200,8 +208,8 @@ class Mailer
 
 		$getString = User::generateNewPasswordString($db, $id);
 		$subject = "New Account";
-		$alternativeEmail = self::DEV_SASS_GMAIL;
-		$alternativeName = self::SASS_APP_AUTOMATIC_SYSTEM_ALTERNATIVE_NAME;
+		$alternativeEmail = self::EMAIL_DEV_SASS;
+		$alternativeName = self::SASS_APP_AUTOMATIC_SYSTEM_DEVELOPERS;
 		$setPasswordLink = "<a href='http://" . $_SERVER['SERVER_NAME'] . "/login/set/" . $id . "/" . $getString . "' target='_blank' >Set SASS App Password</a><br/>";
 		$sassPageLogin = "<a href='http://" . $_SERVER['SERVER_NAME'] . "/login/' target='_blank' >log in</a>";
 
@@ -246,7 +254,7 @@ class Mailer
 			//Set who the message is to be sent to
 			$mail->addAddress($receiverEmail, $receiverName);
 			//Set the subject line
-			$mail->Subject = self::SASS_SUBJECT_PREFIX . $subject;
+			$mail->Subject = self::SUBJECT_PREFIX . $subject;
 			//Read an HTML message body from an external file, convert referenced images to embedded,
 			//convert HTML into a basic plain-text alternative body
 			$mail->msgHTML($email_body);
@@ -272,8 +280,8 @@ class Mailer
 		$genString = User::generateNewPasswordString($db, $id);
 
 		$subject = "Password Recovery";
-		$alternativeEmail = self::DEV_SASS_GMAIL;
-		$alternativeName = self::SASS_APP_AUTOMATIC_SYSTEM_ALTERNATIVE_NAME;
+		$alternativeEmail = self::EMAIL_DEV_SASS;
+		$alternativeName = self::SASS_APP_AUTOMATIC_SYSTEM_DEVELOPERS;
 		$passwordRecoveryLink = "<a href='http://" . $_SERVER['SERVER_NAME'] . "/login/recover/" . $id . "/" . $genString . "' target='_blank' >Reset Password</a>";
 		$sassPageLogin = "<a href='http://" . $_SERVER['SERVER_NAME'] . "/login/' target='_blank' >log in</a>";
 		$sassPageRecover = "<a href='http://" . $_SERVER['SERVER_NAME'] . "/login/confirm-password' target='_blank' >password recovery</a>";
@@ -331,4 +339,65 @@ class Mailer
 
 
 	}
+
+	public static function sendDevelopers($systemMessage, $pathFileMessage) {
+		date_default_timezone_set('Europe/Athens');
+
+		try {
+			$subject = self::SUBJECT_PREFIX . self::SUBJECT_SYSTEM_MESSAGE;
+			$alternativeEmail = self::EMAIL_DEV_SASS;
+			$alternativeName = self::SASS_APP_AUTOMATIC_SYSTEM_DEVELOPERS;
+			$dateGenerated = new DateTime();
+			$senderEmail = self::NO_REPLY_EMAIL_PREFIX . $_SERVER['SERVER_NAME'];
+			$senderName = self::SASS_APP_AUTOMATIC_SYSTEM;
+			$receiverEmail = self::EMAIL_DEV_SASS;
+			$receiverName = self::EMAIL_DEV_NAME_SASS;
+
+			require_once ROOT_PATH . "app/plugins/PHPMailer/PHPMailerAutoload.php";
+
+			//Create a new PHPMailer instance
+			$mail = new PHPMailer();
+			// Set PHPMailer to use the sendmail transport
+			//Set who the message is to be sent from
+			$mail->setFrom($senderEmail, $senderName);
+			//Set an alternative reply-to address
+			$mail->addReplyTo($alternativeEmail, $alternativeName);
+			//Set who the message is to be sent to
+			$mail->addAddress($receiverEmail, $receiverName);
+			//Set the subject line
+			$mail->Subject = $subject;
+
+
+			$message = "<div bgcolor='#fafafa' marginheight='0' marginwidth='0' style='width:100%!important;background:#fafafa'>";
+			$message .= "<div style='padding:20px 20px 20px 20px!important;width:550px;margin:0 auto'>";
+			$message .= "<h1 style='margin:0;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:40px;letter-spacing:-1px;color:#333;font-weight:normal'>
+					New System Message - SASS App</h1>";
+			$message .= "<span style='color: #f0ad4e; margin:0 0 30px 0;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:17px;font-weight:300;color:#555'background-color>
+					We have new <span style='color:#f0ad4e!important;'>system message</span> for you, <strong>$receiverName</strong></span>.";
+
+			$message .= "<div style='margin:20px auto!important;width:510px;padding:20px 20px 20px 20px!important;border:1px solid #ddd!important;border-radius:3px!important;background:#fafafa!important'>";
+
+			$message .= "<p style='margin:0 0 30px 0;width:510px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:17px;font-weight:300;color:#555'>";
+			$message .= "<br/><strong>Date generated:</strong> " . $dateGenerated->format(self::DATE_FORMAT . ", " . self::HOUR_FORMAT);
+			$message .= "<br/><strong>Path file:</strong> " . $pathFileMessage;
+			$message .= "<br/><strong>System Message:</strong> " . $systemMessage . "</p>";
+
+			$message .= "<div style='margin:20px 0;border-top:1px solid #ddd'></div>";
+			$message .= "<p style='margin:0 0 30px 0;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:17px;font-weight:300;color:#555'>Thanks,<br/><strong>$senderName</strong></p>";
+			$message .= "</div>";
+			$message .= "<div style='margin:20px 0;text-align:center;width:510px;'>";
+			$message .= '<img alt="SASS logo" height="40" width="40" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAC4jAAAuIwF4pT92AAAAB3RJTUUH3gkOEB4GKCv7JwAABOFJREFUWMPt1n+slmUZB/DP9TznvICkiDCcJChUDAMpkR+OR0dkLp0zZz+mbG2t1tYmzZrzZenGakVbnbdcVrjStpxlODVsrTbWahqDR63FiElqwBbNQeuHghyB877nee/+OI9wfDnoH/1D2/v969lzf+/7vq7vfV3f+6aPPvroo48+/hfEGx+NaM6WXIkrgnMTf8VTif0drTTR5NyiBZkVM8PsZ9u+3p2I09CcimV4Hy7BIfwRO9paozUnq8ffj8sSx4Ldwm8zmBTNZZJ7ExdnWfb9rvQErsPPSFPOkNyspP1DptxPTJ6IMBjNGdiYuEnEr0XcR0zD47iwDm4SvoDbE/tSpG8Gf8NX8ZmBhub5KdmIb3S0nu6M6fBcQ/N2YihOidyLT5IvDO+oaM/AsR7lMskdGO5obXDqDDYMas7l5J8PYmUKn+2k1nD996GG5gnJ9AyXI8eLPQd4WKQXRJrg6LKLcGeY9hD5SJKu6GUkzsUabJugrp4NRhqxflDEtXg+Jcd75pc4lGE6BhJTxxO6RqvIPRC5kQnU+xKOZN77S6pXahV6w5iamFWv/+bgIzaniMNSyqW0ANOCwZ4sDqbcbzIcwcLg5lxz4I3xUd9KI6OtIyOjvQ2SLcEdxGMdP36GdCBYfLpK6VhwAjcOal48fqyThg530lCFyli9XRNjDTKO0xrtVK1jea44imtwXca8XLG3Ur76Fo3/PZxPWofXcsUKLM0Higeqbtk91eFFe4xnbbA4U7zeVe4dv1Kl7I7xYi1WZopGmlzsMlqeFCWvlMdzq0piFa7Ch3PFJXmjeK6qyk6PetfjHtIf8IM6kPlYpesXlfLIuM1TrtiVOCe4MVieK1bnihcq5b9P5bv6QKZ7CB8LluSjbsoVr1TKfermUClfrZQ/zRXT8W5cpbImj2LH+E2JLxPLctfe0/ApueUX4p11Yvsq5Z4ehdpd5VOZ4sX6CBfg45ni75PyYt9oKiXbU6XcE1nxRCQrMBe35ooqU+zMexb8/WBWPJmShbgScwes2lopuyJbQncDMw4Oum0geW1NiKJecEZiele55TQv1IyO1t5K+ZNM0QgWBDenFE9Wdhw92ZSpPFopH8sVe7AIt2BvnMH9J+Mr+LyIy9tp6ADZ3dhI3EC1tYe/DVPaWsvf7upqaN5am/eDHa2hM3CWYgjHs4bmh3oJba0TtX+N4BxMG6s9v6L7zAQX5jY0GtZffUq59fMHrV85gT/+CS+HmNfwxWhorp1g/504kMR5WWL1GZJNieFIi/aT3VAH+ijpyOlMm9EgrRxnM/NDWnh6LlFhirCZwQsm9tCxjgxpdxZi9oDme95UN1mzgdUR8e22uxt4BH/G0xOtNMpLxjxv+aC7Lqhvi/PqB0BPLmkp/hUp7RxLypyBcf5bH/EizMGmaMT6R6T0LnynNs2ZxC2kfzSs2zhs3qeJTVhH9/63qK3P4WvYjt2JS4Or8SCxnTRQX31zsKmttbOheRGex6OJLbWxL65VfRw/HyDdhQ9gaf0segn3Jp39wy49gSXYQv4jumcs/sTDwev1K2Vb8DIuG7sE0ifqZ9bvEn/paP2nnvZPXI8i+EjicLArcadG+2CnfV96m57LPkrWrbM+G5FtJfvu2frankncRjbrbA1wSt1lffTRRx999PF/jP8CuIm4fhDynqkAAAAASUVORK5CYII=" />';
+			$message .= "</div>";
+			$message .= "</div>";
+			$message .= "</div>";
+
+			$mail->msgHTML($message);
+			$mail->send();
+		} catch (phpmailerException $e) {
+			throw new Exception("PHPMailer error: " . $e->errorMessage()); //Pretty error messages from PHPMailer
+		} catch (Exception $e) {
+			throw new Exception("Something went wrong with mail. Please re-send mail to user for setting password."); //Pretty error messages from PHPMailer
+		}
+	}
+
 }
