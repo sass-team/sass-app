@@ -690,7 +690,8 @@ if (isset($reports)) {
 				$(this).addClass('active');
 
 				$('.form-horizontal.reports-update-form').each(function (i, $obj) {
-					$(this).parsley().reset();
+					$(this).parsley().destroy();
+					$(this).parsley();
 				});
 			}
 		});
