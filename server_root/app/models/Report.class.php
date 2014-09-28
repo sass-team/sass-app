@@ -33,15 +33,30 @@ class Report
 		if (strcmp($oldText, $newText) === 0) return false;
 		self::validateId($db, $reportId);
 		self::validateTextarea($newText);
-		return ReportFetcher::updateProjectTopicOther($db, $reportId, $newText);
+		return ReportFetcher::updateSingle($db, $reportId, $newText, ReportFetcher::DB_COLUMN_PROJECT_TOPIC_OTHER);
 	}
 
 	public static function updateOtherText($db, $reportId, $oldText, $newText) {
 		if (strcmp($oldText, $newText) === 0) return false;
 		self::validateId($db, $reportId);
 		self::validateTextarea($newText);
-		return ReportFetcher::updateOther($db, $reportId, $newText);
+		return ReportFetcher::updateSingle($db, $reportId, $newText, ReportFetcher::DB_COLUMN_OTHER_TEXT_AREA);
 	}
+
+	public static function updateStudentsConcerns($db, $reportId, $oldText, $newText) {
+		if (strcmp($oldText, $newText) === 0) return false;
+		self::validateId($db, $reportId);
+		self::validateTextarea($newText);
+		return ReportFetcher::updateSingle($db, $reportId, $newText, ReportFetcher::DB_COLUMN_STUDENT_CONCERNS);
+	}
+
+	public static function updateRelevantFeedbackGuidelines($db, $reportId, $oldText, $newText) {
+		if (strcmp($oldText, $newText) === 0) return false;
+		self::validateId($db, $reportId);
+		self::validateTextarea($newText);
+		return ReportFetcher::updateSingle($db, $reportId, $newText, ReportFetcher::DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES);
+	}
+
 
 	public static function validateTextarea($text) {
 		if (!preg_match("/^[\\w\t\n\r\\ .,\\-]{0,512}$/", $text)) {

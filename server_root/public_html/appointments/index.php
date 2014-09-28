@@ -35,20 +35,24 @@ try {
 		$reports = Report::getAllWithAppointmentId($db, $appointmentId);
 
 		if (isBtnUpdateReportPrsd() && FALSE !== ($reportUpdate = getReport($_POST['form-update-report-id'], $reports))) {
-
+			var_dump($_POST);
 			$projectTopicOtherNew = isset($_POST['project-topic-other']) ? $_POST['project-topic-other'] : '';
-			$otherTextarea = isset($_POST['other']) ? $_POST['other'] : '';
+			$otherTextArea = isset($_POST['other_text_area']) ? $_POST['other_text_area'] : '';
+			$studentsConcernsTextArea = isset($_POST['students-concerns-textarea']) ? $_POST['students-concerns-textarea'] : '';
+			$relevantFeedbackGuidelines = isset($_POST['relevant-feedback-guidelines']) ? $_POST['relevant-feedback-guidelines'] : '';
 
 			$updateDone = Report::updateProjectTopicOtherText($db, $reportUpdate[ReportFetcher::DB_COLUMN_ID],
 				$reportUpdate[ReportFetcher::DB_COLUMN_PROJECT_TOPIC_OTHER], $projectTopicOtherNew);
-			$updateDone = $updateDone || Report::updateOtherText($db, $reportUpdate[ReportFetcher::DB_COLUMN_ID],
-					$reportUpdate[ReportFetcher::DB_COLUMN_OTHER_TEXT_AREA], $otherTextarea);
+			$updateDone = (Report::updateOtherText($db, $reportUpdate[ReportFetcher::DB_COLUMN_ID],
+					$reportUpdate[ReportFetcher::DB_COLUMN_OTHER_TEXT_AREA], $otherTextArea)) || $updateDone;
+			$updateDone = (Report::updateStudentsConcerns($db, $reportUpdate[ReportFetcher::DB_COLUMN_ID],
+					$reportUpdate[ReportFetcher::DB_COLUMN_STUDENT_CONCERNS], $studentsConcernsTextArea)) || $updateDone;
+			$updateDone = (Report::updateRelevantFeedbackGuidelines($db, $reportUpdate[ReportFetcher::DB_COLUMN_ID],
+					$reportUpdate[ReportFetcher::DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES], $relevantFeedbackGuidelines)) || $updateDone;
 
-			if (!$updateDone) {
-				throw new Exception("No new data inserted.");
-			}
-			header('Location: ' . BASE_URL . 'appointments/' . $appointmentId . '/success');
-			exit();
+			if (!$updateDone) throw new Exception("No new data inserted.");
+//			header('Location: ' . BASE_URL . 'appointments/' . $appointmentId . '/success');
+//			exit();
 		}
 	}
 
@@ -417,12 +421,12 @@ if (isset($reports)) {
 				<!-- /.col -->
 				<div class="col-md-4">
 					<label for="other">Other</label>
-					<textarea name="other" id="other"
+					<textarea name="other_text_area" id="other_text_area"
 					          class="form-control count-textarea"
 					          data-parsley-trigger="keyup" data-parsley-minlength="10" data-parsley-maxlength="512"
 					          data-parsley-validation-threshold="5"
 					          data-parsley-minlength-message="Come on! You need to enter at least a 10 characters long
-					          comment.."><?php echo $reports[$i][ReportFetcher::DB_COLUMN_OTHER_TEXT_AREA]; ?></textarea>
+					          comment.."><?php echo htmlspecialchars($reports[$i][ReportFetcher::DB_COLUMN_OTHER_TEXT_AREA]); ?></textarea>
 				</div>
 				<!-- /.col -->
 			</div>
@@ -437,19 +441,28 @@ if (isset($reports)) {
 
 		<div class="row">
 			<div class="col-md-6">
-				<label for="focus-of-conference-1">What were the <strong>student&#39;s concerns&#63;</strong> (Please
+				<label for="students-concerns-textarea">What were the <strong>student&#39;s concerns&#63;</strong> (Please
 					indicate briefly)</label>
-				<textarea name="focus-of-conference-1" id="focus-of-conference-1" class="form-control count-textarea"
-				          placeholder="Maximization/Preparation for Final" data-required='true'></textarea>
+				<textarea name="students-concerns-textarea" id="students-concerns-textarea"
+				          class="form-control count-textarea"
+				          placeholder="Maximization/Preparation for Final"
+				          data-parsley-trigger="keyup" data-parsley-minlength="10" data-parsley-maxlength="512"
+				          data-parsley-validation-threshold="5"
+				          data-parsley-minlength-message="Come on! You need to enter at least a 10 characters long
+					          comment.."><?php echo htmlspecialchars($reports[$i][ReportFetcher::DB_COLUMN_STUDENT_CONCERNS]); ?></textarea>
 			</div>
 
 			<div class="col-md-6">
-				<label for="focus-of-conference-2">Briefly mention any <strong>relevant feedback or
+				<label for="relevant-feedback-guidelines">Briefly mention any <strong>relevant feedback or
 						guidelines</strong>
 					the instructor has
 					provided &#40;if applicable&#41;</label>
-				<textarea name="focus-of-conference-2" id="focus-of-conference-2" class="form-control count-textarea"
-				          data-required></textarea>
+				<textarea name="relevant-feedback-guidelines" id="relevant-feedback-guidelines"
+				          class="form-control count-textarea"
+				          data-parsley-trigger="keyup" data-parsley-minlength="10" data-parsley-maxlength="512"
+				          data-parsley-validation-threshold="5"
+				          data-parsley-minlength-message="Come on! You need to enter at least a 10 characters long
+					          comment.."><?php echo htmlspecialchars($reports[$i][ReportFetcher::DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES]); ?></textarea>
 			</div>
 		</div>
 
@@ -571,7 +584,7 @@ if (isset($reports)) {
 
 		<div class="form-group">
 			<div class="col-md-12">
-				<label for="focus-of-conference-1">Overall <strong>outcome of session</strong> &#40;please check all that
+				<label for="conclusion-wrap-up">Overall <strong>outcome of session</strong> &#40;please check all that
 					apply
 					&#41;</label>
 
@@ -599,7 +612,8 @@ if (isset($reports)) {
 					<hr/>
 				</div>
 				<label class="col-md-12" for="focus-of-conference-1">Additional comments</label>
-				<textarea name="conclusion-additional-comments" id="other" class="form-control count-textarea"></textarea>
+				<textarea name="conclusion-additional-comments" id="conclusion-additional-comments"
+				          class="form-control count-textarea"></textarea>
 
 			</div>
 		</div>

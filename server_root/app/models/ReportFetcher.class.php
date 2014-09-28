@@ -106,9 +106,10 @@ class ReportFetcher
 		return true;
 	}
 
-	public static function updateProjectTopicOther($db, $reportId, $newText) {
+
+	public static function updateSingle($db, $reportId, $newText, $column) {
 		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
-					SET `" . self::DB_COLUMN_PROJECT_TOPIC_OTHER . "`= :new_text
+					SET `" . $column . "`= :new_text
 					WHERE `" . self::DB_COLUMN_ID . "` = :report_id";
 
 		try {
@@ -121,25 +122,6 @@ class ReportFetcher
 			return true;
 		} catch (Exception $e) {
 			throw new Exception("Could not update data.");
-		}
-		return false;
-	}
-
-	public static function updateOther($db, $reportId, $newText) {
-		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
-					SET `" . self::DB_COLUMN_OTHER_TEXT_AREA . "`= :new_text
-					WHERE `" . self::DB_COLUMN_ID . "` = :report_id";
-
-		try {
-			$query = $db->getConnection()->prepare($query);
-			$query->bindParam(':new_text', $newText, PDO::PARAM_STR);
-			$query->bindParam(':report_id', $reportId, PDO::PARAM_INT);
-
-			$query->execute();
-
-			return true;
-		} catch (Exception $e) {
-			throw new Exception("Could not update data." );
 		}
 		return false;
 	}
