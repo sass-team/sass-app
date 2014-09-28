@@ -24,4 +24,9 @@ class Report
 		}
 	}
 
+	public static function getSingle($db, $reportId) {
+		self::validateId($db, $reportId);
+		return ReportFetcher::retrieveSingle($db, $reportId);
+	}
+
 } 

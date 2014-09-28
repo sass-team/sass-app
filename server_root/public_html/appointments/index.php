@@ -25,12 +25,12 @@ try {
 
 	if ($studentsAppointmentData[0][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID] !== NULL) {
 		$reports = Report::getAllWithAppointmentId($db, $appointmentId);
-//		var_dump($reports);
+		if (isBtnUpdateReportPrsd()) {
+			var_dump($_POST);
+		}
 	}
 
-	if (isUrlRqstngManualReportCreation()) {
-		var_dump($studentsAppointmentData);
-
+	if (isUrlRqstngManualReportEnable()) {
 		if (($studentsAppointmentData[0][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID] === NULL) &&
 			($nowDateTime > $startDateTime)
 		) {
@@ -49,8 +49,6 @@ try {
 
 		header('Location: ' . BASE_URL . 'appointments/' . $appointmentId . '/success');
 		exit();
-	} else if (isBtnFillReportPrsd()) {
-		var_dump($_POST);
 	}
 
 } catch (Exception $e) {
@@ -66,19 +64,21 @@ function isUrlRequestingSingleAppointment() {
 	return isset($_GET['appointmentId']) && preg_match("/^[0-9]+$/", $_GET['appointmentId']) && empty($_POST['hiddenCreateReports']);
 }
 
-function isUrlRqstngManualReportCreation() {
+function isUrlRqstngManualReportEnable() {
 	return isset($_GET['appointmentId']) && preg_match("/^[0-9]+$/", $_GET['appointmentId']) &&
 	isset($_POST['hiddenCreateReports']) && empty($_POST['hiddenCreateReports']);
 }
 
-function isBtnFillReportPrsd() {
+function isBtnUpdateReportPrsd() {
 	return isset($_GET['appointmentId']) && preg_match("/^[0-9]+$/", $_GET['appointmentId']) &&
-	isset($_POST['form-update-report-id']) && preg_match("/^[0-9]+$/", $_POST['form-update-report-id']);
+	isset($_POST['form-update-report-id']) && preg_match("/^[0-9]+$/", $_POST['form-update-report-id']) &&
+	isset($_POST['btn-update-report']);
 }
 
 function isModificationSuccess() {
 	return isset($_GET['success']) && strcmp($_GET['success'], 'y1!q' === 0);
 }
+
 
 /**
  * http://stackoverflow.com/a/4128377/2790481
@@ -368,7 +368,7 @@ require ROOT_PATH . 'views/sidebar.php';
 
 </div>
 <?php
-if ($studentsAppointmentData[0][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID] !== NULL) {
+if (isset($reports)) {
 
 	for ($i = 0;
 	     $i < sizeof($reports);
@@ -377,7 +377,8 @@ if ($studentsAppointmentData[0][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_I
 
 		<div class="tab-pane fade" id="report-tab<?php echo $i; ?>">
 
-		<form action="<?php echo BASE_URL . "appointments/" . $appointmentId; ?>" class="form-horizontal parsley-form"
+		<form action="<?php echo BASE_URL . "appointments/" . $appointmentId; ?>"
+		      class="form-horizontal parsley-form reports-update-form"
 		      method="post">
 		<h3>Assignment Details</h3>
 
@@ -386,7 +387,8 @@ if ($studentsAppointmentData[0][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_I
 
 			<div class="col-md-8">
 				<label for="project-topic-other">Project / Topic / Other</label>
-				<textarea name="project-topic-other" id="project-topic-other" class="form-control" data-required></textarea>
+				<textarea name="project-topic-other" id="project-topic-other" class="form-control"
+				          data-required><?php echo $reports[$i][ReportFetcher::DB_COLUMN_PROJECT_TOPIC_OTHER]; ?></textarea>
 			</div>
 			<!-- /.col -->
 			<div class="col-md-4">
@@ -416,7 +418,8 @@ if ($studentsAppointmentData[0][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_I
 				<label for="focus-of-conference-2">Briefly mention any <strong>relevant feedback or guidelines</strong>
 					the instructor has
 					provided &#40;if applicable&#41;</label>
-				<textarea name="focus-of-conference-2" id="focus-of-conference-2" class="form-control" data-required></textarea>
+				<textarea name="focus-of-conference-2" id="focus-of-conference-2" class="form-control"
+				          data-required></textarea>
 			</div>
 
 			<div class="col-md-6">
@@ -460,15 +463,18 @@ if ($studentsAppointmentData[0][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_I
 					</label>
 				</div>
 				<div class="checkbox">
-					<label>
+					<label class="focus-conference-3-exercise-class">
 						<input type="checkbox" name="focus-of-conference-3" class="" data-mincheck="1">
-						Exercise on <input type="text" name="focus-conference-3-exercise"/>
+						Exercise on <input type="text" name="focus-conference-3-exercise"
+						                   class="form-control" disabled="disabled" required/>
 					</label>
 				</div>
 				<div class="checkbox">
-					<label>
-						<input type="checkbox" name="focus-of-conference-3" class="" data-mincheck="1">
-						Other <input type="text" name="focus-conference-3-other"/>
+					<label class="focus-conference-3-other-class">
+						<input type="checkbox" name="focus-of-conference-3" class=""
+						       data-mincheck="1">
+						Other <input type="text" name="focus-conference-3-other"
+						             class="form-control" disabled="disabled" required/>
 					</label>
 				</div>
 			</div>
@@ -558,7 +564,7 @@ if ($studentsAppointmentData[0][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_I
 					<hr/>
 				</div>
 				<label class="col-md-12" for="focus-of-conference-1">Additional comments</label>
-				<textarea name="conclusion-additional-comments" id="other" class="form-control" ></textarea>
+				<textarea name="conclusion-additional-comments" id="other" class="form-control"></textarea>
 
 			</div>
 		</div>
@@ -568,11 +574,27 @@ if ($studentsAppointmentData[0][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_I
 		<div class="form-group">
 
 			<div class="col-md-12">
-				<button type="submit" class="btn btn-primary">Complete report</button>
+				<div class="col-md-3 col-sm-6 col-xs-6">
+					<button type="submit" name="btn-update-report" class="btn btn-default temp-save-report-btn ui-tooltip"
+					        data-toggle="tooltip"
+					        data-placement="bottom"
+					        data-trigger="hover"
+					        title="Input only some field. You'll be able to edit your report as much you want up until you complete it.">
+						Temporary Save
+					</button>
+				</div>
+				<div class="col-md-3 col-sm-6 col-xs-6">
+
+					<button type="submit" name="btn-complete-report" class="btn btn-primary ui-tooltip" data-toggle="tooltip"
+					        data-placement="bottom"
+					        data-trigger="hover" title="You won't be able to edit the report anymore. The responsible
+				        secretary will have to validate it.">
+						Complete Report
+					</button>
+				</div>
+
 				<input type="hidden" name="form-update-report-id"
 				       value="<?php echo $reports[$i][ReportFetcher::DB_COLUMN_ID]; ?>">
-				&nbsp;
-				<button type="reset" class="btn btn-default">Cancel</button>
 			</div>
 			<!-- /.col -->
 
@@ -615,15 +637,11 @@ if ($studentsAppointmentData[0][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_I
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/autosize/jquery.autosize.min.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/textarea-counter/jquery.textarea-counter.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/select2/select2.js"></script>
-
-<script src="<?php echo BASE_URL; ?>assets/js/plugins/parsley/parsley.js"></script>
-
 <script
 	src="<?php echo BASE_URL; ?>assets/js/plugins/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js">
 </script>
+<script src="<?php echo BASE_URL; ?>assets/js/plugins/parsley/parsley.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/fullcalendar/fullcalendar.min.js"></script>
-<script type="text/javascript"
-        src="//cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.1/js/bootstrapValidator.min.js"></script>
 
 <script type="text/javascript">
 	$(function () {
@@ -636,6 +654,25 @@ if ($studentsAppointmentData[0][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_I
 		var $dateTimePickerEnd2 = $('#dateTimePickerEnd');
 		var $instructors = $(".instructors");
 		var $students = $(".students");
+
+		$('.temp-save-report-btn').click(function () {
+			$(this).closest('.form-horizontal.reports-update-form').parsley().destroy();
+		});
+
+		$(".focus-conference-3-other-class, .focus-conference-3-exercise-class").change(function () {
+			var $inputCheckbox = $(this).find('input[type=checkbox]');
+			var $inputText = $(this).find('input[type=text]');
+
+			if ($inputCheckbox.is(':checked') && $inputText.attr('disabled')) {
+				$inputText.removeAttr('disabled');
+				$inputText.focus();
+			} else if (!$inputText.val() || !$inputCheckbox.is(':checked')) {
+				$inputText.attr('disabled', 'disabled');
+				$inputText.val('');
+			}
+
+		});
+
 
 		<?php for($i = 0; $i < sizeof($studentsAppointmentData); $i++){?>
 		$("#studentId<?php echo $i;?>").select2();
@@ -651,6 +688,10 @@ if ($studentsAppointmentData[0][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_I
 			if ($(this).attr('class') != 'list-group-item active') {
 				$('.list-group-item.active').removeClass('active');
 				$(this).addClass('active');
+
+				$('.form-horizontal.reports-update-form').each(function (i, $obj) {
+					$(this).parsley().reset();
+				});
 			}
 		});
 		<?php endif; ?>

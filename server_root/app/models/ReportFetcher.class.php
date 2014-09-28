@@ -13,6 +13,7 @@ class ReportFetcher
 	const DB_COLUMN_STUDENT_ID = "student_id";
 	const DB_COLUMN_INSTRUCTOR_ID = "instructor_id";
 
+	const DB_COLUMN_PROJECT_TOPIC_OTHER = "project_topic_other";
 	const DB_COLUMN_STUDENT_CONCERNS = "students_concerns";
 	const DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES = "relevant_feedback_or_guidelines";
 	const DB_COLUMN_ADDITIONAL_COMMENTS = "additional_comments";
@@ -24,10 +25,11 @@ class ReportFetcher
 			"SELECT `" . StudentFetcher::DB_TABLE . "`.`" . StudentFetcher::DB_COLUMN_FIRST_NAME . "` , `" .
 			StudentFetcher::DB_TABLE . "`.`" . StudentFetcher::DB_COLUMN_LAST_NAME . "` ,`" . self::DB_TABLE . "`.`" .
 			self::DB_COLUMN_ID . "` , `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_STUDENT_ID . "` AS
-			 " . StudentFetcher::DB_TABLE . "_" . StudentFetcher::DB_COLUMN_ID . ", `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_INSTRUCTOR_ID .
-			"` AS " . InstructorFetcher::DB_TABLE . "_" . InstructorFetcher::DB_COLUMN_ID . ", `" .
-			self::DB_COLUMN_STUDENT_CONCERNS . "`,  `" . self::DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES . "`, `" .
-			self::DB_COLUMN_ADDITIONAL_COMMENTS . "`, `" . self::DB_COLUMN_LABEL_MESSAGE . "` , `" . self::DB_COLUMN_LABEL_COLOR . "`
+			 " . StudentFetcher::DB_TABLE . "_" . StudentFetcher::DB_COLUMN_ID . ", `" . self::DB_TABLE . "`.`" .
+			self::DB_COLUMN_INSTRUCTOR_ID . "` AS " . InstructorFetcher::DB_TABLE . "_" . InstructorFetcher::DB_COLUMN_ID .
+			",  `" . self::DB_COLUMN_PROJECT_TOPIC_OTHER . "`, `" . self::DB_COLUMN_STUDENT_CONCERNS . "`,  `" .
+			self::DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES . "`, `" . self::DB_COLUMN_ADDITIONAL_COMMENTS . "`, `" .
+			self::DB_COLUMN_LABEL_MESSAGE . "` , `" . self::DB_COLUMN_LABEL_COLOR . "`
 			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
 			INNER JOIN  `" . DB_NAME . "`.`" . AppointmentHasStudentFetcher::DB_TABLE . "`
 			ON `" . DB_NAME . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`  = `" .
@@ -125,8 +127,9 @@ class ReportFetcher
 
 	public static function retrieveSingle($db, $id) {
 		$query = "SELECT `" . self::DB_COLUMN_ID . "`, `" . self::DB_COLUMN_INSTRUCTOR_ID . "`, `" .
-			self::DB_COLUMN_STUDENT_ID . "`, `" . self::DB_COLUMN_STUDENT_CONCERNS . "`,  `" .
-			self::DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES . ",`" . self::DB_COLUMN_ADDITIONAL_COMMENTS . "`
+			self::DB_COLUMN_STUDENT_ID . "`, `" . self::DB_COLUMN_STUDENT_CONCERNS . "`, `" .
+			self::DB_COLUMN_PROJECT_TOPIC_OTHER . "`, `" . self::DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES . ",`" .
+			self::DB_COLUMN_ADDITIONAL_COMMENTS . "`
 			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
 			WHERE `" . self::DB_COLUMN_ID . "`=:id";
 
