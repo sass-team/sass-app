@@ -4,6 +4,14 @@ $general->loggedOutProtect();
 
 $section = "appointments";
 
+/**
+ * @param $studentsAppointmentData
+ * @return bool
+ */
+function hasAppointmentReporsCrtd($studentsAppointmentData) {
+	return $studentsAppointmentData[0][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID] !== NULL;
+}
+
 try {
 	if (!isUrlValid() || ($user->isTutor() && !Tutor::hasAppointmentWithId($db, $user->getId(), $_GET['appointmentId']))) {
 		header('Location: ' . BASE_URL . "error-403");
@@ -23,10 +31,14 @@ try {
 	$nowDateTime = new DateTime();
 
 
-	if ($studentsAppointmentData[0][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID] !== NULL) {
+	if (hasAppointmentReporsCrtd($studentsAppointmentData)) {
 		$reports = Report::getAllWithAppointmentId($db, $appointmentId);
-		if (isBtnUpdateReportPrsd()) {
-			var_dump($_POST);
+		
+		if (isBtnUpdateReportPrsd() && ($reportUpdate = getReport($_POST['form-update-report-id'], $reports) !== FALSE)) {
+
+			$projectTopicOtherNew = $_POST['project-topic-other'];
+
+			Report::updateProjectTopicOther($db, $reportId, $oldText, $newText);
 		}
 	}
 
@@ -92,6 +104,20 @@ function get($objects, $findId, $column) {
 		if ($object[$column] === $findId) return $object;
 	}
 
+	return false;
+}
+
+/**
+ * http://stackoverflow.com/a/4128377/2790481
+ *
+ * @param $reportId
+ * @param $students
+ * @return bool
+ */
+function getReport($reportId, $reports) {
+	foreach ($reports as $report) {
+		if ($report[ReportFetcher::DB_COLUMN_ID] === $reportId) return $report;
+	}
 	return false;
 }
 

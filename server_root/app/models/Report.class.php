@@ -29,4 +29,15 @@ class Report
 		return ReportFetcher::retrieveSingle($db, $reportId);
 	}
 
+	public static function updateProjectTopicOther($db, $reportId, $oldText, $newText)
+	{
+		if (strcmp($oldText, $newText) === 0) return false;
+
+		$newName = self::validateName($db, $newName);
+		CourseFetcher::updateName($db, $id, $newName);
+
+		return true;
+	}
+
+
 } 

@@ -74,7 +74,6 @@ function getStudent($needle, $students) {
 	foreach ($students as $student) {
 		if ($student[StudentFetcher::DB_COLUMN_ID] === $needle) return $student;
 	}
-
 	return false;
 }
 
