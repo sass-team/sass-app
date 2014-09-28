@@ -8,7 +8,7 @@ $section = "appointments";
  * @param $studentsAppointmentData
  * @return bool
  */
-function hasAppointmentReporsCrtd($studentsAppointmentData) {
+function isTempReportUpdateRequested($studentsAppointmentData) {
 	return $studentsAppointmentData[0][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID] !== NULL;
 }
 
@@ -31,14 +31,24 @@ try {
 	$nowDateTime = new DateTime();
 
 
-	if (hasAppointmentReporsCrtd($studentsAppointmentData)) {
+	if (isTempReportUpdateRequested($studentsAppointmentData)) {
 		$reports = Report::getAllWithAppointmentId($db, $appointmentId);
-		
-		if (isBtnUpdateReportPrsd() && ($reportUpdate = getReport($_POST['form-update-report-id'], $reports) !== FALSE)) {
 
-			$projectTopicOtherNew = $_POST['project-topic-other'];
+		if (isBtnUpdateReportPrsd() && FALSE !== ($reportUpdate = getReport($_POST['form-update-report-id'], $reports))) {
 
-			Report::updateProjectTopicOther($db, $reportId, $oldText, $newText);
+			$projectTopicOtherNew = isset($_POST['project-topic-other']) ? $_POST['project-topic-other'] : '';
+			$otherTextarea = isset($_POST['other']) ? $_POST['other'] : '';
+
+			$updateDone = Report::updateProjectTopicOtherText($db, $reportUpdate[ReportFetcher::DB_COLUMN_ID],
+				$reportUpdate[ReportFetcher::DB_COLUMN_PROJECT_TOPIC_OTHER], $projectTopicOtherNew);
+			$updateDone = $updateDone || Report::updateOtherText($db, $reportUpdate[ReportFetcher::DB_COLUMN_ID],
+					$reportUpdate[ReportFetcher::DB_COLUMN_OTHER_TEXT_AREA], $otherTextarea);
+
+			if (!$updateDone) {
+				throw new Exception("No new data inserted.");
+			}
+			header('Location: ' . BASE_URL . 'appointments/' . $appointmentId . '/success');
+			exit();
 		}
 	}
 
@@ -95,28 +105,13 @@ function isModificationSuccess() {
 /**
  * http://stackoverflow.com/a/4128377/2790481
  *
- * @param $findId
- * @param $objects
- * @return bool
- */
-function get($objects, $findId, $column) {
-	foreach ($objects as $object) {
-		if ($object[$column] === $findId) return $object;
-	}
-
-	return false;
-}
-
-/**
- * http://stackoverflow.com/a/4128377/2790481
- *
  * @param $reportId
  * @param $students
  * @return bool
  */
 function getReport($reportId, $reports) {
 	foreach ($reports as $report) {
-		if ($report[ReportFetcher::DB_COLUMN_ID] === $reportId) return $report;
+		if (strcmp($report[ReportFetcher::DB_COLUMN_ID], $reportId) === 0) return $report;
 	}
 	return false;
 }
@@ -157,7 +152,7 @@ require ROOT_PATH . 'views/sidebar.php';
 <div id="content-container">
 <div class="row">
 
-<div class="col-md-3 col-sm-12">
+<div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
 	<div class="list-group">
 
 		<a href="#appointment-tab" class="list-group-item active" data-toggle="tab">
@@ -203,7 +198,7 @@ require ROOT_PATH . 'views/sidebar.php';
 	<!-- /.list-group -->
 </div>
 
-<div class="col-md-9 col-sm-12">
+<div class="col-lg-8 col-md-12 col-sm-12 col-xs-12">
 <div class="tab-content stacked-content">
 
 <div class="tab-pane fade in active" id="appointment-tab">
@@ -356,7 +351,7 @@ require ROOT_PATH . 'views/sidebar.php';
 							?>
 							<div class="alert alert-success">
 								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-								<strong>Data successfully modified.!</strong> <br/>
+								<strong>Data successfully modified!</strong> <br/>
 							</div>
 						<?php } ?>
 
@@ -404,25 +399,33 @@ if (isset($reports)) {
 		<div class="tab-pane fade" id="report-tab<?php echo $i; ?>">
 
 		<form action="<?php echo BASE_URL . "appointments/" . $appointmentId; ?>"
-		      class="form-horizontal parsley-form reports-update-form"
+		      class="form-horizontal reports-update-form"
 		      method="post">
 		<h3>Assignment Details</h3>
 
 		<div class="form-group">
+			<div class="form-input">
 
-
-			<div class="col-md-8">
-				<label for="project-topic-other">Project / Topic / Other</label>
-				<textarea name="project-topic-other" id="project-topic-other" class="form-control"
-				          data-required><?php echo $reports[$i][ReportFetcher::DB_COLUMN_PROJECT_TOPIC_OTHER]; ?></textarea>
+				<div class="col-md-8">
+					<label for="project-topic-other">Project / Topic / Other</label>
+					<textarea name="project-topic-other" id="project-topic-other" class="form-control count-textarea"
+					          data-parsley-trigger="keyup" data-parsley-minlength="10" data-parsley-maxlength="512"
+					          data-parsley-validation-threshold="5"
+					          data-parsley-minlength-message="Come on! You need to enter at least a 10 characters long
+					          comment.."><?php echo htmlspecialchars($reports[$i][ReportFetcher::DB_COLUMN_PROJECT_TOPIC_OTHER]); ?></textarea>
+				</div>
+				<!-- /.col -->
+				<div class="col-md-4">
+					<label for="other">Other</label>
+					<textarea name="other" id="other"
+					          class="form-control count-textarea"
+					          data-parsley-trigger="keyup" data-parsley-minlength="10" data-parsley-maxlength="512"
+					          data-parsley-validation-threshold="5"
+					          data-parsley-minlength-message="Come on! You need to enter at least a 10 characters long
+					          comment.."><?php echo $reports[$i][ReportFetcher::DB_COLUMN_OTHER_TEXT_AREA]; ?></textarea>
+				</div>
+				<!-- /.col -->
 			</div>
-			<!-- /.col -->
-			<div class="col-md-4">
-				<label for="other">Other</label>
-				<textarea name="other" id="other" class="form-control"></textarea>
-			</div>
-			<!-- /.col -->
-
 		</div>
 		<!-- /.form-group -->
 
@@ -431,22 +434,27 @@ if (isset($reports)) {
 
 		<h3>Focus of Conference</h3>
 
-		<div class="form-group">
 
+		<div class="row">
 			<div class="col-md-6">
 				<label for="focus-of-conference-1">What were the <strong>student&#39;s concerns&#63;</strong> (Please
 					indicate briefly)</label>
-				<textarea name="focus-of-conference-1" id="focus-of-conference-1" class="form-control"
+				<textarea name="focus-of-conference-1" id="focus-of-conference-1" class="form-control count-textarea"
 				          placeholder="Maximization/Preparation for Final" data-required='true'></textarea>
 			</div>
 
 			<div class="col-md-6">
-				<label for="focus-of-conference-2">Briefly mention any <strong>relevant feedback or guidelines</strong>
+				<label for="focus-of-conference-2">Briefly mention any <strong>relevant feedback or
+						guidelines</strong>
 					the instructor has
 					provided &#40;if applicable&#41;</label>
-				<textarea name="focus-of-conference-2" id="focus-of-conference-2" class="form-control"
+				<textarea name="focus-of-conference-2" id="focus-of-conference-2" class="form-control count-textarea"
 				          data-required></textarea>
 			</div>
+		</div>
+
+
+		<div class="row">
 
 			<div class="col-md-6">
 				<hr/>
@@ -492,7 +500,7 @@ if (isset($reports)) {
 					<label class="focus-conference-3-exercise-class">
 						<input type="checkbox" name="focus-of-conference-3" class="" data-mincheck="1">
 						Exercise on <input type="text" name="focus-conference-3-exercise"
-						                   class="form-control" disabled="disabled" required/>
+						                   class="form-control" disabled="disabled"/>
 					</label>
 				</div>
 				<div class="checkbox">
@@ -500,7 +508,7 @@ if (isset($reports)) {
 						<input type="checkbox" name="focus-of-conference-3" class=""
 						       data-mincheck="1">
 						Other <input type="text" name="focus-conference-3-other"
-						             class="form-control" disabled="disabled" required/>
+						             class="form-control" disabled="disabled"/>
 					</label>
 				</div>
 			</div>
@@ -554,6 +562,7 @@ if (isset($reports)) {
 				</div>
 			</div>
 		</div>
+
 		<!-- /.form-group -->
 
 
@@ -590,7 +599,7 @@ if (isset($reports)) {
 					<hr/>
 				</div>
 				<label class="col-md-12" for="focus-of-conference-1">Additional comments</label>
-				<textarea name="conclusion-additional-comments" id="other" class="form-control"></textarea>
+				<textarea name="conclusion-additional-comments" id="other" class="form-control count-textarea"></textarea>
 
 			</div>
 		</div>
@@ -605,7 +614,7 @@ if (isset($reports)) {
 					        data-toggle="tooltip"
 					        data-placement="bottom"
 					        data-trigger="hover"
-					        title="Input only some field. You'll be able to edit your report as much you want up until you complete it.">
+					        title="Partially fill report. You'll be able to edit your report as much you want up until you complete it.">
 						Temporary Save
 					</button>
 				</div>
@@ -666,7 +675,7 @@ if (isset($reports)) {
 <script
 	src="<?php echo BASE_URL; ?>assets/js/plugins/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js">
 </script>
-<script src="<?php echo BASE_URL; ?>assets/js/plugins/parsley/parsley.js"></script>
+<script src="<?php echo BASE_URL; ?>assets/js/plugins/parsley/parsley.min.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/fullcalendar/fullcalendar.min.js"></script>
 
 <script type="text/javascript">
@@ -700,6 +709,11 @@ if (isset($reports)) {
 		});
 
 
+		$('.count-textarea').on('live', function () {
+			alert('test');
+		});
+
+
 		<?php for($i = 0; $i < sizeof($studentsAppointmentData); $i++){?>
 		$("#studentId<?php echo $i;?>").select2();
 		$("#instructorId<?php echo $i;?>").select2();
@@ -715,13 +729,28 @@ if (isset($reports)) {
 				$('.list-group-item.active').removeClass('active');
 				$(this).addClass('active');
 
-				$('.form-horizontal.reports-update-form').each(function (i, $obj) {
+				$('.form-horizontal.reports-update-form').each(function () {
 					$(this).parsley().destroy();
 					$(this).parsley();
 				});
+
+				$('.count-textarea').each(function () {
+					$(this).fadeOut(function () {
+						$(this).autosize().show().trigger('autosize.resize');
+					});
+				});
+
 			}
 		});
+		$('.count-textarea').each(function () {
+			$(this).textareaCount({
+				maxCharacterSize: 512,
+				warningNumber: 40,
+				displayFormat: '#input/#max | #words words'
+			});
+		});
 		<?php endif; ?>
+
 
 		$courseId.select2();
 		$courseId.select2("val", '<?php echo $studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_COURSE_ID]?>');

@@ -29,14 +29,26 @@ class Report
 		return ReportFetcher::retrieveSingle($db, $reportId);
 	}
 
-	public static function updateProjectTopicOther($db, $reportId, $oldText, $newText)
-	{
+	public static function updateProjectTopicOtherText($db, $reportId, $oldText, $newText) {
 		if (strcmp($oldText, $newText) === 0) return false;
+		self::validateId($db, $reportId);
+		self::validateTextarea($newText);
+		return ReportFetcher::updateProjectTopicOther($db, $reportId, $newText);
+	}
 
-		$newName = self::validateName($db, $newName);
-		CourseFetcher::updateName($db, $id, $newName);
+	public static function updateOtherText($db, $reportId, $oldText, $newText) {
+		if (strcmp($oldText, $newText) === 0) return false;
+		self::validateId($db, $reportId);
+		self::validateTextarea($newText);
+		return ReportFetcher::updateOther($db, $reportId, $newText);
+	}
 
-		return true;
+	public static function validateTextarea($text) {
+		if (!preg_match("/^[\\w\t\n\r\\ .,\\-]{0,512}$/", $text)) {
+			throw new Exception("Textareas can contain only <a href='http://www.regular-expressions.info/shorthand.html'
+			target='_blank'>word characters</a>, spaces, carriage returns, line feeds and special characters <strong>.,-2</strong> of max size 512 characters.");
+		}
+
 	}
 
 

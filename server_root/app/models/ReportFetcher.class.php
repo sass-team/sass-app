@@ -14,6 +14,7 @@ class ReportFetcher
 	const DB_COLUMN_INSTRUCTOR_ID = "instructor_id";
 
 	const DB_COLUMN_PROJECT_TOPIC_OTHER = "project_topic_other";
+	const DB_COLUMN_OTHER_TEXT_AREA = "other_text_area";
 	const DB_COLUMN_STUDENT_CONCERNS = "students_concerns";
 	const DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES = "relevant_feedback_or_guidelines";
 	const DB_COLUMN_ADDITIONAL_COMMENTS = "additional_comments";
@@ -28,6 +29,7 @@ class ReportFetcher
 			 " . StudentFetcher::DB_TABLE . "_" . StudentFetcher::DB_COLUMN_ID . ", `" . self::DB_TABLE . "`.`" .
 			self::DB_COLUMN_INSTRUCTOR_ID . "` AS " . InstructorFetcher::DB_TABLE . "_" . InstructorFetcher::DB_COLUMN_ID .
 			",  `" . self::DB_COLUMN_PROJECT_TOPIC_OTHER . "`, `" . self::DB_COLUMN_STUDENT_CONCERNS . "`,  `" .
+			self::DB_COLUMN_OTHER_TEXT_AREA . "`, `" . self::DB_COLUMN_STUDENT_CONCERNS . "`,  `" .
 			self::DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES . "`, `" . self::DB_COLUMN_ADDITIONAL_COMMENTS . "`, `" .
 			self::DB_COLUMN_LABEL_MESSAGE . "` , `" . self::DB_COLUMN_LABEL_COLOR . "`
 			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
@@ -48,7 +50,7 @@ class ReportFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
-			throw new Exception("Could not retrieve data from database." . $e->getMessage());
+			throw new Exception("Could not retrieve data from database.");
 		}
 	}
 
@@ -81,7 +83,7 @@ class ReportFetcher
 			return $reportId;
 		} catch (Exception $e) {
 			$db->getConnection()->rollback();
-			throw new Exception("Could not insert data into database." . $e->getMessage());
+			throw new Exception("Could not insert data into database.");
 		}
 
 	}
@@ -103,6 +105,45 @@ class ReportFetcher
 
 		return true;
 	}
+
+	public static function updateProjectTopicOther($db, $reportId, $newText) {
+		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+					SET `" . self::DB_COLUMN_PROJECT_TOPIC_OTHER . "`= :new_text
+					WHERE `" . self::DB_COLUMN_ID . "` = :report_id";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':new_text', $newText, PDO::PARAM_STR);
+			$query->bindParam(':report_id', $reportId, PDO::PARAM_INT);
+
+			$query->execute();
+
+			return true;
+		} catch (Exception $e) {
+			throw new Exception("Could not update data.");
+		}
+		return false;
+	}
+
+	public static function updateOther($db, $reportId, $newText) {
+		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+					SET `" . self::DB_COLUMN_OTHER_TEXT_AREA . "`= :new_text
+					WHERE `" . self::DB_COLUMN_ID . "` = :report_id";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':new_text', $newText, PDO::PARAM_STR);
+			$query->bindParam(':report_id', $reportId, PDO::PARAM_INT);
+
+			$query->execute();
+
+			return true;
+		} catch (Exception $e) {
+			throw new Exception("Could not update data." );
+		}
+		return false;
+	}
+
 
 	public static function retrieveAll($db) {
 		date_default_timezone_set('Europe/Athens');
