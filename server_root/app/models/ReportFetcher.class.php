@@ -54,6 +54,26 @@ class ReportFetcher
 		}
 	}
 
+	public static function updateLabel($db, $reportId, $labelMessage, $labelColor) {
+		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+					SET `" . self::DB_COLUMN_LABEL_MESSAGE . "`= :label_message, `" . self::DB_COLUMN_LABEL_COLOR . "` =
+					:label_color
+					WHERE `" . self::DB_COLUMN_ID . "` = :id";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':id', $reportId, PDO::PARAM_INT);
+			$query->bindParam(':label_message', $labelMessage, PDO::PARAM_STR);
+			$query->bindParam(':label_color', $labelColor, PDO::PARAM_STR);
+
+			$query->execute();
+			return true;
+		} catch (Exception $e) {
+			throw new Exception("Could not update data.");
+		}
+		return false;
+	}
+
 	public static function insert($db, $studentId, $appointmentId, $instructorId) {
 
 		try {
@@ -107,7 +127,7 @@ class ReportFetcher
 	}
 
 
-	public static function updateSingle($db, $reportId, $newText, $column) {
+	public static function updateSingleColumn($db, $reportId, $newText, $column) {
 		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
 					SET `" . $column . "`= :new_text
 					WHERE `" . self::DB_COLUMN_ID . "` = :report_id";
@@ -115,6 +135,35 @@ class ReportFetcher
 		try {
 			$query = $db->getConnection()->prepare($query);
 			$query->bindParam(':new_text', $newText, PDO::PARAM_STR);
+			$query->bindParam(':report_id', $reportId, PDO::PARAM_INT);
+
+			$query->execute();
+
+			return true;
+		} catch (Exception $e) {
+			throw new Exception("Could not update data.");
+		}
+		return false;
+	}
+
+
+	public static function updateAllColumns($db, $reportId, $projectTopicOtherNew, $otherTextArea, $studentsConcernsTextArea, $relevantFeedbackGuidelines, $conclusionAdditionalComments) {
+		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+					SET  `" . self::DB_COLUMN_PROJECT_TOPIC_OTHER . "`= :project_topic_other,
+					`" . self::DB_COLUMN_OTHER_TEXT_AREA . "`= :other_text_area,
+					`" . self::DB_COLUMN_STUDENT_CONCERNS . "`= :students_concerns_text_area,
+					`" . self::DB_COLUMN_ADDITIONAL_COMMENTS . "`= :additional_comments,
+					`" . self::DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES . "`= :relevant_feedback_guidelines
+					WHERE `" . self::DB_COLUMN_ID . "` = :report_id";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':project_topic_other', $projectTopicOtherNew, PDO::PARAM_STR);
+			$query->bindParam(':other_text_area', $otherTextArea, PDO::PARAM_STR);
+			$query->bindParam(':students_concerns_text_area', $studentsConcernsTextArea, PDO::PARAM_STR);
+			$query->bindParam(':additional_comments', $conclusionAdditionalComments, PDO::PARAM_STR);
+			$query->bindParam(':relevant_feedback_guidelines', $relevantFeedbackGuidelines, PDO::PARAM_STR);
+
 			$query->bindParam(':report_id', $reportId, PDO::PARAM_INT);
 
 			$query->execute();

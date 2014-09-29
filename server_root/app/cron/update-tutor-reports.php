@@ -16,7 +16,7 @@ try {
 	$curWorkingHour = intval($curWorkingDate->format('H'));
 
 	// save resources - only run cron at hours 08:00 - 18:00
-	if($curWorkingHour < 8 || $curWorkingHour > 18){
+	if ($curWorkingHour < 8 || $curWorkingHour > 18) {
 		exit();
 	}
 
@@ -32,7 +32,7 @@ try {
 		}
 
 		AppointmentFetcher::updateLabel($db, $appointment[AppointmentFetcher::DB_COLUMN_ID],
-			Appointment::LABEL_MESSAGE_PENDING_TUTOR, Appointment::LABEL_COLOR_WARNING);
+			Appointment::LABEL_MESSAGE_COMPLETE, Appointment::LABEL_COLOR_SUCCESS);
 
 		Mailer::sendTutorNewReportsCronOnly($db, $appointment);
 	}

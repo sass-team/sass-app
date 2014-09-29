@@ -10,7 +10,9 @@ class Appointment
 {
 	const LABEL_MESSAGE_PENDING = "pending";
 	const LABEL_COLOR_WARNING = "warning";
-	const LABEL_MESSAGE_PENDING_TUTOR = "pending tutor";
+	const LABEL_COLOR_SUCCESS = "success";
+
+	const LABEL_MESSAGE_COMPLETE = "complete";
 
 	public static function add($db, $dateStart, $dateEnd, $courseId, $studentsIds, $tutorId, $instructorsIds, $termId,
 	                           $secretaryName) {

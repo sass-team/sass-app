@@ -8,7 +8,7 @@ $section = "appointments";
  * @param $studentsAppointmentData
  * @return bool
  */
-function isTempReportUpdateRequested($studentsAppointmentData) {
+function reportsHaveBeenCrtd($studentsAppointmentData) {
 	return $studentsAppointmentData[0][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID] !== NULL;
 }
 
@@ -31,16 +31,20 @@ try {
 	$nowDateTime = new DateTime();
 
 
-	if (isTempReportUpdateRequested($studentsAppointmentData)) {
-		$reports = Report::getAllWithAppointmentId($db, $appointmentId);
+	if (reportsHaveBeenCrtd($studentsAppointmentData)) $reports = Report::getAllWithAppointmentId($db, $appointmentId);
 
-		if (isBtnUpdateReportPrsd() && FALSE !== ($reportUpdate = getReport($_POST['form-update-report-id'], $reports))) {
-			var_dump($_POST);
-			$projectTopicOtherNew = isset($_POST['project-topic-other']) ? $_POST['project-topic-other'] : '';
-			$otherTextArea = isset($_POST['other_text_area']) ? $_POST['other_text_area'] : '';
-			$studentsConcernsTextArea = isset($_POST['students-concerns-textarea']) ? $_POST['students-concerns-textarea'] : '';
-			$relevantFeedbackGuidelines = isset($_POST['relevant-feedback-guidelines']) ? $_POST['relevant-feedback-guidelines'] : '';
 
+	if (isBtnUpdateReportPrsd() || isBtnCompleteReportPrsd()) {
+		$formReportId = isset($_POST['form-update-report-id']) ? $_POST['form-update-report-id'] : '';
+		$reportUpdate = getReport($formReportId, $reports);
+		$projectTopicOtherNew = isset($_POST['project-topic-other']) ? $_POST['project-topic-other'] : '';
+		$otherTextArea = isset($_POST['other_text_area']) ? $_POST['other_text_area'] : '';
+		$studentsConcernsTextArea = isset($_POST['students-concerns-textarea']) ? $_POST['students-concerns-textarea'] : '';
+		$relevantFeedbackGuidelines = isset($_POST['relevant-feedback-guidelines']) ? $_POST['relevant-feedback-guidelines'] : '';
+		$studentBroughtAlong = isset($_POST['student-brought-along']) ? $_POST['student-brought-along'] : NULL;
+		$conclusionAdditionalComments = isset($_POST['conclusion-additional-comments']) ? $_POST['conclusion-additional-comments'] : '';
+
+		if (isBtnUpdateReportPrsd()) {
 			$updateDone = Report::updateProjectTopicOtherText($db, $reportUpdate[ReportFetcher::DB_COLUMN_ID],
 				$reportUpdate[ReportFetcher::DB_COLUMN_PROJECT_TOPIC_OTHER], $projectTopicOtherNew);
 			$updateDone = (Report::updateOtherText($db, $reportUpdate[ReportFetcher::DB_COLUMN_ID],
@@ -49,11 +53,26 @@ try {
 					$reportUpdate[ReportFetcher::DB_COLUMN_STUDENT_CONCERNS], $studentsConcernsTextArea)) || $updateDone;
 			$updateDone = (Report::updateRelevantFeedbackGuidelines($db, $reportUpdate[ReportFetcher::DB_COLUMN_ID],
 					$reportUpdate[ReportFetcher::DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES], $relevantFeedbackGuidelines)) || $updateDone;
+//			$updateDone = (Report::updateStudentBroughtAlong($db, $reportUpdate[ReportFetcher::DB_COLUMN_ID],
+//					$relevantFeedbackGuidelines)) || $updateDone;
+			$updateDone = (Report::updateAdditionalComments($db, $reportUpdate[ReportFetcher::DB_COLUMN_ID],
+					$reportUpdate[ReportFetcher::DB_COLUMN_ADDITIONAL_COMMENTS], $conclusionAdditionalComments)) || $updateDone;
+		} else {
+			$updateDone = Report::updateAllFields($db, $reportUpdate[ReportFetcher::DB_COLUMN_ID], $projectTopicOtherNew,
+				$otherTextArea, $studentsConcernsTextArea, $relevantFeedbackGuidelines, $conclusionAdditionalComments);
+			// user is tutor requesting fill report
+			if($user->isTutor()) {
+				ReportFetcher::updateLabel($db, $formReportId,Report::LABEL_MESSAGE_PENDING_VALIDATION, Report::LABEL_COLOR_WARNING);
+			} else {
+				// user is secretary confirming report
+				ReportFetcher::updateLabel($db, $formReportId,Report::LABEL_MESSAGE_COMPLETE, Report::LABEL_COLOR_SUCCESS);
 
-			if (!$updateDone) throw new Exception("No new data inserted.");
-//			header('Location: ' . BASE_URL . 'appointments/' . $appointmentId . '/success');
-//			exit();
+			}
 		}
+
+		if (!$updateDone) throw new Exception("No new data inserted.");
+		header('Location: ' . BASE_URL . 'appointments/' . $appointmentId . '/success');
+		exit();
 	}
 
 	if (isUrlRqstngManualReportEnable()) {
@@ -67,8 +86,9 @@ try {
 					$student[AppointmentHasStudentFetcher::DB_COLUMN_ID],
 					$student[AppointmentHasStudentFetcher::DB_COLUMN_INSTRUCTOR_ID]);
 			}
-			AppointmentFetcher::updateLabel($db, $appointmentId, Appointment::LABEL_MESSAGE_PENDING_TUTOR,
-				Appointment::LABEL_COLOR_WARNING);
+			AppointmentFetcher::updateLabel($db, $appointmentId,
+				Appointment::LABEL_MESSAGE_COMPLETE, Appointment::LABEL_COLOR_SUCCESS);
+
 
 			if (!$user->isTutor()) Mailer::sendTutorNewReportsCronOnly($db, $appointment);
 		}
@@ -101,6 +121,12 @@ function isBtnUpdateReportPrsd() {
 	isset($_POST['btn-update-report']);
 }
 
+function isBtnCompleteReportPrsd() {
+	return isset($_GET['appointmentId']) && preg_match("/^[0-9]+$/", $_GET['appointmentId']) &&
+	isset($_POST['form-update-report-id']) && preg_match("/^[0-9]+$/", $_POST['form-update-report-id']) &&
+	isset($_POST['btn-complete-report']);
+}
+
 function isModificationSuccess() {
 	return isset($_GET['success']) && strcmp($_GET['success'], 'y1!q' === 0);
 }
@@ -108,16 +134,16 @@ function isModificationSuccess() {
 
 /**
  * http://stackoverflow.com/a/4128377/2790481
- *
  * @param $reportId
- * @param $students
- * @return bool
+ * @param $reports
+ * @return mixed
+ * @throws Exception
  */
 function getReport($reportId, $reports) {
 	foreach ($reports as $report) {
 		if (strcmp($report[ReportFetcher::DB_COLUMN_ID], $reportId) === 0) return $report;
 	}
-	return false;
+	throw new Exception("Data have been malfromed");
 }
 
 ?>
@@ -376,7 +402,7 @@ require ROOT_PATH . 'views/sidebar.php';
 					      class="form">
 						<div class="form-group">
 							<div class="form-group">
-								<button type="submit" class="btn btn-block btn-default">Manually create reports</button>
+								<button type="submit" class="btn btn-block btn-default">Manually - Appointment Success</button>
 								<input type="hidden" name="hiddenCreateReports" value="">
 							</div>
 						</div>
@@ -404,7 +430,7 @@ if (isset($reports)) {
 
 		<form action="<?php echo BASE_URL . "appointments/" . $appointmentId; ?>"
 		      class="form-horizontal reports-update-form"
-		      method="post">
+		      method="post" data-parsley-validate>
 		<h3>Assignment Details</h3>
 
 		<div class="form-group">
@@ -416,7 +442,8 @@ if (isset($reports)) {
 					          data-parsley-trigger="keyup" data-parsley-minlength="10" data-parsley-maxlength="512"
 					          data-parsley-validation-threshold="5"
 					          data-parsley-minlength-message="Come on! You need to enter at least a 10 characters long
-					          comment.."><?php echo htmlspecialchars($reports[$i][ReportFetcher::DB_COLUMN_PROJECT_TOPIC_OTHER]); ?></textarea>
+					          comment.."
+					          data-parsley-required="true"><?php echo htmlspecialchars($reports[$i][ReportFetcher::DB_COLUMN_PROJECT_TOPIC_OTHER]); ?></textarea>
 				</div>
 				<!-- /.col -->
 				<div class="col-md-4">
@@ -449,7 +476,8 @@ if (isset($reports)) {
 				          data-parsley-trigger="keyup" data-parsley-minlength="10" data-parsley-maxlength="512"
 				          data-parsley-validation-threshold="5"
 				          data-parsley-minlength-message="Come on! You need to enter at least a 10 characters long
-					          comment.."><?php echo htmlspecialchars($reports[$i][ReportFetcher::DB_COLUMN_STUDENT_CONCERNS]); ?></textarea>
+					          comment.."
+				          data-parsley-required="true"><?php echo htmlspecialchars($reports[$i][ReportFetcher::DB_COLUMN_STUDENT_CONCERNS]); ?></textarea>
 			</div>
 
 			<div class="col-md-6">
@@ -462,7 +490,8 @@ if (isset($reports)) {
 				          data-parsley-trigger="keyup" data-parsley-minlength="10" data-parsley-maxlength="512"
 				          data-parsley-validation-threshold="5"
 				          data-parsley-minlength-message="Come on! You need to enter at least a 10 characters long
-					          comment.."><?php echo htmlspecialchars($reports[$i][ReportFetcher::DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES]); ?></textarea>
+					          comment.."
+				          data-parsley-required="true"><?php echo htmlspecialchars($reports[$i][ReportFetcher::DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES]); ?></textarea>
 			</div>
 		</div>
 
@@ -471,56 +500,60 @@ if (isset($reports)) {
 
 			<div class="col-md-6">
 				<hr/>
-				<label for="focus-of-conference-3">What did the <strong>student bring along?</strong></label>
+				<label for="student-brought-along">What did the <strong>student bring along?</strong></label>
 
 				<div class="checkbox">
+
 					<label>
-						<input type="checkbox" name="focus-of-conference-3" class="" data-mincheck="1">
+						<input type="checkbox" name="student-brought-along<?php echo $i; ?>[]" value="assignment" class=""
+						       data-parsley-mincheck="1" data-parsley-required="true">
 						Assignment &#40;graded&#41;
 					</label>
 				</div>
 				<div class="checkbox">
 					<label>
-						<input type="checkbox" name="focus-of-conference-3" class="" data-mincheck="1">
+						<input type="checkbox" name="student-brought-along<?php echo $i; ?>[]" class="" value="draft"
+						       data-parsley-multiple="student-brought-along-parsley-<?php echo $i; ?>">
 						Draft
 					</label>
 				</div>
 				<div class="checkbox">
 					<label>
-						<input type="checkbox" name="focus-of-conference-3" class="" data-mincheck="1">
+						<input type="checkbox" name="student-brought-along<?php echo $i; ?>[]" class=""
+						       value="instructorsFeedback">
 						Instructor&#39;s feedback
 					</label>
 				</div>
 				<div class="checkbox">
 					<label>
-						<input type="checkbox" name="focus-of-conference-3" class="" data-mincheck="1">
+						<input type="checkbox" name="student-brought-along<?php echo $i; ?>[]" class="" value="textbook">
 						Textbook
 					</label>
 				</div>
 				<div class="checkbox">
 					<label>
-						<input type="checkbox" name="focus-of-conference-3" class="" data-mincheck="1">
+						<input type="checkbox" name="student-brought-along<?php echo $i; ?>[]" class="" value="studentsNotes">
 						Students Notes
 					</label>
 				</div>
 				<div class="checkbox">
 					<label>
-						<input type="checkbox" name="focus-of-conference-3" class="" data-mincheck="1">
+						<input type="checkbox" name="student-brought-along<?php echo $i; ?>[]" class=""
+						       value="assignmentSheet">
 						Assignment sheet
 					</label>
 				</div>
 				<div class="checkbox">
 					<label class="focus-conference-3-exercise-class">
-						<input type="checkbox" name="focus-of-conference-3" class="" data-mincheck="1">
-						Exercise on <input type="text" name="focus-conference-3-exercise"
+						<input type="checkbox" name="student-brought-along-exercise-on[]" class="" value="exerciseOn">
+						Exercise on <input type="text" name="student-brought-along-exercise-on[]"
 						                   class="form-control" disabled="disabled"/>
 					</label>
 				</div>
 				<div class="checkbox">
 					<label class="focus-conference-3-other-class">
-						<input type="checkbox" name="focus-of-conference-3" class=""
-						       data-mincheck="1">
-						Other <input type="text" name="focus-conference-3-other"
+						<input type="checkbox" name="student-brought-along-other[]" class="" value="other">
+						Other <input type="text" name="student-brought-along-other[]"
 						             class="form-control" disabled="disabled"/>
 					</label>
 				</div>
@@ -613,7 +646,11 @@ if (isset($reports)) {
 				</div>
 				<label class="col-md-12" for="focus-of-conference-1">Additional comments</label>
 				<textarea name="conclusion-additional-comments" id="conclusion-additional-comments"
-				          class="form-control count-textarea"></textarea>
+				          class="form-control count-textarea"
+				          data-parsley-trigger="keyup" data-parsley-minlength="10" data-parsley-maxlength="512"
+				          data-parsley-validation-threshold="5"
+				          data-parsley-minlength-message="Come on! You need to enter at least a 10 characters long
+					          comment.."><?php echo htmlspecialchars($reports[$i][ReportFetcher::DB_COLUMN_ADDITIONAL_COMMENTS]); ?></textarea>
 
 			</div>
 		</div>
@@ -623,24 +660,30 @@ if (isset($reports)) {
 		<div class="form-group">
 
 			<div class="col-md-12">
-				<div class="col-md-3 col-sm-6 col-xs-6">
-					<button type="submit" name="btn-update-report" class="btn btn-default temp-save-report-btn ui-tooltip"
-					        data-toggle="tooltip"
-					        data-placement="bottom"
-					        data-trigger="hover"
-					        title="Partially fill report. You'll be able to edit your report as much you want up until you complete it.">
-						Temporary Save
-					</button>
-				</div>
-				<div class="col-md-3 col-sm-6 col-xs-6">
+				<?php if (($user->isTutor() && strcmp($reports[$i][ReportFetcher::DB_COLUMN_LABEL_MESSAGE], Report::LABEL_MESSAGE_PENDING_FILL) === 0)
+					|| !$user->isTutor() && strcmp($reports[$i][ReportFetcher::DB_COLUMN_LABEL_MESSAGE], Report::LABEL_MESSAGE_PENDING_VALIDATION) === 0
+				): ?>
+					<div class="col-md-3 col-sm-6 col-xs-6">
 
-					<button type="submit" name="btn-complete-report" class="btn btn-primary ui-tooltip" data-toggle="tooltip"
-					        data-placement="bottom"
-					        data-trigger="hover" title="You won't be able to edit the report anymore. The responsible
-				        secretary will have to validate it.">
-						Complete Report
-					</button>
-				</div>
+						<button type="submit" name="btn-update-report" class="btn btn-default temp-save-report-btn ui-tooltip"
+						        data-toggle="tooltip"
+						        data-placement="bottom"
+						        data-trigger="hover"
+						        title="Partially fill report. You'll be able to edit the report as much you want up until you complete it.">
+							Save Changes
+						</button>
+					</div>
+					<div class="col-md-3 col-sm-6 col-xs-6">
+
+						<button type="submit" name="btn-complete-report" class="btn btn-primary ui-tooltip"
+						        data-toggle="tooltip"
+						        data-placement="bottom"
+						        data-trigger="hover" title="<?php echo $user->isTutor() ? "You won't be able to edit the report anymore. The responsible
+				        secretary will have to validate it." : "Report will be finalized, and un-editable."; ?>">
+							<?php echo $user->isTutor() ? "Complete Report" : "Validate Report"; ?>
+						</button>
+					</div>
+				<?php endif; ?>
 
 				<input type="hidden" name="form-update-report-id"
 				       value="<?php echo $reports[$i][ReportFetcher::DB_COLUMN_ID]; ?>">
@@ -714,17 +757,14 @@ if (isset($reports)) {
 
 			if ($inputCheckbox.is(':checked') && $inputText.attr('disabled')) {
 				$inputText.removeAttr('disabled');
+				$inputText.attr('required', 'required');
 				$inputText.focus();
 			} else if (!$inputText.val() || !$inputCheckbox.is(':checked')) {
 				$inputText.attr('disabled', 'disabled');
+				$inputText.removeAttr('required');
 				$inputText.val('');
 			}
 
-		});
-
-
-		$('.count-textarea').on('live', function () {
-			alert('test');
 		});
 
 
