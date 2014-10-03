@@ -59,7 +59,7 @@ class CourseFetcher
 		date_default_timezone_set('Europe/Athens');
 
 		$query =
-			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_CODE . "`, `" . self::DB_TABLE . "`.`" .
+			"SELECT DISTINCT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_CODE . "`, `" . self::DB_TABLE . "`.`" .
 			self::DB_COLUMN_NAME . "`, `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`
 			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
 			INNER JOIN  `" . DB_NAME . "`.`" . Tutor_has_course_has_termFetcher::DB_TABLE . "`
