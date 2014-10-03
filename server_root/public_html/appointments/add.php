@@ -15,7 +15,7 @@ $section = "appointments";
 
 try {
 	$terms = TermFetcher::retrieveCurrTerm($db);
-	$courses = CourseFetcher::retrieveAll($db);
+	$courses = sizeof($terms) > 0 ? CourseFetcher::retrieveForTerm($db, $terms[0][TermFetcher::DB_COLUMN_ID]) : "";
 	$instructors = InstructorFetcher::retrieveAll($db);
 	$students = StudentFetcher::retrieveAll($db);
 
@@ -168,7 +168,7 @@ require ROOT_PATH . 'views/sidebar.php';
 
 							<div class="form-group">
 								<div class="input-group">
-									<span class="input-group-addon"><label for="courseId">Course</label></span>
+									<span class="input-group-addon"><label for="courseId" id="label-course-text">Course</label></span>
 									<select id="courseId" name="courseId" class="form-control" required>
 										<option></option>
 										<?php foreach ($courses as $course) {
@@ -362,10 +362,10 @@ $(function () {
 		}
 	});
 	$termId.click(function () {
-		reloadCalendar('term_change');
-
 		try {
+			retrieveCourses();
 			retrieveTutors();
+			reloadCalendar('term_change');
 		}
 		catch (err) {
 			// clear options
@@ -741,6 +741,64 @@ $(function () {
 			},
 			error: function (e) {
 				$('#label-instructor-text').text("Connection errors.");
+			}
+		});
+	}
+
+	function retrieveCourses() {
+		var termId = $("#termId").select2("val");
+		if (!termId.match(/^[0-9]+$/)) throw new Error("Term is missing");
+
+		$('#label-course-text').text("");
+		$('#label-course-text').append("<i class='fa fa-circle-o-notch fa-spin'></i>");
+
+		var data = {
+			"action": "courses_on_term",
+			"termId": termId
+		}
+		data = $(this).serialize() + "&" + $.param(data);
+
+		$.ajax({
+			type: "GET",
+			dataType: "json",
+			url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/courses",
+			data: data,
+			success: function (inData) {
+				console.log(inData);
+				// reset label test
+				$('#label-course-text').text("Courses");
+
+				// prepare new data for options
+				var newCourses = [];
+				$.each(inData, function (idx, obj) {
+					newCourses.push({
+						id: obj.id,
+						text: obj.code + " - " + obj.name
+					});
+				});
+
+				// clear options
+				var $el = $courseId;
+				$el.empty(); // remove old options
+
+				// add new options
+				$el.append("<option></option>");
+				$.each(newCourses, function (key, value) {
+					$el.append($("<option></option>")
+						.attr("value", value.id).text(value.text));
+				});
+
+				var placeHolder = jQuery.isEmptyObject(inData) ? "No courses found" : "Select one"
+				$el.select2({
+					placeholder: placeHolder,
+					allowClear: false
+				});
+				<?php 	if (isBtnAddStudentPrsd()) : ?>
+				$tutorId.select2("val", <?php echo $_POST['tutorId']; ?>);
+				<?php endif; ?>
+			},
+			error: function (e) {
+				$('#label-course-text').text("Connection errors.");
 			}
 		});
 	}
