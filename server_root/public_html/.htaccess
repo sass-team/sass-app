@@ -31,10 +31,10 @@ ErrorDocument 403 /error-403
 ErrorDocument 500 /error-500
 
 # MAINTENANCE-PAGE REDIRECT #|(?::1)
-#<IfModule mod_rewrite.c>
-# RewriteEngine on
-# RewriteCond %{REMOTE_ADDR} !^(?:(?:0\.0\.0\.0)|(?:127\.0\.0\.1))$
-# RewriteCond %{REQUEST_URI} !\.(jpe?g?|png|gif) [NC]
-# RewriteCond %{REQUEST_URI} !/upgrade/.*$ [NC]
-# RewriteRule .* /upgrade/ [R=302,L]
-#</IfModule>
+<IfModule mod_rewrite.c>
+ RewriteEngine on
+ RewriteCond %{REMOTE_ADDR} !^(?:(?:109\.242\.166\.36)|(?:127\.0\.0\.1))$
+ RewriteCond %{REQUEST_URI} !\.(jpe?g?|png|gif) [NC]
+ RewriteCond %{REQUEST_URI} !/upgrade/.*$ [NC]
+ RewriteRule .* /upgrade/ [R=302,L]
+</IfModule>
