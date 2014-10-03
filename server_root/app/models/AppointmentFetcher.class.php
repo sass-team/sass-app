@@ -79,6 +79,37 @@ class AppointmentFetcher
 		return true;
 	}
 
+	public static function existsTutorsAppointmentsBetween($db, $tutorId, $startDate, $endDate) {
+		date_default_timezone_set('Europe/Athens');
+		$startDate = $startDate->format(Dates::DATE_FORMAT_IN);
+		$endDate = $endDate->format(Dates::DATE_FORMAT_IN);
+
+		try {
+			$sql =
+				"SELECT COUNT(" . self::DB_COLUMN_ID . ")
+				FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+				WHERE `" . self::DB_COLUMN_TUTOR_USER_ID . "` = :tutor_user_id
+				AND
+				(
+					(:start_date BETWEEN `" . self::DB_COLUMN_START_TIME . "` AND `" . self::DB_COLUMN_END_TIME . "`)
+						OR
+					(:end_date BETWEEN `" . self::DB_COLUMN_START_TIME . "` AND `" . self::DB_COLUMN_END_TIME . "`)
+				) ";
+			$query = $db->getConnection()->prepare($sql);
+			$query->bindParam(':tutor_user_id', $tutorId, PDO::PARAM_INT);
+			$query->bindParam(':start_date', $startDate, PDO::PARAM_STR);
+			$query->bindParam(':end_date', $endDate, PDO::PARAM_STR);
+
+			$query->execute();
+
+			if ($query->fetchColumn() === '0') return false;
+		} catch (Exception $e) {
+			throw new Exception("Could not check conflicts with other appointments.");
+		}
+
+		return true;
+	}
+
 	public static function belongsToTutor($db, $id, $tutorId) {
 		try {
 			$sql = "SELECT COUNT(" . self::DB_COLUMN_ID . ")
@@ -133,7 +164,6 @@ class AppointmentFetcher
 			throw new Exception("Something terrible happened . Could not retrieve data from database .: ");
 		} // end catch
 	}
-
 
 	public static function retrieveAll($db) {
 		$query =

@@ -111,7 +111,7 @@ require ROOT_PATH . 'views/sidebar.php';
 	<div class="portlet">
 		<div class="row">
 
-			<div class="col-md-5">
+			<div class="col-lg-5 col-md-12">
 				<div class="portlet-header">
 
 					<h3 class="col-md-10 pull-left">
@@ -254,7 +254,7 @@ require ROOT_PATH . 'views/sidebar.php';
 			</div>
 
 
-			<div class="col-md-7">
+			<div class="col-lg-7 col-md-12">
 				<div class="portlet-header">
 
 					<h3>
@@ -735,13 +735,22 @@ $(function () {
 					placeholder: placeHolder,
 					allowClear: false
 				});
-
+				<?php 	if (isBtnAddStudentPrsd()) : ?>
+				$tutorId.select2("val", <?php echo $_POST['tutorId']; ?>);
+				<?php endif; ?>
 			},
 			error: function (e) {
 				$('#label-instructor-text').text("Connection errors.");
 			}
 		});
 	}
+
+	<?php 	if (isBtnAddStudentPrsd()) : ?>
+	$courseId.select2("val", <?php echo $_POST['courseId']; ?>);
+	retrieveTutors();
+	$dateTimePickerStart.data("DateTimePicker").setDate('<?php echo $_POST['dateTimePickerStart']; ?>');
+	$dateTimePickerEnd.data("DateTimePicker").setDate('<?php echo $_POST['dateTimePickerEnd']; ?>');
+	<?php endif; ?>
 });
 </script>
 
