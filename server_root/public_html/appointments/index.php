@@ -61,11 +61,11 @@ try {
 			$updateDone = Report::updateAllFields($db, $reportUpdate[ReportFetcher::DB_COLUMN_ID], $projectTopicOtherNew,
 				$otherTextArea, $studentsConcernsTextArea, $relevantFeedbackGuidelines, $conclusionAdditionalComments);
 			// user is tutor requesting fill report
-			if($user->isTutor()) {
-				ReportFetcher::updateLabel($db, $formReportId,Report::LABEL_MESSAGE_PENDING_VALIDATION, Report::LABEL_COLOR_WARNING);
+			if ($user->isTutor()) {
+				ReportFetcher::updateLabel($db, $formReportId, Report::LABEL_MESSAGE_PENDING_VALIDATION, Report::LABEL_COLOR_WARNING);
 			} else {
 				// user is secretary confirming report
-				ReportFetcher::updateLabel($db, $formReportId,Report::LABEL_MESSAGE_COMPLETE, Report::LABEL_COLOR_SUCCESS);
+				ReportFetcher::updateLabel($db, $formReportId, Report::LABEL_MESSAGE_COMPLETE, Report::LABEL_COLOR_SUCCESS);
 
 			}
 		}
@@ -202,8 +202,10 @@ require ROOT_PATH . 'views/sidebar.php';
 						<i class="fa fa-file-text-o"></i> &nbsp;&nbsp;R
 						<span class="label label-default">disabled</span>
 					</h5>
-					<?php echo $studentsAppointmentData[$i][UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_FIRST_NAME] . " " .
-						$studentsAppointmentData[$i][UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_LAST_NAME]; ?>
+					<?php echo $studentsAppointmentData[$i][StudentFetcher::DB_TABLE . "_" .
+						StudentFetcher::DB_COLUMN_FIRST_NAME] . " " .
+						$studentsAppointmentData[$i][StudentFetcher::DB_TABLE . "_" .
+						StudentFetcher::DB_COLUMN_LAST_NAME]; ?>
 				</a>
 			<?php } ?>
 		<?php else: ?>
@@ -402,7 +404,8 @@ require ROOT_PATH . 'views/sidebar.php';
 					      class="form">
 						<div class="form-group">
 							<div class="form-group">
-								<button type="submit" class="btn btn-block btn-default">Manually - Appointment Success</button>
+								<button type="submit" class="btn btn-block btn-default">Manually - Appointment Success
+								</button>
 								<input type="hidden" name="hiddenCreateReports" value="">
 							</div>
 						</div>
@@ -468,7 +471,8 @@ if (isset($reports)) {
 
 		<div class="row">
 			<div class="col-md-6">
-				<label for="students-concerns-textarea">What were the <strong>student&#39;s concerns&#63;</strong> (Please
+				<label for="students-concerns-textarea">What were the <strong>student&#39;s concerns&#63;</strong>
+					(Please
 					indicate briefly)</label>
 				<textarea name="students-concerns-textarea" id="students-concerns-textarea"
 				          class="form-control count-textarea"
@@ -505,7 +509,8 @@ if (isset($reports)) {
 				<div class="checkbox">
 
 					<label>
-						<input type="checkbox" name="student-brought-along<?php echo $i; ?>[]" value="assignment" class=""
+						<input type="checkbox" name="student-brought-along<?php echo $i; ?>[]" value="assignment"
+						       class=""
 						       data-parsley-mincheck="1" data-parsley-required="true">
 						Assignment &#40;graded&#41;
 					</label>
@@ -526,13 +531,15 @@ if (isset($reports)) {
 				</div>
 				<div class="checkbox">
 					<label>
-						<input type="checkbox" name="student-brought-along<?php echo $i; ?>[]" class="" value="textbook">
+						<input type="checkbox" name="student-brought-along<?php echo $i; ?>[]" class=""
+						       value="textbook">
 						Textbook
 					</label>
 				</div>
 				<div class="checkbox">
 					<label>
-						<input type="checkbox" name="student-brought-along<?php echo $i; ?>[]" class="" value="studentsNotes">
+						<input type="checkbox" name="student-brought-along<?php echo $i; ?>[]" class=""
+						       value="studentsNotes">
 						Students Notes
 					</label>
 				</div>
@@ -665,7 +672,8 @@ if (isset($reports)) {
 				): ?>
 					<div class="col-md-3 col-sm-6 col-xs-6">
 
-						<button type="submit" name="btn-update-report" class="btn btn-default temp-save-report-btn ui-tooltip"
+						<button type="submit" name="btn-update-report"
+						        class="btn btn-default temp-save-report-btn ui-tooltip"
 						        data-toggle="tooltip"
 						        data-placement="bottom"
 						        data-trigger="hover"
