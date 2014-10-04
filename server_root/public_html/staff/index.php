@@ -264,24 +264,15 @@ require ROOT_PATH . 'views/sidebar.php';
 
 								<div id="collapseTwo" class="panel-collapse collapse">
 									<div class="panel-body">
-										<div class="row">
-
-											<div class="col-md-10">
-
+										
 												<div class="table-responsive">
 													<table class="table table-hover">
 
 														<thead>
 															<tr>
-																<th class="text-center" data-filterable="true" data-sortable="true"
-																data-sortable="true">Days
-																</th>
-																<th class="text-center" data-filterable="true" data-sortable="false"
-																data-sortable="true">Start - End
-																</th>
-																<th class="text-center" data-filterable="true" data-sortable="false"
-																data-sortable="true">Term
-																</th>
+																<th class="text-center">Days</th>
+																<th class="text-center">Start - End</th>
+																<th class="text-center">Term</th>
 																<th class="text-center">Status</th>
 														</tr>
 														</thead>
@@ -299,11 +290,6 @@ require ROOT_PATH . 'views/sidebar.php';
 												</div>
 												<!-- /.table-responsive -->
 
-
-											</div>
-											<!-- /.col -->
-
-
 											<!-- <div class="col-md-9">
 												<div class="portlet-header">
 
@@ -315,10 +301,6 @@ require ROOT_PATH . 'views/sidebar.php';
 													<div id="appointments-calendar"></div>
 												</div>
 											</div> -->
-
-
-										</div>
-										<!-- /.row -->
 
 									</div>
 									<!-- /.panel-default -->
@@ -371,7 +353,6 @@ else: ?>
 									<table
 										class="table table-striped table-bordered table-hover table-highlight table-checkable"
 										data-provide="datatable"
-										data-display-rows="10"
 										data-info="true"
 										data-search="true"
 										data-length-change="true"

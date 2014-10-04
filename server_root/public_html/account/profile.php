@@ -132,6 +132,8 @@ require ROOT_PATH . 'views/sidebar.php';
 	<!-- /.row -->
 	<div class="row">
 
+		<div class="alert alert-info" role="alert">If any of the information below do not match those of your current courses/schedule, please contact one of the secretaries.</div>
+
 		<div class="col-md-10">
 			<h3 class="heading">Special Information</h3>
 
@@ -209,24 +211,15 @@ require ROOT_PATH . 'views/sidebar.php';
 
 					<div id="collapseTwo" class="panel-collapse collapse">
 						<div class="panel-body">
-							<div class="row">
-
-								<div class="col-md-10">
 
 									<div class="table-responsive">
 										<table class="table table-hover">
 
 											<thead>
 											<tr>
-												<th class="text-center" data-filterable="true" data-sortable="true"
-												    data-sortable="true">Days
-												</th>
-												<th class="text-center" data-filterable="true" data-sortable="false"
-												    data-sortable="true">Start - End
-												</th>
-												<th class="text-center" data-filterable="true" data-sortable="false"
-												    data-sortable="true">Term
-												</th>
+												<th class="text-center">Days</th>
+												<th class="text-center">Start - End</th>
+												<th class="text-center">Term</th>
 												<th class="text-center">Status</th>
 											</tr>
 											</thead>
@@ -245,10 +238,6 @@ require ROOT_PATH . 'views/sidebar.php';
 									<!-- /.table-responsive -->
 
 
-								</div>
-								<!-- /.col -->
-
-
 								<!-- <div class="col-md-7">
 									<div class="portlet-header">
 
@@ -261,9 +250,6 @@ require ROOT_PATH . 'views/sidebar.php';
 								</div>
 							</div> -->
 
-
-							</div>
-							<!-- /.row -->
 
 						</div>
 						<!-- /.panel-default -->

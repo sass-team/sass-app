@@ -41,6 +41,7 @@ $mobile = $curUser[UserFetcher::DB_COLUMN_MOBILE];
 			<?php if (Tutor::isUserTypeTutor($position)) { ?>
 				<a class="btn btn-default btn-sm center-block ui-popover" data-toggle="tooltip" data-placement="top"
 				   data-trigger="hover"
+				   data-html="true"
 				   data-content="
 			   <?php
 				   if ((sizeof($courses) > 0)) {
