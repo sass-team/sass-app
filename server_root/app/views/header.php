@@ -69,6 +69,12 @@
 							&nbsp;&nbsp;My Schedule
 						</a>
 					</li>
+					<li>
+						<a href="<?php echo BASE_URL; ?>appointments/calendar">
+							<i class="fa fa-calendar"></i>
+							&nbsp;&nbsp;My Appointments
+						</a>
+					</li>
 					<li class="divider"></li>
 				<?php } ?>
 				<li>
