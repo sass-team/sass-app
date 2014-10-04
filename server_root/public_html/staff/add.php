@@ -52,6 +52,7 @@ function isSaveBttnPressed() {
 
 $pageTitle = "Add staff Member";
 $section = "staff";
+
 ?>
 
 
