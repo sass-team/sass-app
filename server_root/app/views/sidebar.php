@@ -56,7 +56,7 @@
 					</a>
 				</li>
 				<li>
-					<a href="<?php echo BASE_URL; ?>appointments/reports">
+					<a href="<?php echo BASE_URL; ?>appointments/list">
 						<i class="fa fa-list"></i>
 						List
 					</a>
