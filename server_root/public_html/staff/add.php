@@ -255,7 +255,7 @@ require ROOT_PATH . 'views/sidebar.php';
 										</h5>
 										<select id="termIds" name="termIds" class="form-control" required>
 											<?php foreach ($terms as $term) {
-												include(ROOT_PATH . "s/partials/term/select-options-view.html.php");
+												include(ROOT_PATH . "views/partials/term/select-options-view.html.php");
 											}
 											?>
 										</select>
