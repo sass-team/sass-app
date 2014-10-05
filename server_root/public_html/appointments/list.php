@@ -14,7 +14,7 @@ $general->loggedOutProtect();
 $pageTitle = "All Appointments - List";
 $section = "appointments";
 
-$appointments = AppointmentFetcher::retrieveAllForList($db);
+$appointments = AppointmentFetcher::retrieveAllOfCurrTerms($db);
 ?>
 
 <!DOCTYPE html>
@@ -53,7 +53,7 @@ $appointments = AppointmentFetcher::retrieveAllForList($db);
 
 							<h3>
 								<i class="fa fa-table"></i>
-								All Appointments
+								All Appointments of Current Terms
 							</h3>
 
 						</div>

@@ -183,7 +183,7 @@ class AppointmentFetcher
 		}
 	}
 
-	public static function retrieveAllForList($db) {
+	public static function retrieveAllOfCurrTerms($db) {
 		$query =
 			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` AS " . self::DB_TABLE . "_" . self::DB_COLUMN_ID . ", 
 			`" . self::DB_COLUMN_START_TIME . "` , 
@@ -202,7 +202,8 @@ class AppointmentFetcher
 					`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "` 
 			INNER JOIN `" . TermFetcher::DB_TABLE . "` 
 				ON `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "` = 
-					`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`";
+					`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`
+			WHERE CURRENT_TIMESTAMP() BETWEEN `" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" . TermFetcher::DB_COLUMN_END_DATE . "`";
 
 		try {
 			$query = $db->getConnection()->prepare($query);
