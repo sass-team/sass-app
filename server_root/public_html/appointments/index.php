@@ -40,9 +40,23 @@ try {
 		$projectTopicOtherNew = isset($_POST['project-topic-other']) ? $_POST['project-topic-other'] : '';
 		$otherTextArea = isset($_POST['other_text_area']) ? $_POST['other_text_area'] : '';
 		$studentsConcernsTextArea = isset($_POST['students-concerns-textarea']) ? $_POST['students-concerns-textarea'] : '';
-		$relevantFeedbackGuidelines = isset($_POST['relevant-feedback-guidelines']) ? $_POST['relevant-feedback-guidelines'] : '';
 		$studentBroughtAlong = isset($_POST['student-brought-along']) ? $_POST['student-brought-along'] : NULL;
 		$conclusionAdditionalComments = isset($_POST['conclusion-additional-comments']) ? $_POST['conclusion-additional-comments'] : '';
+		$studentBroughtAlongNew = isset($_POST['student-brought-along']) ? $_POST['student-brought-along'] : NULL;
+		$relevantFeedbackGuidelines = isset($_POST['relevant-feedback-guidelines']) ? $_POST['relevant-feedback-guidelines'] : NULL;
+
+
+		$studentBroughtAlongOld = array(
+			StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_GRADED => $reportUpdate[StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_GRADED],
+			StudentBroughtAlongFetcher::DB_COLUMN_DRAFT => $reportUpdate[StudentBroughtAlongFetcher::DB_COLUMN_DRAFT],
+			StudentBroughtAlongFetcher::DB_COLUMN_INSTRUCTORS_FEEDBACK => $reportUpdate[StudentBroughtAlongFetcher::DB_COLUMN_INSTRUCTORS_FEEDBACK],
+			StudentBroughtAlongFetcher::DB_COLUMN_TEXTBOOK => $reportUpdate[StudentBroughtAlongFetcher::DB_COLUMN_TEXTBOOK],
+			StudentBroughtAlongFetcher::DB_COLUMN_NOTES => $reportUpdate[StudentBroughtAlongFetcher::DB_COLUMN_NOTES],
+			StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_SHEET => $reportUpdate[StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_SHEET],
+			StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON => $reportUpdate[StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON],
+			StudentBroughtAlongFetcher::DB_COLUMN_OTHER => $reportUpdate[StudentBroughtAlongFetcher::DB_COLUMN_OTHER]
+		);
+
 
 		if (isBtnUpdateReportPrsd()) {
 			$updateDone = Report::updateProjectTopicOtherText($db, $reportUpdate[ReportFetcher::DB_COLUMN_ID],
@@ -53,13 +67,13 @@ try {
 					$reportUpdate[ReportFetcher::DB_COLUMN_STUDENT_CONCERNS], $studentsConcernsTextArea)) || $updateDone;
 			$updateDone = (Report::updateRelevantFeedbackGuidelines($db, $reportUpdate[ReportFetcher::DB_COLUMN_ID],
 					$reportUpdate[ReportFetcher::DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES], $relevantFeedbackGuidelines)) || $updateDone;
-//			$updateDone = (Report::updateStudentBroughtAlong($db, $reportUpdate[ReportFetcher::DB_COLUMN_ID],
-//					$relevantFeedbackGuidelines)) || $updateDone;
+			$updateDone = (Report::updateStudentBroughtAlong($db, $reportUpdate[ReportFetcher::DB_COLUMN_ID],
+					$studentBroughtAlongNew, $studentBroughtAlongOld)) || $updateDone;
 			$updateDone = (Report::updateAdditionalComments($db, $reportUpdate[ReportFetcher::DB_COLUMN_ID],
 					$reportUpdate[ReportFetcher::DB_COLUMN_ADDITIONAL_COMMENTS], $conclusionAdditionalComments)) || $updateDone;
 		} else {
 			$updateDone = Report::updateAllFields($db, $reportUpdate[ReportFetcher::DB_COLUMN_ID], $projectTopicOtherNew,
-				$otherTextArea, $studentsConcernsTextArea, $relevantFeedbackGuidelines, $conclusionAdditionalComments);
+				$otherTextArea, $studentsConcernsTextArea, $relevantFeedbackGuidelines, $studentBroughtAlongNew, $studentBroughtAlongOld, $conclusionAdditionalComments);
 			// user is tutor requesting fill report
 			if ($user->isTutor()) {
 				ReportFetcher::updateLabel($db, $formReportId, Report::LABEL_MESSAGE_PENDING_VALIDATION, Report::LABEL_COLOR_WARNING);
@@ -95,6 +109,31 @@ try {
 
 		header('Location: ' . BASE_URL . 'appointments/' . $appointmentId . '/success');
 		exit();
+	} else if (isUrlRqstngAppointmentCancelByStudent()) {
+		AppointmentFetcher::updateLabel($db, $appointmentId,
+			Appointment::LABEL_MESSAGE_STUDENT_CANCELED, Appointment::LABEL_COLOR_CANCELED);
+		header('Location: ' . BASE_URL . 'appointments/' . $appointmentId . '/success');
+		exit();
+	} else if (isUrlRqstngAppointmentCancelByTutor()) {
+		AppointmentFetcher::updateLabel($db, $appointmentId,
+			Appointment::LABEL_MESSAGE_TUTOR_CANCELED, Appointment::LABEL_COLOR_CANCELED);
+		header('Location: ' . BASE_URL . 'appointments/' . $appointmentId . '/success');
+		exit();
+	} else if (isUrlRqstngAppointmentNoShowByStudent()) {
+		AppointmentFetcher::updateLabel($db, $appointmentId,
+			Appointment::LABEL_MESSAGE_STUDENT_NO_SHOW, Appointment::LABEL_COLOR_CANCELED);
+		header('Location: ' . BASE_URL . 'appointments/' . $appointmentId . '/success');
+		exit();
+	} else if (isUrlRqstngAppointmentNoShowByTutor()) {
+		AppointmentFetcher::updateLabel($db, $appointmentId,
+			Appointment::LABEL_MESSAGE_TUTOR_NO_SHOW, Appointment::LABEL_COLOR_CANCELED);
+		header('Location: ' . BASE_URL . 'appointments/' . $appointmentId . '/success');
+		exit();
+	} else if (isUrlRqstngAppointmentEnable()) {
+		AppointmentFetcher::updateLabel($db, $appointmentId,
+			Appointment::LABEL_MESSAGE_PENDING, Appointment::LABEL_COLOR_PENDING);
+		header('Location: ' . BASE_URL . 'appointments/' . $appointmentId . '/success');
+		exit();
 	}
 
 } catch (Exception $e) {
@@ -114,6 +153,35 @@ function isUrlRqstngManualReportEnable() {
 	return isset($_GET['appointmentId']) && preg_match("/^[0-9]+$/", $_GET['appointmentId']) &&
 	isset($_POST['hiddenCreateReports']) && empty($_POST['hiddenCreateReports']);
 }
+
+
+function isUrlRqstngAppointmentCancelByStudent() {
+	return isset($_GET['appointmentId']) && preg_match("/^[0-9]+$/", $_GET['appointmentId']) &&
+	isset($_POST['hiddenCanceledByStudent']) && empty($_POST['hiddenCanceledByStudent']);
+}
+
+
+function isUrlRqstngAppointmentNoShowByStudent() {
+	return isset($_GET['appointmentId']) && preg_match("/^[0-9]+$/", $_GET['appointmentId']) &&
+	isset($_POST['hiddenNoShowByStudent']) && empty($_POST['hiddenNoShowByStudent']);
+}
+
+function isUrlRqstngAppointmentNoShowByTutor() {
+	return isset($_GET['appointmentId']) && preg_match("/^[0-9]+$/", $_GET['appointmentId']) &&
+	isset($_POST['hiddenNoShowByTutor']) && empty($_POST['hiddenNoShowByTutor']);
+}
+
+
+function isUrlRqstngAppointmentCancelByTutor() {
+	return isset($_GET['appointmentId']) && preg_match("/^[0-9]+$/", $_GET['appointmentId']) &&
+	isset($_POST['hiddenCanceledByTutor']) && empty($_POST['hiddenCanceledByTutor']);
+}
+
+function isUrlRqstngAppointmentEnable() {
+	return isset($_GET['appointmentId']) && preg_match("/^[0-9]+$/", $_GET['appointmentId']) &&
+	isset($_POST['hiddenEnableAppointment']) && empty($_POST['hiddenEnableAppointment']);
+}
+
 
 function isBtnUpdateReportPrsd() {
 	return isset($_GET['appointmentId']) && preg_match("/^[0-9]+$/", $_GET['appointmentId']) &&
@@ -196,7 +264,7 @@ require ROOT_PATH . 'views/sidebar.php';
 		</a>
 
 		<?php if ($studentsAppointmentData[0][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID] === NULL): ?>
-			<?php for ($i = 0; $i < sizeof($studentsAppointmentData); $i++) { ?>
+			<?php for ($i = 0; $i < sizeof($studentsAppointmentData); $i++) : ?>
 				<a href="#report-tab" class="list-group-item" data-toggle="tab">
 					<h5>
 						<i class="fa fa-file-text-o"></i> &nbsp;&nbsp;R
@@ -207,7 +275,7 @@ require ROOT_PATH . 'views/sidebar.php';
 						$studentsAppointmentData[$i][StudentFetcher::DB_TABLE . "_" .
 						StudentFetcher::DB_COLUMN_LAST_NAME]; ?>
 				</a>
-			<?php } ?>
+			<?php endfor; ?>
 		<?php else: ?>
 			<?php for ($i = 0; $i < sizeof($reports); $i++) { ?>
 				<a href="#report-tab<?php echo $i; ?>" class="list-group-item" data-toggle="tab">
@@ -235,190 +303,258 @@ require ROOT_PATH . 'views/sidebar.php';
 
 <div class="tab-pane fade in active" id="appointment-tab">
 
-	<div class="portlet">
-		<div class="portlet-header">
+<div class="portlet">
+<div class="portlet-header">
 
-			<h3>
-				<i class="fa fa-file-text"></i>
-				Appointment Details
-			</h3>
+	<h3>
+		<i class="fa fa-file-text"></i>
+		Appointment Details
+	</h3>
 
-		</div>
-		<!-- /.portlet-header -->
 
-		<div class="portlet-content">
+	<ul class="portlet-tools pull-right">
+		<li>
+			<div class="btn-group">
+				<button data-toggle="dropdown" class="btn btn-md btn-primary dropdown-toggle">Modify <span
+						class="caret"></span></button>
+				<ul class="dropdown-menu" role="menu">
+					<?php
+					if ((strcmp($studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE], Appointment::LABEL_MESSAGE_PENDING) === 0)
+					): ?>
+						<?php if ($nowDateTime > $startDateTime): ?>
+							<li>
+								<form method="post"
+								      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
+									>
+									<input type="hidden" name="hiddenCreateReports" value="">
+									<button type="submit" class="btn btn-block btn-default">
+										Complete - Enable Reports
+									</button>
+								</form>
+							</li>
+							<li class="divider"></li>
+						<?php endif; ?>
+						<li>
+							<form method="post"
+							      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
+								>
+								<input type="hidden" name="hiddenCanceledByStudent" value="">
+								<button type="submit" class="btn btn-block btn-default">
+									Canceled by student
+								</button>
+							</form>
+						</li>
+						<li class="divider"></li>
+						<li>
+							<form method="post"
+							      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
+								>
+								<input type="hidden" name="hiddenCanceledByTutor" value="">
+								<button type="submit" class="btn btn-block btn-default">
+									Canceled by tutor
+								</button>
+							</form>
+						</li>
+						<li class="divider"></li>
+						<li>
+							<form method="post"
+							      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
+								>
+								<input type="hidden" name="hiddenNoShowByStudent" value="">
+								<button type="submit" class="btn btn-block btn-default">
+									No show by student
+								</button>
+							</form>
+						</li>
+						<li class="divider"></li>
+						<li>
+							<form method="post"
+							      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
+								>
+								<input type="hidden" name="hiddenNoShowByTutor" value="">
+								<button type="submit" class="btn btn-block btn-default">
+									No show by tutor
+								</button>
+							</form>
+						</li>
+					<?php elseif (strcmp($studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE], Appointment::LABEL_MESSAGE_COMPLETE) !== 0): ?>
+						<li>
+							<form method="post"
+							      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
+								>
+								<input type="hidden" name="hiddenEnableAppointment" value="">
+								<button type="submit" class="btn btn-block btn-default">
+									Enable appointment
+								</button>
+							</form>
+						</li>
+					<?php endif; ?>
 
-			<!-- Appointment details. -->
-			<div class="form-group">
-				<form method="post" id="add-student-form"
-				      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
-				      class="form">
+				</ul>
+			</div>
+		</li>
+	</ul>
+</div>
+<!-- /.portlet-header -->
 
-					<div class="form-group" id="student-instructor">
-						<?php
-						for ($i = 0; $i < sizeof($studentsAppointmentData); $i++) {
-							?>
-							<div class="form-group">
-								<div class="input-group">
-									<span class="input-group-addon">Student</span>
-									<select name="studentsIds[]" id="studentId<?php echo $i; ?>" class="form-control"
-									        required>
-										<option></option>
-										<?php
-										foreach ($students as $student):
-											include(ROOT_PATH . "views/partials/student/select-options-view.html.php");
-										endforeach;
-										?>
-									</select>
-								</div>
+<div class="portlet-content">
 
-							</div>
-							<div class="form-group">
-								<div class="input-group">
-									<span class="input-group-addon">Instructor</span>
-									<select name="instructorIds[]" id="instructorId<?php echo $i; ?>"
-									        class="form-control" required disabled>
-										<option></option>
-										<?php foreach ($instructors as $instructor) {
-											include(ROOT_PATH . "views/partials/instructor/select-options-view.html.php");
-										}
-										?>
-									</select>
-								</div>
-							</div>
-						<?php } ?>
-					</div>
+	<!-- Appointment details. -->
+	<div class="form-group">
+		<form method="post" id="add-student-form"
+		      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
+		      class="form">
 
-					<hr/>
-
+			<div class="form-group" id="student-instructor">
+				<?php
+				for ($i = 0; $i < sizeof($studentsAppointmentData); $i++) {
+					?>
 					<div class="form-group">
 						<div class="input-group">
-							<span class="input-group-addon"><label for="courseId">Course</label></span>
-							<select id="courseId" name="courseId" class="form-control" required disabled>
-								<?php foreach ($courses as $course) {
-									include(ROOT_PATH . "views/partials/course/select-options-view.html.php");
+							<span class="input-group-addon">Student</span>
+							<select name="studentsIds[]" id="studentId<?php echo $i; ?>" class="form-control"
+							        required>
+								<option></option>
+								<?php
+								foreach ($students as $student):
+									include(ROOT_PATH . "views/partials/student/select-options-view.html.php");
+								endforeach;
+								?>
+							</select>
+						</div>
+
+					</div>
+					<div class="form-group">
+						<div class="input-group">
+							<span class="input-group-addon">Instructor</span>
+							<select name="instructorIds[]" id="instructorId<?php echo $i; ?>"
+							        class="form-control" required disabled>
+								<option></option>
+								<?php foreach ($instructors as $instructor) {
+									include(ROOT_PATH . "views/partials/instructor/select-options-view.html.php");
 								}
 								?>
 							</select>
 						</div>
 					</div>
+				<?php } ?>
+			</div>
+
+			<hr/>
+
+			<div class="form-group">
+				<div class="input-group">
+					<span class="input-group-addon"><label for="courseId">Course</label></span>
+					<select id="courseId" name="courseId" class="form-control" required disabled>
+						<?php foreach ($courses as $course) {
+							include(ROOT_PATH . "views/partials/course/select-options-view.html.php");
+						}
+						?>
+					</select>
+				</div>
+			</div>
 
 
-					<div class="form-group">
-						<div class="input-group">
+			<div class="form-group">
+				<div class="input-group">
 										<span class="input-group-addon"><label id="label-instructor-text"
 										                                       for="tutorId">Tutors</label></span>
-							<select id="tutorId" name="tutorId" class="form-control" required disabled>
-								<?php foreach ($tutors as $tutor) {
-									include(ROOT_PATH . "views/partials/tutor/select-options-view.html.php");
-								}
-								?>               </select>
-							<input id="value" type="hidden" style="width:300px"/>
-						</div>
-					</div>
+					<select id="tutorId" name="tutorId" class="form-control" required disabled>
+						<?php foreach ($tutors as $tutor) {
+							include(ROOT_PATH . "views/partials/tutor/select-options-view.html.php");
+						}
+						?>               </select>
+					<input id="value" type="hidden" style="width:300px"/>
+				</div>
+			</div>
 
 
-					<div class="form-group">
-						<div class='input-group date' id='dateTimePickerStart'>
+			<div class="form-group">
+				<div class='input-group date' id='dateTimePickerStart'>
 											<span class="input-group-addon"><label for="dateTimePickerStart">
 													Starts At</label></span>
-							<input type='text' name='dateTimePickerStart' class="form-control" required disabled/>
+					<input type='text' name='dateTimePickerStart' class="form-control" required disabled/>
                                  <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
-						</div>
-					</div>
+				</div>
+			</div>
 
 
-					<div class="form-group">
-						<div class='input-group date' id='dateTimePickerEnd'>
+			<div class="form-group">
+				<div class='input-group date' id='dateTimePickerEnd'>
                                         <span class="input-group-addon"><label for="dateTimePickerEnd">Ends
 		                                        At</label></span>
-							<input type='text' name='dateTimePickerEnd' class="form-control" required disabled/>
+					<input type='text' name='dateTimePickerEnd' class="form-control" required disabled/>
 										<span class="input-group-addon">
 											<span class="glyphicon glyphicon-calendar">
 										</span>
-						</div>
-					</div>
-
-
-					<div class="form-group">
-						<div class="input-group">
-							<button type="button" class="btn btn-default btn-sm addButton"
-							        data-template="textbox" disabled>
-								Add One More Student
-							</button>
-						</div>
-					</div>
-
-					<div class="form-group hide" id="textboxTemplate">
-						<div class="input-group">
-							<button type="button" class="btn btn-default btn-sm removeButton">Remove
-							</button>
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="input-group">
-							<span class="input-group-addon"><label for="termId">Term</label></span>
-							<select id="termId" name="termId" class="form-control" required disabled>
-								<?php
-								foreach ($terms as $term) {
-									include(ROOT_PATH . "views/partials/term/select-options-view.html.php");
-								}
-								?>
-							</select>
-						</div>
-					</div>
-
-					<div class="form-group">
-						<?php
-						if (empty($errors) === false) {
-							?>
-							<div class="alert alert-danger">
-								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-								<strong>Oh
-									snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
-								?>
-							</div>
-						<?php
-						} else if (isModificationSuccess()) {
-							?>
-							<div class="alert alert-success">
-								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-								<strong>Data successfully modified!</strong> <br/>
-							</div>
-						<?php } ?>
-
-						<div class="form-group">
-
-							<button type="submit" class="btn btn-block btn-primary" disabled>Update</button>
-							<input type="hidden" name="hiddenSubmitPrsd" value="">
-
-						</div>
-					</div>
-				</form>
-
-				<?php if ($studentsAppointmentData[0][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID] === NULL
-					&& $nowDateTime > $startDateTime
-				): ?>
-					<form method="post" id="add-student-form"
-					      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
-					      class="form">
-						<div class="form-group">
-							<div class="form-group">
-								<button type="submit" class="btn btn-block btn-default">Manually - Appointment Success
-								</button>
-								<input type="hidden" name="hiddenCreateReports" value="">
-							</div>
-						</div>
-					</form>
-				<?php endif; ?>
-
+				</div>
 			</div>
-			<!-- /.form-group -->
 
-		</div>
-		<!-- /.form-group -->
+
+			<div class="form-group">
+				<div class="input-group">
+					<button type="button" class="btn btn-default btn-sm addButton"
+					        data-template="textbox" disabled>
+						Add One More Student
+					</button>
+				</div>
+			</div>
+
+			<div class="form-group hide" id="textboxTemplate">
+				<div class="input-group">
+					<button type="button" class="btn btn-default btn-sm removeButton">Remove
+					</button>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="input-group">
+					<span class="input-group-addon"><label for="termId">Term</label></span>
+					<select id="termId" name="termId" class="form-control" required disabled>
+						<?php
+						foreach ($terms as $term) {
+							include(ROOT_PATH . "views/partials/term/select-options-view.html.php");
+						}
+						?>
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<?php
+				if (empty($errors) === false) {
+					?>
+					<div class="alert alert-danger">
+						<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+						<strong>Oh
+							snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
+						?>
+					</div>
+				<?php
+				} else if (isModificationSuccess()) {
+					?>
+					<div class="alert alert-success">
+						<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+						<strong>Data successfully modified!</strong> <br/>
+					</div>
+				<?php } ?>
+
+				<div class="form-group">
+
+					<button type="submit" class="btn btn-block btn-primary" disabled>Update</button>
+					<input type="hidden" name="hiddenSubmitPrsd" value="">
+
+				</div>
+			</div>
+		</form>
+
 
 	</div>
+	<!-- /.form-group -->
+
+</div>
+<!-- /.form-group -->
+
+</div>
 
 </div>
 <?php
@@ -445,7 +581,7 @@ if (isset($reports)) {
 					          data-parsley-trigger="keyup" data-parsley-minlength="10" data-parsley-maxlength="512"
 					          data-parsley-validation-threshold="5"
 					          data-parsley-minlength-message="Come on! You need to enter at least a 10 characters long
-					          comment.."
+					          comment..."
 					          data-parsley-required="true"><?php echo htmlspecialchars($reports[$i][ReportFetcher::DB_COLUMN_PROJECT_TOPIC_OTHER]); ?></textarea>
 				</div>
 				<!-- /.col -->
@@ -456,7 +592,7 @@ if (isset($reports)) {
 					          data-parsley-trigger="keyup" data-parsley-minlength="10" data-parsley-maxlength="512"
 					          data-parsley-validation-threshold="5"
 					          data-parsley-minlength-message="Come on! You need to enter at least a 10 characters long
-					          comment.."><?php echo htmlspecialchars($reports[$i][ReportFetcher::DB_COLUMN_OTHER_TEXT_AREA]); ?></textarea>
+					          comment..."><?php echo htmlspecialchars($reports[$i][ReportFetcher::DB_COLUMN_OTHER_TEXT_AREA]); ?></textarea>
 				</div>
 				<!-- /.col -->
 			</div>
@@ -495,7 +631,7 @@ if (isset($reports)) {
 				          data-parsley-validation-threshold="5"
 				          data-parsley-minlength-message="Come on! You need to enter at least a 10 characters long
 					          comment.."
-				          data-parsley-required="true"><?php echo htmlspecialchars($reports[$i][ReportFetcher::DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES]); ?></textarea>
+				          data-parsley-required="false"><?php echo htmlspecialchars($reports[$i][ReportFetcher::DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES]); ?></textarea>
 			</div>
 		</div>
 
@@ -504,12 +640,14 @@ if (isset($reports)) {
 
 			<div class="col-md-6">
 				<hr/>
-				<label for="student-brought-along">What did the <strong>student bring along?</strong></label>
+				<label for="student-brought-along[]">What did the <strong>student bring along?</strong></label>
 
 				<div class="checkbox">
 
 					<label>
-						<input type="checkbox" name="student-brought-along<?php echo $i; ?>[]" value="assignment"
+						<input type="checkbox"
+						       name="student-brought-along[<?php echo StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_GRADED; ?>]" <?php echo
+						strcmp($reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_GRADED], StudentBroughtAlongFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>
 						       class=""
 						       data-parsley-mincheck="1" data-parsley-required="true">
 						Assignment &#40;graded&#41;
@@ -517,51 +655,72 @@ if (isset($reports)) {
 				</div>
 				<div class="checkbox">
 					<label>
-						<input type="checkbox" name="student-brought-along<?php echo $i; ?>[]" class="" value="draft"
+						<input type="checkbox"
+						       name="student-brought-along[<?php echo StudentBroughtAlongFetcher::DB_COLUMN_DRAFT; ?>]" <?php echo
+						strcmp($reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_DRAFT], StudentBroughtAlongFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>
 						       data-parsley-multiple="student-brought-along-parsley-<?php echo $i; ?>">
 						Draft
 					</label>
 				</div>
 				<div class="checkbox">
 					<label>
-						<input type="checkbox" name="student-brought-along<?php echo $i; ?>[]" class=""
-						       value="instructorsFeedback">
+						<input type="checkbox"
+						       name="student-brought-along[<?php echo StudentBroughtAlongFetcher::DB_COLUMN_INSTRUCTORS_FEEDBACK; ?>]" <?php echo
+						strcmp($reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_INSTRUCTORS_FEEDBACK], StudentBroughtAlongFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>
+							>
 						Instructor&#39;s feedback
 					</label>
 				</div>
 				<div class="checkbox">
 					<label>
-						<input type="checkbox" name="student-brought-along<?php echo $i; ?>[]" class=""
-						       value="textbook">
+						<input type="checkbox"
+						       name="student-brought-along[<?php echo StudentBroughtAlongFetcher::DB_COLUMN_TEXTBOOK; ?>]" <?php echo
+						strcmp($reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_TEXTBOOK], StudentBroughtAlongFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>>
 						Textbook
 					</label>
 				</div>
 				<div class="checkbox">
 					<label>
-						<input type="checkbox" name="student-brought-along<?php echo $i; ?>[]" class=""
-						       value="studentsNotes">
-						Students Notes
+						<input type="checkbox"
+						       name="student-brought-along[<?php echo StudentBroughtAlongFetcher::DB_COLUMN_NOTES; ?>]" <?php echo
+						strcmp($reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_NOTES], StudentBroughtAlongFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>>
+						Notes
 					</label>
 				</div>
 				<div class="checkbox">
 					<label>
-						<input type="checkbox" name="student-brought-along<?php echo $i; ?>[]" class=""
-						       value="assignmentSheet">
+						<input type="checkbox"
+						       name="student-brought-along[<?php echo StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_SHEET; ?>]" <?php echo
+						strcmp($reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_SHEET], StudentBroughtAlongFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>>
 						Assignment sheet
 					</label>
 				</div>
 				<div class="checkbox">
 					<label class="focus-conference-3-exercise-class">
-						<input type="checkbox" name="student-brought-along-exercise-on[]" class="" value="exerciseOn">
-						Exercise on <input type="text" name="student-brought-along-exercise-on[]"
-						                   class="form-control" disabled="disabled"/>
+						<input type="checkbox"
+						       name="student-brought-along[<?php echo StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON; ?>]" <?php echo
+						$reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON] !== NULL ? 'checked' : ''; ?>>
+						Exercise on <input type="text"
+						                   name="student-brought-along[<?php echo StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON; ?>text]"
+						                   class="form-control" value="<?php echo
+						$reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON] === NULL ? "" : $reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON]; ?>"
+							<?php echo
+							$reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON] === NULL ? "disabled='disabled'" : ''; ?>
+							/>
 					</label>
 				</div>
 				<div class="checkbox">
 					<label class="focus-conference-3-other-class">
-						<input type="checkbox" name="student-brought-along-other[]" class="" value="other">
-						Other <input type="text" name="student-brought-along-other[]"
-						             class="form-control" disabled="disabled"/>
+						<input type="checkbox"
+						       name="student-brought-along[<?php echo StudentBroughtAlongFetcher::DB_COLUMN_OTHER; ?>]" <?php echo
+						$reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_OTHER] !== NULL ? 'checked' : ''; ?>
+						       value="other">
+						Other <input type="text"
+						             name="student-brought-along[<?php echo StudentBroughtAlongFetcher::DB_COLUMN_OTHER; ?>text]"
+						             class="form-control" value="<?php echo
+						$reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_OTHER] === NULL ? "" : $reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_OTHER]; ?>"<?php echo
+						$reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_OTHER] === NULL ? "disabled='disabled'" : ''; ?>
+							/>
 					</label>
 				</div>
 			</div>
@@ -667,7 +826,8 @@ if (isset($reports)) {
 		<div class="form-group">
 
 			<div class="col-md-12">
-				<?php if (($user->isTutor() && strcmp($reports[$i][ReportFetcher::DB_COLUMN_LABEL_MESSAGE], Report::LABEL_MESSAGE_PENDING_FILL) === 0)
+				<?php
+				if (($user->isTutor() && strcmp($reports[$i][ReportFetcher::DB_COLUMN_LABEL_MESSAGE], Report::LABEL_MESSAGE_PENDING_FILL) === 0)
 					|| !$user->isTutor() && strcmp($reports[$i][ReportFetcher::DB_COLUMN_LABEL_MESSAGE], Report::LABEL_MESSAGE_PENDING_VALIDATION) === 0
 				): ?>
 					<div class="col-md-3 col-sm-6 col-xs-6">

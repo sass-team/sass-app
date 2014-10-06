@@ -183,6 +183,38 @@ class AppointmentFetcher
 		}
 	}
 
+	public static function retrieveAllOfCurrTerms($db) {
+		$query =
+			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` AS " . self::DB_TABLE . "_" . self::DB_COLUMN_ID . ", 
+			`" . self::DB_COLUMN_START_TIME . "` , 
+			`" . self::DB_COLUMN_END_TIME . "`, 
+			`" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_CODE . "`, 
+			`" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_NAME . "`, 
+			`" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_FIRST_NAME . "`, 
+			`" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_LAST_NAME . "`, 
+			`" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_NAME . "` AS " . TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_NAME . " 
+			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "` 
+			INNER JOIN `" . DB_NAME . "`.`" . CourseFetcher::DB_TABLE . "` 
+				ON `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_ID . "` = 
+					`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_COURSE_ID . "` 
+			INNER JOIN `" . DB_NAME . "`.`" . UserFetcher::DB_TABLE . "` 
+				ON `" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "` = 
+					`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "` 
+			INNER JOIN `" . TermFetcher::DB_TABLE . "` 
+				ON `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "` = 
+					`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`
+			WHERE CURRENT_TIMESTAMP() BETWEEN `" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" . TermFetcher::DB_COLUMN_END_DATE . "`";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->execute();
+
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			throw new Exception("Could not retrieve data from database." . $e->getMessage());
+		}
+	}
+
 	public static function retrieveTutors($db, $termId) {
 		$query =
 			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_START_TIME . "` , `" .
