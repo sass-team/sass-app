@@ -111,7 +111,7 @@ require ROOT_PATH . 'views/sidebar.php';
 	<div class="portlet">
 		<div class="row">
 
-			<div class="col-lg-5 col-md-12">
+			<div class="col-lg-12 col-md-12">
 				<div class="portlet-header">
 
 					<h3 class="col-md-10 pull-left">
@@ -168,7 +168,8 @@ require ROOT_PATH . 'views/sidebar.php';
 
 							<div class="form-group">
 								<div class="input-group">
-									<span class="input-group-addon"><label for="courseId" id="label-course-text">Course</label></span>
+									<span class="input-group-addon"><label for="courseId"
+									                                       id="label-course-text">Course</label></span>
 									<select id="courseId" name="courseId" class="form-control" required>
 										<option></option>
 										<?php foreach ($courses as $course) {
@@ -254,7 +255,7 @@ require ROOT_PATH . 'views/sidebar.php';
 			</div>
 
 
-			<div class="col-lg-7 col-md-12">
+			<div class="col-lg-12 col-md-12">
 				<div class="portlet-header">
 
 					<h3>
@@ -614,6 +615,16 @@ $(function () {
 
 	function loadAllCalendars() {
 		try {
+			reloadCalendar('single_tutor_appointment_and_schedule');
+		} catch (err) {
+			// clear options
+			$tutorId.empty().append("<option></option>");
+			$tutorId.select2({
+				placeholder: err.message
+			});
+		}
+
+		try {
 			reloadCalendar('all_appointments_schedule');
 		} catch (err) {
 			$calendarTitle.text(err);
@@ -806,6 +817,15 @@ $(function () {
 	<?php 	if (isBtnAddStudentPrsd()) : ?>
 	$courseId.select2("val", <?php echo $_POST['courseId']; ?>);
 	retrieveTutors();
+	try {
+		reloadCalendar('single_tutor_appointment_and_schedule');
+	} catch (err) {
+		// clear options
+		$tutorId.empty().append("<option></option>");
+		$tutorId.select2({
+			placeholder: err.message
+		});
+	}
 	$dateTimePickerStart.data("DateTimePicker").setDate('<?php echo $_POST['dateTimePickerStart']; ?>');
 	$dateTimePickerEnd.data("DateTimePicker").setDate('<?php echo $_POST['dateTimePickerEnd']; ?>');
 	<?php endif; ?>
