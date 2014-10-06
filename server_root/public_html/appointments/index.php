@@ -40,9 +40,21 @@ try {
 		$projectTopicOtherNew = isset($_POST['project-topic-other']) ? $_POST['project-topic-other'] : '';
 		$otherTextArea = isset($_POST['other_text_area']) ? $_POST['other_text_area'] : '';
 		$studentsConcernsTextArea = isset($_POST['students-concerns-textarea']) ? $_POST['students-concerns-textarea'] : '';
-		$relevantFeedbackGuidelines = isset($_POST['relevant-feedback-guidelines']) ? $_POST['relevant-feedback-guidelines'] : '';
 		$studentBroughtAlong = isset($_POST['student-brought-along']) ? $_POST['student-brought-along'] : NULL;
 		$conclusionAdditionalComments = isset($_POST['conclusion-additional-comments']) ? $_POST['conclusion-additional-comments'] : '';
+		$studentBroughtAlongNew = isset($_POST['student-brought-along']) ? $_POST['student-brought-along'] : NULL;
+
+		$studentBroughtAlongOld = array(
+			StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_GRADED => $reportUpdate[StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_GRADED],
+			StudentBroughtAlongFetcher::DB_COLUMN_DRAFT => $reportUpdate[StudentBroughtAlongFetcher::DB_COLUMN_DRAFT],
+			StudentBroughtAlongFetcher::DB_COLUMN_INSTRUCTORS_FEEDBACK => $reportUpdate[StudentBroughtAlongFetcher::DB_COLUMN_INSTRUCTORS_FEEDBACK],
+			StudentBroughtAlongFetcher::DB_COLUMN_TEXTBOOK => $reportUpdate[StudentBroughtAlongFetcher::DB_COLUMN_TEXTBOOK],
+			StudentBroughtAlongFetcher::DB_COLUMN_NOTES => $reportUpdate[StudentBroughtAlongFetcher::DB_COLUMN_NOTES],
+			StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_SHEET => $reportUpdate[StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_SHEET],
+			StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON => $reportUpdate[StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON],
+			StudentBroughtAlongFetcher::DB_COLUMN_OTHER => $reportUpdate[StudentBroughtAlongFetcher::DB_COLUMN_OTHER]
+		);
+
 
 		if (isBtnUpdateReportPrsd()) {
 			$updateDone = Report::updateProjectTopicOtherText($db, $reportUpdate[ReportFetcher::DB_COLUMN_ID],
@@ -52,9 +64,9 @@ try {
 			$updateDone = (Report::updateStudentsConcerns($db, $reportUpdate[ReportFetcher::DB_COLUMN_ID],
 					$reportUpdate[ReportFetcher::DB_COLUMN_STUDENT_CONCERNS], $studentsConcernsTextArea)) || $updateDone;
 			$updateDone = (Report::updateRelevantFeedbackGuidelines($db, $reportUpdate[ReportFetcher::DB_COLUMN_ID],
-					$reportUpdate[ReportFetcher::DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES], $relevantFeedbackGuidelines)) || $updateDone;
-//			$updateDone = (Report::updateStudentBroughtAlong($db, $reportUpdate[ReportFetcher::DB_COLUMN_ID],
-//					$relevantFeedbackGuidelines)) || $updateDone;
+					$reportUpdate[ReportFetcher::DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES], $_POST['relevant-feedback-guidelines'])) || $updateDone;
+			$updateDone = (Report::updateStudentBroughtAlong($db, $reportUpdate[ReportFetcher::DB_COLUMN_ID],
+					$studentBroughtAlongNew, $studentBroughtAlongOld)) || $updateDone;
 			$updateDone = (Report::updateAdditionalComments($db, $reportUpdate[ReportFetcher::DB_COLUMN_ID],
 					$reportUpdate[ReportFetcher::DB_COLUMN_ADDITIONAL_COMMENTS], $conclusionAdditionalComments)) || $updateDone;
 		} else {
@@ -196,7 +208,7 @@ require ROOT_PATH . 'views/sidebar.php';
 		</a>
 
 		<?php if ($studentsAppointmentData[0][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID] === NULL): ?>
-			<?php for ($i = 0; $i < sizeof($studentsAppointmentData); $i++) { ?>
+			<?php for ($i = 0; $i < sizeof($studentsAppointmentData); $i++) : ?>
 				<a href="#report-tab" class="list-group-item" data-toggle="tab">
 					<h5>
 						<i class="fa fa-file-text-o"></i> &nbsp;&nbsp;R
@@ -207,7 +219,7 @@ require ROOT_PATH . 'views/sidebar.php';
 						$studentsAppointmentData[$i][StudentFetcher::DB_TABLE . "_" .
 						StudentFetcher::DB_COLUMN_LAST_NAME]; ?>
 				</a>
-			<?php } ?>
+			<?php endfor; ?>
 		<?php else: ?>
 			<?php for ($i = 0; $i < sizeof($reports); $i++) { ?>
 				<a href="#report-tab<?php echo $i; ?>" class="list-group-item" data-toggle="tab">
@@ -426,7 +438,7 @@ if (isset($reports)) {
 
 	for ($i = 0;
 	     $i < sizeof($reports);
-	     $i++) {
+	     $i++) { var_dump($reports[$i]);
 		?>
 
 		<div class="tab-pane fade" id="report-tab<?php echo $i; ?>">
@@ -445,7 +457,7 @@ if (isset($reports)) {
 					          data-parsley-trigger="keyup" data-parsley-minlength="10" data-parsley-maxlength="512"
 					          data-parsley-validation-threshold="5"
 					          data-parsley-minlength-message="Come on! You need to enter at least a 10 characters long
-					          comment.."
+					          comment..."
 					          data-parsley-required="true"><?php echo htmlspecialchars($reports[$i][ReportFetcher::DB_COLUMN_PROJECT_TOPIC_OTHER]); ?></textarea>
 				</div>
 				<!-- /.col -->
@@ -456,7 +468,7 @@ if (isset($reports)) {
 					          data-parsley-trigger="keyup" data-parsley-minlength="10" data-parsley-maxlength="512"
 					          data-parsley-validation-threshold="5"
 					          data-parsley-minlength-message="Come on! You need to enter at least a 10 characters long
-					          comment.."><?php echo htmlspecialchars($reports[$i][ReportFetcher::DB_COLUMN_OTHER_TEXT_AREA]); ?></textarea>
+					          comment..."><?php echo htmlspecialchars($reports[$i][ReportFetcher::DB_COLUMN_OTHER_TEXT_AREA]); ?></textarea>
 				</div>
 				<!-- /.col -->
 			</div>
@@ -504,12 +516,14 @@ if (isset($reports)) {
 
 			<div class="col-md-6">
 				<hr/>
-				<label for="student-brought-along">What did the <strong>student bring along?</strong></label>
+				<label for="student-brought-along[]">What did the <strong>student bring along?</strong></label>
 
 				<div class="checkbox">
 
 					<label>
-						<input type="checkbox" name="student-brought-along<?php echo $i; ?>[]" value="assignment"
+						<input type="checkbox"
+						       name="student-brought-along[<?php echo StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_GRADED; ?>]" <?php echo
+						strcmp($reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_GRADED], StudentBroughtAlongFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>
 						       class=""
 						       data-parsley-mincheck="1" data-parsley-required="true">
 						Assignment &#40;graded&#41;
@@ -517,51 +531,72 @@ if (isset($reports)) {
 				</div>
 				<div class="checkbox">
 					<label>
-						<input type="checkbox" name="student-brought-along<?php echo $i; ?>[]" class="" value="draft"
+						<input type="checkbox"
+						       name="student-brought-along[<?php echo StudentBroughtAlongFetcher::DB_COLUMN_DRAFT; ?>]" <?php echo
+						strcmp($reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_DRAFT], StudentBroughtAlongFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>
 						       data-parsley-multiple="student-brought-along-parsley-<?php echo $i; ?>">
 						Draft
 					</label>
 				</div>
 				<div class="checkbox">
 					<label>
-						<input type="checkbox" name="student-brought-along<?php echo $i; ?>[]" class=""
-						       value="instructorsFeedback">
+						<input type="checkbox"
+						       name="student-brought-along[<?php echo StudentBroughtAlongFetcher::DB_COLUMN_INSTRUCTORS_FEEDBACK; ?>]" <?php echo
+						strcmp($reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_INSTRUCTORS_FEEDBACK], StudentBroughtAlongFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>
+							>
 						Instructor&#39;s feedback
 					</label>
 				</div>
 				<div class="checkbox">
 					<label>
-						<input type="checkbox" name="student-brought-along<?php echo $i; ?>[]" class=""
-						       value="textbook">
+						<input type="checkbox"
+						       name="student-brought-along[<?php echo StudentBroughtAlongFetcher::DB_COLUMN_TEXTBOOK; ?>]" <?php echo
+						strcmp($reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_TEXTBOOK], StudentBroughtAlongFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>>
 						Textbook
 					</label>
 				</div>
 				<div class="checkbox">
 					<label>
-						<input type="checkbox" name="student-brought-along<?php echo $i; ?>[]" class=""
-						       value="studentsNotes">
-						Students Notes
+						<input type="checkbox"
+						       name="student-brought-along[<?php echo StudentBroughtAlongFetcher::DB_COLUMN_NOTES; ?>]" <?php echo
+						strcmp($reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_NOTES], StudentBroughtAlongFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>>
+						Notes
 					</label>
 				</div>
 				<div class="checkbox">
 					<label>
-						<input type="checkbox" name="student-brought-along<?php echo $i; ?>[]" class=""
-						       value="assignmentSheet">
+						<input type="checkbox"
+						       name="student-brought-along[<?php echo StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_SHEET; ?>]" <?php echo
+						strcmp($reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_SHEET], StudentBroughtAlongFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>>
 						Assignment sheet
 					</label>
 				</div>
 				<div class="checkbox">
 					<label class="focus-conference-3-exercise-class">
-						<input type="checkbox" name="student-brought-along-exercise-on[]" class="" value="exerciseOn">
-						Exercise on <input type="text" name="student-brought-along-exercise-on[]"
-						                   class="form-control" disabled="disabled"/>
+						<input type="checkbox"
+						       name="student-brought-along[<?php echo StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON; ?>]" <?php echo
+						$reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON] !== NULL ? 'checked' : ''; ?>>
+						Exercise on <input type="text"
+						                   name="student-brought-along[<?php echo StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON; ?>text]"
+						                   class="form-control" value="<?php echo
+						$reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON] === NULL ? "" : $reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON]; ?>"
+							<?php echo
+							$reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON] === NULL ? "disabled='disabled'" : ''; ?>
+							/>
 					</label>
 				</div>
 				<div class="checkbox">
 					<label class="focus-conference-3-other-class">
-						<input type="checkbox" name="student-brought-along-other[]" class="" value="other">
-						Other <input type="text" name="student-brought-along-other[]"
-						             class="form-control" disabled="disabled"/>
+						<input type="checkbox"
+						       name="student-brought-along[<?php echo StudentBroughtAlongFetcher::DB_COLUMN_OTHER; ?>]" <?php echo
+						$reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_OTHER] !== NULL ? 'checked' : ''; ?>
+						       value="other">
+						Other <input type="text"
+						             name="student-brought-along[<?php echo StudentBroughtAlongFetcher::DB_COLUMN_OTHER; ?>text]"
+						             class="form-control" value="<?php echo
+						$reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_OTHER] === NULL ? "" : $reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_OTHER]; ?>"<?php echo
+						$reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_OTHER] === NULL ? "disabled='disabled'" : ''; ?>
+							/>
 					</label>
 				</div>
 			</div>
@@ -667,7 +702,8 @@ if (isset($reports)) {
 		<div class="form-group">
 
 			<div class="col-md-12">
-				<?php if (($user->isTutor() && strcmp($reports[$i][ReportFetcher::DB_COLUMN_LABEL_MESSAGE], Report::LABEL_MESSAGE_PENDING_FILL) === 0)
+				<?php
+				if (($user->isTutor() && strcmp($reports[$i][ReportFetcher::DB_COLUMN_LABEL_MESSAGE], Report::LABEL_MESSAGE_PENDING_FILL) === 0)
 					|| !$user->isTutor() && strcmp($reports[$i][ReportFetcher::DB_COLUMN_LABEL_MESSAGE], Report::LABEL_MESSAGE_PENDING_VALIDATION) === 0
 				): ?>
 					<div class="col-md-3 col-sm-6 col-xs-6">

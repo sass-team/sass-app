@@ -23,15 +23,30 @@ class ReportFetcher
 
 	public static function retrieveAllAllWithAppointmentId($db, $appointmentId) {
 		$query =
-			"SELECT `" . StudentFetcher::DB_TABLE . "`.`" . StudentFetcher::DB_COLUMN_FIRST_NAME . "` , `" .
-			StudentFetcher::DB_TABLE . "`.`" . StudentFetcher::DB_COLUMN_LAST_NAME . "` ,`" . self::DB_TABLE . "`.`" .
-			self::DB_COLUMN_ID . "` , `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_STUDENT_ID . "` AS
-			 " . StudentFetcher::DB_TABLE . "_" . StudentFetcher::DB_COLUMN_ID . ", `" . self::DB_TABLE . "`.`" .
-			self::DB_COLUMN_INSTRUCTOR_ID . "` AS " . InstructorFetcher::DB_TABLE . "_" . InstructorFetcher::DB_COLUMN_ID .
-			",  `" . self::DB_COLUMN_PROJECT_TOPIC_OTHER . "`, `" . self::DB_COLUMN_STUDENT_CONCERNS . "`,  `" .
-			self::DB_COLUMN_OTHER_TEXT_AREA . "`, `" . self::DB_COLUMN_STUDENT_CONCERNS . "`,  `" .
-			self::DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES . "`, `" . self::DB_COLUMN_ADDITIONAL_COMMENTS . "`, `" .
-			self::DB_COLUMN_LABEL_MESSAGE . "` , `" . self::DB_COLUMN_LABEL_COLOR . "`
+			"SELECT `" . StudentFetcher::DB_TABLE . "`.`" . StudentFetcher::DB_COLUMN_FIRST_NAME . "` ,
+			`" . StudentFetcher::DB_TABLE . "`.`" . StudentFetcher::DB_COLUMN_LAST_NAME . "` ,
+			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` ,
+			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_STUDENT_ID . "` AS " . StudentFetcher::DB_TABLE . "_" .
+			StudentFetcher::DB_COLUMN_ID . ",
+				`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_INSTRUCTOR_ID . "` AS " . InstructorFetcher::DB_TABLE .
+			"_" . InstructorFetcher::DB_COLUMN_ID . ",
+			  `" . self::DB_COLUMN_PROJECT_TOPIC_OTHER . "`,
+			  `" . self::DB_COLUMN_STUDENT_CONCERNS . "`,
+			  `" . self::DB_COLUMN_OTHER_TEXT_AREA . "`,
+			  `" . self::DB_COLUMN_STUDENT_CONCERNS . "`,
+			  `" . self::DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES . "`,
+			  `" . self::DB_COLUMN_ADDITIONAL_COMMENTS . "`,
+			  `" . self::DB_COLUMN_LABEL_MESSAGE . "` ,
+			  `" . self::DB_COLUMN_LABEL_COLOR . "`,
+			`" . StudentBroughtAlongFetcher::DB_TABLE . "`.`" . StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_GRADED . "`,
+			`" . StudentBroughtAlongFetcher::DB_TABLE . "`.`" . StudentBroughtAlongFetcher::DB_COLUMN_DRAFT . "`,
+			`" . StudentBroughtAlongFetcher::DB_TABLE . "`.`" . StudentBroughtAlongFetcher::DB_COLUMN_INSTRUCTORS_FEEDBACK . "`,
+			`" . StudentBroughtAlongFetcher::DB_TABLE . "`.`" . StudentBroughtAlongFetcher::DB_COLUMN_TEXTBOOK . "`,
+			`" . StudentBroughtAlongFetcher::DB_TABLE . "`.`" . StudentBroughtAlongFetcher::DB_COLUMN_NOTES . "`,
+			`" . StudentBroughtAlongFetcher::DB_TABLE . "`.`" . StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_SHEET . "`,
+			`" . StudentBroughtAlongFetcher::DB_TABLE . "`.`" . StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON . "`,
+			`" . StudentBroughtAlongFetcher::DB_TABLE . "`.`" . StudentBroughtAlongFetcher::DB_COLUMN_OTHER . "`
+
 			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
 			INNER JOIN  `" . DB_NAME . "`.`" . AppointmentHasStudentFetcher::DB_TABLE . "`
 			ON `" . DB_NAME . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`  = `" .
@@ -39,6 +54,9 @@ class ReportFetcher
 			INNER JOIN  `" . DB_NAME . "`.`" . StudentFetcher::DB_TABLE . "`
 			ON `" . DB_NAME . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_STUDENT_ID . "`  = `" .
 			StudentFetcher::DB_TABLE . "`.`" . StudentFetcher::DB_COLUMN_ID . "`
+			INNER JOIN  `" . DB_NAME . "`.`" . StudentBroughtAlongFetcher::DB_TABLE . "`
+			ON `" . DB_NAME . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`  = `" .
+			StudentBroughtAlongFetcher::DB_TABLE . "`.`" . StudentBroughtAlongFetcher::DB_COLUMN_REPORT_ID . "`
 			WHERE `" . AppointmentHasStudentFetcher::DB_TABLE . "`.`" .
 			AppointmentHasStudentFetcher::DB_COLUMN_APPOINTMENT_ID . "` = :appointment_id";
 
@@ -50,7 +68,7 @@ class ReportFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
-			throw new Exception("Could not retrieve data from database.");
+			throw new Exception("Could not retrieve reports data from database." . $e->getMessage());
 		}
 	}
 
@@ -96,7 +114,7 @@ class ReportFetcher
 			$query->execute();
 			// last inserted if of THIS connection
 			$reportId = $db->getConnection()->lastInsertId();
-
+			StudentBroughtAlongFetcher::insert($db, $reportId);
 			AppointmentHasStudentFetcher::update($db, $appointmentId, $reportId);
 
 			$db->getConnection()->commit();

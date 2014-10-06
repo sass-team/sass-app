@@ -202,8 +202,8 @@ function isForgotBtnPressed() {
 		<footer id="footer" class="navbar navbar-fixed-bottom">
 			<ul class="nav pull-left">
 				<li>
-					For bugs, improvements, proposals and tasks please create a new issue at <a href="https://github.com/sass-team/sass-app/issues"
-					                                                                 target="_blank">SASS App GitHub</a>.
+					For bugs, improvements, proposals and tasks please use the <a href="https://github.com/sass-team/sass-app/issues"
+					                                                                 target="_blank">GitHub issue tracker</a>.
 				</li>
 			</ul>
 			<ul class="nav pull-right">

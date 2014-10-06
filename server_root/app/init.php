@@ -46,6 +46,7 @@ require_once ROOT_PATH . "models/CourseFetcher.class.php";
 require_once ROOT_PATH . "models/Course.class.php";
 
 require_once ROOT_PATH . "models/StudentFetcher.class.php";
+require_once ROOT_PATH . "models/StudentBroughtAlongFetcher.class.php";
 require_once ROOT_PATH . "models/Student.class.php";
 
 require_once ROOT_PATH . "models/Dates.class.php";
