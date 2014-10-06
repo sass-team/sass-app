@@ -15,6 +15,7 @@ $pageTitle = "All Appointments - List";
 $section = "appointments";
 
 $appointments = AppointmentFetcher::retrieveAllOfCurrTerms($db);
+$appointmentsByTutor = AppointmentFetcher::retrieveAllOfCurrTermsByTutor($db, )
 ?>
 
 <!DOCTYPE html>

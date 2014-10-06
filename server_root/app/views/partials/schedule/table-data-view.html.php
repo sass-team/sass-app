@@ -22,9 +22,11 @@ $days .= $schedule[ScheduleFetcher::DB_COLUMN_FRIDAY] == 1 ? "F" : "";
     <td class="text-center"><?php echo $hourStart . " - " . $hourEnd; ?></td>
     <td class="text-center"><?php echo htmlentities($schedule[TermFetcher::DB_COLUMN_NAME]); ?></td>
 
+<?php if ($user->isAdmin()): ?>
     <td class="text-center">
         <a href="#deleteSchedule" data-toggle="modal" class="btn btn-xs btn-secondary btnDeleteSchedule"><i
                 class="fa fa-times fa-lg"></i></a>
         <input type="hidden" value="<?php echo $schedule[ScheduleFetcher::DB_COLUMN_ID]; ?>"/>
     </td>
+<?php endif; ?>
 </tr>
