@@ -165,7 +165,8 @@ class ReportFetcher
 	}
 
 
-	public static function updateAllColumns($db, $reportId, $projectTopicOtherNew, $otherTextArea, $studentsConcernsTextArea, $relevantFeedbackGuidelines, $conclusionAdditionalComments) {
+	public static function updateAllColumns($db, $reportId, $projectTopicOtherNew, $otherTextArea,
+	                                        $studentsConcernsTextArea, $relevantFeedbackGuidelines, $studentBroughtAlongNew, $studentBroughtAlongOld, $conclusionAdditionalComments) {
 		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
 					SET  `" . self::DB_COLUMN_PROJECT_TOPIC_OTHER . "`= :project_topic_other,
 					`" . self::DB_COLUMN_OTHER_TEXT_AREA . "`= :other_text_area,
@@ -185,6 +186,8 @@ class ReportFetcher
 			$query->bindParam(':report_id', $reportId, PDO::PARAM_INT);
 
 			$query->execute();
+
+			Report::updateStudentBroughtAlong($db, $reportId, $studentBroughtAlongNew, $studentBroughtAlongOld);
 
 			return true;
 		} catch (Exception $e) {

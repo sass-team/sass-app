@@ -43,6 +43,9 @@ try {
 		$studentBroughtAlong = isset($_POST['student-brought-along']) ? $_POST['student-brought-along'] : NULL;
 		$conclusionAdditionalComments = isset($_POST['conclusion-additional-comments']) ? $_POST['conclusion-additional-comments'] : '';
 		$studentBroughtAlongNew = isset($_POST['student-brought-along']) ? $_POST['student-brought-along'] : NULL;
+		$relevantFeedbackGuidelines = isset($_POST['relevant-feedback-guidelines']) ? $_POST['relevant-feedback-guidelines'] : NULL;
+
+		var_dump($_POST);
 
 		$studentBroughtAlongOld = array(
 			StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_GRADED => $reportUpdate[StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_GRADED],
@@ -64,14 +67,14 @@ try {
 			$updateDone = (Report::updateStudentsConcerns($db, $reportUpdate[ReportFetcher::DB_COLUMN_ID],
 					$reportUpdate[ReportFetcher::DB_COLUMN_STUDENT_CONCERNS], $studentsConcernsTextArea)) || $updateDone;
 			$updateDone = (Report::updateRelevantFeedbackGuidelines($db, $reportUpdate[ReportFetcher::DB_COLUMN_ID],
-					$reportUpdate[ReportFetcher::DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES], $_POST['relevant-feedback-guidelines'])) || $updateDone;
+					$reportUpdate[ReportFetcher::DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES], $relevantFeedbackGuidelines)) || $updateDone;
 			$updateDone = (Report::updateStudentBroughtAlong($db, $reportUpdate[ReportFetcher::DB_COLUMN_ID],
 					$studentBroughtAlongNew, $studentBroughtAlongOld)) || $updateDone;
 			$updateDone = (Report::updateAdditionalComments($db, $reportUpdate[ReportFetcher::DB_COLUMN_ID],
 					$reportUpdate[ReportFetcher::DB_COLUMN_ADDITIONAL_COMMENTS], $conclusionAdditionalComments)) || $updateDone;
 		} else {
 			$updateDone = Report::updateAllFields($db, $reportUpdate[ReportFetcher::DB_COLUMN_ID], $projectTopicOtherNew,
-				$otherTextArea, $studentsConcernsTextArea, $relevantFeedbackGuidelines, $conclusionAdditionalComments);
+				$otherTextArea, $studentsConcernsTextArea, $relevantFeedbackGuidelines, $studentBroughtAlongNew, $studentBroughtAlongOld, $conclusionAdditionalComments);
 			// user is tutor requesting fill report
 			if ($user->isTutor()) {
 				ReportFetcher::updateLabel($db, $formReportId, Report::LABEL_MESSAGE_PENDING_VALIDATION, Report::LABEL_COLOR_WARNING);
@@ -438,7 +441,7 @@ if (isset($reports)) {
 
 	for ($i = 0;
 	     $i < sizeof($reports);
-	     $i++) { var_dump($reports[$i]);
+	     $i++) {
 		?>
 
 		<div class="tab-pane fade" id="report-tab<?php echo $i; ?>">
@@ -507,7 +510,7 @@ if (isset($reports)) {
 				          data-parsley-validation-threshold="5"
 				          data-parsley-minlength-message="Come on! You need to enter at least a 10 characters long
 					          comment.."
-				          data-parsley-required="true"><?php echo htmlspecialchars($reports[$i][ReportFetcher::DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES]); ?></textarea>
+				          data-parsley-required="false"><?php echo htmlspecialchars($reports[$i][ReportFetcher::DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES]); ?></textarea>
 			</div>
 		</div>
 

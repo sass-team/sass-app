@@ -40,10 +40,10 @@ class Report
 		return ReportFetcher::updateSingleColumn($db, $reportId, $newText, ReportFetcher::DB_COLUMN_PROJECT_TOPIC_OTHER);
 	}
 
-	public static function validateTextarea($text, $tempVal) {
-		$tempStringValidation = "/^[\\w\t\n\r\\ .,\\-]{0,512}$/";
-		$finalStringValidation = "/^[\\w\t\n\r\\ .,\\-]{1,512}$/";
-		$stringValidation = !$tempVal ? $finalStringValidation : $tempStringValidation;
+	public static function validateTextarea($text, $notRequired) {
+		$notReqStringValidation = "/^[\\w\t\n\r\\ .,\\-]{0,512}$/";
+		$reqStringValidation = "/^[\\w\t\n\r\\ .,\\-]{1,512}$/";
+		$stringValidation = !$notRequired ? $reqStringValidation : $notReqStringValidation;
 
 		if (!preg_match($stringValidation, $text)) {
 			throw new Exception("Textareas can contain only <a href='http://www.regular-expressions.info/shorthand.html'
@@ -79,22 +79,19 @@ class Report
 		return ReportFetcher::updateSingleColumn($db, $reportId, $newText, ReportFetcher::DB_COLUMN_ADDITIONAL_COMMENTS);
 	}
 
-	public static function updateAllFields($db, $reportId, $projectTopicOtherNew, $otherTextArea, $studentsConcernsTextArea, $relevantFeedbackGuidelines, $conclusionAdditionalComments) {
+	public static function updateAllFields($db, $reportId, $projectTopicOtherNew, $otherTextArea, $studentsConcernsTextArea,
+	                                       $relevantFeedbackGuidelines, $studentBroughtAlongNew, $studentBroughtAlongOld,
+	                                       $conclusionAdditionalComments) {
 		self::validateId($db, $reportId);
 		self::validateTextarea($projectTopicOtherNew, false);
 		self::validateTextarea($otherTextArea, true);
 		self::validateTextarea($studentsConcernsTextArea, false);
-		self::validateTextarea($relevantFeedbackGuidelines, false);
-		self::validateTextarea($conclusionAdditionalComments, true);
-		return ReportFetcher::updateAllColumns($db, $reportId, $projectTopicOtherNew, $otherTextArea, $studentsConcernsTextArea, $relevantFeedbackGuidelines, $conclusionAdditionalComments);
-	}
+		self::validateTextarea($relevantFeedbackGuidelines, true);
+		self::validateOptionsStudentBroughtAlong($studentBroughtAlongNew);
 
-	public static function updateStudentBroughtAlong($db, $reportId, $newOptions, $oldOptions) {
-		if ($newOptions === NULL) $newOptions = [];
-		self::validateOptionsStudentBroughtAlong($newOptions);
-		if (!self::validateIfUpdateIsNeeded($newOptions, $oldOptions)) return false;
-		self::validateId($db, $reportId);
-		return StudentBroughtAlongFetcher::update($db, $newOptions, $oldOptions, $reportId);
+		self::validateTextarea($conclusionAdditionalComments, true);
+		return ReportFetcher::updateAllColumns($db, $reportId, $projectTopicOtherNew, $otherTextArea,
+			$studentsConcernsTextArea, $relevantFeedbackGuidelines, $studentBroughtAlongNew, $studentBroughtAlongOld, $conclusionAdditionalComments);
 	}
 
 	public static function validateOptionsStudentBroughtAlong($newOptions) {
@@ -111,14 +108,22 @@ class Report
 					break;
 				case StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON . "text":
 				case StudentBroughtAlongFetcher::DB_COLUMN_OTHER . "text":
-					self::validateTextarea($newOptions[$option], true);
-
+//					self::validateTextarea($newOptions[$option], true);
+					// TODO: validate input fields
 					break;
 				default:
 					throw new Exception("Data have been malformed.");
 					break;
 			}
 		}
+	}
+
+	public static function updateStudentBroughtAlong($db, $reportId, $newOptions, $oldOptions) {
+		if ($newOptions === NULL) $newOptions = [];
+		self::validateOptionsStudentBroughtAlong($newOptions);
+		if (!self::validateIfUpdateIsNeeded($newOptions, $oldOptions)) return false;
+		self::validateId($db, $reportId);
+		return StudentBroughtAlongFetcher::update($db, $newOptions, $oldOptions, $reportId);
 	}
 
 	public static function validateIfUpdateIsNeeded($newOptions, $oldOptions) {
