@@ -12,7 +12,7 @@ jQuery(document).ready(function () {
      */
     var now = new Date();
     // var countTo = 25 * 24 * 60 * 60 * 1000 + now.valueOf();
-    var countTo = "2014/9/29 11:00";
+    var countTo = "2014/10/06 10:00";
     $('.timer').countdown(countTo, function (event) {
         var $this = $(this);
         switch (event.type) {
