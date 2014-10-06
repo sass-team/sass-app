@@ -11,11 +11,12 @@
 require __DIR__ . '/../../app/init.php';
 $general->loggedOutProtect();
 
+$pageTitleTutor = "All Appointments - " . "<strong>" . $user->getFirstName() . " " . $user->getLastName() . "</strong>";
 $pageTitle = "All Appointments - List";
 $section = "appointments";
 
 $appointments = AppointmentFetcher::retrieveAllOfCurrTerms($db);
-$appointmentsByTutor = AppointmentFetcher::retrieveAllOfCurrTermsByTutor($db, )
+$appointmentsByTutor = AppointmentFetcher::retrieveAllOfCurrTermsByTutor($db, $user->getId());
 ?>
 
 <!DOCTYPE html>
@@ -38,7 +39,13 @@ $appointmentsByTutor = AppointmentFetcher::retrieveAllOfCurrTermsByTutor($db, )
 	<div id="content">
 
 		<div id="content-header">
-			<h1><?php echo $pageTitle; ?></h1>
+				<h1>
+				<?php if ($user->isTutor()) {
+					echo $pageTitleTutor;} else {
+						echo $pageTitle;
+					}
+				 ?>
+				</h1>
 		</div>
 		<!-- #content-header -->
 
@@ -76,9 +83,11 @@ $appointmentsByTutor = AppointmentFetcher::retrieveAllOfCurrTermsByTutor($db, )
 										<th class="text-center" data-filterable="true" data-sortable="true">
 											ID
 										</th>
+										<?php if (!$user->isTutor()) { ?>
 										<th class="text-center" data-filterable="true" data-sortable="true">
 											Tutor
 										</th>
+										<?php } ?>
 										<th class="text-center" data-direction="desc" data-filterable="true"
 										    data-sortable="true">Start
 										</th>
@@ -98,13 +107,19 @@ $appointmentsByTutor = AppointmentFetcher::retrieveAllOfCurrTermsByTutor($db, )
 									</thead>
 									<tbody>
 
-									<?php
-									if (empty($errors) === true) {
-										foreach ($appointments as $appointment) {
-											include(ROOT_PATH . "views/partials/appointments/table-data-view.html.php");
+										<?php
+										if (empty($errors) === true) { ?>
+
+										<?php if ($user->isTutor()) {
+											foreach ($appointmentsByTutor as $appointmentByTutor) {
+												include(ROOT_PATH . "views/partials/appointments/table-data-by-tutor-view.html.php");
+											}
+										} else {
+											foreach ($appointments as $appointment) {
+												include(ROOT_PATH . "views/partials/appointments/table-data-view.html.php");
+											}
 										}
-									}
-									?>
+									}?>
 									</tbody>
 								</table>
 							</div>
