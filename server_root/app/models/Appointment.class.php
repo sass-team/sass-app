@@ -46,7 +46,7 @@ class Appointment
 		$nowDate = new DateTime();
 
 		if ($nowDate > $startDate) throw new Exception("Starting datetime cannot be less than current datetime.");
-		if (date_diff($startDate, $endDate)->i < 30) throw new Exception("Minimum duration of an appointment is 30min.");
+		if (($endDate->getTimestamp() - $startDate->getTimestamp()) * 60 < 30) throw new Exception("Minimum duration of an appointment is 30min.");
 		if (AppointmentFetcher::existsTutorsAppointmentsBetween($db, $tutorId, $startDate, $endDate)) {
 			throw new Exception("There is a conflict with the start/end date with another appointment for selected tutor.");
 		}
