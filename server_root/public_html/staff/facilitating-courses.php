@@ -102,7 +102,6 @@ $courses = Tutor_has_course_has_termFetcher::retrieveCurrTermAllTeachingCourses(
 								<table
 									class="table table-striped table-bordered table-hover table-highlight table-checkable"
 									data-provide="datatable"
-									data-display-rows="10"
 									data-info="true"
 									data-search="true"
 									data-length-change="true"
