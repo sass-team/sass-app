@@ -138,4 +138,28 @@ class Appointment
 		self::validateId($db, $id);
 		return AppointmentFetcher::retrieveSingle($db, $id);
 	}
+
+	public static function countWithLabelMessage($appopintments, $labelMessage) {
+		$count = 0;
+		foreach ($appopintments as $appopintment) {
+			if (strcmp($appopintment[AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE], $labelMessage) === 0) {
+				$count++;
+			}
+		}
+
+		return $count;
+	}
+
+	public static function countWithLabelMessageS($appopintments, $labelMessages) {
+		$count = 0;
+		foreach ($appopintments as $appopintment) {
+			foreach($labelMessages as $labelMessage){
+				if (strcmp($appopintment[AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE], $labelMessage) === 0) {
+					$count++;
+				}
+			}
+		}
+
+		return $count;
+	}
 }
