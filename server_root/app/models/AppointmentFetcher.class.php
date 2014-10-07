@@ -300,6 +300,32 @@ class AppointmentFetcher
 		return false;
 	}
 
+	public static function retrieveBetweenDates($db, $startWeek, $endWeek) {
+		$query =
+			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` , `" . self::DB_TABLE . "`.`" .
+			self::DB_COLUMN_START_TIME . "` , `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_END_TIME . "`,
+			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`,
+			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_COURSE_ID . "`, `" . self::DB_TABLE . "`.`" .
+			self::DB_COLUMN_TUTOR_USER_ID . "`,  `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "`,
+			  `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_LABEL_MESSAGE . "`
+			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+			WHERE
+			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "` BETWEEN :start_week AND :end_week";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':start_week', $startWeek, PDO::PARAM_STR);
+			$query->bindParam(':end_week', $endWeek, PDO::PARAM_STR);
+
+			$query->execute();
+
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+
+		} catch (PDOException $e) {
+			throw new Exception("Could not retrieve data from database." . $e->getMessage());
+		}
+	}
+
 
 	public static function retrieveAllForSingleTutor($db, $tutorId, $termId) {
 		$query =

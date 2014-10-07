@@ -2,12 +2,26 @@
 require __DIR__ . '/../app/init.php';
 $general->loggedOutProtect();
 try {
+	date_default_timezone_set('Europe/Athens');
+	$now = new DateTime();
+	$startWeekDate = getWorkingDates($now->format('Y'), $now->format('W'));
+	$endWeekDate = getWorkingDates($now->format('Y'), $now->format('W'), false);
+
 	if (!$user->isTutor()) {
 		$courses = CourseFetcher::retrieveAll($db);
-		$appointments = AppointmentFetcher::retrieveAll($db);
+		$appointments = AppointmentFetcher::retrieveBetweenDates($db, $startWeekDate,
+			$endWeekDate);
+
+		$countAppointmentsForCurWeek = sizeof($appointments);
+		$countAchievedAppointmentsForCurWeek = Appointment::countWithLabelMessage($appointments, Appointment::LABEL_MESSAGE_COMPLETE);
+		$canceledLabelMessages = array(Appointment::LABEL_MESSAGE_STUDENT_NO_SHOW,
+			Appointment::LABEL_MESSAGE_TUTOR_CANCELED, Appointment::LABEL_MESSAGE_TUTOR_NO_SHOW, Appointment::LABEL_MESSAGE_STUDENT_CANCELED);
+		$countCanceledAppointmentsForCurWeek = Appointment::countWithLabelMessages($appointments, $canceledLabelMessages);
+
 	} else {
 		$appointments = TutorFetcher::retrieveAllAppointments($db, $user->getId());
 		$courses = TutorFetcher::retrieveAllAppointments($db, $user->getId());
+
 	}
 
 } catch (Exception $e) {
@@ -32,6 +46,27 @@ function get($objects, $findId, $column) {
 	}
 
 	return false;
+}
+
+
+/**
+ * http://blog.ekini.net/2009/07/09/php-get-start-and-end-dates-of-a-week-from-datew/
+ *
+ * @param $year
+ * @param $week
+ * @param bool $start
+ * @return bool|string
+ */
+function getWorkingDates($year, $week, $start = true) {
+	$from = date(Dates::DATE_FORMAT_IN, strtotime("{$year}-W{$week}-1")); //Returns the date of monday in week
+	$to = date(Dates::DATE_FORMAT_IN, strtotime("{$year}-W{$week}-6"));   //Returns the date of saturday in week
+
+	if ($start) {
+		return $from;
+	} else {
+		return $to;
+	}
+	//return "Week {$week} in {$year} is from {$from} to {$to}.";
 }
 
 ?>
@@ -62,28 +97,15 @@ require ROOT_PATH . 'views/sidebar.php';
 </div>
 <!-- #content-header -->
 
-
 <div id="content-container">
 
 <div>
 	<h4 class="heading-inline">Weekly Workshop Sessions Stats
 		&nbsp;&nbsp;
-		<small>For the week of Jun 15 - Jun 22, 2011</small>
+		<small>For the week of <?php echo date("M d", strtotime($startWeekDate)) . " - " . date("M d, o",
+					strtotime('-1 day', strtotime($endWeekDate))); ?></small>
 		&nbsp;&nbsp;</h4>
 
-	<div class="btn-group ">
-		<button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
-			<i class="fa fa-clock-o"></i> &nbsp;
-			Change Week <span class="caret"></span>
-		</button>
-		<ul class="dropdown-menu" role="menu">
-			<li><a href="javascript:;">Action</a></li>
-			<li><a href="javascript:;">Another action</a></li>
-			<li><a href="javascript:;">Something else here</a></li>
-			<li class="divider"></li>
-			<li><a href="javascript:;">Separated link</a></li>
-		</ul>
-	</div>
 	<?php
 	if (empty($errors) === false) {
 		?>
@@ -112,7 +134,7 @@ require ROOT_PATH . 'views/sidebar.php';
 
 			<div class="details">
 				<span class="content">Planned</span>
-				<span class="value">40</span>
+				<span class="value"><?php echo $countAppointmentsForCurWeek; ?></span>
 			</div>
 			<!-- /.details -->
 
@@ -132,7 +154,7 @@ require ROOT_PATH . 'views/sidebar.php';
 
 			<div class="details">
 				<span class="content">Achieved</span>
-				<span class="value">36</span>
+				<span class="value"><?php echo $countAchievedAppointmentsForCurWeek; ?></span>
 			</div>
 			<!-- /.details -->
 
@@ -154,12 +176,14 @@ require ROOT_PATH . 'views/sidebar.php';
 
 			<div class="details">
 				<span class="content">Canceled</span>
-				<span class="value">4</span>
+				<span class="value"><?php echo $countCanceledAppointmentsForCurWeek; ?></span>
 			</div>
 			<!-- /.details -->
 
 			<i class="fa fa-play-circle more"></i>
 
+		</a> <!-- /.dashboard-stat -->
+		</a> <!-- /.dashboard-stat -->
 		</a> <!-- /.dashboard-stat -->
 
 	</div>
@@ -201,74 +225,7 @@ require ROOT_PATH . 'views/sidebar.php';
 
 <div class="col-md-9">
 
-<div class="portlet">
-
-	<div class="portlet-header">
-
-		<h3>
-			<i class="fa fa-bar-chart-o"></i>
-			Workshop Sessions
-		</h3>
-
-	</div>
-	<!-- /.portlet-header -->
-
-	<div class="portlet-content">
-
-		<div class="pull-left">
-			<div class="btn-group" data-toggle="buttons">
-				<label class="btn btn-sm btn-default">
-					<input type="radio" name="options" id="option1"> Day
-				</label>
-				<label class="btn btn-sm btn-default">
-					<input type="radio" name="options" id="option2"> Week
-				</label>
-				<label class="btn btn-sm btn-default active">
-					<input type="radio" name="options" id="option3"> Month
-				</label>
-			</div>
-
-			&nbsp;
-
-			<div class="btn-group">
-				<button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">
-					Custom Date
-					<span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu">
-					<li><a href="javascript:;">Dropdown link</a></li>
-					<li><a href="javascript:;">Dropdown link</a></li>
-				</ul>
-			</div>
-
-		</div>
-
-		<div class="pull-right">
-			<div class="btn-group">
-				<button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">
-					<i class="fa fa-cog"></i> &nbsp;&nbsp;<span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu pull-right" role="menu">
-					<li><a href="javascript:;">Action</a></li>
-					<li><a href="javascript:;">Another action</a></li>
-					<li><a href="javascript:;">Something else here</a></li>
-					<li class="divider"></li>
-					<li><a href="javascript:;">Separated link</a></li>
-				</ul>
-			</div>
-		</div>
-
-		<div class="clear"></div>
-		<hr/>
-
-
-		<div id="workshop-session-chart" class="chart-holder" style="height: 250px"></div>
-		<!-- /#bar-chart -->
-
-	</div>
-	<!-- /.portlet-content -->
-
-</div>
+<div class="portlet"></div>
 <!-- /.portlet -->
 
 
@@ -330,7 +287,8 @@ require ROOT_PATH . 'views/sidebar.php';
 							<td>Greyson</td>
 							<td><span class="label label-success">Approved</span></td>
 							<td class="align-center">
-								<a href="javascript:void(0);" class="btn btn-xs btn-primary" data-original-title="Approve"
+								<a href="javascript:void(0);" class="btn btn-xs btn-primary"
+								   data-original-title="Approve"
 								   disabled>
 									<i class="fa fa-check"></i>
 								</a>
@@ -346,7 +304,8 @@ require ROOT_PATH . 'views/sidebar.php';
 							<td><span class="label label-default">Pending</span>
 							</td>
 							<td class="align-center">
-								<a href="javascript:void(0);" class="btn btn-xs btn-primary" data-original-title="Approve">
+								<a href="javascript:void(0);" class="btn btn-xs btn-primary"
+								   data-original-title="Approve">
 									<i class="fa fa-check"></i>
 								</a>
 							</td>
@@ -362,7 +321,8 @@ require ROOT_PATH . 'views/sidebar.php';
 							<td>Mitchell</td>
 							<td><span class="label label-success">Approved</span></td>
 							<td class="align-center">
-								<a href="javascript:void(0);" class="btn btn-xs btn-primary" data-original-title="Approve"
+								<a href="javascript:void(0);" class="btn btn-xs btn-primary"
+								   data-original-title="Approve"
 								   disabled>
 									<i class="fa fa-check"></i>
 								</a>
@@ -376,7 +336,8 @@ require ROOT_PATH . 'views/sidebar.php';
 							<td>Lopez</td>
 							<td><span class="label label-success">Approved</span></td>
 							<td class="align-center">
-								<a href="javascript:void(0);" class="btn btn-xs btn-primary" data-original-title="Approve">
+								<a href="javascript:void(0);" class="btn btn-xs btn-primary"
+								   data-original-title="Approve">
 									<i class="fa fa-check"></i>
 								</a>
 							</td>
@@ -391,7 +352,8 @@ require ROOT_PATH . 'views/sidebar.php';
 							<td>Johnson</td>
 							<td><span class="label label-default">Pending</span></td>
 							<td class="align-center">
-								<a href="javascript:void(0);" class="btn btn-xs btn-primary" data-original-title="Approve"
+								<a href="javascript:void(0);" class="btn btn-xs btn-primary"
+								   data-original-title="Approve"
 								   disabled>
 									<i class="fa fa-check"></i>
 								</a>
@@ -405,7 +367,8 @@ require ROOT_PATH . 'views/sidebar.php';
 							<td>Jones</td>
 							<td><span class="label label-default">Pending</span></td>
 							<td class="align-center">
-								<a href="javascript:void(0);" class="btn btn-xs btn-primary" data-original-title="Approve"
+								<a href="javascript:void(0);" class="btn btn-xs btn-primary"
+								   data-original-title="Approve"
 								   disabled>
 									<i class="fa fa-check"></i>
 								</a>
@@ -465,142 +428,7 @@ require ROOT_PATH . 'views/sidebar.php';
 	<!-- /.portlet -->
 
 
-	<div class="portlet">
-
-		<div class="portlet-header">
-
-			<h3>
-				<i class="fa fa-compass"></i>
-				Traffic Overview
-			</h3>
-
-		</div>
-		<!-- /.portlet-header -->
-
-		<div class="portlet-content">
-
-
-			<div class="progress-stat">
-
-				<div class="stat-header">
-
-					<div class="stat-label">
-						% Tutors
-					</div>
-					<!-- /.stat-label -->
-
-					<div class="stat-value">
-						67.7%
-					</div>
-					<!-- /.stat-value -->
-
-				</div>
-				<!-- /stat-header -->
-
-				<div class="progress progress-striped active">
-					<div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="77" aria-valuemin="0"
-					     aria-valuemax="100" style="width: 77%">
-						<span class="sr-only">67.74% Tutors</span>
-					</div>
-				</div>
-				<!-- /.progress -->
-
-			</div>
-			<!-- /.progress-stat -->
-
-			<div class="progress-stat">
-
-				<div class="stat-header">
-
-					<div class="stat-label">
-						% Secretaries
-					</div>
-					<!-- /.stat-label -->
-
-					<div class="stat-value">
-						23.2%
-					</div>
-					<!-- /.stat-value -->
-
-				</div>
-				<!-- /stat-header -->
-
-				<div class="progress progress-striped active">
-					<div class="progress-bar progress-bar-tertiary" role="progressbar" aria-valuenow="33"
-					     aria-valuemin="0"
-					     aria-valuemax="100" style="width: 23%">
-						<span class="sr-only">23% Secretaries</span>
-					</div>
-				</div>
-				<!-- /.progress -->
-
-			</div>
-			<!-- /.progress-stat -->
-
-			<div class="progress-stat">
-
-				<div class="stat-header">
-
-					<div class="stat-label">
-						Administrators
-					</div>
-					<!-- /.stat-label -->
-
-					<div class="stat-value">
-						5.7%
-					</div>
-					<!-- /.stat-value -->
-
-				</div>
-				<!-- /stat-header -->
-
-				<div class="progress progress-striped active">
-					<div class="progress-bar progress-bar-secondary" role="progressbar" aria-valuenow="42"
-					     aria-valuemin="0"
-					     aria-valuemax="100" style="width: 5.7%">
-						<span class="sr-only">5.7% Administrators</span>
-					</div>
-				</div>
-				<!-- /.progress -->
-
-			</div>
-			<!-- /.progress-stat -->
-
-			<div class="progress-stat">
-
-				<div class="stat-header">
-
-					<div class="stat-label">
-						Bounce Rate
-					</div>
-					<!-- /.stat-label -->
-
-					<div class="stat-value">
-						3.4%
-					</div>
-					<!-- /.stat-value -->
-
-				</div>
-				<!-- /stat-header -->
-
-				<div class="progress progress-striped active">
-					<div class="progress-bar progress-bar-secondary" role="progressbar" aria-valuenow="42"
-					     aria-valuemin="0"
-					     aria-valuemax="100" style="width: 3.4%">
-						<span class="sr-only">3.4% Administrators</span>
-					</div>
-				</div>
-				<!-- /.progress -->
-
-			</div>
-			<!-- /.progress-stat -->
-
-			<br/>
-
-		</div>
-		<!-- /.portlet-content -->
-
-	</div>
+	<div class="portlet"></div>
 	<!-- /.portlet -->
 
 
@@ -612,29 +440,6 @@ require ROOT_PATH . 'views/sidebar.php';
 </div>
 <!-- /.row -->
 
-<div class="portlet">
-
-	<div class="portlet-header">
-
-		<h3>
-			<i class="fa fa-calendar"></i>
-			Full Workshop Session Calendar
-		</h3>
-
-	</div>
-	<!-- /.portlet-header -->
-
-	<div class="portlet-content">
-
-
-		<div id="appointments-calendar"></div>
-
-
-	</div>
-	<!-- /.portlet-content -->
-
-</div>
-<!-- /.portlet -->
 
 </div>
 <!-- /#content-container -->
@@ -682,9 +487,22 @@ require ROOT_PATH . 'views/sidebar.php';
 			Morris.Donut({
 				element: 'workshop-chart',
 				data: [
-					{label: 'Successful', value: 60},
-					{label: 'Canceled', value: 30},
-					{label: 'Unkown', value: 10}
+					{
+						label: 'Successful',
+						value: <?php echo (int)(($countAchievedAppointmentsForCurWeek * 100 / $countAppointmentsForCurWeek)); ?>
+					},
+					{
+						label: 'Canceled',
+						value: <?php echo ((int)$countCanceledAppointmentsForCurWeek) === 0 ? 0 :
+						(int)($countCanceledAppointmentsForCurWeek * 100 / $countAppointmentsForCurWeek); ?>
+
+					},
+					{
+						label: 'Pending',
+						value: <?php echo ((int)$countCanceledAppointmentsForCurWeek) === 0 ? 0 :
+						(int)((($countAppointmentsForCurWeek-
+						$countCanceledAppointmentsForCurWeek-$countAchievedAppointmentsForCurWeek) * 100)/$countAppointmentsForCurWeek); ?>
+					}
 				],
 				colors: ['#0BA462', '#f0ad4e', '#888888'],
 				hideHover: true,
@@ -693,39 +511,6 @@ require ROOT_PATH . 'views/sidebar.php';
 				}
 			});
 		}
-
-		$("#appointments-calendar").fullCalendar({
-			header: {
-				left: 'prev,next',
-				center: 'title',
-				right: 'agendaWeek,month,agendaDay'
-			},
-			weekends: false, // will hide Saturdays and Sundays
-			defaultView: "month",
-			editable: false,
-			droppable: false,
-			events: [
-				<?php	if(sizeof($appointments) <= 1){
-					foreach($appointments as $appointment){
-						$course = get($courses, $appointment[AppointmentFetcher::DB_COLUMN_COURSE_ID], CourseFetcher::DB_COLUMN_ID);
-						include(ROOT_PATH . "views/partials/appointments/fullcalendar-single.php");
-					}
-				 }else{
-				   for($i = 0; $i < (sizeof($appointments) - 1); $i++){
-				   $course = get($courses, $appointments[$i][AppointmentFetcher::DB_COLUMN_COURSE_ID], CourseFetcher::DB_COLUMN_ID);
-				      include(ROOT_PATH . "views/partials/appointments/fullcalendar-multi.php");
-					}
-					$lastAppointmentIndex = sizeof($appointments)-1;
-					$id = $lastAppointmentIndex;
-					$course = get($courses, $appointments[$i][AppointmentFetcher::DB_COLUMN_COURSE_ID], CourseFetcher::DB_COLUMN_ID);
-					include(ROOT_PATH . "views/partials/appointments/fullcalendar-multi.php");
-
-				}
-				?>
-			],
-			timeFormat: 'H(:mm)' // uppercase H for 24-hour clock
-		});
-
 
 	});
 </script>
