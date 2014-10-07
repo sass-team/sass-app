@@ -225,184 +225,185 @@ require ROOT_PATH . 'views/sidebar.php';
 
 <div class="col-md-9">
 
-<div class="portlet"></div>
-<!-- /.portlet -->
+	<div class="portlet"></div>
+	<!-- /.portlet -->
 
 
-<div class="row">
+	<div class="row">
 
-	<div class="col-md-12">
+		<div class="col-md-12">
 
-		<div class="portlet">
+			<div class="portlet">
 
-			<div class="portlet-header">
+				<div class="portlet-header">
 
-				<h3>
-					<i class="fa fa-group"></i>
-					Recent Signups
-				</h3>
+					<h3>
+						<i class="fa fa-group"></i>
+						Recent Signups
+					</h3>
 
-				<ul class="portlet-tools pull-right">
-					<li>
-						<a href="<?php echo BASE_URL . "staff/add"; ?>" name="forgot" class="btn btn-sm btn-default">
-							Add User
-						</a>
+					<ul class="portlet-tools pull-right">
+						<li>
+							<a href="<?php echo BASE_URL . "staff/add"; ?>" name="forgot"
+							   class="btn btn-sm btn-default">
+								Add User
+							</a>
 
-					</li>
-				</ul>
-
-			</div>
-			<!-- /.portlet-header -->
-
-			<div class="portlet-content">
-
-
-				<div class="table-responsive">
-
-					<table id="user-signups" class="table table-striped table-checkable">
-						<thead>
-						<tr>
-							<th class="checkbox-column">
-								<input type="checkbox" id="check-all" class="icheck-input"/>
-							</th>
-							<th class="hidden-xs">First Name
-							</th>
-							<th>Last Name</th>
-							<th>Status
-							</th>
-
-							<th class="align-center">Email - Approve
-							</th>
-
-						</tr>
-						</thead>
-
-						<tbody>
-						<tr class="">
-							<td class="checkbox-column">
-								<input type="checkbox" name="actiony" value="joey" class="icheck-input">
-							</td>
-
-							<td class="hidden-xs">Joey</td>
-							<td>Greyson</td>
-							<td><span class="label label-success">Approved</span></td>
-							<td class="align-center">
-								<a href="javascript:void(0);" class="btn btn-xs btn-primary"
-								   data-original-title="Approve"
-								   disabled>
-									<i class="fa fa-check"></i>
-								</a>
-							</td>
-						</tr>
-
-						<tr class="">
-							<td class="checkbox-column">
-								<input type="checkbox" name="actiony" value="wolf" class="icheck-input">
-							</td>
-							<td class="hidden-xs">Wolf</td>
-							<td>Bud</td>
-							<td><span class="label label-default">Pending</span>
-							</td>
-							<td class="align-center">
-								<a href="javascript:void(0);" class="btn btn-xs btn-primary"
-								   data-original-title="Approve">
-									<i class="fa fa-check"></i>
-								</a>
-							</td>
-						</tr>
-
-
-						<tr class="">
-							<td class="checkbox-column">
-								<input type="checkbox" name="actiony" value="sam" class="icheck-input">
-							</td>
-
-							<td class="hidden-xs">Sam</td>
-							<td>Mitchell</td>
-							<td><span class="label label-success">Approved</span></td>
-							<td class="align-center">
-								<a href="javascript:void(0);" class="btn btn-xs btn-primary"
-								   data-original-title="Approve"
-								   disabled>
-									<i class="fa fa-check"></i>
-								</a>
-							</td>
-						</tr>
-						<tr class="">
-							<td class="checkbox-column">
-								<input type="checkbox" value="carlos" name="actiony" class="icheck-input">
-							</td>
-							<td class="hidden-xs">Carlos</td>
-							<td>Lopez</td>
-							<td><span class="label label-success">Approved</span></td>
-							<td class="align-center">
-								<a href="javascript:void(0);" class="btn btn-xs btn-primary"
-								   data-original-title="Approve">
-									<i class="fa fa-check"></i>
-								</a>
-							</td>
-						</tr>
-
-
-						<tr class="">
-							<td class="checkbox-column">
-								<input type="checkbox" name="actiony" value="rob" class="icheck-input">
-							</td>
-							<td class="hidden-xs">Rob</td>
-							<td>Johnson</td>
-							<td><span class="label label-default">Pending</span></td>
-							<td class="align-center">
-								<a href="javascript:void(0);" class="btn btn-xs btn-primary"
-								   data-original-title="Approve"
-								   disabled>
-									<i class="fa fa-check"></i>
-								</a>
-							</td>
-						</tr>
-						<tr class="">
-							<td class="checkbox-column">
-								<input type="checkbox" value="mike" name="actiony" class="icheck-input">
-							</td>
-							<td class="hidden-xs">Mike</td>
-							<td>Jones</td>
-							<td><span class="label label-default">Pending</span></td>
-							<td class="align-center">
-								<a href="javascript:void(0);" class="btn btn-xs btn-primary"
-								   data-original-title="Approve"
-								   disabled>
-									<i class="fa fa-check"></i>
-								</a>
-							</td>
-						</tr>
-
-						</tbody>
-					</table>
-
+						</li>
+					</ul>
 
 				</div>
-				<!-- /.table-responsive -->
+				<!-- /.portlet-header -->
 
-				<hr/>
+				<div class="portlet-content">
 
-				Apply to Selected: &nbsp;&nbsp;
-				<select id="apply-selected" name="table-select" class="ui-select2" style="width: 125px">
-					<option value="">Select Action</option>
-					<option value="approve">Re-send validation email.</option>
 
-				</select>
+					<div class="table-responsive">
+
+						<table id="user-signups" class="table table-striped table-checkable">
+							<thead>
+							<tr>
+								<th class="checkbox-column">
+									<input type="checkbox" id="check-all" class="icheck-input"/>
+								</th>
+								<th class="hidden-xs">First Name
+								</th>
+								<th>Last Name</th>
+								<th>Status
+								</th>
+
+								<th class="align-center">Email - Approve
+								</th>
+
+							</tr>
+							</thead>
+
+							<tbody>
+							<tr class="">
+								<td class="checkbox-column">
+									<input type="checkbox" name="actiony" value="joey" class="icheck-input">
+								</td>
+
+								<td class="hidden-xs">Joey</td>
+								<td>Greyson</td>
+								<td><span class="label label-success">Approved</span></td>
+								<td class="align-center">
+									<a href="javascript:void(0);" class="btn btn-xs btn-primary"
+									   data-original-title="Approve"
+									   disabled>
+										<i class="fa fa-check"></i>
+									</a>
+								</td>
+							</tr>
+
+							<tr class="">
+								<td class="checkbox-column">
+									<input type="checkbox" name="actiony" value="wolf" class="icheck-input">
+								</td>
+								<td class="hidden-xs">Wolf</td>
+								<td>Bud</td>
+								<td><span class="label label-default">Pending</span>
+								</td>
+								<td class="align-center">
+									<a href="javascript:void(0);" class="btn btn-xs btn-primary"
+									   data-original-title="Approve">
+										<i class="fa fa-check"></i>
+									</a>
+								</td>
+							</tr>
+
+
+							<tr class="">
+								<td class="checkbox-column">
+									<input type="checkbox" name="actiony" value="sam" class="icheck-input">
+								</td>
+
+								<td class="hidden-xs">Sam</td>
+								<td>Mitchell</td>
+								<td><span class="label label-success">Approved</span></td>
+								<td class="align-center">
+									<a href="javascript:void(0);" class="btn btn-xs btn-primary"
+									   data-original-title="Approve"
+									   disabled>
+										<i class="fa fa-check"></i>
+									</a>
+								</td>
+							</tr>
+							<tr class="">
+								<td class="checkbox-column">
+									<input type="checkbox" value="carlos" name="actiony" class="icheck-input">
+								</td>
+								<td class="hidden-xs">Carlos</td>
+								<td>Lopez</td>
+								<td><span class="label label-success">Approved</span></td>
+								<td class="align-center">
+									<a href="javascript:void(0);" class="btn btn-xs btn-primary"
+									   data-original-title="Approve">
+										<i class="fa fa-check"></i>
+									</a>
+								</td>
+							</tr>
+
+
+							<tr class="">
+								<td class="checkbox-column">
+									<input type="checkbox" name="actiony" value="rob" class="icheck-input">
+								</td>
+								<td class="hidden-xs">Rob</td>
+								<td>Johnson</td>
+								<td><span class="label label-default">Pending</span></td>
+								<td class="align-center">
+									<a href="javascript:void(0);" class="btn btn-xs btn-primary"
+									   data-original-title="Approve"
+									   disabled>
+										<i class="fa fa-check"></i>
+									</a>
+								</td>
+							</tr>
+							<tr class="">
+								<td class="checkbox-column">
+									<input type="checkbox" value="mike" name="actiony" class="icheck-input">
+								</td>
+								<td class="hidden-xs">Mike</td>
+								<td>Jones</td>
+								<td><span class="label label-default">Pending</span></td>
+								<td class="align-center">
+									<a href="javascript:void(0);" class="btn btn-xs btn-primary"
+									   data-original-title="Approve"
+									   disabled>
+										<i class="fa fa-check"></i>
+									</a>
+								</td>
+							</tr>
+
+							</tbody>
+						</table>
+
+
+					</div>
+					<!-- /.table-responsive -->
+
+					<hr/>
+
+					Apply to Selected: &nbsp;&nbsp;
+					<select id="apply-selected" name="table-select" class="ui-select2" style="width: 125px">
+						<option value="">Select Action</option>
+						<option value="approve">Re-send validation email.</option>
+
+					</select>
+
+				</div>
+				<!-- /.portlet-content -->
 
 			</div>
-			<!-- /.portlet-content -->
+			<!-- /.portlet -->
 
 		</div>
-		<!-- /.portlet -->
+		<!-- /.col-md-4 -->
+
 
 	</div>
-	<!-- /.col-md-4 -->
-
-
-</div>
-<!-- /.row -->
+	<!-- /.row -->
 
 </div>
 <!-- /.col-md-9 -->
@@ -489,17 +490,18 @@ require ROOT_PATH . 'views/sidebar.php';
 				data: [
 					{
 						label: 'Successful',
-						value: <?php echo (int)(($countAchievedAppointmentsForCurWeek * 100 / $countAppointmentsForCurWeek)); ?>
+						value: <?php echo ((int)$countAppointmentsForCurWeek) === 0 ? 0 :
+						(int)(($countAchievedAppointmentsForCurWeek * 100 / $countAppointmentsForCurWeek)); ?>
 					},
 					{
 						label: 'Canceled',
-						value: <?php echo ((int)$countCanceledAppointmentsForCurWeek) === 0 ? 0 :
+						value: <?php echo ((int)$countAppointmentsForCurWeek) === 0 ? 0 :
 						(int)($countCanceledAppointmentsForCurWeek * 100 / $countAppointmentsForCurWeek); ?>
 
 					},
 					{
 						label: 'Pending',
-						value: <?php echo ((int)$countCanceledAppointmentsForCurWeek) === 0 ? 0 :
+						value: <?php echo ((int)$countAppointmentsForCurWeek) === 0 ? 0 :
 						(int)((($countAppointmentsForCurWeek-
 						$countCanceledAppointmentsForCurWeek-$countAchievedAppointmentsForCurWeek) * 100)/$countAppointmentsForCurWeek); ?>
 					}
