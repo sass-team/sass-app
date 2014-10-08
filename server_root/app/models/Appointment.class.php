@@ -21,6 +21,32 @@ class Appointment
 	const LABEL_COLOR_PENDING = "default";
 	const LABEL_COLOR_WARNING = "warning";
 
+	public static function updateDuration($db, $appointmentId, $tutorId, $user, $oldStartTime, $newStartTime, $newEndTime,
+	                                      $oldEndTime) {
+		date_default_timezone_set('Europe/Athens');
+		$newStartTime = Dates::initDateTime($newStartTime);
+		$newEndTime = Dates::initDateTime($newEndTime);
+		$oldStartTime = Dates::initDateTime($oldStartTime);
+		$oldEndTime = Dates::initDateTime($oldEndTime);
+
+		if ($newStartTime == $oldStartTime && $newEndTime == $oldEndTime) return false;
+
+		self::validateNewDates($db, $user, $tutorId, $newStartTime, $newEndTime, $appointmentId);
+		return AppointmentFetcher::updateDuration($db, $appointmentId, $newStartTime, $newEndTime);
+	}
+
+
+	public static function validateNewDates($db, $user, $tutorId, $startDate, $endDate, $existingAppointmentId = false) {
+		$nowDate = new DateTime();
+		// TODO: remove hardcoded $user
+		if ($nowDate > $startDate && strcmp($user->getId(), "9") !== 0) throw new Exception("Starting datetime cannot be less than current datetime.");
+		$minutesAppointmentDuration = ($endDate->getTimestamp() - $startDate->getTimestamp()) / 60;
+		if ($minutesAppointmentDuration < 30 || $minutesAppointmentDuration > 480) throw new Exception("Appointment's duration can be between 30 min and 8 hours.");
+		if (AppointmentFetcher::existsTutorsAppointmentsBetween($db, $tutorId, $startDate, $endDate, $existingAppointmentId)) {
+			throw new Exception("There is a conflict with the start/end date with another appointment for selected tutor.");
+		}
+	}
+
 	public static function updateCourse($db, $appointmentId, $oldCourseId, $newCourseId) {
 		Course::validateId($db, $newCourseId);
 		if (strcmp($oldCourseId, $newCourseId) === 0) return false;
@@ -28,13 +54,11 @@ class Appointment
 		return AppointmentFetcher::updateCourse($db, $appointmentId, $newCourseId);
 	}
 
-	public static function validateId($db, $id) {
-		if (is_null($id) || !preg_match("/^[0-9]+$/", $id)) throw new Exception("Data has been tempered. Aborting process.");
+	public static function updateTutor($db, $appointmentId, $oldTutorId, $newTutorId) {
+		Tutor::validateId($db, $newTutorId);
+		if (strcmp($oldTutorId, $newTutorId) === 0) return false;
 
-		if (!AppointmentFetcher::existsId($db, $id)) {
-			// TODO: sent email to developer relevant to this error.
-			throw new Exception("Either something went wrong with a database query, or you're trying to hack this app. In either case, the developers were just notified about this.");
-		}
+		return AppointmentFetcher::updateTutor($db, $appointmentId, $newTutorId);
 	}
 
 	public static function add($db, $user, $dateStart, $dateEnd, $courseId, $studentsIds, $tutorId, $instructorsIds, $termId,
@@ -51,21 +75,12 @@ class Appointment
 		Instructor::validateIds($db, $instructorsIds);
 		Tutor::validateId($db, $tutorId);
 		Term::validateId($db, $termId);
-		self::validateDates($db, $user, $tutorId, $dateStart, $dateEnd, $user);
+		self::validateNewDates($db, $user, $tutorId, $dateStart, $dateEnd);
 
 		$appointmentId = AppointmentFetcher::insert($db, $dateStart, $dateEnd, $courseId, $studentsIds, $tutorId, $instructorsIds, $termId);
 		Mailer::sendTutorNewAppointment($db, $appointmentId, $secretaryName);
 	}
 
-	public static function validateDates($db, $user, $tutorId, $startDate, $endDate) {
-		$nowDate = new DateTime();
-
-		if ($nowDate > $startDate && strcmp($user->getId(), "9") !== 0) throw new Exception("Starting datetime cannot be less than current datetime." . $user->getId());
-		if (($endDate->getTimestamp() - $startDate->getTimestamp()) * 60 < 30) throw new Exception("Minimum duration of an appointment is 30min.");
-		if (AppointmentFetcher::existsTutorsAppointmentsBetween($db, $tutorId, $startDate, $endDate)) {
-			throw new Exception("There is a conflict with the start/end date with another appointment for selected tutor.");
-		}
-	}
 
 	public static function  getCalendarAllAppointmentsOnTerm($db, $termId) {
 		Term::validateId($db, $termId);
@@ -138,6 +153,15 @@ class Appointment
 	public static function getSingle($db, $id) {
 		self::validateId($db, $id);
 		return AppointmentFetcher::retrieveSingle($db, $id);
+	}
+
+	public static function validateId($db, $id) {
+		if (is_null($id) || !preg_match("/^[0-9]+$/", $id)) throw new Exception("Data has been tempered. Aborting process.");
+
+		if (!AppointmentFetcher::existsId($db, $id)) {
+			// TODO: sent email to developer relevant to this error.
+			throw new Exception("Either something went wrong with a database query, or you're trying to hack this app. In either case, the developers were just notified about this.");
+		}
 	}
 
 	public static function countWithLabelMessage($appopintments, $labelMessage) {

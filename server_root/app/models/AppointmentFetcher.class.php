@@ -18,6 +18,46 @@ class AppointmentFetcher
 	const DB_COLUMN_LABEL_MESSAGE = "label_message";
 	const DB_COLUMN_LABEL_COLOR = "label_color";
 
+	public static function updateDuration($db, $appointmentId, $newStartTime, $newEndTime) {
+		$newStartTime = $newStartTime->format(Dates::DATE_FORMAT_IN);
+		$newEndTime = $newEndTime->format(Dates::DATE_FORMAT_IN);
+
+		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+					SET `" . self::DB_COLUMN_START_TIME . "`= :start_time,
+					`" . self::DB_COLUMN_END_TIME . "`= :end_time
+					WHERE `" . self::DB_COLUMN_ID . "` = :appointment_id";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':appointment_id', $appointmentId, PDO::PARAM_INT);
+			$query->bindParam(':start_time', $newStartTime, PDO::PARAM_STR);
+			$query->bindParam(':end_time', $newEndTime, PDO::PARAM_STR);
+
+			$query->execute();
+			return true;
+		} catch (Exception $e) {
+			throw new Exception("Could not update data.");
+		}
+		return false;
+	}
+
+	public static function updateTutor($db, $appointmentId, $newTutorId) {
+		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+					SET `" . self::DB_COLUMN_TUTOR_USER_ID . "`= :tutor_id
+					WHERE `" . self::DB_COLUMN_ID . "` = :appointment_id";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':appointment_id', $appointmentId, PDO::PARAM_INT);
+			$query->bindParam(':tutor_id', $newTutorId, PDO::PARAM_INT);
+			$query->execute();
+			return true;
+		} catch (Exception $e) {
+			throw new Exception("Could not update data.");
+		}
+		return false;
+	}
+
 	public static function insert($db, $dateStart, $dateEnd, $courseId, $studentsIds, $tutorId, $instructorsIds, $termId) {
 		date_default_timezone_set('Europe/Athens');
 		$dateStart = $dateStart->format(Dates::DATE_FORMAT_IN);
@@ -96,24 +136,32 @@ class AppointmentFetcher
 		return true;
 	}
 
-	public static function existsTutorsAppointmentsBetween($db, $tutorId, $startDate, $endDate) {
+	public static function existsTutorsAppointmentsBetween($db, $tutorId, $startDate, $endDate, $existingAppointmentId = false) {
 		date_default_timezone_set('Europe/Athens');
 		$startDate = $startDate->format(Dates::DATE_FORMAT_IN);
 		$endDate = $endDate->format(Dates::DATE_FORMAT_IN);
 
 		try {
+			$existingAppointment = ($existingAppointmentId !== false) ? "AND `" . self::DB_COLUMN_ID . "` <> :appointment_id" : "";
+
 			$sql =
-				"SELECT COUNT(" . self::DB_COLUMN_ID . ")
+				"SELECT COUNT(`" . self::DB_COLUMN_ID . "`)
 				FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
 				WHERE `" . self::DB_COLUMN_TUTOR_USER_ID . "` = :tutor_user_id
+				" . $existingAppointment . "
 				AND
 				(
-					(:start_date BETWEEN `" . self::DB_COLUMN_START_TIME . "` AND `" . self::DB_COLUMN_END_TIME . "`)
+					(:start_date > `" . self::DB_COLUMN_START_TIME . "` AND :start_date < `" . self::DB_COLUMN_END_TIME . "`)
 						OR
-					(:end_date BETWEEN `" . self::DB_COLUMN_START_TIME . "` AND `" . self::DB_COLUMN_END_TIME . "`)
-				) ";
+					(:end_date > `" . self::DB_COLUMN_START_TIME . "` AND :end_date < `" . self::DB_COLUMN_END_TIME . "`)
+				)";
+
 			$query = $db->getConnection()->prepare($sql);
 			$query->bindParam(':tutor_user_id', $tutorId, PDO::PARAM_INT);
+
+			if ($existingAppointmentId !== false) $query->bindParam(':appointment_id', $existingAppointmentId, PDO::PARAM_INT);
+
+
 			$query->bindParam(':start_date', $startDate, PDO::PARAM_STR);
 			$query->bindParam(':end_date', $endDate, PDO::PARAM_STR);
 
@@ -121,7 +169,7 @@ class AppointmentFetcher
 
 			if ($query->fetchColumn() === '0') return false;
 		} catch (Exception $e) {
-			throw new Exception("Could not check conflicts with other appointments.");
+			throw new Exception("Could not check conflicts with other appointments." . $e->getMessage());
 		}
 
 		return true;

@@ -166,6 +166,8 @@ class AppointmentHasStudentFetcher
             `" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_END_TIME . "`,
             `" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_LAST_NAME . "` AS
             " . UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_LAST_NAME . ",
+            `" . InstructorFetcher::DB_TABLE . "`.`" . InstructorFetcher::DB_COLUMN_ID . "` AS
+            " . InstructorFetcher::DB_TABLE . "_" . InstructorFetcher::DB_COLUMN_ID . ",
             `" . InstructorFetcher::DB_TABLE . "`.`" . InstructorFetcher::DB_COLUMN_FIRST_NAME . "` AS
             " . InstructorFetcher::DB_TABLE . "_" . InstructorFetcher::DB_COLUMN_FIRST_NAME . ",
             `" . InstructorFetcher::DB_TABLE . "`.`" . InstructorFetcher::DB_COLUMN_LAST_NAME . "` AS

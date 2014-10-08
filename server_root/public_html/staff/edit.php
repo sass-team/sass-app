@@ -47,21 +47,19 @@ if (!isset($_GET['id']) || !preg_match("/^[0-9]+$/", $_GET['id'])) {
 //	header('Location: ' . BASE_URL . 'error-404');
 	exit();
 } else {
-	$userId = $_GET['id'];
+	$staffId = $_GET['id'];
 }
-
 
 try {
 
-	if (($data = User::getSingle($db, $userId)) === FALSE) {
+	if (($data = User::getSingle($db, $staffId)) === FALSE) {
 //		header('Location: ' . BASE_URL . 'error-404');
 		exit();
 	}
 
-
 	// TODO: fix this code -- is ugly.
 	if (strcmp($data['type'], 'tutor') === 0) {
-		$tutor = TutorFetcher::retrieveSingle($db, $userId);
+		$tutor = TutorFetcher::retrieveSingle($db, $staffId);
 		$curUser = new Tutor($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active'], $tutor[TutorFetcher::DB_COLUMN_MAJOR_ID]);
 	} else if (strcmp($data['type'], 'secretary') === 0) {
 		$curUser = new Secretary($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active']);
@@ -74,20 +72,20 @@ try {
 	// retrieve courses data only user type is tutor
 	if ($curUser->isTutor()) {
 		$teachingCourses = TutorFetcher::retrieveCurrTermTeachingCourses($db, $curUser->getId());
-		$notTeachingCourses = Tutor::retrieveCoursesNotTeaching($db, $curUser->getId());
+		$allCourses = CourseFetcher::retrieveAll($db);
 		$majors = MajorFetcher::retrieveMajors($db);
 		$terms = TermFetcher::retrieveCurrTerm($db);
 	}
 
 
 	if (isBtnAddTeachingCoursesPrsd()) {
-		Tutor_has_course_has_schedule::addCourses($db, $userId, $_POST['teachingCourses'], $_POST['term']);
-		header('Location: ' . BASE_URL . 'staff/edit/' . $userId . '/success');
+		Tutor::addCourse($db, $staffId, $_POST['teachingCourses'], $_POST['termId']);
+		header('Location: ' . BASE_URL . 'staff/edit/' . $staffId . '/success');
 		exit();
 
 	} else if (isBtnSubmitReplaceCourse()) {
-		Tutor::updateTeachingCourse($db, $curUser->getId(), $_POST['teachingCourse'], $_POST['hiddenUpdateCourseOldId']);
-		header('Location: ' . BASE_URL . 'staff/edit/' . $userId . '/success');
+		Tutor::updateTeachingCourse($db, $curUser->getId(), $_POST['teachingCourse'], $_POST['hiddenUpdateCourseOldId'],  $_POST['termId']);
+		header('Location: ' . BASE_URL . 'staff/edit/' . $staffId . '/success');
 		exit();
 
 	} else if (isSaveBttnProfilePressed()) {
@@ -104,46 +102,45 @@ try {
 
 		if (strcmp($newFirstName, $oldFirstName) !== 0) {
 			$user->validateName($newFirstName);
-			$user->updateInfo("f_name", "user", $newFirstName, $userId);
+			$user->updateInfo("f_name", "user", $newFirstName, $staffId);
 			$newDataAdded = true;
 		}
 
 		if (strcmp($newLastName, $oldLastName) !== 0) {
 			$user->validateName($newLastName);
-			$user->updateInfo("l_name", "user", $newLastName, $userId);
+			$user->updateInfo("l_name", "user", $newLastName, $staffId);
 			$newDataAdded = true;
 		}
 
 		if (strcmp($newEmail, $oldEmail) !== 0) {
 			Person::validateNewEmail($db, $newEmail, User::DB_TABLE);
-			$user->updateInfo("email", "user", $newEmail, $userId);
+			$user->updateInfo("email", "user", $newEmail, $staffId);
 			$newDataAdded = true;
 		}
 
 		if ($curUser->isTutor()) {
 			$newMajorId = isset($_POST['majorId']) ? $_POST['majorId'] : NULL;
 			$oldMajorId = $curUser->getMajorId();
-			$newDataAdded = Tutor::replaceMajorId($db, $userId, $newMajorId, $oldMajorId) || $newDataAdded;
+			$newDataAdded = Tutor::replaceMajorId($db, $staffId, $newMajorId, $oldMajorId) || $newDataAdded;
 		}
-
 
 		if (!$newDataAdded) {
 			throw new Exception("No new data. No modifications were done.");
 		} else {
-			header('Location: ' . BASE_URL . 'staff/edit/' . $userId . '/success');
+			header('Location: ' . BASE_URL . 'staff/edit/' . $staffId . '/success');
 			exit();
 		}
 	} else if (isBtnDelTeachingCoursesPressed()) {
 		$curUser->deleteTeachingCourse($_POST['delCourseIdModal']);
-		header('Location: ' . BASE_URL . 'staff/edit/' . $userId . '/success');
+		header('Location: ' . BASE_URL . 'staff/edit/' . $staffId . '/success');
 		exit();
 	} else if (isBtnSbmtChangeuserTypePrsd()) {
 		$curUser->updateUserType($_POST['changeuserType']);
-		header('Location: ' . BASE_URL . 'staff/edit/' . $userId . '/success');
+		header('Location: ' . BASE_URL . 'staff/edit/' . $staffId . '/success');
 		exit();
 	} else if (isBtnSbmtChangeUserActivate()) {
 		User::updateActiveStatus($db, $curUser->getId(), $curUser->isActive());
-		header('Location: ' . BASE_URL . 'staff/edit/' . $userId . '/success');
+		header('Location: ' . BASE_URL . 'staff/edit/' . $staffId . '/success');
 		exit();
 	}
 } catch (Exception $e) {
@@ -254,7 +251,7 @@ require ROOT_PATH . 'views/sidebar.php';
 			</a>
 		</li>
 
-		<?php if (strcmp($user->getId(), $userId) !== 0): ?>
+		<?php if (strcmp($user->getId(), $staffId) !== 0): ?>
 			<li>
 				<a href="#status" data-toggle="tab">
 					<i class="fa fa-warning"></i>
@@ -320,7 +317,8 @@ require ROOT_PATH . 'views/sidebar.php';
 							<thead>
 							<tr>
 								<th data-filterable="true" data-sortable="true" data-direction="desc">Code</th>
-								<th data-direction="asc" data-filterable="true" data-sortable="false">Name</th>
+								<th data-direction="asc" data-filterable="true" data-sortable="true">Name</th>
+								<th data-direction="asc" data-filterable="true" data-sortable="true">Term</th>
 								<th>Action</th>
 							</tr>
 							</thead>
@@ -329,7 +327,7 @@ require ROOT_PATH . 'views/sidebar.php';
 							<?php
 							if (empty($errors) === true) {
 								foreach ($teachingCourses as $course) {
-									include(ROOT_PATH . "views/partials/course/table-data-view.html.php");
+									include(ROOT_PATH . "views/partials/course/faciliated-on-terms-table-data-view.html.php");
 
 								}
 							} ?>
@@ -497,7 +495,7 @@ require ROOT_PATH . 'views/sidebar.php';
 
 </div>
 
-<?php if (strcmp($user->getId(), $userId) !== 0): ?>
+<?php if (strcmp($user->getId(), $staffId) !== 0): ?>
 
 	<div class="tab-pane fade" id="status">
 		<div class="col-md-12">
@@ -624,7 +622,7 @@ require ROOT_PATH . 'views/sidebar.php';
 										        multiple>
 
 											<?php
-											foreach ($notTeachingCourses as $course) {
+											foreach ($allCourses as $course) {
 												include(ROOT_PATH . "views/partials/course/select-options-view.html.php");
 											}
 											?>
@@ -636,10 +634,10 @@ require ROOT_PATH . 'views/sidebar.php';
 
 										<h5>
 											<i class="fa fa-tasks"></i>
-											<label for="term">Term</label>
+											<label for="termId">Term</label>
 										</h5>
 
-										<select id="term" name="term" class="form-control">
+										<select id="termId" name="termId" class="form-control">
 
 											<?php
 											foreach ($terms as $term) {
@@ -745,7 +743,7 @@ require ROOT_PATH . 'views/sidebar.php';
 								        class="form-control">
 
 
-									<?php foreach ($notTeachingCourses as $course) {
+									<?php foreach ($allCourses as $course) {
 										include(ROOT_PATH . "views/partials/course/select-options-view.html.php");
 									}
 									?>
@@ -827,7 +825,7 @@ require ROOT_PATH . 'views/sidebar.php';
 		})
 		;
 
-		$("#term").select2();
+		$("#termId").select2();
 
 		$("#majorId").select2({
 			placeholder: "Select courses..."

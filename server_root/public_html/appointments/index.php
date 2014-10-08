@@ -21,16 +21,16 @@ try {
 	$pageTitle = "Single Appointment";
 	$appointmentId = $_GET['appointmentId'];
 	$studentsAppointmentData = Appointment::getAllStudentsWithAppointment($db, $appointmentId);
-	$terms = TermFetcher::retrieveAll($db);
+	$terms = TermFetcher::retrieveCurrTerm($db);
 	$students = StudentFetcher::retrieveAll($db);
-	$courses = CourseFetcher::retrieveAll($db);
+	$courses = CourseFetcher::retrieveForTerm($db, $studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_TERM_ID]);
 	$instructors = InstructorFetcher::retrieveAll($db);
 	$tutors = TutorFetcher::retrieveAll($db);
 	$startDateTime = new DateTime($studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_START_TIME]);
 	$endDateTime = new DateTime($studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_END_TIME]);
 	$nowDateTime = new DateTime();
 
-
+var_dump($courses);
 	// load reports if they have been created
 	if (reportsHaveBeenCrtd($studentsAppointmentData)) $reports = Report::getAllWithAppointmentId($db, $appointmentId);
 
@@ -124,8 +124,16 @@ try {
 		$updateDone = Appointment::updateStudents($db, $appointmentId, $studentsAppointmentData, $_POST['studentsIds']);
 		$updateDone = Appointment::updateInstructors($db, $appointmentId, $studentsAppointmentData, $_POST['instructorIds'])
 			|| $updateDone;
-		$updateDone = Appointment::updateCourse($db, $appointmentId, $studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_COURSE_ID], $_POST['courseId'])
-			|| $updateDone;
+		$updateDone = Appointment::updateCourse($db, $appointmentId,
+				$studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_COURSE_ID], $_POST['courseId']) || $updateDone;
+		$updateDone = Appointment::updateTutor($db, $appointmentId,
+				$studentsAppointmentData[0][UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_ID], $_POST['tutorId']) || $updateDone;
+
+		// TODO: REMOVE hardcoded $user
+		$updateDone = Appointment::updateDuration($db, $appointmentId, $studentsAppointmentData[0][UserFetcher::DB_TABLE .
+				"_" . UserFetcher::DB_COLUMN_ID], $user, $studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_START_TIME],
+				$_POST['dateTimePickerStart'], $_POST['dateTimePickerEnd'], $studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_START_TIME]) || $updateDone;
+
 
 		if (!$updateDone) throw new Exception("No new data inserted.");
 		header('Location: ' . BASE_URL . 'appointments/' . $appointmentId . '/success');
@@ -469,7 +477,7 @@ require ROOT_PATH . 'views/sidebar.php';
 			<div class="form-group">
 				<div class="input-group">
 					<span class="input-group-addon"><label for="courseId">Course</label></span>
-					<select id="courseId" name="courseId" class="form-control" required >
+					<select id="courseId" name="courseId" class="form-control" required>
 						<?php foreach ($courses as $course) {
 							include(ROOT_PATH . "views/partials/course/select-options-view.html.php");
 						}
@@ -483,7 +491,7 @@ require ROOT_PATH . 'views/sidebar.php';
 				<div class="input-group">
 										<span class="input-group-addon"><label id="label-instructor-text"
 										                                       for="tutorId">Tutors</label></span>
-					<select id="tutorId" name="tutorId" class="form-control" required disabled>
+					<select id="tutorId" name="tutorId" class="form-control" required>
 						<?php foreach ($tutors as $tutor) {
 							include(ROOT_PATH . "views/partials/tutor/select-options-view.html.php");
 						}
@@ -497,7 +505,7 @@ require ROOT_PATH . 'views/sidebar.php';
 				<div class='input-group date' id='dateTimePickerStart'>
 											<span class="input-group-addon"><label for="dateTimePickerStart">
 													Starts At</label></span>
-					<input type='text' name='dateTimePickerStart' class="form-control" required disabled/>
+					<input type='text' name='dateTimePickerStart' class="form-control" required/>
                                  <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
 				</div>
 			</div>
@@ -507,7 +515,7 @@ require ROOT_PATH . 'views/sidebar.php';
 				<div class='input-group date' id='dateTimePickerEnd'>
                                         <span class="input-group-addon"><label for="dateTimePickerEnd">Ends
 		                                        At</label></span>
-					<input type='text' name='dateTimePickerEnd' class="form-control" required disabled/>
+					<input type='text' name='dateTimePickerEnd' class="form-control" required/>
 										<span class="input-group-addon">
 											<span class="glyphicon glyphicon-calendar">
 										</span>
@@ -1037,6 +1045,17 @@ if (isset($reports)) {
 			daysOfWeekDisabled: [0, 6],
 			sideBySide: true,
 			strict: true
+		});
+
+		$dateTimePickerStart.on("dp.change", function (e) {
+			var newEndDateDefault = $('#dateTimePickerStart').data("DateTimePicker").getDate().clone();
+
+			newEndDateDefault.add('30', 'minutes');
+			var newMinimumEndDate = newEndDateDefault.clone();
+			newMinimumEndDate.subtract('31', 'minutes')
+
+			$dateTimePickerEnd2.data("DateTimePicker").setMinDate(newMinimumEndDate);
+			$dateTimePickerEnd2.data("DateTimePicker").setDate(newEndDateDefault);
 		});
 
 	});
