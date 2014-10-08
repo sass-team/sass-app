@@ -151,9 +151,9 @@ class AppointmentFetcher
 				" . $existingAppointment . "
 				AND
 				(
-					(:start_date > `" . self::DB_COLUMN_START_TIME . "` AND :start_date < `" . self::DB_COLUMN_END_TIME . "`)
+					(:start_date >= `" . self::DB_COLUMN_START_TIME . "` AND :start_date < `" . self::DB_COLUMN_END_TIME . "`)
 						OR
-					(:end_date > `" . self::DB_COLUMN_START_TIME . "` AND :end_date < `" . self::DB_COLUMN_END_TIME . "`)
+					(:end_date > `" . self::DB_COLUMN_START_TIME . "` AND :end_date <= `" . self::DB_COLUMN_END_TIME . "`)
 				)";
 
 			$query = $db->getConnection()->prepare($sql);
