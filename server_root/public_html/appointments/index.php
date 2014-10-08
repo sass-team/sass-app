@@ -77,7 +77,9 @@ try {
 				$otherTextArea, $studentsConcernsTextArea, $relevantFeedbackGuidelines, $studentBroughtAlongNew, $studentBroughtAlongOld, $conclusionAdditionalComments);
 			// user is tutor requesting fill report
 			if ($user->isTutor()) {
+
 				ReportFetcher::updateLabel($db, $formReportId, Report::LABEL_MESSAGE_PENDING_VALIDATION, Report::LABEL_COLOR_WARNING);
+
 			} else {
 				// user is secretary confirming report
 				ReportFetcher::updateLabel($db, $formReportId, Report::LABEL_MESSAGE_COMPLETE, Report::LABEL_COLOR_SUCCESS);
@@ -297,8 +299,8 @@ require ROOT_PATH . 'views/sidebar.php';
 			<?php for ($i = 0; $i < sizeof($reports); $i++) { ?>
 				<a href="#report-tab<?php echo $i; ?>" class="list-group-item" data-toggle="tab">
 					<h5>
-						<i class="fa fa-file-text-o"></i> &nbsp;&nbsp;R
-						<?php echo "-" . $reports[$i][ReportFetcher::DB_COLUMN_ID]; ?>
+						<i class="fa fa-file-text-o"></i>
+						&nbsp;&nbsp;R<?php echo "-" . $reports[$i][ReportFetcher::DB_COLUMN_ID]; ?>
 						<span
 							class="label label-<?php echo $reports[$i][ReportFetcher::DB_COLUMN_LABEL_COLOR]; ?>">
 							<?php echo $reports[$i][ReportFetcher::DB_COLUMN_LABEL_MESSAGE]; ?>

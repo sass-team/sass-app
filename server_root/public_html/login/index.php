@@ -72,11 +72,12 @@ function isForgotBtnPressed() {
 	<html class="no-js"> <!--<![endif]-->
 	<head>
 
-		<title>Login - Canvas Admin</title>
+		<title>Login - SASS App</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-		<meta name="description" content="">
-		<meta name="author" content=""/>
+		<meta name="description" content="Content management system for managing peer workshop tutoring.">
+		<meta name="author" content="Rizart Dokollari, George Skarlatos"/>
+		<meta name="keywords" content="CMS,university,SASS,tutor,tutoring"/>
 		<link rel="shortcut icon" href="<?php echo BASE_URL; ?>assets/img/logos/favicon.ico">
 
 		<link rel="stylesheet"
@@ -172,8 +173,9 @@ function isForgotBtnPressed() {
 
 					<div class="form-group">
 						<input type="hidden" name="hidden_submit_pressed">
-						<button type="submit" id="login-btn" name="login" class="btn btn-primary btn-block">Log In &nbsp; <i
-								 class="fa fa-sign-in"></i></button>
+						<button type="submit" id="login-btn" name="login" class="btn btn-primary btn-block">Log In
+							&nbsp; <i
+								class="fa fa-sign-in"></i></button>
 					</div>
 				</form>
 
@@ -202,8 +204,9 @@ function isForgotBtnPressed() {
 		<footer id="footer" class="navbar navbar-fixed-bottom">
 			<ul class="nav pull-left">
 				<li>
-					For bugs, improvements, proposals and tasks please use the <a href="https://github.com/sass-team/sass-app/issues"
-					                                                                 target="_blank">GitHub issue tracker</a>.
+					For bugs, improvements, proposals and tasks please use the <a
+						href="https://github.com/sass-team/sass-app/issues"
+						target="_blank">GitHub issue tracker</a>.
 				</li>
 			</ul>
 			<ul class="nav pull-right">

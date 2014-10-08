@@ -11,12 +11,18 @@
 require __DIR__ . '/../../app/init.php';
 $general->loggedOutProtect();
 
-$pageTitleTutor = "All Appointments - " . "<strong>" . $user->getFirstName() . " " . $user->getLastName() . "</strong>";
-$pageTitle = "All Appointments - List";
 $section = "appointments";
 
-$appointments = AppointmentFetcher::retrieveAllOfCurrTerms($db);
-$appointmentsByTutor = AppointmentFetcher::retrieveAllOfCurrTermsByTutor($db, $user->getId());
+if ($user->isTutor()) {
+	$pageTitle = "" . $user->getFirstName() . " " . $user->getLastName();
+	$appointments = AppointmentFetcher::retrieveAllOfCurrTermsByTutor($db, $user->getId());
+	$allReports = ReportFetcher::retrieveAllOfCurrTermsByTutor($db, $user->getId());
+} else {
+	$pageTitle = "All Tutors";
+	$appointments = AppointmentFetcher::retrieveAllOfCurrTerms($db);
+	$allReports = ReportFetcher::retrieveAllOfCurrTerms($db);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -39,13 +45,9 @@ $appointmentsByTutor = AppointmentFetcher::retrieveAllOfCurrTermsByTutor($db, $u
 	<div id="content">
 
 		<div id="content-header">
-				<h1>
-				<?php if ($user->isTutor()) {
-					echo $pageTitleTutor;} else {
-						echo $pageTitle;
-					}
-				 ?>
-				</h1>
+			<h1>
+				<?php echo "Appointments - <strong>" . $pageTitle . "</strong>"; ?>
+			</h1>
 		</div>
 		<!-- #content-header -->
 
@@ -80,42 +82,41 @@ $appointmentsByTutor = AppointmentFetcher::retrieveAllOfCurrTermsByTutor($db, $u
 									>
 									<thead>
 									<tr>
-										<th class="text-center" data-filterable="true" data-sortable="true">
-											ID
+										<th class="text-center" data-filterable="true" data-sortable="true">ID
 										</th>
 										<?php if (!$user->isTutor()) { ?>
-										<th class="text-center" data-filterable="true" data-sortable="true">
-											Tutor
-										</th>
+											<th class="text-center" data-filterable="true" data-sortable="true">Tutor
+											</th>
 										<?php } ?>
+										<th class="text-center" data-filterable="true" data-sortable="true">Status
+										</th>
+										<th class="text-center" data-filterable="true" data-sortable="true">Report(s)
+											Status
+										</th>
+										<th class="text-center" data-filterable="false" data-sortable="false">Page
+										</th>
 										<th class="text-center" data-direction="desc" data-filterable="true"
-										    data-sortable="true">Start
+										    data-sortable="true">Duration
 										</th>
-										<th class="text-center" data-filterable="true" data-sortable="true">
-											End
+										<th class="text-center" data-filterable="true" data-sortable="true">Course
 										</th>
-										<th class="text-center" data-filterable="true" data-sortable="true">
-											Course Code
+										<th class="text-center" data-filterable="true" data-sortable="true">Term
 										</th>
-										<th class="text-center" data-filterable="true" data-sortable="false">
-											Course Name
-										</th>
-										<th class="text-center" data-filterable="true" data-sortable="true">
-											Term
-										</th>
+
 									</tr>
 									</thead>
 									<tbody>
 
-										<?php
-										if (empty($errors) === true) { ?>
-
-										<?php if ($user->isTutor()) {
-											foreach ($appointmentsByTutor as $appointmentByTutor) {
+									<?php
+									if (empty($errors) === true) {
+										if ($user->isTutor()) {
+											foreach ($appointments as $appointment) {
+												$reports = Report::getWithAppointmentId($allReports, $appointment[AppointmentFetcher::DB_TABLE . "_" . AppointmentFetcher::DB_COLUMN_ID]);
 												include(ROOT_PATH . "views/partials/appointments/table-data-by-tutor-view.html.php");
 											}
 										} else {
 											foreach ($appointments as $appointment) {
+												$reports = Report::getWithAppointmentId($allReports, $appointment[AppointmentFetcher::DB_TABLE . "_" . AppointmentFetcher::DB_COLUMN_ID]);
 												include(ROOT_PATH . "views/partials/appointments/table-data-view.html.php");
 											}
 										}

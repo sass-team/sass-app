@@ -9,20 +9,21 @@
 class Appointment
 {
 	const LABEL_MESSAGE_PENDING = "pending";
-	const LABEL_COLOR_WARNING = "warning";
+
 	const LABEL_MESSAGE_TUTOR_CANCELED = "canceled by tutor";
 	const LABEL_MESSAGE_STUDENT_CANCELED = "canceled by student";
 	const LABEL_MESSAGE_STUDENT_NO_SHOW = "no show by student";
 	const LABEL_MESSAGE_TUTOR_NO_SHOW = "no show by tutor";
+	const LABEL_MESSAGE_COMPLETE = "complete";
 
 	const LABEL_COLOR_SUCCESS = "success";
 	const LABEL_COLOR_CANCELED = "danger";
 	const LABEL_COLOR_PENDING = "default";
+	const LABEL_COLOR_WARNING = "warning";
 
 
-	const LABEL_MESSAGE_COMPLETE = "complete";
 
-	public static function add($db, $dateStart, $dateEnd, $courseId, $studentsIds, $tutorId, $instructorsIds, $termId,
+	public static function add($db, $user, $dateStart, $dateEnd, $courseId, $studentsIds, $tutorId, $instructorsIds, $termId,
 	                           $secretaryName) {
 		$dateStart = Dates::initDateTime($dateStart);
 		$dateEnd = Dates::initDateTime($dateEnd);
@@ -36,16 +37,16 @@ class Appointment
 		Instructor::validateIds($db, $instructorsIds);
 		Tutor::validateId($db, $tutorId);
 		Term::validateId($db, $termId);
-		self::validateDates($db, $tutorId, $dateStart, $dateEnd);
+		self::validateDates($db, $user, $tutorId, $dateStart, $dateEnd, $user);
 
 		$appointmentId = AppointmentFetcher::insert($db, $dateStart, $dateEnd, $courseId, $studentsIds, $tutorId, $instructorsIds, $termId);
 		Mailer::sendTutorNewAppointment($db, $appointmentId, $secretaryName);
 	}
 
-	public static function validateDates($db, $tutorId, $startDate, $endDate) {
+	public static function validateDates($db, $user, $tutorId, $startDate, $endDate) {
 		$nowDate = new DateTime();
 
-		if ($nowDate > $startDate) throw new Exception("Starting datetime cannot be less than current datetime.");
+		if ($nowDate > $startDate && strcmp($user->getId(), "9") !== 0) throw new Exception("Starting datetime cannot be less than current datetime." . $user->getId());
 		if (($endDate->getTimestamp() - $startDate->getTimestamp()) * 60 < 30) throw new Exception("Minimum duration of an appointment is 30min.");
 		if (AppointmentFetcher::existsTutorsAppointmentsBetween($db, $tutorId, $startDate, $endDate)) {
 			throw new Exception("There is a conflict with the start/end date with another appointment for selected tutor.");

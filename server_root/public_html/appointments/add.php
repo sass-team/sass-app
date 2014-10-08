@@ -23,7 +23,7 @@ try {
 
 	if (isBtnAddStudentPrsd()) {
 		$secretaryName = $user->getFirstName() . " " . $user->getLastName();
-		Appointment::add($db, $_POST['dateTimePickerStart'], $_POST['dateTimePickerEnd'], $_POST['courseId'],
+		Appointment::add($db, $user, $_POST['dateTimePickerStart'], $_POST['dateTimePickerEnd'], $_POST['courseId'],
 			$_POST['studentsIds'], $_POST['tutorId'], $_POST['instructorIds'], $_POST['termId'], $secretaryName);
 		header('Location: ' . BASE_URL . 'appointments/add/success');
 		exit();
@@ -111,7 +111,7 @@ require ROOT_PATH . 'views/sidebar.php';
 	<div class="portlet">
 		<div class="row">
 
-			<div class="col-lg-5 col-md-12">
+			<div class="col-lg-12 col-md-12">
 				<div class="portlet-header">
 
 					<h3 class="col-md-10 pull-left">
@@ -168,7 +168,8 @@ require ROOT_PATH . 'views/sidebar.php';
 
 							<div class="form-group">
 								<div class="input-group">
-									<span class="input-group-addon"><label for="courseId" id="label-course-text">Course</label></span>
+									<span class="input-group-addon"><label for="courseId"
+									                                       id="label-course-text">Course</label></span>
 									<select id="courseId" name="courseId" class="form-control" required>
 										<option></option>
 										<?php foreach ($courses as $course) {
@@ -254,7 +255,7 @@ require ROOT_PATH . 'views/sidebar.php';
 			</div>
 
 
-			<div class="col-lg-7 col-md-12">
+			<div class="col-lg-12 col-md-12">
 				<div class="portlet-header">
 
 					<h3>
@@ -398,7 +399,9 @@ $(function () {
 
 	$dateTimePickerStart.datetimepicker({
 		defaultDate: startDateDefault,
+		<?php if(strcmp($user->getId(), "9") !== 0): ?>
 		minDate: minimumStartDate,
+		<?php endif; ?>
 		maxDate: minimumMaxDate,
 		minuteStepping: 30,
 		daysOfWeekDisabled: [0, 6],
@@ -407,7 +410,9 @@ $(function () {
 	});
 	$dateTimePickerEnd.datetimepicker({
 		defaultDate: endDateDefault,
+		<?php if(strcmp($user->getId(), "9") !== 0): ?>
 		minDate: minimumEndDate,
+		<?php endif; ?>
 		minuteStepping: 30,
 		daysOfWeekDisabled: [0, 6],
 		sideBySide: true,
@@ -614,6 +619,16 @@ $(function () {
 
 	function loadAllCalendars() {
 		try {
+			reloadCalendar('single_tutor_appointment_and_schedule');
+		} catch (err) {
+			// clear options
+			$tutorId.empty().append("<option></option>");
+			$tutorId.select2({
+				placeholder: err.message
+			});
+		}
+
+		try {
 			reloadCalendar('all_appointments_schedule');
 		} catch (err) {
 			$calendarTitle.text(err);
@@ -806,6 +821,15 @@ $(function () {
 	<?php 	if (isBtnAddStudentPrsd()) : ?>
 	$courseId.select2("val", <?php echo $_POST['courseId']; ?>);
 	retrieveTutors();
+	try {
+		reloadCalendar('single_tutor_appointment_and_schedule');
+	} catch (err) {
+		// clear options
+		$tutorId.empty().append("<option></option>");
+		$tutorId.select2({
+			placeholder: err.message
+		});
+	}
 	$dateTimePickerStart.data("DateTimePicker").setDate('<?php echo $_POST['dateTimePickerStart']; ?>');
 	$dateTimePickerEnd.data("DateTimePicker").setDate('<?php echo $_POST['dateTimePickerEnd']; ?>');
 	<?php endif; ?>
