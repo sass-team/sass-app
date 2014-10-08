@@ -119,6 +119,9 @@ try {
 //		var_dump($studentsAppointmentData);
 
 		$updateDone = Appointment::updateStudents($db, $appointmentId, $studentsAppointmentData, $_POST['studentsIds']);
+		$updateDone = Appointment::updateInstructors($db, $appointmentId, $studentsAppointmentData, $_POST['studentsIds'])
+			|| $updateDone;;
+
 		header('Location: ' . BASE_URL . 'appointments/' . $appointmentId . '/success');
 		exit();
 	} else if (isUrlRqstngAppointmentCancelByTutor()) {
@@ -441,7 +444,7 @@ require ROOT_PATH . 'views/sidebar.php';
 						<div class="input-group">
 							<span class="input-group-addon">Instructor</span>
 							<select name="instructorIds[]" id="instructorId<?php echo $i; ?>"
-							        class="form-control" required disabled>
+							        class="form-control" required>
 								<option></option>
 								<?php foreach ($instructors as $instructor) {
 									include(ROOT_PATH . "views/partials/instructor/select-options-view.html.php");
@@ -954,7 +957,6 @@ if (isset($reports)) {
 		$("#instructorId<?php echo $i;?>").select2();
 		$("#studentId<?php echo $i;?>").select2("val", '<?php echo $studentsAppointmentData[$i][AppointmentHasStudentFetcher::DB_COLUMN_STUDENT_ID]?>');
 		$("#instructorId<?php echo $i;?>").select2("val", '<?php echo $studentsAppointmentData[$i][AppointmentHasStudentFetcher::DB_COLUMN_INSTRUCTOR_ID]?>');
-		$("#instructorId<?php echo $i;?>").select2("enable", false);
 		<?php } ?>
 
 		<?php if ($studentsAppointmentData[0][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID] !== NULL): ?>
