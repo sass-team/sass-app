@@ -8,7 +8,6 @@ try {
 	$endWeekDate = getWorkingDates($now->format('Y'), $now->format('W'), false);
 
 	if (!$user->isTutor()) {
-		$courses = CourseFetcher::retrieveAll($db);
 		$appointments = AppointmentFetcher::retrieveBetweenDates($db, $startWeekDate,
 			$endWeekDate);
 
@@ -19,8 +18,14 @@ try {
 		$countCanceledAppointmentsForCurWeek = Appointment::countWithLabelMessages($appointments, $canceledLabelMessages);
 
 	} else {
-		$appointments = TutorFetcher::retrieveAllAppointments($db, $user->getId());
-		$courses = TutorFetcher::retrieveAllAppointments($db, $user->getId());
+		$appointments = AppointmentFetcher::retrieveTutorsBetweenDates($db, $user->getId(), $startWeekDate,
+			$endWeekDate);
+		$countAppointmentsForCurWeek = sizeof($appointments);
+		$countAchievedAppointmentsForCurWeek = Appointment::countTutorsWithLabelMessage($user->getId(), $appointments,
+			Appointment::LABEL_MESSAGE_COMPLETE);
+		$canceledLabelMessages = array(Appointment::LABEL_MESSAGE_STUDENT_NO_SHOW,
+			Appointment::LABEL_MESSAGE_TUTOR_CANCELED, Appointment::LABEL_MESSAGE_TUTOR_NO_SHOW, Appointment::LABEL_MESSAGE_STUDENT_CANCELED);
+		$countCanceledAppointmentsForCurWeek = Appointment::countTutorsWithLabelMessageS($user->getId(), $appointments, $canceledLabelMessages);
 
 	}
 
