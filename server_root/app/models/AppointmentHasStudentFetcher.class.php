@@ -83,17 +83,20 @@ class AppointmentHasStudentFetcher
 		}
 	}
 
-	public static function updateInstructorId($db, $oldInstructorId, $newInstructorId, $appointmentId) {
+	public static function updateInstructorIdForStudentId($db, $oldInstructorId, $studentId, $newInstructorId, $appointmentId) {
 		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
 					SET `" . self::DB_COLUMN_INSTRUCTOR_ID . "`= :new_instructor_id
 					WHERE `" . self::DB_COLUMN_INSTRUCTOR_ID . "` = :old_instructor_id
-					AND  `" . self::DB_COLUMN_APPOINTMENT_ID . "` = :appointment_id";
+					AND  `" . self::DB_COLUMN_APPOINTMENT_ID . "` = :appointment_id
+					AND  `" . self::DB_COLUMN_STUDENT_ID . "` = :student_id";
+
 
 		try {
 			$query = $db->getConnection()->prepare($query);
 			$query->bindParam(':new_instructor_id', $newInstructorId, PDO::PARAM_INT);
 			$query->bindParam(':old_instructor_id', $oldInstructorId, PDO::PARAM_INT);
 			$query->bindParam(':appointment_id', $appointmentId, PDO::PARAM_INT);
+			$query->bindParam(':student_id', $studentId, PDO::PARAM_INT);
 
 			$query->execute();
 

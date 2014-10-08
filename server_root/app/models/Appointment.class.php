@@ -64,7 +64,7 @@ class Appointment
 		return AppointmentFetcher::updateCourse($db, $appointmentId, $newCourseId);
 	}
 
-	public static function updateTutor($db, $user,$termId, $appointmentId, $oldTutorId, $newTutorId, $dateStart, $dateEnd) {
+	public static function updateTutor($db, $user, $termId, $appointmentId, $oldTutorId, $newTutorId, $dateStart, $dateEnd) {
 		Tutor::validateId($db, $newTutorId);
 		if (strcmp($oldTutorId, $newTutorId) === 0) return false;
 
@@ -251,8 +251,9 @@ class Appointment
 		for ($i = 0; $i < $totInstructors; $i++) {
 			$newInstructorId = $newInstructorsIds[$i];
 			$oldInstructorId = $oldInstructorsIds[$i][AppointmentHasStudentFetcher::DB_COLUMN_INSTRUCTOR_ID];
+			$studentId = $oldInstructorsIds[$i][AppointmentHasStudentFetcher::DB_COLUMN_STUDENT_ID];
 			if (strcmp($newInstructorId, $oldInstructorId) !== 0) {
-				AppointmentHasStudentFetcher::updateInstructorId($db, $oldInstructorId, $newInstructorId, $appointmentId);
+				AppointmentHasStudentFetcher::updateInstructorIdForStudentId($db, $oldInstructorId, $studentId, $newInstructorId, $appointmentId);
 				// need to retrieve new data
 				$update = true;
 			}
