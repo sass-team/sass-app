@@ -57,9 +57,30 @@ class AppointmentHasStudentFetcher
 			}
 			return true;
 		} catch (Exception $e) {
-			throw new Exception("Could not update data." . $e->getMessage());
+			throw new Exception("Could not update data.");
 		}
 		return false;
+	}
+
+	public static function updateStudentId($db, $oldStudentIds, $newStudentIds, $appointmentId) {
+		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+					SET `" . self::DB_COLUMN_STUDENT_ID . "`= :new_student_id
+					WHERE `" . self::DB_COLUMN_STUDENT_ID . "` = :old_student_id
+					AND  `" . self::DB_COLUMN_APPOINTMENT_ID . "` = :appointment_id";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':new_student_id', $newStudentIds, PDO::PARAM_INT);
+			$query->bindParam(':old_student_id', $oldStudentIds, PDO::PARAM_INT);
+			$query->bindParam(':appointment_id', $appointmentId, PDO::PARAM_INT);
+
+			$query->execute();
+
+			if ($query->rowCount() == 0) return false;
+			return true;
+		} catch (Exception $e) {
+			throw new Exception("Could not update data.");
+		}
 	}
 
 	public static function existsId($db, $id) {
@@ -137,7 +158,9 @@ class AppointmentHasStudentFetcher
 			StudentFetcher::DB_COLUMN_FIRST_NAME . ", `" . StudentFetcher::DB_TABLE . "`.`" .
 			StudentFetcher::DB_COLUMN_LAST_NAME . "` AS " . StudentFetcher::DB_TABLE . "_" .
 			StudentFetcher::DB_COLUMN_LAST_NAME . ",  `" . AppointmentFetcher::DB_TABLE . "`.`" .
-			AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE . "`
+			AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE . "`,
+			`" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_ID . "` AS
+			" . AppointmentFetcher::DB_TABLE . "_" . AppointmentFetcher::DB_COLUMN_ID . "
 			,  `" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_LABEL_COLOR . "`
 			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
 			INNER JOIN  `" . DB_NAME . "`.`" . StudentFetcher::DB_TABLE . "`

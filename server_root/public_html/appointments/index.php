@@ -31,6 +31,7 @@ try {
 	$nowDateTime = new DateTime();
 
 
+	// load reports if they have been created
 	if (reportsHaveBeenCrtd($studentsAppointmentData)) $reports = Report::getAllWithAppointmentId($db, $appointmentId);
 
 
@@ -114,6 +115,12 @@ try {
 			Appointment::LABEL_MESSAGE_STUDENT_CANCELED, Appointment::LABEL_COLOR_CANCELED);
 		header('Location: ' . BASE_URL . 'appointments/' . $appointmentId . '/success');
 		exit();
+	} else if (isBtnUpdateAppointmentPrsd()) {
+//		var_dump($studentsAppointmentData);
+
+		$updateDone = Appointment::updateStudents($db, $appointmentId, $studentsAppointmentData, $_POST['studentsIds']);
+		header('Location: ' . BASE_URL . 'appointments/' . $appointmentId . '/success');
+		exit();
 	} else if (isUrlRqstngAppointmentCancelByTutor()) {
 		AppointmentFetcher::updateLabel($db, $appointmentId,
 			Appointment::LABEL_MESSAGE_TUTOR_CANCELED, Appointment::LABEL_COLOR_CANCELED);
@@ -187,6 +194,12 @@ function isBtnUpdateReportPrsd() {
 	return isset($_GET['appointmentId']) && preg_match("/^[0-9]+$/", $_GET['appointmentId']) &&
 	isset($_POST['form-update-report-id']) && preg_match("/^[0-9]+$/", $_POST['form-update-report-id']) &&
 	isset($_POST['btn-update-report']);
+}
+
+
+function isBtnUpdateAppointmentPrsd() {
+	return isset($_GET['appointmentId']) && preg_match("/^[0-9]+$/", $_GET['appointmentId']) &&
+	isset($_POST['hiddenUpdateAppointmentPrsd']) && empty($_POST['hiddenUpdateAppointmentPrsd']);
 }
 
 function isBtnCompleteReportPrsd() {
@@ -412,8 +425,8 @@ require ROOT_PATH . 'views/sidebar.php';
 					<div class="form-group">
 						<div class="input-group">
 							<span class="input-group-addon">Student</span>
-							<select name="studentsIds[]" id="studentId<?php echo $i; ?>" class="form-control"
-							        required>
+							<select name="studentsIds[<?php echo $i; ?>]" id="studentId<?php echo $i; ?>"
+							        class="form-control">
 								<option></option>
 								<?php
 								foreach ($students as $student):
@@ -540,8 +553,8 @@ require ROOT_PATH . 'views/sidebar.php';
 
 				<div class="form-group">
 
-					<button type="submit" class="btn btn-block btn-primary" disabled>Update</button>
-					<input type="hidden" name="hiddenSubmitPrsd" value="">
+					<button type="submit" class="btn btn-block btn-primary">Update</button>
+					<input type="hidden" name="hiddenUpdateAppointmentPrsd" value="">
 
 				</div>
 			</div>
@@ -941,7 +954,6 @@ if (isset($reports)) {
 		$("#instructorId<?php echo $i;?>").select2();
 		$("#studentId<?php echo $i;?>").select2("val", '<?php echo $studentsAppointmentData[$i][AppointmentHasStudentFetcher::DB_COLUMN_STUDENT_ID]?>');
 		$("#instructorId<?php echo $i;?>").select2("val", '<?php echo $studentsAppointmentData[$i][AppointmentHasStudentFetcher::DB_COLUMN_INSTRUCTOR_ID]?>');
-		$("#studentId<?php echo $i;?>").select2("enable", false);
 		$("#instructorId<?php echo $i;?>").select2("enable", false);
 		<?php } ?>
 

@@ -120,9 +120,9 @@ class Appointment
 		return AppointmentFetcher::retrieveAllForSingleTutor($db, $tutorId, $termId);
 	}
 
-	public static function getAllStudentsWithAppointment($db, $id) {
+	public static function getSingle($db, $id) {
 		self::validateId($db, $id);
-		return AppointmentHasStudentFetcher::retrieveStudentsWithAppointment($db, $id);
+		return AppointmentFetcher::retrieveSingle($db, $id);
 	}
 
 	public static function validateId($db, $id) {
@@ -132,11 +132,6 @@ class Appointment
 			// TODO: sent email to developer relevant to this error.
 			throw new Exception("Either something went wrong with a database query, or you're trying to hack this app. In either case, the developers were just notified about this.");
 		}
-	}
-
-	public static function getSingle($db, $id) {
-		self::validateId($db, $id);
-		return AppointmentFetcher::retrieveSingle($db, $id);
 	}
 
 	public static function countWithLabelMessage($appopintments, $labelMessage) {
@@ -163,6 +158,51 @@ class Appointment
 		return $count;
 	}
 
+	public static function updateStudents($db, $appointmentId, $oldStudentsIds, $newStudentsId) {
+		if (!isset($newStudentsId) || empty($newStudentsId)) {
+			throw new Exception("Data have been malformed.");
+		}
+
+		Student::validateIds($db, $newStudentsId);
+		$update = false;
+		$totStudents = sizeof($newStudentsId);
+
+		for ($i = 0; $i < $totStudents; $i++) {
+			$newStudentId = $newStudentsId[$i];
+			$oldStudentId = $oldStudentsIds[$i][AppointmentHasStudentFetcher::DB_COLUMN_STUDENT_ID];
+			if (strcmp($newStudentId, $oldStudentId) !== 0) {
+				if (self::hasStudentId($newStudentId, $oldStudentsIds)) throw new Exception("Student already exist on appointment." . var_dump($oldStudentsIds));
+			}
+		}
+
+		// check if there is a need to update data
+		for ($i = 0; $i < $totStudents; $i++) {
+			$newStudentId = $newStudentsId[$i];
+			$oldStudentId = $oldStudentsIds[$i][AppointmentHasStudentFetcher::DB_COLUMN_STUDENT_ID];
+			if (strcmp($newStudentId, $oldStudentId) !== 0) {
+				AppointmentHasStudentFetcher::updateStudentId($db, $oldStudentId, $newStudentId, $appointmentId);
+				// need to retrieve new data
+				$update = true;
+				break;
+			}
+		}
+
+		return $update;
+
+	}
+
+	public static function hasStudentId($studentId, $studentsIds) {
+		foreach ($studentsIds as $student) {
+			if (strcmp($student[AppointmentHasStudentFetcher::DB_COLUMN_STUDENT_ID], $studentId) === 0) return true;
+		}
+
+		return false;
+	}
+
+	public static function getAllStudentsWithAppointment($db, $id) {
+		self::validateId($db, $id);
+		return AppointmentHasStudentFetcher::retrieveStudentsWithAppointment($db, $id);
+	}
 
 	public static function countWithLabelMessageS($appopintments, $labelMessages) {
 		$count = 0;
