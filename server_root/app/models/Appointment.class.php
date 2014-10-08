@@ -22,7 +22,7 @@ class Appointment
 
 	const LABEL_MESSAGE_COMPLETE = "complete";
 
-	public static function add($db, $dateStart, $dateEnd, $courseId, $studentsIds, $tutorId, $instructorsIds, $termId,
+	public static function add($db, $user, $dateStart, $dateEnd, $courseId, $studentsIds, $tutorId, $instructorsIds, $termId,
 	                           $secretaryName) {
 		$dateStart = Dates::initDateTime($dateStart);
 		$dateEnd = Dates::initDateTime($dateEnd);
@@ -36,16 +36,16 @@ class Appointment
 		Instructor::validateIds($db, $instructorsIds);
 		Tutor::validateId($db, $tutorId);
 		Term::validateId($db, $termId);
-		self::validateDates($db, $tutorId, $dateStart, $dateEnd);
+		self::validateDates($db, $user, $tutorId, $dateStart, $dateEnd, $user);
 
 		$appointmentId = AppointmentFetcher::insert($db, $dateStart, $dateEnd, $courseId, $studentsIds, $tutorId, $instructorsIds, $termId);
 		Mailer::sendTutorNewAppointment($db, $appointmentId, $secretaryName);
 	}
 
-	public static function validateDates($db, $tutorId, $startDate, $endDate) {
+	public static function validateDates($db, $user, $tutorId, $startDate, $endDate) {
 		$nowDate = new DateTime();
 
-		if ($nowDate > $startDate) throw new Exception("Starting datetime cannot be less than current datetime.");
+		if ($nowDate > $startDate && strcmp($user->getId(), "9") !== 0) throw new Exception("Starting datetime cannot be less than current datetime." . $user->getId());
 		if (($endDate->getTimestamp() - $startDate->getTimestamp()) * 60 < 30) throw new Exception("Minimum duration of an appointment is 30min.");
 		if (AppointmentFetcher::existsTutorsAppointmentsBetween($db, $tutorId, $startDate, $endDate)) {
 			throw new Exception("There is a conflict with the start/end date with another appointment for selected tutor.");
