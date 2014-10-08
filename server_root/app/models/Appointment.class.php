@@ -174,21 +174,17 @@ class Appointment
 				if (self::hasStudentId($newStudentId, $oldStudentsIds)) throw new Exception("Student already exist on appointment." . var_dump($oldStudentsIds));
 			}
 		}
-
 		// check if there is a need to update data
 		for ($i = 0; $i < $totStudents; $i++) {
 			$newStudentId = $newStudentsId[$i];
 			$oldStudentId = $oldStudentsIds[$i][AppointmentHasStudentFetcher::DB_COLUMN_STUDENT_ID];
 			if (strcmp($newStudentId, $oldStudentId) !== 0) {
 				AppointmentHasStudentFetcher::updateStudentId($db, $oldStudentId, $newStudentId, $appointmentId);
-				// need to retrieve new data
 				$update = true;
-				break;
 			}
 		}
 
 		return $update;
-
 	}
 
 	public static function hasStudentId($studentId, $studentsIds) {
@@ -197,6 +193,28 @@ class Appointment
 		}
 
 		return false;
+	}
+
+	public static function updateInstructors($db, $appointmentId, $oldInstructorsIds, $newInstructorsIds) {
+		if (!isset($newInstructorsIds) || empty($newInstructorsIds)) {
+			throw new Exception("Data have been malformed.");
+		}
+
+		Instructor::validateIds($db, $newInstructorsIds);
+		$update = false;
+		$totInstructors = sizeof($newInstructorsIds);
+		// check if there is a need to update data
+		for ($i = 0; $i < $totInstructors; $i++) {
+			$newInstructorId = $newInstructorsIds[$i];
+			$oldInstructorId = $oldInstructorsIds[$i][AppointmentHasStudentFetcher::DB_COLUMN_INSTRUCTOR_ID];
+			if (strcmp($newInstructorId, $oldInstructorId) !== 0) {
+				AppointmentHasStudentFetcher::updateInstructorId($db, $oldInstructorId, $newInstructorId, $appointmentId);
+				// need to retrieve new data
+				$update = true;
+			}
+		}
+
+		return $update;
 	}
 
 	public static function getAllStudentsWithAppointment($db, $id) {

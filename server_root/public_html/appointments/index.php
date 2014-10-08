@@ -119,9 +119,10 @@ try {
 //		var_dump($studentsAppointmentData);
 
 		$updateDone = Appointment::updateStudents($db, $appointmentId, $studentsAppointmentData, $_POST['studentsIds']);
-		$updateDone = Appointment::updateInstructors($db, $appointmentId, $studentsAppointmentData, $_POST['studentsIds'])
+		$updateDone = Appointment::updateInstructors($db, $appointmentId, $studentsAppointmentData, $_POST['instructorIds'])
 			|| $updateDone;;
 
+		if (!$updateDone) throw new Exception("No new data inserted.");
 		header('Location: ' . BASE_URL . 'appointments/' . $appointmentId . '/success');
 		exit();
 	} else if (isUrlRqstngAppointmentCancelByTutor()) {
@@ -443,7 +444,7 @@ require ROOT_PATH . 'views/sidebar.php';
 					<div class="form-group">
 						<div class="input-group">
 							<span class="input-group-addon">Instructor</span>
-							<select name="instructorIds[]" id="instructorId<?php echo $i; ?>"
+							<select name="instructorIds[<?php echo $i; ?>]" id="instructorId<?php echo $i; ?>"
 							        class="form-control" required>
 								<option></option>
 								<?php foreach ($instructors as $instructor) {
