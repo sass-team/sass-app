@@ -21,7 +21,7 @@ class ReportFetcher
 	const DB_COLUMN_LABEL_MESSAGE = "label_message";
 	const DB_COLUMN_LABEL_COLOR = "label_color";
 
-	public static function retrieveAllAllWithAppointmentId($db, $appointmentId) {
+	public static function retrieveAllWithAppointmentId($db, $appointmentId) {
 		$query =
 			"SELECT `" . StudentFetcher::DB_TABLE . "`.`" . StudentFetcher::DB_COLUMN_FIRST_NAME . "` ,
 			`" . StudentFetcher::DB_TABLE . "`.`" . StudentFetcher::DB_COLUMN_LAST_NAME . "` ,
@@ -69,6 +69,73 @@ class ReportFetcher
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
 			throw new Exception("Could not retrieve reports data from database." . $e->getMessage());
+		}
+	}
+
+	/**
+	 * @param $db
+	 * @param $tutorId
+	 * @throws Exception
+	 */
+	public static function retrieveAllOfCurrTermsByTutor($db, $tutorId) {
+		$query =
+			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`, `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_LABEL_MESSAGE . "`,
+			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_LABEL_COLOR . "`, `" . AppointmentFetcher::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`
+			AS " . AppointmentFetcher::DB_TABLE . "_" . AppointmentFetcher::DB_COLUMN_ID . "
+			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+			INNER JOIN `" . DB_NAME . "`.`" . AppointmentHasStudentFetcher::DB_TABLE . "`
+				ON `" . AppointmentHasStudentFetcher::DB_TABLE . "`.`" . AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID . "` =
+					`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`
+			INNER JOIN `" . DB_NAME . "`.`" . AppointmentFetcher::DB_TABLE . "`
+				ON `" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_ID . "` =
+					`" . AppointmentHasStudentFetcher::DB_TABLE . "`.`" . AppointmentHasStudentFetcher::DB_COLUMN_APPOINTMENT_ID . "`
+			INNER JOIN `" . TermFetcher::DB_TABLE . "`
+				ON `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "` =
+					`" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_TERM_ID . "`
+			WHERE CURRENT_TIMESTAMP() BETWEEN `" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" . TermFetcher::DB_COLUMN_END_DATE . "`
+			AND `" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_TUTOR_USER_ID . "` = :tutor_id
+			ORDER BY `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` ASC";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':tutor_id', $tutorId, PDO::PARAM_INT);
+			$query->execute();
+
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			throw new Exception("Could not retrieve data from database.");
+		}
+	}
+
+	/**
+	 * @param $db
+	 * @throws Exception
+	 */
+	public static function retrieveAllOfCurrTerms($db) {
+		$query =
+			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`, `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_LABEL_MESSAGE . "`,
+			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_LABEL_COLOR . "`, `" . AppointmentFetcher::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`
+			AS " . AppointmentFetcher::DB_TABLE . "_" . AppointmentFetcher::DB_COLUMN_ID . "
+			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+			INNER JOIN `" . DB_NAME . "`.`" . AppointmentHasStudentFetcher::DB_TABLE . "`
+				ON `" . AppointmentHasStudentFetcher::DB_TABLE . "`.`" . AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID . "` =
+					`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`
+			INNER JOIN `" . DB_NAME . "`.`" . AppointmentFetcher::DB_TABLE . "`
+				ON `" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_ID . "` =
+					`" . AppointmentHasStudentFetcher::DB_TABLE . "`.`" . AppointmentHasStudentFetcher::DB_COLUMN_APPOINTMENT_ID . "`
+			INNER JOIN `" . TermFetcher::DB_TABLE . "`
+				ON `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "` =
+					`" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_TERM_ID . "`
+			WHERE CURRENT_TIMESTAMP() BETWEEN `" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" . TermFetcher::DB_COLUMN_END_DATE . "`
+			ORDER BY `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` ASC";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->execute();
+
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			throw new Exception("Could not retrieve data from database.");
 		}
 	}
 
@@ -126,7 +193,6 @@ class ReportFetcher
 
 	}
 
-
 	public static function existsId($db, $id) {
 		try {
 			$sql = "SELECT COUNT(" . self::DB_COLUMN_ID . ")
@@ -143,7 +209,6 @@ class ReportFetcher
 
 		return true;
 	}
-
 
 	public static function updateSingleColumn($db, $reportId, $newText, $column) {
 		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
@@ -163,7 +228,6 @@ class ReportFetcher
 		}
 		return false;
 	}
-
 
 	public static function updateAllColumns($db, $reportId, $projectTopicOtherNew, $otherTextArea,
 	                                        $studentsConcernsTextArea, $relevantFeedbackGuidelines, $studentBroughtAlongNew, $studentBroughtAlongOld, $conclusionAdditionalComments) {
@@ -195,7 +259,6 @@ class ReportFetcher
 		}
 		return false;
 	}
-
 
 	public static function retrieveAll($db) {
 		date_default_timezone_set('Europe/Athens');

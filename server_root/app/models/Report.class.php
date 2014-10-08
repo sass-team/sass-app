@@ -18,7 +18,23 @@ class Report
 
 	public static function getAllWithAppointmentId($db, $appointmentId) {
 		Appointment::validateId($db, $appointmentId);
-		return ReportFetcher::retrieveAllAllWithAppointmentId($db, $appointmentId);
+		return ReportFetcher::retrieveAllWithAppointmentId($db, $appointmentId);
+	}
+
+	public static function updateLabel($db, $formReportId, $message, $color) {
+		ReportFetcher::updateLabel($db, $formReportId, Report::LABEL_MESSAGE_PENDING_VALIDATION, Report::LABEL_COLOR_WARNING);
+
+	}
+
+	public static function getWithAppointmentId($allReports, $appointmentId) {
+		$reports = [];
+		foreach ($allReports as $report) {
+			if (strcmp($report[AppointmentFetcher::DB_TABLE . "_" . AppointmentFetcher::DB_COLUMN_ID], $appointmentId) === 0) {
+				$reports[] = $report;
+			}
+		}
+
+		return $reports;
 	}
 
 	public static function getSingle($db, $reportId) {

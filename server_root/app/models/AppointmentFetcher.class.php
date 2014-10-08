@@ -186,8 +186,8 @@ class AppointmentFetcher
 	public static function retrieveAllOfCurrTerms($db) {
 		$query =
 			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` AS " . self::DB_TABLE . "_" . self::DB_COLUMN_ID . ", 
-			`" . self::DB_COLUMN_START_TIME . "` , 
-			`" . self::DB_COLUMN_END_TIME . "`, 
+			`" . self::DB_COLUMN_START_TIME . "` , `" . self::DB_COLUMN_END_TIME . "`, `" . self::DB_TABLE . "`.`" .
+			self::DB_COLUMN_LABEL_MESSAGE . "`, `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_LABEL_COLOR . "`,
 			`" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_CODE . "`, 
 			`" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_NAME . "`, 
 			`" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_FIRST_NAME . "`, 
@@ -217,14 +217,14 @@ class AppointmentFetcher
 
 	public static function retrieveAllOfCurrTermsByTutor($db, $tutorId) {
 		$query =
-			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` AS " . self::DB_TABLE . "_" . self::DB_COLUMN_ID . ", 
-			`" . self::DB_COLUMN_START_TIME . "` , 
-			`" . self::DB_COLUMN_END_TIME . "`, 
-			`" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_CODE . "`, 
-			`" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_NAME . "`, 
-			`" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_FIRST_NAME . "`, 
-			`" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_LAST_NAME . "`, 
-			`" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_NAME . "` AS " . TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_NAME . " 
+			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` AS " . self::DB_TABLE . "_" .
+			self::DB_COLUMN_ID . ", `" . self::DB_COLUMN_START_TIME . "` , `" . self::DB_COLUMN_END_TIME . "`,
+			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_LABEL_MESSAGE . "`, `" . self::DB_TABLE . "`.`" .
+			self::DB_COLUMN_LABEL_COLOR . "`, `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_CODE . "`,
+			 `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_NAME . "`,	`" . UserFetcher::DB_TABLE . "`.`" .
+			UserFetcher::DB_COLUMN_FIRST_NAME . "`, `" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_LAST_NAME
+			. "`, `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_NAME . "` AS " . TermFetcher::DB_TABLE . "_"
+			. TermFetcher::DB_COLUMN_NAME . "
 			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "` 
 			INNER JOIN `" . DB_NAME . "`.`" . CourseFetcher::DB_TABLE . "` 
 				ON `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_ID . "` = 
