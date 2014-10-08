@@ -30,7 +30,6 @@ try {
 	$endDateTime = new DateTime($studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_END_TIME]);
 	$nowDateTime = new DateTime();
 
-var_dump($courses);
 	// load reports if they have been created
 	if (reportsHaveBeenCrtd($studentsAppointmentData)) $reports = Report::getAllWithAppointmentId($db, $appointmentId);
 
@@ -126,14 +125,21 @@ var_dump($courses);
 			|| $updateDone;
 		$updateDone = Appointment::updateCourse($db, $appointmentId,
 				$studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_COURSE_ID], $_POST['courseId']) || $updateDone;
-		$updateDone = Appointment::updateTutor($db, $appointmentId,
-				$studentsAppointmentData[0][UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_ID], $_POST['tutorId']) || $updateDone;
+		// TODO: validate new date times.
+		$updateDone = Appointment::updateTutor($db, $user, $appointmentId,
+				$studentsAppointmentData[0][UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_ID], $_POST['tutorId'],
+				$_POST['dateTimePickerStart'], $_POST['dateTimePickerEnd']) || $updateDone;
 
 		// TODO: REMOVE hardcoded $user
 		$updateDone = Appointment::updateDuration($db, $appointmentId, $studentsAppointmentData[0][UserFetcher::DB_TABLE .
-				"_" . UserFetcher::DB_COLUMN_ID], $user, $studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_START_TIME],
-				$_POST['dateTimePickerStart'], $_POST['dateTimePickerEnd'], $studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_START_TIME]) || $updateDone;
+				"_" . UserFetcher::DB_COLUMN_ID], $user,
+				$studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_START_TIME], $_POST['dateTimePickerStart'],
+				$_POST['dateTimePickerEnd'], $studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_END_TIME]) ||
+			$updateDone;
 
+		$updateDone = Appointment::updateTerm($db, $appointmentId, $studentsAppointmentData[0][UserFetcher::DB_TABLE .
+				"_" . UserFetcher::DB_COLUMN_ID], $user, $_POST['dateTimePickerStart'], $_POST['dateTimePickerEnd'],
+				$_POST['termId'], $studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_TERM_ID]) || $updateDone;
 
 		if (!$updateDone) throw new Exception("No new data inserted.");
 		header('Location: ' . BASE_URL . 'appointments/' . $appointmentId . '/success');
@@ -541,7 +547,7 @@ require ROOT_PATH . 'views/sidebar.php';
 			<div class="form-group">
 				<div class="input-group">
 					<span class="input-group-addon"><label for="termId">Term</label></span>
-					<select id="termId" name="termId" class="form-control" required disabled>
+					<select id="termId" name="termId" class="form-control" required>
 						<?php
 						foreach ($terms as $term) {
 							include(ROOT_PATH . "views/partials/term/select-options-view.html.php");
@@ -946,6 +952,8 @@ if (isset($reports)) {
 		var $dateTimePickerEnd2 = $('#dateTimePickerEnd');
 		var $instructors = $(".instructors");
 		var $students = $(".students");
+		$termId.select2();
+		$termId.select2("val", '<?php echo $studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_TERM_ID];?>');
 
 		$('.temp-save-report-btn').click(function () {
 			$(this).closest('.form-horizontal.reports-update-form').parsley().destroy();

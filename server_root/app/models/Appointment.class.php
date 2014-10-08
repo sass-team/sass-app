@@ -21,6 +21,28 @@ class Appointment
 	const LABEL_COLOR_PENDING = "default";
 	const LABEL_COLOR_WARNING = "warning";
 
+
+	public static function updateTerm($db, $appointmentId, $tutorId, $user, $startDate, $endDate, $newTermId, $oldTermId) {
+		if (strcmp($newTermId, $oldTermId) === 0) return false;
+		Term::validateId($db, $newTermId);
+		date_default_timezone_set('Europe/Athens');
+		$startDate = Dates::initDateTime($startDate);
+		$endDate = Dates::initDateTime($endDate);
+		self::validateNewDates($db, $user, $tutorId, $startDate, $endDate, $appointmentId);
+		return AppointmentFetcher::updateTerm($db, $appointmentId, $newTermId);
+	}
+
+	public static function validateNewDates($db, $user, $tutorId, $startDate, $endDate, $existingAppointmentId = false) {
+		$nowDate = new DateTime();
+		// TODO: remove hardcoded $user
+		if ($nowDate > $startDate && strcmp($user->getId(), "9") !== 0) throw new Exception("Starting datetime cannot be less than current datetime.");
+		$minutesAppointmentDuration = ($endDate->getTimestamp() - $startDate->getTimestamp()) / 60;
+		if ($minutesAppointmentDuration < 30 || $minutesAppointmentDuration > 480) throw new Exception("Appointment's duration can be between 30 min and 8 hours.");
+		if (AppointmentFetcher::existsTutorsAppointmentsBetween($db, $tutorId, $startDate, $endDate, $existingAppointmentId)) {
+			throw new Exception("There is a conflict with the start/end date with another appointment for selected tutor.");
+		}
+	}
+
 	public static function updateDuration($db, $appointmentId, $tutorId, $user, $oldStartTime, $newStartTime, $newEndTime,
 	                                      $oldEndTime) {
 		date_default_timezone_set('Europe/Athens');
@@ -35,18 +57,6 @@ class Appointment
 		return AppointmentFetcher::updateDuration($db, $appointmentId, $newStartTime, $newEndTime);
 	}
 
-
-	public static function validateNewDates($db, $user, $tutorId, $startDate, $endDate, $existingAppointmentId = false) {
-		$nowDate = new DateTime();
-		// TODO: remove hardcoded $user
-		if ($nowDate > $startDate && strcmp($user->getId(), "9") !== 0) throw new Exception("Starting datetime cannot be less than current datetime.");
-		$minutesAppointmentDuration = ($endDate->getTimestamp() - $startDate->getTimestamp()) / 60;
-		if ($minutesAppointmentDuration < 30 || $minutesAppointmentDuration > 480) throw new Exception("Appointment's duration can be between 30 min and 8 hours.");
-		if (AppointmentFetcher::existsTutorsAppointmentsBetween($db, $tutorId, $startDate, $endDate, $existingAppointmentId)) {
-			throw new Exception("There is a conflict with the start/end date with another appointment for selected tutor.");
-		}
-	}
-
 	public static function updateCourse($db, $appointmentId, $oldCourseId, $newCourseId) {
 		Course::validateId($db, $newCourseId);
 		if (strcmp($oldCourseId, $newCourseId) === 0) return false;
@@ -54,9 +64,13 @@ class Appointment
 		return AppointmentFetcher::updateCourse($db, $appointmentId, $newCourseId);
 	}
 
-	public static function updateTutor($db, $appointmentId, $oldTutorId, $newTutorId) {
+	public static function updateTutor($db, $user, $appointmentId, $oldTutorId, $newTutorId, $dateStart, $dateEnd) {
 		Tutor::validateId($db, $newTutorId);
 		if (strcmp($oldTutorId, $newTutorId) === 0) return false;
+
+		$dateStart = Dates::initDateTime($dateStart);
+		$dateEnd = Dates::initDateTime($dateEnd);
+		self::validateNewDates($db, $user, $newTutorId, $dateStart, $dateEnd, $appointmentId);
 
 		return AppointmentFetcher::updateTutor($db, $appointmentId, $newTutorId);
 	}

@@ -18,6 +18,25 @@ class AppointmentFetcher
 	const DB_COLUMN_LABEL_MESSAGE = "label_message";
 	const DB_COLUMN_LABEL_COLOR = "label_color";
 
+	public static function updateTerm($db, $appointmentId, $newTermId) {
+
+		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+					SET `" . self::DB_COLUMN_TERM_ID . "`= :term_id
+					WHERE `" . self::DB_COLUMN_ID . "` = :appointment_id";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':appointment_id', $appointmentId, PDO::PARAM_INT);
+			$query->bindParam(':term_id', $newTermId, PDO::PARAM_INT);
+
+			$query->execute();
+			return true;
+		} catch (Exception $e) {
+			throw new Exception("Could not update data.");
+		}
+		return false;
+	}
+
 	public static function updateDuration($db, $appointmentId, $newStartTime, $newEndTime) {
 		$newStartTime = $newStartTime->format(Dates::DATE_FORMAT_IN);
 		$newEndTime = $newEndTime->format(Dates::DATE_FORMAT_IN);
