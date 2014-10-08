@@ -117,12 +117,15 @@ try {
 			Appointment::LABEL_MESSAGE_STUDENT_CANCELED, Appointment::LABEL_COLOR_CANCELED);
 		header('Location: ' . BASE_URL . 'appointments/' . $appointmentId . '/success');
 		exit();
-	} else if (isBtnUpdateAppointmentPrsd()) {
-//		var_dump($studentsAppointmentData);
+	} else if (isBtnUpdateAppointmentPrsd() && !$user->isTutor() &&
+		strcmp($studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE], Appointment::LABEL_MESSAGE_COMPLETE) !== 0
+	) {
 
 		$updateDone = Appointment::updateStudents($db, $appointmentId, $studentsAppointmentData, $_POST['studentsIds']);
 		$updateDone = Appointment::updateInstructors($db, $appointmentId, $studentsAppointmentData, $_POST['instructorIds'])
-			|| $updateDone;;
+			|| $updateDone;
+		$updateDone = Appointment::updateCourse($db, $appointmentId, $studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_COURSE_ID], $_POST['courseId'])
+			|| $updateDone;
 
 		if (!$updateDone) throw new Exception("No new data inserted.");
 		header('Location: ' . BASE_URL . 'appointments/' . $appointmentId . '/success');
@@ -331,88 +334,90 @@ require ROOT_PATH . 'views/sidebar.php';
 	</h3>
 
 
-	<ul class="portlet-tools pull-right">
-		<li>
-			<div class="btn-group">
-				<button data-toggle="dropdown" class="btn btn-md btn-primary dropdown-toggle">Modify <span
-						class="caret"></span></button>
-				<ul class="dropdown-menu" role="menu">
-					<?php
-					if ((strcmp($studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE], Appointment::LABEL_MESSAGE_PENDING) === 0)
-					): ?>
-						<?php if ($nowDateTime > $startDateTime): ?>
+	<?php if (strcmp($studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE], Appointment::LABEL_MESSAGE_COMPLETE) !== 0): ?>
+		<ul class="portlet-tools pull-right">
+			<li>
+				<div class="btn-group">
+					<button data-toggle="dropdown" class="btn btn-md btn-primary dropdown-toggle">Modify <span
+							class="caret"></span></button>
+					<ul class="dropdown-menu" role="menu">
+						<?php
+						if ((strcmp($studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE], Appointment::LABEL_MESSAGE_PENDING) === 0)
+						): ?>
+							<?php if ($nowDateTime > $startDateTime): ?>
+								<li>
+									<form method="post"
+									      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
+										>
+										<input type="hidden" name="hiddenCreateReports" value="">
+										<button type="submit" class="btn btn-block btn-default">
+											Complete - Enable Reports
+										</button>
+									</form>
+								</li>
+								<li class="divider"></li>
+							<?php endif; ?>
 							<li>
 								<form method="post"
 								      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
 									>
-									<input type="hidden" name="hiddenCreateReports" value="">
+									<input type="hidden" name="hiddenCanceledByStudent" value="">
 									<button type="submit" class="btn btn-block btn-default">
-										Complete - Enable Reports
+										Canceled by student
 									</button>
 								</form>
 							</li>
 							<li class="divider"></li>
+							<li>
+								<form method="post"
+								      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
+									>
+									<input type="hidden" name="hiddenCanceledByTutor" value="">
+									<button type="submit" class="btn btn-block btn-default">
+										Canceled by tutor
+									</button>
+								</form>
+							</li>
+							<li class="divider"></li>
+							<li>
+								<form method="post"
+								      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
+									>
+									<input type="hidden" name="hiddenNoShowByStudent" value="">
+									<button type="submit" class="btn btn-block btn-default">
+										No show by student
+									</button>
+								</form>
+							</li>
+							<li class="divider"></li>
+							<li>
+								<form method="post"
+								      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
+									>
+									<input type="hidden" name="hiddenNoShowByTutor" value="">
+									<button type="submit" class="btn btn-block btn-default">
+										No show by tutor
+									</button>
+								</form>
+							</li>
+						<?php elseif (strcmp($studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE], Appointment::LABEL_MESSAGE_COMPLETE) !== 0): ?>
+							<li>
+								<form method="post"
+								      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
+									>
+									<input type="hidden" name="hiddenEnableAppointment" value="">
+									<button type="submit" class="btn btn-block btn-default">
+										Enable appointment
+									</button>
+								</form>
+							</li>
 						<?php endif; ?>
-						<li>
-							<form method="post"
-							      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
-								>
-								<input type="hidden" name="hiddenCanceledByStudent" value="">
-								<button type="submit" class="btn btn-block btn-default">
-									Canceled by student
-								</button>
-							</form>
-						</li>
-						<li class="divider"></li>
-						<li>
-							<form method="post"
-							      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
-								>
-								<input type="hidden" name="hiddenCanceledByTutor" value="">
-								<button type="submit" class="btn btn-block btn-default">
-									Canceled by tutor
-								</button>
-							</form>
-						</li>
-						<li class="divider"></li>
-						<li>
-							<form method="post"
-							      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
-								>
-								<input type="hidden" name="hiddenNoShowByStudent" value="">
-								<button type="submit" class="btn btn-block btn-default">
-									No show by student
-								</button>
-							</form>
-						</li>
-						<li class="divider"></li>
-						<li>
-							<form method="post"
-							      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
-								>
-								<input type="hidden" name="hiddenNoShowByTutor" value="">
-								<button type="submit" class="btn btn-block btn-default">
-									No show by tutor
-								</button>
-							</form>
-						</li>
-					<?php elseif (strcmp($studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE], Appointment::LABEL_MESSAGE_COMPLETE) !== 0): ?>
-						<li>
-							<form method="post"
-							      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
-								>
-								<input type="hidden" name="hiddenEnableAppointment" value="">
-								<button type="submit" class="btn btn-block btn-default">
-									Enable appointment
-								</button>
-							</form>
-						</li>
-					<?php endif; ?>
 
-				</ul>
-			</div>
-		</li>
-	</ul>
+					</ul>
+				</div>
+			</li>
+		</ul>
+	<?php endif; ?>
 </div>
 <!-- /.portlet-header -->
 
@@ -464,7 +469,7 @@ require ROOT_PATH . 'views/sidebar.php';
 			<div class="form-group">
 				<div class="input-group">
 					<span class="input-group-addon"><label for="courseId">Course</label></span>
-					<select id="courseId" name="courseId" class="form-control" required disabled>
+					<select id="courseId" name="courseId" class="form-control" required >
 						<?php foreach ($courses as $course) {
 							include(ROOT_PATH . "views/partials/course/select-options-view.html.php");
 						}
@@ -557,12 +562,12 @@ require ROOT_PATH . 'views/sidebar.php';
 					</div>
 				<?php } ?>
 
-				<div class="form-group">
-
-					<button type="submit" class="btn btn-block btn-primary">Update</button>
-					<input type="hidden" name="hiddenUpdateAppointmentPrsd" value="">
-
-				</div>
+				<?php if (!$user->isTutor() && strcmp($studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE], Appointment::LABEL_MESSAGE_COMPLETE) !== 0): ?>
+					<div class="form-group">
+						<button type="submit" class="btn btn-block btn-primary">Update</button>
+						<input type="hidden" name="hiddenUpdateAppointmentPrsd" value="">
+					</div>
+				<?php endif; ?>
 			</div>
 		</form>
 

@@ -21,7 +21,21 @@ class Appointment
 	const LABEL_COLOR_PENDING = "default";
 	const LABEL_COLOR_WARNING = "warning";
 
+	public static function updateCourse($db, $appointmentId, $oldCourseId, $newCourseId) {
+		Course::validateId($db, $newCourseId);
+		if (strcmp($oldCourseId, $newCourseId) === 0) return false;
 
+		return AppointmentFetcher::updateCourse($db, $appointmentId, $newCourseId);
+	}
+
+	public static function validateId($db, $id) {
+		if (is_null($id) || !preg_match("/^[0-9]+$/", $id)) throw new Exception("Data has been tempered. Aborting process.");
+
+		if (!AppointmentFetcher::existsId($db, $id)) {
+			// TODO: sent email to developer relevant to this error.
+			throw new Exception("Either something went wrong with a database query, or you're trying to hack this app. In either case, the developers were just notified about this.");
+		}
+	}
 
 	public static function add($db, $user, $dateStart, $dateEnd, $courseId, $studentsIds, $tutorId, $instructorsIds, $termId,
 	                           $secretaryName) {
@@ -124,15 +138,6 @@ class Appointment
 	public static function getSingle($db, $id) {
 		self::validateId($db, $id);
 		return AppointmentFetcher::retrieveSingle($db, $id);
-	}
-
-	public static function validateId($db, $id) {
-		if (is_null($id) || !preg_match("/^[0-9]+$/", $id)) throw new Exception("Data has been tempered. Aborting process.");
-
-		if (!AppointmentFetcher::existsId($db, $id)) {
-			// TODO: sent email to developer relevant to this error.
-			throw new Exception("Either something went wrong with a database query, or you're trying to hack this app. In either case, the developers were just notified about this.");
-		}
 	}
 
 	public static function countWithLabelMessage($appopintments, $labelMessage) {

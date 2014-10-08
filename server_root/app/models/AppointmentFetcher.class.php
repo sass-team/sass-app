@@ -63,6 +63,23 @@ class AppointmentFetcher
 
 	}
 
+	public static function updateCourse($db, $appointmentId, $newCourseId) {
+		$query = "UPDATE `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+					SET `" . self::DB_COLUMN_COURSE_ID . "`= :course_id
+					WHERE `" . self::DB_COLUMN_ID . "` = :appointment_id";
+
+		try {
+			$query = $db->getConnection()->prepare($query);
+			$query->bindParam(':appointment_id', $appointmentId, PDO::PARAM_INT);
+			$query->bindParam(':course_id', $newCourseId, PDO::PARAM_INT);
+			$query->execute();
+			return true;
+		} catch (Exception $e) {
+			throw new Exception("Could not update data.");
+		}
+		return false;
+	}
+
 	public static function existsId($db, $id) {
 		try {
 			$sql = "SELECT COUNT(" . self::DB_COLUMN_ID . ") FROM `" . DB_NAME . "`.`" .
