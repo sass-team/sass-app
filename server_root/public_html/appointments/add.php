@@ -399,7 +399,9 @@ $(function () {
 
 	$dateTimePickerStart.datetimepicker({
 		defaultDate: startDateDefault,
+		<?php if(strcmp($user->getId(), "9") !== 0): ?>
 		minDate: minimumStartDate,
+		<?php endif; ?>
 		maxDate: minimumMaxDate,
 		minuteStepping: 30,
 		daysOfWeekDisabled: [0, 6],
@@ -408,7 +410,9 @@ $(function () {
 	});
 	$dateTimePickerEnd.datetimepicker({
 		defaultDate: endDateDefault,
+		<?php if(strcmp($user->getId(), "9") !== 0): ?>
 		minDate: minimumEndDate,
+		<?php endif; ?>
 		minuteStepping: 30,
 		daysOfWeekDisabled: [0, 6],
 		sideBySide: true,
