@@ -28,22 +28,22 @@ class Appointment
 		date_default_timezone_set('Europe/Athens');
 		$startDate = Dates::initDateTime($startDate);
 		$endDate = Dates::initDateTime($endDate);
-		self::validateNewDates($db, $user, $tutorId, $startDate, $endDate, $appointmentId);
+		self::validateNewDates($db, $user, $newTermId, $tutorId, $startDate, $endDate, $appointmentId);
 		return AppointmentFetcher::updateTerm($db, $appointmentId, $newTermId);
 	}
 
-	public static function validateNewDates($db, $user, $tutorId, $startDate, $endDate, $existingAppointmentId = false) {
+	public static function validateNewDates($db, $user, $termId, $tutorId, $startDate, $endDate, $existingAppointmentId = false) {
 		$nowDate = new DateTime();
 		// TODO: remove hardcoded $user
 		if ($nowDate > $startDate && strcmp($user->getId(), "9") !== 0) throw new Exception("Starting datetime cannot be less than current datetime.");
 		$minutesAppointmentDuration = ($endDate->getTimestamp() - $startDate->getTimestamp()) / 60;
 		if ($minutesAppointmentDuration < 30 || $minutesAppointmentDuration > 480) throw new Exception("Appointment's duration can be between 30 min and 8 hours.");
-		if (AppointmentFetcher::existsTutorsAppointmentsBetween($db, $tutorId, $startDate, $endDate, $existingAppointmentId)) {
+		if (AppointmentFetcher::existsTutorsAppointmentsBetween($db, $tutorId, $termId, $startDate, $endDate, $existingAppointmentId)) {
 			throw new Exception("There is a conflict with the start/end date with another appointment for selected tutor.");
 		}
 	}
 
-	public static function updateDuration($db, $appointmentId, $tutorId, $user, $oldStartTime, $newStartTime, $newEndTime,
+	public static function updateDuration($db, $appointmentId, $termId, $tutorId, $user, $oldStartTime, $newStartTime, $newEndTime,
 	                                      $oldEndTime) {
 		date_default_timezone_set('Europe/Athens');
 		$newStartTime = Dates::initDateTime($newStartTime);
@@ -53,7 +53,7 @@ class Appointment
 
 		if ($newStartTime == $oldStartTime && $newEndTime == $oldEndTime) return false;
 
-		self::validateNewDates($db, $user, $tutorId, $newStartTime, $newEndTime, $appointmentId);
+		self::validateNewDates($db, $user, $termId, $tutorId, $newStartTime, $newEndTime, $appointmentId);
 		return AppointmentFetcher::updateDuration($db, $appointmentId, $newStartTime, $newEndTime);
 	}
 
@@ -64,13 +64,13 @@ class Appointment
 		return AppointmentFetcher::updateCourse($db, $appointmentId, $newCourseId);
 	}
 
-	public static function updateTutor($db, $user, $appointmentId, $oldTutorId, $newTutorId, $dateStart, $dateEnd) {
+	public static function updateTutor($db, $user,$termId, $appointmentId, $oldTutorId, $newTutorId, $dateStart, $dateEnd) {
 		Tutor::validateId($db, $newTutorId);
 		if (strcmp($oldTutorId, $newTutorId) === 0) return false;
 
 		$dateStart = Dates::initDateTime($dateStart);
 		$dateEnd = Dates::initDateTime($dateEnd);
-		self::validateNewDates($db, $user, $newTutorId, $dateStart, $dateEnd, $appointmentId);
+		self::validateNewDates($db, $user, $termId, $newTutorId, $dateStart, $dateEnd, $appointmentId);
 
 		return AppointmentFetcher::updateTutor($db, $appointmentId, $newTutorId);
 	}
@@ -89,7 +89,7 @@ class Appointment
 		Instructor::validateIds($db, $instructorsIds);
 		Tutor::validateId($db, $tutorId);
 		Term::validateId($db, $termId);
-		self::validateNewDates($db, $user, $tutorId, $dateStart, $dateEnd);
+		self::validateNewDates($db, $user, $termId, $tutorId, $dateStart, $dateEnd);
 
 		$appointmentId = AppointmentFetcher::insert($db, $dateStart, $dateEnd, $courseId, $studentsIds, $tutorId, $instructorsIds, $termId);
 		Mailer::sendTutorNewAppointment($db, $appointmentId, $secretaryName);

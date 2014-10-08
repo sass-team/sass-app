@@ -126,12 +126,12 @@ try {
 		$updateDone = Appointment::updateCourse($db, $appointmentId,
 				$studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_COURSE_ID], $_POST['courseId']) || $updateDone;
 		// TODO: validate new date times.
-		$updateDone = Appointment::updateTutor($db, $user, $appointmentId,
+		$updateDone = Appointment::updateTutor($db, $user, $studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_TERM_ID], $appointmentId,
 				$studentsAppointmentData[0][UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_ID], $_POST['tutorId'],
 				$_POST['dateTimePickerStart'], $_POST['dateTimePickerEnd']) || $updateDone;
 
 		// TODO: REMOVE hardcoded $user
-		$updateDone = Appointment::updateDuration($db, $appointmentId, $studentsAppointmentData[0][UserFetcher::DB_TABLE .
+		$updateDone = Appointment::updateDuration($db, $appointmentId, $studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_TERM_ID], $studentsAppointmentData[0][UserFetcher::DB_TABLE .
 				"_" . UserFetcher::DB_COLUMN_ID], $user,
 				$studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_START_TIME], $_POST['dateTimePickerStart'],
 				$_POST['dateTimePickerEnd'], $studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_END_TIME]) ||

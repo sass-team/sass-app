@@ -155,7 +155,7 @@ class AppointmentFetcher
 		return true;
 	}
 
-	public static function existsTutorsAppointmentsBetween($db, $tutorId, $startDate, $endDate, $existingAppointmentId = false) {
+	public static function existsTutorsAppointmentsBetween($db, $tutorId, $termId, $startDate, $endDate, $existingAppointmentId = false) {
 		date_default_timezone_set('Europe/Athens');
 		$startDate = $startDate->format(Dates::DATE_FORMAT_IN);
 		$endDate = $endDate->format(Dates::DATE_FORMAT_IN);
@@ -171,12 +171,19 @@ class AppointmentFetcher
 				AND
 				(
 					(:start_date >= `" . self::DB_COLUMN_START_TIME . "` AND :start_date < `" . self::DB_COLUMN_END_TIME . "`)
-						OR
+					OR
 					(:end_date > `" . self::DB_COLUMN_START_TIME . "` AND :end_date <= `" . self::DB_COLUMN_END_TIME . "`)
-				)";
+					OR
+					(`" . self::DB_COLUMN_START_TIME . "` >= :start_date AND `" . self::DB_COLUMN_START_TIME . "` < :end_date)
+					OR
+					(`" . self::DB_COLUMN_END_TIME . "` >= :start_date AND `" . self::DB_COLUMN_END_TIME . "` < :end_date)
+
+				)
+				AND `" . self::DB_COLUMN_TERM_ID . "`=:term_id";
 
 			$query = $db->getConnection()->prepare($sql);
 			$query->bindParam(':tutor_user_id', $tutorId, PDO::PARAM_INT);
+			$query->bindParam(':term_id', $termId, PDO::PARAM_INT);
 
 			if ($existingAppointmentId !== false) $query->bindParam(':appointment_id', $existingAppointmentId, PDO::PARAM_INT);
 
