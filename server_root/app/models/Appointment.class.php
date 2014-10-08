@@ -150,11 +150,40 @@ class Appointment
 		return $count;
 	}
 
+	public static function countTutorsWithLabelMessage($tutorId, $appointments, $labelMessage) {
+		$count = 0;
+		foreach ($appointments as $appointment) {
+			if (strcmp($tutorId, $appointment[AppointmentFetcher::DB_COLUMN_TUTOR_USER_ID]) === 0 &&
+				strcmp($appointment[AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE], $labelMessage) === 0
+			) {
+				$count++;
+			}
+		}
+
+		return $count;
+	}
+
+
 	public static function countWithLabelMessageS($appopintments, $labelMessages) {
 		$count = 0;
 		foreach ($appopintments as $appopintment) {
-			foreach($labelMessages as $labelMessage){
+			foreach ($labelMessages as $labelMessage) {
 				if (strcmp($appopintment[AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE], $labelMessage) === 0) {
+					$count++;
+				}
+			}
+		}
+
+		return $count;
+	}
+
+	public static function countTutorsWithLabelMessageS($tutorId, $appointments, $labelMessages) {
+		$count = 0;
+		foreach ($appointments as $appointment) {
+			foreach ($labelMessages as $labelMessage) {
+				if (strcmp($tutorId, $appointment[AppointmentFetcher::DB_COLUMN_TUTOR_USER_ID]) === 0 &&
+					strcmp($appointment[AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE], $labelMessage) === 0
+				) {
 					$count++;
 				}
 			}
