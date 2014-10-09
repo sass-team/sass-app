@@ -371,49 +371,52 @@ require ROOT_PATH . 'views/sidebar.php';
 								</li>
 								<li class="divider"></li>
 							<?php endif; ?>
-							<li>
-								<form method="post"
-								      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
-									>
-									<input type="hidden" name="hiddenCanceledByStudent" value="">
-									<button type="submit" class="btn btn-block btn-default">
-										Canceled by student
-									</button>
-								</form>
-							</li>
-							<li class="divider"></li>
-							<li>
-								<form method="post"
-								      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
-									>
-									<input type="hidden" name="hiddenCanceledByTutor" value="">
-									<button type="submit" class="btn btn-block btn-default">
-										Canceled by tutor
-									</button>
-								</form>
-							</li>
-							<li class="divider"></li>
-							<li>
-								<form method="post"
-								      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
-									>
-									<input type="hidden" name="hiddenNoShowByStudent" value="">
-									<button type="submit" class="btn btn-block btn-default">
-										No show by student
-									</button>
-								</form>
-							</li>
-							<li class="divider"></li>
-							<li>
-								<form method="post"
-								      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
-									>
-									<input type="hidden" name="hiddenNoShowByTutor" value="">
-									<button type="submit" class="btn btn-block btn-default">
-										No show by tutor
-									</button>
-								</form>
-							</li>
+							<?php if (!$user->isTutor()): ?>
+								<li>
+									<form method="post"
+									      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
+										>
+										<input type="hidden" name="hiddenCanceledByStudent" value="">
+										<button type="submit" class="btn btn-block btn-default">
+											Canceled by student
+										</button>
+									</form>
+								</li>
+								<li class="divider"></li>
+								<li>
+									<form method="post"
+									      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
+										>
+										<input type="hidden" name="hiddenCanceledByTutor" value="">
+										<button type="submit" class="btn btn-block btn-default">
+											Canceled by tutor
+										</button>
+									</form>
+								</li>
+								<li class="divider"></li>
+								<li>
+									<form method="post"
+									      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
+										>
+										<input type="hidden" name="hiddenNoShowByStudent" value="">
+										<button type="submit" class="btn btn-block btn-default">
+											No show by student
+										</button>
+									</form>
+								</li>
+								<li class="divider"></li>
+								<li>
+									<form method="post"
+									      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
+										>
+										<input type="hidden" name="hiddenNoShowByTutor" value="">
+										<button type="submit" class="btn btn-block btn-default">
+											No show by tutor
+										</button>
+									</form>
+								</li>
+							<?php endif; ?>
+
 						<?php elseif (strcmp($studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE], Appointment::LABEL_MESSAGE_COMPLETE) !== 0): ?>
 							<li>
 								<form method="post"
