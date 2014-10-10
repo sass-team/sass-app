@@ -39,10 +39,6 @@ define("ROOT_PATH", __DIR__ . "/../");
 
 // removed for safety reasons.
 
-define("DB_HOST", "localhost");
-define("DB_NAME", "sass-ms_db");
-define("DB_PORT", "3306"); // default port.
-define("DB_USER", "root");
-define("DB_PASS", "");
+
 
 ?>

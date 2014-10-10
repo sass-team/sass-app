@@ -12,7 +12,8 @@ class MailerFetcher
 	const DB_COLUMN_LAST_SENT = "last_sent";
 	const MAX_MAILS_PER_MINUTE = 19;
 
-	public static function canSendMail($db) {
+	public static function canSendMail() {
+		$db = DatabaseManager::getConnection();
 		date_default_timezone_set('Europe/Athens');
 
 		try {
