@@ -25,7 +25,7 @@ class Database
 	public function __construct() {
 		try { // connects to database
 			$this->setConnection(new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";port=" . DB_PORT, DB_USER, DB_PASS));
-			$this->getConnection()->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // CHANGE THE ERROR MODE, THROW AN EXCEPTION WHEN AN ERROR IS FOUND
+			$this->getConnection()->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
 			$this->getConnection()->exec("SET NAMES 'utf8'");
 		} catch (PDOException $e) { // program ends if exception is found
 			throw new Exception("Could not connect to the database.");
