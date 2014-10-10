@@ -30,24 +30,18 @@
  */
 class Mailer
 {
-
-
 	const EMAIL_DEV_SASS = "dev.sass.ms@gmail.com";
 	const EMAIL_DEV_NAME_SASS = "SASS Developers";
-
 	const SASS_APP_AUTOMATIC_SYSTEM_DEVELOPERS = "SASS App | Developers";
 	const SASS_APP_AUTOMATIC_SYSTEM = "SASS App | Automatic System";
-
 	const SUBJECT_NEW_SASS_APP_APPOINTMENT = "New Appointment";
 	const SUBJECT_NEW_SASS_APP_REPORT_PENDING = "New Report Pending";
 	const SUBJECT_SYSTEM_MESSAGE = "System message";
-
 	const SUBJECT_PREFIX = 'SASS App | ';
-
 	const NO_REPLY_EMAIL_PREFIX = "no-reply@";
-
 	const DATE_FORMAT = "M j Y";
 	const HOUR_FORMAT = "g:i A";
+	public static $dateTimeLastSentMail;
 
 	public static function sendTutorNewReportsCronOnly($db, $appointmentData) {
 
@@ -113,7 +107,26 @@ class Mailer
 			$message .= "</div>";
 			$message .= "</div>";
 
-			$mail->msgHTML($message);
+
+			/* Note: set_time_limit() does not work with safe_mode enabled */
+			while (1 == 1) {
+				set_time_limit(30); // sets (or resets) maximum  execution time to 30 seconds)
+				// .... put code to process in here
+
+				if (MailerFetcher::canSendMail($db)) {
+					MailerFetcher::updateMailSent($db);
+					$mail->msgHTML($message);
+					break;
+				}
+
+				usleep(1000000); // sleep for 1 million micro seconds - will not work with Windows servers / PHP4
+				// sleep(1); // sleep for 1 seconds (use with Windows servers / PHP4
+				if (1 != 1) {
+					break;
+				}
+			}
+
+
 			$mail->send();
 		} catch (phpmailerException $e) {
 			throw new Exception("PHPMailer error: " . $e->errorMessage()); //Pretty error messages from PHPMailer

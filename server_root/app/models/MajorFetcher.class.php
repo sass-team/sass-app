@@ -56,7 +56,7 @@ class MajorFetcher
 
 	public static function idExists($db, $majorId) {
 		try {
-			$sql = "SELECT COUNT(" . self::DB_COLUMN_ID . ") FROM `" . DB_NAME . "`.`" .
+			$sql = "SELECT COUNT(`" . self::DB_COLUMN_ID . "`) FROM `" . DB_NAME . "`.`" .
 				self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :majorId";
 			$query = $db->getConnection()->prepare($sql);
 			$query->bindParam(':majorId', $majorId, PDO::PARAM_INT);
