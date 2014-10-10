@@ -35,14 +35,20 @@
 // these two constants are used to create root-relative web addresses
 // amd absolute server paths throught all the code
 define("BASE_URL", "/");
-define("ROOT_PATH", __DIR__ . "/../");
+define("ROOT_PATH", __DIR__ . "/../../app/");
 
 // removed for safety reasons.
+//
+//define("DB_HOST", "mysql.hostinger.gr");
+//define("DB_NAME", "u587110284_sassd");
+//define("DB_PORT", "3306"); // default port.
+//define("DB_USER", "u587110284_sassu");
+//define("DB_PASS", "X`q&,5A<&a-cMPn*");
 
-define("DB_HOST", "mysql.hostinger.gr");
-define("DB_NAME", "u587110284_sassd");
+define("DB_HOST", "localhost");
+define("DB_NAME", "sass-ms_db");
 define("DB_PORT", "3306"); // default port.
-define("DB_USER", "u587110284_sassu");
-define("DB_PASS", "X`q&,5A<&a-cMPn*");
+define("DB_USER", "root");
+define("DB_PASS", "");
 
 ?>
