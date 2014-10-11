@@ -30,7 +30,10 @@ try {
 		'hex-blob' => true
 	);
 
-	$dump = new Ifsnop\Mysqldump\Mysqldump(DB_NAME, DB_USER, DB_PASS, DB_HOST, 'mysql', $dumpSettings);
+	$dump = new Ifsnop\Mysqldump\Mysqldump(DatabaseManager::$dsnProduction[DatabaseManager::DB_NAME],
+		DatabaseManager::$dsnProduction[DatabaseManager::DB_USERNAME],
+		DatabaseManager::$dsnProduction[DatabaseManager::DB_PASSWORD],
+		DatabaseManager::$dsnProduction[DatabaseManager::DB_HOST], 'mysql', $dumpSettings);
 	Mailer::sendDevelopers("Backup created: " . $filename, __FILE__);
 	$dump->start($filename);
 } catch (\Exception $e) {

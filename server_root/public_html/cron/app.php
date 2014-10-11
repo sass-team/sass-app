@@ -52,8 +52,8 @@ define("ROOT_PATH", __DIR__ . "/../../app/");
 //define("DB_PASS", "");
 
 // dev-sass.hol.es
-define("DB_HOST", "mysql.hostinger.gr");
-define("DB_NAME", "u110998101_sassd");
-define("DB_PORT", "3306"); // default port.
-define("DB_USER", "u110998101_sassu");
-define("DB_PASS", "#UUQ|39R}{lKUDZR");
+//define("DB_HOST", "mysql.hostinger.gr");
+//define("DB_NAME", "u110998101_sassd");
+//define("DB_PORT", "3306"); // default port.
+//define("DB_USER", "u110998101_sassu");
+//define("DB_PASS", "#UUQ|39R}{lKUDZR");

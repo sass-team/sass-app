@@ -17,16 +17,16 @@ class MailerFetcher
 
 		try {
 			$sql = "SELECT COUNT(`" . self::DB_COLUMN_LAST_SENT . "`)
-			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+			FROM `" . DatabaseManager::$dsnProduction[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
 			WHERE `" . self::DB_COLUMN_LAST_SENT . "` >= now() - INTERVAL 1 MINUTE";
 
-			$db = DatabaseManager::getConnection();
-			$query = $db->getConnection()->prepare($sql);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($sql);
 			$query->execute();
 
 			if ($query->fetchColumn() >= self::MAX_MAILS_PER_MINUTE) return false;
 		} catch (Exception $e) {
-			throw new Exception("Could not check how mails data. Aborting.");
+			throw new Exception("Could not check if system can send mails. Aborting." . $e->getMessage());
 		}
 
 		return true;
@@ -40,13 +40,14 @@ class MailerFetcher
 
 		try {
 
-			$query = "INSERT INTO `" . DB_NAME . "`.`" . self::DB_TABLE . "`
+			$query = "INSERT INTO `" . DatabaseManager::$dsnProduction[DatabaseManager::DB_NAME] . "`.`" .
+				self::DB_TABLE . "`
 				VALUES(
 					:now
 				)";
 
 			$db = DatabaseManager::getConnection();
-			$query = $db->getConnection()->prepare($query);
+			$query = $db->prepare($query);
 			$query->bindParam(':now', $dateNow, PDO::PARAM_STR);
 			$query->execute();
 			return true;

@@ -195,7 +195,7 @@ class Mailer
 			//Attach an image file
 			//$mail->addAttachment('images/phpmailer_mini.gif');
 
-			$mail->send();
+			self::safelySendMail($mail);
 
 		} catch (phpmailerException $e) {
 			throw new Exception("PHPMailer error: " . $e->errorMessage()); //Pretty error messages from PHPMailer
@@ -406,7 +406,7 @@ class Mailer
 		} catch (phpmailerException $e) {
 			throw new Exception("PHPMailer error: " . $e->errorMessage()); //Pretty error messages from PHPMailer
 		} catch (Exception $e) {
-			throw new Exception("Something went wrong with mail. Please re-send mail to user for setting password."); //Pretty error messages from PHPMailer
+			throw new Exception("Something went wrong with mail. Please re-send mail to user for setting password." . $e->getMessage()); //Pretty error messages from PHPMailer
 		}
 	}
 
