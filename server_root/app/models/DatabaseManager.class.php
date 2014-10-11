@@ -13,21 +13,24 @@
  */
 class DatabaseManager
 {
-	const DB_HOST = 'localhost';
-	const DB_NAME = 'sass-ms_db';
-	const DB_PORT = '3306';
-	const DB_USER = 'root';
-	const DB_PASS = '';
 	private static $instance;
-	private $db;
+	/**
+	 * dev local server
+	 * @var String
+	 */
+	private $dbHost = "localhost";
+	private $dbUsername = "root";
+	private $dbPassword = "";
+	private $dbName = "sass-ms_db";
+	private $dbPort = "3306";
+	protected  $dbConnection;
 
 	// Constructor
 	private function __construct() {
 		try { // connects to database
-			$this->$db->setConnection(new PDO("mysql:host=" . self::DB_HOST . ";dbname=" . self::DB_NAME . ";port=" .
-				self::DB_PORT, self::DB_USER, self::DB_PASS));
-			$this->$db->getConnection()->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // CHANGE THE ERROR MODE, THROW AN EXCEPTION WHEN AN ERROR IS FOUND
-			$this->$db->getConnection()->exec("SET NAMES 'utf8'");
+			$this->$dbConnection->setConnection(new PDO("mysql:host=$this->dbHost;dbname=$this->dbName;port=$this->dbPort", $this->dbUsername, $this->dbPassword));
+			$this->$dbConnection->getConnection()->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // CHANGE THE ERROR MODE, THROW AN EXCEPTION WHEN AN ERROR IS FOUND
+			$this->$dbConnection->getConnection()->exec("SET NAMES 'utf8'");
 		} catch (PDOException $e) { // program ends if exception is found
 			throw new Exception("Could not connect to the database.");
 		} // end

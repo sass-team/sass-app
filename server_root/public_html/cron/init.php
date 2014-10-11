@@ -10,7 +10,7 @@ session_start();
 require __DIR__ . "/app.php";
 
 // identical to require; but php will include it only if it has not already been included
-require_once ROOT_PATH . "config/database.class.php";
+require_once ROOT_PATH . "models/DatabaseManager.class.php";
 require_once ROOT_PATH . "models/General.class.php";
 
 require_once ROOT_PATH . "models/Person.class.php";
@@ -51,6 +51,5 @@ require_once ROOT_PATH . "models/Student.class.php";
 require_once ROOT_PATH . "models/Dates.class.php";
 
 require_once ROOT_PATH . "models/Mailer.class.php";
-
-$db = new Database();
+require_once ROOT_PATH . "models/MailerFetcher.class.php";
 

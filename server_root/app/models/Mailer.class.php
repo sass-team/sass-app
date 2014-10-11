@@ -106,28 +106,11 @@ class Mailer
 			$message .= "</div>";
 			$message .= "</div>";
 			$message .= "</div>";
+			$mail->msgHTML($message);
+
+			self::safelySendMail($mail);
 
 
-			/* Note: set_time_limit() does not work with safe_mode enabled */
-			while (1 == 1) {
-				set_time_limit(30); // sets (or resets) maximum  execution time to 30 seconds)
-				// .... put code to process in here
-
-				if (MailerFetcher::canSendMail($db)) {
-					MailerFetcher::updateMailSent($db);
-					$mail->msgHTML($message);
-					break;
-				}
-
-				usleep(1000000); // sleep for 1 million micro seconds - will not work with Windows servers / PHP4
-				// sleep(1); // sleep for 1 seconds (use with Windows servers / PHP4
-				if (1 != 1) {
-					break;
-				}
-			}
-
-
-			$mail->send();
 		} catch (phpmailerException $e) {
 			throw new Exception("PHPMailer error: " . $e->errorMessage()); //Pretty error messages from PHPMailer
 		} catch (Exception $e) {
@@ -417,11 +400,38 @@ class Mailer
 			$message .= "</div>";
 
 			$mail->msgHTML($message);
-			$mail->send();
+
+			self::safelySendMail($mail);
+
 		} catch (phpmailerException $e) {
 			throw new Exception("PHPMailer error: " . $e->errorMessage()); //Pretty error messages from PHPMailer
 		} catch (Exception $e) {
 			throw new Exception("Something went wrong with mail. Please re-send mail to user for setting password."); //Pretty error messages from PHPMailer
+		}
+	}
+
+	/**
+	 * @param $db
+	 * @param $mail
+	 * @throws Exception
+	 */
+	public static function safelySendMail($mail) {
+		/* Note: set_time_limit() does not work with safe_mode enabled */
+		while (1 == 1) {
+			set_time_limit(30); // sets (or resets) maximum  execution time to 30 seconds)
+			// .... put code to process in here
+
+			if (MailerFetcher::canSendMail()) {
+				$mail->send();
+				MailerFetcher::updateMailSent();
+				break;
+			}
+
+			usleep(1000000); // sleep for 1 million micro seconds - will not work with Windows servers / PHP4
+			// sleep(1); // sleep for 1 seconds (use with Windows servers / PHP4
+			if (1 != 1) {
+				break;
+			}
 		}
 	}
 

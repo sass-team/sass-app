@@ -13,7 +13,6 @@ class MailerFetcher
 	const MAX_MAILS_PER_MINUTE = 19;
 
 	public static function canSendMail() {
-		$db = DatabaseManager::getConnection();
 		date_default_timezone_set('Europe/Athens');
 
 		try {
@@ -21,6 +20,7 @@ class MailerFetcher
 			FROM `" . DB_NAME . "`.`" . self::DB_TABLE . "`
 			WHERE `" . self::DB_COLUMN_LAST_SENT . "` >= now() - INTERVAL 1 MINUTE";
 
+			$db = DatabaseManager::getConnection();
 			$query = $db->getConnection()->prepare($sql);
 			$query->execute();
 
@@ -32,18 +32,20 @@ class MailerFetcher
 		return true;
 	}
 
-	public static function updateMailSent($db) {
+	public static function updateMailSent() {
 		date_default_timezone_set('Europe/Athens');
 		$dateNow = new DateTime();
 		$dateNow = $dateNow->format(Dates::DATE_FORMAT_IN);
 
 
 		try {
+
 			$query = "INSERT INTO `" . DB_NAME . "`.`" . self::DB_TABLE . "`
 				VALUES(
 					:now
 				)";
 
+			$db = DatabaseManager::getConnection();
 			$query = $db->getConnection()->prepare($query);
 			$query->bindParam(':now', $dateNow, PDO::PARAM_STR);
 			$query->execute();
