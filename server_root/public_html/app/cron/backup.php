@@ -8,11 +8,12 @@
  */
 
 try {
+	require __DIR__ . '/init.php';
 	date_default_timezone_set('Europe/Athens');
+	$curWorkingDate = new DateTime();
+	$curWorkingHour = intval($curWorkingDate->format('H'));
 	// save resources - only run cron at hours 08:00 - 18:00
 	if ($curWorkingHour < App::WORKING_HOUR_START || $curWorkingHour > App::WORKING_HOUR_END) exit();
-
-	require __DIR__ . '/init.php';
 
 	include_once(ROOT_PATH . '/plugins/mysqldump-php-1.4.1/src/Ifsnop/Mysqldump/Mysqldump.php');
 	$filename = ROOT_PATH . 'storage/backups/database_backup_' . date('G_a_F_d_Y') . '.sql';
@@ -43,5 +44,4 @@ try {
 
 } catch (\Exception $e) {
 	Mailer::sendDevelopers('mysqldump-php error: ' . $e->getMessage(), __FILE__);
-	echo $e->getMessage();
 }
