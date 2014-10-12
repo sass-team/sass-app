@@ -23,7 +23,7 @@ try {
 	$studentsAppointmentData = Appointment::getAllStudentsWithAppointment($db, $appointmentId);
 	$terms = TermFetcher::retrieveCurrTerm($db);
 	$students = StudentFetcher::retrieveAll($db);
-	$courses = CourseFetcher::retrieveForTerm($db, $studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_TERM_ID]);
+	$courses = CourseFetcher::retrieveForTerm($studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_TERM_ID]);
 	$instructors = InstructorFetcher::retrieveAll($db);
 	$tutors = TutorFetcher::retrieveAll($db);
 	$startDateTime = new DateTime($studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_START_TIME]);
@@ -95,25 +95,21 @@ try {
 		if (($studentsAppointmentData[0][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID] === NULL) &&
 			($nowDateTime > $startDateTime)
 		) {
-			$students = AppointmentHasStudentFetcher::retrieveStudentsWithAppointment($db, $appointmentId);
+			$students = AppointmentHasStudentFetcher::retrieveStudentsWithAppointment($appointmentId);
 			$appointment = Appointment::getSingle($db, $appointmentId);
 			foreach ($students as $student) {
-				$reportId = ReportFetcher::insert($db, $student[AppointmentHasStudentFetcher::DB_COLUMN_STUDENT_ID],
-					$student[AppointmentHasStudentFetcher::DB_COLUMN_ID],
-					$student[AppointmentHasStudentFetcher::DB_COLUMN_INSTRUCTOR_ID]);
+				$reportId = ReportFetcher::insert($student[AppointmentHasStudentFetcher::DB_COLUMN_STUDENT_ID], $student[AppointmentHasStudentFetcher::DB_COLUMN_ID], $student[AppointmentHasStudentFetcher::DB_COLUMN_INSTRUCTOR_ID]);
 			}
-			AppointmentFetcher::updateLabel($db, $appointmentId,
-				Appointment::LABEL_MESSAGE_COMPLETE, Appointment::LABEL_COLOR_SUCCESS);
+			AppointmentFetcher::updateLabel($appointmentId, Appointment::LABEL_MESSAGE_COMPLETE, Appointment::LABEL_COLOR_SUCCESS);
 
 
-			if (!$user->isTutor()) Mailer::sendTutorNewReportsCronOnly($db, $appointment);
+			if (!$user->isTutor()) Mailer::sendTutorNewReportsCronOnly($appointment);
 		}
 
 		header('Location: ' . BASE_URL . 'appointments/' . $appointmentId . '/success');
 		exit();
 	} else if (isUrlRqstngAppointmentCancelByStudent()) {
-		AppointmentFetcher::updateLabel($db, $appointmentId,
-			Appointment::LABEL_MESSAGE_STUDENT_CANCELED, Appointment::LABEL_COLOR_CANCELED);
+		AppointmentFetcher::updateLabel($appointmentId, Appointment::LABEL_MESSAGE_STUDENT_CANCELED, Appointment::LABEL_COLOR_CANCELED);
 		header('Location: ' . BASE_URL . 'appointments/' . $appointmentId . '/success');
 		exit();
 	} else if (isBtnUpdateAppointmentPrsd() && !$user->isTutor() &&
@@ -123,45 +119,35 @@ try {
 		$updateDone = Appointment::updateStudents($db, $appointmentId, $studentsAppointmentData, $_POST['studentsIds']);
 		$updateDone = Appointment::updateInstructors($db, $appointmentId, $studentsAppointmentData, $_POST['instructorIds'])
 			|| $updateDone;
-		$updateDone = Appointment::updateCourse($db, $appointmentId,
-				$studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_COURSE_ID], $_POST['courseId']) || $updateDone;
+		$updateDone = Appointment::updateCourse($appointmentId, $studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_COURSE_ID], $_POST['courseId']) || $updateDone;
 		// TODO: validate new date times.
-		$updateDone = Appointment::updateTutor($db, $user, $studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_TERM_ID], $appointmentId,
-				$studentsAppointmentData[0][UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_ID], $_POST['tutorId'],
-				$_POST['dateTimePickerStart'], $_POST['dateTimePickerEnd']) || $updateDone;
+		$updateDone = Appointment::updateTutor($user, $studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_TERM_ID], $appointmentId, $studentsAppointmentData[0][UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_ID], $_POST['tutorId'], $_POST['dateTimePickerStart'], $_POST['dateTimePickerEnd']) || $updateDone;
 
 		// TODO: REMOVE hardcoded $user
-		$updateDone = Appointment::updateDuration($db, $appointmentId, $studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_TERM_ID], $studentsAppointmentData[0][UserFetcher::DB_TABLE .
-				"_" . UserFetcher::DB_COLUMN_ID], $user,
-				$studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_START_TIME], $_POST['dateTimePickerStart'],
-				$_POST['dateTimePickerEnd'], $studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_END_TIME]) ||
+		$updateDone = Appointment::updateDuration($appointmentId, $studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_TERM_ID], $studentsAppointmentData[0][UserFetcher::DB_TABLE .
+			"_" . UserFetcher::DB_COLUMN_ID], $user, $studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_START_TIME], $_POST['dateTimePickerStart'], $_POST['dateTimePickerEnd'], $studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_END_TIME]) ||
 			$updateDone;
 
-		$updateDone = Appointment::updateTerm($db, $appointmentId, $studentsAppointmentData[0][UserFetcher::DB_TABLE .
-				"_" . UserFetcher::DB_COLUMN_ID], $user, $_POST['dateTimePickerStart'], $_POST['dateTimePickerEnd'],
-				$_POST['termId'], $studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_TERM_ID]) || $updateDone;
+		$updateDone = Appointment::updateTerm($appointmentId, $studentsAppointmentData[0][UserFetcher::DB_TABLE .
+			"_" . UserFetcher::DB_COLUMN_ID], $user, $_POST['dateTimePickerStart'], $_POST['dateTimePickerEnd'], $_POST['termId'], $studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_TERM_ID]) || $updateDone;
 
 		if (!$updateDone) throw new Exception("No new data inserted.");
 		header('Location: ' . BASE_URL . 'appointments/' . $appointmentId . '/success');
 		exit();
 	} else if (isUrlRqstngAppointmentCancelByTutor()) {
-		AppointmentFetcher::updateLabel($db, $appointmentId,
-			Appointment::LABEL_MESSAGE_TUTOR_CANCELED, Appointment::LABEL_COLOR_CANCELED);
+		AppointmentFetcher::updateLabel($appointmentId, Appointment::LABEL_MESSAGE_TUTOR_CANCELED, Appointment::LABEL_COLOR_CANCELED);
 		header('Location: ' . BASE_URL . 'appointments/' . $appointmentId . '/success');
 		exit();
 	} else if (isUrlRqstngAppointmentNoShowByStudent()) {
-		AppointmentFetcher::updateLabel($db, $appointmentId,
-			Appointment::LABEL_MESSAGE_STUDENT_NO_SHOW, Appointment::LABEL_COLOR_CANCELED);
+		AppointmentFetcher::updateLabel($appointmentId, Appointment::LABEL_MESSAGE_STUDENT_NO_SHOW, Appointment::LABEL_COLOR_CANCELED);
 		header('Location: ' . BASE_URL . 'appointments/' . $appointmentId . '/success');
 		exit();
 	} else if (isUrlRqstngAppointmentNoShowByTutor()) {
-		AppointmentFetcher::updateLabel($db, $appointmentId,
-			Appointment::LABEL_MESSAGE_TUTOR_NO_SHOW, Appointment::LABEL_COLOR_CANCELED);
+		AppointmentFetcher::updateLabel($appointmentId, Appointment::LABEL_MESSAGE_TUTOR_NO_SHOW, Appointment::LABEL_COLOR_CANCELED);
 		header('Location: ' . BASE_URL . 'appointments/' . $appointmentId . '/success');
 		exit();
 	} else if (isUrlRqstngAppointmentEnable()) {
-		AppointmentFetcher::updateLabel($db, $appointmentId,
-			Appointment::LABEL_MESSAGE_PENDING, Appointment::LABEL_COLOR_PENDING);
+		AppointmentFetcher::updateLabel($appointmentId, Appointment::LABEL_MESSAGE_PENDING, Appointment::LABEL_COLOR_PENDING);
 		header('Location: ' . BASE_URL . 'appointments/' . $appointmentId . '/success');
 		exit();
 	}

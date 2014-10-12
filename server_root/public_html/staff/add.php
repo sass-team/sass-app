@@ -35,8 +35,8 @@ if (isSaveBttnPressed()) {
 	$termIds = isset($_POST['termIds']) ? $_POST['termIds'] : NULL;
 
 	try {
-		$newUserId = Admin::createUser($db, $first_name, $last_name, $email, $user_type, $userMajorId, $teachingCoursesIds, $termIds);
-		$newUser = User::getSingle($db, $newUserId);
+		$newUserId = Admin::createUser($first_name, $last_name, $email, $user_type, $userMajorId, $teachingCoursesIds, $termIds);
+		$newUser = User::getSingle($newUserId);
 		Mailer::sendNewAccount($db, $newUserId, $user->getEmail(), $user->getFirstName() . " " . $user->getLastName(),
 			$newUser[UserFetcher::DB_COLUMN_EMAIL], $newUser[UserFetcher::DB_COLUMN_FIRST_NAME] . " " .
 			$newUser[UserFetcher::DB_COLUMN_LAST_NAME]);

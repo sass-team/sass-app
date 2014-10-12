@@ -23,8 +23,7 @@ try {
 
 	if (isBtnAddStudentPrsd()) {
 		$secretaryName = $user->getFirstName() . " " . $user->getLastName();
-		Appointment::add($db, $user, $_POST['dateTimePickerStart'], $_POST['dateTimePickerEnd'], $_POST['courseId'],
-			$_POST['studentsIds'], $_POST['tutorId'], $_POST['instructorIds'], $_POST['termId'], $secretaryName);
+		Appointment::add($user, $_POST['dateTimePickerStart'], $_POST['dateTimePickerEnd'], $_POST['courseId'], $_POST['studentsIds'], $_POST['tutorId'], $_POST['instructorIds'], $_POST['termId'], $secretaryName);
 		header('Location: ' . BASE_URL . 'appointments/add/success');
 		exit();
 	}

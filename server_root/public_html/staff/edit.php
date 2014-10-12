@@ -52,7 +52,7 @@ if (!isset($_GET['id']) || !preg_match("/^[0-9]+$/", $_GET['id'])) {
 
 try {
 
-	if (($data = User::getSingle($db, $staffId)) === FALSE) {
+	if (($data = User::getSingle($staffId)) === FALSE) {
 //		header('Location: ' . BASE_URL . 'error-404');
 		exit();
 	}
@@ -60,11 +60,11 @@ try {
 	// TODO: fix this code -- is ugly.
 	if (strcmp($data['type'], 'tutor') === 0) {
 		$tutor = TutorFetcher::retrieveSingle($db, $staffId);
-		$curUser = new Tutor($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active'], $tutor[TutorFetcher::DB_COLUMN_MAJOR_ID]);
+		$curUser = new Tutor($data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active'], $tutor[TutorFetcher::DB_COLUMN_MAJOR_ID]);
 	} else if (strcmp($data['type'], 'secretary') === 0) {
-		$curUser = new Secretary($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active']);
+		$curUser = new Secretary($data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active']);
 	} else if (strcmp($data['type'], 'admin') === 0) {
-		$curUser = new Admin($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active']);
+		$curUser = new Admin($data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active']);
 	} else {
 		throw new Exception("Something terrible has happened with the database. <br/>The software developers will tremble with fear.");
 	}
@@ -113,7 +113,7 @@ try {
 		}
 
 		if (strcmp($newEmail, $oldEmail) !== 0) {
-			Person::validateNewEmail($db, $newEmail, User::DB_TABLE);
+			Person::validateNewEmail($newEmail, User::DB_TABLE);
 			$user->updateInfo("email", "user", $newEmail, $staffId);
 			$newDataAdded = true;
 		}
