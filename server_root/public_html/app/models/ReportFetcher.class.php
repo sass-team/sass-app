@@ -178,7 +178,6 @@ class ReportFetcher
 			$dbConnection->beginTransaction();
 			$query = $dbConnection->prepare($query);
 
-			$query = $dbConnection->prepare($query);
 			$query->bindParam(':student_id', $studentId, PDO::PARAM_INT);
 			$query->bindParam(':instructor_id', $instructorId, PDO::PARAM_INT);
 

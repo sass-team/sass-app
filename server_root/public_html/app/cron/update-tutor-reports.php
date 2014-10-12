@@ -16,7 +16,7 @@ try {
 	$curWorkingHour = intval($curWorkingDate->format('H'));
 
 	// save resources - only run cron at hours 08:00 - 18:00
-	if ($curWorkingHour < 8 || $curWorkingHour > 18) {
+	if ($curWorkingHour < 8 || $curWorkingHour > 20) {
 		exit();
 	}
 
@@ -26,7 +26,8 @@ try {
 
 		$students = AppointmentHasStudentFetcher::retrieveStudentsWithAppointment($appointment[AppointmentFetcher::DB_COLUMN_ID]);
 		foreach ($students as $student) {
-			$reportId = ReportFetcher::insert($student[AppointmentHasStudentFetcher::DB_COLUMN_STUDENT_ID], $student[AppointmentHasStudentFetcher::DB_COLUMN_ID], $student[AppointmentHasStudentFetcher::DB_COLUMN_INSTRUCTOR_ID]);
+			$reportId = ReportFetcher::insert($student[AppointmentHasStudentFetcher::DB_COLUMN_STUDENT_ID],
+				$student[AppointmentHasStudentFetcher::DB_COLUMN_ID], $student[AppointmentHasStudentFetcher::DB_COLUMN_INSTRUCTOR_ID]);
 		}
 
 		AppointmentFetcher::updateLabel($appointment[AppointmentFetcher::DB_COLUMN_ID], Appointment::LABEL_MESSAGE_COMPLETE, Appointment::LABEL_COLOR_SUCCESS);
