@@ -38,15 +38,17 @@ class CourseFetcher
 	const DB_COLUMN_EMAIL = "email";
 
 
-	public static function retrieveAll($db) {
+	public static function retrieveAll() {
 		date_default_timezone_set('Europe/Athens');
 
 		$query =
 			"SELECT `" . self::DB_COLUMN_CODE . "`, `" . self::DB_COLUMN_NAME . "`, `" . self::DB_COLUMN_ID . "`
-			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "` order by `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` desc";
+			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			ORDER BY `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` DESC";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -146,7 +148,7 @@ class CourseFetcher
 		return false;
 	}
 
-	public static function insert($db, $code, $name) {
+	public static function insert($code, $name) {
 		try {
 			$query = "INSERT INTO `" .  DatabaseManager::$dsn[DatabaseManager::DB_NAME]  . "`.`" . self::DB_TABLE . "` (`" . self::DB_COLUMN_CODE .
 				"`, `" . self::DB_COLUMN_NAME . "`)
@@ -155,7 +157,8 @@ class CourseFetcher
 					:name
 				)";
 
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':code', $code, PDO::PARAM_STR);
 			$query->bindParam(':name', $name, PDO::PARAM_STR);
 			$query->execute();
@@ -244,11 +247,12 @@ class CourseFetcher
 	}
 
 
-	public static function nameExists($db, $courseName) {
+	public static function nameExists($courseName) {
 		try {
-			$sql = "SELECT COUNT(" . self::DB_COLUMN_NAME . ") FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" .
+			$query = "SELECT COUNT(" . self::DB_COLUMN_NAME . ") FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" .
 				self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_NAME . "` = :courseName";
-			$query = $db->getConnection()->prepare($sql);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':courseName', $courseName, PDO::PARAM_STR);
 			$query->execute();
 

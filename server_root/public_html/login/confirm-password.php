@@ -71,7 +71,7 @@ if (isContinueBtnPressed()) {
 		// What happens when the CAPTCHA was entered incorrectly
 		if (!$resp->is_valid) throw new Exception ("The reCAPTCHA wasn't entered correctly.");
 
-		Mailer::sendRecover($db, $email);
+		Mailer::sendRecover( $email);
 		header('Location: ' . BASE_URL . 'login/confirm-password/success');
 		exit();
 	} catch (Exception $e) {

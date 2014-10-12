@@ -20,7 +20,7 @@ try {
 		exit();
 	}
 
-	$appointments = AppointmentFetcher::retrieveCmpltWithoutRptsOnCurTerms($db);
+	$appointments = AppointmentFetcher::retrieveCmpltWithoutRptsOnCurTerms();
 
 	foreach ($appointments as $appointment) {
 

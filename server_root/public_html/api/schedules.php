@@ -1,24 +1,28 @@
 <?php
-require 'init.php';
-header('Content-Type: application/json');
+
 if (is_ajax()) {
+	require 'init.php';
+	header('Content-Type: application/json');
 	if (isset($_GET["action"]) && !empty($_GET["action"])) { //Checks if action value exists
 		$action = $_GET["action"];
 		switch ($action) { //Switch case for value of action
 			case "all_tutors_working_hours":
-				printAllTutorsSchedules($db, $_GET["termId"], $_GET["start"], $_GET["end"]);
+				printAllTutorsSchedules($_GET["termId"], $_GET["start"], $_GET["end"]);
 				break;
 			case "single_tutor_working_hours":
-				printSingleTutorSchedules($db, $_GET["tutorId"], $_GET["termId"], $_GET["start"], $_GET["end"]);
+				printSingleTutorSchedules($_GET["tutorId"], $_GET["termId"], $_GET["start"], $_GET["end"]);
 				break;
 		}
+	} else {
+		header("Location: /error-403");
+		exit();
 	}
 } else {
-	header('Location: ' . BASE_URL . "error-403");
+	header("Location: /error-403");
 	exit();
 }
 
-//printAllTutorsSchedules($db, 4, 1409582384, 1412087984);
+//printAllTutorsSchedules( 4, 1409582384, 1412087984);
 
 
 //Function to check if the request is an AJAX request
@@ -26,16 +30,16 @@ function is_ajax() {
 	return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
 }
 
-function printAllTutorsSchedules($db, $termId, $start, $end) {
-	$workingHours = Schedule::getTutorsOnTerm($db, $termId);
+function printAllTutorsSchedules($termId, $start, $end) {
+	$workingHours = Schedule::getTutorsOnTerm($termId);
 
 	$workingHoursJSON = generateCalendarData($start, $end, $workingHours);
 
 	echo json_encode($workingHoursJSON);
 }
 
-function printSingleTutorSchedules($db, $tutorId, $termId, $start, $end) {
-	$workingHours = Schedule::getSingleTutorOnTerm($db, $tutorId, $termId);
+function printSingleTutorSchedules($tutorId, $termId, $start, $end) {
+	$workingHours = Schedule::getSingleTutorOnTerm($tutorId, $termId);
 	$workingHoursJSON = generateCalendarData($start, $end, $workingHours);
 
 	echo json_encode($workingHoursJSON);

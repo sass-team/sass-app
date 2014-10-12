@@ -16,12 +16,13 @@ class InstructorFetcher extends Person
 	/**
 	 * @return mixed
 	 */
-	public static function retrieveAll($db) {
+	public static function retrieveAll() {
 		$query = "SELECT `" . self::DB_COLUMN_ID . "`, `" . self::DB_COLUMN_FIRST_NAME . "`, `" .
 			self::DB_COLUMN_LAST_NAME . "` FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`";
-		$query = $db->getConnection()->prepare($query);
 
 		try {
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->execute();
 			$rows = $query->fetchAll(PDO::FETCH_ASSOC);
 
@@ -49,7 +50,7 @@ class InstructorFetcher extends Person
 		return true;
 	}
 
-	public static function create($db, $firstName, $lastName) {
+	public static function create($firstName, $lastName) {
 		self::validateName($firstName);
 		self::validateName($lastName);
 
@@ -61,7 +62,8 @@ class InstructorFetcher extends Person
 			$query = "INSERT INTO `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "` (`f_name`, `l_name`) VALUES
 			(:firstName, :lastName)";
 
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':firstName', $firstName, PDO::PARAM_STR);
 			$query->bindParam(':lastName', $lastName, PDO::PARAM_STR);
 			$query->execute();
@@ -71,7 +73,7 @@ class InstructorFetcher extends Person
 		}
 	}
 
-	public static function update($db, $instructorId, $newInstructorFirstname, $newInstructorLastname) {
+	public static function update($instructorId, $newInstructorFirstname, $newInstructorLastname) {
 		$newInstructorFirstname = trim($newInstructorFirstname);
 		$newInstructorLastname = trim($newInstructorLastname);
 
@@ -81,7 +83,8 @@ class InstructorFetcher extends Person
 					WHERE `" . self::DB_COLUMN_ID . "`= :instructorId";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':newInstructorFirstname', $newInstructorFirstname, PDO::PARAM_STR);
 			$query->bindParam(':newInstructorLastname', $newInstructorLastname, PDO::PARAM_STR);
 			$query->execute();
@@ -92,7 +95,7 @@ class InstructorFetcher extends Person
 
 	}
 
-	public static function updateLname($db, $id, $newLname) {
+	public static function updateLname($id, $newLname) {
 		$newLname = trim($newLname);
 
 		$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . InstructorFetcher::DB_TABLE . "`
@@ -100,7 +103,8 @@ class InstructorFetcher extends Person
 					WHERE  `" . self::DB_COLUMN_ID . "`= :instructorId";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':instructorId', $id, PDO::PARAM_INT);
 			$query->bindParam(':newInstructorLastname', $newLname, PDO::PARAM_STR);
 			$query->execute();
@@ -111,7 +115,7 @@ class InstructorFetcher extends Person
 
 	}
 
-	public static function updateFname($db, $id, $newFname) {
+	public static function updateFname($id, $newFname) {
 		$newFname = trim($newFname);
 
 		$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . InstructorFetcher::DB_TABLE . "`
@@ -119,7 +123,8 @@ class InstructorFetcher extends Person
 					WHERE  `" . self::DB_COLUMN_ID . "`= :instructorId";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':instructorId', $id, PDO::PARAM_INT);
 			$query->bindParam(':newFname', $newFname, PDO::PARAM_STR);
 			$query->execute();
@@ -130,10 +135,11 @@ class InstructorFetcher extends Person
 
 	}
 
-	public static function delete($db, $id) {
+	public static function delete($id) {
 		try {
 			$query = "DELETE FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :id";
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':id', $id, PDO::PARAM_INT);
 			$query->execute();
 			return true;

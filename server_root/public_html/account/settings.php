@@ -83,7 +83,7 @@ if (isBtnUpdateProfilePrsd()) {
 
 		// check if new changes are required. if to update process
 		if ($user->isAdmin() && strcmp($prevFirstName, $newFirstName) !== 0) {
-			User::updateName($db, $user->getId(), User::DB_COLUMN_FIRST_NAME, $newFirstName);
+			User::updateName( $user->getId(), User::DB_COLUMN_FIRST_NAME, $newFirstName);
 			$newUpdate = true;
 		}
 
@@ -91,17 +91,17 @@ if (isBtnUpdateProfilePrsd()) {
 			if (!$user->isAdmin()) {
 				throw new Exception("You're trying to hack this app. Process aborted.");
 			}
-			User::updateName($db, $user->getId(), User::DB_COLUMN_LAST_NAME, $newLastName);
+			User::updateName( $user->getId(), User::DB_COLUMN_LAST_NAME, $newLastName);
 			$newUpdate = true;
 		}
 
 		if (strcmp($prevProfileDescription, $newProfileDescription) !== 0) {
-			User::updateProfileDescription($db, $user->getId(), $newProfileDescription);
+			User::updateProfileDescription( $user->getId(), $newProfileDescription);
 			$newUpdate = true;
 		}
 
 		if (strcmp($prevMobileNumber, $newMobileNumber) !== 0) {
-			User::updateMobileNumber($db, $user->getId(), $newMobileNumber);
+			User::updateMobileNumber( $user->getId(), $newMobileNumber);
 			$newUpdate = true;
 		}
 
@@ -126,7 +126,7 @@ if (isBtnUpdateProfilePrsd()) {
 } else if (isBtnUpdatePasswordPrsd()) {
 
 	try {
-		User::updatePassword($db, $user->getId(), $_POST['oldPassword'], $_POST['newPassword1'], $_POST['newPassword2']);
+		User::updatePassword( $user->getId(), $_POST['oldPassword'], $_POST['newPassword1'], $_POST['newPassword2']);
 	} catch (Exception $e) {
 		$errors[] = $e->getMessage();
 	}

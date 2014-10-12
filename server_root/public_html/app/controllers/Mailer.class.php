@@ -46,12 +46,12 @@ class Mailer
 	public static function sendTutorNewReportsCronOnly($appointmentData) {
 
 		try {
-			//			$report = ReportFetcher::retrieveSingle($db, $reportId);
-//			$appointment = Appointment::getSingle($db, $tutorId);
+			//			$report = ReportFetcher::retrieveSingle( $reportId);
+//			$appointment = Appointment::getSingle( $tutorId);
 			$tutorUser = UserFetcher::retrieveSingle($appointmentData[AppointmentFetcher::DB_COLUMN_TUTOR_USER_ID]);
 			$course = CourseFetcher::retrieveSingle($appointmentData[AppointmentFetcher::DB_COLUMN_COURSE_ID]);
 
-//			$appointment = AppointmentFetcher::retrieveAllForSingleTutor($db, $tutorId, $termId);
+//			$appointment = AppointmentFetcher::retrieveAllForSingleTutor( $tutorId, $termId);
 			$subject = self::SUBJECT_PREFIX . self::SUBJECT_NEW_SASS_APP_REPORT_PENDING;
 			$alternativeEmail = self::EMAIL_DEV_SASS;
 			$alternativeName = self::SASS_APP_AUTOMATIC_SYSTEM_DEVELOPERS;
@@ -118,7 +118,7 @@ class Mailer
 		}
 	}
 
-	public static function sendTutorNewAppointment($db, $tutorId, $secretaryName) {
+	public static function sendTutorNewAppointment($tutorId, $secretaryName) {
 		require_once ROOT_PATH . "plugins/PHPMailer/PHPMailerAutoload.php";
 
 
@@ -205,10 +205,10 @@ class Mailer
 		}
 	}
 
-	public static function sendNewAccount($db, $id, $senderEmail, $senderName, $receiverEmail, $receiverName) {
+	public static function sendNewAccount( $id, $senderEmail, $senderName, $receiverEmail, $receiverName) {
 		require_once ROOT_PATH . "plugins/PHPMailer/PHPMailerAutoload.php";
 
-		$getString = User::generateNewPasswordString($db, $id);
+		$getString = User::generateNewPasswordString( $id);
 		$subject = "New Account";
 		$alternativeEmail = self::EMAIL_DEV_SASS;
 		$alternativeName = self::SASS_APP_AUTOMATIC_SYSTEM_DEVELOPERS;
@@ -276,13 +276,13 @@ class Mailer
 		}
 	}
 
-	public static function sendRecover($db, $email) {
-		User::validateExistingEmail($db, $email, UserFetcher::DB_TABLE);
-		$user = UserFetcher::retrieveUsingEmail($db, $email);
+	public static function sendRecover( $email) {
+		User::validateExistingEmail($email, UserFetcher::DB_TABLE);
+		$user = UserFetcher::retrieveUsingEmail($email);
 		if ($user[UserFetcher::DB_COLUMN_ACTIVE] != 1) throw new Exception("Sorry, you account has been activated.");
 		$id = $user[UserFetcher::DB_COLUMN_ID];
 		$name = $user[UserFetcher::DB_COLUMN_FIRST_NAME] . " " . $user[UserFetcher::DB_COLUMN_LAST_NAME];
-		$genString = User::generateNewPasswordString($db, $id);
+		$genString = User::generateNewPasswordString( $id);
 
 		$subject = "Password Recovery";
 		$alternativeEmail = self::EMAIL_DEV_SASS;

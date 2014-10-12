@@ -112,11 +112,12 @@ class AppointmentHasStudentFetcher
 	}
 
 
-	public static function existsId($db, $id) {
+	public static function existsId($id) {
 		try {
-			$sql = "SELECT COUNT(" . self::DB_COLUMN_ID . ") FROM `" .  DatabaseManager::$dsn[DatabaseManager::DB_NAME]  . "`.`" .
+			$query = "SELECT COUNT(" . self::DB_COLUMN_ID . ") FROM `" .  DatabaseManager::$dsn[DatabaseManager::DB_NAME]  . "`.`" .
 				self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :id";
-			$query = $db->getConnection()->prepare($sql);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':id', $id, PDO::PARAM_INT);
 			$query->execute();
 
@@ -128,14 +129,15 @@ class AppointmentHasStudentFetcher
 		return true;
 	}
 
-	public static function retrieveAll($db) {
+	public static function retrieveAll() {
 		$query =
 			"SELECT `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_APPOINTMENT_ID . "` , `" . self::DB_COLUMN_STUDENT_ID . "`,
 			 `" . self::DB_COLUMN_REPORT_ID . "`,  `" . self::DB_COLUMN_INSTRUCTOR_ID . "`
 			FROM `" .  DatabaseManager::$dsn[DatabaseManager::DB_NAME]  . "`.`" . self::DB_TABLE . "`";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);

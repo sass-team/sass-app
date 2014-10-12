@@ -10,13 +10,13 @@ class Instructor
 {
 
 
-	public static function create($db, $firstName, $lastName) {
-		$firstName = self::validateName($db, $firstName);
-		$lastName = self::validateName($db, $lastName);
-		InstructorFetcher::create($db, $firstName, $lastName);
+	public static function create( $firstName, $lastName) {
+		$firstName = self::validateName($firstName);
+		$lastName = self::validateName($lastName);
+		InstructorFetcher::create($firstName, $lastName);
 	}
 
-	public static function  validateName($db, $name) {
+	public static function  validateName($name) {
 		$name = trim($name);
 		if (!preg_match("/^[a-zA-Z\\ ]{1,50}$/", $name)) {
 			throw new Exception("Instructor name can only contain <a href='http://www.regular-expressions.info/shorthand.html'
@@ -26,8 +26,9 @@ class Instructor
 		return $name;
 	}
 
-	public static function update($db, $instructorId, $newFirstName, $newLastName) {
-		$newLastName = self::validateName($db, $newLastName);
+	public static function update($instructorId, $newFirstName, $newLastName) {
+		$newLastName = self::validateName($newLastName);
+		$newLastName = self::validateName($newFirstName);
 		$instructorId = self::validateId($instructorId);
 	}
 
@@ -50,19 +51,19 @@ class Instructor
 		}
 	}
 
-	public static function updateFname($db, $id, $newFirstName) {
-		$newFirstName = self::validateName($db, $newFirstName);
-		InstructorFetcher::updateFname($db, $id, $newFirstName);
+	public static function updateFname( $id, $newFirstName) {
+		$newFirstName = self::validateName($newFirstName);
+		InstructorFetcher::updateFname($id, $newFirstName);
 	}
 
-	public static function updateLname($db, $id, $newLastName) {
-		$newLastName = self::validateName($db, $newLastName);
-		InstructorFetcher::updateLname($db, $id, $newLastName);
+	public static function updateLname( $id, $newLastName) {
+		$newLastName = self::validateName($newLastName);
+		InstructorFetcher::updateLname($id, $newLastName);
 	}
 
-	public static function delete($db, $id) {
+	public static function delete( $id) {
 		self::validateId($id);
-		InstructorFetcher::delete($db, $id);
+		InstructorFetcher::delete($id);
 	}
 
 } 

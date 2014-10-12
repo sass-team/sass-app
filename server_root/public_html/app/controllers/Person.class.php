@@ -9,7 +9,7 @@
 abstract class Person
 {
 
-	private $db, $id, $firstName, $lastName, $email, $mobileNum;
+	private  $id, $firstName, $lastName, $email, $mobileNum;
 
 	public function __construct($id, $firstName, $lastName, $email, $mobileNum) {
 		$this->setId($id);
@@ -106,7 +106,7 @@ abstract class Person
 		} // end catch
 	}
 
-	public static function validateExistingEmail($db, $newEmail, $table) {
+	public static function validateExistingEmail($newEmail, $table) {
 		if (!isset($newEmail) || empty($newEmail)) {
 			throw new Exception("Email is required");
 		}

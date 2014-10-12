@@ -10,7 +10,7 @@ class Student extends Person
 {
     private $ci, $credits, $major;
 
-    public function  __construct($db, $id, $firstName, $lastName, $email, $mobileNum, $ci, $credits, $major)
+    public function  __construct( $id, $firstName, $lastName, $email, $mobileNum, $ci, $credits, $major)
     {
         parent::__construct($id, $firstName, $lastName, $email, $mobileNum);
 
@@ -35,7 +35,7 @@ class Student extends Person
         $this->major = $major;
     }
 
-    public static function add($db, $firstName, $lastName, $email, $mobileNum, $courses, $ci, $credits)
+    public static function add( $firstName, $lastName, $email, $mobileNum, $courses, $ci, $credits)
     {
 
     }
@@ -44,13 +44,15 @@ class Student extends Person
      * @param $db
      * @throws Exception
      */
-    public static function retrieve($db)
+    public static function retrieve()
     {
         $query = "SELECT id, email, f_name, l_name, mobile, ci, credits
 		         FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.student";
-        $query = $db->getConnection()->prepare($query);
+
 
         try {
+	        $dbConnection = DatabaseManager::getConnection();
+	        $query = $dbConnection->prepare($query);
             $query->execute();
             $rows = $query->fetchAll(PDO::FETCH_ASSOC);
 
@@ -61,30 +63,30 @@ class Student extends Person
     }
 
 
-    public static function create($db, $firstName, $lastName, $email, $studentId, $mobileNum, $majorId, $ci, $credits)
+    public static function create( $firstName, $lastName, $email, $studentId, $mobileNum, $majorId, $ci, $credits)
     {
         // Validate data
         Person::validateName($firstName);
         Person::validateName($lastName);
         Person::validateNewEmail($email, StudentFetcher::DB_TABLE);
-        self::validateStudentId($db, $studentId);
-        self::validateMobileNumber($db, $mobileNum);
+        self::validateStudentId( $studentId);
+        self::validateMobileNumber( $mobileNum);
         Major::validateId($majorId);
 
         $ci = Student::validateCi($ci);
         $credits = Student::validateCredits($credits);
 
         // Insert into database
-        StudentFetcher::insert($db, $firstName, $lastName, $email, $studentId, $mobileNum, $majorId, $ci, $credits);
+        StudentFetcher::insert($firstName, $lastName, $email, $studentId, $mobileNum, $majorId, $ci, $credits);
     }
 
-    public static function validateStudentId($db, $studentId)
+    public static function validateStudentId( $studentId)
     {
         if (!preg_match("/^[0-9]{6,7}$/", $studentId)) {
             throw new Exception("Student id can contain only numbers of length 6 to 7");
         }
 
-        if (StudentFetcher::existsStudentId($db, $studentId)) {
+        if (StudentFetcher::existsStudentId($studentId)) {
             throw new Exception("Student id entered already exists in database."); // the array of errors messages
         }
     }
@@ -95,7 +97,7 @@ class Student extends Person
      * @return null
      * @throws Exception
      */
-    public static function validateMobileNumber($db, $newMobileNum)
+    public static function validateMobileNumber( $newMobileNum)
     {
         if (empty($newMobileNum) === TRUE) {
             throw new Exception('Mobile number is required.');
@@ -105,7 +107,7 @@ class Student extends Person
             throw new Exception('Mobile number should contain only digits of total length 10');
         }
 
-        if (StudentFetcher::existsMobileNum($db, $newMobileNum)) {
+        if (StudentFetcher::existsMobileNum($newMobileNum)) {
             throw new Exception("Mobile entered number already exists in database."); // the array of errors messages
         }
     }
@@ -124,52 +126,52 @@ class Student extends Person
         if (!preg_match('/^[0-9]{1,3}$/', $credits) || floatval($credits) > 200) throw new Exception('Credits should be in the range of 0 - 200');
     }
 
-    public static function updateFirstName($db, $id, $newName, $oldName)
+    public static function updateFirstName( $id, $newName, $oldName)
     {
 
         if (strcmp($newName, $oldName) === 0) return;
 
         self::validateName($newName);
-        StudentFetcher::updateFirstName($db, $id, $newName);
+        StudentFetcher::updateFirstName($id, $newName);
     }
 
-    public static function updateLastName($db, $id, $newName, $oldName)
+    public static function updateLastName( $id, $newName, $oldName)
     {
         if (strcmp($newName, $oldName) === 0) return;
 
         self::validateName($newName);
-        StudentFetcher::updateLastName($db, $id, $newName);
+        StudentFetcher::updateLastName($id, $newName);
     }
 
-    public static function updateMobileNum($db, $id, $newMobileNum, $oldMobileNum)
+    public static function updateMobileNum( $id, $newMobileNum, $oldMobileNum)
     {
         if (strcmp($newMobileNum, $oldMobileNum) === 0) return;
 
-        self::validateMobileNumber($db, $newMobileNum);
-        StudentFetcher::updateMobileNum($db, $id, $newMobileNum);
+        self::validateMobileNumber( $newMobileNum);
+        StudentFetcher::updateMobileNum($id, $newMobileNum);
     }
 
-    public static function updateMajorId($db, $id, $newMajorId, $oldMajorId)
+    public static function updateMajorId( $id, $newMajorId, $oldMajorId)
     {
         if (!isset($newMajorId) || empty($newMajorId)) throw new Exception("Data tempering detected. Aborting.");
         if (strcmp($newMajorId, $oldMajorId) === 0) return;
 
         Major::validateId($newMajorId);
-        StudentFetcher::updateMajorId($db, $id, $newMajorId);
+        StudentFetcher::updateMajorId($id, $newMajorId);
     }
 
-    public static function updateCi($db, $id, $newCi, $oldCi)
+    public static function updateCi( $id, $newCi, $oldCi)
     {
         if (strcmp($newCi, $oldCi) === 0) return;
 
         $newCi = self::validateCi($newCi);
-        StudentFetcher::updateCi($db, $id, $newCi);
+        StudentFetcher::updateCi($id, $newCi);
     }
 
-    public static function updateEmail($db, $id, $newEmail, $oldEmail)
+    public static function updateEmail( $id, $newEmail, $oldEmail)
     {
         Student::validateNewEmail($newEmail, $oldEmail);
-        StudentFetcher::updateEmail($db, $id, $newEmail);
+        StudentFetcher::updateEmail($id, $newEmail);
     }
 
     public static function validateNewEmail($newEmail, $table)
@@ -179,7 +181,7 @@ class Student extends Person
 
         if (filter_var($newEmail, FILTER_VALIDATE_EMAIL) === false) {
             throw new Exception("Please enter a valid email address");
-        } else if (StudentFetcher::existsEmail($db, $newEmail)) {
+        } else if (StudentFetcher::existsEmail($newEmail)) {
             throw new Exception('That email already exists. Please use another one.');
         } // end else if
     }
@@ -209,21 +211,21 @@ class Student extends Person
         }
     }
 
-    public static function updateStudentId($db, $id, $newStudentId, $oldStudentId)
+    public static function updateStudentId( $id, $newStudentId, $oldStudentId)
     {
         if (strcmp($newStudentId, $oldStudentId) === 0) return;
-        Student::validateStudentId($db, $newStudentId);
+        Student::validateStudentId( $newStudentId);
 
-        StudentFetcher::updateStudentId($db, $id, $newStudentId);
+        StudentFetcher::updateStudentId($id, $newStudentId);
     }
 
 
-    public static function updateCredits($db, $id, $newCreditsNum, $oldCredits)
+    public static function updateCredits( $id, $newCreditsNum, $oldCredits)
     {
         if (strcmp($newCreditsNum, $oldCredits) === 0) return;
         Student::validateCredits($newCreditsNum);
 
-        StudentFetcher::updateCredits($db, $id, $newCreditsNum);
+        StudentFetcher::updateCredits($id, $newCreditsNum);
     }
 
     /**

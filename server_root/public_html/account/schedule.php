@@ -7,10 +7,10 @@ $pageTitle = "New Appointment";
 $section = "account";
 
 try {
-	$terms = TermFetcher::retrieveCurrTerm($db);
-	$students = StudentFetcher::retrieveAll($db);
+	$terms = TermFetcher::retrieveCurrTerm();
+	$students = StudentFetcher::retrieveAll();
 
-	$appointments = AppointmentFetcher::retrieveAll($db);
+	$appointments = AppointmentFetcher::retrieveAll();
 
 
 } catch (Exception $e) {

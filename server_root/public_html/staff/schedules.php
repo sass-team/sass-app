@@ -36,9 +36,9 @@ $general->loggedOutProtect();
 
 
 try {
-	$tutors = TutorFetcher::retrieveAll($db);
-	$currentTerms = TermFetcher::retrieveCurrTerm($db);
-	$schedules = ScheduleFetcher::retrieveTutorsOnCurrentTerms($db);
+	$tutors = TutorFetcher::retrieveAll();
+	$currentTerms = TermFetcher::retrieveCurrTerm();
+	$schedules = ScheduleFetcher::retrieveTutorsOnCurrentTerms();
 
 
 	if (isUrlRequestingAllSchedules($user)) {
@@ -46,11 +46,11 @@ try {
 	} else if (isBtnAddSchedulePrsd()) {
 		$pageTitle = "Add schedule";
 		$days = isset($_POST['day']) ? $_POST['day'] : NULL;
-		Schedule::add($db, $_POST['tutorId'], $_POST['termId'], $days, $_POST['startsAt'], $_POST['endsAt']);
+		Schedule::add( $_POST['tutorId'], $_POST['termId'], $days, $_POST['startsAt'], $_POST['endsAt']);
 		header('Location: ' . BASE_URL . 'staff/schedules/success');
 		exit();
 	} else if (isBtnDeletePrsd()) {
-		Schedule::delete($db, $_POST['delScheduleIdModal']);
+		Schedule::delete( $_POST['delScheduleIdModal']);
 		header('Location: ' . BASE_URL . 'staff/schedules/success');
 		exit();
 	} else if (isModificationSuccessful()) {

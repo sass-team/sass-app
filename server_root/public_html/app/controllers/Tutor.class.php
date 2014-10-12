@@ -26,10 +26,10 @@ class Tutor extends User
 		$this->setMajorId($majorId);
 	}
 
-	public static function addCourse($db, $tutorId, $teachingCoursesId, $termId) {
+	public static function addCourse($tutorId, $teachingCoursesId, $termId) {
 		foreach ($teachingCoursesId as $courseId) {
 			Course::validateId($courseId);
-			if (Tutor::teachesCourseWithIdOnTerm($db, $courseId, $tutorId, $termId)) {
+			if (Tutor::teachesCourseWithIdOnTerm($courseId, $tutorId, $termId)) {
 				throw new Exception("Tutor already teaches a course with id $courseId");
 			}
 		}
@@ -46,14 +46,15 @@ class Tutor extends User
 	 * @param $termId
 	 * @return bool
 	 */
-	public static function teachesCourseWithIdOnTerm($db, $newCourseId, $tutorId, $termId) {
+	public static function teachesCourseWithIdOnTerm($newCourseId, $tutorId, $termId) {
 		$query = "SELECT `" . self::DB_COLUMN_COURSE_ID . "`
 			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE_TUTOR_HAS_COURSE_HAS_TERM . "`
 			WHERE `" . self::DB_COLUMN_COURSE_ID . "`  = :courseId
 			AND `" . self::DB_TABLE_TUTOR_HAS_COURSE_HAS_TERM_TUTOR_USER_ID . "`  = :tutorId
 			AND `" . self::DB_TABLE_TUTOR_HAS_COURSE_HAS_TERM_TERM_ID . "`  = :term_id";
 
-		$query = $db->getConnection()->prepare($query);
+		$dbConnection = DatabaseManager::getConnection();
+		$query = $dbConnection->prepare($query);
 		$query->bindParam(':tutorId', $tutorId, PDO::PARAM_INT);
 		$query->bindParam(':courseId', $newCourseId, PDO::PARAM_INT);
 		$query->bindParam(':term_id', $termId, PDO::PARAM_INT);
@@ -66,10 +67,10 @@ class Tutor extends User
 		}
 	}
 
-	public static function hasAppointmentWithId($db, $tutorId, $appointmentId) {
+	public static function hasAppointmentWithId($tutorId, $appointmentId) {
 		self::validateId($tutorId);
-		Appointment::validateId($db, $appointmentId);
-		return TutorFetcher::hasAppointmentWithId($db, $tutorId, $appointmentId);
+		Appointment::validateId($appointmentId);
+		return TutorFetcher::hasAppointmentWithId($tutorId, $appointmentId);
 	}
 
 	public static function validateId($id) {
@@ -88,10 +89,10 @@ class Tutor extends User
 	public static function  getSingle($id) {
 		self::validateId($id);
 
-		return TutorFetcher::retrieveSingle($db, $id);
+		return TutorFetcher::retrieveSingle($id);
 	}
 
-	public static function retrieveCoursesNotTeaching($db, $id) {
+	public static function retrieveCoursesNotTeaching($id) {
 		$query =
 			"SELECT `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_CODE . "` AS 'code', `" . CourseFetcher::DB_TABLE . "`.`" .
 			CourseFetcher::DB_COLUMN_NAME . "` AS 'name',  `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_ID . "`
@@ -105,7 +106,8 @@ class Tutor extends User
 		)";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':tutorUserId', $id, PDO::PARAM_INT);
 			$query->execute();
 			return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -115,7 +117,7 @@ class Tutor extends User
 		}
 	}
 
-	public static function retrieveTeachingCourses($db, $id) {
+	public static function retrieveTeachingCourses($id) {
 
 
 		$query = "SELECT `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_CODE . "` , `" . CourseFetcher::DB_TABLE . "`.`" .
@@ -126,7 +128,8 @@ class Tutor extends User
 					`" . self::DB_TABLE_TUTOR_HAS_COURSE_HAS_TERM . "`.`" . self::DB_TABLE_TUTOR_HAS_COURSE_HAS_TERM_TUTOR_USER_ID . "` = :tutorId;";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':tutorId', $id, PDO::PARAM_INT);
 
 			$query->execute();
@@ -138,7 +141,7 @@ class Tutor extends User
 
 	}
 
-	public static function updateTeachingCourse($db, $id, $newCourseId, $oldCourseId, $termId) {
+	public static function updateTeachingCourse($id, $newCourseId, $oldCourseId, $termId) {
 
 		if (!preg_match('/^[0-9]+$/', $newCourseId) || !preg_match('/^[0-9]+$/', $oldCourseId) || strcmp($newCourseId, $oldCourseId) === 0) {
 			throw new Exception("Data has been tempered. Aborting process.");
@@ -146,13 +149,15 @@ class Tutor extends User
 
 		Term::validateId($termId);
 
-		if (self::teachesCourseWithIdOnTerm($db, $newCourseId, $id, $termId)) {
+		if (self::teachesCourseWithIdOnTerm($newCourseId, $id, $termId)) {
 			throw new Exception("Data has been tempered. Aborting process.");
 		}
 
 		try {
 			$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE_TUTOR_HAS_COURSE_HAS_TERM . "` SET `course_id`= :newCourseId WHERE `tutor_user_id`= :tutorId and`course_id`= :oldCourseId";
-			$query = $db->getConnection()->prepare($query);
+
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':newCourseId', $newCourseId, PDO::PARAM_INT);
 			$query->bindParam(':tutorId', $id, PDO::PARAM_INT);
 			$query->bindParam(':oldCourseId', $oldCourseId, PDO::PARAM_INT);
@@ -164,10 +169,10 @@ class Tutor extends User
 
 	public static function insertMajor($id, $majorId) {
 		Major::validateId($majorId);
-		TutorFetcher::insertMajor($db, $id, $majorId);
+		TutorFetcher::insertMajor($id, $majorId);
 	}
 
-	public static function replaceMajorId($db, $id, $newMajorId, $oldMajorId) {
+	public static function replaceMajorId($id, $newMajorId, $oldMajorId) {
 		// no changes made. no need to do any work.
 		if (strcmp($newMajorId, $oldMajorId) === 0) return false;
 
@@ -175,7 +180,7 @@ class Tutor extends User
 		Major::validateId($newMajorId);
 		Major::validateId($oldMajorId);
 
-		TutorFetcher::replaceMajorId($db, $id, $newMajorId);
+		TutorFetcher::replaceMajorId($id, $newMajorId);
 		return true;
 	}
 

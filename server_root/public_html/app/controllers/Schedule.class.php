@@ -8,7 +8,7 @@
  */
 class Schedule
 {
-    public static function add($db, $tutorId, $termId, $repeatingDays, $timeStart, $timeEnd) {
+    public static function add( $tutorId, $termId, $repeatingDays, $timeStart, $timeEnd) {
         Tutor::validateId($tutorId);
         Term::validateId($termId);
         self::validateRepeatingDays($repeatingDays);
@@ -16,7 +16,7 @@ class Schedule
         $timeStart = self::convertDate($timeStart);
         $timeEnd = self::convertDate($timeEnd);
 
-        $appointmentId = ScheduleFetcher::insert($db, $tutorId, $termId, $repeatingDays, $timeStart, $timeEnd);
+        $appointmentId = ScheduleFetcher::insert($tutorId, $termId, $repeatingDays, $timeStart, $timeEnd);
         // TODO: add option for admin to check if he wants an automatic email to be said on said user on his email
         return $appointmentId;
     }
@@ -46,63 +46,63 @@ class Schedule
         return $timeStart;
     }
 
-    public static function validateDate($db, $date, $tutorId) {
+    public static function validateDate( $date, $tutorId) {
         $date = Dates::initDateTime($date);
 //maybe in 	existDatesBetween you should consider also termId as a parameter?
-//		if (ScheduleFetcher::existDatesBetween($db, $dateStart, $dateEnd, $tutorId)) {
+//		if (ScheduleFetcher::existDatesBetween( $dateStart, $dateEnd, $tutorId)) {
 //			throw new Exception("Sorry, the days/hours you inputted conflict with existing working hours.");
 //		}
         return $date;
     }
 
-    public static function updateStartingDate($db, $id, $newStartingDate, $oldStartingDate) {
+    public static function updateStartingDate( $id, $newStartingDate, $oldStartingDate) {
         if (strcmp($newStartingDate, $oldStartingDate) === 0) return false;
 
         Dates::initDateTime($newStartingDate, $oldStartingDate);
-        ScheduleFetcher::updateStartingDate($db, $id, $newStartingDate);
+        ScheduleFetcher::updateStartingDate($id, $newStartingDate);
 
         return true;
     }
 
-    public static function updateEndingDate($db, $id, $newEndingDate, $oldEndingDate) {
+    public static function updateEndingDate( $id, $newEndingDate, $oldEndingDate) {
         if (strcmp($newEndingDate, $oldEndingDate) === 0) return false;
 
         Dates::initDateTime($newEndingDate, $oldEndingDate);
-        ScheduleFetcher::updateSingleColumn($db, $id, ScheduleFetcher::DB_COLUMN_END_TIME, $newEndingDate, PDO::PARAM_STR);
+        ScheduleFetcher::updateSingleColumn($id, ScheduleFetcher::DB_COLUMN_END_TIME, $newEndingDate, PDO::PARAM_STR);
         return true;
     }
 
-    public static function delete($db, $id) {
-        self::validateId($db, $id);
-        if (!ScheduleFetcher::idExists($db, $id)) {
+    public static function delete( $id) {
+        self::validateId( $id);
+        if (!ScheduleFetcher::idExists($id)) {
             throw new Exception("Could not retrieve schedule to be deleted from database. <br/>
                 Maybe some other administrator just deleted it?");
         }
 
-        ScheduleFetcher::delete($db, $id);
+        ScheduleFetcher::delete($id);
     }
 
-    public static function validateId($db, $id) {
+    public static function validateId( $id) {
         if (is_null($id) || !preg_match("/^[0-9]+$/", $id)) {
             throw new Exception("Data has been tempered. Aborting process.");
         }
 
-        if (!ScheduleFetcher::existsId($db, $id)) {
+        if (!ScheduleFetcher::existsId($id)) {
             // TODO: sent email to developer relevant to this error.
             throw new Exception("Either something went wrong with a database query, or you're trying to hack this app. In either case, the developers were just notified about this.");
 
         }
     }
 
-    public static function getSingleTutorOnTerm($db, $tutorId, $termId) {
+    public static function getSingleTutorOnTerm( $tutorId, $termId) {
         Tutor::validateId($tutorId);
         Term::validateId($termId);
-        return ScheduleFetcher::retrieveSingleTutorOnTerm($db, $tutorId, $termId);
+        return ScheduleFetcher::retrieveSingleTutorOnTerm($tutorId, $termId);
     }
 
-    public static function getTutorsOnTerm($db, $termId) {
+    public static function getTutorsOnTerm( $termId) {
         Term::validateId($termId);
-        return ScheduleFetcher::retrieveTutorsOnTerm($db, $termId);
+        return ScheduleFetcher::retrieveTutorsOnTerm($termId);
     }
 
 }

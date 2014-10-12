@@ -16,8 +16,8 @@ $email = $curUser[UserFetcher::DB_COLUMN_EMAIL];
 $position = $curUser[UserTypesFetcher::DB_COLUMN_TYPE];
 
 if (User::isUserTypeTutor($position)) {
-	$courses = TutorFetcher::retrieveCurrTermTeachingCourses($db, $id);
-	$schedules = ScheduleFetcher::retrieveCurrWorkingHours($db, $id);
+	$courses = TutorFetcher::retrieveCurrTermTeachingCourses($id);
+	$schedules = ScheduleFetcher::retrieveCurrWorkingHours($id);
 }
 $mobile = $curUser[UserFetcher::DB_COLUMN_MOBILE];
 ?>

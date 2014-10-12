@@ -44,14 +44,15 @@ class UserFetcher
 
 	}
 
-	public static function retrieveUsingEmail($db, $email) {
+	public static function retrieveUsingEmail($email) {
 		$query = "SELECT `" . self::DB_COLUMN_ID . "`, `" . self::DB_COLUMN_FIRST_NAME . "`, `" .
 			self::DB_COLUMN_LAST_NAME . "` , `" . self::DB_COLUMN_ACTIVE . "`
 			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
 			WHERE `" .
 			self::DB_COLUMN_EMAIL . "`=:email";
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':email', $email, PDO::PARAM_STR);
 
 			$query->execute();
@@ -62,11 +63,13 @@ class UserFetcher
 		}
 	}
 
-	public static function retrieveGenStringDate($db, $id) {
-		$query = "SELECT `" . self::DB_COLUMN_GEN_STRING_UPDATE_AT . "` FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE .
-			"` WHERE `" . self::DB_COLUMN_ID . "`=:id";
+	public static function retrieveGenStringDate($id) {
+		$query = "SELECT `" . self::DB_COLUMN_GEN_STRING_UPDATE_AT . "`
+		FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
+		WHERE `" . self::DB_COLUMN_ID . "`=:id";
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':id', $id, PDO::PARAM_STR);
 
 			$query->execute();
@@ -109,15 +112,17 @@ class UserFetcher
 
 
 	public
-	static function updateGenStringTimeUpdate($db, $id) {
+	static function updateGenStringTimeUpdate($id) {
 		date_default_timezone_set('Europe/Athens');
 		$date_modified = date("Y-m-d H:i:s");
 
 		try {
 
-			$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "` SET `" . self::DB_COLUMN_GEN_STRING_UPDATE_AT . "`=
-			 :data_modified WHERE `" . self::DB_COLUMN_ID . "`= :id";
-			$query = $db->getConnection()->prepare($query);
+			$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			SET `" . self::DB_COLUMN_GEN_STRING_UPDATE_AT . "`= :data_modified
+			WHERE `" . self::DB_COLUMN_ID . "`= :id";
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':id', $id);
 			$query->bindParam(':data_modified', $date_modified);
 
@@ -127,11 +132,15 @@ class UserFetcher
 		}
 	}
 
-	public static function generatedStringExists($db, $id, $generatedString) {
+	public static function generatedStringExists($id, $generatedString) {
 		try {
-			$sql = "SELECT COUNT(" . self::DB_COLUMN_GEN_STRING . ") FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" .
-				self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :id AND `" . self::DB_COLUMN_GEN_STRING . "` = :genString";
-			$query = $db->getConnection()->prepare($sql);
+			$query = "SELECT COUNT(" . self::DB_COLUMN_GEN_STRING . ")
+			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" .	self::DB_TABLE . "`
+			WHERE `" . self::DB_COLUMN_ID . "` = :id
+			AND `" . self::DB_COLUMN_GEN_STRING . "` = :genString";
+
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':id', $id, PDO::PARAM_INT);
 			$query->bindParam(':genString', $generatedString, PDO::PARAM_STR);
 
@@ -144,12 +153,16 @@ class UserFetcher
 		return true;
 	}
 
-	public static function updatePassword($db, $id, $newPassword) {
+	public static function updatePassword($id, $newPassword) {
 		try {
 			$new_password_hashed = password_hash($newPassword, PASSWORD_DEFAULT);
 
-			$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`user` SET `password`= :password, `gen_string`='' WHERE `id`= :id";
-			$query = $db->getConnection()->prepare($query);
+			$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`user`
+			SET `password`= :password, `gen_string`=''
+			WHERE `id`= :id";
+
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':id', $id);
 			$query->bindParam(':password', $new_password_hashed);
 
@@ -165,7 +178,6 @@ class UserFetcher
 				self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :id";
 
 			$dbConnection = DatabaseManager::getConnection();
-
 			$dbConnection = $dbConnection->prepare($sql);
 			$dbConnection->bindParam(':id', $id, PDO::PARAM_INT);
 			$dbConnection->execute();
@@ -177,10 +189,12 @@ class UserFetcher
 		return true;
 	}
 
-	public static function updateGenString($db, $id, $generatedString) {
+	public static function updateGenString($id, $generatedString) {
 		try {
-			$sql = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`user` SET `gen_string` = :gen_string WHERE `id` = :id";
-			$query = $db->getConnection()->prepare($sql);
+			$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`user` SET `gen_string` = :gen_string WHERE `id` = :id";
+
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':gen_string', $generatedString, PDO::PARAM_STR);
 			$query->bindParam(':id', $id, PDO::PARAM_INT);
 

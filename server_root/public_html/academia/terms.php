@@ -40,7 +40,7 @@ if ($user->isTutor()) {
 
 
 try {
-	$terms = TermFetcher::retrieveAll($db);
+	$terms = TermFetcher::retrieveAll();
 
 	if (isBtnUpdatePrsd()) {
 		$updateDone = FALSE;
@@ -49,9 +49,9 @@ try {
 
 		if (($course = getTerm($termId, $terms)) === FALSE) throw new Exception("Data tempering detected. Aborting.");
 
-		$updateDone = $updateDone || Term::updateName($db, $termId, $_POST['nameUpdate'], $course[TermFetcher::DB_COLUMN_NAME]);
-		$updateDone = $updateDone || Term::updateStartingDate($db, $termId, $_POST['dateStartUpdate'], $course[TermFetcher::DB_COLUMN_START_DATE]);
-		$updateDone = $updateDone || Term::updateEndingDate($db, $termId, $_POST['dateEndUpdate'], $course[TermFetcher::DB_COLUMN_END_DATE]);
+		$updateDone = $updateDone || Term::updateName( $termId, $_POST['nameUpdate'], $course[TermFetcher::DB_COLUMN_NAME]);
+		$updateDone = $updateDone || Term::updateStartingDate( $termId, $_POST['dateStartUpdate'], $course[TermFetcher::DB_COLUMN_START_DATE]);
+		$updateDone = $updateDone || Term::updateEndingDate( $termId, $_POST['dateEndUpdate'], $course[TermFetcher::DB_COLUMN_END_DATE]);
 
 		if (!$updateDone) throw new Exception("No new data inputted. Process aborted.");
 		header('Location: ' . BASE_URL . 'academia/terms/success');
@@ -59,11 +59,11 @@ try {
 
 	} else if (isBtnCreatePrsd()) {
 
-		Term::create($db, $_POST['termName'], $_POST['dateTimePickerStart'], $_POST['dateTimePickerEnd']);
+		Term::create( $_POST['termName'], $_POST['dateTimePickerStart'], $_POST['dateTimePickerEnd']);
 		header('Location: ' . BASE_URL . 'academia/terms/success');
 		exit();
 	} else if (isBtnDeletePrsd()) {
-		Term::delete($db, $_POST['delTermIdModal']);
+		Term::delete( $_POST['delTermIdModal']);
 		header('Location: ' . BASE_URL . 'academia/terms/success');
 		exit();
 	}

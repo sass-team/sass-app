@@ -6,9 +6,9 @@ try {
 
 	$curUser = $user;
 	if ($curUser->isTutor()) {
-		$teachingCourses = TutorFetcher::retrieveCurrTermTeachingCourses($db, $curUser->getId());
-		$schedules = ScheduleFetcher::retrieveCurrWorkingHours($db, $curUser->getId());
-		$currentTerms = TermFetcher::retrieveCurrTerm($db);
+		$teachingCourses = TutorFetcher::retrieveCurrTermTeachingCourses($curUser->getId());
+		$schedules = ScheduleFetcher::retrieveCurrWorkingHours($curUser->getId());
+		$currentTerms = TermFetcher::retrieveCurrTerm();
 	}
 } catch (Exception $e) {
 	$errors[] = $e->getMessage();

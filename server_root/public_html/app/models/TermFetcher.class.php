@@ -38,7 +38,7 @@ class TermFetcher
 
 
 //m-d-Y h:i A
-	public static function retrieveAllButCur($db) {
+	public static function retrieveAllButCur() {
 		$query =
 			"SELECT `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_NAME . "` , `" . self::DB_COLUMN_START_DATE . "`,
 			 `" . self::DB_COLUMN_END_DATE . "`
@@ -49,7 +49,8 @@ class TermFetcher
 			self::DB_TABLE . "`.`" . self::DB_COLUMN_START_DATE . "` DESC";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -59,7 +60,7 @@ class TermFetcher
 	}
 
 	//m-d-Y h:i A
-	public static function retrieveAll($db) {
+	public static function retrieveAll() {
 		$query =
 			"SELECT `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_NAME . "` , `" . self::DB_COLUMN_START_DATE . "`,
 			 `" . self::DB_COLUMN_END_DATE . "`
@@ -68,7 +69,8 @@ class TermFetcher
 			self::DB_TABLE . "`.`" . self::DB_COLUMN_START_DATE . "` DESC";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -78,7 +80,7 @@ class TermFetcher
 	}
 
 
-	public static function retrieveCurrTerm($db) {
+	public static function retrieveCurrTerm() {
 		$query =
 			"SELECT `" . self::DB_COLUMN_ID . "` ,
 					`" . self::DB_COLUMN_NAME . "`
@@ -86,7 +88,8 @@ class TermFetcher
 			 	WHERE CURRENT_TIMESTAMP() BETWEEN `" . self::DB_COLUMN_START_DATE . "` AND `" . self::DB_COLUMN_END_DATE . "`";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -96,14 +99,15 @@ class TermFetcher
 	}
 
 
-	public static function retrieveSingle($db, $id) {
+	public static function retrieveSingle($id) {
 		$query = "SELECT  `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_NAME . "` , `" . self::DB_COLUMN_START_DATE
 			. "`,		 `" . self::DB_COLUMN_END_DATE . "`
 			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
 			WHERE `" . self::DB_COLUMN_ID . "`=:id";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':id', $id, PDO::PARAM_INT);
 
 			$query->execute();
@@ -113,13 +117,14 @@ class TermFetcher
 		} // end catch
 	}
 
-	public static function updateName($db, $id, $newName) {
+	public static function updateName($id, $newName) {
 		$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
 					SET	`" . self::DB_COLUMN_NAME . "`= :newName
 					WHERE `id`= :id";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':id', $id, PDO::PARAM_INT);
 			$query->bindParam(':newName', $newName, PDO::PARAM_STR);
 			$query->execute();
@@ -130,13 +135,14 @@ class TermFetcher
 		}
 	}
 
-	public static function  updateStartingDate($db, $id, $newStartingDate) {
+	public static function  updateStartingDate($id, $newStartingDate) {
 		$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
 					SET	`" . self::DB_COLUMN_START_DATE . "`= :newName
 					WHERE `id`= :id";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':id', $id, PDO::PARAM_INT);
 			$query->bindParam(':newName', $newStartingDate, PDO::PARAM_STR);
 			$query->execute();
@@ -148,13 +154,14 @@ class TermFetcher
 	}
 
 
-	public static function updateSingleColumn($db, $id, $column, $value, $valueType) {
+	public static function updateSingleColumn($id, $column, $value, $valueType) {
 		$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
 					SET	`" . $column . "`= :column
 					WHERE `id`= :id";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':id', $id, PDO::PARAM_INT);
 			$query->bindParam(':column', $value, $valueType);
 			$query->execute();
@@ -165,7 +172,7 @@ class TermFetcher
 		}
 	}
 
-	public static function insert($db, $name, $startDate, $endDate) {
+	public static function insert($name, $startDate, $endDate) {
 		date_default_timezone_set('Europe/Athens');
 
 		$startDate = $startDate->format(Dates::DATE_FORMAT_IN);
@@ -180,7 +187,8 @@ class TermFetcher
 					:end_date
 				)";
 
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':name', $name, PDO::PARAM_STR);
 			$query->bindParam(':start_date', $startDate);
 			$query->bindParam(':end_date', $endDate);
@@ -210,10 +218,11 @@ class TermFetcher
 	}
 
 
-	public static function delete($db, $id) {
+	public static function delete($id) {
 		try {
 			$query = "DELETE FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :id";
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':id', $id, PDO::PARAM_INT);
 			$query->execute();
 			return true;
@@ -223,11 +232,12 @@ class TermFetcher
 	}
 
 
-	public static function existsName($db, $name) {
+	public static function existsName($name) {
 		try {
-			$sql = "SELECT COUNT(" . self::DB_COLUMN_NAME . ") FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" .
+			$query = "SELECT COUNT(" . self::DB_COLUMN_NAME . ") FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" .
 				self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_NAME . "` = :name";
-			$query = $db->getConnection()->prepare($sql);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':name', $name, PDO::PARAM_STR);
 			$query->execute();
 

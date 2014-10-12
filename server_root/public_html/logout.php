@@ -27,7 +27,7 @@
  * @since 6/29/14.
  */
 
-require __DIR__ . '/../app/init.php';
+require __DIR__ . '/app/init.php';
 // do not allow access to user that have not logged in.
 $general->loggedOutProtect();
 $pageTitle = "Log Out";

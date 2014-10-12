@@ -16,13 +16,13 @@ class Report
 	const LABEL_COLOR_SUCCESS = "success";
 
 
-	public static function getAllWithAppointmentId($db, $appointmentId) {
-		Appointment::validateId($db, $appointmentId);
-		return ReportFetcher::retrieveAllWithAppointmentId($db, $appointmentId);
+	public static function getAllWithAppointmentId($appointmentId) {
+		Appointment::validateId($appointmentId);
+		return ReportFetcher::retrieveAllWithAppointmentId($appointmentId);
 	}
 
-	public static function updateLabel($db, $formReportId, $message, $color) {
-		ReportFetcher::updateLabel($db, $formReportId, Report::LABEL_MESSAGE_PENDING_VALIDATION, Report::LABEL_COLOR_WARNING);
+	public static function updateLabel($formReportId, $message, $color) {
+		ReportFetcher::updateLabel($formReportId, $message, $color);
 
 	}
 
@@ -37,23 +37,23 @@ class Report
 		return $reports;
 	}
 
-	public static function getSingle($db, $reportId) {
-		self::validateId($db, $reportId);
-		return ReportFetcher::retrieveSingle($db, $reportId);
+	public static function getSingle($reportId) {
+		self::validateId($reportId);
+		return ReportFetcher::retrieveSingle($reportId);
 	}
 
-	public static function validateId($db, $id) {
-		if (!preg_match('/^[0-9]+$/', $id) || !ReportFetcher::existsId($db, $id)) {
+	public static function validateId($id) {
+		if (!preg_match('/^[0-9]+$/', $id) || !ReportFetcher::existsId($id)) {
 			throw new Exception("Data tempering detected.
 			<br/>You&#39;re trying to hack this app.<br/>Developers are being notified about this.<br/>Expect Us.");
 		}
 	}
 
-	public static function updateProjectTopicOtherText($db, $reportId, $oldText, $newText) {
+	public static function updateProjectTopicOtherText($reportId, $oldText, $newText) {
 		if (strcmp($oldText, $newText) === 0) return false;
-		self::validateId($db, $reportId);
+		self::validateId($reportId);
 		self::validateTextarea($newText, true);
-		return ReportFetcher::updateSingleColumn($db, $reportId, $newText, ReportFetcher::DB_COLUMN_PROJECT_TOPIC_OTHER);
+		return ReportFetcher::updateSingleColumn($reportId, $newText, ReportFetcher::DB_COLUMN_PROJECT_TOPIC_OTHER);
 	}
 
 	public static function validateTextarea($text, $notRequired) {
@@ -67,38 +67,38 @@ class Report
 		}
 	}
 
-	public static function updateOtherText($db, $reportId, $oldText, $newText) {
+	public static function updateOtherText($reportId, $oldText, $newText) {
 		if (strcmp($oldText, $newText) === 0) return false;
-		self::validateId($db, $reportId);
+		self::validateId($reportId);
 		self::validateTextarea($newText, true);
-		return ReportFetcher::updateSingleColumn($db, $reportId, $newText, ReportFetcher::DB_COLUMN_OTHER_TEXT_AREA);
+		return ReportFetcher::updateSingleColumn($reportId, $newText, ReportFetcher::DB_COLUMN_OTHER_TEXT_AREA);
 	}
 
-	public static function updateStudentsConcerns($db, $reportId, $oldText, $newText) {
+	public static function updateStudentsConcerns($reportId, $oldText, $newText) {
 		if (strcmp($oldText, $newText) === 0) return false;
-		self::validateId($db, $reportId);
+		self::validateId($reportId);
 		self::validateTextarea($newText, true);
-		return ReportFetcher::updateSingleColumn($db, $reportId, $newText, ReportFetcher::DB_COLUMN_STUDENT_CONCERNS);
+		return ReportFetcher::updateSingleColumn($reportId, $newText, ReportFetcher::DB_COLUMN_STUDENT_CONCERNS);
 	}
 
-	public static function updateRelevantFeedbackGuidelines($db, $reportId, $oldText, $newText) {
+	public static function updateRelevantFeedbackGuidelines($reportId, $oldText, $newText) {
 		if (!isset($newText) || strcmp($oldText, $newText) === 0) return false;
-		self::validateId($db, $reportId);
+		self::validateId($reportId);
 		self::validateTextarea($newText, true);
-		return ReportFetcher::updateSingleColumn($db, $reportId, $newText, ReportFetcher::DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES);
+		return ReportFetcher::updateSingleColumn($reportId, $newText, ReportFetcher::DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES);
 	}
 
-	public static function updateAdditionalComments($db, $reportId, $oldText, $newText) {
+	public static function updateAdditionalComments($reportId, $oldText, $newText) {
 		if (strcmp($oldText, $newText) === 0) return false;
-		self::validateId($db, $reportId);
+		self::validateId($reportId);
 		self::validateTextarea($newText, true);
-		return ReportFetcher::updateSingleColumn($db, $reportId, $newText, ReportFetcher::DB_COLUMN_ADDITIONAL_COMMENTS);
+		return ReportFetcher::updateSingleColumn($reportId, $newText, ReportFetcher::DB_COLUMN_ADDITIONAL_COMMENTS);
 	}
 
-	public static function updateAllFields($db, $reportId, $projectTopicOtherNew, $otherTextArea, $studentsConcernsTextArea,
+	public static function updateAllFields($reportId, $projectTopicOtherNew, $otherTextArea, $studentsConcernsTextArea,
 	                                       $relevantFeedbackGuidelines, $studentBroughtAlongNew, $studentBroughtAlongOld,
 	                                       $conclusionAdditionalComments) {
-		self::validateId($db, $reportId);
+		self::validateId($reportId);
 		self::validateTextarea($projectTopicOtherNew, false);
 		self::validateTextarea($otherTextArea, true);
 		self::validateTextarea($studentsConcernsTextArea, false);
@@ -106,8 +106,8 @@ class Report
 		self::validateOptionsStudentBroughtAlong($studentBroughtAlongNew);
 
 		self::validateTextarea($conclusionAdditionalComments, true);
-		return ReportFetcher::updateAllColumns($db, $reportId, $projectTopicOtherNew, $otherTextArea,
-			$studentsConcernsTextArea, $relevantFeedbackGuidelines, $studentBroughtAlongNew, $studentBroughtAlongOld, $conclusionAdditionalComments);
+		return ReportFetcher::updateAllColumns($reportId, $projectTopicOtherNew, $otherTextArea, $studentsConcernsTextArea,
+			$relevantFeedbackGuidelines, $studentBroughtAlongNew, $studentBroughtAlongOld, $conclusionAdditionalComments);
 	}
 
 	public static function validateOptionsStudentBroughtAlong($newOptions) {
@@ -134,12 +134,12 @@ class Report
 		}
 	}
 
-	public static function updateStudentBroughtAlong($db, $reportId, $newOptions, $oldOptions) {
+	public static function updateStudentBroughtAlong($reportId, $newOptions, $oldOptions) {
 		if ($newOptions === NULL) $newOptions = [];
 		self::validateOptionsStudentBroughtAlong($newOptions);
 		if (!self::validateIfUpdateIsNeeded($newOptions, $oldOptions)) return false;
-		self::validateId($db, $reportId);
-		return StudentBroughtAlongFetcher::update($db, $newOptions, $oldOptions, $reportId);
+		self::validateId($reportId);
+		return StudentBroughtAlongFetcher::update($newOptions, $oldOptions, $reportId);
 	}
 
 	public static function validateIfUpdateIsNeeded($newOptions, $oldOptions) {

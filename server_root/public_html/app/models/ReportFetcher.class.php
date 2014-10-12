@@ -21,7 +21,7 @@ class ReportFetcher
 	const DB_COLUMN_LABEL_MESSAGE = "label_message";
 	const DB_COLUMN_LABEL_COLOR = "label_color";
 
-	public static function retrieveAllWithAppointmentId($db, $appointmentId) {
+	public static function retrieveAllWithAppointmentId($appointmentId) {
 		$query =
 			"SELECT `" . StudentFetcher::DB_TABLE . "`.`" . StudentFetcher::DB_COLUMN_FIRST_NAME . "` ,
 			`" . StudentFetcher::DB_TABLE . "`.`" . StudentFetcher::DB_COLUMN_LAST_NAME . "` ,
@@ -61,7 +61,8 @@ class ReportFetcher
 			AppointmentHasStudentFetcher::DB_COLUMN_APPOINTMENT_ID . "` = :appointment_id";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':appointment_id', $appointmentId, PDO::PARAM_INT);
 
 			$query->execute();
@@ -73,11 +74,11 @@ class ReportFetcher
 	}
 
 	/**
-	 * @param $db
 	 * @param $tutorId
 	 * @throws Exception
+	 * @internal param $db
 	 */
-	public static function retrieveAllOfCurrTermsByTutor($db, $tutorId) {
+	public static function retrieveAllOfCurrTermsByTutor($tutorId) {
 		$query =
 			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`, `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_LABEL_MESSAGE . "`,
 			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_LABEL_COLOR . "`, `" . AppointmentFetcher::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`
@@ -97,7 +98,8 @@ class ReportFetcher
 			ORDER BY `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` ASC";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':tutor_id', $tutorId, PDO::PARAM_INT);
 			$query->execute();
 
@@ -108,10 +110,10 @@ class ReportFetcher
 	}
 
 	/**
-	 * @param $db
 	 * @throws Exception
+	 * @internal param $db
 	 */
-	public static function retrieveAllOfCurrTerms($db) {
+	public static function retrieveAllOfCurrTerms() {
 		$query =
 			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`, `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_LABEL_MESSAGE . "`,
 			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_LABEL_COLOR . "`, `" . AppointmentFetcher::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`
@@ -130,7 +132,8 @@ class ReportFetcher
 			ORDER BY `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` ASC";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -139,14 +142,15 @@ class ReportFetcher
 		}
 	}
 
-	public static function updateLabel($db, $reportId, $labelMessage, $labelColor) {
+	public static function updateLabel($reportId, $labelMessage, $labelColor) {
 		$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
 					SET `" . self::DB_COLUMN_LABEL_MESSAGE . "`= :label_message, `" . self::DB_COLUMN_LABEL_COLOR . "` =
 					:label_color
 					WHERE `" . self::DB_COLUMN_ID . "` = :id";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':id', $reportId, PDO::PARAM_INT);
 			$query->bindParam(':label_message', $labelMessage, PDO::PARAM_STR);
 			$query->bindParam(':label_color', $labelColor, PDO::PARAM_STR);
@@ -182,7 +186,7 @@ class ReportFetcher
 			$query->execute();
 			// last inserted if of THIS connection
 			$reportId = $dbConnection->lastInsertId();
-			StudentBroughtAlongFetcher::insert($dbConnection, $reportId);
+			StudentBroughtAlongFetcher::insert($reportId);
 			AppointmentHasStudentFetcher::update($appointmentId, $reportId);
 
 			$dbConnection->commit();
@@ -194,12 +198,14 @@ class ReportFetcher
 
 	}
 
-	public static function existsId($db, $id) {
+	public static function existsId($id) {
 		try {
-			$sql = "SELECT COUNT(" . self::DB_COLUMN_ID . ")
+			$query = "SELECT COUNT(" . self::DB_COLUMN_ID . ")
 			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
 			WHERE `" . self::DB_COLUMN_ID . "` = :id";
-			$query = $db->getConnection()->prepare($sql);
+
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':id', $id, PDO::PARAM_INT);
 			$query->execute();
 
@@ -211,13 +217,14 @@ class ReportFetcher
 		return true;
 	}
 
-	public static function updateSingleColumn($db, $reportId, $newText, $column) {
+	public static function updateSingleColumn($reportId, $newText, $column) {
 		$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
 					SET `" . $column . "`= :new_text
 					WHERE `" . self::DB_COLUMN_ID . "` = :report_id";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':new_text', $newText, PDO::PARAM_STR);
 			$query->bindParam(':report_id', $reportId, PDO::PARAM_INT);
 
@@ -230,8 +237,9 @@ class ReportFetcher
 		return false;
 	}
 
-	public static function updateAllColumns($db, $reportId, $projectTopicOtherNew, $otherTextArea,
-	                                        $studentsConcernsTextArea, $relevantFeedbackGuidelines, $studentBroughtAlongNew, $studentBroughtAlongOld, $conclusionAdditionalComments) {
+	public static function updateAllColumns($reportId, $projectTopicOtherNew, $otherTextArea, $studentsConcernsTextArea,
+	                                        $relevantFeedbackGuidelines, $studentBroughtAlongNew, $studentBroughtAlongOld,
+	                                        $conclusionAdditionalComments) {
 		$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
 					SET  `" . self::DB_COLUMN_PROJECT_TOPIC_OTHER . "`= :project_topic_other,
 					`" . self::DB_COLUMN_OTHER_TEXT_AREA . "`= :other_text_area,
@@ -241,7 +249,8 @@ class ReportFetcher
 					WHERE `" . self::DB_COLUMN_ID . "` = :report_id";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':project_topic_other', $projectTopicOtherNew, PDO::PARAM_STR);
 			$query->bindParam(':other_text_area', $otherTextArea, PDO::PARAM_STR);
 			$query->bindParam(':students_concerns_text_area', $studentsConcernsTextArea, PDO::PARAM_STR);
@@ -252,7 +261,7 @@ class ReportFetcher
 
 			$query->execute();
 
-			Report::updateStudentBroughtAlong($db, $reportId, $studentBroughtAlongNew, $studentBroughtAlongOld);
+			Report::updateStudentBroughtAlong( $reportId, $studentBroughtAlongNew, $studentBroughtAlongOld);
 
 			return true;
 		} catch (Exception $e) {
@@ -261,7 +270,7 @@ class ReportFetcher
 		return false;
 	}
 
-	public static function retrieveAll($db) {
+	public static function retrieveAll() {
 		date_default_timezone_set('Europe/Athens');
 
 		$query =
@@ -272,7 +281,8 @@ class ReportFetcher
 			ORDER BY `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` DESC";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -282,7 +292,7 @@ class ReportFetcher
 	}
 
 
-	public static function retrieveSingle($db, $id) {
+	public static function retrieveSingle($id) {
 		$query = "SELECT `" . self::DB_COLUMN_ID . "`, `" . self::DB_COLUMN_INSTRUCTOR_ID . "`, `" .
 			self::DB_COLUMN_STUDENT_ID . "`, `" . self::DB_COLUMN_STUDENT_CONCERNS . "`, `" .
 			self::DB_COLUMN_PROJECT_TOPIC_OTHER . "`, `" . self::DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES . ",`" .
@@ -291,7 +301,8 @@ class ReportFetcher
 			WHERE `" . self::DB_COLUMN_ID . "`=:id";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':id', $id, PDO::PARAM_INT);
 
 			$query->execute();

@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/../../app/init.php';
+require __DIR__ . '/../app/init.php';
 $general->loggedOutProtect();
 
 $section = "appointments";
@@ -11,14 +11,14 @@ try {
 //		$appointmentId = $_GET['appointmentId'];
 //
 //		// redirect if user elevation is not that of secretary or admin
-//		if ($user->isTutor() && !Tutor::hasAppointmentWithId($db, $user->getId(), $appointmentId)) {
+//		if ($user->isTutor() && !Tutor::hasAppointmentWithId( $user->getId(), $appointmentId)) {
 //			header('Location: ' . BASE_URL . "error-403");
 //			exit();
 //		}
 //
-//		$students = Appointment::getAllStudentsWithAppointment($db, $appointmentId);
-//		$course = Course::get($db, $students[0][AppointmentFetcher::DB_COLUMN_COURSE_ID]);
-//		$term = TermFetcher::retrieveSingle($db, $students[0][AppointmentFetcher::DB_COLUMN_TERM_ID]);
+//		$students = Appointment::getAllStudentsWithAppointment( $appointmentId);
+//		$course = Course::get( $students[0][AppointmentFetcher::DB_COLUMN_COURSE_ID]);
+//		$term = TermFetcher::retrieveSingle( $students[0][AppointmentFetcher::DB_COLUMN_TERM_ID]);
 //
 //		$tutorName = $students[0][UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_FIRST_NAME] . " " .
 //			$students[0][UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_LAST_NAME];
@@ -29,7 +29,7 @@ try {
 	} else if (isUrlRequestingAllAppointments()) {
 		$pageTitle = "All appointments";
 
-		$terms = TermFetcher::retrieveCurrTerm($db);
+		$terms = TermFetcher::retrieveCurrTerm();
 
 		if ($user->isTutor()) {
 			$pageTitle = "All my appointments";
@@ -417,6 +417,7 @@ require ROOT_PATH . 'views/sidebar.php';
 				},
 				error: function (xhr, status, error) {
 					$('#calendar-title').text("there was an error while fetching appointments");
+					console.log(xhr.responseText);
 				},
 				success: function () {
 					$calendarTitle.text("All tutors appointments");

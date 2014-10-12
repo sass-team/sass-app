@@ -31,15 +31,16 @@ class Tutor_has_course_has_termFetcher
 
 			return true;
 		} catch (Exception $e) {
-			throw new Exception("Could not insert teaching courses data into database.");}
+			throw new Exception("Could not insert teaching courses data into database.");
+		}
 
 	}
 
-	public static function retrieveCurrTermAllTeachingCourses($db) {
+	public static function retrieveCurrTermAllTeachingCourses() {
 		$query = "SELECT `" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_FIRST_NAME . "`,
 						 `" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_LAST_NAME . "`,
-						 `" . CourseFetcher::DB_TABLE . "`.`" .	CourseFetcher::DB_COLUMN_CODE . "`,
-						 `" . CourseFetcher::DB_TABLE . "`.`" .	CourseFetcher::DB_COLUMN_NAME . "`,	
+						 `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_CODE . "`,
+						 `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_NAME . "`,
 						 `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_NAME . "` AS
 						" . TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_NAME . "
 			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
@@ -55,7 +56,8 @@ class Tutor_has_course_has_termFetcher
 			WHERE (NOW() BETWEEN `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_END_DATE . "`)";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);

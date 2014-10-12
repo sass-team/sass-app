@@ -19,15 +19,15 @@ class StudentFetcher extends Person
 	const DB_COLUMN_CREDITS = "credits";
 	const DB_COLUMN_MAJOR_ID = "major_id";
 
-	public static function add($db, $firstName, $lastName, $email, $mobileNum, $courses, $ci, $credits) {
+	public static function add($firstName, $lastName, $email, $mobileNum, $courses, $ci, $credits) {
 
 	}
 
 	/**
-	 * @param $db
 	 * @throws Exception
+	 * @internal param $db
 	 */
-	public static function retrieveAll($db) {
+	public static function retrieveAll() {
 		$query =
 			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_STUDENT_ID . "`, `" . self::DB_TABLE . "`.`" .
 			self::DB_COLUMN_ID . "`, `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_EMAIL . "`, `" . self::DB_TABLE . "`.`"
@@ -40,9 +40,11 @@ class StudentFetcher extends Person
 			MajorFetcher::DB_TABLE . "`
 			WHERE `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_MAJOR_ID . "` = `" . MajorFetcher::DB_TABLE . "`.`" .
 			MajorFetcher::DB_COLUMN_ID . "`;";
-		$query = $db->getConnection()->prepare($query);
+
 
 		try {
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->execute();
 			$rows = $query->fetchAll(PDO::FETCH_ASSOC);
 
@@ -52,7 +54,7 @@ class StudentFetcher extends Person
 		} // end catch
 	}
 
-	public static function insert($db, $firstName, $lastName, $email, $studentId, $mobileNum, $majorId, $ci, $credits) {
+	public static function insert($firstName, $lastName, $email, $studentId, $mobileNum, $majorId, $ci, $credits) {
 
 		try {
 			$query = "INSERT INTO `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
@@ -73,7 +75,8 @@ class StudentFetcher extends Person
 				)";
 
 
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':student_id', $studentId, PDO::PARAM_INT);
 			$query->bindParam(':email', $email, PDO::PARAM_STR);
 			$query->bindParam(':first_name', $firstName, PDO::PARAM_STR);
@@ -91,11 +94,12 @@ class StudentFetcher extends Person
 	}
 
 
-	public static function existsMobileNum($db, $newMobileNum) {
+	public static function existsMobileNum($newMobileNum) {
 		try {
-			$sql = "SELECT COUNT(" . self::DB_COLUMN_MOBILE . ") FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" .
+			$query = "SELECT COUNT(" . self::DB_COLUMN_MOBILE . ") FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" .
 				self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_MOBILE . "` = :mobileNum";
-			$query = $db->getConnection()->prepare($sql);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':mobileNum', $newMobileNum, PDO::PARAM_INT);
 			$query->execute();
 
@@ -125,13 +129,14 @@ class StudentFetcher extends Person
 		return true;
 	}
 
-	public static function updateFirstName($db, $id, $newName) {
+	public static function updateFirstName($id, $newName) {
 		$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
 					SET	`" . self::DB_COLUMN_FIRST_NAME . "`= :newName
 					WHERE `" . self::DB_COLUMN_ID . "`= :id";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':id', $id, PDO::PARAM_INT);
 			$query->bindParam(':newName', $newName, PDO::PARAM_STR);
 			$query->execute();
@@ -142,13 +147,14 @@ class StudentFetcher extends Person
 		}
 	}
 
-	public static function updateLastName($db, $id, $newName) {
+	public static function updateLastName($id, $newName) {
 		$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
 					SET	`" . self::DB_COLUMN_LAST_NAME . "`= :newName
 					WHERE `" . self::DB_COLUMN_ID . "`= :id";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':id', $id, PDO::PARAM_INT);
 			$query->bindParam(':newName', $newName, PDO::PARAM_STR);
 			$query->execute();
@@ -159,13 +165,14 @@ class StudentFetcher extends Person
 		}
 	}
 
-	public static function updateMobileNum($db, $id, $mobileNum) {
+	public static function updateMobileNum($id, $mobileNum) {
 		$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
 					SET	`" . self::DB_COLUMN_MOBILE . "`= :mobileNum
 					WHERE `" . self::DB_COLUMN_ID . "`= :id";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':id', $id, PDO::PARAM_INT);
 			$query->bindParam(':mobileNum', $mobileNum, PDO::PARAM_STR);
 			$query->execute();
@@ -176,13 +183,14 @@ class StudentFetcher extends Person
 		}
 	}
 
-	public static function updateStudentId($db, $id, $studentId) {
+	public static function updateStudentId($id, $studentId) {
 		$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
 					SET	`" . self::DB_COLUMN_STUDENT_ID . "`= :newStudentId
 					WHERE `" . self::DB_COLUMN_ID . "`= :id";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':id', $id, PDO::PARAM_INT);
 			$query->bindParam(':newStudentId', $studentId, PDO::PARAM_INT);
 			$query->execute();
@@ -193,13 +201,14 @@ class StudentFetcher extends Person
 		}
 	}
 
-	public static function updateMajorId($db, $id, $majorId) {
+	public static function updateMajorId($id, $majorId) {
 		$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
 					SET	`" . self::DB_COLUMN_MAJOR_ID . "`= :majorId
 					WHERE `" . self::DB_COLUMN_ID . "`= :id";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':id', $id, PDO::PARAM_INT);
 			$query->bindParam(':majorId', $majorId, PDO::PARAM_INT);
 			$query->execute();
@@ -210,13 +219,14 @@ class StudentFetcher extends Person
 		}
 	}
 
-	public static function updateCi($db, $id, $newCi) {
+	public static function updateCi($id, $newCi) {
 		$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
 					SET	`" . self::DB_COLUMN_CI . "`= :ci
 					WHERE `" . self::DB_COLUMN_ID . "`= :id";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':id', $id, PDO::PARAM_INT);
 			$query->bindParam(':ci', $newCi, PDO::PARAM_BOOL);
 			$query->execute();
@@ -227,13 +237,14 @@ class StudentFetcher extends Person
 		}
 	}
 
-	public static function updateCredits($db, $id, $credits) {
+	public static function updateCredits($id, $credits) {
 		$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
 					SET	`" . self::DB_COLUMN_CREDITS . "`= :credits
 					WHERE `" . self::DB_COLUMN_ID . "`= :id";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':id', $id, PDO::PARAM_INT);
 			$query->bindParam(':credits', $credits, PDO::PARAM_INT);
 			$query->execute();
@@ -245,13 +256,14 @@ class StudentFetcher extends Person
 	}
 
 
-	public static function existsEmail($db, $email) {
+	public static function existsEmail($email) {
 		try {
 			$email = trim($email);
 			$query = "SELECT COUNT(`" . self::DB_COLUMN_ID . "`) FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "` WHERE `" .
 				self::DB_COLUMN_EMAIL . "` = :email";
 
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':email', $email, PDO::PARAM_STR);
 
 			$query->execute();
@@ -266,13 +278,14 @@ class StudentFetcher extends Person
 
 	} // end function get_data
 
-	public static function updateEmail($db, $id, $email) {
+	public static function updateEmail($id, $email) {
 		try {
 
-			$sql = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "` SET `" . self::DB_COLUMN_EMAIL . "` = :email WHERE `" .
+			$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "` SET `" . self::DB_COLUMN_EMAIL . "` = :email WHERE `" .
 				self::DB_COLUMN_ID . "`= :id";
 
-			$query = $db->getConnection()->prepare($sql);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':id', $id, PDO::PARAM_INT);
 			$query->bindParam(':email', $email, PDO::PARAM_STR);
 			$query->execute();
@@ -284,11 +297,13 @@ class StudentFetcher extends Person
 	}
 
 
-	public static function existsStudentId($db, $studentId) {
+	public static function existsStudentId($studentId) {
 		try {
-			$sql = "SELECT COUNT(" . self::DB_COLUMN_STUDENT_ID . ") FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" .
+			$query = "SELECT COUNT(" . self::DB_COLUMN_STUDENT_ID . ") FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" .
 				self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_STUDENT_ID . "` = :studentId";
-			$query = $db->getConnection()->prepare($sql);
+
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':studentId', $studentId, PDO::PARAM_INT);
 			$query->execute();
 

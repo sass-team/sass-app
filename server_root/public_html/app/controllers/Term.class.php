@@ -34,28 +34,28 @@ class Term
 
 	const MINIMUM_TERM_DAYS = 20;
 
-	public static function create($db, $name, $startDate, $endDate) {
+	public static function create( $name, $startDate, $endDate) {
 		date_default_timezone_set('Europe/Athens');
 
-		self::validateName($db, $name);
+		self::validateName( $name);
 		try {
 
 			$startDate = new DateTime($startDate);
 			$endDate = new DateTime($endDate);
 
 			self::validateDateTypes($startDate, $endDate);
-			TermFetcher::insert($db, $name, $startDate, $endDate);
+			TermFetcher::insert($name, $startDate, $endDate);
 		} catch (Exception $e) {
 			throw new Exception($e->getMessage());
 
 		}
 	}
 
-	public static function  validateName($db, $name) {
+	public static function  validateName( $name) {
 		if (!preg_match('/^[\\w\\ ]{1,35}$/', $name))
 			throw new Exception("Term names can only word characters of length 1-35.");
 
-		if (TermFetcher::existsName($db, $name))
+		if (TermFetcher::existsName($name))
 			throw new Exception("Term name already exists. Please choose another one.");
 	}
 
@@ -71,41 +71,41 @@ class Term
 	}
 
 
-	public static function updateName($db, $id, $newName, $oldName) {
+	public static function updateName( $id, $newName, $oldName) {
 		if (strcmp($newName, $oldName) === 0) return false;
 
-		self::validateName($db, $newName);
-		TermFetcher::updateName($db, $id, $newName);
+		self::validateName( $newName);
+		TermFetcher::updateName($id, $newName);
 
 		return true;
 	}
 
-	public static function updateStartingDate($db, $id, $newStartingDate, $oldStartingDate) {
+	public static function updateStartingDate( $id, $newStartingDate, $oldStartingDate) {
 		if (strcmp($newStartingDate, $oldStartingDate) === 0) return false;
 
 		Dates::initDateTime($newStartingDate, $oldStartingDate);
-		TermFetcher::updateStartingDate($db, $id, $newStartingDate);
+		TermFetcher::updateStartingDate($id, $newStartingDate);
 
 		return true;
 	}
 
 
-	public static function updateEndingDate($db, $id, $newEndingDate, $oldEndingDate) {
+	public static function updateEndingDate( $id, $newEndingDate, $oldEndingDate) {
 		if (strcmp($newEndingDate, $oldEndingDate) === 0) return false;
 
 		Dates::initDateTime($newEndingDate, $oldEndingDate);
-		TermFetcher::updateSingleColumn($db, $id, TermFetcher::DB_COLUMN_END_DATE, $newEndingDate, PDO::PARAM_STR);
+		TermFetcher::updateSingleColumn($id, TermFetcher::DB_COLUMN_END_DATE, $newEndingDate, PDO::PARAM_STR);
 		return true;
 	}
 
-	public static function delete($db, $id) {
+	public static function delete( $id) {
 		self::validateId($id);
 		if (!TermFetcher::idExists($id)) {
 			throw new Exception("Could not retrieve term to be deleted from database. <br/>
                 Maybe some other administrator just deleted it?");
 		}
 
-		TermFetcher::delete($db, $id);
+		TermFetcher::delete($id);
 	}
 
 	public static function validateId($id) {

@@ -21,14 +21,15 @@ class StudentBroughtAlongFetcher
 	const IS_SELECTED = "1";
 	const IS_NOT_SELECTED = "0";
 
-	public static function insert($db, $reportId) {
+	public static function insert($reportId) {
 		try {
 			$queryInsertUser = "INSERT INTO `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
 			(`" . self::DB_COLUMN_REPORT_ID . "`)
 			VALUES(:report_id)";
 
 
-			$queryInsertUser = $db->getConnection()->prepare($queryInsertUser);
+			$dbConnection = DatabaseManager::getConnection();
+			$queryInsertUser = $dbConnection->prepare($queryInsertUser);
 			$queryInsertUser->bindParam(':report_id', $reportId, PDO::PARAM_INT);
 
 			$queryInsertUser->execute();
@@ -40,7 +41,7 @@ class StudentBroughtAlongFetcher
 	}
 
 
-	public static function update($db, $newOptions, $oldOptions, $reportId) {
+	public static function update($newOptions, $oldOptions, $reportId) {
 		foreach ($oldOptions as $option => $value) {
 			switch ($option) {
 				case StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_GRADED:
@@ -122,7 +123,8 @@ class StudentBroughtAlongFetcher
 					WHERE `" . self::DB_COLUMN_REPORT_ID . "` = :report_id";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':assignment_graded', $assignmentGraded, PDO::PARAM_INT);
 			$query->bindParam(':draft', $draft, PDO::PARAM_INT);
 			$query->bindParam(':instructors_feedback', $instructorFeedback, PDO::PARAM_INT);

@@ -13,18 +13,18 @@ $pageTitle = "Academia - Students";
 $section = "academia";
 
 try {
-	$students = StudentFetcher::retrieveAll($db);
-	$majors = MajorFetcher::retrieveMajors($db);
+	$students = StudentFetcher::retrieveAll();
+	$majors = MajorFetcher::retrieveMajors();
 
 	if (isBtnAddStudentPrsd()) {
 		$majorId = !empty($_POST['userMajorId']) ? $_POST['userMajorId'] : NULL;
 
-		Student::create($db, $_POST['firstName'], $_POST['lastName'], $_POST['email'], $_POST['studentId'],
+		Student::create( $_POST['firstName'], $_POST['lastName'], $_POST['email'], $_POST['studentId'],
 			$_POST['mobileNum'], $majorId, $_POST['ciInput'], $_POST['creditsInput']);
 		header('Location: ' . BASE_URL . "academia/students/success");
 		exit();
 	} else if (isBtnAddMajorPrsd()) {
-		Major::create($db, $_POST['majorCode'], $_POST['majorName']);
+		Major::create( $_POST['majorCode'], $_POST['majorName']);
 		header('Location: ' . BASE_URL . "academia/students/success");
 	} else if (isBtnUpdatePrsd()) {
 
@@ -42,14 +42,14 @@ try {
 			$newCreditsNum = $_POST['newCreditsNum'];
 
 
-			Student::updateFirstName($db, $id, $newFirstName, $oldStudentData[StudentFetcher::DB_COLUMN_FIRST_NAME]);
-			Student::updateLastName($db, $id, $newLastName, $oldStudentData[StudentFetcher::DB_COLUMN_LAST_NAME]);
-			Student::updateStudentId($db, $id, $newStudentId, $oldStudentData[StudentFetcher::DB_COLUMN_STUDENT_ID]);
-			Student::updateEmail($db, $id, $newEmail, $oldStudentData[StudentFetcher::DB_COLUMN_EMAIL]);
-			Student::updateMobileNum($db, $id, $newMobileNum, $oldStudentData[StudentFetcher::DB_COLUMN_MOBILE]);
-			Student::updateMajorId($db, $id, $newMajorId, $oldStudentData[StudentFetcher::DB_COLUMN_MAJOR_ID]);
-			Student::updateCi($db, $id, $newCI, $oldStudentData[StudentFetcher::DB_COLUMN_CI]);
-			Student::updateCredits($db, $id, $newCreditsNum, $oldStudentData[StudentFetcher::DB_COLUMN_CREDITS]);
+			Student::updateFirstName( $id, $newFirstName, $oldStudentData[StudentFetcher::DB_COLUMN_FIRST_NAME]);
+			Student::updateLastName( $id, $newLastName, $oldStudentData[StudentFetcher::DB_COLUMN_LAST_NAME]);
+			Student::updateStudentId( $id, $newStudentId, $oldStudentData[StudentFetcher::DB_COLUMN_STUDENT_ID]);
+			Student::updateEmail( $id, $newEmail, $oldStudentData[StudentFetcher::DB_COLUMN_EMAIL]);
+			Student::updateMobileNum( $id, $newMobileNum, $oldStudentData[StudentFetcher::DB_COLUMN_MOBILE]);
+			Student::updateMajorId( $id, $newMajorId, $oldStudentData[StudentFetcher::DB_COLUMN_MAJOR_ID]);
+			Student::updateCi( $id, $newCI, $oldStudentData[StudentFetcher::DB_COLUMN_CI]);
+			Student::updateCredits( $id, $newCreditsNum, $oldStudentData[StudentFetcher::DB_COLUMN_CREDITS]);
 
 			header('Location: ' . BASE_URL . "academia/students/success");
 

@@ -13,25 +13,25 @@ function reportsHaveBeenCrtd($studentsAppointmentData) {
 }
 
 try {
-	if (!isUrlValid() || ($user->isTutor() && !Tutor::hasAppointmentWithId($db, $user->getId(), $_GET['appointmentId']))) {
+	if (!isUrlValid() || ($user->isTutor() && !Tutor::hasAppointmentWithId( $user->getId(), $_GET['appointmentId']))) {
 		header('Location: ' . BASE_URL . "error-403");
 		exit();
 	}
 
 	$pageTitle = "Single Appointment";
 	$appointmentId = $_GET['appointmentId'];
-	$studentsAppointmentData = Appointment::getAllStudentsWithAppointment($db, $appointmentId);
-	$terms = TermFetcher::retrieveCurrTerm($db);
-	$students = StudentFetcher::retrieveAll($db);
+	$studentsAppointmentData = Appointment::getAllStudentsWithAppointment($appointmentId);
+	$terms = TermFetcher::retrieveCurrTerm();
+	$students = StudentFetcher::retrieveAll();
 	$courses = CourseFetcher::retrieveForTerm($studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_TERM_ID]);
-	$instructors = InstructorFetcher::retrieveAll($db);
-	$tutors = TutorFetcher::retrieveAll($db);
+	$instructors = InstructorFetcher::retrieveAll();
+	$tutors = TutorFetcher::retrieveAll();
 	$startDateTime = new DateTime($studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_START_TIME]);
 	$endDateTime = new DateTime($studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_END_TIME]);
 	$nowDateTime = new DateTime();
 
 	// load reports if they have been created
-	if (reportsHaveBeenCrtd($studentsAppointmentData)) $reports = Report::getAllWithAppointmentId($db, $appointmentId);
+	if (reportsHaveBeenCrtd($studentsAppointmentData)) $reports = Report::getAllWithAppointmentId( $appointmentId);
 
 
 	if (isBtnUpdateReportPrsd() || isBtnCompleteReportPrsd()) {
@@ -59,29 +59,29 @@ try {
 
 
 		if (isBtnUpdateReportPrsd()) {
-			$updateDone = Report::updateProjectTopicOtherText($db, $reportUpdate[ReportFetcher::DB_COLUMN_ID],
+			$updateDone = Report::updateProjectTopicOtherText( $reportUpdate[ReportFetcher::DB_COLUMN_ID],
 				$reportUpdate[ReportFetcher::DB_COLUMN_PROJECT_TOPIC_OTHER], $projectTopicOtherNew);
-			$updateDone = (Report::updateOtherText($db, $reportUpdate[ReportFetcher::DB_COLUMN_ID],
+			$updateDone = (Report::updateOtherText( $reportUpdate[ReportFetcher::DB_COLUMN_ID],
 					$reportUpdate[ReportFetcher::DB_COLUMN_OTHER_TEXT_AREA], $otherTextArea)) || $updateDone;
-			$updateDone = (Report::updateStudentsConcerns($db, $reportUpdate[ReportFetcher::DB_COLUMN_ID],
+			$updateDone = (Report::updateStudentsConcerns( $reportUpdate[ReportFetcher::DB_COLUMN_ID],
 					$reportUpdate[ReportFetcher::DB_COLUMN_STUDENT_CONCERNS], $studentsConcernsTextArea)) || $updateDone;
-			$updateDone = (Report::updateRelevantFeedbackGuidelines($db, $reportUpdate[ReportFetcher::DB_COLUMN_ID],
+			$updateDone = (Report::updateRelevantFeedbackGuidelines( $reportUpdate[ReportFetcher::DB_COLUMN_ID],
 					$reportUpdate[ReportFetcher::DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES], $relevantFeedbackGuidelines)) || $updateDone;
-			$updateDone = (Report::updateStudentBroughtAlong($db, $reportUpdate[ReportFetcher::DB_COLUMN_ID],
+			$updateDone = (Report::updateStudentBroughtAlong( $reportUpdate[ReportFetcher::DB_COLUMN_ID],
 					$studentBroughtAlongNew, $studentBroughtAlongOld)) || $updateDone;
-			$updateDone = (Report::updateAdditionalComments($db, $reportUpdate[ReportFetcher::DB_COLUMN_ID],
+			$updateDone = (Report::updateAdditionalComments( $reportUpdate[ReportFetcher::DB_COLUMN_ID],
 					$reportUpdate[ReportFetcher::DB_COLUMN_ADDITIONAL_COMMENTS], $conclusionAdditionalComments)) || $updateDone;
 		} else {
-			$updateDone = Report::updateAllFields($db, $reportUpdate[ReportFetcher::DB_COLUMN_ID], $projectTopicOtherNew,
+			$updateDone = Report::updateAllFields( $reportUpdate[ReportFetcher::DB_COLUMN_ID], $projectTopicOtherNew,
 				$otherTextArea, $studentsConcernsTextArea, $relevantFeedbackGuidelines, $studentBroughtAlongNew, $studentBroughtAlongOld, $conclusionAdditionalComments);
 			// user is tutor requesting fill report
 			if ($user->isTutor()) {
 
-				ReportFetcher::updateLabel($db, $formReportId, Report::LABEL_MESSAGE_PENDING_VALIDATION, Report::LABEL_COLOR_WARNING);
+				ReportFetcher::updateLabel($formReportId, Report::LABEL_MESSAGE_PENDING_VALIDATION, Report::LABEL_COLOR_WARNING);
 
 			} else {
 				// user is secretary confirming report
-				ReportFetcher::updateLabel($db, $formReportId, Report::LABEL_MESSAGE_COMPLETE, Report::LABEL_COLOR_SUCCESS);
+				ReportFetcher::updateLabel($formReportId, Report::LABEL_MESSAGE_COMPLETE, Report::LABEL_COLOR_SUCCESS);
 
 			}
 		}
@@ -96,7 +96,7 @@ try {
 			($nowDateTime > $startDateTime)
 		) {
 			$students = AppointmentHasStudentFetcher::retrieveStudentsWithAppointment($appointmentId);
-			$appointment = Appointment::getSingle($db, $appointmentId);
+			$appointment = Appointment::getSingle($appointmentId);
 			foreach ($students as $student) {
 				$reportId = ReportFetcher::insert($student[AppointmentHasStudentFetcher::DB_COLUMN_STUDENT_ID], $student[AppointmentHasStudentFetcher::DB_COLUMN_ID], $student[AppointmentHasStudentFetcher::DB_COLUMN_INSTRUCTOR_ID]);
 			}
@@ -116,8 +116,8 @@ try {
 		strcmp($studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE], Appointment::LABEL_MESSAGE_COMPLETE) !== 0
 	) {
 
-		$updateDone = Appointment::updateStudents($db, $appointmentId, $studentsAppointmentData, $_POST['studentsIds']);
-		$updateDone = Appointment::updateInstructors($db, $appointmentId, $studentsAppointmentData, $_POST['instructorIds'])
+		$updateDone = Appointment::updateStudents($appointmentId, $studentsAppointmentData, $_POST['studentsIds']);
+		$updateDone = Appointment::updateInstructors( $appointmentId, $studentsAppointmentData, $_POST['instructorIds'])
 			|| $updateDone;
 		$updateDone = Appointment::updateCourse($appointmentId, $studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_COURSE_ID], $_POST['courseId']) || $updateDone;
 		// TODO: validate new date times.

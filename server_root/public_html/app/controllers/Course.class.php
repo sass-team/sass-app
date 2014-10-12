@@ -10,7 +10,7 @@ class Course
 {
 	const NULL = "null";
 
-	public static function validateSingle($db, $courseId) {
+	public static function validateSingle($courseId) {
 		if (!isset($courseId) || empty($courseId)) throw new Exception("Data has been tempered. Aborting process.");
 		if (strcmp($courseId, self::NULL) === 0) throw new Exception("Course is required.");
 		if (!CourseFetcher::courseExists($courseId)) throw new Exception("Data has been tempered. Aborting process");
@@ -18,18 +18,18 @@ class Course
 		return true;
 	}
 
-	public static function getForTerm($db, $termId) {
+	public static function getForTerm($termId) {
 		Term::validateId($termId);
 		return CourseFetcher::retrieveForTerm($termId);
 	}
 
-	public static function create($db, $courseCode, $courseName) {
-		$courseCode = self::validateCode($db, $courseCode);
-		$courseName = self::validateName($db, $courseName);
-		CourseFetcher::insert($db, $courseCode, $courseName);
+	public static function create($courseCode, $courseName) {
+		$courseCode = self::validateCode($courseCode);
+		$courseName = self::validateName($courseName);
+		CourseFetcher::insert($courseCode, $courseName);
 	}
 
-	public static function  validateCode($db, $courseCode) {
+	public static function  validateCode($courseCode) {
 		$courseCode = trim($courseCode);
 
 		if (!preg_match("/^[A-Z0-9]{1,10}$/", $courseCode)) {
@@ -43,7 +43,7 @@ class Course
 		return $courseCode;
 	}
 
-	public static function  validateName($db, $courseName) {
+	public static function  validateName($courseName) {
 		$courseName = trim($courseName);
 
 
@@ -52,15 +52,15 @@ class Course
             target='_blank'>word characters</a> and spaces of length 1-50");
 		}
 
-		if (CourseFetcher::nameExists($db, $courseName)) {
+		if (CourseFetcher::nameExists($courseName)) {
 			throw new Exception("Course name already exists on database. Please insert a different one.");
 		}
 
 		return $courseName;
 	}
 
-	public static function update($db, $courseId, $newCourseCode, $newCourseName) {
-		$newCourseName = self::validateName($db, $newCourseName);
+	public static function update( $courseId, $newCourseCode, $newCourseName) {
+		$newCourseName = self::validateName($newCourseName);
 		$courseId = self::validateId($courseId);
 	}
 
@@ -71,21 +71,21 @@ class Course
 		}
 	}
 
-	public static function updateCode($db, $id, $newCode) {
-		$newCode = self::validateCode($db, $newCode);
+	public static function updateCode( $id, $newCode) {
+		$newCode = self::validateCode($newCode);
 		CourseFetcher::updateCode($id, $newCode);
 	}
 
-	public static function updateName($db, $id, $newName, $oldName) {
+	public static function updateName( $id, $newName, $oldName) {
 		if (strcmp($newName, $oldName) === 0) return false;
 
-		$newName = self::validateName($db, $newName);
+		$newName = self::validateName($newName);
 		CourseFetcher::updateName($id, $newName);
 
 		return true;
 	}
 
-	public static function delete($db, $id) {
+	public static function delete($id) {
 		self::validateId($id);
 		if (!CourseFetcher::courseExists($id)) {
 			throw new Exception("Could not retrieve course to be deleted from database. <br/>
@@ -95,12 +95,12 @@ class Course
 		CourseFetcher::delete($id);
 	}
 
-	public static function getTutors($db, $courseId) {
+	public static function getTutors($courseId) {
 		self::validateId($courseId);
 		return CourseFetcher::retrieveTutors($courseId);
 	}
 
-	public static function get($db, $courseId) {
+	public static function get($courseId) {
 		self::validateId($courseId);
 		return CourseFetcher::retrieveSingle($courseId);
 	}

@@ -59,7 +59,7 @@ try {
 
 	// TODO: fix this code -- is ugly.
 	if (strcmp($data['type'], 'tutor') === 0) {
-		$tutor = TutorFetcher::retrieveSingle($db, $staffId);
+		$tutor = TutorFetcher::retrieveSingle($staffId);
 		$curUser = new Tutor($data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active'], $tutor[TutorFetcher::DB_COLUMN_MAJOR_ID]);
 	} else if (strcmp($data['type'], 'secretary') === 0) {
 		$curUser = new Secretary($data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active']);
@@ -71,20 +71,20 @@ try {
 
 	// retrieve courses data only user type is tutor
 	if ($curUser->isTutor()) {
-		$teachingCourses = TutorFetcher::retrieveCurrTermTeachingCourses($db, $curUser->getId());
-		$allCourses = CourseFetcher::retrieveAll($db);
-		$majors = MajorFetcher::retrieveMajors($db);
-		$terms = TermFetcher::retrieveCurrTerm($db);
+		$teachingCourses = TutorFetcher::retrieveCurrTermTeachingCourses($curUser->getId());
+		$allCourses = CourseFetcher::retrieveAll();
+		$majors = MajorFetcher::retrieveMajors();
+		$terms = TermFetcher::retrieveCurrTerm();
 	}
 
 
 	if (isBtnAddTeachingCoursesPrsd()) {
-		Tutor::addCourse($db, $staffId, $_POST['teachingCourses'], $_POST['termId']);
+		Tutor::addCourse( $staffId, $_POST['teachingCourses'], $_POST['termId']);
 		header('Location: ' . BASE_URL . 'staff/edit/' . $staffId . '/success');
 		exit();
 
 	} else if (isBtnSubmitReplaceCourse()) {
-		Tutor::updateTeachingCourse($db, $curUser->getId(), $_POST['teachingCourse'], $_POST['hiddenUpdateCourseOldId'],  $_POST['termId']);
+		Tutor::updateTeachingCourse( $curUser->getId(), $_POST['teachingCourse'], $_POST['hiddenUpdateCourseOldId'],  $_POST['termId']);
 		header('Location: ' . BASE_URL . 'staff/edit/' . $staffId . '/success');
 		exit();
 
@@ -121,7 +121,7 @@ try {
 		if ($curUser->isTutor()) {
 			$newMajorId = isset($_POST['majorId']) ? $_POST['majorId'] : NULL;
 			$oldMajorId = $curUser->getMajorId();
-			$newDataAdded = Tutor::replaceMajorId($db, $staffId, $newMajorId, $oldMajorId) || $newDataAdded;
+			$newDataAdded = Tutor::replaceMajorId( $staffId, $newMajorId, $oldMajorId) || $newDataAdded;
 		}
 
 		if (!$newDataAdded) {
@@ -139,7 +139,7 @@ try {
 		header('Location: ' . BASE_URL . 'staff/edit/' . $staffId . '/success');
 		exit();
 	} else if (isBtnSbmtChangeUserActivate()) {
-		User::updateActiveStatus($db, $curUser->getId(), $curUser->isActive());
+		User::updateActiveStatus( $curUser->getId(), $curUser->isActive());
 		header('Location: ' . BASE_URL . 'staff/edit/' . $staffId . '/success');
 		exit();
 	}

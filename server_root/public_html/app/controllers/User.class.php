@@ -109,12 +109,14 @@ abstract class User extends Person
 		}
 	}
 
-	public static function updateActiveStatus($db, $id, $oldStatus) {
+	public static function updateActiveStatus( $id, $oldStatus) {
 		$newStatus = $oldStatus == 1 ? 0 : 1;
 
 		try {
 			$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`user` SET `active`= :accountStatus WHERE `id`=:id";
-			$query = $db->getConnection()->prepare($query);
+
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':accountStatus', $newStatus, PDO::PARAM_INT);
 			$query->bindParam(':id', $id, PDO::PARAM_INT);
 
@@ -126,7 +128,7 @@ abstract class User extends Person
 		} // end catch
 	}
 
-	static function updateProfile($db, $id, $firstName, $lastName, $prevMobileNum, $newMobileNum, $description) {
+	static function updateProfile( $id, $firstName, $lastName, $prevMobileNum, $newMobileNum, $description) {
 		$firstName = trim($firstName);
 		$lastName = trim($lastName);
 		$newMobileNum = trim($newMobileNum);
@@ -145,8 +147,8 @@ abstract class User extends Person
 						`profile_description`= :profile_description
 						WHERE `id`= :id";
 		try {
-			$query = $db->getConnection()->prepare($query);
-
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':first_name', $firstName, PDO::PARAM_STR);
 			$query->bindParam(':last_name', $lastName, PDO::PARAM_STR);
 			$query->bindParam(':mobile', $newMobileNum, PDO::PARAM_INT);
@@ -162,7 +164,7 @@ abstract class User extends Person
 
 	}
 
-	public static function updateName($db, $id, $column, $newFirstName) {
+	public static function updateName( $id, $column, $newFirstName) {
 		$newFirstName = trim($newFirstName);
 
 		if (!preg_match("/^[a-zA-Z]{1,35}$/", $newFirstName)) {
@@ -172,8 +174,8 @@ abstract class User extends Person
 		$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
 					SET `" . $column . "`= :newFirstName WHERE `id`= :id";
 		try {
-			$query = $db->getConnection()->prepare($query);
-
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':newFirstName', $newFirstName, PDO::PARAM_STR);
 			$query->bindParam(':id', $id, PDO::PARAM_INT);
 
@@ -186,7 +188,7 @@ abstract class User extends Person
 
 	}
 
-	public static function updateProfileDescription($db, $id, $newProfileDescription) {
+	public static function updateProfileDescription( $id, $newProfileDescription) {
 
 		if (!preg_match("/^[\\w\t\n\r .,\\-]{0,512}$/", $newProfileDescription)) {
 			throw new Exception("Description can contain only <a href='http://www.regular-expressions.info/shorthand.html'
@@ -196,8 +198,8 @@ abstract class User extends Person
 		$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
 					SET `" . self::DB_COLUMN_PROFILE_DESCRIPTION . "`= :newProfileDescription WHERE `id`= :id";
 		try {
-			$query = $db->getConnection()->prepare($query);
-
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':newProfileDescription', $newProfileDescription, PDO::PARAM_STR);
 			$query->bindParam(':id', $id, PDO::PARAM_INT);
 
@@ -209,14 +211,16 @@ abstract class User extends Person
 		}
 	}
 
-	public static function updateMobileNumber($db, $id, $newMobileNum) {
-		self::validateMobileNumber($db, $newMobileNum);
+	public static function updateMobileNumber( $id, $newMobileNum) {
+		self::validateMobileNumber( $newMobileNum);
 
 		try {
 
 			$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
 					SET `mobile`= :mobile WHERE `id`= :id";
-			$query = $db->getConnection()->prepare($query);
+
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':mobile', $newMobileNum, PDO::PARAM_INT);
 			$query->bindParam(':id', $id, PDO::PARAM_INT);
 
@@ -235,7 +239,7 @@ abstract class User extends Person
 	 * @return null
 	 * @throws Exception
 	 */
-	public static function validateMobileNumber($db, $newMobileNum) {
+	public static function validateMobileNumber( $newMobileNum) {
 		if (empty($newMobileNum) === TRUE) {
 			return NULL; // no mobilenumber
 		}
@@ -250,7 +254,7 @@ abstract class User extends Person
 		return $newMobileNum;
 	}
 
-	public static function updatePassword($db, $id, $oldPassword, $newPassword1, $newPassword2) {
+	public static function updatePassword( $id, $oldPassword, $newPassword1, $newPassword2) {
 
 		if ($newPassword1 !== $newPassword2) {
 			throw new Exception("There was a mismatch with the new passwords");
@@ -258,7 +262,7 @@ abstract class User extends Person
 
 		self::validatePassword($newPassword1);
 
-		$old_password_hashed = self::getHashedPassword($db, $id);
+		$old_password_hashed = self::getHashedPassword( $id);
 		if (!password_verify($oldPassword, $old_password_hashed)) {
 			throw new Exception("Sorry, the old password is incorrect.");
 		}
@@ -266,8 +270,12 @@ abstract class User extends Person
 		try {
 			$new_password_hashed = password_hash($newPassword1, PASSWORD_DEFAULT);
 
-			$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`user` SET `password`= :password WHERE `id`= :id";
-			$query = $db->getConnection()->prepare($query);
+			$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`user`
+			SET `password`= :password
+			WHERE `id`= :id";
+
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':id', $id);
 			$query->bindParam(':password', $new_password_hashed);
 
@@ -300,13 +308,13 @@ abstract class User extends Person
 		}
 	}
 
-	public static function getHashedPassword($db, $id) {
+	public static function getHashedPassword( $id) {
 		$query = "SELECT password FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.user WHERE id = :id";
-		$query = $db->getConnection()->prepare($query);
-		$query->bindParam(':id', $id);
 
 		try {
-
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
+			$query->bindParam(':id', $id);
 			$query->execute();
 			$data = $query->fetch();
 			$hash_password = $data['password'];
@@ -316,13 +324,16 @@ abstract class User extends Person
 		}
 	}
 
-	public static function retrieveAll($db) {
+	public static function retrieveAll() {
 		$query = "SELECT user.id, user.f_name, user.l_name, user.img_loc, user.profile_description, user.date, user.mobile, user.email, user_types.type
 		         FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.user
 						LEFT OUTER JOIN user_types ON user.`user_types_id` = `user_types`.id";
-		$query = $db->getConnection()->prepare($query);
+
+
 
 		try {
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->execute();
 			$rows = $query->fetchAll();
 
@@ -400,7 +411,7 @@ abstract class User extends Person
 	 * @param $value
 	 * @throws Exception
 	 */
-	public static function fetchInfo($db, $what, $field, $where, $value) {
+	public static function fetchInfo( $what, $field, $where, $value) {
 		// I have only added few, but you can add more. However do not add 'password' even though the parameters will only be given by you and not the user, in our system.
 		$allowed = array('id', 'username', 'f_name', 'l_name', 'email', 'COUNT(mobile)',
 			'mobile', 'user', 'gen_string', 'COUNT(gen_string)', 'COUNT(id)', 'img_loc', 'user_types', 'type');
@@ -408,8 +419,9 @@ abstract class User extends Person
 			throw new InvalidArgumentException;
 		} else {
 			try {
-				$sql = "SELECT `" . $what . "` FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . $field . "` WHERE $where = :value";
-				$query = $db->getConnection()->prepare($sql);
+				$query = "SELECT `" . $what . "` FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . $field . "` WHERE $where = :value";
+				$dbConnection = DatabaseManager::getConnection();
+				$query = $dbConnection->prepare($query);
 
 				$query->bindParam(':value', $value, PDO::PARAM_STR);
 
@@ -423,36 +435,36 @@ abstract class User extends Person
 		}
 	}
 
-	public static function addNewPassword($db, $id, $newPassword1, $newPassword2, $generatedString) {
+	public static function addNewPassword( $id, $newPassword1, $newPassword2, $generatedString) {
 		if (strcmp($newPassword1, $newPassword2) !== 0) {
 			throw new Exception("There was a mismatch with the new passwords");
 		}
 		User::validatePassword($newPassword1);
-		if (!UserFetcher::generatedStringExists($db, $id, $generatedString)) {
+		if (!UserFetcher::generatedStringExists($id, $generatedString)) {
 			throw new Exception("Could not verify generated string exists. Please make sure url sent was not modified.");
 		}
-		UserFetcher::updatePassword($db, $id, $newPassword1);
+		UserFetcher::updatePassword($id, $newPassword1);
 	}
 
-	public static function recoverPassword($db, $id, $newPassword1, $newPassword2, $generatedString) {
+	public static function recoverPassword( $id, $newPassword1, $newPassword2, $generatedString) {
 		if (strcmp($newPassword1, $newPassword2) !== 0) throw new Exception("There was a mismatch with the new passwords");
 		User::validatePassword($newPassword1);
 
-		if (!UserFetcher::generatedStringExists($db, $id, $generatedString)) {
+		if (!UserFetcher::generatedStringExists($id, $generatedString)) {
 			throw new Exception("Could not verify generated string exists. Please make sure url sent was not modified.");
 		}
 
-		if (User::isGeneratedStringExpired($db, $id, $generatedString)) {
+		if (User::isGeneratedStringExpired( $id, $generatedString)) {
 			throw new Exception("Sorry that link has expired. Please <a href='http://" . $_SERVER['SERVER_NAME']
 				. "/login/confirm-password'
 							target='_self'>request</a> a new one");
 		}
-		UserFetcher::updatePassword($db, $id, $newPassword1);
+		UserFetcher::updatePassword($id, $newPassword1);
 	}
 
-	public static function isGeneratedStringExpired($db, $id, $generatedString) {
+	public static function isGeneratedStringExpired( $id, $generatedString) {
 		date_default_timezone_set('Europe/Athens');
-		$generatedStringDate = UserFetcher::retrieveGenStringDate($db, $id);
+		$generatedStringDate = UserFetcher::retrieveGenStringDate($id);
 
 		$dateNow = new DateTime();
 		$dateGenStringMdfd = new DateTime($generatedStringDate);
@@ -462,14 +474,14 @@ abstract class User extends Person
 	}
 
 
-	public static function generateNewPasswordString($db, $id) {
+	public static function generateNewPasswordString( $id) {
 		$unique = uniqid('', true); // generate a unique string
 		$random = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 10); // generate a more random string
 		$generatedString = $unique . $random; // a random and unique string
 
 		User::validateId($id);
-		UserFetcher::updateGenString($db, $id, $generatedString);
-		UserFetcher::updateGenStringTimeUpdate($db, $id);
+		UserFetcher::updateGenString($id, $generatedString);
+		UserFetcher::updateGenStringTimeUpdate($id);
 		return $generatedString;
 	}
 

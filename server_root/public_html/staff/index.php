@@ -47,11 +47,11 @@ try {
 		}
 
 		if (strcmp($data['type'], 'tutor') === 0) {
-			$tutor = TutorFetcher::retrieveSingle($db, $userId);
+			$tutor = TutorFetcher::retrieveSingle($userId);
 			$curUser = new Tutor($data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active'], $tutor[MajorFetcher::DB_COLUMN_NAME]);
 
-			$schedules = ScheduleFetcher::retrieveCurrWorkingHours($db, $curUser->getId());
-			$teachingCourses = TutorFetcher::retrieveCurrTermTeachingCourses($db, $curUser->getId());
+			$schedules = ScheduleFetcher::retrieveCurrWorkingHours($curUser->getId());
+			$teachingCourses = TutorFetcher::retrieveCurrTermTeachingCourses($curUser->getId());
 		} else if (strcmp($data['type'], 'secretary') === 0) {
 			$curUser = new Secretary($data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active']);
 		} else if (strcmp($data['type'], 'admin') === 0) {
@@ -62,8 +62,8 @@ try {
 
 	} else if (empty($_GET)) {
 		$pageTitle = "All Staff Members";
-		$users = User::retrieveAll($db);
-		$courses = CourseFetcher::retrieveAll($db);
+		$users = User::retrieveAll();
+		$courses = CourseFetcher::retrieveAll();
 	} else {
 		header('Location: ' . BASE_URL . 'error-404');
 		exit();

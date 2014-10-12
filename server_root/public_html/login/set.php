@@ -54,7 +54,7 @@ if (isUpdatePasswordBtnPressed()) {
 		$newPassword2 = $_POST['new-password-2'];
 		$id = $_GET['id'];
 		$genString = $_GET['gen_string'];
-		User::addNewPassword($db, $id, $newPassword1, $newPassword2, $genString);
+		User::addNewPassword( $id, $newPassword1, $newPassword2, $genString);
 		header('Location: ' . BASE_URL . 'login/set/success');
 		exit();
 	} catch (Exception $e) {

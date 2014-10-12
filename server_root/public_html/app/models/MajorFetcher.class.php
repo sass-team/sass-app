@@ -13,7 +13,7 @@ class MajorFetcher
 	const DB_COLUMN_CODE = "code";
 	const DB_COLUMN_NAME = "name";
 
-	public static function retrieveMajors($db) {
+	public static function retrieveMajors() {
 
 		$query =
 			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_CODE . "`,
@@ -23,7 +23,8 @@ class MajorFetcher
 					order by `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` asc"; //ordering tis way so "Undecided" and "I do not know" to be first
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -33,7 +34,7 @@ class MajorFetcher
 	}
 
 	//This function is identical to retrieveMajors() but only used in courses.php to edit majors by excluding "I do not know" and "Undecided"
-	public static function retrieveMajorsToEdit($db) {
+	public static function retrieveMajorsToEdit() {
 
 		$query =
 			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_CODE . "`,
@@ -45,7 +46,8 @@ class MajorFetcher
 					order by `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` desc";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -72,7 +74,7 @@ class MajorFetcher
 		return true;
 	}
 
-	public static function insert($db, $majorCode, $majorName) {
+	public static function insert($majorCode, $majorName) {
 		try {
 			$query = "INSERT INTO `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . MajorFetcher::DB_TABLE . "` (`" . MajorFetcher::DB_COLUMN_CODE .
 				"`, `" . MajorFetcher::DB_COLUMN_NAME . "`)
@@ -81,7 +83,8 @@ class MajorFetcher
 					:major_name
 				)";
 
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':major_code', $majorCode, PDO::PARAM_STR);
 			$query->bindParam(':major_name', $majorName, PDO::PARAM_STR);
 			$query->execute();
@@ -92,7 +95,7 @@ class MajorFetcher
 	}
 
 
-	public static function update($db, $majorId, $newMajorCode, $newMajorName) {
+	public static function update($majorId, $newMajorCode, $newMajorName) {
 		$newMajorCode = trim($newMajorCode);
 		$newMajorName = trim($newMajorName);
 
@@ -102,7 +105,8 @@ class MajorFetcher
 					WHERE `" . self::DB_COLUMN_ID . "`= :majorId";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':newMajorCode', $newMajorCode, PDO::PARAM_STR);
 			$query->bindParam(':newMajorName', $newMajorName, PDO::PARAM_STR);
 			$query->execute();
@@ -113,7 +117,7 @@ class MajorFetcher
 
 	}
 
-	public static function updateName($db, $id, $newName) {
+	public static function updateName($id, $newName) {
 		$newName = trim($newName);
 
 		$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . MajorFetcher::DB_TABLE . "`
@@ -121,7 +125,8 @@ class MajorFetcher
 					WHERE  `" . self::DB_COLUMN_ID . "`= :majorId";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':majorId', $id, PDO::PARAM_INT);
 			$query->bindParam(':newMajorName', $newName, PDO::PARAM_STR);
 			$query->execute();
@@ -132,7 +137,7 @@ class MajorFetcher
 
 	}
 
-	public static function updateCode($db, $id, $newCode) {
+	public static function updateCode($id, $newCode) {
 		$newCode = trim($newCode);
 
 		$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . MajorFetcher::DB_TABLE . "`
@@ -140,7 +145,8 @@ class MajorFetcher
 					WHERE  `" . self::DB_COLUMN_ID . "`= :majorId";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':majorId', $id, PDO::PARAM_INT);
 			$query->bindParam(':newCode', $newCode, PDO::PARAM_STR);
 			$query->execute();
@@ -151,11 +157,12 @@ class MajorFetcher
 
 	}
 
-	public static function codeExists($db, $majorCode) {
+	public static function codeExists($majorCode) {
 		try {
-			$sql = "SELECT COUNT(" . self::DB_COLUMN_CODE . ") FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" .
+			$query = "SELECT COUNT(" . self::DB_COLUMN_CODE . ") FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" .
 				self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_CODE . "` = :majorCode";
-			$query = $db->getConnection()->prepare($sql);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':majorCode', $majorCode, PDO::PARAM_STR);
 			$query->execute();
 
@@ -168,11 +175,13 @@ class MajorFetcher
 	}
 
 
-	public static function nameExists($db, $majorName) {
+	public static function nameExists($majorName) {
 		try {
-			$sql = "SELECT COUNT(" . self::DB_COLUMN_NAME . ") FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" .
+			$query = "SELECT COUNT(" . self::DB_COLUMN_NAME . ") FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" .
 				self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_NAME . "` = :majorName";
-			$query = $db->getConnection()->prepare($sql);
+
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':majorName', $majorName, PDO::PARAM_STR);
 			$query->execute();
 
@@ -184,10 +193,11 @@ class MajorFetcher
 		return true;
 	}
 
-	public static function delete($db, $id) {
+	public static function delete($id) {
 		try {
 			$query = "DELETE FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :id";
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':id', $id, PDO::PARAM_INT);
 			$query->execute();
 			return true;

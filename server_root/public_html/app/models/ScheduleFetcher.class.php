@@ -22,7 +22,7 @@ class ScheduleFetcher
 	const DB_COLUMN_FRIDAY = "friday";
 
 
-	public static function insert($db, $tutorId, $termId, $repeatingDays, $timeStart, $timeEnd) {
+	public static function insert($tutorId, $termId, $repeatingDays, $timeStart, $timeEnd) {
 		$monday = $tuesday = $wednesday = $thursday = $friday = 0;
 
 		foreach ($repeatingDays as $repeatingDay) {
@@ -63,7 +63,8 @@ class ScheduleFetcher
 				)";
 
 
-			$queryInsertUser = $db->getConnection()->prepare($queryInsertUser);
+			$dbConnection = DatabaseManager::getConnection();
+			$queryInsertUser = $dbConnection->prepare($queryInsertUser);
 			$queryInsertUser->bindParam(':start', $timeStart, PDO::PARAM_STR);
 			$queryInsertUser->bindParam(':end', $timeEnd, PDO::PARAM_STR);
 			$queryInsertUser->bindParam(':tutor_user_id', $tutorId, PDO::PARAM_INT);
@@ -77,18 +78,19 @@ class ScheduleFetcher
 			$queryInsertUser->execute();
 
 			// last inserted if of THIS connection
-			return $appointmentId = $db->getConnection()->lastInsertId();
+			return $appointmentId = $queryInsertUser->lastInsertId();
 		} catch (Exception $e) {
 			throw new Exception("Could not insert data into database." . $e->getMessage());
 		}
 
 	}
 
-	public static function existsId($db, $id) {
+	public static function existsId($id) {
 		try {
-			$sql = "SELECT COUNT(" . self::DB_COLUMN_ID . ") FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" .
+			$query = "SELECT COUNT(" . self::DB_COLUMN_ID . ") FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" .
 				self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :id";
-			$query = $db->getConnection()->prepare($sql);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':id', $id, PDO::PARAM_INT);
 			$query->execute();
 
@@ -100,7 +102,7 @@ class ScheduleFetcher
 		return true;
 	}
 
-	public static function retrieveAll($db) {
+	public static function retrieveAll() {
 		$query =
 			"SELECT `" . self::DB_COLUMN_START_TIME . "`, `" . self::DB_COLUMN_END_TIME . "`, `" .
 			self::DB_COLUMN_TUTOR_USER_ID . "`, `" . self::DB_COLUMN_TERM_ID . "`
@@ -108,7 +110,8 @@ class ScheduleFetcher
 			self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "` DESC";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -117,7 +120,7 @@ class ScheduleFetcher
 		}
 	}
 
-	public static function retrieveTutors($db) {
+	public static function retrieveTutors() {
 		$query =
 			"SELECT `" . TermFetcher::DB_COLUMN_NAME . "`, `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`, `" . self::DB_COLUMN_START_TIME . "`, `" .
 			self::DB_COLUMN_END_TIME . "`, `" . self::DB_COLUMN_TUTOR_USER_ID . "`, `" . self::DB_COLUMN_TERM_ID . "`,
@@ -135,7 +138,8 @@ class ScheduleFetcher
 
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -144,7 +148,7 @@ class ScheduleFetcher
 		}
 	}
 
-	public static function retrieveTutorsOnTerm($db, $termId) {
+	public static function retrieveTutorsOnTerm($termId) {
 		$query =
 			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`, `" . self::DB_COLUMN_START_TIME . "`, `" .
 			self::DB_COLUMN_END_TIME . "`, `" . self::DB_COLUMN_TUTOR_USER_ID . "`, `" . self::DB_COLUMN_TERM_ID . "`,
@@ -167,7 +171,8 @@ class ScheduleFetcher
 			WHERE `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "` = :term_id";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':term_id', $termId, PDO::PARAM_INT);
 			$query->execute();
 
@@ -177,7 +182,7 @@ class ScheduleFetcher
 		}
 	}
 
-	public static function retrieveTutorsOnCurrentTerms($db) {
+	public static function retrieveTutorsOnCurrentTerms() {
 		$query =
 			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`, `" . self::DB_COLUMN_START_TIME . "`,
             `" . self::DB_COLUMN_END_TIME . "`,	`" . self::DB_COLUMN_TUTOR_USER_ID . "`,`" . self::DB_COLUMN_TERM_ID . "`,
@@ -199,7 +204,8 @@ class ScheduleFetcher
 			WHERE CURRENT_TIMESTAMP() BETWEEN `" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" . TermFetcher::DB_COLUMN_END_DATE . "`";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -209,7 +215,7 @@ class ScheduleFetcher
 	}
 
 
-	public static function retrieveSingleTutorOnTerm($db, $tutorId, $termId) {
+	public static function retrieveSingleTutorOnTerm($tutorId, $termId) {
 		$query =
 			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`, `" . self::DB_COLUMN_START_TIME . "`, `" .
 			self::DB_COLUMN_END_TIME . "`, `" . self::DB_COLUMN_TUTOR_USER_ID . "`, `" . self::DB_COLUMN_TERM_ID . "`,
@@ -232,7 +238,8 @@ class ScheduleFetcher
 			ORDER BY `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "` DESC";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':tutor_id', $tutorId, PDO::PARAM_INT);
 			$query->bindParam(':term_id', $termId, PDO::PARAM_INT);
 
@@ -244,7 +251,7 @@ class ScheduleFetcher
 		}
 	}
 
-	public static function retrieveWorkingHours($db, $tutorId, $termId) {
+	public static function retrieveWorkingHours($tutorId, $termId) {
 		$query =
 			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`, `" . self::DB_COLUMN_START_TIME . "`, `" .
 			self::DB_COLUMN_END_TIME . "`, `" . self::DB_COLUMN_TUTOR_USER_ID . "`, `" . self::DB_COLUMN_TERM_ID . "`
@@ -253,7 +260,8 @@ class ScheduleFetcher
 			AND `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`=:term_id";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':tutor_id', $tutorId, PDO::PARAM_INT);
 			$query->bindParam(':term_id', $termId, PDO::PARAM_INT);
 
@@ -265,7 +273,7 @@ class ScheduleFetcher
 		}
 	}
 
-	public static function retrieveCurrWorkingHours($db, $tutorId) {
+	public static function retrieveCurrWorkingHours($tutorId) {
 		$query =
 			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "`,
                     `" . self::DB_COLUMN_END_TIME . "`, 
@@ -288,7 +296,8 @@ class ScheduleFetcher
             ORDER BY `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_NAME . "`";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':tutor_id', $tutorId, PDO::PARAM_INT);
 
 			$query->execute();
@@ -299,7 +308,7 @@ class ScheduleFetcher
 		}
 	}
 
-	public static function retrieveSingle($db, $id) {
+	public static function retrieveSingle($id) {
 		$query = "SELECT  `" . self::DB_COLUMN_ID . "` ,
 						  `" . self::DB_COLUMN_TERM_ID . "`, 
 						  `" . self::DB_COLUMN_TUTOR_USER_ID . "` , 
@@ -309,7 +318,8 @@ class ScheduleFetcher
 			WHERE `" . self::DB_COLUMN_ID . "`=:id";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':id', $id, PDO::PARAM_INT);
 
 			$query->execute();
@@ -319,13 +329,14 @@ class ScheduleFetcher
 		} // end catch
 	}
 
-	public static function  updateStartingDate($db, $id, $newStartingDate) {
+	public static function  updateStartingDate($id, $newStartingDate) {
 		$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
 					SET	`" . self::DB_COLUMN_START_TIME . "`= :newName
 					WHERE `id`= :id";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':id', $id, PDO::PARAM_INT);
 			$query->bindParam(':newName', $newStartingDate, PDO::PARAM_STR);
 			$query->execute();
@@ -336,13 +347,14 @@ class ScheduleFetcher
 		}
 	}
 
-	public static function updateSingleColumn($db, $id, $column, $value, $valueType) {
+	public static function updateSingleColumn($id, $column, $value, $valueType) {
 		$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
 					SET	`" . $column . "`= :column
 					WHERE `id`= :id";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':id', $id, PDO::PARAM_INT);
 			$query->bindParam(':column', $value, $valueType);
 			$query->execute();
@@ -353,11 +365,12 @@ class ScheduleFetcher
 		}
 	}
 
-	public static function idExists($db, $id) {
+	public static function idExists($id) {
 		try {
-			$sql = "SELECT COUNT(" . self::DB_COLUMN_ID . ") FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" .
+			$query = "SELECT COUNT(" . self::DB_COLUMN_ID . ") FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" .
 				self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :id";
-			$query = $db->getConnection()->prepare($sql);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':id', $id, PDO::PARAM_INT);
 			$query->execute();
 
@@ -369,10 +382,11 @@ class ScheduleFetcher
 		return true;
 	}
 
-	public static function delete($db, $id) {
+	public static function delete($id) {
 		try {
 			$query = "DELETE FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :id";
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':id', $id, PDO::PARAM_INT);
 			$query->execute();
 			return true;
@@ -384,14 +398,14 @@ class ScheduleFetcher
 
 	/**
 	 * NEEDS TESTING
-	 * @param $db
 	 * @param $dateStart
 	 * @param $dateEnd
 	 * @param $tutorId
-	 * @return bool
 	 * @throws Exception
+	 * @internal param $db
+	 * @return bool
 	 */
-	public static function existDatesBetween($db, $dateStart, $dateEnd, $tutorId) {
+	public static function existDatesBetween($dateStart, $dateEnd, $tutorId) {
 		date_default_timezone_set('Europe/Athens');
 		$dateStart = $dateStart->format(Dates::DATE_FORMAT_IN);
 		$dateEnd = $dateEnd->format(Dates::DATE_FORMAT_IN);
@@ -403,7 +417,8 @@ class ScheduleFetcher
 
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':tutor_id', $tutorId, PDO::PARAM_INT);
 
 			$query->execute();

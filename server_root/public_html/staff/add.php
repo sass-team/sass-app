@@ -10,9 +10,9 @@ if (!$user->isAdmin()) {
 
 
 try {
-	$courses = CourseFetcher::retrieveAll($db);
-	$majors = MajorFetcher::retrieveMajors($db);
-	$terms = TermFetcher::retrieveCurrTerm($db);
+	$courses = CourseFetcher::retrieveAll();
+	$majors = MajorFetcher::retrieveMajors();
+	$terms = TermFetcher::retrieveCurrTerm();
 
 	//$majors = array_unique(array_column($courses, 'Major'));
 	//$majors_extensions = array_unique(array_column($courses, 'Extension'));
@@ -37,7 +37,7 @@ if (isSaveBttnPressed()) {
 	try {
 		$newUserId = Admin::createUser($first_name, $last_name, $email, $user_type, $userMajorId, $teachingCoursesIds, $termIds);
 		$newUser = User::getSingle($newUserId);
-		Mailer::sendNewAccount($db, $newUserId, $user->getEmail(), $user->getFirstName() . " " . $user->getLastName(),
+		Mailer::sendNewAccount( $newUserId, $user->getEmail(), $user->getFirstName() . " " . $user->getLastName(),
 			$newUser[UserFetcher::DB_COLUMN_EMAIL], $newUser[UserFetcher::DB_COLUMN_FIRST_NAME] . " " .
 			$newUser[UserFetcher::DB_COLUMN_LAST_NAME]);
 

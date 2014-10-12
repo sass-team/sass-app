@@ -13,7 +13,7 @@ function is_create_bttn_Pressed() {
 }
 
 try {
-	$majors = MajorFetcher::retrieveMajorsToEdit($db);
+	$majors = MajorFetcher::retrieveMajorsToEdit();
 
 	if (isBtnUpdatePrsd()) {
 		$updateDone = false;
@@ -29,12 +29,12 @@ try {
 
 			if (strcmp($newMajorName, $oldMajorName) !== 0) {
 				$updateDone = true;
-				Major::updateName($db, $majorId, $newMajorName);
+				Major::updateName( $majorId, $newMajorName);
 			}
 
 			if (strcmp($newMajorCode, $oldMajorCodeName) !== 0) {
 				$updateDone = true;
-				Major::updateCode($db, $majorId, $newMajorCode);
+				Major::updateCode( $majorId, $newMajorCode);
 			}
 
 			if (!$updateDone) {
@@ -54,11 +54,11 @@ try {
 		$newMajorName = trim($_POST['major_name']);
 
 
-		Major::create($db, $newMajorCode, $newMajorName);
+		Major::create( $newMajorCode, $newMajorName);
 		header('Location: ' . BASE_URL . 'academia/majors/success');
 		exit();
 	} else if (isBtnDeletePrsd()) {
-		Major::delete($db, $_POST['delMajorIdModal']);
+		Major::delete( $_POST['delMajorIdModal']);
 		header('Location: ' . BASE_URL . 'academia/majors/success');
 		exit();
 	}

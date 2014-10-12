@@ -12,13 +12,15 @@ class TutorFetcher
     const DB_COLUMN_MAJOR_ID = "major_id";
     const DB_COLUMN_USER_ID = "user_id";
 
-    public static function insertMajor($db, $id, $majorId)
+    public static function insertMajor($id, $majorId)
     {
 
         try {
             $query = "INSERT INTO `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
 				(`" . self::DB_COLUMN_USER_ID . "`, `" . self::DB_COLUMN_MAJOR_ID . "`) VALUES (:user_id, :major_id)";
-            $query = $db->getConnection()->prepare($query);
+
+	        $dbConnection = DatabaseManager::getConnection();
+	        $query = $dbConnection->prepare($query);
             $query->bindParam(':user_id', $id, PDO::PARAM_INT);
             $query->bindParam(':major_id', $majorId, PDO::PARAM_INT);
             $query->execute();
@@ -30,7 +32,7 @@ class TutorFetcher
         }
     }
 
-    public static function retrieveCurrTermTeachingCourses($db, $id)
+    public static function retrieveCurrTermTeachingCourses($id)
     {
         $query = "SELECT `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_ID . "`,
 		`" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_CODE . "` , `" . CourseFetcher::DB_TABLE . "`.`" .
@@ -48,7 +50,8 @@ class TutorFetcher
 			(NOW() BETWEEN `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_END_DATE . "`)";
 
         try {
-            $query = $db->getConnection()->prepare($query);
+	        $dbConnection = DatabaseManager::getConnection();
+	        $query = $dbConnection->prepare($query);
             $query->bindParam(':tutorId', $id, PDO::PARAM_INT);
 
             $query->execute();
@@ -59,7 +62,7 @@ class TutorFetcher
         }
     }
 
-    public static function retrieveAllAppointments($db, $id)
+    public static function retrieveAllAppointments($id)
     {
         $query =
             "SELECT `" . AppointmentFetcher::DB_COLUMN_START_TIME . "`, `" . AppointmentFetcher::DB_COLUMN_END_TIME . "`,
@@ -69,7 +72,8 @@ class TutorFetcher
 				WHERE `" . AppointmentFetcher::DB_COLUMN_TUTOR_USER_ID . "`=:id";
 
         try {
-            $query = $db->getConnection()->prepare($query);
+	        $dbConnection = DatabaseManager::getConnection();
+	        $query = $dbConnection->prepare($query);
             $query->bindParam(':id', $id, PDO::PARAM_INT);
             $query->execute();
             return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -81,14 +85,16 @@ class TutorFetcher
         }
     }
 
-    public static function hasAppointmentWithId($db, $tutorId, $appointmentId)
+    public static function hasAppointmentWithId($tutorId, $appointmentId)
     {
         try {
-            $sql = "SELECT COUNT(" . AppointmentFetcher::DB_COLUMN_ID . ")
+	        $query = "SELECT COUNT(" . AppointmentFetcher::DB_COLUMN_ID . ")
             FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . AppointmentFetcher::DB_TABLE . "`
             WHERE `" . AppointmentFetcher::DB_COLUMN_TUTOR_USER_ID . "` = :tutor_id
             AND  `" . AppointmentFetcher::DB_COLUMN_ID . "` = :appointment_id";
-            $query = $db->getConnection()->prepare($sql);
+
+	        $dbConnection = DatabaseManager::getConnection();
+	        $query = $dbConnection->prepare($query);
             $query->bindParam(':tutor_id', $tutorId, PDO::PARAM_INT);
             $query->bindParam(':appointment_id', $appointmentId, PDO::PARAM_INT);
 
@@ -102,14 +108,15 @@ class TutorFetcher
         return true;
     }
 
-    public static function replaceMajorId($db, $id, $newMajorId)
+    public static function replaceMajorId($id, $newMajorId)
     {
         $query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
 					SET	`" . self::DB_COLUMN_MAJOR_ID . "`= :major_id
 					WHERE `" . self::DB_COLUMN_USER_ID . "`= :id";
 
         try {
-            $query = $db->getConnection()->prepare($query);
+	        $dbConnection = DatabaseManager::getConnection();
+	        $query = $dbConnection->prepare($query);
             $query->bindParam(':id', $id, PDO::PARAM_INT);
             $query->bindParam(':major_id', $newMajorId, PDO::PARAM_INT);
             $query->execute();
@@ -121,7 +128,7 @@ class TutorFetcher
     }
 
 
-    public static function retrieveSingle($db, $id)
+    public static function retrieveSingle($id)
     {
         $query =
             "SELECT `" . self::DB_COLUMN_MAJOR_ID . "`, `" . self::DB_COLUMN_USER_ID . "`, `" . MajorFetcher::DB_TABLE .
@@ -133,7 +140,8 @@ class TutorFetcher
 		WHERE `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_USER_ID . "`=:id";
 
         try {
-            $query = $db->getConnection()->prepare($query);
+	        $dbConnection = DatabaseManager::getConnection();
+	        $query = $dbConnection->prepare($query);
             $query->bindParam(':id', $id, PDO::PARAM_INT);
 
             $query->execute();
@@ -143,7 +151,7 @@ class TutorFetcher
         } // end catch
     }
 
-    public static function retrieveAll($db)
+    public static function retrieveAll()
     {
         $query =
             "SELECT `" . UserFetcher::DB_COLUMN_FIRST_NAME . "`, `" . UserFetcher::DB_COLUMN_LAST_NAME . "`,  `" .
@@ -154,7 +162,8 @@ class TutorFetcher
             UserFetcher::DB_COLUMN_ID . "`";
 
         try {
-            $query = $db->getConnection()->prepare($query);
+	        $dbConnection = DatabaseManager::getConnection();
+	        $query = $dbConnection->prepare($query);
             $query->execute();
             return $query->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {

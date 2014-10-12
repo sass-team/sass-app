@@ -90,14 +90,14 @@ class Appointment
 		self::validateNewDates($user, $termId, $tutorId, $dateStart, $dateEnd, $dateEnd);
 
 		$appointmentId = AppointmentFetcher::insert($dateStart, $dateEnd, $courseId, $studentsIds, $tutorId, $instructorsIds, $termId);
-		Mailer::sendTutorNewAppointment($db, $appointmentId, $secretaryName);
+		Mailer::sendTutorNewAppointment($appointmentId, $secretaryName);
 	}
 
 
-	public static function  getCalendarAllAppointmentsOnTerm($db, $termId) {
+	public static function  getCalendarAllAppointmentsOnTerm($termId) {
 		Term::validateId($termId);
 
-		$appointmentHours = Appointment::getTutorsOnTerm($db, $termId);
+		$appointmentHours = Appointment::getTutorsOnTerm($termId);
 		$appointmentHoursJSON = array();
 		foreach ($appointmentHours as $appointmentHour) {
 			$appointmentTitle = $appointmentHour[CourseFetcher::DB_COLUMN_CODE] . " - " .
@@ -122,16 +122,16 @@ class Appointment
 		return json_encode($appointmentHoursJSON);
 	}
 
-	public static function getTutorsOnTerm($db, $termId) {
+	public static function getTutorsOnTerm($termId) {
 		Term::validateId($termId);
 		return AppointmentFetcher::retrieveTutors($termId);
 	}
 
-	public static function getCalendarSingleTutorAppointments($db, $tutorId, $termId) {
+	public static function getCalendarSingleTutorAppointments($tutorId, $termId) {
 		Tutor::validateId($tutorId);
 		Term::validateId($termId);
 
-		$appointmentHours = Appointment::getAllForSingleTutor($db, $tutorId, $termId);
+		$appointmentHours = Appointment::getAllForSingleTutor($tutorId, $termId);
 		$appointmentHoursJSON = array();
 		foreach ($appointmentHours as $appointmentHour) {
 			$appointmentTitle = $appointmentHour[CourseFetcher::DB_COLUMN_CODE] . " - " .
@@ -156,18 +156,18 @@ class Appointment
 		return json_encode($appointmentHoursJSON);
 	}
 
-	public static function getAllForSingleTutor($db, $tutorId, $termId) {
+	public static function getAllForSingleTutor($tutorId, $termId) {
 		Tutor::validateId($tutorId);
 		Term::validateId($termId);
 		return AppointmentFetcher::retrieveAllForSingleTutor($tutorId, $termId);
 	}
 
-	public static function getSingle($db, $id) {
-		self::validateId($db, $id);
+	public static function getSingle($id) {
+		self::validateId($id);
 		return AppointmentFetcher::retrieveSingle($id);
 	}
 
-	public static function validateId($db, $id) {
+	public static function validateId($id) {
 		if (is_null($id) || !preg_match("/^[0-9]+$/", $id)) throw new Exception("Data has been tempered. Aborting process.");
 
 		if (!AppointmentFetcher::existsId($id)) {
@@ -200,7 +200,7 @@ class Appointment
 		return $count;
 	}
 
-	public static function updateStudents($db, $appointmentId, $oldStudentsIds, $newStudentsId) {
+	public static function updateStudents($appointmentId, $oldStudentsIds, $newStudentsId) {
 		if (!isset($newStudentsId) || empty($newStudentsId)) {
 			throw new Exception("Data have been malformed.");
 		}
@@ -237,7 +237,7 @@ class Appointment
 		return false;
 	}
 
-	public static function updateInstructors($db, $appointmentId, $oldInstructorsIds, $newInstructorsIds) {
+	public static function updateInstructors( $appointmentId, $oldInstructorsIds, $newInstructorsIds) {
 		if (!isset($newInstructorsIds) || empty($newInstructorsIds)) {
 			throw new Exception("Data have been malformed.");
 		}
@@ -260,8 +260,8 @@ class Appointment
 		return $update;
 	}
 
-	public static function getAllStudentsWithAppointment($db, $id) {
-		self::validateId($db, $id);
+	public static function getAllStudentsWithAppointment($id) {
+		self::validateId($id);
 		return AppointmentHasStudentFetcher::retrieveStudentsWithAppointment($id);
 	}
 

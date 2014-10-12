@@ -273,7 +273,7 @@ class AppointmentFetcher
 		} // end catch
 	}
 
-	public static function retrieveAll($db) {
+	public static function retrieveAll() {
 		$query =
 			"SELECT `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_START_TIME . "` , `" . self::DB_COLUMN_END_TIME . "`,
 			 `" . self::DB_COLUMN_COURSE_ID . "`,  `" . self::DB_COLUMN_TUTOR_USER_ID . "`,  `" .
@@ -282,7 +282,8 @@ class AppointmentFetcher
 			self::DB_COLUMN_START_TIME . "` DESC";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -291,7 +292,7 @@ class AppointmentFetcher
 		}
 	}
 
-	public static function retrieveAllOfCurrTerms($db) {
+	public static function retrieveAllOfCurrTerms() {
 		$query =
 			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` AS " . self::DB_TABLE . "_" . self::DB_COLUMN_ID . ", 
 			`" . self::DB_COLUMN_START_TIME . "` , `" . self::DB_COLUMN_END_TIME . "`, `" . self::DB_TABLE . "`.`" .
@@ -314,7 +315,8 @@ class AppointmentFetcher
 			WHERE CURRENT_TIMESTAMP() BETWEEN `" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" . TermFetcher::DB_COLUMN_END_DATE . "`";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -509,7 +511,7 @@ class AppointmentFetcher
 	 * @param $db
 	 * @throws Exception
 	 */
-	public static function  retrieveCmpltWithoutRptsOnCurTerms($db) {
+	public static function  retrieveCmpltWithoutRptsOnCurTerms() {
 		$query =
 			"SELECT DISTINCT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` , `" . self::DB_TABLE . "`.`" .
 			self::DB_COLUMN_START_TIME . "` , `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_END_TIME . "`,
@@ -530,7 +532,8 @@ class AppointmentFetcher
 			ORDER BY `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "` DESC";
 
 		try {
-			$query = $db->getConnection()->prepare($query);
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);

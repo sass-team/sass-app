@@ -54,12 +54,12 @@
 //	/**
 //	 * @param \PDO $db
 //	 */
-//	public function setConnection($db) {
+//	public function setConnection() {
 //		$this->connection = $db;
 //	} // end __construct
 //
 //
-//	public function confirmRecover($db, $email, $id) {
+//	public function confirmRecover( $email, $id) {
 //
 //		try {
 //			$unique = uniqid('', true); // generate a unique string
@@ -71,7 +71,7 @@
 //
 //			$query->execute();
 //
-//			$generated_string = User::generateNewPasswordString($db, $id);
+//			$generated_string = User::generateNewPasswordString( $id);
 //
 //			$email = trim($email);
 //			$message = "We heard that you lost your SASS password. Sorry about that!<br/><br/>";
