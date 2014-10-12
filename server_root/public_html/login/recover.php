@@ -32,7 +32,7 @@
 
 <?php
 ob_start();
-require __DIR__ . '/../../app/init.php';
+require __DIR__ . '/../app/init.php';
 
 
 // if there is an active log in process redirect to students.class.php; load page only if no

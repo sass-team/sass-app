@@ -35,7 +35,7 @@
 ob_start();
 // TODO: Add option-functionality to resend email if password forgot
 // TODO: sql make 'img' of database to NOT NULL & refactor name to 'img_location'
-require __DIR__ . '/../../app/init.php';
+require __DIR__ . '/../app/init.php';
 require_once(ROOT_PATH . 'plugins/recaptcha-php-1.11/recaptchalib.php');
 require_once(ROOT_PATH . 'models/ReCAPTCHA.class.php');
 

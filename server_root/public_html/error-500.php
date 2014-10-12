@@ -9,7 +9,7 @@
 <html class="no-js"> <!--<![endif]-->
 <head>
 
-	<title>Internal Server Error - Canvas Admin</title>
+	<title>Internal Server Error</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	<meta name="description" content="">

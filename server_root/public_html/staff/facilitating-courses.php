@@ -31,7 +31,7 @@
 ?>
 
 <?php
-require __DIR__ . '/../../app/init.php';
+require __DIR__ . '/../app/init.php';
 $general->loggedOutProtect();
 
 $pageTitle = "Current Facilitated Courses";

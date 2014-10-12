@@ -32,7 +32,7 @@
 ?>
 
 <?php
-require __DIR__ . '/../../app/init.php';
+require __DIR__ . '/../app/init.php';
 $general->loggedOutProtect();
 
 // redirect if user elevation is not that of secretary or tutor
