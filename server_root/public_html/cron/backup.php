@@ -29,13 +29,14 @@ try {
 		'add-drop-database' => false,
 		'hex-blob' => true
 	);
-
-	$dump = new Ifsnop\Mysqldump\Mysqldump(DatabaseManager::$dsnProduction[DatabaseManager::DB_NAME],
-		DatabaseManager::$dsnProduction[DatabaseManager::DB_USERNAME],
-		DatabaseManager::$dsnProduction[DatabaseManager::DB_PASSWORD],
-		DatabaseManager::$dsnProduction[DatabaseManager::DB_HOST], 'mysql', $dumpSettings);
+//
+//	$dump = new Ifsnop\Mysqldump\Mysqldump(DatabaseManager::$dsnProduction[DatabaseManager::DB_NAME],
+//		DatabaseManager::$dsnProduction[DatabaseManager::DB_USERNAME],
+//		DatabaseManager::$dsnProduction[DatabaseManager::DB_PASSWORD],
+//		DatabaseManager::$dsnProduction[DatabaseManager::DB_HOST], 'mysql', $dumpSettings);
 	Mailer::sendDevelopers("Backup created: " . $filename, __FILE__);
-	$dump->start($filename);
+//	$dump->start($filename);
 } catch (\Exception $e) {
-	Mailer::sendDevelopers('mysqldump-php error: ' . $e->getMessage(), __FILE__);
+//	Mailer::sendDevelopers('mysqldump-php error: ' . $e->getMessage(), __FILE__);
+	echo $e->getMessage();
 }

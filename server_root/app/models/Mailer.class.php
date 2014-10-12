@@ -418,12 +418,13 @@ class Mailer
 	public static function safelySendMail($mail) {
 		/* Note: set_time_limit() does not work with safe_mode enabled */
 		while (1 == 1) {
-			set_time_limit(30); // sets (or resets) maximum  execution time to 30 seconds)
+//			set_time_limit(30); // sets (or resets) maximum  execution time to 30 seconds)
+			// has been set by system to 120 seconds. un-modified
 			// .... put code to process in here
 
 			if (MailerFetcher::canSendMail()) {
-				$mail->send();
 				MailerFetcher::updateMailSent();
+				$mail->send();
 				break;
 			}
 

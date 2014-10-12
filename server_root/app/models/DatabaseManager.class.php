@@ -13,17 +13,25 @@
  */
 class DatabaseManager
 {
-	const DB_HOST = "dbHost";
-	const DB_USERNAME = "dbUsername";
-	const DB_PASSWORD = "dbPassword";
-	const DB_NAME = "dbName";
-	const DB_PORT = "dbPort";
+	const DB_HOST = 'dbHost';
+	const DB_USERNAME = 'dbUsername';
+	const DB_PASSWORD = 'dbPassword';
+	const DB_NAME = 'dbName';
+	const DB_PORT = 'dbPort';
+
+//	public static $dsnProduction = array(
+//		self::DB_HOST => 'localhost',
+//		self::DB_USERNAME => 'root',
+//		self::DB_PASSWORD => '',
+//		self::DB_NAME => 'sass-ms_db',
+//		self::DB_PORT => '3306'
+//	);
 
 	public static $dsnProduction = array(
-		self::DB_HOST => "localhost",
-		self::DB_USERNAME => "root",
-		self::DB_PASSWORD => "",
-		self::DB_NAME => "sass-ms_db",
+		self::DB_HOST => "mysql.hostinger.gr",
+		self::DB_USERNAME => "u110998101_sassu",
+		self::DB_PASSWORD => "DDhS662fu5PzfgmM7a",
+		self::DB_NAME => "u110998101_sassd",
 		self::DB_PORT => "3306"
 	);
 	private static $instance;
@@ -43,7 +51,7 @@ class DatabaseManager
 			$this->dbConnection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // CHANGE THE ERROR MODE, THROW AN EXCEPTION WHEN AN ERROR IS FOUND
 			$this->dbConnection->exec("SET NAMES 'utf8'");
 		} catch (PDOException $e) { // program ends if exception is found
-			throw new Exception("Could not connect to the database." . $e->getMessage());
+			throw new Exception("Could not connect to the database." . $e->getMessage() .  self::$dsnProduction[self::DB_HOST]);
 		} // end
 	}
 
