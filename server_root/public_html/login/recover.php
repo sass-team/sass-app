@@ -32,7 +32,7 @@
 
 <?php
 ob_start();
-require __DIR__ . '/../../app/init.php';
+require __DIR__ . '/../app/init.php';
 
 
 // if there is an active log in process redirect to students.class.php; load page only if no
@@ -53,7 +53,7 @@ if (isUpdatePasswordBtnPressed()) {
 		$newPassword2 = trim($_POST['new-password-2']);
 		$id = $_GET['id'];
 		$genString = $_GET['gen_string'];
-		User::recoverPassword($db, $id, $newPassword1, $newPassword2, $genString);
+		User::recoverPassword( $id, $newPassword1, $newPassword2, $genString);
 
 		header('Location: ' . BASE_URL . 'login/recover/success');
 		exit();

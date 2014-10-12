@@ -1,0 +1,7 @@
+  # language setting
+language: php
+  # php tag
+php:
+ - 5.5
+
+script: phpunit DependecyFailureTest.class

@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/../../app/init.php';
+require __DIR__ . '/../app/init.php';
 $general->loggedOutProtect();
 
 // redirect if user elevation is not that of secretary or admin
@@ -14,17 +14,16 @@ $pageTitle = "New Appointment";
 $section = "appointments";
 
 try {
-	$terms = TermFetcher::retrieveCurrTerm($db);
-	$courses = sizeof($terms) > 0 ? CourseFetcher::retrieveForTerm($db, $terms[0][TermFetcher::DB_COLUMN_ID]) : "";
-	$instructors = InstructorFetcher::retrieveAll($db);
-	$students = StudentFetcher::retrieveAll($db);
+	$terms = TermFetcher::retrieveCurrTerm();
+	$courses = sizeof($terms) > 0 ? CourseFetcher::retrieveForTerm( $terms[0][TermFetcher::DB_COLUMN_ID]) : "";
+	$instructors = InstructorFetcher::retrieveAll();
+	$students = StudentFetcher::retrieveAll();
 
-	$appointments = AppointmentFetcher::retrieveAll($db);
+	$appointments = AppointmentFetcher::retrieveAll();
 
 	if (isBtnAddStudentPrsd()) {
 		$secretaryName = $user->getFirstName() . " " . $user->getLastName();
-		Appointment::add($db, $user, $_POST['dateTimePickerStart'], $_POST['dateTimePickerEnd'], $_POST['courseId'],
-			$_POST['studentsIds'], $_POST['tutorId'], $_POST['instructorIds'], $_POST['termId'], $secretaryName);
+		Appointment::add($user, $_POST['dateTimePickerStart'], $_POST['dateTimePickerEnd'], $_POST['courseId'], $_POST['studentsIds'], $_POST['tutorId'], $_POST['instructorIds'], $_POST['termId'], $secretaryName);
 		header('Location: ' . BASE_URL . 'appointments/add/success');
 		exit();
 	}

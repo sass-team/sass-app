@@ -9,7 +9,7 @@
 <html class="no-js"> <!--<![endif]-->
 <head>
 
-	<title>Internal Server Error - Canvas Admin</title>
+	<title>Internal Server Error</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	<meta name="description" content="">
@@ -84,8 +84,18 @@
 						</div>
 						<!-- /.error-code -->
 
+						<?php
+						session_start();
+						$errors[] = $_SESSION['errors'];
+						?>
 						<div class="error-details">
 							<h4>There was a problem serving the requested page.</h4>
+
+								<div class="alert alert-danger">
+									<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+									<?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
+								</div>
+
 							<br/>
 
 							<p><strong>What should I do:</strong></p>
@@ -102,7 +112,8 @@
 								</li>
 								<li>
 									<i class="icon-li fa fa-check-square-o"></i>
-									Nothing! we've been notified of the problem and will do our best to make sure it doesn't
+									Nothing! we've been notified of the problem and will do our best to make sure it
+									doesn't
 									happen again!
 								</li>
 								<li>

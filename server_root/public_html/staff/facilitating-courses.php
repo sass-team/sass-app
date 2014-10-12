@@ -31,16 +31,16 @@
 ?>
 
 <?php
-require __DIR__ . '/../../app/init.php';
+require __DIR__ . '/../app/init.php';
 $general->loggedOutProtect();
 
 $pageTitle = "Current Facilitated Courses";
 $section = "staff";
 
-$tutors = TutorFetcher::retrieveAll($db);
-$currentTerms = TermFetcher::retrieveCurrTerm($db);
+$tutors = TutorFetcher::retrieveAll();
+$currentTerms = TermFetcher::retrieveCurrTerm();
 //$users = UserFetcher::
-$courses = Tutor_has_course_has_termFetcher::retrieveCurrTermAllTeachingCourses($db);
+$courses = Tutor_has_course_has_termFetcher::retrieveCurrTermAllTeachingCourses();
 ?>
 
 <!DOCTYPE html>

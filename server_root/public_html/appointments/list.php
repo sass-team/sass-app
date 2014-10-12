@@ -8,19 +8,19 @@
 ?>
 
 <?php
-require __DIR__ . '/../../app/init.php';
+require __DIR__ . '/../app/init.php';
 $general->loggedOutProtect();
 
 $section = "appointments";
 
 if ($user->isTutor()) {
 	$pageTitle = "" . $user->getFirstName() . " " . $user->getLastName();
-	$appointments = AppointmentFetcher::retrieveAllOfCurrTermsByTutor($db, $user->getId());
-	$allReports = ReportFetcher::retrieveAllOfCurrTermsByTutor($db, $user->getId());
+	$appointments = AppointmentFetcher::retrieveAllOfCurrTermsByTutor($user->getId());
+	$allReports = ReportFetcher::retrieveAllOfCurrTermsByTutor($user->getId());
 } else {
 	$pageTitle = "All Tutors";
-	$appointments = AppointmentFetcher::retrieveAllOfCurrTerms($db);
-	$allReports = ReportFetcher::retrieveAllOfCurrTerms($db);
+	$appointments = AppointmentFetcher::retrieveAllOfCurrTerms();
+	$allReports = ReportFetcher::retrieveAllOfCurrTerms();
 }
 
 ?>

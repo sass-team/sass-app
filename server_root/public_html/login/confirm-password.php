@@ -35,7 +35,7 @@
 ob_start();
 // TODO: Add option-functionality to resend email if password forgot
 // TODO: sql make 'img' of database to NOT NULL & refactor name to 'img_location'
-require __DIR__ . '/../../app/init.php';
+require __DIR__ . '/../app/init.php';
 require_once(ROOT_PATH . 'plugins/recaptcha-php-1.11/recaptchalib.php');
 require_once(ROOT_PATH . 'models/ReCAPTCHA.class.php');
 
@@ -71,7 +71,7 @@ if (isContinueBtnPressed()) {
 		// What happens when the CAPTCHA was entered incorrectly
 		if (!$resp->is_valid) throw new Exception ("The reCAPTCHA wasn't entered correctly.");
 
-		Mailer::sendRecover($db, $email);
+		Mailer::sendRecover( $email);
 		header('Location: ' . BASE_URL . 'login/confirm-password/success');
 		exit();
 	} catch (Exception $e) {

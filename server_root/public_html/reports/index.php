@@ -32,16 +32,16 @@
 ?>
 
 <?php
-require __DIR__ . '/../../app/init.php';
+require __DIR__ . '/../app/init.php';
 $general->loggedOutProtect();
 
 $pageTitle = "All Reports";
 $section = "reports";
 
 try {
-	$users = User::retrieveAll($db);
-	$courses = CourseFetcher::retrieveAll($db);
-	$reports = ReportFetcher::retrieveAll($db);
+	$users = User::retrieveAll();
+	$courses = CourseFetcher::retrieveAll();
+	$reports = ReportFetcher::retrieveAll();
 } catch (Exception $e) {
 	$errors[] = $e->getMessage();
 }

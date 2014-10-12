@@ -1,6 +1,6 @@
 <?php
 ob_start();
-require __DIR__ . '/../../app/init.php';
+require __DIR__ . '/../app/init.php';
 
 // if there is an active log in process redirect to students.class.php; load page only if no
 // logged in user exists
@@ -31,7 +31,7 @@ if (isLoginBtnPressed()) {
 		$password = trim($_POST['login_password']);
 
 		// check if credentials are correct. If they are not, an exception occurs.
-		$id = User::login($db, $email, $password);
+		$id = User::login($email, $password);
 		// destroying the old session id
 		//and creating a new one. protect from session fixation attack.
 		session_regenerate_id(true);

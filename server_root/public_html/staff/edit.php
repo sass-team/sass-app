@@ -32,7 +32,7 @@
 ?>
 
 <?php
-require __DIR__ . '/../../app/init.php';
+require __DIR__ . '/../app/init.php';
 $general->loggedOutProtect();
 
 // redirect if user elevation is not that of secretary or tutor
@@ -52,39 +52,39 @@ if (!isset($_GET['id']) || !preg_match("/^[0-9]+$/", $_GET['id'])) {
 
 try {
 
-	if (($data = User::getSingle($db, $staffId)) === FALSE) {
+	if (($data = User::getSingle($staffId)) === FALSE) {
 //		header('Location: ' . BASE_URL . 'error-404');
 		exit();
 	}
 
 	// TODO: fix this code -- is ugly.
 	if (strcmp($data['type'], 'tutor') === 0) {
-		$tutor = TutorFetcher::retrieveSingle($db, $staffId);
-		$curUser = new Tutor($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active'], $tutor[TutorFetcher::DB_COLUMN_MAJOR_ID]);
+		$tutor = TutorFetcher::retrieveSingle($staffId);
+		$curUser = new Tutor($data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active'], $tutor[TutorFetcher::DB_COLUMN_MAJOR_ID]);
 	} else if (strcmp($data['type'], 'secretary') === 0) {
-		$curUser = new Secretary($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active']);
+		$curUser = new Secretary($data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active']);
 	} else if (strcmp($data['type'], 'admin') === 0) {
-		$curUser = new Admin($db, $data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active']);
+		$curUser = new Admin($data['id'], $data['f_name'], $data['l_name'], $data['email'], $data['mobile'], $data['img_loc'], $data['profile_description'], $data['date'], $data['type'], $data['active']);
 	} else {
 		throw new Exception("Something terrible has happened with the database. <br/>The software developers will tremble with fear.");
 	}
 
 	// retrieve courses data only user type is tutor
 	if ($curUser->isTutor()) {
-		$teachingCourses = TutorFetcher::retrieveCurrTermTeachingCourses($db, $curUser->getId());
-		$allCourses = CourseFetcher::retrieveAll($db);
-		$majors = MajorFetcher::retrieveMajors($db);
-		$terms = TermFetcher::retrieveCurrTerm($db);
+		$teachingCourses = TutorFetcher::retrieveCurrTermTeachingCourses($curUser->getId());
+		$allCourses = CourseFetcher::retrieveAll();
+		$majors = MajorFetcher::retrieveMajors();
+		$terms = TermFetcher::retrieveCurrTerm();
 	}
 
 
 	if (isBtnAddTeachingCoursesPrsd()) {
-		Tutor::addCourse($db, $staffId, $_POST['teachingCourses'], $_POST['termId']);
+		Tutor::addCourse( $staffId, $_POST['teachingCourses'], $_POST['termId']);
 		header('Location: ' . BASE_URL . 'staff/edit/' . $staffId . '/success');
 		exit();
 
 	} else if (isBtnSubmitReplaceCourse()) {
-		Tutor::updateTeachingCourse($db, $curUser->getId(), $_POST['teachingCourse'], $_POST['hiddenUpdateCourseOldId'],  $_POST['termId']);
+		Tutor::updateTeachingCourse( $curUser->getId(), $_POST['teachingCourse'], $_POST['hiddenUpdateCourseOldId'],  $_POST['termId']);
 		header('Location: ' . BASE_URL . 'staff/edit/' . $staffId . '/success');
 		exit();
 
@@ -113,7 +113,7 @@ try {
 		}
 
 		if (strcmp($newEmail, $oldEmail) !== 0) {
-			Person::validateNewEmail($db, $newEmail, User::DB_TABLE);
+			Person::validateNewEmail($newEmail, User::DB_TABLE);
 			$user->updateInfo("email", "user", $newEmail, $staffId);
 			$newDataAdded = true;
 		}
@@ -121,7 +121,7 @@ try {
 		if ($curUser->isTutor()) {
 			$newMajorId = isset($_POST['majorId']) ? $_POST['majorId'] : NULL;
 			$oldMajorId = $curUser->getMajorId();
-			$newDataAdded = Tutor::replaceMajorId($db, $staffId, $newMajorId, $oldMajorId) || $newDataAdded;
+			$newDataAdded = Tutor::replaceMajorId( $staffId, $newMajorId, $oldMajorId) || $newDataAdded;
 		}
 
 		if (!$newDataAdded) {
@@ -139,7 +139,7 @@ try {
 		header('Location: ' . BASE_URL . 'staff/edit/' . $staffId . '/success');
 		exit();
 	} else if (isBtnSbmtChangeUserActivate()) {
-		User::updateActiveStatus($db, $curUser->getId(), $curUser->isActive());
+		User::updateActiveStatus( $curUser->getId(), $curUser->isActive());
 		header('Location: ' . BASE_URL . 'staff/edit/' . $staffId . '/success');
 		exit();
 	}

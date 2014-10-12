@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/../../app/init.php';
+require __DIR__ . '/../app/init.php';
 $general->loggedOutProtect();
 
 // redirect if user elevation is not that of secretary or admin
@@ -13,7 +13,7 @@ function is_create_bttn_Pressed() {
 }
 
 try {
-	$courses = CourseFetcher::retrieveAll($db);
+	$courses = CourseFetcher::retrieveAll();
 
 	if (isBtnUpdatePrsd()) {
 		$courseId = trim($_POST['updateCourseIdModal']);
@@ -27,12 +27,12 @@ try {
 			$oldCourseName = $schedule[CourseFetcher::DB_COLUMN_NAME];
 
 
-			$updateDone = $updateDone || Course::updateName($db, $courseId, $newCourseName, $oldCourseName);
+			$updateDone = $updateDone || Course::updateName( $courseId, $newCourseName, $oldCourseName);
 
 
 			if (strcmp($newCourseCode, $oldCourseCodeName) !== 0) {
 				$updateDone = true;
-				Course::updateCode($db, $courseId, $newCourseCode);
+				Course::updateCode( $courseId, $newCourseCode);
 			}
 
 			if (!$updateDone) {
@@ -52,11 +52,11 @@ try {
 		$newCourseName = trim($_POST['course_name']);
 
 
-		Course::create($db, $newCourseCode, $newCourseName);
+		Course::create($newCourseCode, $newCourseName);
 		header('Location: ' . BASE_URL . 'academia/courses/success');
 		exit();
 	} else if (isBtnDeletePrsd()) {
-		Course::delete($db, $_POST['delCourseIdModal']);
+		Course::delete($_POST['delCourseIdModal']);
 		header('Location: ' . BASE_URL . 'academia/courses/success');
 		exit();
 	}

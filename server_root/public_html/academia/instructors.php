@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/../../app/init.php';
+require __DIR__ . '/../app/init.php';
 $general->loggedOutProtect();
 
 // redirect if user elevation is not that of secretary or admin
@@ -13,7 +13,7 @@ function is_create_bttn_Pressed() {
 }
 
 try {
-	$instructors = InstructorFetcher::retrieveAll($db);
+	$instructors = InstructorFetcher::retrieveAll();
 
 	if (isBtnUpdatePrsd()) {
 		$updateDone = 0;
@@ -28,16 +28,16 @@ try {
 			$oldInstructorLname = $instructor[InstructorFetcher::DB_COLUMN_LAST_NAME];
 
 
-			$updateDone = $updateDone || Instructor::updateLname($db, $instructorId, $newInstructorLname, $oldInstructorLname);
+			$updateDone = $updateDone || Instructor::updateLname( $instructorId, $newInstructorLname, $oldInstructorLname);
 
 
 			if (strcmp($newInstructorFname, $oldInstructorFname) !== 0) {
 				$updateDone = true;
-				Instructor::updateFname($db, $instructorId, $newInstructorFname);
+				Instructor::updateFname( $instructorId, $newInstructorFname);
 			}
 			if (strcmp($newInstructorLname, $oldInstructorLname) !== 0) {
 				$updateDone = true;
-				Instructor::updateLname($db, $instructorId, $newInstructorLname);
+				Instructor::updateLname( $instructorId, $newInstructorLname);
 			}
 
 			if (!$updateDone) {
@@ -57,11 +57,11 @@ try {
 		$newInstructorLname = trim($_POST['l_name']);
 
 
-		Instructor::create($db, $newInstructorFname, $newInstructorLname);
+		Instructor::create( $newInstructorFname, $newInstructorLname);
 		header('Location: ' . BASE_URL . 'academia/instructors/success');
 		exit();
 	} else if (isBtnDeletePrsd()) {
-		Instructor::delete($db, $_POST['delInstructorIdModal']);
+		Instructor::delete( $_POST['delInstructorIdModal']);
 		header('Location: ' . BASE_URL . 'academia/instructors/success');
 		exit();
 	}

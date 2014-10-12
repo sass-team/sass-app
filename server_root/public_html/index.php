@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/../app/init.php';
+require __DIR__ . '/app/init.php';
 $general->loggedOutProtect();
 try {
 	date_default_timezone_set('Europe/Athens');
@@ -8,8 +8,7 @@ try {
 	$endWeekDate = getWorkingDates($now->format('Y'), $now->format('W'), false);
 
 	if (!$user->isTutor()) {
-		$appointments = AppointmentFetcher::retrieveBetweenDates($db, $startWeekDate,
-			$endWeekDate);
+		$appointments = AppointmentFetcher::retrieveBetweenDates($startWeekDate, $endWeekDate);
 
 		$countAppointmentsForCurWeek = sizeof($appointments);
 		$countAchievedAppointmentsForCurWeek = Appointment::countWithLabelMessage($appointments, Appointment::LABEL_MESSAGE_COMPLETE);
@@ -18,8 +17,7 @@ try {
 		$countCanceledAppointmentsForCurWeek = Appointment::countWithLabelMessages($appointments, $canceledLabelMessages);
 
 	} else {
-		$appointments = AppointmentFetcher::retrieveTutorsBetweenDates($db, $user->getId(), $startWeekDate,
-			$endWeekDate);
+		$appointments = AppointmentFetcher::retrieveTutorsBetweenDates($user->getId(), $startWeekDate, $endWeekDate);
 		$countAppointmentsForCurWeek = sizeof($appointments);
 		$countAchievedAppointmentsForCurWeek = Appointment::countTutorsWithLabelMessage($user->getId(), $appointments,
 			Appointment::LABEL_MESSAGE_COMPLETE);
