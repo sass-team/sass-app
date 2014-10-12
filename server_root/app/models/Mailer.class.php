@@ -30,7 +30,7 @@
  */
 class Mailer
 {
-	const EMAIL_DEV_SASS = "dev.sass.ms@gmail.com";
+	const EMAIL_DEV_SASS = "r.dokollari@acg.edu";
 	const EMAIL_DEV_NAME_SASS = "SASS Developers";
 	const SASS_APP_AUTOMATIC_SYSTEM_DEVELOPERS = "SASS App | Developers";
 	const SASS_APP_AUTOMATIC_SYSTEM = "SASS App | Automatic System";

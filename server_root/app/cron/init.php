@@ -7,7 +7,7 @@ ob_start();
 #starting the staff session
 session_start();
 
-require __DIR__ . "/app.php";
+require __DIR__ . "app.php";
 
 // identical to require; but php will include it only if it has not already been included
 require_once ROOT_PATH . "models/DatabaseManager.class.php";
