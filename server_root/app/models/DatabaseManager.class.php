@@ -19,21 +19,21 @@ class DatabaseManager
 	const DB_NAME = 'dbName';
 	const DB_PORT = 'dbPort';
 
-//	public static $dsnProduction = array(
-//		self::DB_HOST => 'localhost',
-//		self::DB_USERNAME => 'root',
-//		self::DB_PASSWORD => '',
-//		self::DB_NAME => 'sass-ms_db',
-//		self::DB_PORT => '3306'
-//	);
-
 	public static $dsnProduction = array(
-		self::DB_HOST => "mysql.hostinger.gr",
-		self::DB_USERNAME => "u110998101_sassu",
-		self::DB_PASSWORD => "DDhS662fu5PzfgmM7a",
-		self::DB_NAME => "u110998101_sassd",
-		self::DB_PORT => "3306"
+		self::DB_HOST => 'localhost',
+		self::DB_USERNAME => 'root',
+		self::DB_PASSWORD => '',
+		self::DB_NAME => 'sass-ms_db',
+		self::DB_PORT => '3306'
 	);
+
+//	public static $dsnProduction = array(
+//		self::DB_HOST => "mysql.hostinger.gr",
+//		self::DB_USERNAME => "u110998101_sassu",
+//		self::DB_PASSWORD => "DDhS662fu5PzfgmM7a",
+//		self::DB_NAME => "u110998101_sassd",
+//		self::DB_PORT => "3306"
+//	);
 	private static $instance;
 	private $dbConnection;
 
