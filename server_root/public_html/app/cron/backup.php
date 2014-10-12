@@ -8,8 +8,12 @@
  */
 
 try {
-	require __DIR__ . '/init.php';
+	date_default_timezone_set('Europe/Athens');
+	// save resources - only run cron at hours 08:00 - 18:00
+	if ($curWorkingHour < App::WORKING_HOUR_START || $curWorkingHour > App::WORKING_HOUR_END) exit();
 
+	require __DIR__ . '/init.php';
+	
 	include_once(ROOT_PATH . '/plugins/mysqldump-php-1.4.1/src/Ifsnop/Mysqldump/Mysqldump.php');
 	$filename = ROOT_PATH . 'storage/backups/database_backup_' . date('G_a_F_d_Y') . '.sql';
 
@@ -29,7 +33,7 @@ try {
 		'add-drop-database' => false,
 		'hex-blob' => true
 	);
-//
+
 	$dump = new Ifsnop\Mysqldump\Mysqldump(DatabaseManager::$dsn[DatabaseManager::DB_NAME],
 		DatabaseManager::$dsn[DatabaseManager::DB_USERNAME],
 		DatabaseManager::$dsn[DatabaseManager::DB_PASSWORD],
@@ -37,7 +41,6 @@ try {
 	Mailer::sendDevelopers("Backup created: " . $filename, __FILE__);
 	$dump->start($filename);
 
-	echo "Backup created: " . $filename;
 } catch (\Exception $e) {
 	Mailer::sendDevelopers('mysqldump-php error: ' . $e->getMessage(), __FILE__);
 	echo $e->getMessage();

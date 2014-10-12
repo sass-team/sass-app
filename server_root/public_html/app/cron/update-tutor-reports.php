@@ -6,19 +6,17 @@
  * Time: 2:35 PM
  */
 
-require __DIR__ . '/init.php';
-
 
 try {
 	date_default_timezone_set('Europe/Athens');
+	// save resources - only run cron at hours 08:00 - 18:00
+	if ($curWorkingHour < App::WORKING_HOUR_START || $curWorkingHour > App::WORKING_HOUR_END) exit();
+
+	require __DIR__ . '/init.php';
 
 	$curWorkingDate = new DateTime();
 	$curWorkingHour = intval($curWorkingDate->format('H'));
 
-	// save resources - only run cron at hours 08:00 - 18:00
-	if ($curWorkingHour < 8 || $curWorkingHour > 20) {
-		exit();
-	}
 
 	$appointments = AppointmentFetcher::retrieveCmpltWithoutRptsOnCurTerms();
 
