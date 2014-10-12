@@ -266,7 +266,7 @@ class Mailer
 			//Attach an image file
 			//$mail->addAttachment('images/phpmailer_mini.gif');
 
-			$mail->send();
+			self::safelySendMail($mail);
 
 		} catch (phpmailerException $e) {
 			throw new Exception("PHPMailer error: " . $e->errorMessage()); //Pretty error messages from PHPMailer
@@ -340,7 +340,7 @@ class Mailer
 			//Attach an image file
 			//$mail->addAttachment('images/phpmailer_mini.gif');
 
-			$mail->send();
+			self::safelySendMail($mail);
 		} catch (Exception $e) {
 			throw new Exception("Could not send email. Please re-try to recover your email.");
 		}
