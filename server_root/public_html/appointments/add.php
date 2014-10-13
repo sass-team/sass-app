@@ -15,7 +15,7 @@ $section = "appointments";
 
 try {
 	$terms = TermFetcher::retrieveCurrTerm();
-	$courses = sizeof($terms) > 0 ? CourseFetcher::retrieveForTerm( $terms[0][TermFetcher::DB_COLUMN_ID]) : "";
+	$courses = sizeof($terms) > 0 ? CourseFetcher::retrieveForTerm($terms[0][TermFetcher::DB_COLUMN_ID]) : "";
 	$instructors = InstructorFetcher::retrieveAll();
 	$students = StudentFetcher::retrieveAll();
 
@@ -398,7 +398,7 @@ $(function () {
 
 	$dateTimePickerStart.datetimepicker({
 		defaultDate: startDateDefault,
-		<?php if(strcmp($user->getId(), "9") !== 0): ?>
+		<?php if(!$user->isAdmin()): ?>
 		minDate: minimumStartDate,
 		<?php endif; ?>
 		maxDate: minimumMaxDate,

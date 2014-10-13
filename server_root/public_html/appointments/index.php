@@ -13,7 +13,7 @@ function reportsHaveBeenCrtd($studentsAppointmentData) {
 }
 
 try {
-	if (!isUrlValid() || ($user->isTutor() && !Tutor::hasAppointmentWithId( $user->getId(), $_GET['appointmentId']))) {
+	if (!isUrlValid() || ($user->isTutor() && !Tutor::hasAppointmentWithId($user->getId(), $_GET['appointmentId']))) {
 		header('Location: ' . BASE_URL . "error-403");
 		exit();
 	}
@@ -31,7 +31,7 @@ try {
 	$nowDateTime = new DateTime();
 
 	// load reports if they have been created
-	if (reportsHaveBeenCrtd($studentsAppointmentData)) $reports = Report::getAllWithAppointmentId( $appointmentId);
+	if (reportsHaveBeenCrtd($studentsAppointmentData)) $reports = Report::getAllWithAppointmentId($appointmentId);
 
 
 	if (isBtnUpdateReportPrsd() || isBtnCompleteReportPrsd()) {
@@ -59,20 +59,20 @@ try {
 
 
 		if (isBtnUpdateReportPrsd()) {
-			$updateDone = Report::updateProjectTopicOtherText( $reportUpdate[ReportFetcher::DB_COLUMN_ID],
+			$updateDone = Report::updateProjectTopicOtherText($reportUpdate[ReportFetcher::DB_COLUMN_ID],
 				$reportUpdate[ReportFetcher::DB_COLUMN_PROJECT_TOPIC_OTHER], $projectTopicOtherNew);
-			$updateDone = (Report::updateOtherText( $reportUpdate[ReportFetcher::DB_COLUMN_ID],
+			$updateDone = (Report::updateOtherText($reportUpdate[ReportFetcher::DB_COLUMN_ID],
 					$reportUpdate[ReportFetcher::DB_COLUMN_OTHER_TEXT_AREA], $otherTextArea)) || $updateDone;
-			$updateDone = (Report::updateStudentsConcerns( $reportUpdate[ReportFetcher::DB_COLUMN_ID],
+			$updateDone = (Report::updateStudentsConcerns($reportUpdate[ReportFetcher::DB_COLUMN_ID],
 					$reportUpdate[ReportFetcher::DB_COLUMN_STUDENT_CONCERNS], $studentsConcernsTextArea)) || $updateDone;
-			$updateDone = (Report::updateRelevantFeedbackGuidelines( $reportUpdate[ReportFetcher::DB_COLUMN_ID],
+			$updateDone = (Report::updateRelevantFeedbackGuidelines($reportUpdate[ReportFetcher::DB_COLUMN_ID],
 					$reportUpdate[ReportFetcher::DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES], $relevantFeedbackGuidelines)) || $updateDone;
-			$updateDone = (Report::updateStudentBroughtAlong( $reportUpdate[ReportFetcher::DB_COLUMN_ID],
+			$updateDone = (Report::updateStudentBroughtAlong($reportUpdate[ReportFetcher::DB_COLUMN_ID],
 					$studentBroughtAlongNew, $studentBroughtAlongOld)) || $updateDone;
-			$updateDone = (Report::updateAdditionalComments( $reportUpdate[ReportFetcher::DB_COLUMN_ID],
+			$updateDone = (Report::updateAdditionalComments($reportUpdate[ReportFetcher::DB_COLUMN_ID],
 					$reportUpdate[ReportFetcher::DB_COLUMN_ADDITIONAL_COMMENTS], $conclusionAdditionalComments)) || $updateDone;
 		} else {
-			$updateDone = Report::updateAllFields( $reportUpdate[ReportFetcher::DB_COLUMN_ID], $projectTopicOtherNew,
+			$updateDone = Report::updateAllFields($reportUpdate[ReportFetcher::DB_COLUMN_ID], $projectTopicOtherNew,
 				$otherTextArea, $studentsConcernsTextArea, $relevantFeedbackGuidelines, $studentBroughtAlongNew, $studentBroughtAlongOld, $conclusionAdditionalComments);
 			// user is tutor requesting fill report
 			if ($user->isTutor()) {
@@ -117,7 +117,7 @@ try {
 	) {
 
 		$updateDone = Appointment::updateStudents($appointmentId, $studentsAppointmentData, $_POST['studentsIds']);
-		$updateDone = Appointment::updateInstructors( $appointmentId, $studentsAppointmentData, $_POST['instructorIds'])
+		$updateDone = Appointment::updateInstructors($appointmentId, $studentsAppointmentData, $_POST['instructorIds'])
 			|| $updateDone;
 		$updateDone = Appointment::updateCourse($appointmentId, $studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_COURSE_ID], $_POST['courseId']) || $updateDone;
 		// TODO: validate new date times.
@@ -685,7 +685,8 @@ if (isset($reports)) {
 						<input type="checkbox"
 						       name="student-brought-along[<?php echo StudentBroughtAlongFetcher::DB_COLUMN_DRAFT; ?>]" <?php echo
 						strcmp($reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_DRAFT], StudentBroughtAlongFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>
-						       data-parsley-multiple="student-brought-along-parsley-<?php echo $i; ?>" data-parsley-required="true">
+						       data-parsley-multiple="student-brought-along-parsley-<?php echo $i; ?>"
+						       data-parsley-required="true">
 						Draft
 					</label>
 				</div>
@@ -733,11 +734,10 @@ if (isset($reports)) {
 						       data-parsley-multiple="student-brought-along-parsley-<?php echo $i; ?>">
 						Exercise on <input type="text"
 						                   name="student-brought-along[<?php echo StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON; ?>text]"
-						                   class="form-control" value="<?php echo
-						$reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON] === NULL ? "" : $reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON]; ?>"
-							<?php echo
-							$reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON] === NULL ? "disabled='disabled'" : ''; ?>
-						                   data-parsley-multiple="student-brought-along-parsley-<?php echo $i; ?>" />
+						                   class="form-control"
+						                   value="<?php echo $reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON] === NULL ? "" : $reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON]; ?>"
+							<?php echo $reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON] === NULL ? "disabled='disabled'" : ''; ?>
+						                   data-parsley-validate-if-empty/>
 					</label>
 				</div>
 				<div class="checkbox">
@@ -750,8 +750,8 @@ if (isset($reports)) {
 						             name="student-brought-along[<?php echo StudentBroughtAlongFetcher::DB_COLUMN_OTHER; ?>text]"
 						             class="form-control" value="<?php echo
 						$reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_OTHER] === NULL ? "" : $reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_OTHER]; ?>"<?php echo
-						$reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_OTHER] === NULL ? "disabled='disabled'" : ''; ?>
-						             data-parsley-multiple="student-brought-along-parsley-<?php echo $i; ?>" />
+						$reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_OTHER] === NULL ? "disabled='disabled'" : 'data-parsley-minlength="3"'; ?>
+						             />
 					</label>
 				</div>
 			</div>

@@ -73,7 +73,7 @@ class Mailer
 			$mail = new PHPMailer();
 			// Set PHPMailer to use the sendmail transport
 			//Set who the message is to be sent from
-			$mail->setFrom($senderEmail, $senderName);
+			$mail->setFrom($senderEmail, self::SASS_APP_AUTOMATIC_SYSTEM);
 			//Set an alternative reply-to address
 			$mail->addReplyTo($alternativeEmail, $alternativeName);
 			//Set who the message is to be sent to
@@ -147,7 +147,7 @@ class Mailer
 			$mail = new PHPMailer();
 			// Set PHPMailer to use the sendmail transport
 			//Set who the message is to be sent from
-			$mail->setFrom($senderEmail, $senderName);
+			$mail->setFrom($senderEmail, self::SASS_APP_AUTOMATIC_SYSTEM);
 			//Set an alternative reply-to address
 			$mail->addReplyTo($alternativeEmail, $alternativeName);
 			//Set who the message is to be sent to
@@ -184,7 +184,7 @@ class Mailer
 			$email_body = $message;
 
 			//Set who the message is to be sent from
-			$mail->setFrom($senderEmail, $senderName);
+			$mail->setFrom($senderEmail, self::SASS_APP_AUTOMATIC_SYSTEM);
 			//Set who the message is to be sent to
 			$mail->addAddress($receiverEmail, $receiverName);
 			//Set the subject line
@@ -223,7 +223,7 @@ class Mailer
 			$mail = new PHPMailer();
 			// Set PHPMailer to use the sendmail transport
 			//Set who the message is to be sent from
-			$mail->setFrom($senderEmail, $senderName);
+			$mail->setFrom($senderEmail, self::SASS_APP_AUTOMATIC_SYSTEM);
 			//Set an alternative reply-to address
 			$mail->addReplyTo($alternativeEmail, $alternativeName);
 			//Set who the message is to be sent to
@@ -255,7 +255,7 @@ class Mailer
 			$email_body = $message;
 
 			//Set who the message is to be sent from
-			$mail->setFrom($senderEmail, $senderName);
+			$mail->setFrom($senderEmail, self::SASS_APP_AUTOMATIC_SYSTEM);
 			//Set who the message is to be sent to
 			$mail->addAddress($receiverEmail, $receiverName);
 			//Set the subject line
@@ -303,7 +303,7 @@ class Mailer
 			$mail = new PHPMailer();
 			// Set PHPMailer to use the sendmail transport
 			//Set who the message is to be sent from
-			$mail->setFrom($senderEmail, $senderName);
+			$mail->setFrom($senderEmail, self::SASS_APP_AUTOMATIC_SYSTEM);
 			//Set an alternative reply-to address
 			$mail->addReplyTo($alternativeEmail, $alternativeName);
 			//Set who the message is to be sent to
@@ -367,7 +367,7 @@ class Mailer
 			$mail = new PHPMailer();
 			// Set PHPMailer to use the sendmail transport
 			//Set who the message is to be sent from
-			$mail->setFrom($senderEmail, $senderName);
+			$mail->setFrom($senderEmail, self::SASS_APP_AUTOMATIC_SYSTEM);
 			//Set an alternative reply-to address
 			$mail->addReplyTo($alternativeEmail, $alternativeName);
 			//Set who the message is to be sent to

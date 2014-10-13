@@ -37,7 +37,7 @@ class Appointment
 		date_default_timezone_set('Europe/Athens');
 
 		// TODO: remove hardcoded $user
-		if ($nowDate > $startDate && strcmp($user->getId(), "9") !== 0) throw new Exception("Starting datetime cannot be less than current datetime.");
+		if ($nowDate > $startDate && !$user->isAdmin()) throw new Exception("Starting datetime cannot be less than current datetime.");
 		$minutesAppointmentDuration = ($endDate->getTimestamp() - $startDate->getTimestamp()) / 60;
 		if ($minutesAppointmentDuration < 30 || $minutesAppointmentDuration > 480) throw new Exception("Appointment's duration can be between 30 min and 8 hours.");
 		if (AppointmentFetcher::existsTutorsAppointmentsBetween($tutorId, $termId, $startDate, $endDate, $existingAppointmentId)) {
