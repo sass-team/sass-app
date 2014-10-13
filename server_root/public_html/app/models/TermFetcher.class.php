@@ -85,11 +85,17 @@ class TermFetcher
 			"SELECT `" . self::DB_COLUMN_ID . "` ,
 					`" . self::DB_COLUMN_NAME . "`
 			 	FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
-			 	WHERE CURRENT_TIMESTAMP() BETWEEN `" . self::DB_COLUMN_START_DATE . "` AND `" . self::DB_COLUMN_END_DATE . "`";
+			 	WHERE :now BETWEEN `" . self::DB_COLUMN_START_DATE . "` AND `" . self::DB_COLUMN_END_DATE . "`";
 
 		try {
+			date_default_timezone_set('Europe/Athens');
+			$now = new DateTime();
+			$now = $now->format(Dates::DATE_FORMAT_IN);
+
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
+			$query->bindParam(':now', $now, PDO::PARAM_STR);
+
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);

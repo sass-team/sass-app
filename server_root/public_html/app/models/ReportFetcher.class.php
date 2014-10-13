@@ -93,14 +93,19 @@ class ReportFetcher
 			INNER JOIN `" . TermFetcher::DB_TABLE . "`
 				ON `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "` =
 					`" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_TERM_ID . "`
-			WHERE CURRENT_TIMESTAMP() BETWEEN `" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" . TermFetcher::DB_COLUMN_END_DATE . "`
+			WHERE :now BETWEEN `" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" . TermFetcher::DB_COLUMN_END_DATE . "`
 			AND `" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_TUTOR_USER_ID . "` = :tutor_id
 			ORDER BY `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` ASC";
 
 		try {
+			date_default_timezone_set('Europe/Athens');
+			$now = new DateTime();
+			$now = $now->format(Dates::DATE_FORMAT_IN);
+
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
 			$query->bindParam(':tutor_id', $tutorId, PDO::PARAM_INT);
+			$query->bindParam(':now', $now, PDO::PARAM_STR);
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -128,12 +133,18 @@ class ReportFetcher
 			INNER JOIN `" . TermFetcher::DB_TABLE . "`
 				ON `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "` =
 					`" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_TERM_ID . "`
-			WHERE CURRENT_TIMESTAMP() BETWEEN `" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" . TermFetcher::DB_COLUMN_END_DATE . "`
+			WHERE :now BETWEEN `" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" . TermFetcher::DB_COLUMN_END_DATE . "`
 			ORDER BY `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` ASC";
 
 		try {
+			date_default_timezone_set('Europe/Athens');
+			$now = new DateTime();
+			$now = $now->format(Dates::DATE_FORMAT_IN);
+
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
+			$query->bindParam(':now', $now, PDO::PARAM_STR);
+
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -260,7 +271,7 @@ class ReportFetcher
 
 			$query->execute();
 
-			Report::updateStudentBroughtAlong( $reportId, $studentBroughtAlongNew, $studentBroughtAlongOld);
+			Report::updateStudentBroughtAlong($reportId, $studentBroughtAlongNew, $studentBroughtAlongOld);
 
 			return true;
 		} catch (Exception $e) {

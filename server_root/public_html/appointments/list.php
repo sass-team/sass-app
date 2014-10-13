@@ -17,12 +17,29 @@ if ($user->isTutor()) {
 	$pageTitle = "" . $user->getFirstName() . " " . $user->getLastName();
 	$appointments = AppointmentFetcher::retrieveAllOfCurrTermsByTutor($user->getId());
 	$allReports = ReportFetcher::retrieveAllOfCurrTermsByTutor($user->getId());
+
+	// TODO: add sepearate retrieval function for tutor. currently retrieves all students \/
+	$students = AppointmentHasStudentFetcher::retrieveAllOnCurTerm();
+
 } else {
 	$pageTitle = "All Tutors";
 	$appointments = AppointmentFetcher::retrieveAllOfCurrTerms();
 	$allReports = ReportFetcher::retrieveAllOfCurrTerms();
+	$students = AppointmentHasStudentFetcher::retrieveAllOnCurTerm();
 }
 
+function getStudentsIds($students, $appointmentId) {
+	$studentsIds = "";
+	foreach ($students as $student) {
+		if (strcmp($student[AppointmentHasStudentFetcher::DB_COLUMN_APPOINTMENT_ID], $appointmentId) === 0) {
+			$studentsIds = $student[StudentFetcher::DB_COLUMN_STUDENT_ID] . ", " . $studentsIds;
+		}
+	}
+
+	return rtrim($studentsIds, ", ");
+}
+
+var_dump($students);
 ?>
 
 <!DOCTYPE html>
@@ -88,6 +105,9 @@ if ($user->isTutor()) {
 											<th class="text-center" data-filterable="true" data-sortable="true">Tutor
 											</th>
 										<?php } ?>
+										<th class="text-center" data-filterable="true" data-sortable="true">Student(s)
+											ID
+										</th>
 										<th class="text-center" data-filterable="true" data-sortable="true">Status
 										</th>
 										<th class="text-center" data-filterable="true" data-sortable="true">Report(s)
@@ -108,14 +128,24 @@ if ($user->isTutor()) {
 									<tbody>
 
 									<?php
+
+
+
 									if (empty($errors) === true) {
 										if ($user->isTutor()) {
 											foreach ($appointments as $appointment) {
+												$studentsIds = getStudentsIds($students,
+													$appointment[AppointmentFetcher::DB_TABLE . "_" .
+													AppointmentFetcher::DB_COLUMN_ID]);
+
 												$reports = Report::getWithAppointmentId($allReports, $appointment[AppointmentFetcher::DB_TABLE . "_" . AppointmentFetcher::DB_COLUMN_ID]);
 												include(ROOT_PATH . "views/partials/appointments/table-data-by-tutor-view.html.php");
 											}
 										} else {
 											foreach ($appointments as $appointment) {
+												$studentsIds = getStudentsIds($students,
+													$appointment[AppointmentFetcher::DB_TABLE . "_" .
+													AppointmentFetcher::DB_COLUMN_ID]);
 												$reports = Report::getWithAppointmentId($allReports, $appointment[AppointmentFetcher::DB_TABLE . "_" . AppointmentFetcher::DB_COLUMN_ID]);
 												include(ROOT_PATH . "views/partials/appointments/table-data-view.html.php");
 											}

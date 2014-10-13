@@ -311,11 +311,16 @@ class AppointmentFetcher
 			INNER JOIN `" . TermFetcher::DB_TABLE . "` 
 				ON `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "` = 
 					`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`
-			WHERE CURRENT_TIMESTAMP() BETWEEN `" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" . TermFetcher::DB_COLUMN_END_DATE . "`";
+			WHERE :now BETWEEN `" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" . TermFetcher::DB_COLUMN_END_DATE . "`";
 
 		try {
+			date_default_timezone_set('Europe/Athens');
+			$now = new DateTime();
+			$now = $now->format(Dates::DATE_FORMAT_IN);
+
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
+			$query->bindParam(':now', $now, PDO::PARAM_STR);
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -345,11 +350,17 @@ class AppointmentFetcher
 				ON `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "` = 
 					`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`
 			WHERE `" . self::DB_COLUMN_TUTOR_USER_ID . "` = :tutor_id AND
-			CURRENT_TIMESTAMP() BETWEEN `" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" . TermFetcher::DB_COLUMN_END_DATE . "`";
+			:now BETWEEN `" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" . TermFetcher::DB_COLUMN_END_DATE . "`";
 
 		try {
+			date_default_timezone_set('Europe/Athens');
+			$now = new DateTime();
+			$now = $now->format(Dates::DATE_FORMAT_IN);
+
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
+			$query->bindParam(':now', $now, PDO::PARAM_STR);
+
 			$query->bindParam(':tutor_id', $tutorId, PDO::PARAM_INT);
 			$query->execute();
 
@@ -525,7 +536,7 @@ class AppointmentFetcher
 			LEFT JOIN  `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . TermFetcher::DB_TABLE . "`
 			ON `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`  = `" .
 			TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "`
-			WHERE TIME_TO_SEC(TIMEDIFF(:now,  `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "`))/60 > 30
+			WHERE TIME_TO_SEC(TIMEDIFF(:now,  `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "`))/60 >= 30
 			AND `" . AppointmentHasStudentFetcher::DB_TABLE . "`.`" .
 			AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID . "` IS NULL
 			AND :now BETWEEN `" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" . TermFetcher::DB_COLUMN_END_DATE . "`
@@ -534,7 +545,6 @@ class AppointmentFetcher
 
 		try {
 			date_default_timezone_set('Europe/Athens');
-
 			$now = new DateTime();
 			$now = $now->format(Dates::DATE_FORMAT_IN);
 

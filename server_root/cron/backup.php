@@ -39,9 +39,8 @@ try {
 		DatabaseManager::$dsn[DatabaseManager::DB_USERNAME],
 		DatabaseManager::$dsn[DatabaseManager::DB_PASSWORD],
 		DatabaseManager::$dsn[DatabaseManager::DB_HOST], 'mysql', $dumpSettings);
-	Mailer::sendDevelopers("Backup created: " . $filename, __FILE__);
 	$dump->start($filename);
-
+	Mailer::sendDevelopers("Backup created: " . $filename, __FILE__);
 } catch (\Exception $e) {
 	Mailer::sendDevelopers('mysqldump-php error: ' . $e->getMessage(), __FILE__);
 }
