@@ -99,8 +99,6 @@ class AppointmentFetcher
 				)";
 
 			$dbConnection = DatabaseManager::getConnection();
-			$queryInsertUser = $dbConnection->prepare($queryInsertUser);
-
 			$dbConnection->beginTransaction();
 
 			$queryInsertUser = $dbConnection->prepare($queryInsertUser);
@@ -200,6 +198,7 @@ class AppointmentFetcher
 
 			if ($existingAppointmentId !== false) $query->bindParam(':appointment_id', $existingAppointmentId, PDO::PARAM_INT);
 
+//			throw new Exception("Could not check conflicts with other appointments." . $startDate);
 
 			$query->bindParam(':start_date', $startDate, PDO::PARAM_STR);
 			$query->bindParam(':end_date', $endDate, PDO::PARAM_STR);

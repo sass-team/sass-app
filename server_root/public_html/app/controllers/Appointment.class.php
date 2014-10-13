@@ -34,6 +34,8 @@ class Appointment
 
 	public static function validateNewDates($user, $termId, $tutorId, $startDate, $endDate, $existingAppointmentId = false) {
 		$nowDate = new DateTime();
+		date_default_timezone_set('Europe/Athens');
+
 		// TODO: remove hardcoded $user
 		if ($nowDate > $startDate && strcmp($user->getId(), "9") !== 0) throw new Exception("Starting datetime cannot be less than current datetime.");
 		$minutesAppointmentDuration = ($endDate->getTimestamp() - $startDate->getTimestamp()) / 60;
@@ -87,7 +89,7 @@ class Appointment
 		Instructor::validateIds($instructorsIds);
 		Tutor::validateId($tutorId);
 		Term::validateId($termId);
-		self::validateNewDates($user, $termId, $tutorId, $dateStart, $dateEnd, $dateEnd);
+		self::validateNewDates($user, $termId, $tutorId, $dateStart, $dateEnd);
 
 		$appointmentId = AppointmentFetcher::insert($dateStart, $dateEnd, $courseId, $studentsIds, $tutorId, $instructorsIds, $termId);
 		Mailer::sendTutorNewAppointment($appointmentId, $secretaryName);

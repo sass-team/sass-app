@@ -18,14 +18,14 @@ class DatabaseManager
 	const DB_PASSWORD = 'dbPassword';
 	const DB_NAME = 'dbName';
 	const DB_PORT = 'dbPort';
-//
-//	public static $dsn = array(
-//		self::DB_HOST => 'localhost',
-//		self::DB_USERNAME => 'root',
-//		self::DB_PASSWORD => '',
-//		self::DB_NAME => 'sass-ms_db',
-//		self::DB_PORT => '3306'
-//	);
+
+	public static $dsn = array(
+		self::DB_HOST => 'localhost',
+		self::DB_USERNAME => 'root',
+		self::DB_PASSWORD => '',
+		self::DB_NAME => 'sass-ms_db',
+		self::DB_PORT => '3306'
+	);
 
 	// develop
 //	public static $dsnProduction = array(
@@ -37,13 +37,13 @@ class DatabaseManager
 //	);
 
 // production
-	public static $dsn = array(
-		self::DB_HOST => 'mysql.hostinger.gr',
-		self::DB_USERNAME => 'u137989003_sassu',
-		self::DB_PASSWORD => '79Z20lTqIB7CEw8Puc',
-		self::DB_NAME => 'u137989003_sassd',
-		self::DB_PORT => '3306'
-	);
+//	public static $dsn = array(
+//		self::DB_HOST => 'mysql.hostinger.gr',
+//		self::DB_USERNAME => 'u137989003_sassu',
+//		self::DB_PASSWORD => '79Z20lTqIB7CEw8Puc',
+//		self::DB_NAME => 'u137989003_sassd',
+//		self::DB_PORT => '3306'
+//	);
 
 	private static $instance;
 	private $dbConnection;
