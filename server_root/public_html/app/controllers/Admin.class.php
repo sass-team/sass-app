@@ -33,8 +33,6 @@ class Admin extends User
 			$dbConnection = DatabaseManager::getConnection();
 			$dbConnection->beginTransaction();
 			$queryInsertUser = $dbConnection->prepare($queryInsertUser);
-
-			$queryInsertUser = $dbConnection->getConnection()->prepare($queryInsertUser);
 			$queryInsertUser->bindParam(':email', $email, PDO::PARAM_STR);
 			$queryInsertUser->bindParam(':first_name', $first_name, PDO::PARAM_STR);
 			$queryInsertUser->bindParam(':last_name', $last_name, PDO::PARAM_STR);
@@ -43,7 +41,7 @@ class Admin extends User
 			$queryInsertUser->execute();
 
 			// last inserted if of THIS connection
-			$userId = $dbConnection->getConnection()->lastInsertId();
+			$userId = $dbConnection->lastInsertId();
 
 			if (strcmp($user_type, User::TUTOR) === 0) {
 				Major::validateId($majorId);
@@ -52,10 +50,10 @@ class Admin extends User
 			}
 
 
-			$dbConnection->getConnection()->commit();
+			$dbConnection->commit();
 			return $userId;
 		} catch (Exception $e) {
-			$dbConnection->getConnection()->rollback();
+			$dbConnection->rollback();
 			throw new Exception("Could not insert user into database.");}
 
 	}
