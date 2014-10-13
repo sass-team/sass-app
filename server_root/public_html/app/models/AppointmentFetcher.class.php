@@ -185,7 +185,7 @@ class AppointmentFetcher
 					OR
 					(`" . self::DB_COLUMN_START_TIME . "` >= :start_date AND `" . self::DB_COLUMN_START_TIME . "` < :end_date)
 					OR
-					(`" . self::DB_COLUMN_END_TIME . "` >= :start_date AND `" . self::DB_COLUMN_END_TIME . "` < :end_date)
+					(`" . self::DB_COLUMN_END_TIME . "` > :start_date AND `" . self::DB_COLUMN_END_TIME . "` < :end_date)
 
 				)
 				AND `" . self::DB_COLUMN_TERM_ID . "`=:term_id";
