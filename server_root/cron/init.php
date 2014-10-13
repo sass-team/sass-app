@@ -2,7 +2,7 @@
 
 // TODO: allow access only from api
 
-require "../../app/config/app.php";
+require "../public_html/app/config/app.php";
 require ROOT_PATH . "config/DatabaseManager.class.php";
 
 // identical to require; but php will include it only if it has not already been included

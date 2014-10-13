@@ -27,15 +27,15 @@ class UserFetcher
 	public static function existsMobileNum($newMobileNum) {
 
 		try {
-			$sql = "SELECT COUNT(" . self::DB_COLUMN_MOBILE . ") FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" .
+			$query = "SELECT COUNT(" . self::DB_COLUMN_MOBILE . ") FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" .
 				self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_MOBILE . "` = :mobileNum";
 			$dbConnection = DatabaseManager::getConnection();
 
-			$query = $dbConnection->prepare($sql);
-			$dbConnection->bindParam(':mobileNum', $newMobileNum, PDO::PARAM_INT);
-			$dbConnection->execute();
+			$query = $dbConnection->prepare($query);
+			$query->bindParam(':mobileNum', $newMobileNum, PDO::PARAM_INT);
+			$query->execute();
 
-			if ($dbConnection->fetchColumn() === '0') return false;
+			if ($query->fetchColumn() === '0') return false;
 		} catch (Exception $e) {
 			throw new Exception("Could not check if new mobile number already exists on database.");
 		}

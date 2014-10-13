@@ -117,8 +117,25 @@ class Appointment
 			$endDate = new DateTime($appointmentHour[AppointmentFetcher::DB_COLUMN_END_TIME]);
 			$appointmentUrl = "http://" . $_SERVER['SERVER_NAME'] . "/appointments/" . $appointmentHour[UserFetcher::DB_COLUMN_ID];
 
+			switch ($appointmentHour[AppointmentFetcher::DB_COLUMN_LABEL_COLOR]) {
+				case Appointment::LABEL_COLOR_PENDING:
+					$color = '#888888';
+					break;
+				case Appointment::LABEL_COLOR_CANCELED:
+					$color = '#e5412d';
+					break;
+				case Appointment::LABEL_COLOR_SUCCESS:
+					$color = '#3fa67a';
+					break;
+				case Appointment::LABEL_COLOR_WARNING:
+					$color = '#f0ad4e';
+					break;
+				default:
+					$color = '#444';
+					break;
+			}
 			$appointmentHoursJSON[] = array('title' => $appointmentTitle, 'start' => $startDate->format('Y-m-d H:i:s'), 'end' =>
-				$endDate->format('Y-m-d H:i:s'), 'allDay' => false, 'url' => $appointmentUrl, 'color' => '#e5412d');
+				$endDate->format('Y-m-d H:i:s'), 'allDay' => false, 'url' => $appointmentUrl, 'color' => $color);
 		}
 
 		return json_encode($appointmentHoursJSON);
@@ -239,7 +256,7 @@ class Appointment
 		return false;
 	}
 
-	public static function updateInstructors( $appointmentId, $oldInstructorsIds, $newInstructorsIds) {
+	public static function updateInstructors($appointmentId, $oldInstructorsIds, $newInstructorsIds) {
 		if (!isset($newInstructorsIds) || empty($newInstructorsIds)) {
 			throw new Exception("Data have been malformed.");
 		}

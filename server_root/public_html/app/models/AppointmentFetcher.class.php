@@ -364,7 +364,8 @@ class AppointmentFetcher
 			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_START_TIME . "` , `" .
 			self::DB_COLUMN_END_TIME . "`, `" . self::DB_COLUMN_COURSE_ID . "`,  `" . self::DB_COLUMN_TUTOR_USER_ID . "`,
 			`" . self::DB_COLUMN_TUTOR_USER_ID . "`, `" . UserFetcher::DB_COLUMN_FIRST_NAME . "` , `" .
-			UserFetcher::DB_COLUMN_LAST_NAME . "`, `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_CODE . "`
+			UserFetcher::DB_COLUMN_LAST_NAME . "`, `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_CODE . "`,
+			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_LABEL_COLOR . "`
 			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
 			INNER JOIN  `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . UserFetcher::DB_TABLE . "`
 			ON `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "`  = `" .
@@ -524,15 +525,22 @@ class AppointmentFetcher
 			LEFT JOIN  `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . TermFetcher::DB_TABLE . "`
 			ON `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`  = `" .
 			TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "`
-			WHERE TIME_TO_SEC(TIMEDIFF(NOW(),  `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "`))/60 > 30
+			WHERE TIME_TO_SEC(TIMEDIFF(:now,  `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "`))/60 > 30
 			AND `" . AppointmentHasStudentFetcher::DB_TABLE . "`.`" .
 			AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID . "` IS NULL
-			AND CURRENT_TIMESTAMP() BETWEEN `" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" . TermFetcher::DB_COLUMN_END_DATE . "`
+			AND :now BETWEEN `" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" . TermFetcher::DB_COLUMN_END_DATE . "`
 			ORDER BY `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "` DESC";
 
+
 		try {
+			date_default_timezone_set('Europe/Athens');
+
+			$now = new DateTime();
+			$now = $now->format(Dates::DATE_FORMAT_IN);
+
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
+			$query->bindParam(':now', $now, PDO::PARAM_STR);
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
