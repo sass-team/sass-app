@@ -517,7 +517,9 @@ abstract class User extends Person
 		try {
 
 			$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.user SET `img_loc`= :avatar_img WHERE `id`= :user_id";
-			$query = $this->getDb()->getConnection()->prepare($query);
+
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':avatar_img', $avatar_img_loc, PDO::PARAM_STR);
 			$query->bindParam(':user_id', $id, PDO::PARAM_INT);
 

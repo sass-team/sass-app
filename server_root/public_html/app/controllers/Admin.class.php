@@ -80,9 +80,10 @@ class Admin extends User
 		} else {
 			try {
 
-				$sql = "UPDATE `" .  DatabaseManager::$dsn[DatabaseManager::DB_NAME]  . "`.`" . $field . "` SET `$what` = ? WHERE `id`= ?";
+				$query = "UPDATE `" .  DatabaseManager::$dsn[DatabaseManager::DB_NAME]  . "`.`" . $field . "` SET `$what` = ? WHERE `id`= ?";
 
-				$query = $this->getDb()->getConnection()->prepare($sql);
+				$dbConnection = DatabaseManager::getConnection();
+				$query = $dbConnection->prepare($query);
 				$query->bindValue(1, $value, PDO::PARAM_STR);
 				$query->bindValue(2, $id, PDO::PARAM_INT);
 				$query->execute();

@@ -226,7 +226,9 @@ class Tutor extends User
 		try {
 
 			$query = "DELETE FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE_TUTOR_HAS_COURSE_HAS_TERM . "` WHERE `tutor_user_id`=:id AND`course_id`=:courseId;";
-			$query = $this->getDb()->getConnection()->prepare($query);
+
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
 			$query->bindParam(':id', $tutorId, PDO::PARAM_INT);
 			$query->bindParam(':courseId', $courseId, PDO::PARAM_INT);
 			$query->execute();

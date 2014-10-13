@@ -78,7 +78,7 @@ class ScheduleFetcher
 			$queryInsertUser->execute();
 
 			// last inserted if of THIS connection
-			return $appointmentId = $queryInsertUser->lastInsertId();
+			return $appointmentId = $dbConnection->lastInsertId();
 		} catch (Exception $e) {
 			throw new Exception("Could not insert data into database." . $e->getMessage());
 		}
