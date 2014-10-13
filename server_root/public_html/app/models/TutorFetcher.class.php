@@ -47,12 +47,17 @@ class TutorFetcher
             Tutor_has_course_has_termFetcher::DB_TABLE . "`.`" . Tutor_has_course_has_termFetcher::DB_COLUMN_TERM_ID . "`
 			WHERE `" . Tutor_has_course_has_termFetcher::DB_COLUMN_TUTOR_USER_ID . "` = :tutorId
 			AND
-			(NOW() BETWEEN `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_END_DATE . "`)";
+			(:now BETWEEN `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_END_DATE . "`)";
 
         try {
+	        date_default_timezone_set('Europe/Athens');
+	        $now = new DateTime();
+	        $now = $now->format(Dates::DATE_FORMAT_IN);
+
 	        $dbConnection = DatabaseManager::getConnection();
 	        $query = $dbConnection->prepare($query);
-            $query->bindParam(':tutorId', $id, PDO::PARAM_INT);
+	        $query->bindParam(':now', $now, PDO::PARAM_STR);
+	        $query->bindParam(':tutorId', $id, PDO::PARAM_INT);
 
             $query->execute();
             return $query->fetchAll(PDO::FETCH_ASSOC);

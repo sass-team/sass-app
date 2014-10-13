@@ -43,14 +43,19 @@ class TermFetcher
 			"SELECT `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_NAME . "` , `" . self::DB_COLUMN_START_DATE . "`,
 			 `" . self::DB_COLUMN_END_DATE . "`
 			 FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
-			 WHERE (NOW() NOT BETWEEN `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" .
+			 WHERE (:now NOT BETWEEN `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" .
 			TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_END_DATE . "`)
 			 order by `" .
 			self::DB_TABLE . "`.`" . self::DB_COLUMN_START_DATE . "` DESC";
 
 		try {
+			date_default_timezone_set('Europe/Athens');
+			$now = new DateTime();
+			$now = $now->format(Dates::DATE_FORMAT_IN);
+
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
+			$query->bindParam(':now', $now, PDO::PARAM_STR);
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
