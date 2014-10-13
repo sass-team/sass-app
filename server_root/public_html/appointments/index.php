@@ -675,7 +675,7 @@ if (isset($reports)) {
 						<input type="checkbox"
 						       name="student-brought-along[<?php echo StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_GRADED; ?>]" <?php echo
 						strcmp($reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_GRADED], StudentBroughtAlongFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>
-						       class=""
+						       class="" data-parsley-multiple="student-brought-along-parsley-<?php echo $i; ?>"
 						       data-parsley-mincheck="1" data-parsley-required="true">
 						Assignment &#40;graded&#41;
 					</label>
@@ -685,7 +685,7 @@ if (isset($reports)) {
 						<input type="checkbox"
 						       name="student-brought-along[<?php echo StudentBroughtAlongFetcher::DB_COLUMN_DRAFT; ?>]" <?php echo
 						strcmp($reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_DRAFT], StudentBroughtAlongFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>
-						       data-parsley-multiple="student-brought-along-parsley-<?php echo $i; ?>">
+						       data-parsley-multiple="student-brought-along-parsley-<?php echo $i; ?>" data-parsley-required="true">
 						Draft
 					</label>
 				</div>
@@ -694,7 +694,7 @@ if (isset($reports)) {
 						<input type="checkbox"
 						       name="student-brought-along[<?php echo StudentBroughtAlongFetcher::DB_COLUMN_INSTRUCTORS_FEEDBACK; ?>]" <?php echo
 						strcmp($reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_INSTRUCTORS_FEEDBACK], StudentBroughtAlongFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>
-							>
+						       data-parsley-multiple="student-brought-along-parsley-<?php echo $i; ?>">
 						Instructor&#39;s feedback
 					</label>
 				</div>
@@ -702,7 +702,8 @@ if (isset($reports)) {
 					<label>
 						<input type="checkbox"
 						       name="student-brought-along[<?php echo StudentBroughtAlongFetcher::DB_COLUMN_TEXTBOOK; ?>]" <?php echo
-						strcmp($reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_TEXTBOOK], StudentBroughtAlongFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>>
+						strcmp($reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_TEXTBOOK], StudentBroughtAlongFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>
+						       data-parsley-multiple="student-brought-along-parsley-<?php echo $i; ?>">
 						Textbook
 					</label>
 				</div>
@@ -710,7 +711,8 @@ if (isset($reports)) {
 					<label>
 						<input type="checkbox"
 						       name="student-brought-along[<?php echo StudentBroughtAlongFetcher::DB_COLUMN_NOTES; ?>]" <?php echo
-						strcmp($reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_NOTES], StudentBroughtAlongFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>>
+						strcmp($reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_NOTES], StudentBroughtAlongFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>
+						       data-parsley-multiple="student-brought-along-parsley-<?php echo $i; ?>">
 						Notes
 					</label>
 				</div>
@@ -718,7 +720,8 @@ if (isset($reports)) {
 					<label>
 						<input type="checkbox"
 						       name="student-brought-along[<?php echo StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_SHEET; ?>]" <?php echo
-						strcmp($reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_SHEET], StudentBroughtAlongFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>>
+						strcmp($reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_SHEET], StudentBroughtAlongFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>
+						       data-parsley-multiple="student-brought-along-parsley-<?php echo $i; ?>">
 						Assignment sheet
 					</label>
 				</div>
@@ -726,14 +729,15 @@ if (isset($reports)) {
 					<label class="focus-conference-3-exercise-class">
 						<input type="checkbox"
 						       name="student-brought-along[<?php echo StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON; ?>]" <?php echo
-						$reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON] !== NULL ? 'checked' : ''; ?>>
+						$reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON] !== NULL ? 'checked' : ''; ?>
+						       data-parsley-multiple="student-brought-along-parsley-<?php echo $i; ?>">
 						Exercise on <input type="text"
 						                   name="student-brought-along[<?php echo StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON; ?>text]"
 						                   class="form-control" value="<?php echo
 						$reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON] === NULL ? "" : $reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON]; ?>"
 							<?php echo
 							$reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON] === NULL ? "disabled='disabled'" : ''; ?>
-							/>
+						                   data-parsley-multiple="student-brought-along-parsley-<?php echo $i; ?>" />
 					</label>
 				</div>
 				<div class="checkbox">
@@ -741,13 +745,13 @@ if (isset($reports)) {
 						<input type="checkbox"
 						       name="student-brought-along[<?php echo StudentBroughtAlongFetcher::DB_COLUMN_OTHER; ?>]" <?php echo
 						$reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_OTHER] !== NULL ? 'checked' : ''; ?>
-						       value="other">
+						       value="other" data-parsley-multiple="student-brought-along-parsley-<?php echo $i; ?>">
 						Other <input type="text"
 						             name="student-brought-along[<?php echo StudentBroughtAlongFetcher::DB_COLUMN_OTHER; ?>text]"
 						             class="form-control" value="<?php echo
 						$reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_OTHER] === NULL ? "" : $reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_OTHER]; ?>"<?php echo
 						$reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_OTHER] === NULL ? "disabled='disabled'" : ''; ?>
-							/>
+						             data-parsley-multiple="student-brought-along-parsley-<?php echo $i; ?>" />
 					</label>
 				</div>
 			</div>
