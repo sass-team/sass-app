@@ -38,8 +38,6 @@ function getStudentsIds($students, $appointmentId) {
 
 	return rtrim($studentsIds, ", ");
 }
-
-var_dump($students);
 ?>
 
 <!DOCTYPE html>
