@@ -40,6 +40,9 @@ class Appointment
 		if ($nowDate > $startDate && !$user->isAdmin()) throw new Exception("Starting datetime cannot be less than current datetime.");
 		$minutesAppointmentDuration = ($endDate->getTimestamp() - $startDate->getTimestamp()) / 60;
 		if ($minutesAppointmentDuration < 30 || $minutesAppointmentDuration > 480) throw new Exception("Appointment's duration can be between 30 min and 8 hours.");
+		if (!$user->isAdmin() && !ScheduleFetcher::existsTutorsSchedulesBetween($tutorId, $termId, $startDate, $endDate)) {
+			throw new Exception("There is a conflict with start/end date with tutor's schedule. ");
+		}
 		if (AppointmentFetcher::existsTutorsAppointmentsBetween($tutorId, $termId, $startDate, $endDate, $existingAppointmentId)) {
 			throw new Exception("There is a conflict with the start/end date with another appointment for selected tutor.");
 		}
@@ -168,8 +171,26 @@ class Appointment
 			$endDate = new DateTime($appointmentHour[AppointmentFetcher::DB_COLUMN_END_TIME]);
 			$appointmentUrl = "http://" . $_SERVER['SERVER_NAME'] . "/appointments/" . $appointmentHour[UserFetcher::DB_COLUMN_ID];
 
+			switch ($appointmentHour[AppointmentFetcher::DB_COLUMN_LABEL_COLOR]) {
+				case Appointment::LABEL_COLOR_PENDING:
+					$color = '#888888';
+					break;
+				case Appointment::LABEL_COLOR_CANCELED:
+					$color = '#e5412d';
+					break;
+				case Appointment::LABEL_COLOR_SUCCESS:
+					$color = '#3fa67a';
+					break;
+				case Appointment::LABEL_COLOR_WARNING:
+					$color = '#f0ad4e';
+					break;
+				default:
+					$color = '#444';
+					break;
+			}
+
 			$appointmentHoursJSON[] = array('title' => $appointmentTitle, 'start' => $startDate->format('Y-m-d H:i:s'), 'end' =>
-				$endDate->format('Y-m-d H:i:s'), 'allDay' => false, 'url' => $appointmentUrl, 'color' => '#e5412d');
+				$endDate->format('Y-m-d H:i:s'), 'allDay' => false, 'url' => $appointmentUrl, 'color' => $color);
 		}
 
 		return json_encode($appointmentHoursJSON);

@@ -69,6 +69,9 @@ try {
 					$reportUpdate[ReportFetcher::DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES], $relevantFeedbackGuidelines)) || $updateDone;
 			$updateDone = (Report::updateStudentBroughtAlong($reportUpdate[ReportFetcher::DB_COLUMN_ID],
 					$studentBroughtAlongNew, $studentBroughtAlongOld)) || $updateDone;
+//			$updateDone = (Report::updatePrimaryFocusOfConference($reportUpdate[ReportFetcher::DB_COLUMN_ID],
+//					$studentBroughtAlongNew, $studentBroughtAlongOld)) || $updateDone;
+			throw new Exception(var_dump($_POST));
 			$updateDone = (Report::updateAdditionalComments($reportUpdate[ReportFetcher::DB_COLUMN_ID],
 					$reportUpdate[ReportFetcher::DB_COLUMN_ADDITIONAL_COMMENTS], $conclusionAdditionalComments)) || $updateDone;
 		} else {
@@ -667,10 +670,11 @@ if (isset($reports)) {
 
 			<div class="col-md-6">
 				<hr/>
-				<label for="student-brought-along[]">What did the <strong>student bring along?</strong></label>
+				<label
+					for="student-brought-along[<?php echo StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_GRADED; ?>]"
+					>What did the <strong>student bring along?</strong></label>
 
 				<div class="checkbox">
-
 					<label>
 						<input type="checkbox"
 						       name="student-brought-along[<?php echo StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_GRADED; ?>]" <?php echo
@@ -751,7 +755,7 @@ if (isset($reports)) {
 						             class="form-control" value="<?php echo
 						$reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_OTHER] === NULL ? "" : $reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_OTHER]; ?>"<?php echo
 						$reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_OTHER] === NULL ? "disabled='disabled'" : 'data-parsley-minlength="3"'; ?>
-						             />
+							/>
 					</label>
 				</div>
 			</div>
@@ -763,44 +767,71 @@ if (isset($reports)) {
 
 				<div class="checkbox">
 					<label>
-						<input type="checkbox" name="checkbox-2" class="" data-mincheck="1">
-						Discussion of concepts
+						<input type="checkbox"
+						       name="primary-focus-of-conference[<?php echo $i; ?>]"
+							<?php echo strcmp($reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_SHEET],
+								StudentBroughtAlongFetcher::IS_SELECTED) === 0 ? 'checked' : '';?>
+						       class="" data-parsley-multiple="primary-focus-of-conference-parsley<?php echo $i; ?>"
+						       data-parsley-mincheck="1" data-parsley-required="true">Discussion
+						of concepts
 					</label>
 				</div>
 				<div class="checkbox">
 					<label>
-						<input type="checkbox" name="checkbox-2" class="" data-mincheck="1">
-						Organization of thoughts/ideas
+						<input type="checkbox"
+						       name="primary-focus-of-conference[<?php echo $i; ?>]"
+							<?php echo strcmp($reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_SHEET],
+								StudentBroughtAlongFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>
+						       data-parsley-multiple="primary-focus-of-conference-parsley<?php echo $i; ?>">Organization
+						of thoughts/ideas
 					</label>
 				</div>
 				<div class="checkbox">
 					<label>
-						<input type="checkbox" name="checkbox-2" class="" data-mincheck="1">
-						Expression &#40;grammar, syntax, diction, etc.&#41;
+						<input type="checkbox"
+						       name="primary-focus-of-conference[<?php echo $i; ?>]"
+							<?php echo strcmp($reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_SHEET],
+								StudentBroughtAlongFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>
+						       data-parsley-multiple="primary-focus-of-conference-parsley<?php echo $i; ?>">Expression
+						&#40;grammar, syntax, diction, etc.&#41;
 					</label>
 				</div>
 				<div class="checkbox">
 					<label>
-						<input type="checkbox" name="checkbox-2" class="" data-mincheck="1">
-						Exercises
+						<input type="checkbox"
+						       name="primary-focus-of-conference[<?php echo $i; ?>]"
+							<?php echo strcmp($reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_SHEET],
+								StudentBroughtAlongFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>
+						       data-parsley-multiple="primary-focus-of-conference-parsley<?php echo $i; ?>">Exercises
 					</label>
 				</div>
 				<div class="checkbox">
 					<label>
-						<input type="checkbox" name="checkbox-2" class="" data-mincheck="1">
-						Academic skills
+						<input type="checkbox"
+						       name="primary-focus-of-conference[<?php echo $i; ?>]"
+							<?php echo strcmp($reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_SHEET],
+								StudentBroughtAlongFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>
+						       data-parsley-multiple="primary-focus-of-conference-parsley<?php echo $i; ?>">Academic
+						skills
 					</label>
 				</div>
 				<div class="checkbox">
 					<label>
-						<input type="checkbox" name="checkbox-2" class="" data-mincheck="1">
-						Citations &#38; Referencing
+						<input type="checkbox"
+						       name="primary-focus-of-conference[<?php echo $i; ?>]"
+							<?php echo strcmp($reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_SHEET],
+								StudentBroughtAlongFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>
+						       data-parsley-multiple="primary-focus-of-conference-parsley<?php echo $i; ?>">Citations
+						&#38; Referencing
 					</label>
 				</div>
 				<div class="checkbox">
 					<label>
-						<input type="checkbox" name="checkbox-2" class="" data-mincheck="1">
-						Other
+						<input type="checkbox"
+						       name="primary-focus-of-conference[<?php echo $i; ?>]"
+							<?php echo strcmp($reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_SHEET],
+								StudentBroughtAlongFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>
+						       data-parsley-multiple="primary-focus-of-conference-parsley<?php echo $i; ?>">Other
 					</label>
 				</div>
 			</div>

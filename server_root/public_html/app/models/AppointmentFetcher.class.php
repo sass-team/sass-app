@@ -188,13 +188,25 @@ class AppointmentFetcher
 					(`" . self::DB_COLUMN_END_TIME . "` > :start_date AND `" . self::DB_COLUMN_END_TIME . "` < :end_date)
 
 				)
-				AND `" . self::DB_COLUMN_TERM_ID . "`=:term_id";
+				AND `" . self::DB_COLUMN_TERM_ID . "`=:term_id
+				AND
+				(
+				`" . self::DB_COLUMN_LABEL_MESSAGE . "` = :message_pending
+				OR
+				`" . self::DB_COLUMN_LABEL_MESSAGE . "` = :message_complete
+				)";
 
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
 
 			$query->bindParam(':tutor_user_id', $tutorId, PDO::PARAM_INT);
 			$query->bindParam(':term_id', $termId, PDO::PARAM_INT);
+
+			$messagePending = Appointment::LABEL_MESSAGE_PENDING;
+			$messageComplete = Appointment::LABEL_MESSAGE_COMPLETE;
+
+			$query->bindParam(':message_pending', $messagePending, PDO::PARAM_INT);
+			$query->bindParam(':message_complete', $messageComplete, PDO::PARAM_INT);
 
 			if ($existingAppointmentId !== false) $query->bindParam(':appointment_id', $existingAppointmentId, PDO::PARAM_INT);
 
@@ -207,11 +219,12 @@ class AppointmentFetcher
 
 			if ($query->fetchColumn() === '0') return false;
 		} catch (Exception $e) {
-			throw new Exception("Could not check conflicts with other appointments." . $e->getMessage());
+			throw new Exception("Could not check conflicts with other appointments.");
 		}
 
 		return true;
 	}
+
 
 	public static function belongsToTutor($id, $tutorId) {
 		try {
@@ -488,7 +501,7 @@ class AppointmentFetcher
 			self::DB_COLUMN_COURSE_ID . "`,  `" . self::DB_COLUMN_TUTOR_USER_ID . "`, `" . self::DB_COLUMN_TUTOR_USER_ID .
 			"`, `" . UserFetcher::DB_COLUMN_FIRST_NAME . "` , `" . UserFetcher::DB_COLUMN_LAST_NAME . "`, `" .
 			CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_CODE . "`, `" . CourseFetcher::DB_TABLE . "`.`" .
-			CourseFetcher::DB_COLUMN_NAME . "`
+			CourseFetcher::DB_COLUMN_NAME . "`, `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_LABEL_COLOR . "`
 			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
 			INNER JOIN  `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . UserFetcher::DB_TABLE . "`
 			ON `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "`  = `" .

@@ -325,10 +325,78 @@ class ScheduleFetcher
 		}
 	}
 
+	public static function existsTutorsSchedulesBetween($tutorId, $termId, $startDate, $endDate) {
+		date_default_timezone_set('Europe/Athens');
+//		$startDate = $startDate->format(Dates::DATE_FORMAT_IN);
+//		$endDate = $endDate->format(Dates::DATE_FORMAT_IN);
+
+		$curStartWorkingWeekDay = $startDate->format('w');
+		$curEndWorkingWeekDay = $endDate->format('w');
+		$startHour = $startDate->format('Hi');
+		$endHour = $endDate->format('Hi');
+
+		$startDayColumn = self::getColumnWeekDay($curStartWorkingWeekDay);
+
+		try {
+			$query = "SELECT COUNT(`" . self::DB_COLUMN_ID . "`)
+			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			WHERE `" . self::DB_COLUMN_TUTOR_USER_ID . "` = :tutor_user_id
+			AND `$startDayColumn` = 1
+			AND `" . self::DB_COLUMN_TERM_ID . "`=:term_id
+			AND    :start_time >= EXTRACT(HOUR_MINUTE FROM `" . self::DB_COLUMN_START_TIME . "`)
+			AND    :end_time <= EXTRACT(HOUR_MINUTE FROM `" . self::DB_COLUMN_END_TIME . "`)";
+
+
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
+			$query->bindParam(':tutor_user_id', $tutorId, PDO::PARAM_INT);
+			$query->bindParam(':term_id', $termId, PDO::PARAM_INT);
+			$query->bindParam(':start_time', $startHour, PDO::PARAM_STR);
+			$query->bindParam(':end_time', $endHour, PDO::PARAM_STR);
+
+			$query->execute();
+
+			if ($query->fetchColumn() === '0') return false;
+		} catch (Exception $e) {
+			throw new Exception("Could not check conflicts with other appointments." . $e->getMessage());
+		}
+
+		return true;
+	}
+
+	/**
+	 * @param $curStartWorkingWeekDay
+	 * @return string
+	 * @throws Exception
+	 */
+	public static function getColumnWeekDay($curStartWorkingWeekDay) {
+		switch ($curStartWorkingWeekDay) {
+			case '1':
+				$day = self::DB_COLUMN_MONDAY;
+				break;
+			case '2':
+				$day = self::DB_COLUMN_TUESDAY;
+				break;
+			case '3':
+				$day = self::DB_COLUMN_WEDNESDAY;
+				break;
+			case '4':
+				$day = self::DB_COLUMN_THURSDAY;
+				break;
+			case '5':
+				$day = self::DB_COLUMN_FRIDAY;
+				break;
+			default:
+				throw new Exception("Data have been malformed. Aborting.");
+		}
+
+		return $day;
+	}
+
 	public static function retrieveSingle($id) {
 		$query = "SELECT  `" . self::DB_COLUMN_ID . "` ,
-						  `" . self::DB_COLUMN_TERM_ID . "`, 
-						  `" . self::DB_COLUMN_TUTOR_USER_ID . "` , 
+						  `" . self::DB_COLUMN_TERM_ID . "`,
+						  `" . self::DB_COLUMN_TUTOR_USER_ID . "` ,
 						  `" . self::DB_COLUMN_START_TIME . "`,
 						  `" . self::DB_COLUMN_END_TIME . "`
 			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
@@ -411,7 +479,6 @@ class ScheduleFetcher
 			throw new Exception("Could not delete schedule from database.");
 		}
 	}
-
 
 	/**
 	 * NEEDS TESTING

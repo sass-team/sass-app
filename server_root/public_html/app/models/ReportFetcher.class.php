@@ -133,6 +133,7 @@ class ReportFetcher
 			INNER JOIN `" . TermFetcher::DB_TABLE . "`
 				ON `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "` =
 					`" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_TERM_ID . "`
+
 			WHERE :now BETWEEN `" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" . TermFetcher::DB_COLUMN_END_DATE . "`
 			ORDER BY `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` ASC";
 
@@ -197,6 +198,7 @@ class ReportFetcher
 			// last inserted if of THIS connection
 			$reportId = $dbConnection->lastInsertId();
 			StudentBroughtAlongFetcher::insert($reportId);
+			PrimaryFocusOfConferenceFetcher::insert($reportId);
 			AppointmentHasStudentFetcher::update($appointmentId, $reportId);
 
 			$dbConnection->commit();

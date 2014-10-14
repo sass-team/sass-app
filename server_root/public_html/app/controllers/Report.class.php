@@ -143,65 +143,81 @@ class Report
 	}
 
 	public static function validateIfUpdateIsNeeded($newOptions, $oldOptions) {
-		foreach ($oldOptions as $key => $value) {
-			switch ($key) {
 
+		foreach ($oldOptions as $key => $oldOption) {
+			switch ($key) {
 				case StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_GRADED:
 					if ((!isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_GRADED])
-							&& strcmp($value, StudentBroughtAlongFetcher::IS_SELECTED) === 0)
+							&& strcmp($oldOption, StudentBroughtAlongFetcher::IS_SELECTED) === 0)
 						|| (isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_GRADED])
-							&& strcmp($value, StudentBroughtAlongFetcher::IS_NOT_SELECTED) === 0)
+							&& strcmp($oldOption, StudentBroughtAlongFetcher::IS_NOT_SELECTED) === 0)
 					) return true;
 					break;
 				case StudentBroughtAlongFetcher::DB_COLUMN_DRAFT:
 					if ((!isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_DRAFT])
-							&& strcmp($value, StudentBroughtAlongFetcher::IS_SELECTED) === 0)
+							&& strcmp($oldOption, StudentBroughtAlongFetcher::IS_SELECTED) === 0)
 						|| (isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_DRAFT])
-							&& strcmp($value, StudentBroughtAlongFetcher::IS_NOT_SELECTED) === 0)
+							&& strcmp($oldOption, StudentBroughtAlongFetcher::IS_NOT_SELECTED) === 0)
 					) return true;
 					break;
 				case StudentBroughtAlongFetcher::DB_COLUMN_INSTRUCTORS_FEEDBACK:
 					if ((!isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_INSTRUCTORS_FEEDBACK])
-							&& strcmp($value, StudentBroughtAlongFetcher::IS_SELECTED) === 0)
+							&& strcmp($oldOption, StudentBroughtAlongFetcher::IS_SELECTED) === 0)
 						|| (isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_INSTRUCTORS_FEEDBACK])
-							&& strcmp($value, StudentBroughtAlongFetcher::IS_NOT_SELECTED) === 0)
+							&& strcmp($oldOption, StudentBroughtAlongFetcher::IS_NOT_SELECTED) === 0)
 					) return true;
 					break;
 				case StudentBroughtAlongFetcher::DB_COLUMN_TEXTBOOK:
 					if ((!isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_TEXTBOOK])
-							&& strcmp($value, StudentBroughtAlongFetcher::IS_SELECTED) === 0)
+							&& strcmp($oldOption, StudentBroughtAlongFetcher::IS_SELECTED) === 0)
 						|| (isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_TEXTBOOK])
-							&& strcmp($value, StudentBroughtAlongFetcher::IS_NOT_SELECTED) === 0)
+							&& strcmp($oldOption, StudentBroughtAlongFetcher::IS_NOT_SELECTED) === 0)
 					) return true;
 					break;
 				case StudentBroughtAlongFetcher::DB_COLUMN_NOTES:
 					if ((!isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_NOTES])
-							&& strcmp($value, StudentBroughtAlongFetcher::IS_SELECTED) === 0)
+							&& strcmp($oldOption, StudentBroughtAlongFetcher::IS_SELECTED) === 0)
 						|| (isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_NOTES])
-							&& strcmp($value, StudentBroughtAlongFetcher::IS_NOT_SELECTED) === 0)
+							&& strcmp($oldOption, StudentBroughtAlongFetcher::IS_NOT_SELECTED) === 0)
 					) return true;
 					break;
 				case StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_SHEET:
 					if ((!isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_SHEET])
-							&& strcmp($value, StudentBroughtAlongFetcher::IS_SELECTED) === 0)
+							&& strcmp($oldOption, StudentBroughtAlongFetcher::IS_SELECTED) === 0)
 						|| (isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_SHEET])
-							&& strcmp($value, StudentBroughtAlongFetcher::IS_NOT_SELECTED) === 0)
+							&& strcmp($oldOption, StudentBroughtAlongFetcher::IS_NOT_SELECTED) === 0)
 					) return true;
 					break;
 				case StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON:
+
 					if ((!isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON])
-							&& strcmp($value, StudentBroughtAlongFetcher::IS_SELECTED) !== NULL)
-						|| (isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON])
-							&& strcmp($value, $newOptions[StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON . "text"]) !== 0)
+						&& strcmp($oldOption, StudentBroughtAlongFetcher::IS_SELECTED) === 0)
 					) return true;
+					if (isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON])) {
+						if (!isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON . "text"]) ||
+							!preg_match("/^[\\S]+$/", $newOptions[StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON . "text"])
+						) {
+							throw new Exception("Please input what exercise book/page/number the student brought along.");
+						}
+						if (strcmp($oldOption, $newOptions[StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON . "text"]) !== 0) {
+							return true;
+						}
+					}
 					break;
 				case StudentBroughtAlongFetcher::DB_COLUMN_OTHER:
 					if ((!isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_OTHER])
-							&& strcmp($value, StudentBroughtAlongFetcher::IS_SELECTED) !== NULL)
-						||
-						(isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_OTHER])
-							&& strcmp($value, $newOptions[StudentBroughtAlongFetcher::DB_COLUMN_OTHER . "text"]) !== 0)
+						&& strcmp($oldOption, StudentBroughtAlongFetcher::IS_SELECTED) === 0)
 					) return true;
+					if (isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_OTHER])) {
+						if (!isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_OTHER . "text"]) ||
+							!preg_match("/^[\\S]+$/", $newOptions[StudentBroughtAlongFetcher::DB_COLUMN_OTHER . "text"])
+						) {
+							throw new Exception("Please input what other material the student brought along.");
+						}
+						if (strcmp($oldOption, $newOptions[StudentBroughtAlongFetcher::DB_COLUMN_OTHER . "text"]) !== 0) {
+							return true;
+						}
+					}
 					break;
 				default:
 					return false;
