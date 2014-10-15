@@ -44,62 +44,62 @@ class StudentBroughtAlongFetcher
 	public static function update($newOptions, $oldOptions, $reportId) {
 		foreach ($oldOptions as $option => $value) {
 			switch ($option) {
-				case StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_GRADED:
-					if (isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_GRADED])) {
+				case self::DB_COLUMN_ASSIGNMENT_GRADED:
+					if (isset($newOptions[self::DB_COLUMN_ASSIGNMENT_GRADED])) {
 						$assignmentGraded = 1;
 					} else {
 						$assignmentGraded = 0;
 					}
 					break;
-				case StudentBroughtAlongFetcher::DB_COLUMN_DRAFT:
-					if (isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_DRAFT])) {
+				case self::DB_COLUMN_DRAFT:
+					if (isset($newOptions[self::DB_COLUMN_DRAFT])) {
 						$draft = 1;
 					} else {
 						$draft = 0;
 					}
 					break;
-				case StudentBroughtAlongFetcher::DB_COLUMN_INSTRUCTORS_FEEDBACK:
-					if (isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_INSTRUCTORS_FEEDBACK])) {
+				case self::DB_COLUMN_INSTRUCTORS_FEEDBACK:
+					if (isset($newOptions[self::DB_COLUMN_INSTRUCTORS_FEEDBACK])) {
 						$instructorFeedback = 1;
 					} else {
 						$instructorFeedback = 0;
 					}
 					break;
-				case StudentBroughtAlongFetcher::DB_COLUMN_TEXTBOOK:
-					if (isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_TEXTBOOK])) {
+				case self::DB_COLUMN_TEXTBOOK:
+					if (isset($newOptions[self::DB_COLUMN_TEXTBOOK])) {
 						$textbook = 1;
 					} else {
 						$textbook = 0;
 					}
 					break;
-				case StudentBroughtAlongFetcher::DB_COLUMN_NOTES:
-					if (isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_NOTES])) {
+				case self::DB_COLUMN_NOTES:
+					if (isset($newOptions[self::DB_COLUMN_NOTES])) {
 						$notes = 1;
 					} else {
 						$notes = 0;
 					}
 					break;
-				case StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_SHEET:
-					if (isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_SHEET])) {
+				case self::DB_COLUMN_ASSIGNMENT_SHEET:
+					if (isset($newOptions[self::DB_COLUMN_ASSIGNMENT_SHEET])) {
 						$assignmentSheet = 1;
 					} else {
 						$assignmentSheet = 0;
 					}
 					break;
-				case StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON:
-					if (isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON . "text"])
-						&& strcmp($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON . "text"], $value) !== 0
+				case self::DB_COLUMN_EXERCISE_ON:
+					if (isset($newOptions[self::DB_COLUMN_EXERCISE_ON . "text"])
+						&& strcmp($newOptions[self::DB_COLUMN_EXERCISE_ON . "text"], $value) !== 0
 					) {
-						$exerciseOn = $newOptions[StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON . "text"];
+						$exerciseOn = $newOptions[self::DB_COLUMN_EXERCISE_ON . "text"];
 					} else {
 						$exerciseOn = NULL;
 					}
 					break;
-				case StudentBroughtAlongFetcher::DB_COLUMN_OTHER:
-					if (isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_OTHER . "text"])
-						&& strcmp($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_OTHER], $value) !== 0
+				case self::DB_COLUMN_OTHER:
+					if (isset($newOptions[self::DB_COLUMN_OTHER . "text"])
+						&& strcmp($newOptions[self::DB_COLUMN_OTHER], $value) !== 0
 					) {
-						$other = $newOptions[StudentBroughtAlongFetcher::DB_COLUMN_OTHER . "text"];
+						$other = $newOptions[self::DB_COLUMN_OTHER . "text"];
 					} else {
 						$other = NULL;
 					}

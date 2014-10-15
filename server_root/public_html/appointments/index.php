@@ -43,8 +43,10 @@ try {
 		$studentBroughtAlong = isset($_POST['student-brought-along']) ? $_POST['student-brought-along'] : NULL;
 		$conclusionAdditionalComments = isset($_POST['conclusion-additional-comments']) ? $_POST['conclusion-additional-comments'] : '';
 		$studentBroughtAlongNew = isset($_POST['student-brought-along']) ? $_POST['student-brought-along'] : NULL;
+		$primaryFocusOfConferenceNew = isset($_POST['primary-focus-of-conference']) ? $_POST['primary-focus-of-conference'] : NULL;
 		$relevantFeedbackGuidelines = isset($_POST['relevant-feedback-guidelines']) ? $_POST['relevant-feedback-guidelines'] : NULL;
 
+		throw new Exception(var_dump($_POST));
 
 		$studentBroughtAlongOld = array(
 			StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_GRADED => $reportUpdate[StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_GRADED],
@@ -57,6 +59,15 @@ try {
 			StudentBroughtAlongFetcher::DB_COLUMN_OTHER => $reportUpdate[StudentBroughtAlongFetcher::DB_COLUMN_OTHER]
 		);
 
+		$primaryFocusOfConferenceOld = array(
+			PrimaryFocusOfConferenceFetcher::DB_COLUMN_DISCUSSION_OF_CONCEPTS => $reportUpdate[PrimaryFocusOfConferenceFetcher::DB_COLUMN_DISCUSSION_OF_CONCEPTS],
+			PrimaryFocusOfConferenceFetcher::DB_COLUMN_ORGANIZATION_THOUGHTS_IDEAS => $reportUpdate[PrimaryFocusOfConferenceFetcher::DB_COLUMN_ORGANIZATION_THOUGHTS_IDEAS],
+			PrimaryFocusOfConferenceFetcher::DB_COLUMN_EXPRESSION_GRAMMAR_SYNTAX_ETC => $reportUpdate[PrimaryFocusOfConferenceFetcher::DB_COLUMN_EXPRESSION_GRAMMAR_SYNTAX_ETC],
+			PrimaryFocusOfConferenceFetcher::DB_COLUMN_EXERCISES => $reportUpdate[PrimaryFocusOfConferenceFetcher::DB_COLUMN_EXERCISES],
+			PrimaryFocusOfConferenceFetcher::DB_COLUMN_ACADEMIC_SKILLS => $reportUpdate[PrimaryFocusOfConferenceFetcher::DB_COLUMN_ACADEMIC_SKILLS],
+			PrimaryFocusOfConferenceFetcher::DB_COLUMN_CITATIONS_REFERENCING => $reportUpdate[PrimaryFocusOfConferenceFetcher::DB_COLUMN_CITATIONS_REFERENCING],
+			PrimaryFocusOfConferenceFetcher::DB_COLUMN_OTHER => $reportUpdate[PrimaryFocusOfConferenceFetcher::DB_COLUMN_OTHER],
+		);
 
 		if (isBtnUpdateReportPrsd()) {
 			$updateDone = Report::updateProjectTopicOtherText($reportUpdate[ReportFetcher::DB_COLUMN_ID],
@@ -70,7 +81,7 @@ try {
 			$updateDone = (Report::updateStudentBroughtAlong($reportUpdate[ReportFetcher::DB_COLUMN_ID],
 					$studentBroughtAlongNew, $studentBroughtAlongOld)) || $updateDone;
 			$updateDone = (Report::updatePrimaryFocusOfConference($reportUpdate[ReportFetcher::DB_COLUMN_ID],
-					$studentBroughtAlongNew, $studentBroughtAlongOld)) || $updateDone;
+					$primaryFocusOfConferenceNew, $primaryFocusOfConferenceOld)) || $updateDone;
 			$updateDone = (Report::updateAdditionalComments($reportUpdate[ReportFetcher::DB_COLUMN_ID],
 					$reportUpdate[ReportFetcher::DB_COLUMN_ADDITIONAL_COMMENTS], $conclusionAdditionalComments)) || $updateDone;
 		} else {
@@ -768,8 +779,8 @@ if (isset($reports)) {
 					<label>
 						<input type="checkbox"
 						       name="primary-focus-of-conference[<?php echo $i; ?>]"
-							<?php echo strcmp($reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_SHEET],
-								StudentBroughtAlongFetcher::IS_SELECTED) === 0 ? 'checked' : '';?>
+							<?php echo strcmp($reports[$i][PrimaryFocusOfConferenceFetcher::DB_COLUMN_DISCUSSION_OF_CONCEPTS],
+								PrimaryFocusOfConferenceFetcher::IS_SELECTED) === 0 ? 'checked' : '';?>
 						       class="" data-parsley-multiple="primary-focus-of-conference-parsley<?php echo $i; ?>"
 						       data-parsley-mincheck="1" data-parsley-required="true">Discussion
 						of concepts
@@ -779,8 +790,8 @@ if (isset($reports)) {
 					<label>
 						<input type="checkbox"
 						       name="primary-focus-of-conference[<?php echo $i; ?>]"
-							<?php echo strcmp($reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_SHEET],
-								StudentBroughtAlongFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>
+							<?php echo strcmp($reports[$i][PrimaryFocusOfConferenceFetcher::DB_COLUMN_ORGANIZATION_THOUGHTS_IDEAS],
+								PrimaryFocusOfConferenceFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>
 						       data-parsley-multiple="primary-focus-of-conference-parsley<?php echo $i; ?>">Organization
 						of thoughts/ideas
 					</label>
@@ -789,8 +800,8 @@ if (isset($reports)) {
 					<label>
 						<input type="checkbox"
 						       name="primary-focus-of-conference[<?php echo $i; ?>]"
-							<?php echo strcmp($reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_SHEET],
-								StudentBroughtAlongFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>
+							<?php echo strcmp($reports[$i][PrimaryFocusOfConferenceFetcher::DB_COLUMN_EXPRESSION_GRAMMAR_SYNTAX_ETC],
+								PrimaryFocusOfConferenceFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>
 						       data-parsley-multiple="primary-focus-of-conference-parsley<?php echo $i; ?>">Expression
 						&#40;grammar, syntax, diction, etc.&#41;
 					</label>
@@ -799,8 +810,8 @@ if (isset($reports)) {
 					<label>
 						<input type="checkbox"
 						       name="primary-focus-of-conference[<?php echo $i; ?>]"
-							<?php echo strcmp($reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_SHEET],
-								StudentBroughtAlongFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>
+							<?php echo strcmp($reports[$i][PrimaryFocusOfConferenceFetcher::DB_COLUMN_EXERCISES],
+								PrimaryFocusOfConferenceFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>
 						       data-parsley-multiple="primary-focus-of-conference-parsley<?php echo $i; ?>">Exercises
 					</label>
 				</div>
@@ -808,8 +819,8 @@ if (isset($reports)) {
 					<label>
 						<input type="checkbox"
 						       name="primary-focus-of-conference[<?php echo $i; ?>]"
-							<?php echo strcmp($reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_SHEET],
-								StudentBroughtAlongFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>
+							<?php echo strcmp($reports[$i][PrimaryFocusOfConferenceFetcher::DB_COLUMN_ACADEMIC_SKILLS],
+								PrimaryFocusOfConferenceFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>
 						       data-parsley-multiple="primary-focus-of-conference-parsley<?php echo $i; ?>">Academic
 						skills
 					</label>
@@ -818,8 +829,8 @@ if (isset($reports)) {
 					<label>
 						<input type="checkbox"
 						       name="primary-focus-of-conference[<?php echo $i; ?>]"
-							<?php echo strcmp($reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_SHEET],
-								StudentBroughtAlongFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>
+							<?php echo strcmp($reports[$i][PrimaryFocusOfConferenceFetcher::DB_COLUMN_CITATIONS_REFERENCING],
+								PrimaryFocusOfConferenceFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>
 						       data-parsley-multiple="primary-focus-of-conference-parsley<?php echo $i; ?>">Citations
 						&#38; Referencing
 					</label>
@@ -828,8 +839,8 @@ if (isset($reports)) {
 					<label>
 						<input type="checkbox"
 						       name="primary-focus-of-conference[<?php echo $i; ?>]"
-							<?php echo strcmp($reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_SHEET],
-								StudentBroughtAlongFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>
+							<?php echo strcmp($reports[$i][PrimaryFocusOfConferenceFetcher::DB_COLUMN_OTHER],
+								PrimaryFocusOfConferenceFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>
 						       data-parsley-multiple="primary-focus-of-conference-parsley<?php echo $i; ?>">Other
 					</label>
 				</div>
