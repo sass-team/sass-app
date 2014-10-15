@@ -27,7 +27,7 @@ class Report
 	}
 
 	public static function updatePrimaryFocusOfConference($reportId, $studentBroughtAlongNew, $studentBroughtAlongOld) {
-		if ($studentBroughtAlongNew === NULL) return false;
+		if ($studentBroughtAlongNew === NULL) $studentBroughtAlongNew = [];
 		self::validateOptionsPrimaryFocusOfConference($studentBroughtAlongNew);
 //		if (!self::validateIfUpdateIsNeeded($newOptions, $oldOptions)) return false;
 		self::validateId($reportId);
@@ -161,7 +161,7 @@ class Report
 	}
 
 	public static function updateStudentBroughtAlong($reportId, $newOptions, $oldOptions) {
-		if ($newOptions === NULL) return false;
+		if ($newOptions === NULL) $newOptions = [];
 		self::validateOptionsStudentBroughtAlong($newOptions);
 		if (!self::validateIfUpdateIsNeeded($newOptions, $oldOptions)) return false;
 		self::validateId($reportId);

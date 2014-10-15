@@ -101,23 +101,22 @@ class PrimaryFocusOfConferenceFetcher
 		}
 
 		$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
-			SET `" . self::DB_COLUMN_DISCUSSION_OF_CONCEPTS . "=`:discussion_of_concepts,
-			`" . self::DB_COLUMN_ORGANIZATION_THOUGHTS_IDEAS . "=:organization_thoughts_ideas`,
-			`" . self::DB_COLUMN_EXPRESSION_GRAMMAR_SYNTAX_ETC . "`=:expression_grammar_syntax,
-			`" . self::DB_COLUMN_EXERCISES . "`=:exercises, `" . self::DB_COLUMN_ACADEMIC_SKILLS . "`=:academic_skills,
-			" . self::DB_COLUMN_CITATIONS_REFERENCING . "`=:citation_referencing, `" . self::DB_COLUMN_OTHER . "=:other`
+			SET `" . self::DB_COLUMN_DISCUSSION_OF_CONCEPTS . "` = :discussion_of_concepts,
+			`" . self::DB_COLUMN_ORGANIZATION_THOUGHTS_IDEAS . "` = :organization_thoughts_ideas,
+			`" . self::DB_COLUMN_EXPRESSION_GRAMMAR_SYNTAX_ETC . "` = :expression_grammar_syntax,
+			`" . self::DB_COLUMN_EXERCISES . "` = :exercises, `" . self::DB_COLUMN_ACADEMIC_SKILLS . "` = :academic_skills,
+			`" . self::DB_COLUMN_CITATIONS_REFERENCING . "` = :citation_referencing, `" . self::DB_COLUMN_OTHER . "` = :other
 			WHERE `" . self::DB_COLUMN_REPORT_ID . "` = :report_id";
 
 		try {
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
-			$query->bindParam(':assignment_graded', $assignmentGraded, PDO::PARAM_INT);
-			$query->bindParam(':draft', $draft, PDO::PARAM_INT);
-			$query->bindParam(':instructors_feedback', $instructorFeedback, PDO::PARAM_INT);
-			$query->bindParam(':textbook', $textbook, PDO::PARAM_INT);
-			$query->bindParam(':notes', $notes, PDO::PARAM_INT);
-			$query->bindParam(':assignment_sheet', $assignmentSheet, PDO::PARAM_INT);
-			$query->bindParam(':exercise_on', $exerciseOn, PDO::PARAM_INT);
+			$query->bindParam(':discussion_of_concepts', $discussionOfConcepts, PDO::PARAM_INT);
+			$query->bindParam(':organization_thoughts_ideas', $organizationThoughtsIdeas, PDO::PARAM_INT);
+			$query->bindParam(':expression_grammar_syntax', $expressionGrammarSyntaxEtc, PDO::PARAM_INT);
+			$query->bindParam(':exercises', $exercises, PDO::PARAM_INT);
+			$query->bindParam(':academic_skills', $academicSkills, PDO::PARAM_INT);
+			$query->bindParam(':citation_referencing', $citationsReferencing, PDO::PARAM_INT);
 			$query->bindParam(':other', $other, PDO::PARAM_INT);
 
 			$query->bindParam(':report_id', $reportId, PDO::PARAM_INT);
@@ -127,7 +126,7 @@ class PrimaryFocusOfConferenceFetcher
 			return true;
 		} catch
 		(Exception $e) {
-			throw new Exception("Could not update report data.");
+			throw new Exception("Could not update report data." . $e->getMessage());
 		}
 		return false;
 	}

@@ -23,7 +23,7 @@ class ReportFetcher
 
 	public static function retrieveAllWithAppointmentId($appointmentId) {
 		$query =
-			"SELECT DISTINCT `" . StudentFetcher::DB_TABLE . "`.`" . StudentFetcher::DB_COLUMN_FIRST_NAME . "` ,
+			"SELECT `" . StudentFetcher::DB_TABLE . "`.`" . StudentFetcher::DB_COLUMN_FIRST_NAME . "` ,
 			`" . StudentFetcher::DB_TABLE . "`.`" . StudentFetcher::DB_COLUMN_LAST_NAME . "` ,
 			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` ,
 			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_STUDENT_ID . "` AS " . StudentFetcher::DB_TABLE . "_" .
@@ -65,7 +65,7 @@ class ReportFetcher
 			StudentBroughtAlongFetcher::DB_TABLE . "`.`" . StudentBroughtAlongFetcher::DB_COLUMN_REPORT_ID . "`
 			INNER JOIN  `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . PrimaryFocusOfConferenceFetcher::DB_TABLE . "`
 			ON `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`  = `" .
-			self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`
+			PrimaryFocusOfConferenceFetcher::DB_TABLE . "`.`" . PrimaryFocusOfConferenceFetcher::DB_COLUMN_REPORT_ID . "`
 			WHERE `" . AppointmentHasStudentFetcher::DB_TABLE . "`.`" .
 			AppointmentHasStudentFetcher::DB_COLUMN_APPOINTMENT_ID . "` = :appointment_id";
 
