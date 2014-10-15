@@ -69,9 +69,8 @@ try {
 					$reportUpdate[ReportFetcher::DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES], $relevantFeedbackGuidelines)) || $updateDone;
 			$updateDone = (Report::updateStudentBroughtAlong($reportUpdate[ReportFetcher::DB_COLUMN_ID],
 					$studentBroughtAlongNew, $studentBroughtAlongOld)) || $updateDone;
-//			$updateDone = (Report::updatePrimaryFocusOfConference($reportUpdate[ReportFetcher::DB_COLUMN_ID],
-//					$studentBroughtAlongNew, $studentBroughtAlongOld)) || $updateDone;
-			throw new Exception(var_dump($_POST));
+			$updateDone = (Report::updatePrimaryFocusOfConference($reportUpdate[ReportFetcher::DB_COLUMN_ID],
+					$studentBroughtAlongNew, $studentBroughtAlongOld)) || $updateDone;
 			$updateDone = (Report::updateAdditionalComments($reportUpdate[ReportFetcher::DB_COLUMN_ID],
 					$reportUpdate[ReportFetcher::DB_COLUMN_ADDITIONAL_COMMENTS], $conclusionAdditionalComments)) || $updateDone;
 		} else {

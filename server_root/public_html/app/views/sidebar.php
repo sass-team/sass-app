@@ -63,27 +63,6 @@
 				</li>
 			</ul>
 		</li>
-
-		<li class="dropdown <?php if ($section == "reports") {
-			echo "active";
-		} ?>">
-			<a href="javascript:;">
-				<i class="fa fa-files-o"></i>
-				Reports
-				<span class="caret"></span>
-			</a>
-
-			<ul class="sub-nav">
-				<li>
-					<a href="<?php echo BASE_URL; ?>reports/">
-						<i class="fa fa-dashboard"></i>
-						All
-					</a>
-				</li>
-
-			</ul>
-		</li>
-
 		<li class="dropdown <?php if ($section == "staff") {
 			echo "active";
 		} ?>">
