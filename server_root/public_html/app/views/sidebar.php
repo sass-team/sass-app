@@ -64,26 +64,6 @@
 	</ul>
 </li>
 
-<li class="dropdown <?php if ($section == "reports") {
-	echo "active";
-} ?>">
-	<a href="javascript:;">
-		<i class="fa fa-files-o"></i>
-		Reports
-		<span class="caret"></span>
-	</a>
-
-	<ul class="sub-nav">
-		<li>
-			<a href="<?php echo BASE_URL; ?>reports/">
-				<i class="fa fa-dashboard"></i>
-				All
-			</a>
-		</li>
-
-	</ul>
-</li>
-
 <li class="dropdown <?php if ($section == "staff") {
 	echo "active";
 } ?>">
@@ -211,33 +191,33 @@
 	</ul>
 </li>
 
-<?php if (!$user->isTutor()) { ?>
-	<li class="dropdown <?php if ($section == "backups") {
-		echo "active";
-	} ?>">
-		<a href="javascript:;">
-			<i class="fa fa-database"></i>
-			Backups
-			<span class="caret"></span>
-		</a>
-
-		<ul class="sub-nav" style="">
-			<li>
-				<a href="<?php echo BASE_URL; ?>backups/dropbox">
-					<i class="fa fa-dropbox"></i>
-					Dropbox
-				</a>
-			</li>
-			<li>
-				<a href="<?php echo BASE_URL; ?>backups/excel">
-					<i class="fa fa-file-excel-o"></i>
-					Excel
-				</a>
-			</li>
-		</ul>
-	</li>
-
-<?php } ?>
+<?php //if (!$user->isTutor()) { ?>
+<!--	<li class="dropdown --><?php //if ($section == "backups") {
+//		echo "active";
+//	} ?><!--">-->
+<!--		<a href="javascript:;">-->
+<!--			<i class="fa fa-database"></i>-->
+<!--			Backups-->
+<!--			<span class="caret"></span>-->
+<!--		</a>-->
+<!---->
+<!--		<ul class="sub-nav" style="">-->
+<!--			<li>-->
+<!--				<a href="--><?php //echo BASE_URL; ?><!--backups/dropbox">-->
+<!--					<i class="fa fa-dropbox"></i>-->
+<!--					Dropbox-->
+<!--				</a>-->
+<!--			</li>-->
+<!--			<li>-->
+<!--				<a href="--><?php //echo BASE_URL; ?><!--backups/excel">-->
+<!--					<i class="fa fa-file-excel-o"></i>-->
+<!--					Excel-->
+<!--				</a>-->
+<!--			</li>-->
+<!--		</ul>-->
+<!--	</li>-->
+<!---->
+<?php //} ?>
 
 </ul>
 
