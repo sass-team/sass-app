@@ -550,8 +550,8 @@ class AppointmentFetcher
 			ON `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`  = `" .
 			TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "`
 			WHERE TIME_TO_SEC(TIMEDIFF(:now,  `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "`))/60 >= 30
-			AND `" . AppointmentHasStudentFetcher::DB_TABLE . "`.`" .
-			AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID . "` IS NULL
+			AND `" . AppointmentFetcher::DB_TABLE . "`.`" .
+			self::DB_COLUMN_LABEL_MESSAGE . "` = :pending
 			AND :now BETWEEN `" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" . TermFetcher::DB_COLUMN_END_DATE . "`
 			ORDER BY `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "` DESC";
 
@@ -564,6 +564,11 @@ class AppointmentFetcher
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
 			$query->bindParam(':now', $now, PDO::PARAM_STR);
+
+			$pendingLabel = Appointment::LABEL_MESSAGE_PENDING;
+			$query->bindParam(':pending', $pendingLabel, PDO::PARAM_STR);
+
+
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
