@@ -45,7 +45,18 @@ class ReportFetcher
 			`" . StudentBroughtAlongFetcher::DB_TABLE . "`.`" . StudentBroughtAlongFetcher::DB_COLUMN_NOTES . "`,
 			`" . StudentBroughtAlongFetcher::DB_TABLE . "`.`" . StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_SHEET . "`,
 			`" . StudentBroughtAlongFetcher::DB_TABLE . "`.`" . StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON . "`,
-			`" . StudentBroughtAlongFetcher::DB_TABLE . "`.`" . StudentBroughtAlongFetcher::DB_COLUMN_OTHER . "`
+			`" . StudentBroughtAlongFetcher::DB_TABLE . "`.`" . StudentBroughtAlongFetcher::DB_COLUMN_OTHER . "`,
+			`" . PrimaryFocusOfConferenceFetcher::DB_TABLE . "`.`" . PrimaryFocusOfConferenceFetcher::DB_COLUMN_DISCUSSION_OF_CONCEPTS . "`,
+			`" . PrimaryFocusOfConferenceFetcher::DB_TABLE . "`.`" . PrimaryFocusOfConferenceFetcher::DB_COLUMN_ORGANIZATION_THOUGHTS_IDEAS . "`,
+			`" . PrimaryFocusOfConferenceFetcher::DB_TABLE . "`.`" . PrimaryFocusOfConferenceFetcher::DB_COLUMN_EXPRESSION_GRAMMAR_SYNTAX_ETC . "`,
+			`" . PrimaryFocusOfConferenceFetcher::DB_TABLE . "`.`" . PrimaryFocusOfConferenceFetcher::DB_COLUMN_EXERCISES . "`,
+			`" . PrimaryFocusOfConferenceFetcher::DB_TABLE . "`.`" . PrimaryFocusOfConferenceFetcher::DB_COLUMN_ACADEMIC_SKILLS . "`,
+			`" . PrimaryFocusOfConferenceFetcher::DB_TABLE . "`.`" . PrimaryFocusOfConferenceFetcher::DB_COLUMN_CITATIONS_REFERENCING . "`,
+			`" . PrimaryFocusOfConferenceFetcher::DB_TABLE . "`.`" . PrimaryFocusOfConferenceFetcher::DB_COLUMN_OTHER . "`
+			AS " . PrimaryFocusOfConferenceFetcher::DB_TABLE . "_" . PrimaryFocusOfConferenceFetcher::DB_COLUMN_OTHER . ",
+			`" . ConclusionWrapUpFetcher::DB_TABLE . "`.`" . ConclusionWrapUpFetcher::DB_COLUMN_QUESTIONS_ADDRESSED . "`,
+			`" . ConclusionWrapUpFetcher::DB_TABLE . "`.`" . ConclusionWrapUpFetcher::DB_COLUMN_ANOTHER_SCHEDULE . "`,
+			`" . ConclusionWrapUpFetcher::DB_TABLE . "`.`" . ConclusionWrapUpFetcher::DB_COLUMN_CLARIFY_CONCERNS . "`
 
 			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
 			INNER JOIN  `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . AppointmentHasStudentFetcher::DB_TABLE . "`
@@ -57,6 +68,12 @@ class ReportFetcher
 			INNER JOIN  `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . StudentBroughtAlongFetcher::DB_TABLE . "`
 			ON `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`  = `" .
 			StudentBroughtAlongFetcher::DB_TABLE . "`.`" . StudentBroughtAlongFetcher::DB_COLUMN_REPORT_ID . "`
+			INNER JOIN  `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . PrimaryFocusOfConferenceFetcher::DB_TABLE . "`
+			ON `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`  = `" .
+			PrimaryFocusOfConferenceFetcher::DB_TABLE . "`.`" . PrimaryFocusOfConferenceFetcher::DB_COLUMN_REPORT_ID . "`
+			INNER JOIN  `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . ConclusionWrapUpFetcher::DB_TABLE . "`
+			ON `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`  = `" .
+			ConclusionWrapUpFetcher::DB_TABLE . "`.`" . ConclusionWrapUpFetcher::DB_COLUMN_REPORT_ID . "`
 			WHERE `" . AppointmentHasStudentFetcher::DB_TABLE . "`.`" .
 			AppointmentHasStudentFetcher::DB_COLUMN_APPOINTMENT_ID . "` = :appointment_id";
 
@@ -69,7 +86,7 @@ class ReportFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
-			throw new Exception("Could not retrieve reports data from database." . $e->getMessage());
+			throw new Exception("Could not retrieve reports data from database.");
 		}
 	}
 
@@ -199,6 +216,7 @@ class ReportFetcher
 			$reportId = $dbConnection->lastInsertId();
 			StudentBroughtAlongFetcher::insert($reportId);
 			PrimaryFocusOfConferenceFetcher::insert($reportId);
+			ConclusionWrapUpFetcher::insert($reportId);
 			AppointmentHasStudentFetcher::update($appointmentId, $reportId);
 
 			$dbConnection->commit();
@@ -249,9 +267,10 @@ class ReportFetcher
 		return false;
 	}
 
-	public static function updateAllColumns($reportId, $projectTopicOtherNew, $otherTextArea, $studentsConcernsTextArea,
-	                                        $relevantFeedbackGuidelines, $studentBroughtAlongNew, $studentBroughtAlongOld,
-	                                        $conclusionAdditionalComments) {
+	public static function updateAllColumns
+	($reportId, $projectTopicOtherNew, $otherTextArea, $studentsConcernsTextArea, $relevantFeedbackGuidelines,
+	 $studentBroughtAlongNew, $studentBroughtAlongOld, $conclusionAdditionalComments, $primaryFocusOfConferenceNew,
+	 $primaryFocusOfConferenceOld, $conclusionWrapUpNew, $conclusionWrapUpOld) {
 		$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
 					SET  `" . self::DB_COLUMN_PROJECT_TOPIC_OTHER . "`= :project_topic_other,
 					`" . self::DB_COLUMN_OTHER_TEXT_AREA . "`= :other_text_area,
@@ -275,6 +294,10 @@ class ReportFetcher
 
 			Report::updateStudentBroughtAlong($reportId, $studentBroughtAlongNew, $studentBroughtAlongOld);
 
+			Report::updatePrimaryFocusOfConference($reportId, $primaryFocusOfConferenceNew, $primaryFocusOfConferenceOld);
+
+			Report::updateConclusionWrapUp($reportId, $conclusionWrapUpNew, $conclusionWrapUpOld);
+
 			return true;
 		} catch (Exception $e) {
 			throw new Exception("Could not update data.");
@@ -286,7 +309,7 @@ class ReportFetcher
 		date_default_timezone_set('Europe/Athens');
 
 		$query =
-			"SELECT `" . self::DB_COLUMN_STUDENT_ID . "`, `" . self::DB_COLUMN_INSTRUCTOR_ID . "`,
+			"SELECT `" . self::DB_COLUMN_ID . "`, `" . self::DB_COLUMN_STUDENT_ID . "`, `" . self::DB_COLUMN_INSTRUCTOR_ID . "`,
 			`" . self::DB_COLUMN_STUDENT_CONCERNS . "`			, `" . self::DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES . "`
 			, `" . self::DB_COLUMN_ADDITIONAL_COMMENTS . "`
 			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
@@ -299,7 +322,7 @@ class ReportFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
-			throw new Exception("Could not retrieve courses data from database.");
+			throw new Exception("Could not retrieve report data from database.");
 		}
 	}
 

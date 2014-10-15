@@ -152,7 +152,7 @@ class TutorFetcher
             $query->execute();
             return $query->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            throw new Exception("Something terrible happened . Could not retrieve tutor data from database." . $e->getMessage());
+            throw new Exception("Something terrible happened . Could not retrieve tutor data from database." );
         } // end catch
     }
 

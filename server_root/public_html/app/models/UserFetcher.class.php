@@ -105,7 +105,7 @@ class UserFetcher
 			$dbConnection->execute();
 			return $dbConnection->fetch(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
-			throw new Exception("Could not retrieve user data." . $e->getMessage());
+			throw new Exception("Could not retrieve user data.");
 			// end try
 		}
 	}
@@ -135,7 +135,7 @@ class UserFetcher
 	public static function generatedStringExists($id, $generatedString) {
 		try {
 			$query = "SELECT COUNT(" . self::DB_COLUMN_GEN_STRING . ")
-			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" .	self::DB_TABLE . "`
+			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
 			WHERE `" . self::DB_COLUMN_ID . "` = :id
 			AND `" . self::DB_COLUMN_GEN_STRING . "` = :genString";
 
