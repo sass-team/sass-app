@@ -95,7 +95,8 @@ try {
 					$conclusionWrapUpNew, $conclusionWrapUpOld)) || $updateDone;
 		} else {
 			$updateDone = Report::updateAllFields($reportUpdate[ReportFetcher::DB_COLUMN_ID], $projectTopicOtherNew,
-				$otherTextArea, $studentsConcernsTextArea, $relevantFeedbackGuidelines, $studentBroughtAlongNew, $studentBroughtAlongOld, $conclusionAdditionalComments);
+				$otherTextArea, $studentsConcernsTextArea, $relevantFeedbackGuidelines, $studentBroughtAlongNew,
+				$studentBroughtAlongOld, $conclusionAdditionalComments, $primaryFocusOfConferenceNew, $primaryFocusOfConferenceOld, $conclusionWrapUpNew, $conclusionWrapUpOld);
 			// user is tutor requesting fill report
 			if ($user->isTutor()) {
 

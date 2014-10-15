@@ -86,7 +86,7 @@ class ReportFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
-			throw new Exception("Could not retrieve reports data from database." );
+			throw new Exception("Could not retrieve reports data from database.");
 		}
 	}
 
@@ -267,9 +267,10 @@ class ReportFetcher
 		return false;
 	}
 
-	public static function updateAllColumns($reportId, $projectTopicOtherNew, $otherTextArea, $studentsConcernsTextArea,
-	                                        $relevantFeedbackGuidelines, $studentBroughtAlongNew, $studentBroughtAlongOld,
-	                                        $conclusionAdditionalComments) {
+	public static function updateAllColumns
+	($reportId, $projectTopicOtherNew, $otherTextArea, $studentsConcernsTextArea, $relevantFeedbackGuidelines,
+	 $studentBroughtAlongNew, $studentBroughtAlongOld, $conclusionAdditionalComments, $primaryFocusOfConferenceNew,
+	 $primaryFocusOfConferenceOld, $conclusionWrapUpNew, $conclusionWrapUpOld) {
 		$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
 					SET  `" . self::DB_COLUMN_PROJECT_TOPIC_OTHER . "`= :project_topic_other,
 					`" . self::DB_COLUMN_OTHER_TEXT_AREA . "`= :other_text_area,
@@ -292,7 +293,9 @@ class ReportFetcher
 			$query->execute();
 
 			Report::updateStudentBroughtAlong($reportId, $studentBroughtAlongNew, $studentBroughtAlongOld);
-
+			PrimaryFocusOfConferenceFetcher::update($reportId, $primaryFocusOfConferenceNew, $primaryFocusOfConferenceOld);
+			ConclusionWrapUpFetcher::update($reportId, $conclusionWrapUpNew, $conclusionWrapUpOld);
+			
 			return true;
 		} catch (Exception $e) {
 			throw new Exception("Could not update data.");

@@ -143,22 +143,26 @@ class Report
 		return ReportFetcher::updateSingleColumn($reportId, $newText, ReportFetcher::DB_COLUMN_ADDITIONAL_COMMENTS);
 	}
 
-	public static function updateAllFields($reportId, $projectTopicOtherNew, $otherTextArea, $studentsConcernsTextArea,
-	                                       $relevantFeedbackGuidelines, $studentBroughtAlongNew, $studentBroughtAlongOld,
-	                                       $conclusionAdditionalComments) {
+	public static function updateAllFields
+	($reportId, $projectTopicOtherNew, $otherTextArea, $studentsConcernsTextArea,
+	 $relevantFeedbackGuidelines, $studentBroughtAlongNew, $studentBroughtAlongOld,
+	 $conclusionAdditionalComments, $primaryFocusOfConferenceNew, $primaryFocusOfConferenceOld, $conclusionWrapUpNew, $conclusionWrapUpOld) {
 		self::validateId($reportId);
 		self::validateTextArea($projectTopicOtherNew, false);
 		self::validateTextArea($otherTextArea, true);
 		self::validateTextArea($studentsConcernsTextArea, false);
 		self::validateTextArea($relevantFeedbackGuidelines, true);
 		self::validateOptionsStudentBroughtAlong($studentBroughtAlongNew);
-
+		self::validateOptionsPrimaryFocusOfConference($primaryFocusOfConferenceNew);
+		self::validateOptionsConclusionWrapUp($conclusionWrapUpNew);
 		self::validateTextArea($conclusionAdditionalComments, true);
 		return ReportFetcher::updateAllColumns($reportId, $projectTopicOtherNew, $otherTextArea, $studentsConcernsTextArea,
-			$relevantFeedbackGuidelines, $studentBroughtAlongNew, $studentBroughtAlongOld, $conclusionAdditionalComments);
+			$relevantFeedbackGuidelines, $studentBroughtAlongNew, $studentBroughtAlongOld, $conclusionAdditionalComments,
+			$primaryFocusOfConferenceNew, $primaryFocusOfConferenceOld, $conclusionWrapUpNew, $conclusionWrapUpOld);
 	}
 
-	public static function validateOptionsStudentBroughtAlong($newOptions) {
+	public
+	static function validateOptionsStudentBroughtAlong($newOptions) {
 		foreach ($newOptions as $option => $value) {
 			switch ($option) {
 				case StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_GRADED:
