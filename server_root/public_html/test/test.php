@@ -7,5 +7,3 @@
  */
 
 require __DIR__ . '/../app/init.php';
-
-var_dump(AppointmentFetcher::retrieveCmpltWithoutRptsOnCurTerms());

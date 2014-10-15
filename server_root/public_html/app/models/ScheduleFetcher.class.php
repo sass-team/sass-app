@@ -80,7 +80,7 @@ class ScheduleFetcher
 			// last inserted if of THIS connection
 			return $appointmentId = $dbConnection->lastInsertId();
 		} catch (Exception $e) {
-			throw new Exception("Could not insert data into database." . $e->getMessage());
+			throw new Exception("Could not insert data into database." );
 		}
 
 	}
@@ -358,7 +358,7 @@ class ScheduleFetcher
 
 			if ($query->fetchColumn() === '0') return false;
 		} catch (Exception $e) {
-			throw new Exception("Could not check conflicts with other appointments." . $e->getMessage());
+			throw new Exception("Could not check conflicts with other appointments." );
 		}
 
 		return true;
@@ -510,7 +510,7 @@ class ScheduleFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
-			throw new Exception("Could not retrieve teaching courses data from database." . $e->getMessage());
+			throw new Exception("Could not retrieve teaching courses data from database." );
 		}
 		return true;
 	}

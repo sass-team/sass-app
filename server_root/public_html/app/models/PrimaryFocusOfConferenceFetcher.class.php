@@ -87,8 +87,8 @@ class PrimaryFocusOfConferenceFetcher
 						$citationsReferencing = 0;
 					}
 					break;
-				case self::DB_COLUMN_OTHER:
-					if (isset($newOptions[self::DB_COLUMN_CITATIONS_REFERENCING])) {
+				case PrimaryFocusOfConferenceFetcher::DB_TABLE . "_" . PrimaryFocusOfConferenceFetcher::DB_COLUMN_OTHER:
+					if (isset($newOptions[PrimaryFocusOfConferenceFetcher::DB_TABLE . "_" . PrimaryFocusOfConferenceFetcher::DB_COLUMN_OTHER])) {
 						$other = 1;
 					} else {
 						$other = 0;
@@ -126,7 +126,7 @@ class PrimaryFocusOfConferenceFetcher
 			return true;
 		} catch
 		(Exception $e) {
-			throw new Exception("Could not update report data." . $e->getMessage());
+			throw new Exception("Could not update report data.");
 		}
 		return false;
 	}

@@ -30,7 +30,7 @@ class MailerFetcher
 
 			if ($query->fetchColumn() >= self::MAX_MAILS_PER_MINUTE) return false;
 		} catch (Exception $e) {
-			throw new Exception("Could not check if system can send mails. Aborting." . $e->getMessage());
+			throw new Exception("Could not check if system can send mails. Aborting." );
 		}
 
 		return true;

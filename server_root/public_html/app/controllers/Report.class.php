@@ -26,24 +26,20 @@ class Report
 
 	}
 
-	public static function updatePrimaryFocusOfConference($reportId, $studentBroughtAlongNew, $studentBroughtAlongOld) {
-		if ($studentBroughtAlongNew === NULL) $studentBroughtAlongNew = [];
-		self::validateOptionsPrimaryFocusOfConference($studentBroughtAlongNew);
-//		if (!self::validateIfUpdateIsNeeded($newOptions, $oldOptions)) return false;
+	public static function updateConclusionWrapUp($reportId, $newOptions, $oldOptions) {
+		if ($newOptions === NULL) $newOptions = [];
+		self::validateOptionsConclusionWrapUp($newOptions);
+		// TODO: check if update is needed. if not, return false.
 		self::validateId($reportId);
-		return PrimaryFocusOfConferenceFetcher::update($reportId, $studentBroughtAlongNew, $studentBroughtAlongOld);
+		return ConclusionWrapUpFetcher::update($reportId, $newOptions, $oldOptions);
 	}
 
-	public static function validateOptionsPrimaryFocusOfConference($newOptions) {
+	public static function validateOptionsConclusionWrapUp($newOptions) {
 		foreach ($newOptions as $option => $value) {
 			switch ($option) {
-				case PrimaryFocusOfConferenceFetcher::DB_COLUMN_DISCUSSION_OF_CONCEPTS:
-				case PrimaryFocusOfConferenceFetcher::DB_COLUMN_ORGANIZATION_THOUGHTS_IDEAS:
-				case PrimaryFocusOfConferenceFetcher::DB_COLUMN_EXPRESSION_GRAMMAR_SYNTAX_ETC:
-				case PrimaryFocusOfConferenceFetcher::DB_COLUMN_EXERCISES:
-				case PrimaryFocusOfConferenceFetcher::DB_COLUMN_ACADEMIC_SKILLS:
-				case PrimaryFocusOfConferenceFetcher::DB_COLUMN_CITATIONS_REFERENCING:
-				case PrimaryFocusOfConferenceFetcher::DB_COLUMN_OTHER:
+				case ConclusionWrapUpFetcher::DB_COLUMN_QUESTIONS_ADDRESSED:
+				case ConclusionWrapUpFetcher::DB_COLUMN_ANOTHER_SCHEDULE:
+				case ConclusionWrapUpFetcher::DB_COLUMN_CLARIFY_CONCERNS:
 					break;
 				default:
 					throw new Exception("Data have been malformed. Aborting process.");
@@ -56,6 +52,32 @@ class Report
 		if (!preg_match('/^[0-9]+$/', $id) || !ReportFetcher::existsId($id)) {
 			throw new Exception("Data tempering detected.
 			<br/>You&#39;re trying to hack this app.<br/>Developers are being notified about this.<br/>Expect Us.");
+		}
+	}
+
+	public static function updatePrimaryFocusOfConference($reportId, $newOptions, $oldOptions) {
+		if ($newOptions === NULL) $newOptions = [];
+		self::validateOptionsPrimaryFocusOfConference($newOptions);
+		// TODO: check if update is needed. if not, return false.
+		self::validateId($reportId);
+		return PrimaryFocusOfConferenceFetcher::update($reportId, $newOptions, $oldOptions);
+	}
+
+	public static function validateOptionsPrimaryFocusOfConference($newOptions) {
+		foreach ($newOptions as $option => $value) {
+			switch ($option) {
+				case PrimaryFocusOfConferenceFetcher::DB_COLUMN_DISCUSSION_OF_CONCEPTS:
+				case PrimaryFocusOfConferenceFetcher::DB_COLUMN_ORGANIZATION_THOUGHTS_IDEAS:
+				case PrimaryFocusOfConferenceFetcher::DB_COLUMN_EXPRESSION_GRAMMAR_SYNTAX_ETC:
+				case PrimaryFocusOfConferenceFetcher::DB_COLUMN_EXERCISES:
+				case PrimaryFocusOfConferenceFetcher::DB_COLUMN_ACADEMIC_SKILLS:
+				case PrimaryFocusOfConferenceFetcher::DB_COLUMN_CITATIONS_REFERENCING:
+				case PrimaryFocusOfConferenceFetcher::DB_TABLE . "_" . PrimaryFocusOfConferenceFetcher::DB_COLUMN_OTHER:
+					break;
+				default:
+					throw new Exception("Data have been malformed. Aborting process.");
+					break;
+			}
 		}
 	}
 

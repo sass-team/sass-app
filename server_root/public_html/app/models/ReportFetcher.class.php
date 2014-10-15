@@ -53,6 +53,11 @@ class ReportFetcher
 			`" . PrimaryFocusOfConferenceFetcher::DB_TABLE . "`.`" . PrimaryFocusOfConferenceFetcher::DB_COLUMN_ACADEMIC_SKILLS . "`,
 			`" . PrimaryFocusOfConferenceFetcher::DB_TABLE . "`.`" . PrimaryFocusOfConferenceFetcher::DB_COLUMN_CITATIONS_REFERENCING . "`,
 			`" . PrimaryFocusOfConferenceFetcher::DB_TABLE . "`.`" . PrimaryFocusOfConferenceFetcher::DB_COLUMN_OTHER . "`
+			AS " . PrimaryFocusOfConferenceFetcher::DB_TABLE . "_" . PrimaryFocusOfConferenceFetcher::DB_COLUMN_OTHER . ",
+			`" . ConclusionWrapUpFetcher::DB_TABLE . "`.`" . ConclusionWrapUpFetcher::DB_COLUMN_QUESTIONS_ADDRESSED . "`,
+			`" . ConclusionWrapUpFetcher::DB_TABLE . "`.`" . ConclusionWrapUpFetcher::DB_COLUMN_ANOTHER_SCHEDULE . "`,
+			`" . ConclusionWrapUpFetcher::DB_TABLE . "`.`" . ConclusionWrapUpFetcher::DB_COLUMN_CLARIFY_CONCERNS . "`
+
 			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
 			INNER JOIN  `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . AppointmentHasStudentFetcher::DB_TABLE . "`
 			ON `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`  = `" .
@@ -66,6 +71,9 @@ class ReportFetcher
 			INNER JOIN  `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . PrimaryFocusOfConferenceFetcher::DB_TABLE . "`
 			ON `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`  = `" .
 			PrimaryFocusOfConferenceFetcher::DB_TABLE . "`.`" . PrimaryFocusOfConferenceFetcher::DB_COLUMN_REPORT_ID . "`
+			INNER JOIN  `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . ConclusionWrapUpFetcher::DB_TABLE . "`
+			ON `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`  = `" .
+			ConclusionWrapUpFetcher::DB_TABLE . "`.`" . ConclusionWrapUpFetcher::DB_COLUMN_REPORT_ID . "`
 			WHERE `" . AppointmentHasStudentFetcher::DB_TABLE . "`.`" .
 			AppointmentHasStudentFetcher::DB_COLUMN_APPOINTMENT_ID . "` = :appointment_id";
 
@@ -78,7 +86,7 @@ class ReportFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
-			throw new Exception("Could not retrieve reports data from database." . $e->getMessage());
+			throw new Exception("Could not retrieve reports data from database." );
 		}
 	}
 
@@ -208,6 +216,7 @@ class ReportFetcher
 			$reportId = $dbConnection->lastInsertId();
 			StudentBroughtAlongFetcher::insert($reportId);
 			PrimaryFocusOfConferenceFetcher::insert($reportId);
+			ConclusionWrapUpFetcher::insert($reportId);
 			AppointmentHasStudentFetcher::update($appointmentId, $reportId);
 
 			$dbConnection->commit();

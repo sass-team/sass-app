@@ -181,7 +181,7 @@ class AppointmentHasStudentFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
-			throw new Exception("Could not retrieve data from database." . $e->getMessage());
+			throw new Exception("Could not retrieve data from database." );
 		}
 	}
 
@@ -200,7 +200,7 @@ class AppointmentHasStudentFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
-			throw new Exception("Could not retrieve data from database." . $e->getMessage());
+			throw new Exception("Could not retrieve data from database." );
 		}
 	}
 
@@ -257,7 +257,7 @@ class AppointmentHasStudentFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
-			throw new Exception("Could not retrieve data from database." . $e->getMessage());
+			throw new Exception("Could not retrieve data from database." );
 		}
 	}
 

@@ -45,7 +45,7 @@ try {
 		$studentBroughtAlongNew = isset($_POST['student-brought-along']) ? $_POST['student-brought-along'] : NULL;
 		$primaryFocusOfConferenceNew = isset($_POST['primary-focus-of-conference']) ? $_POST['primary-focus-of-conference'] : NULL;
 		$relevantFeedbackGuidelines = isset($_POST['relevant-feedback-guidelines']) ? $_POST['relevant-feedback-guidelines'] : NULL;
-
+		$conclusionWrapUpNew = isset($_POST['conclusion-wrap-up']) ? $_POST['conclusion-wrap-up'] : NULL;
 
 		$studentBroughtAlongOld = array(
 			StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_GRADED => $reportUpdate[StudentBroughtAlongFetcher::DB_COLUMN_ASSIGNMENT_GRADED],
@@ -65,7 +65,13 @@ try {
 			PrimaryFocusOfConferenceFetcher::DB_COLUMN_EXERCISES => $reportUpdate[PrimaryFocusOfConferenceFetcher::DB_COLUMN_EXERCISES],
 			PrimaryFocusOfConferenceFetcher::DB_COLUMN_ACADEMIC_SKILLS => $reportUpdate[PrimaryFocusOfConferenceFetcher::DB_COLUMN_ACADEMIC_SKILLS],
 			PrimaryFocusOfConferenceFetcher::DB_COLUMN_CITATIONS_REFERENCING => $reportUpdate[PrimaryFocusOfConferenceFetcher::DB_COLUMN_CITATIONS_REFERENCING],
-			PrimaryFocusOfConferenceFetcher::DB_COLUMN_OTHER => $reportUpdate[PrimaryFocusOfConferenceFetcher::DB_COLUMN_OTHER],
+			PrimaryFocusOfConferenceFetcher::DB_TABLE . "_" . PrimaryFocusOfConferenceFetcher::DB_COLUMN_OTHER => $reportUpdate[PrimaryFocusOfConferenceFetcher::DB_TABLE . "_" . PrimaryFocusOfConferenceFetcher::DB_COLUMN_OTHER]
+		);
+
+		$conclusionWrapUpOld = array(
+			ConclusionWrapUpFetcher::DB_COLUMN_QUESTIONS_ADDRESSED => $reportUpdate[ConclusionWrapUpFetcher::DB_COLUMN_QUESTIONS_ADDRESSED],
+			ConclusionWrapUpFetcher::DB_COLUMN_ANOTHER_SCHEDULE => $reportUpdate[ConclusionWrapUpFetcher::DB_COLUMN_ANOTHER_SCHEDULE],
+			ConclusionWrapUpFetcher::DB_COLUMN_CLARIFY_CONCERNS => $reportUpdate[ConclusionWrapUpFetcher::DB_COLUMN_CLARIFY_CONCERNS]
 		);
 
 
@@ -84,6 +90,9 @@ try {
 					$primaryFocusOfConferenceNew, $primaryFocusOfConferenceOld)) || $updateDone;
 			$updateDone = (Report::updateAdditionalComments($reportUpdate[ReportFetcher::DB_COLUMN_ID],
 					$reportUpdate[ReportFetcher::DB_COLUMN_ADDITIONAL_COMMENTS], $conclusionAdditionalComments)) || $updateDone;
+
+			$updateDone = (Report::updateConclusionWrapUp($reportUpdate[ReportFetcher::DB_COLUMN_ID],
+					$conclusionWrapUpNew, $conclusionWrapUpOld)) || $updateDone;
 		} else {
 			$updateDone = Report::updateAllFields($reportUpdate[ReportFetcher::DB_COLUMN_ID], $projectTopicOtherNew,
 				$otherTextArea, $studentsConcernsTextArea, $relevantFeedbackGuidelines, $studentBroughtAlongNew, $studentBroughtAlongOld, $conclusionAdditionalComments);
@@ -748,8 +757,8 @@ if (isset($reports)) {
 						       data-parsley-multiple="student-brought-along-parsley-<?php echo $i; ?>">
 						Exercise on <input type="text"
 						                   name="student-brought-along[<?php echo StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON; ?>text]"
-						                   class="form-control"
-						                   value="<?php echo $reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON] === NULL ? "" : $reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON]; ?>"
+						                   class="form-control" value="<?php echo
+						$reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON] === NULL ? "" : $reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON]; ?>"
 							<?php echo $reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON] === NULL ? "disabled='disabled'" : ''; ?>
 						                   data-parsley-validate-if-empty/>
 					</label>
@@ -763,9 +772,9 @@ if (isset($reports)) {
 						Other <input type="text"
 						             name="student-brought-along[<?php echo StudentBroughtAlongFetcher::DB_COLUMN_OTHER; ?>text]"
 						             class="form-control" value="<?php echo
-						$reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_OTHER] === NULL ? "" : $reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_OTHER]; ?>"<?php echo
-						$reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_OTHER] === NULL ? "disabled='disabled'" : 'data-parsley-minlength="3"'; ?>
-							/>
+						$reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_OTHER] === NULL ? "" : $reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_OTHER]; ?>"
+							<?php echo $reports[$i][StudentBroughtAlongFetcher::DB_COLUMN_OTHER] === NULL ? "disabled='disabled'" : ''; ?>
+						             data-parsley-validate-if-empty/>
 					</label>
 				</div>
 			</div>
@@ -838,8 +847,8 @@ if (isset($reports)) {
 				<div class="checkbox">
 					<label>
 						<input type="checkbox"
-						       name="primary-focus-of-conference[<?php echo PrimaryFocusOfConferenceFetcher::DB_COLUMN_OTHER; ?>]"
-							<?php echo strcmp($reports[$i][PrimaryFocusOfConferenceFetcher::DB_COLUMN_OTHER],
+						       name="primary-focus-of-conference[<?php echo PrimaryFocusOfConferenceFetcher::DB_TABLE . "_" . PrimaryFocusOfConferenceFetcher::DB_COLUMN_OTHER; ?>]"
+							<?php echo strcmp($reports[$i][PrimaryFocusOfConferenceFetcher::DB_TABLE . "_" . PrimaryFocusOfConferenceFetcher::DB_COLUMN_OTHER],
 								PrimaryFocusOfConferenceFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>
 						       data-parsley-multiple="primary-focus-of-conference-parsley<?php echo $i; ?>">Other
 					</label>
@@ -861,19 +870,28 @@ if (isset($reports)) {
 
 				<div class="checkbox">
 					<label>
-						<input type="checkbox" name="checkbox-3" data-mincheck="1">
+						<input type="checkbox"
+						       name="conclusion-wrap-up[<?php echo ConclusionWrapUpFetcher::DB_COLUMN_QUESTIONS_ADDRESSED; ?>]"
+							<?php echo strcmp($reports[$i][ConclusionWrapUpFetcher::DB_COLUMN_QUESTIONS_ADDRESSED],
+								PrimaryFocusOfConferenceFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>>
 						The student reported that his/her questions/concerns had been addressed
 					</label>
 				</div>
 				<div class="checkbox">
 					<label>
-						<input type="checkbox" name="checkbox-3" data-mincheck="1">
+						<input type="checkbox"
+						       name="conclusion-wrap-up[<?php echo ConclusionWrapUpFetcher::DB_COLUMN_ANOTHER_SCHEDULE; ?>]"
+							<?php echo strcmp($reports[$i][ConclusionWrapUpFetcher::DB_COLUMN_ANOTHER_SCHEDULE],
+								PrimaryFocusOfConferenceFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>>
 						The student asked to schedule another session to discuss issues further
 					</label>
 				</div>
 				<div class="checkbox">
 					<label>
-						<input type="checkbox" name="checkbox-3" data-mincheck="1">
+						<input type="checkbox"
+						       name="conclusion-wrap-up[<?php echo ConclusionWrapUpFetcher::DB_COLUMN_CLARIFY_CONCERNS; ?>]"
+							<?php echo strcmp($reports[$i][ConclusionWrapUpFetcher::DB_COLUMN_CLARIFY_CONCERNS],
+								PrimaryFocusOfConferenceFetcher::IS_SELECTED) === 0 ? 'checked' : ''; ?>>
 						The student was advised to return after clarifying her/his concerns
 					</label>
 				</div>
