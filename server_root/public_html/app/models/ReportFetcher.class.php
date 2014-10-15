@@ -293,9 +293,11 @@ class ReportFetcher
 			$query->execute();
 
 			Report::updateStudentBroughtAlong($reportId, $studentBroughtAlongNew, $studentBroughtAlongOld);
-			PrimaryFocusOfConferenceFetcher::update($reportId, $primaryFocusOfConferenceNew, $primaryFocusOfConferenceOld);
-			ConclusionWrapUpFetcher::update($reportId, $conclusionWrapUpNew, $conclusionWrapUpOld);
-			
+
+			Report::updatePrimaryFocusOfConference($reportId, $primaryFocusOfConferenceNew, $primaryFocusOfConferenceOld);
+
+			Report::updateConclusionWrapUp($reportId, $conclusionWrapUpNew, $conclusionWrapUpOld);
+
 			return true;
 		} catch (Exception $e) {
 			throw new Exception("Could not update data.");
@@ -307,7 +309,7 @@ class ReportFetcher
 		date_default_timezone_set('Europe/Athens');
 
 		$query =
-			"SELECT `" . self::DB_COLUMN_STUDENT_ID . "`, `" . self::DB_COLUMN_INSTRUCTOR_ID . "`,
+			"SELECT `" . self::DB_COLUMN_ID . "`, `" . self::DB_COLUMN_STUDENT_ID . "`, `" . self::DB_COLUMN_INSTRUCTOR_ID . "`,
 			`" . self::DB_COLUMN_STUDENT_CONCERNS . "`			, `" . self::DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES . "`
 			, `" . self::DB_COLUMN_ADDITIONAL_COMMENTS . "`
 			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
@@ -320,7 +322,7 @@ class ReportFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
-			throw new Exception("Could not retrieve courses data from database.");
+			throw new Exception("Could not retrieve report data from database.");
 		}
 	}
 

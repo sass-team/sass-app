@@ -39,7 +39,28 @@ class ConclusionWrapUpFetcher
 		return false;
 	}
 
+	public static function exists($reportId) {
+		try {
+			$query = "SELECT COUNT(" . self::DB_COLUMN_REPORT_ID . ")
+			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			WHERE `" . self::DB_COLUMN_REPORT_ID . "` = :report_id";
+
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
+			$query->bindParam(':report_id', $reportId, PDO::PARAM_INT);
+			$query->execute();
+
+			if ($query->fetchColumn() === '0') return false;
+		} catch (Exception $e) {
+			throw new Exception("Could not verify data on database.");
+		}
+
+		return true;
+	}
+
 	public static function update($reportId, $newOptions, $oldOptions) {
+		if (!self::exists($reportId)) self::insert($reportId);
+
 		foreach ($oldOptions as $option => $value) {
 			switch ($option) {
 				case self::DB_COLUMN_QUESTIONS_ADDRESSED:

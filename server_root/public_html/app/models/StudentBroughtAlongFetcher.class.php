@@ -21,27 +21,8 @@ class StudentBroughtAlongFetcher
 	const IS_SELECTED = "1";
 	const IS_NOT_SELECTED = "0";
 
-	public static function insert($reportId) {
-		try {
-			$queryInsertUser = "INSERT INTO `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
-			(`" . self::DB_COLUMN_REPORT_ID . "`)
-			VALUES(:report_id)";
-
-
-			$dbConnection = DatabaseManager::getConnection();
-			$queryInsertUser = $dbConnection->prepare($queryInsertUser);
-			$queryInsertUser->bindParam(':report_id', $reportId, PDO::PARAM_INT);
-
-			$queryInsertUser->execute();
-
-		} catch (Exception $e) {
-			throw new Exception("Could not insert report data into database.");
-		}
-
-	}
-
-
 	public static function update($newOptions, $oldOptions, $reportId) {
+
 		foreach ($oldOptions as $option => $value) {
 			switch ($option) {
 				case self::DB_COLUMN_ASSIGNMENT_GRADED:
@@ -144,5 +125,43 @@ class StudentBroughtAlongFetcher
 			throw new Exception("Could not update data.");
 		}
 		return false;
+	}
+
+	public static function exists($reportId) {
+		try {
+			$query = "SELECT COUNT(" . self::DB_COLUMN_REPORT_ID . ")
+			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			WHERE `" . self::DB_COLUMN_REPORT_ID . "` = :report_id";
+
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
+			$query->bindParam(':report_id', $reportId, PDO::PARAM_INT);
+			$query->execute();
+
+			if ($query->fetchColumn() === '0') return false;
+		} catch (Exception $e) {
+			throw new Exception("Could not verify data on database.");
+		}
+
+		return true;
+	}
+
+	public static function insert($reportId) {
+		try {
+			$queryInsertUser = "INSERT INTO `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			(`" . self::DB_COLUMN_REPORT_ID . "`)
+			VALUES(:report_id)";
+
+
+			$dbConnection = DatabaseManager::getConnection();
+			$queryInsertUser = $dbConnection->prepare($queryInsertUser);
+			$queryInsertUser->bindParam(':report_id', $reportId, PDO::PARAM_INT);
+
+			$queryInsertUser->execute();
+
+		} catch (Exception $e) {
+			throw new Exception("Could not insert report data into database.");
+		}
+
 	}
 } 

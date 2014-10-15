@@ -300,7 +300,7 @@ require ROOT_PATH . 'views/sidebar.php';
 
 		<a href="#appointment-tab" class="list-group-item active" data-toggle="tab">
 			<h5><i class="fa fa-file-text-o"></i>
-				&nbsp;&nbsp;A-<?php echo $studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_ID]; ?>
+				&nbsp;&nbsp;A-<?php echo $studentsAppointmentData[0][AppointmentFetcher::DB_TABLE . "_" . AppointmentFetcher::DB_COLUMN_ID]; ?>
 				<span
 					class="label label-<?php echo $studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_LABEL_COLOR]; ?>">
 							<?php echo $studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE]; ?>
