@@ -130,7 +130,7 @@ $courses = Tutor_has_course_has_termFetcher::retrieveCurrTermAllTeachingCourses(
 									<tbody>
 
 									<?php
-									if (empty($errors) === true) {
+									if (empty($successMessage) === true) {
 										foreach (array_reverse($courses) as $course) {
 											include(ROOT_PATH . "views/partials/course/table-data-all-current-view.html.php");
 										}

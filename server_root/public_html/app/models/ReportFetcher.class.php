@@ -21,13 +21,20 @@ class ReportFetcher
 	const DB_COLUMN_LABEL_MESSAGE = "label_message";
 	const DB_COLUMN_LABEL_COLOR = "label_color";
 
-	public static function deleteWithAppointment($appointmentId) {
+	public static function deleteWithAppointmentId($appointmentId) {
 
 		try {
 			$reports = ReportFetcher::retrieveAllWithAppointmentId($appointmentId);
 
 			$dbConnection = DatabaseManager::getConnection();
-			$dbConnection->beginTransaction();
+
+
+			try {
+				$dbConnection->beginTransaction();
+				$prevTransFromParent = false;
+			} catch (PDOException $e) {
+				$prevTransFromParent = true;
+			}
 
 			foreach ($reports as $report) {
 				$reportId = $report[self::DB_COLUMN_ID];
@@ -38,9 +45,11 @@ class ReportFetcher
 				AppointmentHasStudentFetcher::disconnectReport($reportId);
 				self::delete($reportId);
 			}
-			$dbConnection->commit();
 
 			AppointmentFetcher::updateLabel($appointmentId, Appointment::LABEL_MESSAGE_ADMIN_DISABLED, Appointment::LABEL_COLOR_CANCELED);
+
+			if (!$prevTransFromParent) $dbConnection->commit();
+
 			return true;
 		} catch (Exception $e) {
 			if (isset($dbConnection)) $dbConnection->rollback();

@@ -34,11 +34,6 @@ class Report
 		return ConclusionWrapUpFetcher::update($reportId, $newOptions, $oldOptions);
 	}
 
-	public static function deleteWithAppointmentId($appointmentId) {
-		Appointment::validateId($appointmentId);
-		ReportFetcher::deleteWithAppointment($appointmentId);
-	}
-
 	public static function validateOptionsConclusionWrapUp($newOptions) {
 		foreach ($newOptions as $option => $value) {
 			switch ($option) {
@@ -58,6 +53,11 @@ class Report
 			throw new Exception("Data tempering detected.
 			<br/>You&#39;re trying to hack this app.<br/>Developers are being notified about this.<br/>Expect Us.");
 		}
+	}
+
+	public static function deleteWithAppointmentId($appointmentId) {
+		Appointment::validateId($appointmentId);
+		return ReportFetcher::deleteWithAppointmentId($appointmentId);
 	}
 
 	public static function updatePrimaryFocusOfConference($reportId, $newOptions, $oldOptions) {

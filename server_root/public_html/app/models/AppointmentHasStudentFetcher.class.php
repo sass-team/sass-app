@@ -132,16 +132,16 @@ class AppointmentHasStudentFetcher
 		return false;
 	}
 
-	public static function delete($reportId) {
+	public static function delete($appointmentId) {
 		try {
 			$query =
 				"DELETE FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
-				WHERE `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_REPORT_ID . "` = :report_id";
+				WHERE `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_APPOINTMENT_ID . "` = :appointment_id";
 
 
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
-			$query->bindParam(':report_id', $reportId, PDO::PARAM_INT);
+			$query->bindParam(':appointment_id', $appointmentId, PDO::PARAM_INT);
 			$query->execute();
 
 		} catch (Exception $e) {

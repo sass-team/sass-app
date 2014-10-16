@@ -18,7 +18,39 @@ class AppointmentFetcher
 	const DB_COLUMN_LABEL_MESSAGE = "label_message";
 	const DB_COLUMN_LABEL_COLOR = "label_color";
 
+	public static function delete($appointmentId) {
+		try {
+			$dbConnection = DatabaseManager::getConnection();
 
+			try {
+				$dbConnection->beginTransaction();
+				$prevTransFromParent = false;
+			} catch (PDOException $e) {
+				$prevTransFromParent = true;
+			}
+
+			ReportFetcher::deleteWithAppointmentId($appointmentId);
+			AppointmentHasStudentFetcher::delete($appointmentId);
+
+			$query =
+				"DELETE FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
+				WHERE `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` = :appointment_id";
+
+			$query = $dbConnection->prepare($query);
+			$query->bindParam(':appointment_id', $appointmentId, PDO::PARAM_INT);
+			$query->execute();
+
+
+			if (!$prevTransFromParent) $dbConnection->commit();
+
+			return $query->rowCount();
+
+		} catch (Exception $e) {
+			if (isset($dbConnection)) $dbConnection->rollback();
+			throw new Exception("Could not delete appointment data." . $e->getMessage());
+		}
+		return false;
+	}
 
 	public static function updateTerm($appointmentId, $newTermId) {
 

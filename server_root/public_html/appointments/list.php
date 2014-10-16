@@ -12,6 +12,10 @@ require __DIR__ . '/../app/init.php';
 $general->loggedOutProtect();
 
 $section = "appointments";
+if (isset($_SESSION['success'])) {
+	$successMessage[] = $_SESSION['success'];
+	unset($_SESSION['success']);
+}
 
 if ($user->isTutor()) {
 	$pageTitle = "" . $user->getFirstName() . " " . $user->getLastName();
@@ -38,6 +42,7 @@ function getStudentsIds($students, $appointmentId) {
 
 	return rtrim($studentsIds, ", ");
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -71,7 +76,14 @@ function getStudentsIds($students, $appointmentId) {
 			<div class="row">
 
 				<div class="col-md-12">
-
+					<?php
+					if (!empty($successMessage)):
+						?>
+						<div class="alert alert-danger">
+							<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+							<?php echo '<p>' . implode('</p><p>', $successMessage) . '</p>'; ?>
+						</div>
+					<?php endif; ?>
 					<div class="portlet">
 
 						<div class="portlet-header">
@@ -129,7 +141,7 @@ function getStudentsIds($students, $appointmentId) {
 
 
 
-									if (empty($errors) === true) {
+									if (empty($successMessage) === true) {
 										if ($user->isTutor()) {
 											foreach ($appointments as $appointment) {
 												$studentsIds = getStudentsIds($students,

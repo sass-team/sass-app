@@ -22,6 +22,10 @@ class Appointment
 	const LABEL_COLOR_PENDING = "default";
 	const LABEL_COLOR_WARNING = "warning";
 
+	public static function delete($appointmentId){
+		self::validateId($appointmentId);
+		return AppointmentFetcher::delete($appointmentId);
+	}
 
 	public static function updateTerm($appointmentId, $tutorId, $user, $startDate, $endDate, $newTermId, $oldTermId) {
 		if (strcmp($newTermId, $oldTermId) === 0) return false;

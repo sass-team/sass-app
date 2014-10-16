@@ -9,9 +9,8 @@
 require __DIR__ . '/../app/init.php';
 
 try {
-	Report::deleteWithAppointmentId(8);
-//	AppointmentHasStudentFetcher::disconnectReport(67);
+	var_dump(Appointment::delete(9));
 
 } catch (Exception $e) {
-	var_dump($e->getMessage());
+	echo $e->getMessage();
 }

@@ -90,11 +90,11 @@ session_destroy();
 	</div>
 
 	<?php
-	if (empty($errors) === false) {
+	if (empty($successMessage) === false) {
 		?>
 		<div class="alert alert-danger">
 			<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-			<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
+			<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $successMessage) . '</p>'; ?>
 		</div>
 	<?php
 	}

@@ -110,8 +110,6 @@ try {
 		}
 
 		if (!$updateDone) throw new Exception("No new data inserted.");
-		header('Location: ' . BASE_URL . 'appointments/' . $appointmentId . '/success');
-		exit();
 	}
 
 	if (isUrlRqstngManualReportEnable()) {
@@ -129,12 +127,8 @@ try {
 			if (!$user->isTutor()) Mailer::sendTutorNewReportsCronOnly($appointment);
 		}
 
-		header('Location: ' . BASE_URL . 'appointments/' . $appointmentId . '/success');
-		exit();
 	} else if (isUrlRqstngAppointmentCancelByStudent()) {
 		AppointmentFetcher::updateLabel($appointmentId, Appointment::LABEL_MESSAGE_STUDENT_CANCELED, Appointment::LABEL_COLOR_CANCELED);
-		header('Location: ' . BASE_URL . 'appointments/' . $appointmentId . '/success');
-		exit();
 	} else if (isBtnUpdateAppointmentPrsd() && !$user->isTutor() &&
 		strcmp($studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE], Appointment::LABEL_MESSAGE_COMPLETE) !== 0
 	) {
@@ -155,37 +149,37 @@ try {
 			"_" . UserFetcher::DB_COLUMN_ID], $user, $_POST['dateTimePickerStart'], $_POST['dateTimePickerEnd'], $_POST['termId'], $studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_TERM_ID]) || $updateDone;
 
 		if (!$updateDone) throw new Exception("No new data inserted.");
-		header('Location: ' . BASE_URL . 'appointments/' . $appointmentId . '/success');
-		exit();
 	} else if (isUrlRqstngAppointmentCancelByTutor()) {
 		AppointmentFetcher::updateLabel($appointmentId, Appointment::LABEL_MESSAGE_TUTOR_CANCELED, Appointment::LABEL_COLOR_CANCELED);
-		header('Location: ' . BASE_URL . 'appointments/' . $appointmentId . '/success');
-		exit();
 	} else if (isUrlRqstngAppointmentNoShowByStudent()) {
 		AppointmentFetcher::updateLabel($appointmentId, Appointment::LABEL_MESSAGE_STUDENT_NO_SHOW, Appointment::LABEL_COLOR_CANCELED);
-		header('Location: ' . BASE_URL . 'appointments/' . $appointmentId . '/success');
-		exit();
 	} else if (isUrlRqstngAppointmentNoShowByTutor()) {
 		AppointmentFetcher::updateLabel($appointmentId, Appointment::LABEL_MESSAGE_TUTOR_NO_SHOW, Appointment::LABEL_COLOR_CANCELED);
-		header('Location: ' . BASE_URL . 'appointments/' . $appointmentId . '/success');
-		exit();
 	} else if (isUrlRqstngAppointmentEnable()) {
 		AppointmentFetcher::updateLabel($appointmentId, Appointment::LABEL_MESSAGE_PENDING, Appointment::LABEL_COLOR_PENDING);
-		header('Location: ' . BASE_URL . 'appointments/' . $appointmentId . '/success');
-		exit();
-	} else if (isBtnDeleteAppointmentPressed()) {
+	} else if (isBtnDeleteAppointmentPressed() || isBtnDeleteReportPrsd()) {
 		if (!$user->isAdmin()) {
 			header('Location: /error-403');
 			exit();
 		}
-		var_dump($appointmentId);
-		Appointment::delete($id);
+//		Appointment::delete($id);
+		if (isBtnDeleteReportPrsd()) {
+			Report::deleteWithAppointmentId($appointmentId);
+		} else if (isBtnDeleteAppointmentPressed()) {
+			Appointment::delete($appointmentId);
+			$_SESSION['success'] = "Appointment with id $appointmentId successfully deleted.";
+			header('Location: ' . BASE_URL . 'appointments/list');
+			exit();
+		}
 	}
 
+	if (!isset($_GET['success']) && sizeof($_POST) !== 0) {
+		header('Location: ' . BASE_URL . 'appointments/' . $appointmentId . '/success');
+		exit();
+	}
 } catch (Exception $e) {
 	$errors[] = $e->getMessage();
 }
-
 
 function isUrlValid() {
 	return isset($_GET['appointmentId']) && preg_match("/^[0-9]+$/", $_GET['appointmentId']);
@@ -226,6 +220,11 @@ function isUrlRqstngAppointmentCancelByTutor() {
 function isBtnDeleteAppointmentPressed() {
 	return isset($_GET['appointmentId']) && preg_match("/^[0-9]+$/", $_GET['appointmentId']) &&
 	isset($_POST['hiddenDeleteAppointment']) && empty($_POST['hiddenDeleteAppointment']);
+}
+
+function isBtnDeleteReportPrsd() {
+	return isset($_GET['appointmentId']) && preg_match("/^[0-9]+$/", $_GET['appointmentId']) &&
+	isset($_POST['hiddenDeleteReports']) && empty($_POST['hiddenDeleteReports']);
 }
 
 
@@ -439,7 +438,7 @@ require ROOT_PATH . 'views/sidebar.php';
 								</li>
 							<?php endif; ?>
 
-						<?php elseif (strcmp($studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE], Appointment::LABEL_MESSAGE_COMPLETE) !== 0): ?>
+						<?php elseif (strcmp($studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE], Appointment::LABEL_MESSAGE_PENDING) === 0): ?>
 							<li>
 								<form method="post"
 								      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
@@ -464,6 +463,19 @@ require ROOT_PATH . 'views/sidebar.php';
 									</button>
 								</form>
 							</li>
+							<?php if ($studentsAppointmentData[0][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID] !== NULL): ?>
+								<li class="divider"></li>
+								<li>
+									<form method="post"
+									      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
+										>
+										<input type="hidden" name="hiddenDeleteReports" value="">
+										<button type="submit" class="btn btn-block btn-default">
+											Delete only reports
+										</button>
+									</form>
+								</li>
+							<?php endif; ?>
 						<?php endif; ?>
 					</ul>
 				</div>
@@ -1117,8 +1129,9 @@ if (isset($reports)) {
 
 		$dateTimePickerStart.datetimepicker({
 			defaultDate: '<?php echo $startDateTime->format('m/d/Y g:i A');?>',
+			<?php if(!$user->isAdmin()): ?>
 			minDate: minimumStartDate,
-			maxDate: minimumMaxDate,
+			<?php endif; ?>			maxDate: minimumMaxDate,
 			minuteStepping: 30,
 			daysOfWeekDisabled: [0, 6],
 			sideBySide: true,
