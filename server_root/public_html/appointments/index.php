@@ -172,6 +172,10 @@ try {
 			header('Location: ' . BASE_URL . 'appointments/list');
 			exit();
 		}
+	} else if (isBtnRqstFrthrTutorVal()) {
+		Report::updateLabel($_POST['form-update-report-id'], Report::LABEL_MESSAGE_PENDING_FILL, Report::LABEL_COLOR_WARNING);
+	}else if(isBtnRqstFrthrSecretaryVal()){
+		Report::updateLabel($_POST['form-update-report-id'], Report::LABEL_MESSAGE_PENDING_VALIDATION, Report::LABEL_COLOR_WARNING);
 	}
 
 	if (!isset($_GET['success']) && sizeof($_POST) !== 0) {
@@ -183,7 +187,7 @@ try {
 }
 
 function isUrlValid() {
-	return isset($_GET['appointmentId']) && preg_match("/^[0-9]+$/", $_GET['appointmentId']);
+	return isset($_GET['appointmentId']) && preg_match("/^[0-9]+$/", $_GET['appointmentId']) && AppointmentFetcher::existsId($_GET['appointmentId']);
 }
 
 function isUrlRequestingSingleAppointment() {
@@ -228,6 +232,15 @@ function isBtnDeleteReportPrsd() {
 	isset($_POST['hiddenDeleteReports']) && empty($_POST['hiddenDeleteReports']);
 }
 
+function isBtnRqstFrthrTutorVal() {
+	return isset($_GET['appointmentId']) && preg_match("/^[0-9]+$/", $_GET['appointmentId']) &&
+	isset($_POST['btn-request-further-tutor-report']) && empty($_POST['btn-request-further-tutor-report']);
+}
+
+function isBtnRqstFrthrSecretaryVal() {
+	return isset($_GET['appointmentId']) && preg_match("/^[0-9]+$/", $_GET['appointmentId']) &&
+	isset($_POST['btn-request-further-secretary-report']) && empty($_POST['btn-request-secretary-tutor-report']);
+}
 
 function isUrlRqstngAppointmentEnable() {
 	return isset($_GET['appointmentId']) && preg_match("/^[0-9]+$/", $_GET['appointmentId']) &&
@@ -452,16 +465,18 @@ require ROOT_PATH . 'views/sidebar.php';
 						else:
 							// allow enable of appointment only if user is admin or use is secretary and appointment start time has not passed
 							if ($user->isAdmin() || $user->isSecretary() && $nowDateTime < $startDateTime):?>
-								<li>
-									<form method="post"
-									      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
-										>
-										<input type="hidden" name="hiddenEnableAppointment" value="">
-										<button type="submit" class="btn btn-block btn-default">
-											Enable appointment
-										</button>
-									</form>
-								</li>
+								<?php if (strcmp($studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE], Appointment::LABEL_MESSAGE_COMPLETE) !== 0): ?>
+									<li>
+										<form method="post"
+										      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
+											>
+											<input type="hidden" name="hiddenEnableAppointment" value="">
+											<button type="submit" class="btn btn-block btn-default">
+												Enable appointment
+											</button>
+										</form>
+									</li>
+								<?php endif; ?>
 								<?php if ($user->isAdmin()): ?>
 
 									<li class="divider"></li>
@@ -643,7 +658,7 @@ require ROOT_PATH . 'views/sidebar.php';
 
 				// allow secretary to edit appointment data only if appointment status is "pending"
 				// allow admin to edit no matter what.
-				if ($nowDateTime > $startDateTime && $user->isSecretary() || $user->isAdmin()
+				if ($nowDateTime < $startDateTime && $user->isSecretary() || $user->isAdmin()
 				): ?>
 					<div class="form-group">
 						<button type="submit" class="btn btn-block btn-primary">Update</button>
@@ -1025,6 +1040,31 @@ if (isset($reports)) {
 							</button>
 						</div>
 
+						<input type="hidden" name="form-update-report-id"
+						       value="<?php echo $reports[$i][ReportFetcher::DB_COLUMN_ID]; ?>">
+					<?php
+					} else if (strcmp($reports[$i][ReportFetcher::DB_COLUMN_LABEL_MESSAGE], Report::LABEL_MESSAGE_COMPLETE) === 0) {
+						?>
+						<div class="col-md-3 col-sm-6 col-xs-6">
+							<button type="submit" name="btn-request-further-tutor-report"
+							        class="btn btn-default temp-save-report-btn ui-tooltip"
+							        data-toggle="tooltip"
+							        data-placement="bottom"
+							        data-trigger="hover"
+							        title="Partially fill report. You'll be able to edit the report as much you want up until you complete it.">
+								Request Further Tutor Validation
+							</button>
+						</div>
+						<div class="col-md-3 col-sm-6 col-xs-6">
+							<button type="submit" name="btn-request-further-secretary-report"
+							        class="btn btn-primary ui-tooltip"
+							        data-toggle="tooltip"
+							        data-placement="bottom"
+							        data-trigger="hover" title="You won't be able to edit the report anymore. The responsible
+				        secretary will have to validate it.">
+								Request Further Secretary Validation
+							</button>
+						</div>
 						<input type="hidden" name="form-update-report-id"
 						       value="<?php echo $reports[$i][ReportFetcher::DB_COLUMN_ID]; ?>">
 					<?php
