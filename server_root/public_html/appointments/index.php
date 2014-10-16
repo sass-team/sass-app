@@ -174,7 +174,7 @@ try {
 		}
 	} else if (isBtnRqstFrthrTutorVal()) {
 		Report::updateLabel($_POST['form-update-report-id'], Report::LABEL_MESSAGE_PENDING_FILL, Report::LABEL_COLOR_WARNING);
-	}else if(isBtnRqstFrthrSecretaryVal()){
+	} else if (isBtnRqstFrthrSecretaryVal()) {
 		Report::updateLabel($_POST['form-update-report-id'], Report::LABEL_MESSAGE_PENDING_VALIDATION, Report::LABEL_COLOR_WARNING);
 	}
 
@@ -478,18 +478,6 @@ require ROOT_PATH . 'views/sidebar.php';
 									</li>
 								<?php endif; ?>
 								<?php if ($user->isAdmin()): ?>
-
-									<li class="divider"></li>
-									<li>
-										<form method="post"
-										      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
-											>
-											<input type="hidden" name="hiddenDeleteAppointment" value="">
-											<button type="submit" class="btn btn-block btn-default">
-												Delete appointment
-											</button>
-										</form>
-									</li>
 									<?php if ($studentsAppointmentData[0][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID] !== NULL): ?>
 										<li class="divider"></li>
 										<li>
@@ -504,7 +492,22 @@ require ROOT_PATH . 'views/sidebar.php';
 										</li>
 									<?php endif; ?>
 								<?php endif; ?>
+
 							<?php endif; ?>
+
+						<?php endif; ?>
+						<?php if ($user->isAdmin()): ?>
+							<li class="divider"></li>
+							<li>
+								<form method="post"
+								      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
+									>
+									<input type="hidden" name="hiddenDeleteAppointment" value="">
+									<button type="submit" class="btn btn-block btn-default">
+										Delete appointment
+									</button>
+								</form>
+							</li>
 						<?php endif; ?>
 					</ul>
 				</div>
