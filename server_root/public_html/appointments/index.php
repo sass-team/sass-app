@@ -173,6 +173,13 @@ try {
 		AppointmentFetcher::updateLabel($appointmentId, Appointment::LABEL_MESSAGE_PENDING, Appointment::LABEL_COLOR_PENDING);
 		header('Location: ' . BASE_URL . 'appointments/' . $appointmentId . '/success');
 		exit();
+	} else if (isBtnDeleteAppointmentPressed()) {
+		if (!$user->isAdmin()) {
+			header('Location: /error-403');
+			exit();
+		}
+		var_dump($appointmentId);
+		Appointment::delete($id);
 	}
 
 } catch (Exception $e) {
@@ -215,6 +222,12 @@ function isUrlRqstngAppointmentCancelByTutor() {
 	return isset($_GET['appointmentId']) && preg_match("/^[0-9]+$/", $_GET['appointmentId']) &&
 	isset($_POST['hiddenCanceledByTutor']) && empty($_POST['hiddenCanceledByTutor']);
 }
+
+function isBtnDeleteAppointmentPressed() {
+	return isset($_GET['appointmentId']) && preg_match("/^[0-9]+$/", $_GET['appointmentId']) &&
+	isset($_POST['hiddenDeleteAppointment']) && empty($_POST['hiddenDeleteAppointment']);
+}
+
 
 function isUrlRqstngAppointmentEnable() {
 	return isset($_GET['appointmentId']) && preg_match("/^[0-9]+$/", $_GET['appointmentId']) &&
@@ -357,7 +370,7 @@ require ROOT_PATH . 'views/sidebar.php';
 	</h3>
 
 
-	<?php if (strcmp($studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE], Appointment::LABEL_MESSAGE_COMPLETE) !== 0): ?>
+	<?php if (strcmp($studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE], Appointment::LABEL_MESSAGE_COMPLETE) !== 0 || $user->isAdmin()): ?>
 		<ul class="portlet-tools pull-right">
 			<li>
 				<div class="btn-group">
@@ -439,6 +452,19 @@ require ROOT_PATH . 'views/sidebar.php';
 							</li>
 						<?php endif; ?>
 
+						<?php if ($user->isAdmin()): ?>
+							<li class="divider"></li>
+							<li>
+								<form method="post"
+								      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
+									>
+									<input type="hidden" name="hiddenDeleteAppointment" value="">
+									<button type="submit" class="btn btn-block btn-default">
+										Delete appointment
+									</button>
+								</form>
+							</li>
+						<?php endif; ?>
 					</ul>
 				</div>
 			</li>

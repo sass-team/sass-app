@@ -34,6 +34,11 @@ class Report
 		return ConclusionWrapUpFetcher::update($reportId, $newOptions, $oldOptions);
 	}
 
+	public static function deleteWithAppointmentId($appointmentId) {
+		Appointment::validateId($appointmentId);
+		ReportFetcher::deleteWithAppointment($appointmentId);
+	}
+
 	public static function validateOptionsConclusionWrapUp($newOptions) {
 		foreach ($newOptions as $option => $value) {
 			switch ($option) {

@@ -8,8 +8,8 @@
 ?>
 <?php
 $courseName = $course[CourseFetcher::DB_COLUMN_NAME];
-$dateStart = new DateTime($appointments[$i][AppointmentFetcher::DB_COLUMN_START_TIME]);
-$dateEnd = new DateTime($appointments[$i][AppointmentFetcher::DB_COLUMN_END_TIME]);
+$dateStart = new DateTime($reports[$i][AppointmentFetcher::DB_COLUMN_START_TIME]);
+$dateEnd = new DateTime($reports[$i][AppointmentFetcher::DB_COLUMN_END_TIME]);
 ?>
 {
 title: '<?php echo htmlentities($courseName); ?>',

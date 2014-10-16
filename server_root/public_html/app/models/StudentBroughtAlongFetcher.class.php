@@ -21,6 +21,27 @@ class StudentBroughtAlongFetcher
 	const IS_SELECTED = "1";
 	const IS_NOT_SELECTED = "0";
 
+
+	public static function delete($reportId) {
+		try {
+			$query =
+				"DELETE FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
+				WHERE `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_REPORT_ID . "` = :report_id";
+
+
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
+			$query->bindParam(':report_id', $reportId, PDO::PARAM_INT);
+			$query->execute();
+			return $query->rowCount();
+
+		} catch (Exception $e) {
+			throw new Exception("Could not delete report data.");
+		}
+
+		return false;
+	}
+
 	public static function update($newOptions, $oldOptions, $reportId) {
 
 		foreach ($oldOptions as $option => $value) {

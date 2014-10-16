@@ -15,6 +15,7 @@ class Appointment
 	const LABEL_MESSAGE_STUDENT_NO_SHOW = "no show by student";
 	const LABEL_MESSAGE_TUTOR_NO_SHOW = "no show by tutor";
 	const LABEL_MESSAGE_COMPLETE = "complete";
+	const LABEL_MESSAGE_ADMIN_DISABLED = "disabled by admin";
 
 	const LABEL_COLOR_SUCCESS = "success";
 	const LABEL_COLOR_CANCELED = "danger";
@@ -97,7 +98,6 @@ class Appointment
 		$appointmentId = AppointmentFetcher::insert($dateStart, $dateEnd, $courseId, $studentsIds, $tutorId, $instructorsIds, $termId);
 		Mailer::sendTutorNewAppointment($appointmentId, $secretaryName);
 	}
-
 
 	public static function  getCalendarAllAppointmentsOnTerm($termId) {
 		Term::validateId($termId);

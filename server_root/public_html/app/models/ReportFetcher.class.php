@@ -21,6 +21,34 @@ class ReportFetcher
 	const DB_COLUMN_LABEL_MESSAGE = "label_message";
 	const DB_COLUMN_LABEL_COLOR = "label_color";
 
+	public static function deleteWithAppointment($appointmentId) {
+
+		try {
+			$reports = ReportFetcher::retrieveAllWithAppointmentId($appointmentId);
+
+			$dbConnection = DatabaseManager::getConnection();
+			$dbConnection->beginTransaction();
+
+			foreach ($reports as $report) {
+				$reportId = $report[self::DB_COLUMN_ID];
+
+				ConclusionWrapUpFetcher::delete($reportId);
+				StudentBroughtAlongFetcher::delete($reportId);
+				PrimaryFocusOfConferenceFetcher::delete($reportId);
+				AppointmentHasStudentFetcher::disconnectReport($reportId);
+				self::delete($reportId);
+			}
+			$dbConnection->commit();
+
+			AppointmentFetcher::updateLabel($appointmentId, Appointment::LABEL_MESSAGE_ADMIN_DISABLED, Appointment::LABEL_COLOR_CANCELED);
+			return true;
+		} catch (Exception $e) {
+			if (isset($dbConnection)) $dbConnection->rollback();
+			throw new Exception("Could not update report data." . $e->getMessage());
+		}
+		return false;
+	}
+
 	public static function retrieveAllWithAppointmentId($appointmentId) {
 		$query =
 			"SELECT `" . StudentFetcher::DB_TABLE . "`.`" . StudentFetcher::DB_COLUMN_FIRST_NAME . "` ,
@@ -88,6 +116,25 @@ class ReportFetcher
 		} catch (PDOException $e) {
 			throw new Exception("Could not retrieve reports data from database.");
 		}
+	}
+
+	public static function delete($reportId) {
+		$query =
+			"DELETE FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
+					WHERE `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` = :report_id;";
+
+		try {
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
+			$query->bindParam(':report_id', $reportId, PDO::PARAM_INT);
+			$query->execute();
+
+			return $query->rowCount();
+		} catch (Exception $e) {
+			$dbConnection->rollback();
+			throw new Exception("Could not update report data appointment.");
+		}
+		return false;
 	}
 
 	/**

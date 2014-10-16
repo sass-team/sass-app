@@ -18,13 +18,12 @@ class ConclusionWrapUpFetcher
 	const IS_SELECTED = "1";
 	const IS_NOT_SELECTED = "0";
 
-	public static function insert($reportId) {
 
+	public static function delete($reportId) {
 		try {
-
-			$query = "INSERT INTO `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
-			(`" . self::DB_COLUMN_REPORT_ID . "`)
-			VALUES(:report_id)";
+			$query =
+				"DELETE FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
+				WHERE `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_REPORT_ID . "` = :report_id";
 
 
 			$dbConnection = DatabaseManager::getConnection();
@@ -32,30 +31,12 @@ class ConclusionWrapUpFetcher
 			$query->bindParam(':report_id', $reportId, PDO::PARAM_INT);
 			$query->execute();
 
+			return $query->rowCount();
 		} catch (Exception $e) {
-			throw new Exception("Could not insert report data into database.");
+			throw new Exception("Could not delete report data.");
 		}
 
 		return false;
-	}
-
-	public static function exists($reportId) {
-		try {
-			$query = "SELECT COUNT(" . self::DB_COLUMN_REPORT_ID . ")
-			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
-			WHERE `" . self::DB_COLUMN_REPORT_ID . "` = :report_id";
-
-			$dbConnection = DatabaseManager::getConnection();
-			$query = $dbConnection->prepare($query);
-			$query->bindParam(':report_id', $reportId, PDO::PARAM_INT);
-			$query->execute();
-
-			if ($query->fetchColumn() === '0') return false;
-		} catch (Exception $e) {
-			throw new Exception("Could not verify data on database.");
-		}
-
-		return true;
 	}
 
 	public static function update($reportId, $newOptions, $oldOptions) {
@@ -113,6 +94,46 @@ class ConclusionWrapUpFetcher
 		(Exception $e) {
 			throw new Exception("Could not update report data." . $e->getMessage());
 		}
+		return false;
+	}
+
+	public static function exists($reportId) {
+		try {
+			$query = "SELECT COUNT(" . self::DB_COLUMN_REPORT_ID . ")
+			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			WHERE `" . self::DB_COLUMN_REPORT_ID . "` = :report_id";
+
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
+			$query->bindParam(':report_id', $reportId, PDO::PARAM_INT);
+			$query->execute();
+
+			if ($query->fetchColumn() === '0') return false;
+		} catch (Exception $e) {
+			throw new Exception("Could not verify data on database.");
+		}
+
+		return true;
+	}
+
+	public static function insert($reportId) {
+
+		try {
+
+			$query = "INSERT INTO `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			(`" . self::DB_COLUMN_REPORT_ID . "`)
+			VALUES(:report_id)";
+
+
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
+			$query->bindParam(':report_id', $reportId, PDO::PARAM_INT);
+			$query->execute();
+
+		} catch (Exception $e) {
+			throw new Exception("Could not insert report data into database.");
+		}
+
 		return false;
 	}
 } 

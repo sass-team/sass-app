@@ -112,6 +112,45 @@ class AppointmentHasStudentFetcher
 	}
 
 
+	public static function disconnectReport($reportId) {
+		try {
+			$query =
+				"UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
+				SET `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_REPORT_ID . "` = NULL
+				WHERE `" . self::DB_COLUMN_REPORT_ID . "` = :report_id";
+
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
+			$query->bindParam(':report_id', $reportId, PDO::PARAM_INT);
+			$query->execute();
+			return $query->rowCount();
+
+		} catch (Exception $e) {
+			throw new Exception("Could not delete report data.");
+		}
+
+		return false;
+	}
+
+	public static function delete($reportId) {
+		try {
+			$query =
+				"DELETE FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
+				WHERE `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_REPORT_ID . "` = :report_id";
+
+
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
+			$query->bindParam(':report_id', $reportId, PDO::PARAM_INT);
+			$query->execute();
+
+		} catch (Exception $e) {
+			throw new Exception("Could not delete report data.");
+		}
+
+		return false;
+	}
+
 	public static function existsId($id) {
 		try {
 			$query = "SELECT COUNT(" . self::DB_COLUMN_ID . ") FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" .
@@ -181,7 +220,7 @@ class AppointmentHasStudentFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
-			throw new Exception("Could not retrieve data from database." );
+			throw new Exception("Could not retrieve data from database.");
 		}
 	}
 
@@ -200,7 +239,7 @@ class AppointmentHasStudentFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
-			throw new Exception("Could not retrieve data from database." );
+			throw new Exception("Could not retrieve data from database.");
 		}
 	}
 
@@ -257,7 +296,7 @@ class AppointmentHasStudentFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
-			throw new Exception("Could not retrieve data from database." );
+			throw new Exception("Could not retrieve data from database.");
 		}
 	}
 

@@ -18,6 +18,8 @@ class AppointmentFetcher
 	const DB_COLUMN_LABEL_MESSAGE = "label_message";
 	const DB_COLUMN_LABEL_COLOR = "label_color";
 
+
+
 	public static function updateTerm($appointmentId, $newTermId) {
 
 		$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
@@ -122,7 +124,7 @@ class AppointmentFetcher
 			return $appointmentId;
 		} catch (Exception $e) {
 			$dbConnection->rollback();
-			throw new Exception("Could not insert data into database." );
+			throw new Exception("Could not insert data into database.");
 		}
 
 	}
@@ -338,7 +340,7 @@ class AppointmentFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
-			throw new Exception("Could not retrieve data from database." );
+			throw new Exception("Could not retrieve data from database.");
 		}
 	}
 
@@ -379,7 +381,7 @@ class AppointmentFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
-			throw new Exception("Could not retrieve data from database." );
+			throw new Exception("Could not retrieve data from database.");
 		}
 	}
 
@@ -412,7 +414,7 @@ class AppointmentFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
-			throw new Exception("Could not retrieve data from database." );
+			throw new Exception("Could not retrieve data from database.");
 		}
 	}
 
@@ -460,7 +462,7 @@ class AppointmentFetcher
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 
 		} catch (PDOException $e) {
-			throw new Exception("Could not retrieve data from database." );
+			throw new Exception("Could not retrieve data from database.");
 		}
 	}
 
@@ -489,7 +491,7 @@ class AppointmentFetcher
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 
 		} catch (PDOException $e) {
-			throw new Exception("Could not retrieve data from database." );
+			throw new Exception("Could not retrieve data from database.");
 		}
 	}
 
@@ -526,7 +528,7 @@ class AppointmentFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
-			throw new Exception("Could not retrieve data from database." );
+			throw new Exception("Could not retrieve data from database.");
 		}
 	}
 
@@ -573,7 +575,7 @@ class AppointmentFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
-			throw new Exception("Could not retrieve data from database." );
+			throw new Exception("Could not retrieve data from database.");
 		}
 	}
 
