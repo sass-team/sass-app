@@ -18,6 +18,7 @@ try {
 		exit();
 	}
 
+	date_default_timezone_set('Europe/Athens');
 	$pageTitle = "Single Appointment";
 	$appointmentId = $_GET['appointmentId'];
 	$studentsAppointmentData = Appointment::getAllStudentsWithAppointment($appointmentId);
@@ -369,7 +370,15 @@ require ROOT_PATH . 'views/sidebar.php';
 	</h3>
 
 
-	<?php if (strcmp($studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE], Appointment::LABEL_MESSAGE_COMPLETE) !== 0 || $user->isAdmin()): ?>
+	<?php
+	// allow access for secretary: only then the start time of appointment has NOT passed
+	// allow access for tutor: only when the start time of appointment has passed
+	// allow access for secretary: only then the start time of appointment has passed
+
+	if (
+		$user->isAdmin() || $nowDateTime < $startDateTime && $user->isSecretary() || $nowDateTime > $startDateTime && $user->isTutor() &&
+		strcmp($studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE], Appointment::LABEL_MESSAGE_PENDING) === 0
+	): ?>
 		<ul class="portlet-tools pull-right">
 			<li>
 				<div class="btn-group">
@@ -380,6 +389,7 @@ require ROOT_PATH . 'views/sidebar.php';
 						if ((strcmp($studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE], Appointment::LABEL_MESSAGE_PENDING) === 0)
 						): ?>
 							<?php if ($nowDateTime > $startDateTime): ?>
+								<li class="divider"></li>
 								<li>
 									<form method="post"
 									      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
@@ -390,9 +400,9 @@ require ROOT_PATH . 'views/sidebar.php';
 										</button>
 									</form>
 								</li>
-								<li class="divider"></li>
 							<?php endif; ?>
 							<?php if (!$user->isTutor()): ?>
+								<li class="divider"></li>
 								<li>
 									<form method="post"
 									      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
@@ -438,43 +448,47 @@ require ROOT_PATH . 'views/sidebar.php';
 								</li>
 							<?php endif; ?>
 
-						<?php elseif (strcmp($studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE], Appointment::LABEL_MESSAGE_PENDING) === 0): ?>
-							<li>
-								<form method="post"
-								      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
-									>
-									<input type="hidden" name="hiddenEnableAppointment" value="">
-									<button type="submit" class="btn btn-block btn-default">
-										Enable appointment
-									</button>
-								</form>
-							</li>
-						<?php endif; ?>
-
-						<?php if ($user->isAdmin()): ?>
-							<li class="divider"></li>
-							<li>
-								<form method="post"
-								      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
-									>
-									<input type="hidden" name="hiddenDeleteAppointment" value="">
-									<button type="submit" class="btn btn-block btn-default">
-										Delete appointment
-									</button>
-								</form>
-							</li>
-							<?php if ($studentsAppointmentData[0][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID] !== NULL): ?>
-								<li class="divider"></li>
+						<?php
+						else:
+							// allow enable of appointment only if user is admin or use is secretary and appointment start time has not passed
+							if ($user->isAdmin() || $user->isSecretary() && $nowDateTime < $startDateTime):?>
 								<li>
 									<form method="post"
 									      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
 										>
-										<input type="hidden" name="hiddenDeleteReports" value="">
+										<input type="hidden" name="hiddenEnableAppointment" value="">
 										<button type="submit" class="btn btn-block btn-default">
-											Delete only reports
+											Enable appointment
 										</button>
 									</form>
 								</li>
+								<?php if ($user->isAdmin()): ?>
+
+									<li class="divider"></li>
+									<li>
+										<form method="post"
+										      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
+											>
+											<input type="hidden" name="hiddenDeleteAppointment" value="">
+											<button type="submit" class="btn btn-block btn-default">
+												Delete appointment
+											</button>
+										</form>
+									</li>
+									<?php if ($studentsAppointmentData[0][AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID] !== NULL): ?>
+										<li class="divider"></li>
+										<li>
+											<form method="post"
+											      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
+												>
+												<input type="hidden" name="hiddenDeleteReports" value="">
+												<button type="submit" class="btn btn-block btn-default">
+													Delete only reports
+												</button>
+											</form>
+										</li>
+									<?php endif; ?>
+								<?php endif; ?>
 							<?php endif; ?>
 						<?php endif; ?>
 					</ul>
@@ -624,9 +638,13 @@ require ROOT_PATH . 'views/sidebar.php';
 						<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
 						<strong>Data successfully modified!</strong> <br/>
 					</div>
-				<?php } ?>
+				<?php
+				}
 
-				<?php if (!$user->isTutor() && strcmp($studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE], Appointment::LABEL_MESSAGE_COMPLETE) !== 0): ?>
+				// allow secretary to edit appointment data only if appointment status is "pending"
+				// allow admin to edit no matter what.
+				if ($nowDateTime > $startDateTime && $user->isSecretary() || $user->isAdmin()
+				): ?>
 					<div class="form-group">
 						<button type="submit" class="btn btn-block btn-primary">Update</button>
 						<input type="hidden" name="hiddenUpdateAppointmentPrsd" value="">
@@ -956,34 +974,65 @@ if (isset($reports)) {
 
 			<div class="col-md-12">
 				<?php
-				if (($user->isTutor() && strcmp($reports[$i][ReportFetcher::DB_COLUMN_LABEL_MESSAGE], Report::LABEL_MESSAGE_PENDING_FILL) === 0)
-					|| !$user->isTutor() && strcmp($reports[$i][ReportFetcher::DB_COLUMN_LABEL_MESSAGE], Report::LABEL_MESSAGE_PENDING_VALIDATION) === 0
-				): ?>
-					<div class="col-md-3 col-sm-6 col-xs-6">
+				if ($user->isTutor()) {
+					// show when report status is "pending fill"
+					if (strcmp($reports[$i][ReportFetcher::DB_COLUMN_LABEL_MESSAGE], Report::LABEL_MESSAGE_PENDING_FILL) === 0) {
+						?>
+						<div class="col-md-3 col-sm-6 col-xs-6">
+							<button type="submit" name="btn-update-report"
+							        class="btn btn-default temp-save-report-btn ui-tooltip"
+							        data-toggle="tooltip"
+							        data-placement="bottom"
+							        data-trigger="hover"
+							        title="Partially fill report. You'll be able to edit the report as much you want up until you complete it.">
+								Save Changes
+							</button>
+						</div>
+						<div class="col-md-3 col-sm-6 col-xs-6">
+							<button type="submit" name="btn-complete-report" class="btn btn-primary ui-tooltip"
+							        data-toggle="tooltip"
+							        data-placement="bottom"
+							        data-trigger="hover" title="You won't be able to edit the report anymore. The responsible
+				        secretary will have to validate it.">
+								Complete Report
+							</button>
+						</div>
+						<input type="hidden" name="form-update-report-id"
+						       value="<?php echo $reports[$i][ReportFetcher::DB_COLUMN_ID]; ?>">
+					<?php
+					}
+				} else if ($user->isAdmin()) {
+					// show when report status is "pending fill"
+					if (strcmp($reports[$i][ReportFetcher::DB_COLUMN_LABEL_MESSAGE], Report::LABEL_MESSAGE_PENDING_VALIDATION) === 0) {
+						?>
+						<div class="col-md-3 col-sm-6 col-xs-6">
+							<button type="submit" name="btn-update-report"
+							        class="btn btn-default temp-save-report-btn ui-tooltip"
+							        data-toggle="tooltip"
+							        data-placement="bottom"
+							        data-trigger="hover"
+							        title="Partially fill report. You'll be able to edit the report as much you want up until you complete it.">
+								Save Changes
+							</button>
+						</div>
+						<div class="col-md-3 col-sm-6 col-xs-6">
 
-						<button type="submit" name="btn-update-report"
-						        class="btn btn-default temp-save-report-btn ui-tooltip"
-						        data-toggle="tooltip"
-						        data-placement="bottom"
-						        data-trigger="hover"
-						        title="Partially fill report. You'll be able to edit the report as much you want up until you complete it.">
-							Save Changes
-						</button>
-					</div>
-					<div class="col-md-3 col-sm-6 col-xs-6">
+							<button type="submit" name="btn-complete-report" class="btn btn-primary ui-tooltip"
+							        data-toggle="tooltip"
+							        data-placement="bottom"
+							        data-trigger="hover" title="Report will be finalized, and un-editable.">Validate
+								Report
+							</button>
+						</div>
 
-						<button type="submit" name="btn-complete-report" class="btn btn-primary ui-tooltip"
-						        data-toggle="tooltip"
-						        data-placement="bottom"
-						        data-trigger="hover" title="<?php echo $user->isTutor() ? "You won't be able to edit the report anymore. The responsible
-				        secretary will have to validate it." : "Report will be finalized, and un-editable."; ?>">
-							<?php echo $user->isTutor() ? "Complete Report" : "Validate Report"; ?>
-						</button>
-					</div>
-				<?php endif; ?>
+						<input type="hidden" name="form-update-report-id"
+						       value="<?php echo $reports[$i][ReportFetcher::DB_COLUMN_ID]; ?>">
+					<?php
+					}
+				}
+				?>
 
-				<input type="hidden" name="form-update-report-id"
-				       value="<?php echo $reports[$i][ReportFetcher::DB_COLUMN_ID]; ?>">
+
 			</div>
 			<!-- /.col -->
 
@@ -1131,7 +1180,7 @@ if (isset($reports)) {
 			defaultDate: '<?php echo $startDateTime->format('m/d/Y g:i A');?>',
 			<?php if(!$user->isAdmin()): ?>
 			minDate: minimumStartDate,
-			<?php endif; ?>			maxDate: minimumMaxDate,
+			<?php endif; ?>            maxDate: minimumMaxDate,
 			minuteStepping: 30,
 			daysOfWeekDisabled: [0, 6],
 			sideBySide: true,
