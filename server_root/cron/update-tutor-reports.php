@@ -30,7 +30,7 @@ try {
 
 		AppointmentFetcher::updateLabel($appointment[AppointmentFetcher::DB_COLUMN_ID], Appointment::LABEL_MESSAGE_COMPLETE, Appointment::LABEL_COLOR_SUCCESS);
 
-		Mailer::sendTutorNewReportsCronOnly($appointment);
+//		Mailer::sendTutorNewReportsCronOnly($appointment);
 	}
 
 } catch (Exception $e) {
