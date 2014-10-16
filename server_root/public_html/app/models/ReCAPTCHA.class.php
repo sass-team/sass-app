@@ -8,9 +8,9 @@
  */
 class ReCAPTCHA
 {
-	const PRODUCTION_HOST = "sass.hol.es";
-	const PUBLIC_KEY_PRODUCTION = "6Lema_oSAAAAADmf0qqidosSIvY0fJJDFaZeSylb";
-	const PRIVATE_KEY_PRODUCTION = "6Lema_oSAAAAAMvkuKrncc7ItGyxMUcDqEXPmvNo";
+	const PRODUCTION_HOST = "sass.vv.si";
+	const PUBLIC_KEY_PRODUCTION = "6LfHKfwSAAAAAPHYpEOaFo0iiLthxvzXfZSNvpjQ";
+	const PRIVATE_KEY_PRODUCTION = "6LfHKfwSAAAAACKjGU_quCZ5iccYMiWh8XWLGzZQ";
 
 	const STAGE_HOST = "dev-sass.hol.es";
 	const PUBLIC_KEY_STAGE = "6Lf0bPoSAAAAAEKxZ8WB9OxakwBS2ZMM1N8ptIDD";
