@@ -4,12 +4,11 @@ $dateEnd = new DateTime($appointment[AppointmentFetcher::DB_COLUMN_END_TIME]);
 ?>
 <tr>
 	<td class="text-center"><?php echo $appointment[AppointmentFetcher::DB_TABLE . "_" . AppointmentFetcher::DB_COLUMN_ID]; ?></td>
+	<td class="text-center"><?php echo $studentsIds; ?></td>
 	<td class="text-center">
 		<span class="label label-<?php echo $appointment[AppointmentFetcher::DB_COLUMN_LABEL_COLOR]; ?>">
 		<?php echo $appointment[AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE]; ?></span>
 	</td>
-	<td class="text-center"><?php echo $studentsIds; ?></td>
-
 	<td class="text-center">
 		<?php foreach($reports as $report): ?>
 			<span class="label label-<?php echo $report[ReportFetcher::DB_COLUMN_LABEL_COLOR]; ?>">

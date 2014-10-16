@@ -191,6 +191,16 @@
 	</ul>
 </li>
 
+
+<li class="<?php if ($section == "support") {
+	echo "active";
+} ?>">
+	<a href="<?php echo BASE_URL; ?>support">
+		<i class="fa fa-question"></i>
+		Support
+	</a>
+</li>
+
 <?php //if (!$user->isTutor()) { ?>
 <!--	<li class="dropdown --><?php //if ($section == "backups") {
 //		echo "active";
