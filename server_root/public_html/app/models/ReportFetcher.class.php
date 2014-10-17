@@ -362,9 +362,13 @@ class ReportFetcher
 			Report::updateConclusionWrapUp($reportId, $conclusionWrapUpNew, $conclusionWrapUpOld);
 
 			return true;
-		} catch (Exception $e) {
+		}catch (PDOException $e){
 			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not update data.");
+		}
+
+		catch (Exception $e) {
+			throw new Exception($e->getMessage());
 		}
 		return false;
 	}
