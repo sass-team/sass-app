@@ -29,6 +29,7 @@ class MajorFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve majors data from database.");
 		}
 	}
@@ -52,6 +53,7 @@ class MajorFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve majors data from database.");
 		}
 	}
@@ -68,6 +70,7 @@ class MajorFetcher
 
 			if ($query->fetchColumn() === 0) return false;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not check if major code already exists on database. <br/> Aborting process.");
 		}
 
@@ -90,6 +93,7 @@ class MajorFetcher
 			$query->execute();
 			return true;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not insert major into database.");}
 
 	}
@@ -113,6 +117,7 @@ class MajorFetcher
 
 			return true;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Something terrible happened. Could not update major.");}
 
 	}
@@ -133,6 +138,7 @@ class MajorFetcher
 
 			return true;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Something terrible happened. Could not update major name");}
 
 	}
@@ -153,6 +159,7 @@ class MajorFetcher
 
 			return true;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Something terrible happened. Could not update major code");}
 
 	}
@@ -168,6 +175,7 @@ class MajorFetcher
 
 			if ($query->fetchColumn() === '0') return false;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not check if major id already exists on database. <br/> Aborting process.");
 		}
 
@@ -187,6 +195,7 @@ class MajorFetcher
 
 			if ($query->fetchColumn() === '0') return false;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not check if major name already exists on database. <br/> Aborting process.");
 		}
 
@@ -202,6 +211,7 @@ class MajorFetcher
 			$query->execute();
 			return true;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not delete major from database. Please first remove this major from students have this major, then you can delete this major.");
 		}
 	}
@@ -216,6 +226,7 @@ class MajorFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve majors data from database.");
 		}
 	}

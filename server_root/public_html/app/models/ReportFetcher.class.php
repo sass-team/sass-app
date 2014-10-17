@@ -53,7 +53,7 @@ class ReportFetcher
 			return true;
 		} catch (Exception $e) {
 			if (isset($dbConnection)) $dbConnection->rollback();
-			throw new Exception("Could not update report data." . $e->getMessage());
+			throw new Exception($e->getMessage());
 		}
 		return false;
 	}
@@ -140,7 +140,8 @@ class ReportFetcher
 
 			return $query->rowCount();
 		} catch (Exception $e) {
-			$dbConnection->rollback();
+			if (isset($dbConnection)) $dbConnection->rollback();
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not update report data appointment.");
 		}
 		return false;
@@ -183,6 +184,7 @@ class ReportFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve data from database.");
 		}
 	}
@@ -223,6 +225,7 @@ class ReportFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve data from database.");
 		}
 	}
@@ -243,6 +246,7 @@ class ReportFetcher
 			$query->execute();
 			return true;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not update data.");
 		}
 		return false;
@@ -278,7 +282,8 @@ class ReportFetcher
 			$dbConnection->commit();
 			return $reportId;
 		} catch (Exception $e) {
-			$dbConnection->rollback();
+			if (isset($dbConnection)) $dbConnection->rollback();
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not insert data into database.");
 		}
 
@@ -297,6 +302,7 @@ class ReportFetcher
 
 			if ($query->fetchColumn() === '0') return false;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not check if data exists on database.");
 		}
 
@@ -318,6 +324,7 @@ class ReportFetcher
 
 			return true;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not update data.");
 		}
 		return false;
@@ -356,6 +363,7 @@ class ReportFetcher
 
 			return true;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not update data.");
 		}
 		return false;
@@ -378,6 +386,7 @@ class ReportFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve report data from database.");
 		}
 	}
@@ -399,6 +408,7 @@ class ReportFetcher
 			$query->execute();
 			return $query->fetch(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve data from database.");
 		} // end catch
 	}

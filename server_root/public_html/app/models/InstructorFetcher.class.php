@@ -27,7 +27,8 @@ class InstructorFetcher extends Person
 			$rows = $query->fetchAll(PDO::FETCH_ASSOC);
 
 			return $rows;
-		} catch (PDOException $e) {
+		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Something terrible happened. Could not retrieve instructors data from database.: ");
 		} // end catch
 	}
@@ -69,6 +70,7 @@ class InstructorFetcher extends Person
 			$query->execute();
 			return true;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not insert instructor into database.");
 		}
 	}
@@ -91,6 +93,7 @@ class InstructorFetcher extends Person
 
 			return true;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Something terrible happened. Could not update instructor.");}
 
 	}
@@ -111,6 +114,7 @@ class InstructorFetcher extends Person
 
 			return true;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Something terrible happened. Could not update instructor last name");}
 
 	}
@@ -131,6 +135,7 @@ class InstructorFetcher extends Person
 
 			return true;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Something terrible happened. Could not update instructor first name");}
 
 	}
@@ -144,6 +149,7 @@ class InstructorFetcher extends Person
 			$query->execute();
 			return true;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not delete instructor from database.");
 		}
 	}

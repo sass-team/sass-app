@@ -53,6 +53,7 @@ class CourseFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve courses data from database.");
 		}
 	}
@@ -78,6 +79,7 @@ class CourseFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve courses data from database.");
 		}
 	}
@@ -103,7 +105,8 @@ class CourseFetcher
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
-		} catch (PDOException $e) {
+		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve data from database.");
 		}
 	}
@@ -121,7 +124,8 @@ class CourseFetcher
 
 			$query->execute();
 			return $query->fetch(PDO::FETCH_ASSOC);
-		} catch (PDOException $e) {
+		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Something terrible happened . Could not retrieve tutor data from database .: ");
 		} // end catch
 	}
@@ -141,7 +145,8 @@ class CourseFetcher
 			$rows = $query->fetchColumn();
 
 			if ($rows == 1) return true;
-		} catch (PDOException $e) {
+		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Something terrible happened. Could not access database.");
 		} // end catch
 
@@ -164,6 +169,7 @@ class CourseFetcher
 			$query->execute();
 			return true;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not insert course into database.");
 		}
 	}

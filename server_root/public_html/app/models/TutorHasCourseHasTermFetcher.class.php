@@ -31,6 +31,7 @@ class Tutor_has_course_has_termFetcher
 
 			return true;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not insert teaching courses data into database.");
 		}
 
@@ -69,6 +70,7 @@ class Tutor_has_course_has_termFetcher
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 
 		} catch (PDOException $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve teaching courses from current terms from database.");
 		}
 	}

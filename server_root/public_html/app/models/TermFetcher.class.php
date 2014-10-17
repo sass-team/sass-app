@@ -60,6 +60,7 @@ class TermFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve terms data from database.");
 		}
 	}
@@ -80,6 +81,7 @@ class TermFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve terms data from database.");
 		}
 	}
@@ -105,6 +107,7 @@ class TermFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve current term from database.");
 		}
 	}
@@ -124,6 +127,7 @@ class TermFetcher
 			$query->execute();
 			return $query->fetch(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve data from database .: ");
 		} // end catch
 	}
@@ -142,6 +146,7 @@ class TermFetcher
 
 			return true;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Something terrible happened. Could not update term name");
 		}
 	}
@@ -160,6 +165,7 @@ class TermFetcher
 
 			return true;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Something terrible happened. Could not update starting date");
 		}
 	}
@@ -179,6 +185,7 @@ class TermFetcher
 
 			return true;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Something went wrong. Could not update term table.");
 		}
 	}
@@ -206,6 +213,7 @@ class TermFetcher
 			$query->execute();
 			return true;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not insert term data into database.");
 		}
 	}
@@ -222,6 +230,7 @@ class TermFetcher
 
 			if ($query->fetchColumn() === 0) return false;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not check if term id already exists on database. <br/> Aborting process.");
 		}
 
@@ -238,6 +247,7 @@ class TermFetcher
 			$query->execute();
 			return true;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not delete term from database.");
 		}
 	}
@@ -254,6 +264,7 @@ class TermFetcher
 
 			if ($query->fetchColumn() === '0') return false;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not check if term name already exists on database. <br/> Aborting process.");
 		}
 
