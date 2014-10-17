@@ -40,7 +40,7 @@ try {
 		DatabaseManager::$dsn[DatabaseManager::DB_PASSWORD],
 		DatabaseManager::$dsn[DatabaseManager::DB_HOST], 'mysql', $dumpSettings);
 	$dump->start($filename);
-	Mailer::sendDevelopers("Backup created: " . $filename, __FILE__);
+//	Mailer::sendDevelopers("Backup created: " . $filename, __FILE__);
 } catch (\Exception $e) {
 	Mailer::sendDevelopers('mysqldump-php error: ' . $e->getMessage(), __FILE__);
 }
