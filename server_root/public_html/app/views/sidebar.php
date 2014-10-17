@@ -192,12 +192,12 @@
 </li>
 
 <?php if (!$user->isTutor()) { ?>
-	<li class="dropdown <?php if ($section == "backups") {
+	<li class="dropdown <?php if ($section == "cloud") {
 		echo "active";
 	} ?>">
 		<a href="javascript:;">
-			<i class="fa fa-database"></i>
-			Backups
+			<i class="fa fa-cloud"></i>
+			Cloud
 			<span class="caret"></span>
 		</a>
 
@@ -208,12 +208,12 @@
 					Dropbox
 				</a>
 			</li>
-			<li>
-				<a href="<?php echo BASE_URL; ?>backups/excel">
-					<i class="fa fa-file-excel-o"></i>
-					Excel
-				</a>
-			</li>
+<!--			<li>-->
+<!--				<a href="--><?php //echo BASE_URL; ?><!--backups/excel">-->
+<!--					<i class="fa fa-file-excel-o"></i>-->
+<!--					Excel-->
+<!--				</a>-->
+<!--			</li>-->
 		</ul>
 	</li>
 

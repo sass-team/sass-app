@@ -1,39 +1,11 @@
 <?php
 require __DIR__ . '/../app/init.php';
 $general->loggedOutProtect();
-try {
-	date_default_timezone_set('Europe/Athens');
-	$now = new DateTime();
-	$startWeekDate = getWorkingDates($now->format('Y'), $now->format('W'));
-	$endWeekDate = getWorkingDates($now->format('Y'), $now->format('W'), false);
 
-	if (!$user->isTutor()) {
-		$appointments = AppointmentFetcher::retrieveBetweenDates($startWeekDate, $endWeekDate);
-
-		$countAppointmentsForCurWeek = sizeof($appointments);
-		$countAchievedAppointmentsForCurWeek = Appointment::countWithLabelMessage($appointments, Appointment::LABEL_MESSAGE_COMPLETE);
-		$canceledLabelMessages = array(Appointment::LABEL_MESSAGE_STUDENT_NO_SHOW,
-			Appointment::LABEL_MESSAGE_TUTOR_CANCELED, Appointment::LABEL_MESSAGE_TUTOR_NO_SHOW, Appointment::LABEL_MESSAGE_STUDENT_CANCELED);
-		$countCanceledAppointmentsForCurWeek = Appointment::countWithLabelMessages($appointments, $canceledLabelMessages);
-
-	} else {
-		$appointments = AppointmentFetcher::retrieveTutorsBetweenDates($user->getId(), $startWeekDate, $endWeekDate);
-		$countAppointmentsForCurWeek = sizeof($appointments);
-		$countAchievedAppointmentsForCurWeek = Appointment::countTutorsWithLabelMessage($user->getId(), $appointments,
-			Appointment::LABEL_MESSAGE_COMPLETE);
-		$canceledLabelMessages = array(Appointment::LABEL_MESSAGE_STUDENT_NO_SHOW,
-			Appointment::LABEL_MESSAGE_TUTOR_CANCELED, Appointment::LABEL_MESSAGE_TUTOR_NO_SHOW, Appointment::LABEL_MESSAGE_STUDENT_CANCELED);
-		$countCanceledAppointmentsForCurWeek = Appointment::countTutorsWithLabelMessageS($user->getId(), $appointments, $canceledLabelMessages);
-
-	}
-
-} catch (Exception $e) {
-	$errors[] = $e->getMessage();
-}
 
 // viewers
-$pageTitle = "Dashboard - SASS App";
-$section = "dashboard";
+$pageTitle = "Dropbox - SASS App";
+$section = "cloud";
 
 
 /**
