@@ -42,3 +42,4 @@ require_once ROOT_PATH . "models/StudentFetcher.class.php";
 require_once ROOT_PATH . "models/StudentBroughtAlongFetcher.class.php";
 require_once ROOT_PATH . "models/MailerFetcher.class.php";
 require_once ROOT_PATH . "models/PrimaryFocusOfConferenceFetcher.class.php";
+require_once ROOT_PATH . "models/ConclusionWrapUpFetcher.class.php";
