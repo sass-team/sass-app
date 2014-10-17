@@ -14,7 +14,7 @@ function uploadAvatarImage($user) {
 	if ($_FILES['fileupload-avatar']['error'] == 1) {
 		throw new Exception("File size exceeded");
 	} else {
-		$uploaddir = ROOT_PATH . "../public_html/assets/img/avatars/";
+		$uploaddir = ROOT_PATH . "../assets/img/avatars/";
 		$uploadfile = $uploaddir . basename($_FILES['fileupload-avatar']['name']);
 
 		$path = $_FILES['fileupload-avatar']['name'];
