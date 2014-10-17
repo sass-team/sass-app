@@ -21,170 +21,180 @@ $section = "support";
 <?php require ROOT_PATH . 'views/head.php'; ?>
 <body>
 <div id="wrapper">
-<?php
-require ROOT_PATH . 'views/header.php';
-require ROOT_PATH . 'views/sidebar.php';
-?>
+	<?php
+	require ROOT_PATH . 'views/header.php';
+	require ROOT_PATH . 'views/sidebar.php';
+	?>
 
 
-<div id="content">
+	<div id="content">
 
-	<div id="content-header">
-		<h1>Support Center</h1>
-	</div>
-	<!-- #content-header -->
-
-
-	<div id="content-container">
+		<div id="content-header">
+			<h1>Support Center</h1>
+		</div>
+		<!-- #content-header -->
 
 
-		<div class="row">
-
-			<div class="col-md-8">
-
-				<h3 class="heading">Section Categories</h3>
-
-				<!-- <hr /> -->
-
-				<div class="row">
-
-					<div class="col-md-6 col-sm-6">
-
-						<h4>
-							<i class="fa fa-folder-close"></i> &nbsp;
-							Appointments
-							&nbsp;
-							<!--							<small>(1)</small>-->
-						</h4>
-
-						<ul class="icons-list support-list">
-							<?php if ($user->isTutor()): ?>
-								<li>
-									<i class="icon-li fa fa-youtube-play"></i>
-									<a rel="lightbox"
-									   href="https://www.youtube.com/watch?v=R2QcWxyr9P4&list=UUum32knqNNMJWP-DkKqpBDg"
-									   data-type="youtube"
-									   data-title="How Can I View My Appointments?"
-									   data-toggle="lightbox"
-									   data-width="1024"
-									   class="youtube-vid">How Can I View My Appointments?</a>
-								</li>
-							<?php else: ?>
-								<li>
-									<i class="icon-li fa fa-youtube-play"></i>
-									<a rel="lightbox"
-									   href="https://www.youtube.com/watch?v=sCW0N-B8_oQ&list=UUum32knqNNMJWP-DkKqpBDg"
-									   data-type="youtube"
-									   data-title="How Can I Delete An Appointment?"
-									   data-toggle="lightbox"
-									   data-width="1024"
-									   class="youtube-vid">How Can I Delete An Appointment?</a>
-								</li>
-							<?php endif; ?>
-						</ul>
+		<div id="content-container">
 
 
-					</div>
-					<!-- /.col-md-6 -->
+			<div class="row">
 
+				<div class="col-md-8">
 
-					<div class="col-md-6 col-sm-6">
+					<h3 class="heading">Section Categories</h3>
 
-						<h4>
-							<i class="fa fa-folder-close"></i>
-							SASS Staff
-						</h4>
+					<!-- <hr /> -->
 
-						<ul class="icons-list support-list">
-							<li>
-								<i class="icon-li fa fa-youtube-play"></i>
-								<a rel="lightbox"
-								   href="https://www.youtube.com/watch?v=qSMVMejo_GU&feature=youtu.be"
-								   data-type="youtube"
-								   data-title="How Can I View SASS Personnel?"
-								   data-toggle="lightbox"
-								   data-width="1024"
-								   class="youtube-vid">How Can I View SASS Personnel?</a>
-							</li>
-						</ul>
-
-
-					</div>
-					<!-- /.col-md-6 -->
-
-				</div>
-				<!-- /.row -->
-
-
-				<div class="row">
-					<?php if (!$user->isTutor()): ?>
+					<div class="row">
 
 						<div class="col-md-6 col-sm-6">
+
+							<h4>
+								<i class="fa fa-folder-close"></i> &nbsp;
+								Appointments
+								&nbsp;
+								<!--							<small>(1)</small>-->
+							</h4>
+
+							<ul class="icons-list support-list">
+								<?php if ($user->isTutor()): ?>
+									<li>
+										<i class="icon-li fa fa-youtube-play"></i>
+										<a rel="lightbox"
+										   href="https://www.youtube.com/watch?v=R2QcWxyr9P4&list=UUum32knqNNMJWP-DkKqpBDg"
+										   data-type="youtube"
+										   data-title="How Can I View My Appointments?"
+										   data-toggle="lightbox"
+										   data-width="1024"
+										   class="youtube-vid">How Can I View My Appointments?</a>
+									</li>
+								<?php else: ?>
+									<li>
+										<i class="icon-li fa fa-youtube-play"></i>
+										<a rel="lightbox"
+										   href="https://www.youtube.com/watch?v=sCW0N-B8_oQ&list=UUum32knqNNMJWP-DkKqpBDg"
+										   data-type="youtube"
+										   data-title="How Can I Delete An Appointment?"
+										   data-toggle="lightbox"
+										   data-width="1024"
+										   class="youtube-vid">How Can I Delete An Appointment?</a>
+									</li>
+									<li>
+										<i class="icon-li fa fa-youtube-play"></i>
+										<a rel="lightbox"
+										   href="https://www.youtube.com/watch?v=DJCk4Sbj654&list=UUum32knqNNMJWP-DkKqpBDg"
+										   data-type="youtube"
+										   data-title="How Do I Edit Reports After They Have Been Completed(validated)? "
+										   data-toggle="lightbox"
+										   data-width="1024"
+										   class="youtube-vid">How Do I Edit Reports After They Have Been Completed(validated)? </a>
+									</li>
+								<?php endif; ?>
+							</ul>
+
+
+						</div>
+						<!-- /.col-md-6 -->
+
+
+						<div class="col-md-6 col-sm-6">
+
 							<h4>
 								<i class="fa fa-folder-close"></i>
-								Academia
+								SASS Staff
 							</h4>
 
 							<ul class="icons-list support-list">
 								<li>
 									<i class="icon-li fa fa-youtube-play"></i>
 									<a rel="lightbox"
-									   href="https://www.youtube.com/watch?v=D4G6ZXCD8jI&list=UUum32knqNNMJWP-DkKqpBDg"
+									   href="https://www.youtube.com/watch?v=qSMVMejo_GU&feature=youtu.be"
 									   data-type="youtube"
-									   data-title="How Can I Add/Edit/Delete Academia Data?"
+									   data-title="How Can I View SASS Personnel?"
 									   data-toggle="lightbox"
 									   data-width="1024"
-									   class="youtube-vid">How Can I Add/Edit/Delete Academia Data?</a>
+									   class="youtube-vid">How Can I View SASS Personnel?</a>
 								</li>
 							</ul>
 
 
 						</div>
 						<!-- /.col-md-6 -->
-					<?php endif; ?>
-
-					<div class="col-md-6 col-sm-6">
-						<h4>
-							<i class="fa fa-folder-close"></i>
-							Account
-						</h4>
-
-						<ul class="icons-list support-list">
-							<li>
-								<i class="icon-li fa fa-youtube-play"></i>
-								<a rel="lightbox"
-								   href="https://www.youtube.com/watch?v=Qmr4aEpm_f4&list=UUum32knqNNMJWP-DkKqpBDg"
-								   data-type="youtube"
-								   data-title="What Do I Need To Know About My Account?"
-								   data-toggle="lightbox"
-								   data-width="1024"
-								   class="youtube-vid">What Do I Need To Know About My Account?</a>
-							</li>
-
-						</ul>
-
 
 					</div>
-					<!-- /.col-md-6 -->
+					<!-- /.row -->
+
+
+					<div class="row">
+						<?php if (!$user->isTutor()): ?>
+
+							<div class="col-md-6 col-sm-6">
+								<h4>
+									<i class="fa fa-folder-close"></i>
+									Academia
+								</h4>
+
+								<ul class="icons-list support-list">
+									<li>
+										<i class="icon-li fa fa-youtube-play"></i>
+										<a rel="lightbox"
+										   href="https://www.youtube.com/watch?v=D4G6ZXCD8jI&list=UUum32knqNNMJWP-DkKqpBDg"
+										   data-type="youtube"
+										   data-title="How Can I Add/Edit/Delete Academia Data?"
+										   data-toggle="lightbox"
+										   data-width="1024"
+										   class="youtube-vid">How Can I Add/Edit/Delete Academia Data?</a>
+									</li>
+								</ul>
+
+
+							</div>
+							<!-- /.col-md-6 -->
+						<?php endif; ?>
+
+						<div class="col-md-6 col-sm-6">
+							<h4>
+								<i class="fa fa-folder-close"></i>
+								Account
+							</h4>
+
+							<ul class="icons-list support-list">
+								<li>
+									<i class="icon-li fa fa-youtube-play"></i>
+									<a rel="lightbox"
+									   href="https://www.youtube.com/watch?v=Qmr4aEpm_f4&list=UUum32knqNNMJWP-DkKqpBDg"
+									   data-type="youtube"
+									   data-title="What Do I Need To Know About My Account?"
+									   data-toggle="lightbox"
+									   data-width="1024"
+									   class="youtube-vid">What Do I Need To Know About My Account?</a>
+								</li>
+
+							</ul>
+
+
+						</div>
+						<!-- /.col-md-6 -->
+
+					</div>
+					<!-- /.row -->
+
 
 				</div>
-				<!-- /.row -->
-
+				<!-- /.col-md-8 -->
 
 			</div>
-			<!-- /.col-md-8 -->
+			<!-- /.row -->
+
 
 		</div>
-		<!-- /.row -->
-
+		<!-- /#content-container -->
 
 	</div>
-	<!-- /#content-container -->
+	<!-- #content -->
 
-</div>
-<!-- #content -->
-
-<?php include ROOT_PATH . "views/footer.php"; ?>
+	<?php include ROOT_PATH . "views/footer.php"; ?>
 </div>
 <!-- #wrapper<!-- #content -->
 
