@@ -203,13 +203,13 @@
 
 		<ul class="sub-nav" style="">
 			<li>
-				<a href="<?php echo BASE_URL; ?>backups/dropbox">
-					<i class="fa fa-dropbox"></i>
-					Dropbox
+				<a href="<?php echo BASE_URL; ?>cloud/backups">
+					<i class="fa fa-database"></i>
+					Backups
 				</a>
 			</li>
 <!--			<li>-->
-<!--				<a href="--><?php //echo BASE_URL; ?><!--backups/excel">-->
+<!--				<a href="--><?php //echo BASE_URL; ?><!--cloud/excel">-->
 <!--					<i class="fa fa-file-excel-o"></i>-->
 <!--					Excel-->
 <!--				</a>-->
