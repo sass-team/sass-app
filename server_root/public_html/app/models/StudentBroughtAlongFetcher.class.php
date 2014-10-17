@@ -44,8 +44,8 @@ class StudentBroughtAlongFetcher
 
 	public static function update($newOptions, $oldOptions, $reportId) {
 
-		foreach ($oldOptions as $option => $value) {
-			switch ($option) {
+		foreach ($oldOptions as $oldOption => $oldValue) {
+			switch ($oldOption) {
 				case self::DB_COLUMN_ASSIGNMENT_GRADED:
 					if (isset($newOptions[self::DB_COLUMN_ASSIGNMENT_GRADED])) {
 						$assignmentGraded = 1;
@@ -89,22 +89,10 @@ class StudentBroughtAlongFetcher
 					}
 					break;
 				case self::DB_COLUMN_EXERCISE_ON:
-					if (isset($newOptions[self::DB_COLUMN_EXERCISE_ON . "text"])
-						&& strcmp($newOptions[self::DB_COLUMN_EXERCISE_ON . "text"], $value) !== 0
-					) {
-						$exerciseOn = $newOptions[self::DB_COLUMN_EXERCISE_ON . "text"];
-					} else {
-						$exerciseOn = NULL;
-					}
+					$exerciseOn = $newOptions[self::DB_COLUMN_EXERCISE_ON . "text"];
 					break;
 				case self::DB_COLUMN_OTHER:
-					if (isset($newOptions[self::DB_COLUMN_OTHER . "text"])
-						&& strcmp($newOptions[self::DB_COLUMN_OTHER], $value) !== 0
-					) {
-						$other = $newOptions[self::DB_COLUMN_OTHER . "text"];
-					} else {
-						$other = NULL;
-					}
+					$other = $newOptions[self::DB_COLUMN_OTHER . "text"];
 					break;
 				default:
 					throw new Exception("Data have been malformed");

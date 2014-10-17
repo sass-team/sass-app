@@ -246,9 +246,8 @@ class Report
 					) return true;
 					break;
 				case StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON:
-
-					if ((!isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON])
-						&& strcmp($oldOption, StudentBroughtAlongFetcher::IS_SELECTED) === 0)
+					if ((!isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON . "text"])
+						&& $oldOption !== NULL)
 					) return true;
 					if (isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON])) {
 						if (!isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON . "text"]) ||
@@ -262,8 +261,8 @@ class Report
 					}
 					break;
 				case StudentBroughtAlongFetcher::DB_COLUMN_OTHER:
-					if ((!isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_OTHER])
-						&& strcmp($oldOption, StudentBroughtAlongFetcher::IS_SELECTED) === 0)
+					if ((!isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_OTHER . "text"])
+						&& $oldOption !== NULL)
 					) return true;
 					if (isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_OTHER])) {
 						if (!isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_OTHER . "text"]) ||

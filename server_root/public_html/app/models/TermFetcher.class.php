@@ -220,8 +220,9 @@ class TermFetcher
 
 	public static function idExists($id) {
 		try {
-			$query = "SELECT COUNT(" . self::DB_COLUMN_ID . ") FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" .
-				self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :id";
+			$query = "SELECT COUNT(" . self::DB_COLUMN_ID . ")
+			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" .	self::DB_TABLE . "`
+			WHERE `" . self::DB_COLUMN_ID . "` = :id";
 
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
