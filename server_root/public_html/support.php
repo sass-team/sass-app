@@ -83,6 +83,16 @@ $section = "support";
 									<li>
 										<i class="icon-li fa fa-youtube-play"></i>
 										<a rel="lightbox"
+										   href="https://www.youtube.com/watch?v=AGsetlzW7sM&feature=youtu.be"
+										   data-type="youtube"
+										   data-title="How Do I Easy/Fast Find Reports 'pending validation'?"
+										   data-toggle="lightbox"
+										   data-width="1024"
+										   class="youtube-vid">I want to validate reports. How Do I Easy/Fast Find Reports "pending validation"?</a>
+									</li>
+									<li>
+										<i class="icon-li fa fa-youtube-play"></i>
+										<a rel="lightbox"
 										   href="https://www.youtube.com/watch?v=DJCk4Sbj654&list=UUum32knqNNMJWP-DkKqpBDg"
 										   data-type="youtube"
 										   data-title="How Do I Edit Reports After They Have Been Completed(validated)? "
