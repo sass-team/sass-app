@@ -116,7 +116,7 @@ class Report
 
 		if (!preg_match($stringValidation, $text)) {
 			throw new Exception("Textareas can contain only <a href='http://www.regular-expressions.info/shorthand.html'
-			target='_blank'>word characters</a>, spaces, carriage returns, line feeds and special characters <strong>.,-2</strong> of max size 512 characters.");
+			target='_blank'>word characters</a>, spaces, carriage returns, line feeds and special characters <strong>.,</strong> of max size 512 characters.");
 		}
 	}
 
@@ -251,9 +251,9 @@ class Report
 					) return true;
 					if (isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON])) {
 						if (!isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON . "text"]) ||
-							!preg_match("/^[\\S]+$/", $newOptions[StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON . "text"])
+							!preg_match("/^[\\w\t\n\r\\ .,\\-]{1,512}$/", $newOptions[StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON . "text"])
 						) {
-							throw new Exception("Please input what exercise book/page/number the student brought along.");
+							throw new Exception("Please input what exercise book/page/number the student brought along. (Word characters accepted only.");
 						}
 						if (strcmp($oldOption, $newOptions[StudentBroughtAlongFetcher::DB_COLUMN_EXERCISE_ON . "text"]) !== 0) {
 							return true;
@@ -266,9 +266,9 @@ class Report
 					) return true;
 					if (isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_OTHER])) {
 						if (!isset($newOptions[StudentBroughtAlongFetcher::DB_COLUMN_OTHER . "text"]) ||
-							!preg_match("/^[\\S]+$/", $newOptions[StudentBroughtAlongFetcher::DB_COLUMN_OTHER . "text"])
+							!preg_match("/^[\\w\t\n\r\\ .,\\-]{1,512}$/", $newOptions[StudentBroughtAlongFetcher::DB_COLUMN_OTHER . "text"])
 						) {
-							throw new Exception("Please input what other material the student brought along.");
+							throw new Exception("Please input what exercise book/page/number the student brought along. (Word characters accepted only.");
 						}
 						if (strcmp($oldOption, $newOptions[StudentBroughtAlongFetcher::DB_COLUMN_OTHER . "text"]) !== 0) {
 							return true;
