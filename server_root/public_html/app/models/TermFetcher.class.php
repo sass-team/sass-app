@@ -221,7 +221,7 @@ class TermFetcher
 	public static function idExists($id) {
 		try {
 			$query = "SELECT COUNT(" . self::DB_COLUMN_ID . ")
-			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" .	self::DB_TABLE . "`
+			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
 			WHERE `" . self::DB_COLUMN_ID . "` = :id";
 
 			$dbConnection = DatabaseManager::getConnection();
@@ -232,7 +232,7 @@ class TermFetcher
 			if ($query->fetchColumn() === 0) return false;
 		} catch (Exception $e) {
 			Mailer::sendDevelopers($e->getMessage(), __FILE__);
-			throw new Exception("Could not check if term id already exists on database. <br/> Aborting process.");
+			throw new Exception("There a problem with the database.<br/> Aborting process.");
 		}
 
 		return true;

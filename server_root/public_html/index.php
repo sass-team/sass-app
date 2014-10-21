@@ -266,8 +266,12 @@ require ROOT_PATH . 'views/sidebar.php';
 				<span class="value">
 					<?php
 					if (function_exists('sys_getloadavg')) {
-						$load = sys_getloadavg();
-						echo $load[0] . "%";
+						$cpuLoads = sys_getloadavg();
+						$averageCpuLoad = 0;
+						foreach($cpuLoads as $cpuLoad){
+
+						}
+						echo $cpuLoads[0] . "%";
 					} else {
 						echo "Unsupported.";
 					}

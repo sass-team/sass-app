@@ -87,6 +87,8 @@
 						<?php
 						session_start();
 						$errors[] = $_SESSION['errors'];
+						unset($_SESSION['errors']);
+
 						?>
 						<div class="error-details">
 							<h4>There was a problem serving the requested page.</h4>
