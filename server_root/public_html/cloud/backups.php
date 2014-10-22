@@ -9,34 +9,50 @@ if (!$user->isAdmin()) {
 
 # Include the Dropbox SDK libraries
 require_once ROOT_PATH . "plugins/dropbox-php-sdk-1.1.3/lib/Dropbox/autoload.php";
-use \Dropbox as dbx;
+use Dropbox as dbx;
 
+//var_dump($requestPath);
 try {
-	if (isBtnConnectAppPrsd()) {
-
-
-		$appInfo = dbx\AppInfo::loadFromJsonFile(ROOT_PATH . "config/DROPBOX_JSON");
-		$webAuth = new dbx\WebAuth($appInfo, "PHP-Example/1.0");
-
-		$authorizeUrl = $webAuth->();
+	if (isBtnConnectDropboxPrsd()) {
+		$authorizeUrl = getWebAuth()->start();
 		header("Location: $authorizeUrl");
+	}else if(isset($_GET['dropbox-auth-finish'])){
+		var_dump($_GET);
+
+	}else {
+		var_dump($_GET);
 	}
 } catch (Exception $e) {
 	$errors[] = $e->getMessage();
 }
 
 
-function getWebAuth()
-{
-	$appInfo = dbx\AppInfo::loadFromJsonFile(ROOT_PATH . "config/DROPBOX_JSON");
-	$clientIdentifier = "my-app/1.0";
-	$redirectUri = "http:///dropbox-auth-finish";
+function getWebAuth() {
+
+	list($appInfo, $clientIdentifier, $userLocale) = getAppConfig();
+
+	$redirectUri = "http://" . $_SERVER['SERVER_NAME'] . "/cloud/backups/dropbox-auth-finish";
 	$csrfTokenStore = new dbx\ArrayEntryStore($_SESSION, 'dropbox-auth-csrf-token');
-	return new dbx\WebAuth($appInfo, $clientIdentifier, $redirectUri, $csrfTokenStore, ...);
+	return new dbx\WebAuth($appInfo, $clientIdentifier, $redirectUri, $csrfTokenStore, $userLocale);
 }
 
-function isBtnConnectAppPrsd() {
-	return isset($_POST['hiddenConnectWholeApp']) && empty($_POST['hiddenConnectWholeApp']);
+function getAppConfig() {
+	global $appInfoFile;
+
+	try {
+		$appInfo = dbx\AppInfo::loadFromJsonFile($appInfoFile);
+	} catch (dbx\AppInfoLoadException $ex) {
+		throw new Exception("Unable to load \"$appInfoFile\": " . $ex->getMessage());
+	}
+
+	$clientIdentifier = "sass-app/1.0";
+	$userLocale = null;
+
+	return array($appInfo, $clientIdentifier, $userLocale);
+}
+
+function isBtnConnectDropboxPrsd() {
+	return isset($_POST['dropbox-auth-start']) && empty($_POST['dropbox-auth-start']);
 }
 
 
@@ -117,7 +133,7 @@ $section = "cloud";
 									</td>
 									<td class="text-center">
 										<button type="submit" class="btn btn-block btn-primary">Connect</button>
-										<input type="hidden" name="hiddenConnectWholeApp" value="">
+										<input type="hidden" name="dropbox-auth-start" value="">
 									</td>
 								</tr>
 
