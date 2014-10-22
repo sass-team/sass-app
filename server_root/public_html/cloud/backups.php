@@ -7,25 +7,70 @@ if (!$user->isAdmin()) {
 	exit();
 }
 
+$appInfoFile = ROOT_PATH . "config/dropbox.app";
 # Include the Dropbox SDK libraries
 require_once ROOT_PATH . "plugins/dropbox-php-sdk-1.1.3/lib/Dropbox/autoload.php";
 use Dropbox as dbx;
 
-//var_dump($requestPath);
 try {
 	if (isBtnConnectDropboxPrsd()) {
 		$authorizeUrl = getWebAuth()->start();
 		header("Location: $authorizeUrl");
-	}else if(isset($_GET['dropbox-auth-finish'])){
-		var_dump($_GET);
+		var_dump($_POST);
 
-	}else {
-		var_dump($_GET);
+	} else if (isset($_GET['dropbox-auth-finish'])) {
+		try {
+			list($accessToken, $userId, $urlState) = getWebAuth()->finish($_GET);
+			// We didn't pass in $urlState to finish, and we're assuming the session can't be
+			// tampered with, so this should be null.
+			assert($urlState === null);
+		} catch (dbx\WebAuthException_BadRequest $ex) {
+			respondWithError(400, "Bad Request");
+			// Write full details to server error log.
+			// IMPORTANT: Never show the $ex->getMessage() string to the user -- it could contain
+			// sensitive information.
+			error_log("/dropbox-auth-finish: bad request: " . $ex->getMessage());
+			exit;
+		} catch (dbx\WebAuthException_BadState $ex) {
+			// Auth session expired.  Restart the auth process.
+			header("Location: " . getPath("dropbox-auth-start"));
+			exit;
+		} catch (dbx\WebAuthException_Csrf $ex) {
+			respondWithError(403, "Unauthorized", "CSRF mismatch");
+			// Write full details to server error log.
+			// IMPORTANT: Never show the $ex->getMessage() string to the user -- it contains
+			// sensitive information that could be used to bypass the CSRF check.
+			error_log("/dropbox-auth-finish: CSRF mismatch: " . $ex->getMessage());
+			exit;
+		} catch (dbx\WebAuthException_NotApproved $ex) {
+			throw new Exception("Not Authorized?");
+			exit;
+		} catch (dbx\WebAuthException_Provider $ex) {
+			error_log("/dropbox-auth-finish: unknown error: " . $ex->getMessage());
+			respondWithError(500, "Internal Server Error");
+			exit;
+		} catch (dbx\Exception $ex) {
+			error_log("/dropbox-auth-finish: error communicating with Dropbox API: " . $ex->getMessage());
+			respondWithError(500, "Internal Server Error");
+			exit;
+		}
+
+		// NOTE: A real web app would store the access token in a database.
+		$_SESSION['access-token'] = $accessToken;
+
+		echo renderHtmlPage("Authorized!",
+			"Auth complete, <a href='" . htmlspecialchars(getPath("")) . "'>click here</a> to browse.");
+	} else {
 	}
 } catch (Exception $e) {
 	$errors[] = $e->getMessage();
 }
 
+function respondWithError($code, $title, $body = "") {
+	$proto = $_SERVER['SERVER_PROTOCOL'];
+	header("$proto $code $title", true, $code);
+	$errors[] = $title . ": " . $body;
+}
 
 function getWebAuth() {
 
@@ -93,7 +138,16 @@ $section = "cloud";
 
 
 			<h3 class="heading">Cloud Services</h3>
-
+			<?php
+			if (empty($errors) === false) {
+				?>
+				<div class="alert alert-danger">
+					<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+					<strong>Oh
+						snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
+					?>
+				</div>
+			<?php } ?>
 			<div class="row">
 
 				<div class="col-md-12">

@@ -191,7 +191,7 @@
 	</ul>
 </li>
 
-<?php if (!$user->isTutor()) { ?>
+<?php if ($user->isAdmin()) { ?>
 	<li class="dropdown <?php if ($section == "cloud") {
 		echo "active";
 	} ?>">
