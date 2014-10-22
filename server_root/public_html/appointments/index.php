@@ -130,8 +130,12 @@ try {
 
 	} else if (isUrlRqstngAppointmentCancelByStudent()) {
 		AppointmentFetcher::updateLabel($appointmentId, Appointment::LABEL_MESSAGE_STUDENT_CANCELED, Appointment::LABEL_COLOR_CANCELED);
-	} else if (isBtnUpdateAppointmentPrsd() && !$user->isTutor() &&
-		strcmp($studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE], Appointment::LABEL_MESSAGE_COMPLETE) !== 0
+	} else if (isBtnUpdateAppointmentPrsd() &&
+		// allow secretaries to update appointment data only if appointment is NOT completed.
+		(($user->isSecretary() &&
+				strcmp($studentsAppointmentData[0][AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE], Appointment::LABEL_MESSAGE_COMPLETE) !== 0)
+			// allow admin to update appointment data no matter what
+			|| $user->isAdmin())
 	) {
 
 		$updateDone = Appointment::updateStudents($appointmentId, $studentsAppointmentData, $_POST['studentsIds']);
