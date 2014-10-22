@@ -7,17 +7,43 @@ if (!$user->isAdmin()) {
 	exit();
 }
 
-if (isBtnConnectAppPrsd()) {
-	var_dump($_POST);
+# Include the Dropbox SDK libraries
+require_once ROOT_PATH . "plugins/dropbox-php-sdk-1.1.3/lib/Dropbox/autoload.php";
+use \Dropbox as dbx;
+
+try {
+	if (isBtnConnectAppPrsd()) {
+
+
+		$appInfo = dbx\AppInfo::loadFromJsonFile(ROOT_PATH . "config/DROPBOX_JSON");
+		$webAuth = new dbx\WebAuth($appInfo, "PHP-Example/1.0");
+
+		$authorizeUrl = $webAuth->();
+		header("Location: $authorizeUrl");
+	}
+} catch (Exception $e) {
+	$errors[] = $e->getMessage();
 }
+
+
+function getWebAuth()
+{
+	$appInfo = dbx\AppInfo::loadFromJsonFile(ROOT_PATH . "config/DROPBOX_JSON");
+	$clientIdentifier = "my-app/1.0";
+	$redirectUri = "http:///dropbox-auth-finish";
+	$csrfTokenStore = new dbx\ArrayEntryStore($_SESSION, 'dropbox-auth-csrf-token');
+	return new dbx\WebAuth($appInfo, $clientIdentifier, $redirectUri, $csrfTokenStore, ...);
+}
+
+function isBtnConnectAppPrsd() {
+	return isset($_POST['hiddenConnectWholeApp']) && empty($_POST['hiddenConnectWholeApp']);
+}
+
 
 // viewers
 $pageTitle = "Dropbox - SASS App";
 $section = "cloud";
 
-function isBtnConnectAppPrsd() {
-	return isset($_POST['hiddenConnectWholeApp']) && empty($_POST['hiddenConnectWholeApp']);
-}
 
 ?>
 
@@ -58,41 +84,47 @@ function isBtnConnectAppPrsd() {
 
 					<div class="table-responsive">
 
-						<table class="table table-striped table-bordered media-table">
-							<thead>
-							<tr>
-								<th style="width: 150px">Services</th>
-								<th>Description</th>
-								<th class="text-center">Actions</th>
-							</tr>
-							</thead>
-							<tbody>
+						<form method="post" id="add-student-form"
+						      action="<?php echo BASE_URL . 'cloud/backups'; ?>"
+						      class="form">
+							<table class="table table-striped table-bordered media-table">
+								<thead>
+								<tr>
+									<th style="width: 150px">Services</th>
+									<th>Description</th>
+									<th class="text-center">Actions</th>
+								</tr>
+								</thead>
+								<tbody>
 
-							<tr>
-								<td>
-									<div class="thumbnail">
-										<img src="<?php echo BASE_URL; ?>assets/img/logos/dropbox-logo.png" width="125"
-										     alt="Gallery Image"/>
-									</div>
-									<!-- /.thumbnail -->
-								</td>
-								<td><a href="https://www.dropbox.com/" title="Dropbox" target="_blank">Dropbox</a>
+								<tr>
 
-									<p>Connects a Dropbox account with SASS App database files. <a
-											href="http://en.wikipedia.org/wiki/SQL" title="sql"
-											target="_blank">sql</a></p>
+									<td>
+										<div class="thumbnail">
+											<img src="<?php echo BASE_URL; ?>assets/img/logos/dropbox-logo.png"
+											     width="125"
+											     alt="Gallery Image"/>
+										</div>
+										<!-- /.thumbnail -->
+									</td>
+									<td><a href="https://www.dropbox.com/" title="Dropbox" target="_blank">Dropbox</a>
 
-
-								</td>
-								<td class="text-center">
-									<button type="submit" class="btn btn-block btn-primary">Connect</button>
-									<input type="hidden" name="hiddenConnectWholeApp" value="">
-								</td>
-							</tr>
+										<p>Connects a Dropbox account with SASS App database files. <a
+												href="http://en.wikipedia.org/wiki/SQL" title="sql"
+												target="_blank">sql</a></p>
 
 
-							</tbody>
-						</table>
+									</td>
+									<td class="text-center">
+										<button type="submit" class="btn btn-block btn-primary">Connect</button>
+										<input type="hidden" name="hiddenConnectWholeApp" value="">
+									</td>
+								</tr>
+
+
+								</tbody>
+							</table>
+						</form>
 
 					</div>
 					<!-- /.table-responsive -->

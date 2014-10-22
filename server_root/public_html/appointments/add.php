@@ -129,8 +129,7 @@ require ROOT_PATH . 'views/sidebar.php';
 				<div class="portlet-content">
 
 					<div class="form-group">
-						<form method="post" id="add-student-form"
-						      action="<?php echo BASE_URL . 'appointments/add'; ?>"
+						<form method="post" id="add-student-form" action="<?php echo BASE_URL . 'appointments/add'; ?>"
 						      class="form">
 
 

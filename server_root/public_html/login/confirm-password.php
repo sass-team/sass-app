@@ -75,6 +75,7 @@ if (isContinueBtnPressed()) {
 		header('Location: ' . BASE_URL . 'login/confirm-password/success');
 		exit();
 	} catch (Exception $e) {
+		Mailer::sendDevelopers($e->getMessage(), __DIR__);
 		$errors[] = $e->getMessage();
 	}
 } // end outer if
