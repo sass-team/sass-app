@@ -9,6 +9,7 @@
 	<link rel="stylesheet"
     	      href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,800italic,400,600,800"
     	      type="text/css">
+	<meta name="google-site-verification" content="NuqI5iZIn8O3afn4SsTvEG7gMCNb87TA_JpWWzmjNOM" />
 	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <!--	 Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">

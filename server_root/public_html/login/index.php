@@ -79,7 +79,7 @@ function isForgotBtnPressed() {
 		<meta name="author" content="Rizart Dokollari, George Skarlatos"/>
 		<meta name="keywords" content="CMS,university,SASS,tutor,tutoring"/>
 		<link rel="shortcut icon" href="<?php echo BASE_URL; ?>assets/img/logos/favicon.ico">
-
+		<meta name="google-site-verification" content="NuqI5iZIn8O3afn4SsTvEG7gMCNb87TA_JpWWzmjNOM" />
 		<link rel="stylesheet"
 		      href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,800italic,400,600,800"
 		      type="text/css">
