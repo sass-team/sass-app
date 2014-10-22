@@ -126,6 +126,7 @@ class AppointmentHasStudentFetcher
 			return $query->rowCount();
 
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not delete report data.");
 		}
 
@@ -145,6 +146,7 @@ class AppointmentHasStudentFetcher
 			$query->execute();
 
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not delete report data.");
 		}
 
@@ -162,6 +164,7 @@ class AppointmentHasStudentFetcher
 
 			if ($query->fetchColumn() === 0) return false;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not check if data already exists.");
 		}
 
@@ -181,6 +184,7 @@ class AppointmentHasStudentFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve data from database.");
 		}
 	}
@@ -220,6 +224,7 @@ class AppointmentHasStudentFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve data from database.");
 		}
 	}
@@ -239,6 +244,7 @@ class AppointmentHasStudentFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve data from database.");
 		}
 	}
@@ -296,6 +302,7 @@ class AppointmentHasStudentFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve data from database.");
 		}
 	}

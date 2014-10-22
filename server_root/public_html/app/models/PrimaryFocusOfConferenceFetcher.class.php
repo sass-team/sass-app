@@ -36,6 +36,7 @@ class PrimaryFocusOfConferenceFetcher
 			return $query->rowCount();
 
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not delete report data.");
 		}
 
@@ -128,6 +129,7 @@ class PrimaryFocusOfConferenceFetcher
 			return true;
 		} catch
 		(Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not update report data.");
 		}
 		return false;
@@ -146,6 +148,7 @@ class PrimaryFocusOfConferenceFetcher
 
 			if ($query->fetchColumn() === '0') return false;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not verify data on database.");
 		}
 
@@ -167,6 +170,7 @@ class PrimaryFocusOfConferenceFetcher
 			$query->execute();
 
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not insert report data into database.");
 		}
 

@@ -50,6 +50,7 @@ class StudentFetcher extends Person
 
 			return $rows;
 		} catch (PDOException $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Something terrible happened. Could not retrieve students data from database.: ");
 		} // end catch
 	}
@@ -89,6 +90,7 @@ class StudentFetcher extends Person
 			$query->execute();
 			return true;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not insert student into database.");}
 
 	}
@@ -105,6 +107,7 @@ class StudentFetcher extends Person
 
 			if ($query->fetchColumn() === '0') return false;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not check if new mobile number already exists on database.");
 		}
 
@@ -123,6 +126,7 @@ class StudentFetcher extends Person
 
 			if ($query->fetchColumn() === '0') return false;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not verify data on database.");
 		}
 
@@ -143,6 +147,7 @@ class StudentFetcher extends Person
 
 			return true;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Something terrible happened. Could not update first name");
 		}
 	}
@@ -161,6 +166,7 @@ class StudentFetcher extends Person
 
 			return true;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Something terrible happened. Could not update last name");
 		}
 	}
@@ -179,6 +185,7 @@ class StudentFetcher extends Person
 
 			return true;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Something terrible happened. Could not update mobile number");
 		}
 	}
@@ -197,6 +204,7 @@ class StudentFetcher extends Person
 
 			return true;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Something terrible happened. Could not update student id.");
 		}
 	}
@@ -215,6 +223,7 @@ class StudentFetcher extends Person
 
 			return true;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Something terrible happened. Could not update major id.");
 		}
 	}
@@ -233,6 +242,7 @@ class StudentFetcher extends Person
 
 			return true;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Something terrible happened. Could not update CI.");
 		}
 	}
@@ -251,6 +261,7 @@ class StudentFetcher extends Person
 
 			return true;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Something terrible happened. Could not update credits.");
 		}
 	}
@@ -270,7 +281,8 @@ class StudentFetcher extends Person
 
 			if ($query->fetchColumn() === '0') return false;
 
-		} catch (PDOException $e) {
+		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Something terrible happened. Could not access database.");
 		} // end catch
 
@@ -291,6 +303,7 @@ class StudentFetcher extends Person
 			$query->execute();
 			return true;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception($e->getMessage());
 		}
 
@@ -309,6 +322,7 @@ class StudentFetcher extends Person
 
 			if ($query->fetchColumn() === '0') return false;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not check if stuent id already exists on database.");
 		}
 

@@ -69,6 +69,16 @@ $section = "support";
 										   data-width="1024"
 										   class="youtube-vid">How Can I View My Appointments?</a>
 									</li>
+									<li>
+										<i class="icon-li fa fa-youtube-play"></i>
+										<a rel="lightbox"
+										   href="https://www.youtube.com/watch?v=eDygp9Ovx-I&list=UUum32knqNNMJWP-DkKqpBDg"
+										   data-type="youtube"
+										   data-title="How Can I View The Reports I need To Fill?"
+										   data-toggle="lightbox"
+										   data-width="1024"
+										   class="youtube-vid">How Can I View The Reports I need To Fill?</a>
+									</li>
 								<?php else: ?>
 									<li>
 										<i class="icon-li fa fa-youtube-play"></i>
@@ -79,6 +89,16 @@ $section = "support";
 										   data-toggle="lightbox"
 										   data-width="1024"
 										   class="youtube-vid">How Can I Delete An Appointment?</a>
+									</li>
+									<li>
+										<i class="icon-li fa fa-youtube-play"></i>
+										<a rel="lightbox"
+										   href="https://www.youtube.com/watch?v=AGsetlzW7sM&feature=youtu.be"
+										   data-type="youtube"
+										   data-title="How Do I Easy/Fast Find Reports 'pending validation'?"
+										   data-toggle="lightbox"
+										   data-width="1024"
+										   class="youtube-vid">I want to validate reports. How Do I Easy/Fast Find Reports "pending validation"?</a>
 									</li>
 									<li>
 										<i class="icon-li fa fa-youtube-play"></i>

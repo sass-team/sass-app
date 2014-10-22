@@ -80,6 +80,7 @@ class ScheduleFetcher
 			// last inserted if of THIS connection
 			return $appointmentId = $dbConnection->lastInsertId();
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not insert data into database." );
 		}
 
@@ -96,6 +97,7 @@ class ScheduleFetcher
 
 			if ($query->fetchColumn() === '0') return false;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not check data already exists on database.");
 		}
 
@@ -115,7 +117,8 @@ class ScheduleFetcher
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
-		} catch (PDOException $e) {
+		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve data from database.");
 		}
 	}
@@ -148,7 +151,8 @@ class ScheduleFetcher
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
-		} catch (PDOException $e) {
+		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve data from database.");
 		}
 	}
@@ -182,7 +186,8 @@ class ScheduleFetcher
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
-		} catch (PDOException $e) {
+		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve data from database.");
 		}
 	}
@@ -220,7 +225,8 @@ class ScheduleFetcher
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
-		} catch (PDOException $e) {
+		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve data from database.");
 		}
 	}
@@ -257,7 +263,8 @@ class ScheduleFetcher
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
-		} catch (PDOException $e) {
+		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve data from database.");
 		}
 	}
@@ -279,7 +286,8 @@ class ScheduleFetcher
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
-		} catch (PDOException $e) {
+		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve data from database.");
 		}
 	}
@@ -320,7 +328,8 @@ class ScheduleFetcher
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
-		} catch (PDOException $e) {
+		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve data from database.");
 		}
 	}
@@ -358,6 +367,7 @@ class ScheduleFetcher
 
 			if ($query->fetchColumn() === '0') return false;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not check conflicts with other appointments." );
 		}
 
@@ -410,6 +420,7 @@ class ScheduleFetcher
 			$query->execute();
 			return $query->fetch(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve data from database .: ");
 		} // end catch
 	}
@@ -428,6 +439,7 @@ class ScheduleFetcher
 
 			return true;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Something terrible happened. Could not update starting time.");
 		}
 	}
@@ -446,6 +458,7 @@ class ScheduleFetcher
 
 			return true;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Something went wrong. Could not update schedules table.");
 		}
 	}
@@ -476,6 +489,7 @@ class ScheduleFetcher
 			$query->execute();
 			return true;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not delete schedule from database.");
 		}
 	}
@@ -510,6 +524,7 @@ class ScheduleFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve teaching courses data from database." );
 		}
 		return true;

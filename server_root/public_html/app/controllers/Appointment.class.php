@@ -100,7 +100,7 @@ class Appointment
 		self::validateNewDates($user, $termId, $tutorId, $dateStart, $dateEnd);
 
 		$appointmentId = AppointmentFetcher::insert($dateStart, $dateEnd, $courseId, $studentsIds, $tutorId, $instructorsIds, $termId);
-		Mailer::sendTutorNewAppointment($appointmentId, $secretaryName);
+//		Mailer::sendTutorNewAppointment($appointmentId, $secretaryName);
 	}
 
 	public static function  getCalendarAllAppointmentsOnTerm($termId) {

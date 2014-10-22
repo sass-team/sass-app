@@ -4,6 +4,15 @@ $general->loggedOutProtect();
 try {
 	date_default_timezone_set('Europe/Athens');
 	$now = new DateTime();
+
+	if (isBtnChangeNxtWeekPrsd()) {
+		$now->modify('+1 week');
+	} else if (isBtnChangeWeekAfterNxtWeekPrsd()) {
+		$now->modify('+2 week');
+	} else if (isBtnChangePrevWeekPrsd()) {
+		$now->modify('-1 week');
+	}
+
 	$startWeekDate = getWorkingDates($now->format('Y'), $now->format('W'));
 	$endWeekDate = getWorkingDates($now->format('Y'), $now->format('W'), false);
 
@@ -72,6 +81,19 @@ function getWorkingDates($year, $week, $start = true) {
 	//return "Week {$week} in {$year} is from {$from} to {$to}.";
 }
 
+function isBtnChangeNxtWeekPrsd() {
+	return isset($_POST['hiddenNextWeek']) && empty($_POST['hiddenNextWeek']);
+}
+
+function isBtnChangeWeekAfterNxtWeekPrsd() {
+	return isset($_POST['weekAfterNext']) && empty($_POST['weekAfterNext']);
+}
+
+function isBtnChangePrevWeekPrsd() {
+	return isset($_POST['prevWeek']) && empty($_POST['prevWeek']);
+}
+
+
 ?>
 
 
@@ -107,7 +129,47 @@ require ROOT_PATH . 'views/sidebar.php';
 		&nbsp;&nbsp;
 		<small>For the week of <?php echo date("M d", strtotime($startWeekDate)) . " - " . date("M d, o",
 					strtotime('-1 day', strtotime($endWeekDate))); ?></small>
-		&nbsp;&nbsp;</h4>
+		&nbsp;&nbsp;
+	</h4>
+
+	<div class="btn-group ">
+		<button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+			<i class="fa fa-clock-o"></i> &nbsp;
+			Change Week <span class="caret"></span>
+		</button>
+
+		<ul class="dropdown-menu" role="menu">
+			<li>
+				<a class="changeWeek">Previous Week</a>
+
+				<form method="post" action="<?php echo BASE_URL; ?>">
+					<input type="hidden" name="prevWeek"/>
+				</form>
+			</li>
+			<li>
+				<a class="changeWeek">Current Week</a>
+
+				<form method="post" action="<?php echo BASE_URL; ?>">
+					<input type="hidden" name="hiddenCurrentWeek"/>
+				</form>
+			</li>
+			<li>
+				<a class="changeWeek">Next Week</a>
+
+				<form method="post" action="<?php echo BASE_URL; ?>">
+					<input type="hidden" name="hiddenNextWeek"/>
+				</form>
+			</li>
+			<li>
+				<a class="changeWeek">The Week After Next</a>
+
+				<form method="post" action="<?php echo BASE_URL; ?>">
+					<input type="hidden" name="weekAfterNext"/>
+				</form>
+			</li>
+		</ul>
+
+	</div>
 
 	<?php
 	if (empty($errors) === false) {
@@ -204,8 +266,12 @@ require ROOT_PATH . 'views/sidebar.php';
 				<span class="value">
 					<?php
 					if (function_exists('sys_getloadavg')) {
-						$load = sys_getloadavg();
-						echo $load[0] . "%";
+						$cpuLoads = sys_getloadavg();
+						$averageCpuLoad = 0;
+						foreach($cpuLoads as $cpuLoad){
+
+						}
+						echo $cpuLoads[0] . "%";
 					} else {
 						echo "Unsupported.";
 					}
@@ -479,6 +545,12 @@ require ROOT_PATH . 'views/sidebar.php';
 
 <script type="text/javascript">
 	$(function () {
+		$('.changeWeek').on('click', function () {
+			var $a = $(this);
+			var $form = $a.next();
+			$form.submit();
+		});
+
 		if (!$('#workshop-chart').length) {
 			return false;
 		}

@@ -33,6 +33,7 @@ class ConclusionWrapUpFetcher
 
 			return $query->rowCount();
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not delete report data.");
 		}
 
@@ -90,8 +91,8 @@ class ConclusionWrapUpFetcher
 			$query->execute();
 
 			return true;
-		} catch
-		(Exception $e) {
+		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not update report data." . $e->getMessage());
 		}
 		return false;
@@ -110,6 +111,7 @@ class ConclusionWrapUpFetcher
 
 			if ($query->fetchColumn() === '0') return false;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not verify data on database.");
 		}
 
@@ -131,6 +133,7 @@ class ConclusionWrapUpFetcher
 			$query->execute();
 
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not insert report data into database.");
 		}
 

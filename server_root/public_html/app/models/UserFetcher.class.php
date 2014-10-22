@@ -37,6 +37,7 @@ class UserFetcher
 
 			if ($query->fetchColumn() === '0') return false;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not check if new mobile number already exists on database.");
 		}
 
@@ -57,7 +58,8 @@ class UserFetcher
 
 			$query->execute();
 			return $query->fetch(PDO::FETCH_ASSOC);
-		} catch (PDOException $e) {
+		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Something terrible happened. Could not retrieve email data.");
 			// end try
 		}
@@ -74,7 +76,8 @@ class UserFetcher
 
 			$query->execute();
 			return $query->fetchColumn();
-		} catch (PDOException $e) {
+		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Something terrible happened. Could not retrieve database.");
 			// end try
 		}
@@ -104,7 +107,8 @@ class UserFetcher
 
 			$dbConnection->execute();
 			return $dbConnection->fetch(PDO::FETCH_ASSOC);
-		} catch (PDOException $e) {
+		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve user data.");
 			// end try
 		}
@@ -128,6 +132,7 @@ class UserFetcher
 
 			$query->execute();
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not update data for password recovery.");
 		}
 	}
@@ -148,6 +153,7 @@ class UserFetcher
 
 			if ($query->fetchColumn() === '0') return false;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not check if user id already exists on database.");
 		}
 		return true;
@@ -168,6 +174,7 @@ class UserFetcher
 
 			$query->execute();
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not update password.");
 		}
 	}
@@ -184,6 +191,7 @@ class UserFetcher
 
 			if ($dbConnection->fetchColumn() === '0') return false;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not check if user id already exists on database.");
 		}
 		return true;
@@ -200,6 +208,7 @@ class UserFetcher
 
 			$query->execute();
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not update generated string. Please re-send password link to user that was created.");
 		}
 

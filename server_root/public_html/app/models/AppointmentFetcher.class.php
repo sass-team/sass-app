@@ -47,6 +47,7 @@ class AppointmentFetcher
 
 		} catch (Exception $e) {
 			if (isset($dbConnection)) $dbConnection->rollback();
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not delete appointment data." . $e->getMessage());
 		}
 		return false;
@@ -68,6 +69,7 @@ class AppointmentFetcher
 			$query->execute();
 			return true;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not update data.");
 		}
 		return false;
@@ -92,6 +94,7 @@ class AppointmentFetcher
 			$query->execute();
 			return true;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not update data.");
 		}
 		return false;
@@ -110,6 +113,7 @@ class AppointmentFetcher
 			$query->execute();
 			return true;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not update data.");
 		}
 		return false;
@@ -155,7 +159,8 @@ class AppointmentFetcher
 			$dbConnection->commit();
 			return $appointmentId;
 		} catch (Exception $e) {
-			$dbConnection->rollback();
+			if (isset($dbConnection)) $dbConnection->rollback();
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not insert data into database.");
 		}
 
@@ -174,6 +179,7 @@ class AppointmentFetcher
 			$query->execute();
 			return true;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not update data.");
 		}
 		return false;
@@ -191,6 +197,7 @@ class AppointmentFetcher
 
 			if ($query->fetchColumn() === '0') return false;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not check data already exists on database.");
 		}
 
@@ -253,6 +260,7 @@ class AppointmentFetcher
 
 			if ($query->fetchColumn() === '0') return false;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not check conflicts with other appointments.");
 		}
 
@@ -275,6 +283,7 @@ class AppointmentFetcher
 
 			if ($query->fetchColumn() === '0') return false;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not check data already exists on database.");
 		}
 
@@ -296,6 +305,7 @@ class AppointmentFetcher
 			$query->execute();
 			return $query->fetch(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Something terrible happened . Could not retrieve data from database .: ");
 		} // end catch
 	}
@@ -315,6 +325,7 @@ class AppointmentFetcher
 			$query->execute();
 			return $query->fetch(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Something terrible happened . Could not retrieve data from database .: ");
 		} // end catch
 	}
@@ -334,6 +345,7 @@ class AppointmentFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve data from database.");
 		}
 	}
@@ -372,6 +384,7 @@ class AppointmentFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve data from database.");
 		}
 	}
@@ -413,6 +426,7 @@ class AppointmentFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve data from database.");
 		}
 	}
@@ -446,6 +460,7 @@ class AppointmentFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve data from database.");
 		}
 	}
@@ -466,6 +481,7 @@ class AppointmentFetcher
 			$query->execute();
 			return true;
 		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not update data.");
 		}
 		return false;
@@ -494,6 +510,7 @@ class AppointmentFetcher
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 
 		} catch (PDOException $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve data from database.");
 		}
 	}
@@ -523,6 +540,7 @@ class AppointmentFetcher
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 
 		} catch (PDOException $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve data from database.");
 		}
 	}
@@ -560,6 +578,7 @@ class AppointmentFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve data from database.");
 		}
 	}
@@ -607,6 +626,7 @@ class AppointmentFetcher
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve data from database.");
 		}
 	}

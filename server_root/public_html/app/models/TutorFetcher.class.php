@@ -28,7 +28,8 @@ class TutorFetcher
 
             return true;
         } catch (Exception $e) {
-            throw new Exception("Could not insert teaching major data into database.");
+	        Mailer::sendDevelopers($e->getMessage(), __FILE__);
+	        throw new Exception("Could not insert teaching major data into database.");
         }
     }
 
@@ -63,7 +64,8 @@ class TutorFetcher
             return $query->fetchAll(PDO::FETCH_ASSOC);
 
         } catch (PDOException $e) {
-            throw new Exception("Could not retrieve teaching courses data from database.");
+	        Mailer::sendDevelopers($e->getMessage(), __FILE__);
+	        throw new Exception("Could not retrieve teaching courses data from database.");
         }
     }
 
@@ -83,7 +85,8 @@ class TutorFetcher
             $query->execute();
             return $query->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            throw new Exception("Something terrible happened . Could not retrieve data from database.");
+	        Mailer::sendDevelopers($e->getMessage(), __FILE__);
+	        throw new Exception("Something terrible happened . Could not retrieve data from database.");
             // end catch
 
             return null;
@@ -107,7 +110,8 @@ class TutorFetcher
 
             if ($query->fetchColumn() === '0') return false;
         } catch (Exception $e) {
-            throw new Exception("Could not check if tutor id already exists on database.");
+	        Mailer::sendDevelopers($e->getMessage(), __FILE__);
+	        throw new Exception("Could not check if tutor id already exists on database.");
         }
 
         return true;
@@ -128,7 +132,8 @@ class TutorFetcher
 
             return true;
         } catch (Exception $e) {
-            throw new Exception("Something terrible happened. Could not update first name");
+	        Mailer::sendDevelopers($e->getMessage(), __FILE__);
+	        throw new Exception("Something terrible happened. Could not update first name");
         }
     }
 
@@ -152,7 +157,8 @@ class TutorFetcher
             $query->execute();
             return $query->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            throw new Exception("Something terrible happened . Could not retrieve tutor data from database." );
+	        Mailer::sendDevelopers($e->getMessage(), __FILE__);
+	        throw new Exception("Something terrible happened . Could not retrieve tutor data from database." );
         } // end catch
     }
 
@@ -172,7 +178,8 @@ class TutorFetcher
             $query->execute();
             return $query->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            throw new Exception("Something terrible happened . Could not data from database .: ");
+	        Mailer::sendDevelopers($e->getMessage(), __FILE__);
+	        throw new Exception("Something terrible happened . Could not data from database .: ");
         } // end catch
     }
 
@@ -189,7 +196,8 @@ class TutorFetcher
 
             if ($dbConnection->fetchColumn() === '0') return false;
         } catch (Exception $e) {
-            throw new Exception("Could not check if tutor id already exists on database.");
+	        Mailer::sendDevelopers($e->getMessage(), __FILE__);
+	        throw new Exception("Could not check if tutor id already exists on database.");
         }
 
         return true;
