@@ -7,14 +7,15 @@ if (!$user->isAdmin()) {
 	exit();
 }
 
+include_once(ROOT_PATH . '/plugins/mysqldump-php-1.4.1/src/Ifsnop/Mysqldump/Mysqldump.php');
 $appInfoFile = ROOT_PATH . "config/dropbox.app";
 # Include the Dropbox SDK libraries
 require_once ROOT_PATH . "plugins/dropbox-php-sdk-1.1.3/lib/Dropbox/autoload.php";
+
 use Dropbox as dbx;
 
 try {
-	$accessToken = DropboxFetcher::retrieveAccessToken($user->getId())[DropboxFetcher::DB_COLUMN_ACCESS_TOKEN];
-//	var_dump($accessToken);
+	$accessToken = DropboxFetcher::retrieveAccessToken(DropboxCon::SERVICE_APP_DATABASE_BACKUP)[DropboxFetcher::DB_COLUMN_ACCESS_TOKEN];
 	$appInfo = dbx\AppInfo::loadFromJsonFile($appInfoFile);
 	$clientIdentifier = "sass-app/1.0";
 	$webAuth = new dbx\WebAuthNoRedirect($appInfo, $clientIdentifier, "en");
@@ -45,20 +46,82 @@ try {
 		DropboxFetcher::disconnectServiceType(DropboxCon::SERVICE_APP_DATABASE_BACKUP);
 		header('Location: ' . BASE_URL . "cloud/backups/success");
 		exit();
+	} else if (isBtnRqstDnldDBKeyPrsd()) {
+
+		date_default_timezone_set('Europe/Athens');
+		$curWorkingDate = new DateTime();
+		$curWorkingHour = intval($curWorkingDate->format('H'));
+
+		$filePath = ROOT_PATH . 'storage/backups/';
+		$fileName = 'sass_app_db_' . date('m_d_Y_Hi') . '.sql';
+		$zippedFileName = $fileName . '.gz';
+		$fullPathName = $filePath . $fileName;
+
+		$dumpSettings = array(
+			'compress' => Ifsnop\Mysqldump\Mysqldump::GZIP,
+			'no-data' => false,
+			'add-drop-table' => true,
+			'single-transaction' => false,
+			'lock-tables' => true,
+			'add-locks' => true,
+			'extended-insert' => true,
+			'disable-foreign-keys-check' => true,
+			'skip-triggers' => false,
+			'add-drop-trigger' => true,
+			'databases' => false,
+			'add-drop-database' => false,
+			'hex-blob' => true
+		);
+
+		$dump = new Ifsnop\Mysqldump\Mysqldump(DatabaseManager::$dsn[DatabaseManager::DB_NAME],
+			DatabaseManager::$dsn[DatabaseManager::DB_USERNAME],
+			DatabaseManager::$dsn[DatabaseManager::DB_PASSWORD],
+			DatabaseManager::$dsn[DatabaseManager::DB_HOST], 'mysql', $dumpSettings);
+		$dump->start($fullPathName);
+
+		// all credits: http://stackoverflow.com/q/22046020/2790481
+		header("Content-Description: File Transfer");
+		header("Content-Disposition: attachment; filename=\"" . basename($zippedFileName) . "\";");
+		header("Content-Type: application/octet-stream");
+		header("Content-Encoding: binary");
+		header("Content-Length: " . filesize($filePath . $zippedFileName));
+		header("Expires: 0");
+		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+		header("Cache-Control: private");
+		header("Pragma: public");
+		ob_clean();
+		readfile($filePath . $zippedFileName);
 	}
 
 } catch (Exception $e) {
 	$errors[] = $e->getMessage();
 }
 
+/**
+ * http://stackoverflow.com/a/3403863
+ *
+ * @param $f_location
+ * @param $f_name
+ */
+function download($f_location, $f_name) {
+	header('Content-Description: File Transfer');
+	header('Content-Type: application/x-zip');
+	header('Content-Length: ' . filesize($f_location));
+	header('Content-Disposition: attachment; filename=' . basename($f_name));
+	header('Content-Encoding: gz');
+	readfile($f_location);
+}
 
 function isModificationSuccess() {
 	return isset($_GET['success']) && strcmp($_GET['success'], 'y1!q' === 0);
 }
 
-
 function isBtnRqstTokenKeyPrsd() {
 	return isset($_POST['dropbox-auth-start']) && empty($_POST['dropbox-auth-start']);
+}
+
+function isBtnRqstDnldDBKeyPrsd() {
+	return isset($_POST['request-sass-database-backup-hdn']) && empty($_POST['request-sass-database-backup-hdn']);
 }
 
 
@@ -155,15 +218,16 @@ $section = "cloud";
 										<td><a href="https://www.dropbox.com/" title="Dropbox"
 										       target="_blank">Dropbox</a>
 
-											<p><strong>Account connected: <?php echo $adminAccountInfo['display_name']
-														. ", " .
-														$adminAccountInfo['email']; ?>
-												</strong></p>
+											<p><strong>Account
+													connected:</strong> <?php echo $adminAccountInfo['display_name']
+													. ", " . $adminAccountInfo['email']; ?>
+											</p>
 
 										</td>
 										<td class="text-center">
 											<div class="btn-group">
-												<button type="button" class="btn btn-default" id="disconnect-dropbox-database-btn">
+												<button type="button" class="btn btn-default"
+												        id="disconnect-dropbox-database-btn">
 													<i class="fa fa-dropbox fa-fw"></i>
 													Disconnect
 												</button>
@@ -179,7 +243,6 @@ $section = "cloud";
 								?>
 
 								<tr>
-
 									<td>
 										<div class="thumbnail">
 											<img src="<?php echo BASE_URL; ?>assets/img/logos/dropbox-database-sass.png"
@@ -191,8 +254,8 @@ $section = "cloud";
 									<td><a href="https://www.dropbox.com/" title="Dropbox" target="_blank">Dropbox</a>
 
 										<p>Connects a Dropbox account with SASS App database files. <a
-												href="http://en.wikipedia.org/wiki/SQL" title="sql"
-												target="_blank">sql</a><br/>
+												href="http://en.wikipedia.org/wiki/SQL" title="SQL"
+												target="_blank">SQL</a><br/>
 										</p>
 
 									</td>
@@ -215,12 +278,37 @@ $section = "cloud";
 										<input type="text" class="form-control" name="dropbox-key-token"
 										       placeholder="Key Token" required>
 									</td>
-
-
 									<?php
 									}
 									?>
+								<tr>
+									<td>
+										<div class="thumbnail">
+											<img
+												src="<?php echo BASE_URL; ?>assets/img/logos/sass-db-export.png"
+												width="125"
+												alt="Gallery Image"/>
+										</div>
+										<!-- /.thumbnail -->
+									</td>
+									<td>
+										<a href="http://en.wikipedia.org/wiki/SQL" title="sql"
+										   target="_blank">SQL</a><br/>
 
+										<p>Create a full SASS App database backup and download.</p>
+									</td>
+									<td class="text-center">
+										<div class="btn-group">
+											<button type="button" class="btn btn-default"
+											        id="download-sass-backup-database-btn">
+												<i class="fa fa-download fa-fw"></i>
+												Download
+											</button>
+										</div>
+									</td>
+									<td>
+									</td>
+								</tr>
 								</tbody>
 							</table>
 						</form>
@@ -228,6 +316,11 @@ $section = "cloud";
 						      action="<?php echo BASE_URL . 'cloud/backups'; ?>">
 							<input type="hidden" name="dropbox-auth-start" value="">
 						</form>
+						<form id="request-sass-database-backup-form" method="post"
+						      action="<?php echo BASE_URL . 'cloud/backups'; ?>">
+							<input type="hidden" name="request-sass-database-backup-hdn" value="">
+						</form>
+
 					</div>
 					<!-- /.table-responsive -->
 
@@ -265,6 +358,10 @@ $section = "cloud";
 
 		$('#disconnect-dropbox-database-btn').on('click', function () {
 			$('#request-dropbox-connection-form').submit();
+		});
+
+		$('#download-sass-backup-database-btn').on('click', function () {
+			$('#request-sass-database-backup-form').submit();
 		});
 
 
