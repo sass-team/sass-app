@@ -91,14 +91,14 @@ $section = "support";
 										   class="youtube-vid">How Can I Delete An Appointment?</a>
 									</li>
 									<li>
-										<i class="icon-li fa fa-youtube-play"></i>
+										<i class="icon-li fa fa-youtube-play"></i>I want to validate reports.
 										<a rel="lightbox"
 										   href="https://www.youtube.com/watch?v=AGsetlzW7sM&feature=youtu.be"
 										   data-type="youtube"
 										   data-title="How Do I Easy/Fast Find Reports 'pending validation'?"
 										   data-toggle="lightbox"
 										   data-width="1024"
-										   class="youtube-vid">I want to validate reports. How Do I Easy/Fast Find Reports "pending validation"?</a>
+										   class="youtube-vid">How Do I Easy/Fast Find Reports "pending validation"?</a>
 									</li>
 									<li>
 										<i class="icon-li fa fa-youtube-play"></i>
@@ -108,7 +108,18 @@ $section = "support";
 										   data-title="How Do I Edit Reports After They Have Been Completed(validated)? "
 										   data-toggle="lightbox"
 										   data-width="1024"
-										   class="youtube-vid">How Do I Edit Reports After They Have Been Completed(validated)? </a>
+										   class="youtube-vid">How Do I Edit Reports After They Have Been
+											Completed(validated)? </a>
+									</li>
+									<li>
+										<i class="icon-li fa fa-youtube-play"></i>
+										<a rel="lightbox"
+										   href="https://www.youtube.com/watch?v=cg_Oyr4GeKU"
+										   data-type="youtube"
+										   data-title="How Can I Change Completed Appointment Status? "
+										   data-toggle="lightbox"
+										   data-width="1024"
+										   class="youtube-vid">How Can I Change Completed Appointment Status?</a>
 									</li>
 								<?php endif; ?>
 							</ul>
