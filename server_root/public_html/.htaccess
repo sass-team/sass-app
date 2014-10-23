@@ -32,11 +32,12 @@ ErrorDocument 404 /error-404
 ErrorDocument 403 /error-403
 ErrorDocument 500 /error-500
 
+
 # MAINTENANCE-PAGE REDIRECT #|(?::1)
-#<IfModule mod_rewrite.c>
-# RewriteEngine on
-# RewriteCond %{REMOTE_ADDR} !^(?:(?:91\.140\.23\.90)|(?:127\.0\.0\.1)|(?:192\.168\.1\.2))$
-# RewriteCond %{REQUEST_URI} !\.(jpe?g?|png|gif) [NC]
-# RewriteCond %{REQUEST_URI} !/upgrade/.*$ [NC]
-# RewriteRule .* /upgrade/ [R=302,L]
-#</IfModule>
+<IfModule mod_rewrite.c>
+ RewriteEngine on
+ RewriteCond %{REMOTE_ADDR} !^(?:(?:46\.190\.82\.234)|(?:127\.0\.0\.1)|(?:192\.168\.1\.2))$
+ RewriteCond %{REQUEST_URI} !\.(jpe?g?|png|gif) [NC]
+ RewriteCond %{REQUEST_URI} !/upgrade/.*$ [NC]
+ RewriteRule .* /upgrade/ [R=302,L]
+</IfModule>
