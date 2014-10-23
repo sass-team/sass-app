@@ -13,7 +13,7 @@ require_once ROOT_PATH . "plugins/dropbox-php-sdk-1.1.3/lib/Dropbox/autoload.php
 use Dropbox as dbx;
 
 try {
-	$accessToken = DropboxFetcher::retrieveSingle($user->getId())[DropboxFetcher::DB_COLUMN_ACCESS_TOKEN];
+	$accessToken = DropboxFetcher::retrieveAdminAccessToken($user->getId())[DropboxFetcher::DB_COLUMN_ACCESS_TOKEN];
 //	var_dump($accessToken);
 	$appInfo = dbx\AppInfo::loadFromJsonFile($appInfoFile);
 	$clientIdentifier = "sass-app/1.0";
@@ -21,30 +21,30 @@ try {
 
 	if ($accessToken !== NULL) {
 		$dbxClient = new dbx\Client($accessToken, "PHP-Example/1.0");
-		$accountInfo = $dbxClient->getAccountInfo();
-		var_dump($accountInfo);
-
-		$filePath = ROOT_PATH . "storage/backups/";
-		$fileName = "database_backup_8_am_October_12_2014.sql.gz";
-		$f = fopen($filePath . $fileName, "rb");
-		$result = $dbxClient->uploadFile("/backups/$fileName", dbx\WriteMode::add(), $f);
-		fclose($f);
-		var_dump($result);
+		$adminAccountInfo = $dbxClient->getAccountInfo();
+//		var_dump($accountInfo);
+//
+//		$filePath = ROOT_PATH . "storage/backups/";
+//		$fileName = "database_backup_8_am_October_12_2014.sql.gz";
+//		$f = fopen($filePath . $fileName, "rb");
+//		$result = $dbxClient->uploadFile("/backups/$fileName", dbx\WriteMode::add(), $f);
+//		fclose($f);
+//		var_dump($result);
 	}
 
 	if (isBtnRqstTokenKeyPrsd()) {
 		$authorizeUrl = $webAuth->start();
 		header("Location: $authorizeUrl");
-	} else if (isset($_POST['dropbox-auth-finish'])) {
+	} else if (isset($_POST['dropbox-auth-finish-database-backup'])) {
 		$authCode = $_POST['dropbox-key-token'];
 		if (empty($authCode)) throw new Exception("Key token is required.");
 		list($accessToken, $userId) = $webAuth->finish($authCode);
-		DropboxCon::insertDatabaseToken($accessToken, $user->getId());
+		DropboxCon::insertAccessToken($accessToken, $user->getId(), DropboxCon::SERVICE_APP_DATABASE_BACKUP);
 
 		header('Location: ' . BASE_URL . "cloud/backups/success");
 		exit();
-	} else {
-
+	} else if (isset($_POST['dropbox-disconnect-database-backup'])) {
+		DropboxFetcher::disconnectService(DropboxCon::SERVICE_APP_DATABASE_BACKUP);
 	}
 
 } catch (Exception $e) {
@@ -139,12 +139,50 @@ $section = "cloud";
 								</tr>
 								</thead>
 								<tbody>
+								<?php
+								if ($accessToken !== NULL) {
+									?>
+									<tr>
+										<td>
+											<div class="thumbnail">
+												<img
+													src="<?php echo BASE_URL; ?>assets/img/logos/dropbox-database-sass.png"
+													width="125"
+													alt="Gallery Image"/>
+											</div>
+											<!-- /.thumbnail -->
+										</td>
+										<td><a href="https://www.dropbox.com/" title="Dropbox"
+										       target="_blank">Dropbox</a>
+
+											<p><strong>Account connected: <?php echo $adminAccountInfo['display_name']
+														. ", " .
+														$adminAccountInfo['email']; ?>
+												</strong></p>
+
+										</td>
+										<td class="text-center">
+											<div class="btn-group">
+												<button type="button" class="btn btn-default">
+													<i class="fa fa-dropbox fa-fw"></i>
+													Disconnect
+												</button>
+												<input type="hidden" class="form-control"
+												       name="dropbox-disconnect-database-backup">
+											</div>
+										</td>
+										<td>
+										</td>
+									</tr>
+								<?php
+								} else {
+								?>
 
 								<tr>
 
 									<td>
 										<div class="thumbnail">
-											<img src="<?php echo BASE_URL; ?>assets/img/logos/dropbox-logo.png"
+											<img src="<?php echo BASE_URL; ?>assets/img/logos/dropbox-database-sass.png"
 											     width="125"
 											     alt="Gallery Image"/>
 										</div>
@@ -154,8 +192,8 @@ $section = "cloud";
 
 										<p>Connects a Dropbox account with SASS App database files. <a
 												href="http://en.wikipedia.org/wiki/SQL" title="sql"
-												target="_blank">sql</a></p>
-
+												target="_blank">sql</a><br/>
+										</p>
 
 									</td>
 									<td class="text-center">
@@ -172,12 +210,16 @@ $section = "cloud";
 										</div>
 									</td>
 									<td>
-										<input type="hidden" class="form-control" name="dropbox-auth-finish">
+										<input type="hidden" class="form-control"
+										       name="dropbox-auth-finish-database-backup">
 										<input type="text" class="form-control" name="dropbox-key-token"
 										       placeholder="Key Token" required>
 									</td>
-								</tr>
 
+
+									<?php
+									}
+									?>
 
 								</tbody>
 							</table>

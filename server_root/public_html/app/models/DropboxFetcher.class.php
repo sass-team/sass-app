@@ -11,19 +11,21 @@ class DropboxFetcher
 	const DB_TABLE = "dropbox";
 	const DB_COLUMN_USER_ID = "user_id";
 	const DB_COLUMN_ACCESS_TOKEN = "access_token";
+	const DB_COLUMN_SERVICE_TYPE = "service_type";
 
-	public static function insertDatabaseToken($accessToken, $userId) {
+	public static function insertAccessToken($accessToken, $userId, $serviceType) {
 		try {
 			$query = "INSERT INTO `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
-			(`" . self::DB_COLUMN_ACCESS_TOKEN . "`, `" . self::DB_COLUMN_USER_ID . "`)
+			(`" . self::DB_COLUMN_ACCESS_TOKEN . "`, `" . self::DB_COLUMN_USER_ID . "`, `" . self::DB_COLUMN_SERVICE_TYPE . "`)
 				VALUES(
-					:access_token, :user_id
+					:access_token, :user_id, :service_type
 				)";
 
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
 			$query->bindParam(':access_token', $accessToken, PDO::PARAM_STR);
 			$query->bindParam(':user_id', $userId, PDO::PARAM_INT);
+			$query->bindParam(':service_type', $serviceType, PDO::PARAM_STR);
 
 			$query->execute();
 
@@ -35,57 +37,27 @@ class DropboxFetcher
 		return true;
 	}
 
-	public static function existsAccessToken($accessToken) {
+	public static function existsAccessToken($serviceType) {
 		try {
 			$query = "SELECT COUNT(" . self::DB_COLUMN_ACCESS_TOKEN . ")
 			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
-			WHERE `" . self::DB_COLUMN_ACCESS_TOKEN . "` = :dropbox_access_token";
+			WHERE `" . self::DB_COLUMN_SERVICE_TYPE . "` = :service_type";
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
-			$query->bindParam(':dropbox_access_token', $accessToken, PDO::PARAM_STR);
+			$query->bindParam(':service_type', $serviceType, PDO::PARAM_STR);
 			$query->execute();
 
 			if (strcmp($query->fetchColumn(), '0') === 0) return false;
 		} catch (Exception $e) {
-			throw new Exception("There was a problem with database verification. <br/> Please try again."
-				. $e->getMessage());
+			Mailer::sendDevelopers($e->getMessage(), __DIR__);
+			throw new Exception("There was a problem with the database. <br/> Please try again.");
 		}
 
 		return true;
 	}
 
-	public static function existsAccessTokenAdmin($adminId) {
-		try {
-			$query = "SELECT COUNT(" . self::DB_COLUMN_ACCESS_TOKEN . ")
-			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
-			INNER JOIN  `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . UserFetcher::DB_TABLE . "`
-			ON `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . UserFetcher::DB_TABLE . "`.`" .
-				UserFetcher::DB_COLUMN_ID . "`  = `" .
-				self::DB_TABLE . "`.`" . self::DB_COLUMN_USER_ID . "`
-			INNER JOIN  `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . UserTypesFetcher::DB_TABLE . "`
-			ON `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . UserTypesFetcher::DB_TABLE . "`.`" .
-				UserTypesFetcher::DB_COLUMN_ID . "`  = `" .
-				self::DB_TABLE . "`.`" . self::DB_COLUMN_USER_ID . "`
-			WHERE `" . self::DB_COLUMN_USER_ID . "` = :user_id
-			AND `" . UserTypesFetcher::DB_COLUMN_TYPE . "` = " . User::ADMIN;
 
-
-			$dbConnection = DatabaseManager::getConnection();
-			$query = $dbConnection->prepare($query);
-			$query->bindParam(':user_id', $adminId, PDO::PARAM_INT);
-
-			$query->execute();
-
-			if (strcmp($query->fetchColumn(), '0') === 0) return false;
-		} catch (Exception $e) {
-			throw new Exception("There was a problem with database verification. <br/> Please try again."
-				. $e->getMessage());
-		}
-
-		return true;
-	}
-
-	public static function retrieveSingle($userId) {
+	public static function retrieveAdminAccessToken($userId) {
 		$query = "SELECT `" . self::DB_COLUMN_ACCESS_TOKEN . "`
 		FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
 		WHERE `" . self::DB_COLUMN_USER_ID . "` = :user_id";
@@ -100,8 +72,24 @@ class DropboxFetcher
 			return $query->fetch(PDO::FETCH_ASSOC);
 		} catch (Exception $e) {
 			Mailer::sendDevelopers($e->getMessage(), __FILE__);
-			throw new Exception("Something went wrong with database access.<br/> Please try again.");
+			throw new Exception("Something went wrong with database access.<br/>Please try again.");
 		} // end catch
 	}
 
+	public static function disconnectServiceType() {
+		try {
+			$query = "DELETE
+			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			WHERE `" . self::DB_COLUMN_SERVICE_TYPE . "` = :service_type";
+
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
+			$query->bindParam(':service_type', $id, PDO::PARAM_STR);
+			$query->execute();
+			return true;
+		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
+			throw new Exception("Could not access database. <br/>Please try again.");
+		}
+	}
 } 

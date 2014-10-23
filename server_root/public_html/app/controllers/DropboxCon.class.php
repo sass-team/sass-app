@@ -8,13 +8,29 @@
  */
 class DropboxCon
 {
+	const SERVICE_APP_DATABASE_BACKUP = "service_app_database_backup";
+	const SERVICE_APP_EXCEL_BACKUP = "service_app_excel_backup";
 
-	public static function insertDatabaseToken($accessToken, $adminUserId) {
-		if (DropboxFetcher::existsAccessTokenAdmin($adminUserId)) throw new Exception(
-			"There is already a Dropbox account connected.");
-		if (!DropboxFetcher::insertDatabaseToken($accessToken, $adminUserId)) {
-			throw new Exception("Data was not inserted into database. Please try again.");
+	public static function insertAccessToken($accessToken, $userId, $serviceType) {
+		if (DropboxFetcher::existsAccessToken($serviceType)) throw new Exception(
+			"There is already a Dropbox account connected with chosen service.");
+		if (!DropboxFetcher::insertAccessToken($accessToken, $userId, $serviceType)) {
+			throw new Exception("No changes made on database. Please try again.");
 		}
 		return true;
+	}
+
+	public static function verifyServiceType($serviceType) {
+		switch ($serviceType) {
+			case self::SERVICE_APP_DATABASE_BACKUP:
+			case self::SERVICE_APP_EXCEL_BACKUP:
+				break;
+			default:
+				throw new Exception("Data has been malformed.");
+		}
+	}
+
+	public static function disconnectService($serviceType) {
+
 	}
 } 
