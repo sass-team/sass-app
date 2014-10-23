@@ -13,90 +13,51 @@ require_once ROOT_PATH . "plugins/dropbox-php-sdk-1.1.3/lib/Dropbox/autoload.php
 use Dropbox as dbx;
 
 try {
-	if (isBtnConnectDropboxPrsd()) {
-		$authorizeUrl = getWebAuth()->start();
-		header("Location: $authorizeUrl");
-		var_dump($_POST);
+	$accessToken = DropboxFetcher::retrieveSingle($user->getId())[DropboxFetcher::DB_COLUMN_ACCESS_TOKEN];
+//	var_dump($accessToken);
+	$appInfo = dbx\AppInfo::loadFromJsonFile($appInfoFile);
+	$clientIdentifier = "sass-app/1.0";
+	$webAuth = new dbx\WebAuthNoRedirect($appInfo, $clientIdentifier, "en");
 
-	} else if (isset($_GET['dropbox-auth-finish'])) {
-		try {
-			list($accessToken, $userId, $urlState) = getWebAuth()->finish($_GET);
-			// We didn't pass in $urlState to finish, and we're assuming the session can't be
-			// tampered with, so this should be null.
-			assert($urlState === null);
-		} catch (dbx\WebAuthException_BadRequest $ex) {
-			respondWithError(400, "Bad Request");
-			// Write full details to server error log.
-			// IMPORTANT: Never show the $ex->getMessage() string to the user -- it could contain
-			// sensitive information.
-			error_log("/dropbox-auth-finish: bad request: " . $ex->getMessage());
-			exit;
-		} catch (dbx\WebAuthException_BadState $ex) {
-			// Auth session expired.  Restart the auth process.
-			header("Location: " . getPath("dropbox-auth-start"));
-			exit;
-		} catch (dbx\WebAuthException_Csrf $ex) {
-			respondWithError(403, "Unauthorized", "CSRF mismatch");
-			// Write full details to server error log.
-			// IMPORTANT: Never show the $ex->getMessage() string to the user -- it contains
-			// sensitive information that could be used to bypass the CSRF check.
-			error_log("/dropbox-auth-finish: CSRF mismatch: " . $ex->getMessage());
-			exit;
-		} catch (dbx\WebAuthException_NotApproved $ex) {
-			throw new Exception("Not Authorized?");
-			exit;
-		} catch (dbx\WebAuthException_Provider $ex) {
-			error_log("/dropbox-auth-finish: unknown error: " . $ex->getMessage());
-			respondWithError(500, "Internal Server Error");
-			exit;
-		} catch (dbx\Exception $ex) {
-			error_log("/dropbox-auth-finish: error communicating with Dropbox API: " . $ex->getMessage());
-			respondWithError(500, "Internal Server Error");
-			exit;
-		}
+	if ($accessToken !== NULL) {
+		$dbxClient = new dbx\Client($accessToken, "PHP-Example/1.0");
+		$accountInfo = $dbxClient->getAccountInfo();
+		var_dump($accountInfo);
 
-		// NOTE: A real web app would store the access token in a database.
-		$_SESSION['access-token'] = $accessToken;
-
-		echo renderHtmlPage("Authorized!",
-			"Auth complete, <a href='" . htmlspecialchars(getPath("")) . "'>click here</a> to browse.");
-	} else {
+		$filePath = ROOT_PATH . "storage/backups/";
+		$fileName = "database_backup_8_am_October_12_2014.sql.gz";
+		$f = fopen($filePath . $fileName, "rb");
+		$result = $dbxClient->uploadFile("/backups/$fileName", dbx\WriteMode::add(), $f);
+		fclose($f);
+		var_dump($result);
 	}
+
+	if (isBtnRqstTokenKeyPrsd()) {
+		$authorizeUrl = $webAuth->start();
+		header("Location: $authorizeUrl");
+	} else if (isset($_POST['dropbox-auth-finish'])) {
+		$authCode = $_POST['dropbox-key-token'];
+		if (empty($authCode)) throw new Exception("Key token is required.");
+		list($accessToken, $userId) = $webAuth->finish($authCode);
+		DropboxCon::insertDatabaseToken($accessToken, $user->getId());
+
+		header('Location: ' . BASE_URL . "cloud/backups/success");
+		exit();
+	} else {
+
+	}
+
 } catch (Exception $e) {
 	$errors[] = $e->getMessage();
 }
 
-function respondWithError($code, $title, $body = "") {
-	$proto = $_SERVER['SERVER_PROTOCOL'];
-	header("$proto $code $title", true, $code);
-	$errors[] = $title . ": " . $body;
+
+function isModificationSuccess() {
+	return isset($_GET['success']) && strcmp($_GET['success'], 'y1!q' === 0);
 }
 
-function getWebAuth() {
 
-	list($appInfo, $clientIdentifier, $userLocale) = getAppConfig();
-
-	$redirectUri = "http://" . $_SERVER['SERVER_NAME'] . "/cloud/backups/dropbox-auth-finish";
-	$csrfTokenStore = new dbx\ArrayEntryStore($_SESSION, 'dropbox-auth-csrf-token');
-	return new dbx\WebAuth($appInfo, $clientIdentifier, $redirectUri, $csrfTokenStore, $userLocale);
-}
-
-function getAppConfig() {
-	global $appInfoFile;
-
-	try {
-		$appInfo = dbx\AppInfo::loadFromJsonFile($appInfoFile);
-	} catch (dbx\AppInfoLoadException $ex) {
-		throw new Exception("Unable to load \"$appInfoFile\": " . $ex->getMessage());
-	}
-
-	$clientIdentifier = "sass-app/1.0";
-	$userLocale = null;
-
-	return array($appInfo, $clientIdentifier, $userLocale);
-}
-
-function isBtnConnectDropboxPrsd() {
+function isBtnRqstTokenKeyPrsd() {
 	return isset($_POST['dropbox-auth-start']) && empty($_POST['dropbox-auth-start']);
 }
 
@@ -147,22 +108,34 @@ $section = "cloud";
 						snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
 					?>
 				</div>
-			<?php } ?>
+			<?php
+			} else if (isModificationSuccess()) {
+				?>
+				<div class="alert alert-success">
+					<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+					<strong>Data successfully modified!</strong> <br/>
+				</div>
+			<?php
+			}?>
+
+
 			<div class="row">
 
 				<div class="col-md-12">
 
 					<div class="table-responsive">
 
-						<form method="post" id="add-student-form"
-						      action="<?php echo BASE_URL . 'cloud/backups'; ?>"
+						<form method="post" action="<?php echo BASE_URL . 'cloud/backups'; ?>"
+						      id="request-dropbox-connection-form"
 						      class="form">
 							<table class="table table-striped table-bordered media-table">
 								<thead>
 								<tr>
 									<th style="width: 150px">Services</th>
 									<th>Description</th>
-									<th class="text-center">Actions</th>
+									<th class="text-center">Action</th>
+									<th class="text-center">Keys</th>
+
 								</tr>
 								</thead>
 								<tbody>
@@ -186,8 +159,22 @@ $section = "cloud";
 
 									</td>
 									<td class="text-center">
-										<button type="submit" class="btn btn-block btn-primary">Connect</button>
-										<input type="hidden" name="dropbox-auth-start" value="">
+										<div class="btn-group">
+											<button type="button" class="btn btn-default dropdown-toggle"
+											        data-toggle="dropdown"><i class="fa fa-dropbox fa-fw"></i>
+												Request
+												<span class="caret"></span>
+											</button>
+											<ul class="dropdown-menu" role="menu">
+												<li><a id="request-dropbox-key-token-btn">Key Token</a></li>
+												<li><a id="request-dropbox-connection-btn">Connection</a></li>
+											</ul>
+										</div>
+									</td>
+									<td>
+										<input type="hidden" class="form-control" name="dropbox-auth-finish">
+										<input type="text" class="form-control" name="dropbox-key-token"
+										       placeholder="Key Token" required>
 									</td>
 								</tr>
 
@@ -195,7 +182,10 @@ $section = "cloud";
 								</tbody>
 							</table>
 						</form>
-
+						<form target="_blank" id="request-dropbox-key-token-form" method="post"
+						      action="<?php echo BASE_URL . 'cloud/backups'; ?>">
+							<input type="hidden" name="dropbox-auth-start" value="">
+						</form>
 					</div>
 					<!-- /.table-responsive -->
 
@@ -221,6 +211,17 @@ $section = "cloud";
 
 <?php include ROOT_PATH . "views/assets/footer_common.php"; ?>
 
+<script type="text/javascript">
+	$(function () {
+		$('#request-dropbox-key-token-btn').on('click', function () {
+			$('#request-dropbox-key-token-form').submit();
+		});
 
+		$('#request-dropbox-connection-btn').on('click', function () {
+			$('#request-dropbox-connection-form').submit();
+		});
+
+	});
+</script>
 </body>
 </html>
