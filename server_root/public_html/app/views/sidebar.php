@@ -191,6 +191,33 @@
 	</ul>
 </li>
 
+<?php if ($user->isAdmin()) { ?>
+	<li class="dropdown <?php if ($section == "cloud") {
+		echo "active";
+	} ?>">
+		<a href="javascript:;">
+			<i class="fa fa-cloud"></i>
+			Cloud
+			<span class="caret"></span>
+		</a>
+
+		<ul class="sub-nav" style="">
+			<li>
+				<a href="<?php echo BASE_URL; ?>cloud/backups">
+					<i class="fa fa-database"></i>
+					Backups
+				</a>
+			</li>
+<!--			<li>-->
+<!--				<a href="--><?php //echo BASE_URL; ?><!--cloud/excel">-->
+<!--					<i class="fa fa-file-excel-o"></i>-->
+<!--					Excel-->
+<!--				</a>-->
+<!--			</li>-->
+		</ul>
+	</li>
+
+<?php } ?>
 
 <li class="<?php if ($section == "support") {
 	echo "active";
@@ -201,33 +228,6 @@
 	</a>
 </li>
 
-<?php //if (!$user->isTutor()) { ?>
-<!--	<li class="dropdown --><?php //if ($section == "backups") {
-//		echo "active";
-//	} ?><!--">-->
-<!--		<a href="javascript:;">-->
-<!--			<i class="fa fa-database"></i>-->
-<!--			Backups-->
-<!--			<span class="caret"></span>-->
-<!--		</a>-->
-<!---->
-<!--		<ul class="sub-nav" style="">-->
-<!--			<li>-->
-<!--				<a href="--><?php //echo BASE_URL; ?><!--backups/dropbox">-->
-<!--					<i class="fa fa-dropbox"></i>-->
-<!--					Dropbox-->
-<!--				</a>-->
-<!--			</li>-->
-<!--			<li>-->
-<!--				<a href="--><?php //echo BASE_URL; ?><!--backups/excel">-->
-<!--					<i class="fa fa-file-excel-o"></i>-->
-<!--					Excel-->
-<!--				</a>-->
-<!--			</li>-->
-<!--		</ul>-->
-<!--	</li>-->
-<!---->
-<?php //} ?>
 
 </ul>
 

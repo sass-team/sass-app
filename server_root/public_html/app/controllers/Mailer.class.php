@@ -58,11 +58,11 @@ class Mailer
 			$reportLink = "<a style='background-color:#008dd0;color:#fff;border-radius:4px;display:block;
 		text-decoration:none;margin-top:30px;margin-bottom:15px;margin-right:0px;margin-left:0px;padding-top:20px;
 		padding-bottom:20px;padding-right:20px;padding-left:20px;text-align:center'
-		href='http://" . (isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : "sass.vv.si") . "/appointments/" .
+		href='http://" . (isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : "sass.zz.vc") . "/appointments/" .
 				$appointmentData[AppointmentFetcher::DB_COLUMN_ID] . "' target='_blank' >View Report</a><br/>";
 			$appointmentStart = new DateTime($appointmentData[AppointmentFetcher::DB_COLUMN_START_TIME]);
 			$appointmentEnd = new DateTime($appointmentData[AppointmentFetcher::DB_COLUMN_END_TIME]);
-			$senderEmail = self::NO_REPLY_EMAIL_PREFIX . (isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'sass.vv.si');
+			$senderEmail = self::NO_REPLY_EMAIL_PREFIX . (isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'sass.zz.vc');
 			$senderName = self::SASS_APP_AUTOMATIC_SYSTEM;
 			$receiverEmail = $tutorUser[UserFetcher::DB_COLUMN_EMAIL];
 			$receiverName = $tutorUser[UserFetcher::DB_COLUMN_FIRST_NAME] . " " . $tutorUser[UserFetcher::DB_COLUMN_LAST_NAME];;

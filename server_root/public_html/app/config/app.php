@@ -37,8 +37,4 @@
 define("BASE_URL", "/");
 define("ROOT_PATH", __DIR__ . "/../");
 
-// removed for safety reasons.
-
-
-
-?>
+require ROOT_PATH . "config/loadAllClasses.php";
