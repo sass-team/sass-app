@@ -21,8 +21,13 @@ try {
 	$webAuth = new dbx\WebAuthNoRedirect($appInfo, $clientIdentifier, "en");
 
 	if ($accessToken !== NULL) {
-		$dbxClient = new dbx\Client($accessToken, "PHP-Example/1.0");
-		$adminAccountInfo = $dbxClient->getAccountInfo();
+		try {
+			$dbxClient = new dbx\Client($accessToken, "PHP-Example/1.0");
+			$adminAccountInfo = $dbxClient->getAccountInfo();
+		} catch (Exception $e) {
+			$errors[] = "Could not access dropbox account. Maybe user has revoked access?";
+		}
+
 
 //		$filePath = ROOT_PATH . "storage/backups/";
 //		$fileName = "database_backup_8_am_October_12_2014.sql.gz";
