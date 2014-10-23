@@ -57,16 +57,16 @@ class DropboxFetcher
 	}
 
 
-	public static function retrieveAdminAccessToken($userId) {
+	public static function retrieveAccessToken($serviceType) {
 		$query = "SELECT `" . self::DB_COLUMN_ACCESS_TOKEN . "`
 		FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
-		WHERE `" . self::DB_COLUMN_USER_ID . "` = :user_id";
+		WHERE `" . self::DB_COLUMN_SERVICE_TYPE . "` = :service_type";
 
 		try {
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
 
-			$query->bindParam(':user_id', $userId, PDO::PARAM_INT);
+			$query->bindParam(':service_type', $serviceType, PDO::PARAM_STR);
 
 			$query->execute();
 			return $query->fetch(PDO::FETCH_ASSOC);
@@ -76,7 +76,7 @@ class DropboxFetcher
 		} // end catch
 	}
 
-	public static function disconnectServiceType() {
+	public static function disconnectServiceType($serviceType) {
 		try {
 			$query = "DELETE
 			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
@@ -84,7 +84,7 @@ class DropboxFetcher
 
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
-			$query->bindParam(':service_type', $id, PDO::PARAM_STR);
+			$query->bindParam(':service_type', $serviceType, PDO::PARAM_STR);
 			$query->execute();
 			return true;
 		} catch (Exception $e) {

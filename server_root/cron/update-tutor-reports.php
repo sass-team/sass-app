@@ -8,7 +8,7 @@
 
 
 try {
-	require __DIR__ . '/init.php';
+	require "../public_html/app/config/app.php";
 	date_default_timezone_set('Europe/Athens');
 
 	$curWorkingDate = new DateTime();

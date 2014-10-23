@@ -1,6 +1,6 @@
 <?php
 if (is_ajax()) {
-	require 'init.php';
+	require "../app/config/app.php";
 	header('Content-Type: application/json');
 
 	try {

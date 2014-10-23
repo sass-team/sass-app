@@ -13,7 +13,7 @@ require_once ROOT_PATH . "plugins/dropbox-php-sdk-1.1.3/lib/Dropbox/autoload.php
 use Dropbox as dbx;
 
 try {
-	$accessToken = DropboxFetcher::retrieveAdminAccessToken($user->getId())[DropboxFetcher::DB_COLUMN_ACCESS_TOKEN];
+	$accessToken = DropboxFetcher::retrieveAccessToken($user->getId())[DropboxFetcher::DB_COLUMN_ACCESS_TOKEN];
 //	var_dump($accessToken);
 	$appInfo = dbx\AppInfo::loadFromJsonFile($appInfoFile);
 	$clientIdentifier = "sass-app/1.0";
@@ -22,14 +22,12 @@ try {
 	if ($accessToken !== NULL) {
 		$dbxClient = new dbx\Client($accessToken, "PHP-Example/1.0");
 		$adminAccountInfo = $dbxClient->getAccountInfo();
-//		var_dump($accountInfo);
-//
+
 //		$filePath = ROOT_PATH . "storage/backups/";
 //		$fileName = "database_backup_8_am_October_12_2014.sql.gz";
 //		$f = fopen($filePath . $fileName, "rb");
 //		$result = $dbxClient->uploadFile("/backups/$fileName", dbx\WriteMode::add(), $f);
 //		fclose($f);
-//		var_dump($result);
 	}
 
 	if (isBtnRqstTokenKeyPrsd()) {
@@ -44,7 +42,9 @@ try {
 		header('Location: ' . BASE_URL . "cloud/backups/success");
 		exit();
 	} else if (isset($_POST['dropbox-disconnect-database-backup'])) {
-		DropboxFetcher::disconnectService(DropboxCon::SERVICE_APP_DATABASE_BACKUP);
+		DropboxFetcher::disconnectServiceType(DropboxCon::SERVICE_APP_DATABASE_BACKUP);
+		header('Location: ' . BASE_URL . "cloud/backups/success");
+		exit();
 	}
 
 } catch (Exception $e) {
@@ -163,7 +163,7 @@ $section = "cloud";
 										</td>
 										<td class="text-center">
 											<div class="btn-group">
-												<button type="button" class="btn btn-default">
+												<button type="button" class="btn btn-default" id="disconnect-dropbox-database-btn">
 													<i class="fa fa-dropbox fa-fw"></i>
 													Disconnect
 												</button>
@@ -262,6 +262,11 @@ $section = "cloud";
 		$('#request-dropbox-connection-btn').on('click', function () {
 			$('#request-dropbox-connection-form').submit();
 		});
+
+		$('#disconnect-dropbox-database-btn').on('click', function () {
+			$('#request-dropbox-connection-form').submit();
+		});
+
 
 	});
 </script>
