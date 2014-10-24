@@ -173,8 +173,8 @@ class AppointmentHasStudentFetcher
 
 	public static function retrieveAll() {
 		$query =
-			"SELECT `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_APPOINTMENT_ID . "` , `" . self::DB_COLUMN_STUDENT_ID . "`,
-			 `" . self::DB_COLUMN_REPORT_ID . "`,  `" . self::DB_COLUMN_INSTRUCTOR_ID . "`
+			"SELECT `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_APPOINTMENT_ID . "` , `" .
+			self::DB_COLUMN_STUDENT_ID . "`, `" . self::DB_COLUMN_REPORT_ID . "`,  `" . self::DB_COLUMN_INSTRUCTOR_ID . "`
 			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`";
 
 		try {
@@ -188,6 +188,58 @@ class AppointmentHasStudentFetcher
 			throw new Exception("Could not retrieve data from database.");
 		}
 	}
+
+
+	public static function retrieveForTerm($termId) {
+		$query =
+			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` , `" . self::DB_TABLE . "`.`" .
+			self::DB_COLUMN_APPOINTMENT_ID . "` , `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_STUDENT_ID . "`,
+			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_REPORT_ID . "`,  `" . self::DB_TABLE . "`.`" .
+			self::DB_COLUMN_INSTRUCTOR_ID . "`,
+
+			`" . StudentFetcher::DB_TABLE . "`.`" .
+			StudentFetcher::DB_COLUMN_FIRST_NAME . "`, `" . StudentFetcher::DB_TABLE . "`.`" .
+			StudentFetcher::DB_COLUMN_LAST_NAME . "`, `" . StudentFetcher::DB_TABLE . "`.`" .
+			StudentFetcher::DB_COLUMN_STUDENT_ID . "`, `" . StudentFetcher::DB_TABLE . "`.`" .
+			StudentFetcher::DB_COLUMN_MOBILE . "`, `" . StudentFetcher::DB_TABLE . "`.`" .
+			StudentFetcher::DB_COLUMN_EMAIL . "`,
+
+			 `" . InstructorFetcher::DB_TABLE . "`.`" . InstructorFetcher::DB_COLUMN_FIRST_NAME . "` AS
+			 " . InstructorFetcher::DB_TABLE . "_" . InstructorFetcher::DB_COLUMN_FIRST_NAME . ",
+				 `" . InstructorFetcher::DB_TABLE . "`.`" . InstructorFetcher::DB_COLUMN_LAST_NAME . "` AS
+			 " . InstructorFetcher::DB_TABLE . "_" . InstructorFetcher::DB_COLUMN_LAST_NAME . ",
+
+			`" . MajorFetcher::DB_TABLE . "`.`" .
+			MajorFetcher::DB_COLUMN_CODE . "`, `" . MajorFetcher::DB_TABLE . "`.`" .
+			MajorFetcher::DB_COLUMN_NAME . "`
+			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . AppointmentFetcher::DB_TABLE . "`
+			INNER JOIN `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			ON `" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_ID . "` =
+			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_APPOINTMENT_ID . "`
+			INNER JOIN `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . StudentFetcher::DB_TABLE . "`
+			ON `" . StudentFetcher::DB_TABLE . "`.`" . StudentFetcher::DB_COLUMN_ID . "` =
+			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_STUDENT_ID . "`
+			INNER JOIN `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . MajorFetcher::DB_TABLE . "`
+			ON `" . MajorFetcher::DB_TABLE . "`.`" . MajorFetcher::DB_COLUMN_ID . "` =
+			`" . StudentFetcher::DB_TABLE . "`.`" . StudentFetcher::DB_COLUMN_MAJOR_ID . "`
+				INNER JOIN `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . InstructorFetcher::DB_TABLE . "`
+			ON `" . InstructorFetcher::DB_TABLE . "`.`" . InstructorFetcher::DB_COLUMN_ID . "` =
+			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_INSTRUCTOR_ID . "`
+			WHERE `" . AppointmentFetcher::DB_COLUMN_TERM_ID . "` = :term_id";
+
+		try {
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
+			$query->bindParam(':term_id', $termId, PDO::PARAM_INT);
+			$query->execute();
+
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
+			throw new Exception("Could not retrieve data from database.");
+		}
+	}
+
 
 	public static function retrieveAllOnCurTerm() {
 		$query =

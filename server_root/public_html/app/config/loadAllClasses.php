@@ -28,7 +28,7 @@ require_once ROOT_PATH . "controllers/Student.class.php";
 require_once ROOT_PATH . "controllers/Dates.class.php";
 require_once ROOT_PATH . "controllers/Mailer.class.php";
 require_once ROOT_PATH . "controllers/DropboxCon.class.php";
-
+require_once ROOT_PATH . "controllers/Excel.class.php";
 
 require_once ROOT_PATH . "models/UserFetcher.class.php";
 require_once ROOT_PATH . "models/TutorFetcher.class.php";
