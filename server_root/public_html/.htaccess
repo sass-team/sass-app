@@ -2,8 +2,9 @@
 RewriteEngine On
 RewriteBase /
 
-RewriteRule ^([a-z\-]+)/([a-z\-]+)$ /$1/$2.php [L]
-RewriteRule ^([a-z]+)$ /$1.php [L]
+RewriteRule ^([a-z\-]+)/([a-z\-]+)/?$ /$1/$2.php [L]
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([a-z]+)/?$ /$1.php [L]
 RewriteRule ^appointments/([0-9]+)$ /appointments/index.php?appointmentId=$1 [L]
 RewriteRule ^appointments/calendar/([0-9]+)$ /appointments/calendar.php?tutorId=$1 [L]
 RewriteRule ^appointments/add/success$ /appointments/add.php?success=y1!q [L]
@@ -36,7 +37,7 @@ ErrorDocument 500 /error-500
 # MAINTENANCE-PAGE REDIRECT #|(?::1)
 #<IfModule mod_rewrite.c>
 # RewriteEngine on
-# RewriteCond %{REMOTE_ADDR} !^(?:(?:46\.190\.82\.234)|(?:127\.0\.0\.1)|(?:192\.168\.1\.2))$
+# RewriteCond %{REMOTE_ADDR} !^(?:(?:176\.58\.134\.20)|(?:127\.0\.0\.1)|(?:192\.168\.1\.2))$
 # RewriteCond %{REQUEST_URI} !\.(jpe?g?|png|gif) [NC]
 # RewriteCond %{REQUEST_URI} !/upgrade/.*$ [NC]
 # RewriteRule .* /upgrade/ [R=302,L]

@@ -18,29 +18,29 @@ try {
 
 	$terms = TermFetcher::retrieveAll();
 
-	$accessToken = DropboxFetcher::retrieveAccessToken(DropboxCon::SERVICE_APP_DATABASE_BACKUP)[DropboxFetcher::DB_COLUMN_ACCESS_TOKEN];
+	$accessTokenDatabase = DropboxFetcher::retrieveAccessToken(DropboxCon::SERVICE_APP_DATABASE_BACKUP)[DropboxFetcher::DB_COLUMN_ACCESS_TOKEN];
 	$appInfo = dbx\AppInfo::loadFromJsonFile($appInfoFile);
 	$clientIdentifier = "sass-app/1.0";
 	$webAuth = new dbx\WebAuthNoRedirect($appInfo, $clientIdentifier, "en");
 
-	if ($accessToken !== NULL) {
+	if ($accessTokenDatabase !== NULL) {
 		try {
-			$dbxClient = new dbx\Client($accessToken, "PHP-Example/1.0");
-			$accountInfo = $dbxClient->getAccountInfo();
+			$dbxClient = new dbx\Client($accessTokenDatabase, "PHP-Example/1.0");
+			$accountInfoDatabase = $dbxClient->getAccountInfo();
 		} catch (Exception $e) {
 			$errors[] = "Could not access Dropbox account. Maybe user has revoked access?";
 		}
 
 	}
 
-	if (isBtnRqstTokenKeyPrsd()) {
+	if (isBtnRqstTokenDatabaseDropboxKeyPrsd()) {
 		$authorizeUrl = $webAuth->start();
 		header("Location: $authorizeUrl");
 	} else if (isBtnRqstDropboxConnectionPrsd()) {
-		$authCode = $_POST['dropbox-key-token'];
+		$authCode = $_POST['dropbox-key-token-db-database'];
 		if (empty($authCode)) throw new Exception("Key token is required.");
-		list($accessToken, $userId) = $webAuth->finish($authCode);
-		DropboxCon::insertAccessToken($accessToken, $user->getId(), DropboxCon::SERVICE_APP_DATABASE_BACKUP);
+		list($accessTokenDatabase, $userId) = $webAuth->finish($authCode);
+		DropboxCon::insertAccessToken($accessTokenDatabase, $user->getId(), DropboxCon::SERVICE_APP_DATABASE_BACKUP);
 
 		header('Location: ' . BASE_URL . "cloud/success");
 		exit();
@@ -96,6 +96,17 @@ try {
 	} else if (isBtnRqstDownloadExcelKeyPrsd()) {
 		Excel::downloadAppointments($_POST['termId']);
 		exit();
+	} else if (isBtnRqstDropboxConnectExcelKeyPrsd()) {
+		$authCode = $_POST['request-dropbox-key-connection-excel-btn'];
+		if (empty($authCode)) throw new Exception("Key token is required.");
+		list($accessTokenDatabase, $userId) = $webAuth->finish($authCode);
+		DropboxCon::insertAccessToken($accessTokenDatabase, $user->getId(), DropboxCon::SERVICE_APP_EXCEL_BACKUP);
+
+		header('Location: ' . BASE_URL . "cloud/success");
+		exit();
+	} else if (isBtnRqstTokenExcelDropboxKeyPrsd()) {
+		$authorizeUrl = $webAuth->start();
+		header("Location: $authorizeUrl");
 	}
 
 } catch (Exception $e) {
@@ -124,12 +135,21 @@ function download($f_location, $f_name) {
 	readfile($f_location);
 }
 
+function isDropboxConnectedToDatabase() {
+	return isset($accessTokenDatabase) && $accessTokenDatabase !== NULL && isset($accountInfoDatabase);
+}
+
+
 function isModificationSuccess() {
 	return isset($_GET['success']) && strcmp($_GET['success'], 'y1!q' === 0);
 }
 
-function isBtnRqstTokenKeyPrsd() {
-	return isset($_POST['request-dropbox-key-token-btn']) && empty($_POST['request-dropbox-key-token-btn']);
+function isBtnRqstTokenDatabaseDropboxKeyPrsd() {
+	return isset($_POST['request-dropbox-key-token-db-database-btn']) && empty($_POST['request-dropbox-key-token-db-database-btn']);
+}
+
+function isBtnRqstDropboxConnectExcelKeyPrsd() {
+	return isset($_POST['request-dropbox-key-connection-excel-btn']) && empty($_POST['request-dropbox-key-connection-excel-btn']);
 }
 
 
@@ -139,6 +159,10 @@ function isBtnRqstDownloadExcelKeyPrsd() {
 
 function isBtnRqstDnldDBKeyPrsd() {
 	return isset($_POST['download-sass-backup-database-btn']) && empty($_POST['download-sass-backup-database-btn']);
+}
+
+function isBtnRqstTokenExcelDropboxKeyPrsd() {
+	return isset($_POST['request-dropbox-key-token-db-excel-btn']) && empty($_POST['request-dropbox-key-token-db-excel-btn']);
 }
 
 
@@ -178,194 +202,271 @@ require ROOT_PATH . 'views/sidebar.php';
 <div id="content-container">
 
 
-	<h3 class="heading">Cloud Services</h3>
-	<?php
-	if (empty($errors) === false) {
+<h3 class="heading">Cloud Services</h3>
+<?php
+if (empty($errors) === false) {
+	?>
+	<div class="alert alert-danger">
+		<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+		<strong>Oh
+			snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
 		?>
-		<div class="alert alert-danger">
-			<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-			<strong>Oh
-				snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
-			?>
-		</div>
-	<?php
-	} else if (isModificationSuccess()) {
-		?>
-		<div class="alert alert-success">
-			<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-			<strong>Data successfully modified!</strong> <br/>
-		</div>
-	<?php
-	}?>
-
-
-	<div class="row">
-
-		<div class="col-md-12">
-
-			<div class="table-responsive">
-
-				<form method="post" action="<?php echo BASE_URL . 'cloud'; ?>"
-				      id="request-full-form"
-				      class="form">
-					<table class="table table-striped table-bordered media-table">
-						<thead>
-
-						<tr>
-							<th style="width: 150px">Services</th>
-							<th>Description</th>
-							<th class="text-center">Action</th>
-							<th class="text-center">Data Required</th>
-
-						</tr>
-						</thead>
-						<tbody>
-						<tr>
-							<td>
-								<div class="thumbnail">
-									<img
-										src="<?php echo BASE_URL; ?>assets/img/logos/logo-sass-excel.png"
-										width="125"
-										alt="logo sass-excel"/>
-								</div>
-								<!-- /.thumbnail -->
-							</td>
-							<td>
-								<p>Download appointments as excel file. (Excel 2007)</p>
-							</td>
-							<td class="text-center">
-								<div class="btn-group">
-									<button type="button" class="btn btn-default" id="download-appointments-excel-btn">
-										<i class="fa fa-download fa-fw"></i>
-										Download
-									</button>
-								</div>
-							</td>
-							<td>
-								<select id="termId" name="termId" class="form-control" required>
-									<?php
-									foreach ($terms as $term) {
-										include(ROOT_PATH . "views/partials/term/select-options-view.html.php");
-									}
-									?>
-								</select>
-							</td>
-						</tr>
-						<?php
-						if ($accessToken !== NULL && isset($accountInfo)) {
-							?>
-							<tr>
-								<td>
-									<div class="thumbnail">
-										<img
-											src="<?php echo BASE_URL; ?>assets/img/logos/dropbox-database-sass.png"
-											width="125"
-											alt="logo sass-dropbox-database"/>
-									</div>
-									<!-- /.thumbnail -->
-								</td>
-								<td><a href="https://www.dropbox.com/" title="Dropbox"
-								       target="_blank">Dropbox</a>
-
-									<p><strong>Account
-											connected:</strong> <?php echo $accountInfo['display_name']
-											. ", " . $accountInfo['email']; ?>
-									</p>
-
-								</td>
-								<td class="text-center">
-									<div class="btn-group">
-										<button type="button" class="btn btn-default"
-										        id="disconnect-dropbox-database-btn">
-											<i class="fa fa-dropbox fa-fw"></i>
-											Disconnect
-										</button>
-									</div>
-								</td>
-								<td>
-								</td>
-							</tr>
-						<?php
-						} else {
-						?>
-
-						<tr>
-							<td>
-								<div class="thumbnail">
-									<img src="<?php echo BASE_URL; ?>assets/img/logos/dropbox-database-sass.png"
-									     width="125"
-									     alt="logo sass-dropbox-database"/>
-								</div>
-								<!-- /.thumbnail -->
-							</td>
-							<td><a href="https://www.dropbox.com/" title="Dropbox" target="_blank">Dropbox</a>
-
-								<p>Connects a Dropbox account with SASS App database files. <a
-										href="http://en.wikipedia.org/wiki/SQL" title="SQL"
-										target="_blank">SQL</a><br/>
-								</p>
-
-							</td>
-							<td class="text-center">
-								<div class="btn-group">
-									<button type="button" class="btn btn-default dropdown-toggle"
-									        data-toggle="dropdown"><i class="fa fa-dropbox fa-fw"></i>
-										Request
-										<span class="caret"></span>
-									</button>
-									<ul class="dropdown-menu" role="menu">
-										<li><a id="request-dropbox-key-token-btn">Key Token</a></li>
-										<li><a id="request-dropbox-key-connection-btn">Connection</a></li>
-									</ul>
-								</div>
-							</td>
-							<td>
-								<input type="text" class="form-control" name="dropbox-key-token"
-								       placeholder="Key Token" required>
-							</td>
-							<?php
-							}
-							?>
-						<tr>
-							<td>
-								<div class="thumbnail">
-									<img
-										src="<?php echo BASE_URL; ?>assets/img/logos/sass-db-export.png"
-										width="125"
-										alt="logo sass-export-database"/>
-								</div>
-								<!-- /.thumbnail -->
-							</td>
-							<td>
-								<a href="http://en.wikipedia.org/wiki/SQL" title="sql"
-								   target="_blank">SQL</a><br/>
-
-								<p>Create a full SASS App database backup and download.</p>
-							</td>
-							<td class="text-center">
-								<div class="btn-group">
-									<button type="button" class="btn btn-default"
-									        id="download-sass-backup-database-btn">
-										<i class="fa fa-download fa-fw"></i>
-										Download
-									</button>
-								</div>
-							</td>
-							<td>
-							</td>
-						</tr>
-						</tbody>
-					</table>
-				</form>
-			</div>
-			<!-- /.table-responsive -->
-
-
-		</div>
-		<!-- /.col -->
-
 	</div>
-	<!-- /.row -->
+<?php
+} else if (isModificationSuccess()) {
+	?>
+	<div class="alert alert-success">
+		<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+		<strong>Data successfully modified!</strong> <br/>
+	</div>
+<?php
+}?>
+
+
+<div class="row">
+
+<div class="col-md-12">
+
+<div class="table-responsive">
+
+<form method="post" action="<?php echo BASE_URL . 'cloud/'; ?>"
+      id="request-full-form"
+      class="form">
+<table class="table table-striped table-bordered media-table">
+<thead>
+
+<tr>
+	<th style="width: 150px">Services</th>
+	<th>Description</th>
+	<th class="text-center">Action</th>
+	<th class="text-center">Data Required</th>
+
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>
+		<div class="thumbnail">
+			<img
+				src="<?php echo BASE_URL; ?>assets/img/logos/logo-sass-excel.png"
+				width="125"
+				alt="logo sass-excel"/>
+		</div>
+		<!-- /.thumbnail -->
+	</td>
+	<td>
+		<p>Manually create <strong>Visit Log as excel file and download.</strong> (Excel 2007)</p>
+	</td>
+	<td class="text-center">
+		<div class="btn-group">
+			<button type="button" class="btn btn-default" id="download-appointments-excel-btn">
+				<i class="fa fa-download fa-fw"></i>
+				Download
+			</button>
+		</div>
+	</td>
+	<td>
+		<select id="termId" name="termId" class="form-control" required>
+			<?php
+			foreach ($terms as $term) {
+				include(ROOT_PATH . "views/partials/term/select-options-view.html.php");
+			}
+			?>
+		</select>
+	</td>
+</tr>
+<?php
+
+if (isDropboxConnectedToDatabase()) {
+	?>
+	<tr>
+		<td>
+			<div class="thumbnail">
+				<img
+					src="<?php echo BASE_URL; ?>assets/img/logos/dropbox-database-sass.png"
+					width="125"
+					alt="logo sass-dropbox-database"/>
+			</div>
+			<!-- /.thumbnail -->
+		</td>
+		<td><a href="https://www.dropbox.com/" title="Dropbox"
+		       target="_blank">Dropbox</a>
+
+			<p><strong>Account
+					connected:</strong> <?php echo $accountInfoDatabase['display_name']
+					. ", " . $accountInfoDatabase['email']; ?>
+			</p>
+
+		</td>
+		<td class="text-center">
+			<div class="btn-group">
+				<button type="button" class="btn btn-default"
+				        id="disconnect-dropbox-database-btn">
+					<i class="fa fa-dropbox fa-fw"></i>
+					Disconnect
+				</button>
+			</div>
+		</td>
+		<td>
+		</td>
+	</tr>
+<?php
+} else {
+	?>
+
+	<tr>
+		<td>
+			<div class="thumbnail">
+				<img src="<?php echo BASE_URL; ?>assets/img/logos/logo-sass-dropbox-excel.png"
+				     width="125"
+				     alt="logo sass-dropbox-database"/>
+			</div>
+			<!-- /.thumbnail -->
+		</td>
+		<td><a href="https://www.dropbox.com/" title="Dropbox" target="_blank">Dropbox</a>
+
+			<p>Connect a Dropbox account with SASS App <strong>Visit Log Excel</strong> files.</p>
+
+		</td>
+		<td class="text-center">
+			<div class="btn-group">
+				<button type="button" class="btn btn-default dropdown-toggle"
+				        data-toggle="dropdown"><i class="fa fa-dropbox fa-fw"></i>
+					Request
+					<span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu" role="menu">
+					<li><a id="request-dropbox-key-token-db-excel-btn">Key Token</a></li>
+					<li><a id="request-dropbox-key-connection-excel-btn">Connection</a></li>
+				</ul>
+			</div>
+		</td>
+		<td>
+			<input type="text" class="form-control" name="dropbox-key-token-db"
+			       placeholder="Key Token" required>
+		</td>
+	</tr>
+<?php
+}
+?>
+<?php
+
+if (isDropboxConnectedToDatabase()) {
+	?>
+	<tr>
+		<td>
+			<div class="thumbnail">
+				<img
+					src="<?php echo BASE_URL; ?>assets/img/logos/dropbox-database-sass.png"
+					width="125"
+					alt="logo sass-dropbox-database"/>
+			</div>
+			<!-- /.thumbnail -->
+		</td>
+		<td><a href="https://www.dropbox.com/" title="Dropbox"
+		       target="_blank">Dropbox</a>
+
+			<p><strong>Account
+					connected:</strong> <?php echo $accountInfoDatabase['display_name']
+					. ", " . $accountInfoDatabase['email']; ?>
+			</p>
+
+		</td>
+		<td class="text-center">
+			<div class="btn-group">
+				<button type="button" class="btn btn-default"
+				        id="disconnect-dropbox-database-btn">
+					<i class="fa fa-dropbox fa-fw"></i>
+					Disconnect
+				</button>
+			</div>
+		</td>
+		<td>
+		</td>
+	</tr>
+<?php
+} else {
+	?>
+
+	<tr>
+		<td>
+			<div class="thumbnail">
+				<img src="<?php echo BASE_URL; ?>assets/img/logos/dropbox-database-sass.png"
+				     width="125"
+				     alt="logo sass-dropbox-database"/>
+			</div>
+			<!-- /.thumbnail -->
+		</td>
+		<td><a href="https://www.dropbox.com/" title="Dropbox" target="_blank">Dropbox</a>
+
+			<p>Connect a Dropbox account with SASS App <strong>database backup files.</strong> <a
+					href="http://en.wikipedia.org/wiki/SQL" title="SQL"
+					target="_blank">SQL</a><br/>
+			</p>
+
+		</td>
+		<td class="text-center">
+			<div class="btn-group">
+				<button type="button" class="btn btn-default dropdown-toggle"
+				        data-toggle="dropdown"><i class="fa fa-dropbox fa-fw"></i>
+					Request
+					<span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu" role="menu">
+					<li><a id="request-dropbox-key-token-db-database-btn">Key Token</a></li>
+					<li><a id="request-dropbox-key-connection-btn">Connection</a></li>
+				</ul>
+			</div>
+		</td>
+		<td>
+			<input type="text" class="form-control" name="dropbox-key-token-db"
+			       placeholder="Key Token" required>
+		</td>
+	</tr>
+<?php
+}
+?>
+
+<tr>
+	<td>
+		<div class="thumbnail">
+			<img
+				src="<?php echo BASE_URL; ?>assets/img/logos/sass-db-export.png"
+				width="125"
+				alt="logo sass-export-database"/>
+		</div>
+		<!-- /.thumbnail -->
+	</td>
+	<td>
+		<a href="http://en.wikipedia.org/wiki/SQL" title="sql"
+		   target="_blank">SQL</a><br/>
+
+		<p>Manually create a full SASS App <strong>database backup and download.</strong></p>
+	</td>
+	<td class="text-center">
+		<div class="btn-group">
+			<button type="button" class="btn btn-default"
+			        id="download-sass-backup-database-btn">
+				<i class="fa fa-download fa-fw"></i>
+				Download
+			</button>
+		</div>
+	</td>
+	<td>
+	</td>
+</tr>
+</tbody>
+</table>
+</form>
+</div>
+<!-- /.table-responsive -->
+
+
+</div>
+<!-- /.col -->
+
+</div>
+<!-- /.row -->
 
 
 </div>
@@ -389,13 +490,13 @@ require ROOT_PATH . 'views/sidebar.php';
 		var $termId = $('#termId');
 		$termId.select2();
 
-		$('#download-appointments-excel-btn, #download-sass-backup-database-btn, #dropbox-disconnect-database-backup, #request-dropbox-key-connection-btn, #disconnect-dropbox-database-btn').on('click', function () {
+		$('#download-appointments-excel-btn, #download-sass-backup-database-btn, #request-dropbox-key-connection-excel-btn, #dropbox-disconnect-database-backup, #request-dropbox-key-connection-btn, #disconnect-dropbox-database-btn').on('click', function () {
 			var input = $("<input>", {type: "hidden", name: $(this).attr("id")});
 			$form.append($(input));
 			$form.submit();
 		});
 
-		$('#request-dropbox-key-token-btn').on('click', function () {
+		$('#request-dropbox-key-token-db-database-btn, #request-dropbox-key-token-db-excel-btn').on('click', function () {
 			$form.attr('target', '_blank');
 
 			var input = $("<input>", {type: "hidden", name: $(this).attr("id")});
