@@ -43,16 +43,25 @@ try {
 		}
 	}
 
-	if (isBtnRqstTokenDatabaseDropboxKeyPrsd() || isBtnRqstTokenExcelDropboxKeyPrsd()) {
-		$authorizeUrl = $webAuth->start();
-		header("Location: $authorizeUrl");
-	} else if (isBtnRqstDropboxConnectionPrsd()) {
+
+	if (isBtnRqstDropboxConnectionPrsd()) {
 		$authCode = $_POST['dropbox-key-token-db'];
 		if (empty($authCode)) throw new Exception("Key token is required.");
 		list($accessTokenDatabase, $userId) = $webAuth->finish($authCode);
 		DropboxCon::insertAccessToken($accessTokenDatabase, $user->getId(), DropboxCon::SERVICE_APP_DATABASE_BACKUP);
 
 		header('Location: ' . BASE_URL . "cloud/success");
+		exit();
+	} else if (isBtnRqstDropboxConnectExcelKeyPrsd()) {
+		$authCode = $_POST['dropbox-key-token-excel'];
+		if (empty($authCode)) throw new Exception("Key token is required.");
+		list($accessTokenExcel, $userId) = $webAuth->finish($authCode);
+		DropboxCon::insertAccessToken($accessTokenExcel, $user->getId(), DropboxCon::SERVICE_APP_EXCEL_BACKUP);
+		header('Location: ' . BASE_URL . "cloud/success");
+		exit();
+	} else if (isBtnRqstTokenDatabaseDropboxKeyPrsd() || isBtnRqstTokenExcelDropboxKeyPrsd()) {
+		$authorizeUrl = $webAuth->start();
+		header("Location: $authorizeUrl");
 		exit();
 	} else if (isset($_POST['disconnect-dropbox-database-btn'])) {
 		DropboxFetcher::disconnectServiceType(DropboxCon::SERVICE_APP_DATABASE_BACKUP);
@@ -109,13 +118,6 @@ try {
 		readfile($filePath . $zippedFileName);
 	} else if (isBtnRqstDownloadExcelKeyPrsd()) {
 		Excel::downloadAppointments($_POST['termId']);
-		exit();
-	} else if (isBtnRqstDropboxConnectExcelKeyPrsd()) {
-		$authCode = $_POST['dropbox-key-token-excel'];
-		if (empty($authCode)) throw new Exception("Key token is required.");
-		list($accessTokenExcel, $userId) = $webAuth->finish($authCode);
-		DropboxCon::insertAccessToken($accessTokenExcel, $user->getId(), DropboxCon::SERVICE_APP_EXCEL_BACKUP);
-		header('Location: ' . BASE_URL . "cloud/success");
 		exit();
 	}
 
@@ -435,7 +437,7 @@ if (!empty($accessTokenDatabase) && !empty($accountInfoDatabase)) {
 			</div>
 		</td>
 		<td>
-			<input type="text" class="form-control" name="dropbox-key-token-db"
+			<input type="text" class="form-control" name="dropbox-key-token-db" id="dropbox-key-token-db"
 			       placeholder="Key Token" required>
 		</td>
 	</tr>
