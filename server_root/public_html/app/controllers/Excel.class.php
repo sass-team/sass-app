@@ -61,7 +61,6 @@ class Excel
 			// We'll be outputting an excel file
 
 
-
 //			$objWriter->save($absoluteFilePathExcel);
 			// Write file to the browser
 			$objWriter->save('php://output');
@@ -296,7 +295,7 @@ class Excel
 		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
 		$objPHPExcel->setActiveSheetIndex(0);
 		return array($termName, $objPHPExcel);
-	}
+	} // end function
 
 	public static function getAppointments($appointments, $week) {
 		$appointmentsOut = [];
@@ -355,6 +354,25 @@ class Excel
 			}
 		}
 		return $students;
+	}
+
+	public static function saveAppointments($termId) {
+		ini_set('memory_limit', '128M');
+
+		try {
+			list($termName, $objPHPExcel) = self::exportAppointments($termId);
+
+			$fileName = self::TITLE_VISIT_LOG . " - $termName.xlsx";
+
+			$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+			$absoluteFilePathExcel = ROOT_PATH . "storage/excel/$fileName";
+			// We'll be outputting an excel file
+			$objWriter->save($absoluteFilePathExcel);
+
+			return $absoluteFilePathExcel;
+		} catch (Exception $e) {
+			throw new Exception($e->getMessage());
+		}
 	}
 
 }

@@ -14,38 +14,54 @@ require_once ROOT_PATH . "plugins/dropbox-php-sdk-1.1.3/lib/Dropbox/autoload.php
 
 use Dropbox as dbx;
 
+var_dump($_POST);
+
 try {
 
 	$terms = TermFetcher::retrieveAll();
 
 	$accessTokenDatabase = DropboxFetcher::retrieveAccessToken(DropboxCon::SERVICE_APP_DATABASE_BACKUP)[DropboxFetcher::DB_COLUMN_ACCESS_TOKEN];
+	$accessTokenExcel = DropboxFetcher::retrieveAccessToken(DropboxCon::SERVICE_APP_EXCEL_BACKUP)[DropboxFetcher::DB_COLUMN_ACCESS_TOKEN];
+
+//	var_dump($accessTokenDatabase);
 	$appInfo = dbx\AppInfo::loadFromJsonFile($appInfoFile);
 	$clientIdentifier = "sass-app/1.0";
 	$webAuth = new dbx\WebAuthNoRedirect($appInfo, $clientIdentifier, "en");
 
 	if ($accessTokenDatabase !== NULL) {
 		try {
-			$dbxClient = new dbx\Client($accessTokenDatabase, "PHP-Example/1.0");
-			$accountInfoDatabase = $dbxClient->getAccountInfo();
+			$dbxClientDB = new dbx\Client($accessTokenDatabase, "PHP-Example/1.0");
+			$accountInfoDatabase = $dbxClientDB->getAccountInfo();
 		} catch (Exception $e) {
-			$errors[] = "Could not access Dropbox account. Maybe user has revoked access?";
+			$errors[] = "Could not access Dropbox account database. Maybe user has revoked access?";
 		}
-
+	}
+	if ($accessTokenExcel !== NULL) {
+		try {
+			$dbxClientExcel = new dbx\Client($accessTokenExcel, "PHP-Example/1.0");
+			$accountInfoExcel = $dbxClientExcel->getAccountInfo();
+		} catch (Exception $e) {
+			$errors[] = "Could not access Dropbox account excel. Maybe user has revoked access?";
+		}
 	}
 
-	if (isBtnRqstTokenDatabaseDropboxKeyPrsd()) {
+	if (isBtnRqstTokenDatabaseDropboxKeyPrsd() || isBtnRqstTokenExcelDropboxKeyPrsd()) {
 		$authorizeUrl = $webAuth->start();
 		header("Location: $authorizeUrl");
 	} else if (isBtnRqstDropboxConnectionPrsd()) {
-		$authCode = $_POST['dropbox-key-token-db-database'];
+		$authCode = $_POST['dropbox-key-token-db'];
 		if (empty($authCode)) throw new Exception("Key token is required.");
 		list($accessTokenDatabase, $userId) = $webAuth->finish($authCode);
 		DropboxCon::insertAccessToken($accessTokenDatabase, $user->getId(), DropboxCon::SERVICE_APP_DATABASE_BACKUP);
 
 		header('Location: ' . BASE_URL . "cloud/success");
 		exit();
-	} else if (isset($_POST['dropbox-disconnect-database-backup'])) {
+	} else if (isset($_POST['disconnect-dropbox-database-btn'])) {
 		DropboxFetcher::disconnectServiceType(DropboxCon::SERVICE_APP_DATABASE_BACKUP);
+		header('Location: ' . BASE_URL . "cloud/success");
+		exit();
+	} else if (isset($_POST['disconnect-dropbox-excel-btn'])) {
+		DropboxFetcher::disconnectServiceType(DropboxCon::SERVICE_APP_EXCEL_BACKUP);
 		header('Location: ' . BASE_URL . "cloud/success");
 		exit();
 	} else if (isBtnRqstDnldDBKeyPrsd()) {
@@ -97,19 +113,16 @@ try {
 		Excel::downloadAppointments($_POST['termId']);
 		exit();
 	} else if (isBtnRqstDropboxConnectExcelKeyPrsd()) {
-		$authCode = $_POST['request-dropbox-key-connection-excel-btn'];
+		$authCode = $_POST['dropbox-key-token-excel'];
 		if (empty($authCode)) throw new Exception("Key token is required.");
-		list($accessTokenDatabase, $userId) = $webAuth->finish($authCode);
-		DropboxCon::insertAccessToken($accessTokenDatabase, $user->getId(), DropboxCon::SERVICE_APP_EXCEL_BACKUP);
-
+		list($accessTokenExcel, $userId) = $webAuth->finish($authCode);
+		DropboxCon::insertAccessToken($accessTokenExcel, $user->getId(), DropboxCon::SERVICE_APP_EXCEL_BACKUP);
 		header('Location: ' . BASE_URL . "cloud/success");
 		exit();
-	} else if (isBtnRqstTokenExcelDropboxKeyPrsd()) {
-		$authorizeUrl = $webAuth->start();
-		header("Location: $authorizeUrl");
 	}
 
-} catch (Exception $e) {
+} catch
+(Exception $e) {
 	$errors[] = $e->getMessage();
 }
 
@@ -117,7 +130,7 @@ try {
  * @return bool
  */
 function isBtnRqstDropboxConnectionPrsd() {
-	return isset($_POST['request-dropbox-key-connection-btn']);
+	return isset($_POST['request-dropbox-database-connection-btn']);
 }
 
 /**
@@ -133,10 +146,6 @@ function download($f_location, $f_name) {
 	header('Content-Disposition: attachment; filename=' . basename($f_name));
 	header('Content-Encoding: gz');
 	readfile($f_location);
-}
-
-function isDropboxConnectedToDatabase() {
-	return isset($accessTokenDatabase) && $accessTokenDatabase !== NULL && isset($accountInfoDatabase);
 }
 
 
@@ -229,9 +238,7 @@ if (empty($errors) === false) {
 
 <div class="table-responsive">
 
-<form method="post" action="<?php echo BASE_URL . 'cloud/'; ?>"
-      id="request-full-form"
-      class="form">
+<form method="post" action="<?php echo BASE_URL . 'cloud/'; ?>" id="request-full-form" class="form">
 <table class="table table-striped table-bordered media-table">
 <thead>
 
@@ -277,15 +284,15 @@ if (empty($errors) === false) {
 </tr>
 <?php
 
-if (isDropboxConnectedToDatabase()) {
+if (!empty($accessTokenExcel) && !empty($accountInfoExcel)) {
 	?>
 	<tr>
 		<td>
 			<div class="thumbnail">
 				<img
-					src="<?php echo BASE_URL; ?>assets/img/logos/dropbox-database-sass.png"
+					src="<?php echo BASE_URL; ?>assets/img/logos/logo-sass-dropbox-excel.png"
 					width="125"
-					alt="logo sass-dropbox-database"/>
+					alt="logo sass-dropbox-excel"/>
 			</div>
 			<!-- /.thumbnail -->
 		</td>
@@ -293,15 +300,15 @@ if (isDropboxConnectedToDatabase()) {
 		       target="_blank">Dropbox</a>
 
 			<p><strong>Account
-					connected:</strong> <?php echo $accountInfoDatabase['display_name']
-					. ", " . $accountInfoDatabase['email']; ?>
+					connected:</strong> <?php echo $accountInfoExcel['display_name']
+					. ", " . $accountInfoExcel['email']; ?>
 			</p>
 
 		</td>
 		<td class="text-center">
 			<div class="btn-group">
 				<button type="button" class="btn btn-default"
-				        id="disconnect-dropbox-database-btn">
+				        id="disconnect-dropbox-excel-btn">
 					<i class="fa fa-dropbox fa-fw"></i>
 					Disconnect
 				</button>
@@ -342,7 +349,7 @@ if (isDropboxConnectedToDatabase()) {
 			</div>
 		</td>
 		<td>
-			<input type="text" class="form-control" name="dropbox-key-token-db"
+			<input type="text" class="form-control" name="dropbox-key-token-excel"
 			       placeholder="Key Token" required>
 		</td>
 	</tr>
@@ -351,7 +358,7 @@ if (isDropboxConnectedToDatabase()) {
 ?>
 <?php
 
-if (isDropboxConnectedToDatabase()) {
+if (!empty($accessTokenDatabase) && !empty($accountInfoDatabase)) {
 	?>
 	<tr>
 		<td>
@@ -414,7 +421,7 @@ if (isDropboxConnectedToDatabase()) {
 				</button>
 				<ul class="dropdown-menu" role="menu">
 					<li><a id="request-dropbox-key-token-db-database-btn">Key Token</a></li>
-					<li><a id="request-dropbox-key-connection-btn">Connection</a></li>
+					<li><a id="request-dropbox-database-connection-btn">Connection</a></li>
 				</ul>
 			</div>
 		</td>
@@ -490,7 +497,9 @@ if (isDropboxConnectedToDatabase()) {
 		var $termId = $('#termId');
 		$termId.select2();
 
-		$('#download-appointments-excel-btn, #download-sass-backup-database-btn, #request-dropbox-key-connection-excel-btn, #dropbox-disconnect-database-backup, #request-dropbox-key-connection-btn, #disconnect-dropbox-database-btn').on('click', function () {
+		$('#download-appointments-excel-btn, #download-sass-backup-database-btn, #request-dropbox-key-connection-excel-btn, #disconnect-dropbox-excel-btn, #dropbox-disconnect-database-backup, #request-dropbox-database-connection-btn, #disconnect-dropbox-database-btn').on('click', function () {
+			$form.attr('target', '_self');
+
 			var input = $("<input>", {type: "hidden", name: $(this).attr("id")});
 			$form.append($(input));
 			$form.submit();

@@ -28,6 +28,7 @@ try {
 	$fileName = 'sass app db ' . date('m-d-Y Hi') . '.sql';
 	$zippedFileName = $fileName . '.gz';
 	$zippedFullFileName = $filePath . $zippedFileName;
+	$curWorkingDateYear = $curWorkingDate->format('Y');
 
 	$dumpSettings = array(
 		'compress' => Ifsnop\Mysqldump\Mysqldump::GZIP,
@@ -57,7 +58,7 @@ try {
 	$dbxClient = new dbx\Client($accessToken, "PHP-Example/1.0");
 	$adminAccountInfo = $dbxClient->getAccountInfo();
 	$f = fopen($zippedFullFileName, "rb");
-	$result = $dbxClient->uploadFile("/storage/backups/$zippedFileName", dbx\WriteMode::add(), $f);
+	$result = $dbxClient->uploadFile("/storage/backups/$curWorkingDateYear/$zippedFileName", dbx\WriteMode::add(), $f);
 	fclose($f);
 
 //	Mailer::sendDevelopers("Backup created: " . $filename, __FILE__);
