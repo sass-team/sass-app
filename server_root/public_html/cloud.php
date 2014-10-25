@@ -94,7 +94,8 @@ try {
 		ob_clean();
 		readfile($filePath . $zippedFileName);
 	} else if (isBtnRqstDownloadExcelKeyPrsd()) {
-		var_dump("tester");
+		Excel::downloadAppointments($_POST['termId']);
+		exit();
 	}
 
 } catch (Exception $e) {

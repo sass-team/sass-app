@@ -39,8 +39,47 @@ class Excel
 //		),
 	);
 
-	public static function exportAppointmentsOnTerm($termId) {
+	public static function downloadAppointments($termId) {
+		error_reporting(E_ALL);
+		ini_set('display_errors', TRUE);
+		ini_set('display_startup_errors', TRUE);
+		define('EOL', (PHP_SAPI == 'cli') ? PHP_EOL : '<br />');
+		ini_set('memory_limit', '128M');
+
+		try {
+			list($termName, $objPHPExcel) = self::exportAppointments($termId);
+
+			$fileName = self::TITLE_VISIT_LOG . " - $termName.xlsx";
+			ob_clean();
+			header('Content-type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+
+			// It will be called file.xls
+			header('Content-Disposition: attachment; filename="' . $fileName . '"');
+
+			$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+//			$absoluteFilePathExcel = ROOT_PATH . "storage/excel/" . self::TITLE_VISIT_LOG . " - $termName.xlsx";
+			// We'll be outputting an excel file
+
+
+
+//			$objWriter->save($absoluteFilePathExcel);
+			// Write file to the browser
+			$objWriter->save('php://output');
+
+		} catch (Exception $e) {
+			throw new Exception($e->getMessage());
+		}
+	} // end function
+
+	/**
+	 * @param $termId
+	 * @return array
+	 * @throws Exception
+	 * @throws PHPExcel_Exception
+	 */
+	private static function exportAppointments($termId) {
 		Term::validateId($termId);
+
 
 		require_once ROOT_PATH . 'plugins/PHPExcel_1.8.0_doc/Classes/PHPExcel.php';
 		date_default_timezone_set('Europe/Athens');
@@ -54,8 +93,6 @@ class Excel
 		$termEnd = new DateTime($termData[TermFetcher::DB_COLUMN_END_DATE]);
 		$termName = $termData[TermFetcher::DB_COLUMN_NAME];
 
-//		$termWeekStart = -(int)$termStart->format('W');
-//		$termWeekEnd = (int)($termEnd->format('W'));
 
 		$objPHPExcel = new PHPExcel();
 		$objPHPExcel->getProperties()->setCreator(App::NAME)
@@ -68,6 +105,7 @@ class Excel
 
 		$sheetIndex = 0;
 		for ($workingDateTime = $termStart; $workingDateTime <= $termEnd; $workingDateTime->modify('+1 week')) {
+
 			$curWeek = $workingDateTime->format('W');
 			$appointmentsWeekly = self::getAppointments($allAppointments, $curWeek);
 
@@ -257,13 +295,8 @@ class Excel
 
 		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
 		$objPHPExcel->setActiveSheetIndex(0);
-
-		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
-		$objWriter->save(ROOT_PATH . "storage/excel/" . self::TITLE_VISIT_LOG . " - $termName.xlsx");
-
-		echo date('H:i:s'), " Peak memory usage: ", (memory_get_peak_usage(true) / 1024 / 1024), " MB";
-
-	} // end function
+		return array($termName, $objPHPExcel);
+	}
 
 	public static function getAppointments($appointments, $week) {
 		$appointmentsOut = [];

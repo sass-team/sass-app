@@ -9,7 +9,7 @@
 require __DIR__ . '/../app/init.php';
 
 try {
-	Excel::exportAppointmentsOnTerm(9);
+	Excel::downloadAppointments(2);
 } catch (Exception $e) {
 	var_dump($e->getMessage());
 }
