@@ -6,7 +6,7 @@
  * Time: 10:30 AM
  */
 
-require ROOT_PATH . "config/DatabaseManager.class.php";
+require_once ROOT_PATH . "config/DatabaseManager.class.php";
 
 // identical to require; but php will include it only if it has not already been included
 require_once ROOT_PATH . "controllers/General.class.php";

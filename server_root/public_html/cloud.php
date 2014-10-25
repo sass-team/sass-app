@@ -14,8 +14,6 @@ require_once ROOT_PATH . "plugins/dropbox-php-sdk-1.1.3/lib/Dropbox/autoload.php
 
 use Dropbox as dbx;
 
-var_dump($_POST);
-
 try {
 
 	$terms = TermFetcher::retrieveAll();

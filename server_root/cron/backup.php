@@ -55,7 +55,7 @@ try {
 
 	$accessToken = DropboxFetcher::retrieveAccessToken(DropboxCon::SERVICE_APP_DATABASE_BACKUP)[DropboxFetcher::DB_COLUMN_ACCESS_TOKEN];
 
-	$dbxClient = new dbx\Client($accessToken, "PHP-Example/1.0");
+	$dbxClient = new dbx\Client($accessToken, App::VERSION);
 	$adminAccountInfo = $dbxClient->getAccountInfo();
 	$f = fopen($zippedFullFileName, "rb");
 	$result = $dbxClient->uploadFile("/storage/backups/$curWorkingDateYear/$zippedFileName", dbx\WriteMode::add(), $f);

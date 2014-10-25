@@ -6,7 +6,7 @@
  *  * Time: 2:35 PM
  *
  */
-require "../app/config/app.php";
+require "../public_html/app/config/app.php";
 
 $appInfoFile = ROOT_PATH . "config/dropbox.app";
 # Include the Dropbox SDK libraries
@@ -36,10 +36,10 @@ try {
 		$fileName = pathinfo($fullPathFile)['filename'] . "." . pathinfo($fullPathFile)['extension'];
 		$accessToken = DropboxFetcher::retrieveAccessToken(DropboxCon::SERVICE_APP_EXCEL_BACKUP)[DropboxFetcher::DB_COLUMN_ACCESS_TOKEN];
 
-		$dbxClient = new dbx\Client($accessToken, "PHP-Example/1.0");
+		$dbxClient = new dbx\Client($accessToken, App::VERSION);
 		$adminAccountInfo = $dbxClient->getAccountInfo();
 		$f = fopen($fullPathFile, "rb");
-		$result = $dbxClient->uploadFile("/storage/excel/$fileName", dbx\WriteMode::add(), $f);
+		$result = $dbxClient->uploadFile("/storage/excel/$curTermYear/$fileName", dbx\WriteMode::force(), $f);
 		fclose($f);
 	}
 	exit();

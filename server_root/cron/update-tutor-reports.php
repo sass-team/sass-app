@@ -17,7 +17,6 @@ try {
 	if ($curWorkingHour < App::WORKING_HOUR_START || $curWorkingHour > App::WORKING_HOUR_END) exit();
 
 
-
 	$appointments = AppointmentFetcher::retrieveCmpltWithoutRptsOnCurTerms();
 
 	foreach ($appointments as $appointment) {
@@ -36,4 +35,6 @@ try {
 } catch (Exception $e) {
 	Mailer::sendDevelopers($e, __FILE__);
 }
+
+require __DIR__ . "/export-appointments-excel.php";
 
