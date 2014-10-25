@@ -174,7 +174,7 @@ function isBtnRqstTokenExcelDropboxKeyPrsd() {
 
 
 // viewers
-$pageTitle = "Dropbox - SASS App";
+$pageTitle = "Cloud - SASS App";
 $section = "cloud";
 
 
@@ -260,7 +260,9 @@ if (empty($errors) === false) {
 		<!-- /.thumbnail -->
 	</td>
 	<td>
-		<p>Manually create <strong>Visit Log as excel file and download.</strong> (Excel 2007)</p>
+		<p>Manually create <strong>Visit Log as excel file and download.</p>
+		<a href="http://en.wikipedia.org/wiki/Microsoft_Excel#Excel_2007_.28v12.0.29" title="Excel 2007"
+		   target="_blank">Excel 2007</a>
 	</td>
 	<td class="text-center">
 		<div class="btn-group">
@@ -294,14 +296,17 @@ if (!empty($accessTokenExcel) && !empty($accountInfoExcel)) {
 			</div>
 			<!-- /.thumbnail -->
 		</td>
-		<td><a href="https://www.dropbox.com/" title="Dropbox"
-		       target="_blank">Dropbox</a>
+		<td>
+			<p>Visit Log are currently generated hourly on the Dropbox Account Connected.</p>
 
 			<p><strong>Account
 					connected:</strong> <?php echo $accountInfoExcel['display_name']
 					. ", " . $accountInfoExcel['email']; ?>
 			</p>
-
+			<a href="https://www.dropbox.com/" title="Dropbox"
+			   target="_blank">Dropbox</a> &#124;
+			<a href="http://en.wikipedia.org/wiki/Microsoft_Excel#Excel_2007_.28v12.0.29" title="Excel 2007"
+			   target="_blank">Excel 2007</a>
 		</td>
 		<td class="text-center">
 			<div class="btn-group">
@@ -328,7 +333,8 @@ if (!empty($accessTokenExcel) && !empty($accountInfoExcel)) {
 			</div>
 			<!-- /.thumbnail -->
 		</td>
-		<td><a href="https://www.dropbox.com/" title="Dropbox" target="_blank">Dropbox</a>
+		<td>
+			<a href="https://www.dropbox.com/" title="Dropbox" target="_blank">Dropbox</a>
 
 			<p>Connect a Dropbox account with SASS App <strong>Visit Log Excel</strong> files.</p>
 
@@ -368,14 +374,19 @@ if (!empty($accessTokenDatabase) && !empty($accountInfoDatabase)) {
 			</div>
 			<!-- /.thumbnail -->
 		</td>
-		<td><a href="https://www.dropbox.com/" title="Dropbox"
-		       target="_blank">Dropbox</a>
+		<td>
+			<p>Database backups are currently generated hourly on the Dropbox Account Connected.</p>
 
 			<p><strong>Account
 					connected:</strong> <?php echo $accountInfoDatabase['display_name']
 					. ", " . $accountInfoDatabase['email']; ?>
 			</p>
-
+			<a href="https://www.dropbox.com/" title="Dropbox"
+			   target="_blank">Dropbox</a> &#124;
+			<a href="http://www.7-zip.org/download.html" title="7zip"
+			   target="_blank">7-Zip</a> &#124;
+			<a href="http://en.wikipedia.org/wiki/SQL" title="SQL"
+			   target="_blank">SQL</a>
 		</td>
 		<td class="text-center">
 			<div class="btn-group">
@@ -443,10 +454,11 @@ if (!empty($accessTokenDatabase) && !empty($accountInfoDatabase)) {
 		<!-- /.thumbnail -->
 	</td>
 	<td>
-		<a href="http://en.wikipedia.org/wiki/SQL" title="sql"
-		   target="_blank">SQL</a><br/>
-
 		<p>Manually create a full SASS App <strong>database backup and download.</strong></p>
+		<a href="http://www.7-zip.org/download.html" title="7zip"
+		   target="_blank">7-Zip</a> &#124;
+		<a href="http://en.wikipedia.org/wiki/SQL" title="SQL"
+		   target="_blank">SQL</a>
 	</td>
 	<td class="text-center">
 		<div class="btn-group">
