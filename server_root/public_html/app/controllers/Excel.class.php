@@ -39,24 +39,23 @@ class Excel
 //		),
 	);
 
-
 	public static function exportAppointmentsOnTerm($termId) {
 		Term::validateId($termId);
 
 		require_once ROOT_PATH . 'plugins/PHPExcel_1.8.0_doc/Classes/PHPExcel.php';
 		date_default_timezone_set('Europe/Athens');
 
-		$termData = TermFetcher::retrieveSingle($termId);
-		$appointments = AppointmentFetcher::retrieveForTerm($termId);
+		$allAppointments = AppointmentFetcher::retrieveForTerm($termId);
 		$appointmentsHaveStudents = AppointmentHasStudentFetcher::retrieveForTerm($termId);
 		$primaryFocusOfConferences = PrimaryFocusOfConferenceFetcher::retrieveForTerm($termId);
 
-		$currentTime = new DateTime();
-		$startWeekDate = self::getWorkingDates($currentTime->format('Y'), $currentTime->format('W'));
-		$endWeekDate = self::getWorkingDates($currentTime->format('Y'), $currentTime->format('W'), false);
-		$periodTime = date("d M", strtotime($startWeekDate)) . "-" . date("d M, o", strtotime('-1 day', strtotime($endWeekDate)));
+		$termData = TermFetcher::retrieveSingle($termId);
+		$termStart = new DateTime($termData[TermFetcher::DB_COLUMN_START_DATE]);
+		$termEnd = new DateTime($termData[TermFetcher::DB_COLUMN_END_DATE]);
 		$termName = $termData[TermFetcher::DB_COLUMN_NAME];
 
+//		$termWeekStart = -(int)$termStart->format('W');
+//		$termWeekEnd = (int)($termEnd->format('W'));
 
 		$objPHPExcel = new PHPExcel();
 		$objPHPExcel->getProperties()->setCreator(App::NAME)
@@ -67,199 +66,194 @@ class Excel
 			->setKeywords("office sass appointments php")
 			->setCategory("Appointments");
 
-		$objPHPExcel->setActiveSheetIndex(0)
-			->setCellValue('A1', 'Day')
-			->setCellValue('B1', 'Date')
-			->setCellValue('C1', 'Month')
-			->setCellValue('D1', 'Year')
-			->setCellValue('E1', 'Time')
-			->setCellValue('F1', 'LF Lname')
-			->setCellValue('G1', 'Stud Lname')
-			->setCellValue('H1', 'Stud Fname')
-			->setCellValue('I1', 'Stud ID')
-			->setCellValue('J1', 'Major')
-			->setCellValue('K1', 'Mobile')
-			->setCellValue('L1', 'e-mail')
-			->setCellValue('M1', 'Course Code')
-			->setCellValue('N1', 'Course Instructor')
-			->setCellValue('O1', '# of Students')
-			->setCellValue('P1', 'Outcome')
-			->setCellValue('Q1', 'Actual Duration')
-			->setCellValue('R1', 'Purpose');
+		$sheetIndex = 0;
+		for ($workingDateTime = $termStart; $workingDateTime <= $termEnd; $workingDateTime->modify('+1 week')) {
+			$curWeek = $workingDateTime->format('W');
+			$appointmentsWeekly = self::getAppointments($allAppointments, $curWeek);
 
-		$objPHPExcel->getActiveSheet()->getStyle('A1:R1')->applyFromArray(self::$styleVisitLogHeader);
-		$objPHPExcel->getActiveSheet()->getRowDimension('1')->setRowHeight(24);
 
-		$objPHPExcel->getActiveSheet()->setTitle($periodTime);
+			$startWeekDate = self::getWorkingDates($workingDateTime->format('Y'), $workingDateTime->format('W'));
+			$endWeekDate = self::getWorkingDates($workingDateTime->format('Y'), $workingDateTime->format('W'), false);
+			$periodTime = date("d M", strtotime($startWeekDate)) . "-" . date("d M, o", strtotime('-1 day', strtotime($endWeekDate)));
 
-		$row = 2;
-		foreach ($appointments as $appointment) {
-			$appointmentStartDateTime = new DateTime($appointment[AppointmentFetcher::DB_COLUMN_START_TIME]);
-			$appointmentEndDateTime = new DateTime($appointment[AppointmentFetcher::DB_COLUMN_END_TIME]);
 
-			$appointmentId = $appointment[AppointmentFetcher::DB_COLUMN_ID];
-			$students = self::getStudentsForAppointment($appointmentsHaveStudents, $appointmentId);
-			$numOfStudents = sizeof($students);
+			$objPHPExcel->createSheet($sheetIndex);
+			$objPHPExcel->setActiveSheetIndex($sheetIndex)
+				->setCellValue('A1', 'Day')
+				->setCellValue('B1', 'Date')
+				->setCellValue('C1', 'Month')
+				->setCellValue('D1', 'Year')
+				->setCellValue('E1', 'Time')
+				->setCellValue('F1', 'LF Lname')
+				->setCellValue('G1', 'Stud Lname')
+				->setCellValue('H1', 'Stud Fname')
+				->setCellValue('I1', 'Stud ID')
+				->setCellValue('J1', 'Major')
+				->setCellValue('K1', 'Mobile')
+				->setCellValue('L1', 'e-mail')
+				->setCellValue('M1', 'Course Code')
+				->setCellValue('N1', 'Course Instructor')
+				->setCellValue('O1', '# of Students')
+				->setCellValue('P1', 'Outcome')
+				->setCellValue('Q1', 'Actual Duration')
+				->setCellValue('R1', 'Purpose');
+			$sheetIndex++;
 
-			// TODO: REMOVE autosize from loop
-			$col = 0;    // day
-			$day = $appointmentStartDateTime->format('l');
-			$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $day);
-			//$objPHPExcel->getActiveSheet()->getColumnDimensionByColumn($col)->setAutoSize(true);
+			$objPHPExcel->getActiveSheet()->getStyle('A1:R1')->applyFromArray(self::$styleVisitLogHeader);
+			$objPHPExcel->getActiveSheet()->getRowDimension('1')->setRowHeight(24);
 
-			$col++; // date
-			$date = $appointmentStartDateTime->format('d');
-			$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $date);
-			//$objPHPExcel->getActiveSheet()->getColumnDimensionByColumn($col)->setAutoSize(true);
+			$objPHPExcel->getActiveSheet()->setTitle($periodTime);
 
-			$col++; // month
-			$month = $appointmentStartDateTime->format('M');
-			$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $month);
-			//$objPHPExcel->getActiveSheet()->getColumnDimensionByColumn($col)->setAutoSize(true);
+			$row = 2;
+			foreach ($appointmentsWeekly as $appointment) {
+				$appointmentStartDateTime = new DateTime($appointment[AppointmentFetcher::DB_COLUMN_START_TIME]);
+				$appointmentEndDateTime = new DateTime($appointment[AppointmentFetcher::DB_COLUMN_END_TIME]);
 
-			$col++; // year
-			$year = $appointmentStartDateTime->format('Y');
-			$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $year);
-			//$objPHPExcel->getActiveSheet()->getColumnDimensionByColumn($col)->setAutoSize(true);
+				$appointmentId = $appointment[AppointmentFetcher::DB_COLUMN_ID];
+				$students = self::getStudentsForAppointment($appointmentsHaveStudents, $appointmentId);
+				$numOfStudents = sizeof($students);
 
-			$col++; // time
-			$time = $appointmentStartDateTime->format('H:i');
-			$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $time);
-			//$objPHPExcel->getActiveSheet()->getColumnDimensionByColumn($col)->setAutoSize(true);
+				// TODO: REMOVE autosize from loop
+				$col = 0;    // day
+				$day = $appointmentStartDateTime->format('l');
+				$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $day);
 
-			$col++; // tutor last name
-			$tutorLastName = $appointment[UserFetcher::DB_COLUMN_LAST_NAME];
-			$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $tutorLastName);
-			//$objPHPExcel->getActiveSheet()->getColumnDimensionByColumn($col)->setAutoSize(true);
+				$col++; // date
+				$date = $appointmentStartDateTime->format('d');
+				$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $date);
 
-			// TODO: add student that first requested the appointment.
+				$col++; // month
+				$month = $appointmentStartDateTime->format('M');
+				$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $month);
 
-			$col++; // student last name
-			$studentLastName = $students[0][StudentFetcher::DB_COLUMN_LAST_NAME];
-			$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $studentLastName);
-			//$objPHPExcel->getActiveSheet()->getColumnDimensionByColumn($col)->setAutoSize(true);
+				$col++; // year
+				$year = $appointmentStartDateTime->format('Y');
+				$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $year);
 
-			$col++; // student first name
-			$studentFirstName = $students[0][StudentFetcher::DB_COLUMN_FIRST_NAME];
-			$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $studentFirstName);
-			//$objPHPExcel->getActiveSheet()->getColumnDimensionByColumn($col)->setAutoSize(true);
+				$col++; // time
+				$time = $appointmentStartDateTime->format('H:i');
+				$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $time);
 
-			$col++; // student ID
-			$studentId = $students[0][StudentFetcher::DB_COLUMN_STUDENT_ID];
-			$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $studentId);
-			//$objPHPExcel->getActiveSheet()->getColumnDimensionByColumn($col)->setAutoSize(true);
+				$col++; // tutor last name
+				$tutorLastName = $appointment[UserFetcher::DB_COLUMN_LAST_NAME];
+				$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $tutorLastName);
 
-			$col++; // student major
-			$majorCode = $students[0][MajorFetcher::DB_COLUMN_CODE];
-			$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $majorCode);
-			//$objPHPExcel->getActiveSheet()->getColumnDimensionByColumn($col)->setAutoSize(true);
+				// TODO: add student that first requested the appointment.
 
-			$col++; // student mobile
-			$mobile = $students[0][StudentFetcher::DB_COLUMN_MOBILE];
-			$objPHPExcel->getActiveSheet()->setCellValueExplicitByColumnAndRow($col, $row, $mobile);
-			//$objPHPExcel->getActiveSheet()->getColumnDimensionByColumn($col)->setAutoSize(true);
+				$col++; // student last name
+				$studentLastName = $students[0][StudentFetcher::DB_COLUMN_LAST_NAME];
+				$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $studentLastName);
 
-			$col++; // student email
-			$email = $students[0][StudentFetcher::DB_COLUMN_EMAIL];
-			$objPHPExcel->getActiveSheet()->setCellValueExplicitByColumnAndRow($col, $row, $email);
-			//$objPHPExcel->getActiveSheet()->getColumnDimensionByColumn($col)->setAutoSize(true);
+				$col++; // student first name
+				$studentFirstName = $students[0][StudentFetcher::DB_COLUMN_FIRST_NAME];
+				$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $studentFirstName);
 
-			$col++; // course code
-			$courseCode = $appointment[CourseFetcher::DB_COLUMN_CODE];
-			$objPHPExcel->getActiveSheet()->setCellValueExplicitByColumnAndRow($col, $row, $courseCode);
-			//$objPHPExcel->getActiveSheet()->getColumnDimensionByColumn($col)->setAutoSize(true);
+				$col++; // student ID
+				$studentId = $students[0][StudentFetcher::DB_COLUMN_STUDENT_ID];
+				$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $studentId);
 
-			$col++; // instructor for first student
-			$instructorLastName = $students[0][InstructorFetcher::DB_COLUMN_LAST_NAME];
-			$objPHPExcel->getActiveSheet()->setCellValueExplicitByColumnAndRow($col, $row, $instructorLastName);
-			//$objPHPExcel->getActiveSheet()->getColumnDimensionByColumn($col)->setAutoSize(true);
+				$col++; // student major
+				$majorCode = $students[0][MajorFetcher::DB_COLUMN_CODE];
+				$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $majorCode);
 
-			$col++; // instructor for first student
-			$objPHPExcel->getActiveSheet()->setCellValueExplicitByColumnAndRow($col, $row, $numOfStudents);
-			//$objPHPExcel->getActiveSheet()->getColumnDimensionByColumn($col)->setAutoSize(true);
+				$col++; // student mobile
+				$mobile = $students[0][StudentFetcher::DB_COLUMN_MOBILE];
+				$objPHPExcel->getActiveSheet()->setCellValueExplicitByColumnAndRow($col, $row, $mobile);
 
-			$col++; // appointment outcome
-			$appointmentOutcome = $appointment[AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE];
-			$objPHPExcel->getActiveSheet()->setCellValueExplicitByColumnAndRow($col, $row, $appointmentOutcome);
-			//$objPHPExcel->getActiveSheet()->getColumnDimensionByColumn($col)->setAutoSize(true);
+				$col++; // student email
+				$email = $students[0][StudentFetcher::DB_COLUMN_EMAIL];
+				$objPHPExcel->getActiveSheet()->setCellValueExplicitByColumnAndRow($col, $row, $email);
 
-			$col++; // appointment duration
-			$appointmentDuration = ($appointmentEndDateTime->getTimestamp() - $appointmentStartDateTime->getTimestamp()) / 60;
-			$objPHPExcel->getActiveSheet()->setCellValueExplicitByColumnAndRow($col, $row, $appointmentDuration);
-			////$objPHPExcel->getActiveSheet()->getColumnDimensionByColumn($col)->setAutoSize(true);
+				$col++; // course code
+				$courseCode = $appointment[CourseFetcher::DB_COLUMN_CODE];
+				$objPHPExcel->getActiveSheet()->setCellValueExplicitByColumnAndRow($col, $row, $courseCode);
 
-			$col++; // purpose
-			$primaryFocusOfConferencesString = self::getFocusOfConferencesForAppointment($primaryFocusOfConferences, $appointmentId);
-			var_dump($primaryFocusOfConferencesString);
+				$col++; // instructor for first student
+				$instructorLastName = $students[0][InstructorFetcher::DB_COLUMN_LAST_NAME];
+				$objPHPExcel->getActiveSheet()->setCellValueExplicitByColumnAndRow($col, $row, $instructorLastName);
 
-			if (!empty($primaryFocusOfConferencesString)) {
-				$primaryFocusOfConferencesString = Report::convertFocusOfConferenceToString($primaryFocusOfConferencesString[0]);
-				$objPHPExcel->getActiveSheet()->setCellValueExplicitByColumnAndRow($col, $row, $primaryFocusOfConferencesString);
-				//$objPHPExcel->getActiveSheet()->getColumnDimensionByColumn($col)->setAutoSize(true);
-			}
+				$col++; // instructor for first student
+				$objPHPExcel->getActiveSheet()->setCellValueExplicitByColumnAndRow($col, $row, $numOfStudents);
 
-			switch ($appointment[AppointmentFetcher::DB_COLUMN_LABEL_COLOR]) {
-				case Appointment::LABEL_COLOR_PENDING:
-					$color = '888888';
-					break;
-				case Appointment::LABEL_COLOR_CANCELED:
-					$color = 'e5412d';
-					break;
-				case Appointment::LABEL_COLOR_SUCCESS:
-					$color = '3fa67a';
-					break;
-				case Appointment::LABEL_COLOR_WARNING:
-					$color = 'f0ad4e';
-					break;
-				default:
-					$color = '444';
-					break;
-			}
+				$col++; // appointment outcome
+				$appointmentOutcome = $appointment[AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE];
+				$objPHPExcel->getActiveSheet()->setCellValueExplicitByColumnAndRow($col, $row, $appointmentOutcome);
 
-			$styleRow = array(
-				'font' => array(
-					'bold' => false,
-					'name' => 'Times New Roman',
-					'size' => 12
-				),
-				'alignment' => array(
-					'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT
-				),
-				'borders' => array(
-					'bottom' => array(
-						'style' => PHPExcel_Style_Border::BORDER_THIN,
+				$col++; // appointment duration
+				$appointmentDuration = ($appointmentEndDateTime->getTimestamp() - $appointmentStartDateTime->getTimestamp()) / 60;
+				$objPHPExcel->getActiveSheet()->setCellValueExplicitByColumnAndRow($col, $row, $appointmentDuration);
+
+				$col++; // purpose
+				$primaryFocusOfConferencesString = self::getFocusOfConferencesForAppointment($primaryFocusOfConferences, $appointmentId);
+
+				if (!empty($primaryFocusOfConferencesString)) {
+					$primaryFocusOfConferencesString = Report::convertFocusOfConferenceToString($primaryFocusOfConferencesString[0]);
+					$objPHPExcel->getActiveSheet()->setCellValueExplicitByColumnAndRow($col, $row, $primaryFocusOfConferencesString);
+					//$objPHPExcel->getActiveSheet()->getColumnDimensionByColumn($col)->setAutoSize(true);
+				}
+
+				switch ($appointment[AppointmentFetcher::DB_COLUMN_LABEL_COLOR]) {
+					case Appointment::LABEL_COLOR_PENDING:
+						$color = '888888';
+						break;
+					case Appointment::LABEL_COLOR_CANCELED:
+						$color = 'e5412d';
+						break;
+					case Appointment::LABEL_COLOR_SUCCESS:
+						$color = '3fa67a';
+						break;
+					case Appointment::LABEL_COLOR_WARNING:
+						$color = 'f0ad4e';
+						break;
+					default:
+						$color = '444';
+						break;
+				}
+
+				$styleRow = array(
+					'font' => array(
+						'bold' => false,
+						'name' => 'Times New Roman',
+						'size' => 12
 					),
-					'right' => array(
-						'style' => PHPExcel_Style_Border::BORDER_MEDIUM,
-					)
-				),
-				'fill' => array(
-					'type' => PHPExcel_Style_Fill::FILL_GRADIENT_LINEAR,
-					'rotation' => 90,
-					'startcolor' => array(
-						'argb' => $color,
+					'alignment' => array(
+						'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT
 					),
-					'endcolor' => array(
-						'argb' => $color,
+					'borders' => array(
+						'bottom' => array(
+							'style' => PHPExcel_Style_Border::BORDER_THIN,
+						),
+						'right' => array(
+							'style' => PHPExcel_Style_Border::BORDER_MEDIUM,
+						)
 					),
-				),
-			);
-			$objPHPExcel->getActiveSheet()->getStyle("A$row:R$row")->applyFromArray($styleRow);
-			$row++;
+					'fill' => array(
+						'type' => PHPExcel_Style_Fill::FILL_GRADIENT_LINEAR,
+						'rotation' => 90,
+						'startcolor' => array(
+							'argb' => $color,
+						),
+						'endcolor' => array(
+							'argb' => $color,
+						),
+					),
+				);
+				$objPHPExcel->getActiveSheet()->getStyle("A$row:R$row")->applyFromArray($styleRow);
+				$row++;
+
+			} // end foreach
+
+			// enable all filters
+			$objPHPExcel->getActiveSheet()->setAutoFilter($objPHPExcel->getActiveSheet()->calculateWorksheetDimension());
+
+			// source: http://stackoverflow.com/a/5578240 - autosize all columns
+			$lastColumn = $objPHPExcel->getActiveSheet()->getHighestColumn();
+			$lastColumn++;
+			for ($column = 'A'; $column != $lastColumn; $column++) {
+				$objPHPExcel->getActiveSheet()->getColumnDimension($column)->setAutoSize(true);
+			} // end for
 
 		} // end foreach
-
-		// enable all filters
-		$objPHPExcel->getActiveSheet()->setAutoFilter($objPHPExcel->getActiveSheet()->calculateWorksheetDimension());
-
-		// source: http://stackoverflow.com/a/5578240 - autosize all columns
-		$lastColumn = $objPHPExcel->getActiveSheet()->getHighestColumn();
-		$lastColumn++;
-		for ($column = 'A'; $column != $lastColumn; $column++) {
-			$objPHPExcel->getActiveSheet()->getColumnDimension($column)->setAutoSize(true);
-		}
-
-
 
 		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
 		$objPHPExcel->setActiveSheetIndex(0);
@@ -269,6 +263,17 @@ class Excel
 
 		echo date('H:i:s'), " Peak memory usage: ", (memory_get_peak_usage(true) / 1024 / 1024), " MB";
 
+	} // end function
+
+	public static function getAppointments($appointments, $week) {
+		$appointmentsOut = [];
+
+		foreach ($appointments as $appointment) {
+			$dateTime = new DateTime($appointment[AppointmentFetcher::DB_COLUMN_START_TIME]);
+			if (strcmp($week, $dateTime->format('W')) === 0) $appointmentsOut[] = $appointment;
+		}
+
+		return $appointmentsOut;
 	}
 
 	/**
