@@ -350,6 +350,38 @@ class AppointmentFetcher
 		}
 	}
 
+	public static function retrieveForTerm($termId) {
+		$query =
+			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_START_TIME . "` ,
+			`" . self::DB_COLUMN_END_TIME . "`, `" . self::DB_COLUMN_COURSE_ID . "`,  `" . self::DB_COLUMN_TUTOR_USER_ID
+			. "`,  `" . self::DB_COLUMN_TUTOR_USER_ID . "`,  `" . self::DB_COLUMN_LABEL_MESSAGE . "`,
+			 `" . self::DB_COLUMN_LABEL_COLOR . "`,
+
+			`" . UserFetcher::DB_COLUMN_FIRST_NAME . "`, `" . UserFetcher::DB_COLUMN_LAST_NAME . "`,
+			`" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_CODE . "`
+			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			INNER JOIN `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . UserFetcher::DB_TABLE . "`
+				ON `" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "` =
+				`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "`
+			INNER JOIN `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . CourseFetcher::DB_TABLE . "`
+				ON `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_ID . "` =
+				`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_COURSE_ID . "`
+			WHERE `" . self::DB_COLUMN_TERM_ID . "` = :term_id
+			ORDER BY `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "` ASC";
+
+		try {
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
+			$query->bindParam(':term_id', $termId, PDO::PARAM_INT);
+			$query->execute();
+
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
+			throw new Exception("Could not retrieve data from database.");
+		}
+	}
+
 	public static function retrieveAllOfCurrTerms() {
 		$query =
 			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` AS " . self::DB_TABLE . "_" . self::DB_COLUMN_ID . ", 

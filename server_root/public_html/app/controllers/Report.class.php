@@ -55,6 +55,39 @@ class Report
 		}
 	}
 
+	public static function convertFocusOfConferenceToString($options) {
+		$purposes = "";
+		$commaPattern = ", ";
+		if (strcmp($options[PrimaryFocusOfConferenceFetcher::DB_COLUMN_DISCUSSION_OF_CONCEPTS], '1') === 0) {
+			$purposes = PrimaryFocusOfConferenceFetcher::STRING_DISCUSSION_OF_CONCEPTS . $commaPattern;
+		}
+
+		if (strcmp($options[PrimaryFocusOfConferenceFetcher::DB_COLUMN_ORGANIZATION_THOUGHTS_IDEAS], '1') === 0) {
+			$purposes = $purposes . PrimaryFocusOfConferenceFetcher::STRING_ORGANIZATION_THOUGHTS_IDEAS . $commaPattern;
+		}
+
+		if (strcmp($options[PrimaryFocusOfConferenceFetcher::DB_COLUMN_EXPRESSION_GRAMMAR_SYNTAX_ETC], '1') === 0) {
+			$purposes = $purposes . PrimaryFocusOfConferenceFetcher::STRING_EXPRESSION_GRAMMAR_SYNTAX_ETC . $commaPattern;
+		}
+
+		if (strcmp($options[PrimaryFocusOfConferenceFetcher::DB_COLUMN_EXERCISES], '1') === 0) {
+			$purposes = $purposes . PrimaryFocusOfConferenceFetcher::STRING_EXERCISES . $commaPattern;
+		}
+		if (strcmp($options[PrimaryFocusOfConferenceFetcher::DB_COLUMN_ACADEMIC_SKILLS], '1') === 0) {
+			$purposes = $purposes . PrimaryFocusOfConferenceFetcher::STRING_ACADEMIC_SKILLS . $commaPattern;
+		}
+
+		if (strcmp($options[PrimaryFocusOfConferenceFetcher::DB_COLUMN_CITATIONS_REFERENCING], '1') === 0) {
+			$purposes = $purposes . PrimaryFocusOfConferenceFetcher::STRING_CITATIONS_REFERENCING . $commaPattern;
+		}
+
+		if (strcmp($options[PrimaryFocusOfConferenceFetcher::DB_COLUMN_OTHER], '1') === 0) {
+			$purposes = $purposes . PrimaryFocusOfConferenceFetcher::STRING_OTHER . $commaPattern;
+		}
+
+		return rtrim($purposes, $commaPattern);
+	}
+
 	public static function deleteWithAppointmentId($appointmentId) {
 		Appointment::validateId($appointmentId);
 		return ReportFetcher::deleteWithAppointmentId($appointmentId);

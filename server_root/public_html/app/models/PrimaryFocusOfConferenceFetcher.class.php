@@ -21,6 +21,50 @@ class PrimaryFocusOfConferenceFetcher
 	const IS_SELECTED = "1";
 	const IS_NOT_SELECTED = "0";
 
+	const STRING_DISCUSSION_OF_CONCEPTS = "Discussion of concepts";
+	const STRING_ORGANIZATION_THOUGHTS_IDEAS = "Organization of thoughts/ideas";
+	const STRING_EXPRESSION_GRAMMAR_SYNTAX_ETC = "Expression (grammar, syntax, diction, etc.)";
+	const STRING_EXERCISES = "Exercises";
+	const STRING_ACADEMIC_SKILLS = "Academic skills";
+	const STRING_CITATIONS_REFERENCING = "Citations & Referencing";
+	const STRING_OTHER = "Other";
+
+
+	public static function retrieveForTerm($termId) {
+		$query =
+			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_DISCUSSION_OF_CONCEPTS . "` , `" . self::DB_TABLE . "`.`" .
+			self::DB_COLUMN_ORGANIZATION_THOUGHTS_IDEAS . "` , `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_EXPRESSION_GRAMMAR_SYNTAX_ETC . "`,
+			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_REPORT_ID . "`,  `" . self::DB_TABLE . "`.`" .
+			self::DB_COLUMN_EXERCISES . "`, `" . self::DB_TABLE . "`.`" .
+			self::DB_COLUMN_ACADEMIC_SKILLS . "`,`" . self::DB_TABLE . "`.`" .
+			self::DB_COLUMN_CITATIONS_REFERENCING . "`,`" . self::DB_TABLE . "`.`" .
+			self::DB_COLUMN_OTHER . "`,`" . AppointmentHasStudentFetcher::DB_TABLE . "`.`" .
+			AppointmentHasStudentFetcher::DB_COLUMN_APPOINTMENT_ID . "`
+
+			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			INNER JOIN `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . ReportFetcher::DB_TABLE . "`
+			ON `" . ReportFetcher::DB_TABLE . "`.`" . ReportFetcher::DB_COLUMN_ID . "` =
+			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_REPORT_ID . "`
+			INNER JOIN `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . AppointmentHasStudentFetcher::DB_TABLE . "`
+			ON `" . AppointmentHasStudentFetcher::DB_TABLE . "`.`" . AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID . "` =
+			`" . ReportFetcher::DB_TABLE . "`.`" . ReportFetcher::DB_COLUMN_ID . "`
+			INNER JOIN `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . AppointmentFetcher::DB_TABLE . "`
+			ON `" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_ID . "` =
+			`" . AppointmentHasStudentFetcher::DB_TABLE . "`.`" . AppointmentHasStudentFetcher::DB_COLUMN_APPOINTMENT_ID . "`
+			WHERE `" . AppointmentFetcher::DB_COLUMN_TERM_ID . "` = :term_id";
+
+		try {
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
+			$query->bindParam(':term_id', $termId, PDO::PARAM_INT);
+			$query->execute();
+
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
+			throw new Exception("Could not retrieve data from database.");
+		}
+	}
 
 	public static function delete($reportId) {
 		try {

@@ -18,8 +18,8 @@ RewriteRule ^staff/edit/([0-9]+)/success$ /staff/edit.php?id=$1&success=y1! [L]
 RewriteRule ^staff/schedules/success$ /staff/schedules.php?success=y1!qp! [L]
 RewriteRule ^staff/([0-9]+)$ /staff/index.php?id=$1 [L]
 RewriteRule ^account/settings/success$ /account/settings.php?success [L]
-RewriteRule ^cloud/backups/dropbox-auth-finish /cloud/backups.php?dropbox-auth-finish [L]
-RewriteRule ^cloud/backups/success$ /cloud/backups.php?success=y1!qp [L]
+RewriteRule ^cloud/dropbox-auth-finish /cloud.php?dropbox-auth-finish [L]
+RewriteRule ^cloud/success$ /cloud.php?success=y1!qp [L]
 RewriteRule ^login/confirm-password/success$ /login/confirm-password.php?success [L]
 RewriteRule ^login/confirm-password/success$ /login/confirm-password.php?success [L]
 RewriteRule ^login/recover/([^/]+)/([\w\.]+) /login/recover.php?id=$1&gen_string=$2 [L]
@@ -34,10 +34,10 @@ ErrorDocument 500 /error-500
 
 
 # MAINTENANCE-PAGE REDIRECT #|(?::1)
-<IfModule mod_rewrite.c>
- RewriteEngine on
- RewriteCond %{REMOTE_ADDR} !^(?:(?:46\.190\.82\.234)|(?:127\.0\.0\.1)|(?:192\.168\.1\.2))$
- RewriteCond %{REQUEST_URI} !\.(jpe?g?|png|gif) [NC]
- RewriteCond %{REQUEST_URI} !/upgrade/.*$ [NC]
- RewriteRule .* /upgrade/ [R=302,L]
-</IfModule>
+#<IfModule mod_rewrite.c>
+# RewriteEngine on
+# RewriteCond %{REMOTE_ADDR} !^(?:(?:46\.190\.82\.234)|(?:127\.0\.0\.1)|(?:192\.168\.1\.2))$
+# RewriteCond %{REQUEST_URI} !\.(jpe?g?|png|gif) [NC]
+# RewriteCond %{REQUEST_URI} !/upgrade/.*$ [NC]
+# RewriteRule .* /upgrade/ [R=302,L]
+#</IfModule>
