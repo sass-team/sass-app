@@ -353,7 +353,7 @@ $(function () {
 	$courseId.click(function () {
 		try {
 			retrieveTutors();
-			reloadCalendar('many_tutors_appointments');
+			reloadCalendar('appointments_and_schedules_for_single_course');
 		}
 		catch (err) {
 			$tutorId.select2({
@@ -520,6 +520,33 @@ $(function () {
 				}
 			}
 		};
+
+		var manyTutorScheduleCalendar = {
+			url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/schedules",
+			type: 'GET',
+			dataType: "json",
+			data: {
+				action: 'many_tutor_working_hours',
+				courseId: $courseId.select2('val'),
+				termId: $termId.select2('val')
+			},
+			error: function (xhr, status, error) {
+				$calendarTitle.text("there was an error while retrieving schedules");
+				console.log(xhr.responseText);
+			},
+			beforeSend: function () {
+				if (spinner == null) {
+					spinner = new Spinner(opts).spin(calendar);
+				}
+
+			},
+			complete: function () {
+				if (spinner != null) {
+					spinner.stop();
+					spinner = null;
+				}
+			}
+		};
 		var manyTutorAppointmentsCalendar = {
 			url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/appointments",
 			type: 'GET',
@@ -601,6 +628,7 @@ $(function () {
 		$calendar.fullCalendar('removeEventSource', allSchedulesCalendar);
 		$calendar.fullCalendar('removeEventSource', allAppointmentsCalendar);
 		$calendar.fullCalendar('removeEventSource', manyTutorAppointmentsCalendar);
+		$calendar.fullCalendar('removeEventSource', manyTutorScheduleCalendar);
 
 		switch (choice) {
 			case 'all_appointments_schedule':
@@ -615,10 +643,10 @@ $(function () {
 				$calendar.fullCalendar('addEventSource', singleTutorScheduleCalendar);
 				$calendar.fullCalendar('addEventSource', singleTutorAppointmentsCalendar);
 				break;
-			case 'many_tutors_appointments':
+			case 'appointments_and_schedules_for_single_course':
 				if (!$courseId.select2("val").match(/^[0-9]+$/)) throw new Error("Course is missing");
 				if (!$termId.select2("val").match(/^[0-9]+$/)) throw new Error("Term is missing");
-//				$calendar.fullCalendar('addEventSource', singleTutorScheduleCalendar);
+				$calendar.fullCalendar('addEventSource', manyTutorScheduleCalendar);
 				$calendar.fullCalendar('addEventSource', manyTutorAppointmentsCalendar);
 				break;
 			case 'working_hours_only':

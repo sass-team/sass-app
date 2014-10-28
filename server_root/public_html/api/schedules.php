@@ -12,6 +12,10 @@ if (is_ajax()) {
 			case "single_tutor_working_hours":
 				printSingleTutorSchedules($_GET["tutorId"], $_GET["termId"], $_GET["start"], $_GET["end"]);
 				break;
+			case "many_tutor_working_hours":
+				printManyTutorSchedulesForCourse($_GET["courseId"], $_GET["termId"], $_GET["start"], $_GET["end"]);
+				break;
+
 		}
 	} else {
 		header("Location: /error-403");
@@ -32,6 +36,14 @@ function is_ajax() {
 
 function printAllTutorsSchedules($termId, $start, $end) {
 	$workingHours = Schedule::getTutorsOnTerm($termId);
+
+	$workingHoursJSON = generateCalendarData($start, $end, $workingHours);
+
+	echo json_encode($workingHoursJSON);
+}
+
+function printManyTutorSchedulesForCourse($courseId, $termId, $start, $end) {
+	$workingHours = Schedule::getTutorsOnTermOnCourse($courseId, $termId);
 
 	$workingHoursJSON = generateCalendarData($start, $end, $workingHours);
 

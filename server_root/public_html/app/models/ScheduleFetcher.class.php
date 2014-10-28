@@ -81,7 +81,7 @@ class ScheduleFetcher
 			return $appointmentId = $dbConnection->lastInsertId();
 		} catch (Exception $e) {
 			Mailer::sendDevelopers($e->getMessage(), __FILE__);
-			throw new Exception("Could not insert data into database." );
+			throw new Exception("Could not insert data into database.");
 		}
 
 	}
@@ -183,6 +183,47 @@ class ScheduleFetcher
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
 			$query->bindParam(':term_id', $termId, PDO::PARAM_INT);
+			$query->execute();
+
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+		} catch (Exception $e) {
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
+			throw new Exception("Could not retrieve data from database.");
+		}
+	}
+
+	public static function retrieveTutorsOnTermOnCourse($courseId, $termId) {
+		$query =
+			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`, `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "`,
+			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_END_TIME . "`, `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "`,
+			 `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`, `" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_FIRST_NAME . "`, `" . UserFetcher::DB_TABLE . "`.`"
+			. UserFetcher::DB_COLUMN_LAST_NAME . "`, `" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "`  AS
+			" . UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_ID . ", `" . TermFetcher::DB_TABLE . "`.`" .
+			TermFetcher::DB_COLUMN_START_DATE . "` AS " . TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_START_DATE
+			. ", `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_END_DATE . "`  AS " . TermFetcher::DB_TABLE
+			. "_" . TermFetcher::DB_COLUMN_END_DATE . ",
+            `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_MONDAY . "`, `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUESDAY . "`,
+            `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_WEDNESDAY . "`,`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_THURSDAY . "`,
+            `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_FRIDAY . "`
+			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			INNER JOIN  `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . UserFetcher::DB_TABLE . "`
+			ON `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "`  = `" .
+			UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "`
+			INNER JOIN  `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . TermFetcher::DB_TABLE . "`
+			ON `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`  = `" .
+			TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "`
+			INNER JOIN  `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . Tutor_has_course_has_termFetcher::DB_TABLE . "`
+			ON `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "`  = `" .
+			Tutor_has_course_has_termFetcher::DB_TABLE . "`.`" . Tutor_has_course_has_termFetcher::DB_COLUMN_TUTOR_USER_ID . "`
+			WHERE `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "` = :term_id
+			AND `" . Tutor_has_course_has_termFetcher::DB_TABLE . "`.`" . Tutor_has_course_has_termFetcher::DB_COLUMN_COURSE_ID . "` = :course_id";
+
+		try {
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
+			$query->bindParam(':term_id', $termId, PDO::PARAM_INT);
+			$query->bindParam(':course_id', $courseId, PDO::PARAM_INT);
+
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -368,7 +409,7 @@ class ScheduleFetcher
 			if ($query->fetchColumn() === '0') return false;
 		} catch (Exception $e) {
 			Mailer::sendDevelopers($e->getMessage(), __FILE__);
-			throw new Exception("Could not check conflicts with other appointments." );
+			throw new Exception("Could not check conflicts with other appointments.");
 		}
 
 		return true;
@@ -525,7 +566,7 @@ class ScheduleFetcher
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
 			Mailer::sendDevelopers($e->getMessage(), __FILE__);
-			throw new Exception("Could not retrieve teaching courses data from database." );
+			throw new Exception("Could not retrieve teaching courses data from database.");
 		}
 		return true;
 	}
