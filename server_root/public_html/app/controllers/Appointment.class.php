@@ -22,9 +22,18 @@ class Appointment
 	const LABEL_COLOR_PENDING = "default";
 	const LABEL_COLOR_WARNING = "warning";
 
-	public static function delete($appointmentId){
+	public static function delete($appointmentId) {
 		self::validateId($appointmentId);
 		return AppointmentFetcher::delete($appointmentId);
+	}
+
+	public static function validateId($id) {
+		if (is_null($id) || !preg_match("/^[0-9]+$/", $id)) throw new Exception("Data has been tempered. Aborting process.");
+
+		if (!AppointmentFetcher::existsId($id)) {
+			// TODO: sent email to developer relevant to this error.
+			throw new Exception("Either something went wrong with a database query, or you're trying to hack this app. In either case, the developers were just notified about this.");
+		}
 	}
 
 	public static function updateTerm($appointmentId, $tutorId, $user, $startDate, $endDate, $newTermId, $oldTermId) {
@@ -106,7 +115,7 @@ class Appointment
 	public static function  getCalendarAllAppointmentsOnTerm($termId) {
 		Term::validateId($termId);
 
-		$appointmentHours = Appointment::getTutorsOnTerm($termId);
+		$appointmentHours = AppointmentFetcher::retrieveTutors($termId);
 		$appointmentHoursJSON = array();
 		foreach ($appointmentHours as $appointmentHour) {
 			$appointmentTitle = $appointmentHour[CourseFetcher::DB_COLUMN_CODE] . " - " .
@@ -148,10 +157,58 @@ class Appointment
 		return json_encode($appointmentHoursJSON);
 	}
 
+	public static function  getCalendarAllAppointmentsForTutorsTeachingOnTerm($courseId, $termId) {
+		Course::validateId($courseId);
+		Term::validateId($termId);
+
+		$appointmentHours = AppointmentFetcher::getTutorsTeachingCourseOnTerm($courseId, $termId);
+		$appointmentHoursJSON = array();
+		foreach ($appointmentHours as $appointmentHour) {
+			$appointmentTitle = $appointmentHour[CourseFetcher::DB_COLUMN_CODE] . " - " .
+				$appointmentHour[UserFetcher::DB_COLUMN_FIRST_NAME] . " " . $appointmentHour[UserFetcher::DB_COLUMN_LAST_NAME];
+
+			$students = AppointmentHasStudentFetcher::retrieveStudentsWithAppointment($appointmentHour[AppointmentFetcher::DB_COLUMN_ID]);
+			$appointmentTitle .= " - ";
+			foreach ($students as $student) {
+				$appointmentTitle .= $student[StudentFetcher::DB_TABLE . "_" . StudentFetcher::DB_COLUMN_FIRST_NAME] . " " .
+					$student[StudentFetcher::DB_TABLE . "_" . StudentFetcher::DB_COLUMN_LAST_NAME] . ", ";
+			}
+			$appointmentTitle = rtrim($appointmentTitle, ", ");
+
+			$startDate = new DateTime($appointmentHour[AppointmentFetcher::DB_COLUMN_START_TIME]);
+			$endDate = new DateTime($appointmentHour[AppointmentFetcher::DB_COLUMN_END_TIME]);
+			$appointmentUrl = "http://" . $_SERVER['SERVER_NAME'] . "/appointments/" . $appointmentHour[UserFetcher::DB_COLUMN_ID];
+
+			switch ($appointmentHour[AppointmentFetcher::DB_COLUMN_LABEL_COLOR]) {
+				case Appointment::LABEL_COLOR_PENDING:
+					$color = '#888888';
+					break;
+				case Appointment::LABEL_COLOR_CANCELED:
+					$color = '#e5412d';
+					break;
+				case Appointment::LABEL_COLOR_SUCCESS:
+					$color = '#3fa67a';
+					break;
+				case Appointment::LABEL_COLOR_WARNING:
+					$color = '#f0ad4e';
+					break;
+				default:
+					$color = '#444';
+					break;
+			}
+			$appointmentHoursJSON[] = array('title' => $appointmentTitle, 'start' => $startDate->format('Y-m-d H:i:s'), 'end' =>
+				$endDate->format('Y-m-d H:i:s'), 'allDay' => false, 'url' => $appointmentUrl, 'color' => $color);
+		}
+
+		return json_encode($appointmentHoursJSON);
+	}
+
+
 	public static function getTutorsOnTerm($termId) {
 		Term::validateId($termId);
 		return AppointmentFetcher::retrieveTutors($termId);
 	}
+
 
 	public static function getCalendarSingleTutorAppointments($tutorId, $termId) {
 		Tutor::validateId($tutorId);
@@ -211,19 +268,10 @@ class Appointment
 		return AppointmentFetcher::retrieveSingle($id);
 	}
 
-	public static function validateId($id) {
-		if (is_null($id) || !preg_match("/^[0-9]+$/", $id)) throw new Exception("Data has been tempered. Aborting process.");
-
-		if (!AppointmentFetcher::existsId($id)) {
-			// TODO: sent email to developer relevant to this error.
-			throw new Exception("Either something went wrong with a database query, or you're trying to hack this app. In either case, the developers were just notified about this.");
-		}
-	}
-
-	public static function countWithLabelMessage($appopintments, $labelMessage) {
+	public static function countWithLabelMessage($appointments, $labelMessage) {
 		$count = 0;
-		foreach ($appopintments as $appopintment) {
-			if (strcmp($appopintment[AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE], $labelMessage) === 0) {
+		foreach ($appointments as $appointment) {
+			if (strcmp($appointment[AppointmentFetcher::DB_COLUMN_LABEL_MESSAGE], $labelMessage) === 0) {
 				$count++;
 			}
 		}

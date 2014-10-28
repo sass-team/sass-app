@@ -353,6 +353,7 @@ $(function () {
 	$courseId.click(function () {
 		try {
 			retrieveTutors();
+			reloadCalendar('many_tutors_appointments');
 		}
 		catch (err) {
 			$tutorId.select2({
@@ -498,12 +499,38 @@ $(function () {
 			type: 'GET',
 			dataType: "json",
 			data: {
-				action: 'single_tutor_working_hours',
+				action: 'single_tutor_appointments',
 				tutorId: $tutorId.select2('val'),
 				termId: $termId.select2('val')
 			},
 			error: function (xhr, status, error) {
 				$calendarTitle.text("there was an error while fetching tutor's appointments");
+				console.log(xhr.responseText);
+			},
+			beforeSend: function () {
+				if (spinner == null) {
+					spinner = new Spinner(opts).spin(calendar);
+				}
+
+			},
+			complete: function () {
+				if (spinner != null) {
+					spinner.stop();
+					spinner = null;
+				}
+			}
+		};
+		var manyTutorAppointmentsCalendar = {
+			url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/appointments",
+			type: 'GET',
+			dataType: "json",
+			data: {
+				action: 'many_tutors_appointments',
+				courseId: $courseId.select2('val'),
+				termId: $termId.select2('val')
+			},
+			error: function (xhr, status, error) {
+				$calendarTitle.text("Could not fetch tutor's appointments.");
 				console.log(xhr.responseText);
 			},
 			beforeSend: function () {
@@ -573,6 +600,7 @@ $(function () {
 		$calendar.fullCalendar('removeEventSource', singleTutorAppointmentsCalendar);
 		$calendar.fullCalendar('removeEventSource', allSchedulesCalendar);
 		$calendar.fullCalendar('removeEventSource', allAppointmentsCalendar);
+		$calendar.fullCalendar('removeEventSource', manyTutorAppointmentsCalendar);
 
 		switch (choice) {
 			case 'all_appointments_schedule':
@@ -583,9 +611,15 @@ $(function () {
 			case 'single_tutor_appointment_and_schedule':
 				if (!$tutorId.select2('val').match(/^[0-9]+$/)) throw new Error("Tutor is missing");
 				if (!$courseId.select2("val").match(/^[0-9]+$/)) throw new Error("Course is missing");
-				if (!$termId.select2("val").match(/^[0-9]+$/)) throw new Error("Course is missing");
+				if (!$termId.select2("val").match(/^[0-9]+$/)) throw new Error("Term is missing");
 				$calendar.fullCalendar('addEventSource', singleTutorScheduleCalendar);
 				$calendar.fullCalendar('addEventSource', singleTutorAppointmentsCalendar);
+				break;
+			case 'many_tutors_appointments':
+				if (!$courseId.select2("val").match(/^[0-9]+$/)) throw new Error("Course is missing");
+				if (!$termId.select2("val").match(/^[0-9]+$/)) throw new Error("Term is missing");
+//				$calendar.fullCalendar('addEventSource', singleTutorScheduleCalendar);
+				$calendar.fullCalendar('addEventSource', manyTutorAppointmentsCalendar);
 				break;
 			case 'working_hours_only':
 				if (!$tutorId.select2('val').match(/^[0-9]+$/)) {

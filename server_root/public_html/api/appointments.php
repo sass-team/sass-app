@@ -1,27 +1,31 @@
 <?php
 
-if (is_ajax()) {
-	require "../app/config/app.php";
-	header('Content-Type: application/json');
+if (!is_ajax()) {
+	header("Location: /error-403");
+	exit();
+}
 
-	if (isset($_GET["action"]) && !empty($_GET["action"])) { //Checks if action value exists
-		$action = $_GET["action"];
-		switch ($action) { //Switch case for value of action
-			case "all_tutors_appointments":
-				echo Appointment::getCalendarAllAppointmentsOnTerm($_GET["termId"]);
-				break;
-			case "single_tutor_working_hours":
-				echo Appointment::getCalendarSingleTutorAppointments($_GET["tutorId"], $_GET["termId"]);
-				break;
-		}
-	} else {
-		header("Location: /error-403");
-		exit();
+require "../app/config/app.php";
+header('Content-Type: application/json');
+
+if (isset($_GET["action"]) && !empty($_GET["action"])) { //Checks if action value exists
+	$action = $_GET["action"];
+	switch ($action) { //Switch case for value of action
+		case "all_tutors_appointments":
+			echo Appointment::getCalendarAllAppointmentsOnTerm($_GET["termId"]);
+			break;
+		case "single_tutor_appointments":
+			echo Appointment::getCalendarSingleTutorAppointments($_GET["tutorId"], $_GET["termId"]);
+			break;
+		case "many_tutors_appointments":
+			echo Appointment::getCalendarAllAppointmentsForTutorsTeachingOnTerm($_GET["courseId"], $_GET["termId"]);
+			break;
 	}
 } else {
 	header("Location: /error-403");
 	exit();
 }
+
 
 //Function to check if the request is an AJAX request
 function is_ajax() {
