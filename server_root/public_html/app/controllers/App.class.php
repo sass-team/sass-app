@@ -12,4 +12,5 @@ class App
 	const WORKING_HOUR_END = 19;
 	const NAME = "SASS App";
 	const VERSION = "v1.5.0";
+	const DATE_FORMAT = "m/d/Y g:i A";
 } 

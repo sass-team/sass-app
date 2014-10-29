@@ -15,15 +15,16 @@ try {
 
 	$startWeekDate = getWorkingDates($now->format('Y'), $now->format('W'));
 	$endWeekDate = getWorkingDates($now->format('Y'), $now->format('W'), false);
+	$courses = CourseFetcher::retrieveAll();
 
 	if (!$user->isTutor()) {
 		$appointments = AppointmentFetcher::retrieveBetweenDates($startWeekDate, $endWeekDate);
-
 		$countAppointmentsForCurWeek = sizeof($appointments);
 		$countAchievedAppointmentsForCurWeek = Appointment::countWithLabelMessage($appointments, Appointment::LABEL_MESSAGE_COMPLETE);
 		$canceledLabelMessagesForWeek = array(Appointment::LABEL_MESSAGE_STUDENT_NO_SHOW,
 			Appointment::LABEL_MESSAGE_TUTOR_CANCELED, Appointment::LABEL_MESSAGE_TUTOR_NO_SHOW, Appointment::LABEL_MESSAGE_STUDENT_CANCELED);
 		$countCanceledAppointmentsForCurWeek = Appointment::countWithLabelMessages($appointments, $canceledLabelMessagesForWeek);
+		$tutors = TutorFetcher::retrieveAll();
 
 	} else {
 		$appointments = AppointmentFetcher::retrieveTutorsBetweenDates($user->getId(), $startWeekDate, $endWeekDate);
@@ -335,14 +336,13 @@ function countLabelsStatusAppointments($day, $i, $appointments) {
 
 		<h3>
 			<i class="fa fa-bar-chart-o"></i>
-			Appointments - Area Chart
+			Workshop Sessions - Area Chart
 		</h3>
 
 	</div>
 	<!-- /.portlet-header -->
 
 	<div class="portlet-content">
-		<hr/>
 		<div id="area-chart-appointments" class="chart-holder" style="height: 250px"></div>
 		<!-- /#bar-chart -->
 
@@ -352,6 +352,249 @@ function countLabelsStatusAppointments($day, $i, $appointments) {
 </div>
 <!-- /.portlet -->
 
+
+<div class="row">
+
+<div class="col-md-6">
+
+	<div class="portlet">
+
+		<div class="portlet-header">
+
+			<h3>
+				<i class="fa fa-table"></i>
+				Recent Appointments
+			</h3>
+
+			<ul class="portlet-tools pull-right">
+
+				<li>
+					<a class="btn btn-sm btn-default" href="<?php echo BASE_URL; ?>appointments/add">
+						Add
+					</a>
+				</li>
+			</ul>
+
+		</div>
+		<!-- /.portlet-header -->
+
+		<div class="portlet-content">
+
+			<div class="table-responsive">
+				<table class="table">
+					<thead>
+					<tr>
+						<th>Facilitator</th>
+						<th>Course</th>
+						<th>Date</th>
+						<th></th>
+					</tr>
+					</thead>
+					<tbody>
+					<?php
+					$totalAllAppointmentsSize = sizeof($appointments);
+					$totalRecentAppointments = $totalAllAppointmentsSize > 6 ? 6 : $totalAllAppointmentsSize;
+					for ($i = 0; $i < $totalRecentAppointments; $i++):
+						$appointmentId = $appointments[$i][AppointmentFetcher::DB_COLUMN_ID];
+						$appointmentStartDate = new DateTime($appointments[$i][AppointmentFetcher::DB_COLUMN_START_TIME]);
+						$course = get($courses, $appointments[$i][AppointmentFetcher::DB_COLUMN_COURSE_ID], CourseFetcher::DB_COLUMN_ID);
+						$tutor = get($tutors, $appointments[$i][AppointmentFetcher::DB_COLUMN_TUTOR_USER_ID], TutorFetcher::DB_COLUMN_USER_ID);
+						//09/21/2013
+						?>
+						<tr>
+							<td><?php echo $tutor[UserFetcher::DB_COLUMN_LAST_NAME]; ?></td>
+							<td><?php echo $course[CourseFetcher::DB_COLUMN_CODE]; ?></td>
+							<td><?php echo $appointmentStartDate->format(App::DATE_FORMAT); ?></td>
+							<td><a href="<?php echo BASE_URL . "appointments/$appointmentId"; ?>"
+							       class="btn btn-xs btn-tertiary">View &nbsp;&nbsp;<i
+										class="fa fa-chevron-right"></i></a></td>
+						</tr>
+					<?php endfor; ?>
+					</tbody>
+				</table>
+			</div>
+			<!-- /.table-responsive -->
+
+			<hr/>
+
+			<a href="<?php echo BASE_URL; ?>appointments/list" class="btn btn-sm btn-secondary">View All
+				Appointments</a>
+
+
+		</div>
+		<!-- /.portlet-content -->
+
+	</div>
+	<!-- /.portlet -->
+
+
+</div>
+<!-- /.col-md-4 -->
+
+
+<div class="col-md-6">
+
+	<div class="portlet">
+
+		<div class="portlet-header">
+
+			<h3>
+				<i class="fa fa-group"></i>
+				Recent Signups
+			</h3>
+
+			<ul class="portlet-tools pull-right">
+				<li>
+					<button class="btn btn-sm btn-default">
+						Add User
+					</button>
+				</li>
+			</ul>
+
+		</div>
+		<!-- /.portlet-header -->
+
+		<div class="portlet-content">
+
+
+			<div class="table-responsive">
+
+				<table id="user-signups" class="table table-striped table-checkable">
+					<thead>
+					<tr>
+						<th class="checkbox-column">
+							<input type="checkbox" id="check-all" class="icheck-input"/>
+						</th>
+						<th class="hidden-xs">First Name
+						</th>
+						<th>Last Name</th>
+						<th>Status
+						</th>
+
+						<th class="align-center">Approve
+						</th>
+
+					</tr>
+					</thead>
+
+					<tbody>
+					<tr class="">
+						<td class="checkbox-column">
+							<input type="checkbox" name="actiony" value="joey" class="icheck-input">
+						</td>
+
+						<td class="hidden-xs">Joey</td>
+						<td>Greyson</td>
+						<td><span class="label label-success">Approved</span></td>
+						<td class="align-center">
+							<a href="javascript:void(0);" class="btn btn-xs btn-primary" data-original-title="Approve">
+								<i class="fa fa-check"></i>
+							</a>
+						</td>
+					</tr>
+
+					<tr class="">
+						<td class="checkbox-column">
+							<input type="checkbox" name="actiony" value="wolf" class="icheck-input">
+						</td>
+						<td class="hidden-xs">Wolf</td>
+						<td>Bud</td>
+						<td><span class="label label-default">Pending</span>
+						</td>
+						<td class="align-center">
+							<a href="javascript:void(0);" class="btn btn-xs btn-primary" data-original-title="Approve">
+								<i class="fa fa-check"></i>
+							</a>
+						</td>
+					</tr>
+
+
+					<tr class="">
+						<td class="checkbox-column">
+							<input type="checkbox" name="actiony" value="sam" class="icheck-input">
+						</td>
+
+						<td class="hidden-xs">Sam</td>
+						<td>Mitchell</td>
+						<td><span class="label label-success">Approved</span></td>
+						<td class="align-center">
+							<a href="javascript:void(0);" class="btn btn-xs btn-primary" data-original-title="Approve">
+								<i class="fa fa-check"></i>
+							</a>
+						</td>
+					</tr>
+					<tr class="">
+						<td class="checkbox-column">
+							<input type="checkbox" value="carlos" name="actiony" class="icheck-input">
+						</td>
+						<td class="hidden-xs">Carlos</td>
+						<td>Lopez</td>
+						<td><span class="label label-success">Approved</span></td>
+						<td class="align-center">
+							<a href="javascript:void(0);" class="btn btn-xs btn-primary" data-original-title="Approve">
+								<i class="fa fa-check"></i>
+							</a>
+						</td>
+					</tr>
+
+
+					<tr class="">
+						<td class="checkbox-column">
+							<input type="checkbox" name="actiony" value="rob" class="icheck-input">
+						</td>
+						<td class="hidden-xs">Rob</td>
+						<td>Johnson</td>
+						<td><span class="label label-default">Pending</span></td>
+						<td class="align-center">
+							<a href="javascript:void(0);" class="btn btn-xs btn-primary" data-original-title="Approve">
+								<i class="fa fa-check"></i>
+							</a>
+						</td>
+					</tr>
+					<tr class="">
+						<td class="checkbox-column">
+							<input type="checkbox" value="mike" name="actiony" class="icheck-input">
+						</td>
+						<td class="hidden-xs">Mike</td>
+						<td>Jones</td>
+						<td><span class="label label-default">Pending</span></td>
+						<td class="align-center">
+							<a href="javascript:void(0);" class="btn btn-xs btn-primary" data-original-title="Approve">
+								<i class="fa fa-check"></i>
+							</a>
+						</td>
+					</tr>
+
+					</tbody>
+				</table>
+
+
+			</div>
+			<!-- /.table-responsive -->
+
+			<hr/>
+
+			Apply to Selected: &nbsp;&nbsp;
+			<select id="apply-selected" name="table-select" class="ui-select2" style="width: 125px">
+				<option value="">Select Action</option>
+				<option value="approve">Approve</option>
+				<option value="edit">Edit</option>
+				<option value="delete">Delete</option>
+
+			</select>
+
+		</div>
+		<!-- /.portlet-content -->
+
+	</div>
+	<!-- /.portlet -->
+
+</div>
+<!-- /.col-md-4 -->
+
+
+</div>
+<!-- /.row -->
 
 
 </div>
@@ -363,7 +606,7 @@ function countLabelsStatusAppointments($day, $i, $appointments) {
 		<div class="portlet-header">
 			<h3>
 				<i class="fa fa-bar-chart-o"></i>
-				Workshop Session Chart
+				Workshop Sessions - Donut Chart
 			</h3>
 		</div>
 		<!-- /.portlet-header -->
@@ -498,7 +741,7 @@ function countLabelsStatusAppointments($day, $i, $appointments) {
 			labels: ['planned', 'achieved', 'canceled'],
 			pointSize: 3,
 			hideHover: 'auto',
-			lineColors: [App.chartColors[4], '#3fa67a', App.chartColors[0]],
+			lineColors: [App.chartColors[4], '#3fa67a', '#f0ad4e'],
 			parseTime: false
 		});
 	}

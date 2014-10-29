@@ -556,6 +556,7 @@ class AppointmentFetcher
 		return false;
 	}
 
+
 	public static function retrieveBetweenDates($startWeek, $endWeek) {
 		$query =
 			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` , `" . self::DB_TABLE . "`.`" .
@@ -566,7 +567,9 @@ class AppointmentFetcher
 			  `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_LABEL_MESSAGE . "`
 			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
 			WHERE
-			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "` BETWEEN :start_week AND :end_week";
+			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "` BETWEEN :start_week AND :end_week
+			ORDER BY `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` DESC"; // IS USED BY DASHBOARD FOR SHOWING LATEST APPOINTMENTS
+		// DO NOT REMOVE. (DESC ID)
 
 		try {
 			$dbConnection = DatabaseManager::getConnection();
@@ -595,7 +598,10 @@ class AppointmentFetcher
 			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
 			WHERE
 			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "` BETWEEN :start_week AND :end_week
-			AND `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "` = :tutor_id";
+			AND `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "` = :tutor_id
+			ORDER BY `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` DESC"; // IS USED BY DASHBOARD FOR SHOWING LATEST APPOINTMENTS
+		// DO NOT REMOVE. (DESC ID)
+
 
 		try {
 			$dbConnection = DatabaseManager::getConnection();

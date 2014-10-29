@@ -3,11 +3,11 @@
 }
 
 .dashboard-stat.secondary, .dashboard-stat.secondary:active {
-    background-color: #d5412d;
+    background-color: #f0ad4e;
 }
 
 .dashboard-stat.secondary:hover {
-    background-color: #e5412d;
+    background-color: #f0ad4e;
 }
 
 .dashboard-stat.primary:hover {
@@ -15,7 +15,7 @@
 }
 
 .dashboard-stat.secondary i, .dashboard-stat.secondary:hover i, .dashboard-stat.secondary:active i {
-    color: #c4301a;
+    color: #f0ad4e;
 }
 
 .dashboard-stat.primary i, .dashboard-stat.primary:hover i, .dashboard-stat.primary:active i {
