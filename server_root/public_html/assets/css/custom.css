@@ -2,12 +2,24 @@
     background-color: #3fa67a;
 }
 
+.dashboard-stat.secondary, .dashboard-stat.secondary:active {
+    background-color: #d5412d;
+}
+
+.dashboard-stat.secondary:hover {
+    background-color: #e5412d;
+}
+
 .dashboard-stat.primary:hover {
-    background-color: #1fa67a;
+    background-color: #3aaf7f;
+}
+
+.dashboard-stat.secondary i, .dashboard-stat.secondary:hover i, .dashboard-stat.secondary:active i {
+    color: #c4301a;
 }
 
 .dashboard-stat.primary i, .dashboard-stat.primary:hover i, .dashboard-stat.primary:active i {
-    color: #008351;
+    color: #1da67a;
 }
 
 #back-to-top {
