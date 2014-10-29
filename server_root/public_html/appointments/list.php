@@ -109,7 +109,7 @@ function getStudentsIds($students, $appointmentId) {
 									>
 									<thead>
 									<tr>
-										<th class="text-center" data-filterable="true" data-sortable="true">ID
+										<th class="text-center" data-direction="desc" data-filterable="true" data-sortable="true">ID
 										</th>
 										<?php if (!$user->isTutor()) { ?>
 											<th class="text-center" data-filterable="true" data-sortable="true">Tutor

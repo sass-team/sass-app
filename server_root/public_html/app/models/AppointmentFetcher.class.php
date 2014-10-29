@@ -403,7 +403,9 @@ class AppointmentFetcher
 			INNER JOIN `" . TermFetcher::DB_TABLE . "` 
 				ON `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "` = 
 					`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`
-			WHERE :now BETWEEN `" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" . TermFetcher::DB_COLUMN_END_DATE . "`";
+			WHERE :now BETWEEN `" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" . TermFetcher::DB_COLUMN_END_DATE . "`
+			ORDER BY `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` DESC"; // IS USED BY DASHBOARD FOR SHOWING LATEST APPOINTMENTS
+
 
 		try {
 			date_default_timezone_set('Europe/Athens');
