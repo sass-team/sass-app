@@ -383,12 +383,13 @@ require ROOT_PATH . 'views/sidebar.php';
 				type: 'GET',
 				dataType: "json",
 				data: {
-					action: 'single_tutor_working_hours',
+					action: 'single_tutor_appointments',
 					tutorId: <?php echo $requestedTutorId; ?>,
 					termId: $termId.select2('val')
 				},
 				error: function (xhr, status, error) {
-					$calendarTitle.text("there was an error while fetching appointments");
+					$calendarTitle.text("Could not retrieve appointments.");
+					console.log(error);
 				},
 				success: function () {
 					$calendarTitle.text();
@@ -416,7 +417,7 @@ require ROOT_PATH . 'views/sidebar.php';
 					termId: $termId.select2('val')
 				},
 				error: function (xhr, status, error) {
-					$('#calendar-title').text("there was an error while fetching appointments");
+					$('#calendar-title').text("Could not retrieve appointments.");
 					console.log(xhr.responseText);
 				},
 				success: function () {

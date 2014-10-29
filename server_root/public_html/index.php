@@ -329,149 +329,149 @@ function countLabelsStatusAppointments($day, $i, $appointments) {
 
 <div class="row">
 
-<div class="col-md-9">
+	<div class="col-md-9">
 
-<div class="portlet">
+		<div class="portlet">
 
-	<div class="portlet-header">
+			<div class="portlet-header">
 
-		<h3>
-			<i class="fa fa-bar-chart-o"></i>
-			Workshop Sessions - Area Chart
-		</h3>
+				<h3>
+					<i class="fa fa-bar-chart-o"></i>
+					Workshop Sessions - Area Chart
+				</h3>
 
-	</div>
-	<!-- /.portlet-header -->
-
-	<div class="portlet-content">
-		<div id="area-chart-appointments" class="chart-holder" style="height: 250px"></div>
-		<!-- /#bar-chart -->
-
-	</div>
-	<!-- /.portlet-content -->
-
-</div>
-<!-- /.portlet -->
-
-
-<div class="row">
-
-<div class="col-md-6">
-
-	<div class="portlet">
-
-		<div class="portlet-header">
-
-			<h3>
-				<i class="fa fa-table"></i>
-				Recent Appointments
-			</h3>
-
-			<ul class="portlet-tools pull-right">
-
-				<li>
-					<a class="btn btn-sm btn-default" href="<?php echo BASE_URL; ?>appointments/add">
-						Add
-					</a>
-				</li>
-			</ul>
-
-		</div>
-		<!-- /.portlet-header -->
-
-		<div class="portlet-content">
-
-			<div class="table-responsive">
-				<table class="table">
-					<thead>
-					<tr>
-						<th>Facilitator</th>
-						<th>Course</th>
-						<th>Date</th>
-						<th></th>
-					</tr>
-					</thead>
-					<tbody>
-					<?php
-					$totalAllAppointmentsSize = sizeof($appointments);
-					$totalRecentAppointments = $totalAllAppointmentsSize > 6 ? 6 : $totalAllAppointmentsSize;
-					for ($i = 0; $i < $totalRecentAppointments; $i++):
-						$appointmentId = $appointments[$i][AppointmentFetcher::DB_COLUMN_ID];
-						$appointmentStartDate = new DateTime($appointments[$i][AppointmentFetcher::DB_COLUMN_START_TIME]);
-						$course = get($courses, $appointments[$i][AppointmentFetcher::DB_COLUMN_COURSE_ID], CourseFetcher::DB_COLUMN_ID);
-						$tutor = get($tutors, $appointments[$i][AppointmentFetcher::DB_COLUMN_TUTOR_USER_ID], TutorFetcher::DB_COLUMN_USER_ID);
-						//09/21/2013
-						?>
-						<tr>
-							<td><?php echo $tutor[UserFetcher::DB_COLUMN_LAST_NAME]; ?></td>
-							<td><?php echo $course[CourseFetcher::DB_COLUMN_CODE]; ?></td>
-							<td><?php echo $appointmentStartDate->format(App::DATE_FORMAT); ?></td>
-							<td><a href="<?php echo BASE_URL . "appointments/$appointmentId"; ?>"
-							       class="btn btn-xs btn-tertiary">View &nbsp;&nbsp;<i
-										class="fa fa-chevron-right"></i></a></td>
-						</tr>
-					<?php endfor; ?>
-					</tbody>
-				</table>
 			</div>
-			<!-- /.table-responsive -->
+			<!-- /.portlet-header -->
 
-			<hr/>
+			<div class="portlet-content">
+				<div id="area-chart-appointments" class="chart-holder" style="height: 250px"></div>
+				<!-- /#bar-chart -->
 
-			<a href="<?php echo BASE_URL; ?>appointments/list" class="btn btn-sm btn-secondary">View All
-				Appointments</a>
+			</div>
+			<!-- /.portlet-content -->
+
+		</div>
+		<!-- /.portlet -->
+
+
+		<div class="row">
+
+			<div class="col-md-6">
+
+				<div class="portlet">
+
+					<div class="portlet-header">
+
+						<h3>
+							<i class="fa fa-table"></i>
+							Recent Appointments
+						</h3>
+
+						<?php if (!$user->isTutor()): ?>
+							<ul class="portlet-tools pull-right">
+								<li>
+									<a class="btn btn-sm btn-default" href="<?php echo BASE_URL; ?>appointments/add">
+										Add
+									</a>
+								</li>
+							</ul>
+						<?php endif; ?>
+					</div>
+					<!-- /.portlet-header -->
+
+					<div class="portlet-content">
+
+						<div class="table-responsive">
+							<table class="table">
+								<thead>
+								<tr>
+									<th>Facilitator</th>
+									<th>Course</th>
+									<th>Date</th>
+									<th></th>
+								</tr>
+								</thead>
+								<tbody>
+								<?php
+								$totalAllAppointmentsSize = sizeof($appointments);
+								$totalRecentAppointments = $totalAllAppointmentsSize > 6 ? 6 : $totalAllAppointmentsSize;
+								for ($i = 0; $i < $totalRecentAppointments; $i++):
+									$appointmentId = $appointments[$i][AppointmentFetcher::DB_COLUMN_ID];
+									$appointmentStartDate = new DateTime($appointments[$i][AppointmentFetcher::DB_COLUMN_START_TIME]);
+									$course = get($courses, $appointments[$i][AppointmentFetcher::DB_COLUMN_COURSE_ID], CourseFetcher::DB_COLUMN_ID);
+									$tutor = get($tutors, $appointments[$i][AppointmentFetcher::DB_COLUMN_TUTOR_USER_ID], TutorFetcher::DB_COLUMN_USER_ID);
+									//09/21/2013
+									?>
+									<tr>
+										<td><?php echo $tutor[UserFetcher::DB_COLUMN_LAST_NAME]; ?></td>
+										<td><?php echo $course[CourseFetcher::DB_COLUMN_CODE]; ?></td>
+										<td><?php echo $appointmentStartDate->format(App::DATE_FORMAT); ?></td>
+										<td><a href="<?php echo BASE_URL . "appointments/$appointmentId"; ?>"
+										       class="btn btn-xs btn-tertiary">View &nbsp;&nbsp;<i
+													class="fa fa-chevron-right"></i></a></td>
+									</tr>
+								<?php endfor; ?>
+								</tbody>
+							</table>
+						</div>
+						<!-- /.table-responsive -->
+
+						<hr/>
+
+						<a href="<?php echo BASE_URL; ?>appointments/list" class="btn btn-sm btn-secondary">View All
+							Appointments</a>
+
+
+					</div>
+					<!-- /.portlet-content -->
+
+				</div>
+				<!-- /.portlet -->
+
+
+			</div>
+			<!-- /.col-md-4 -->
+
+
+			<div class="col-md-6"></div>
+			<!-- /.col-md-4 -->
 
 
 		</div>
-		<!-- /.portlet-content -->
+		<!-- /.row -->
+
 
 	</div>
-	<!-- /.portlet -->
+	<!-- /.row -->
 
+	<div class="col-md-3">
+		<div class="portlet">
 
-</div>
-<!-- /.col-md-4 -->
+			<div class="portlet-header">
+				<h3>
+					<i class="fa fa-bar-chart-o"></i>
+					Workshop Sessions - Donut Chart
+				</h3>
+			</div>
+			<!-- /.portlet-header -->
 
+			<div class="portlet-content">
+				<div id="workshop-chart" class="chart-holder" style="height: 250px"></div>
+			</div>
+			<!-- /.portlet-content -->
 
-<div class="col-md-6"></div>
-<!-- /.col-md-4 -->
-
-
-</div>
-<!-- /.row -->
-
-
-</div>
-<!-- /.row -->
-
-<div class="col-md-3">
-	<div class="portlet">
-
-		<div class="portlet-header">
-			<h3>
-				<i class="fa fa-bar-chart-o"></i>
-				Workshop Sessions - Donut Chart
-			</h3>
 		</div>
-		<!-- /.portlet-header -->
+		<!-- /.portlet -->
 
-		<div class="portlet-content">
-			<div id="workshop-chart" class="chart-holder" style="height: 250px"></div>
-		</div>
-		<!-- /.portlet-content -->
+
+		<div class="portlet"></div>
+		<!-- /.portlet -->
+
+
+		<!-- /.portlet -->
 
 	</div>
-	<!-- /.portlet -->
-
-
-	<div class="portlet"></div>
-	<!-- /.portlet -->
-
-
-	<!-- /.portlet -->
-
-</div>
-<!-- /.col -->
+	<!-- /.col -->
 
 </div>
 <!-- /.row -->
