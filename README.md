@@ -115,7 +115,7 @@ git branch -r
 # Gitflow  
 [Training](https://github.com/nvie/gitflow)  
 
-![Gitflow Diagram](http://nvie.com/img/2009/12/Screen-shot-2009-12-24-at-11.32.03.png "Visualize")
+![Gitflow Diagram](http://nvie.com/img/git-model@2x.png "Visualize")
 
 # [Markdown-Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)  
 
@@ -125,6 +125,4 @@ http://www.toolheap.com/test-mail-server-tool/
 
 Just install the above app. Run "Test Mail Server Tool". Allow to connect to internet if prompted.  
 
-# [ssh](https://help.github.com/articles/generating-ssh-keys)  
-    
-    
+# [ssh](https://help.github.com/articles/generating-ssh-keys)
