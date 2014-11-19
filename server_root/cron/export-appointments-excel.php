@@ -10,7 +10,7 @@ require "../public_html/app/config/app.php";
 
 $appInfoFile = ROOT_PATH . "config/dropbox.app";
 # Include the Dropbox SDK libraries
-require_once ROOT_PATH . "plugins/dropbox-php-sdk-1.1.3/lib/Dropbox/autoload.php";
+require_once ROOT_PATH . "plugins/dropbox-sdk/lib/Dropbox/autoload.php";
 include_once(ROOT_PATH . '/plugins/mysqldump-php-1.4.1/src/Ifsnop/Mysqldump/Mysqldump.php');
 
 use Dropbox as dbx;
