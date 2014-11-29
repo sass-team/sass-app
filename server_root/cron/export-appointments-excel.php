@@ -16,17 +16,21 @@ include_once(ROOT_PATH . '/plugins/mysqldump-php-1.4.1/src/Ifsnop/Mysqldump/Mysq
 use Dropbox as dbx;
 
 
-try {
+try
+{
 	date_default_timezone_set('Europe/Athens');
-	$curWorkingDate = new DateTime();
-	$curWorkingHour = intval($curWorkingDate->format('H'));
-	// save resources - only run cron at hours 08:00 - 18:00
-	if ($curWorkingHour < App::WORKING_HOUR_START || $curWorkingHour > App::WORKING_HOUR_END) exit();
+
+	// run script only during working hours
+	if ( ! App::isWorkingDateTimeOn())
+	{
+		exit();
+	}
 
 	$filePath = ROOT_PATH . 'storage/excel/';
 	$curTerms = TermFetcher::retrieveCurrTerm();
 
-	foreach ($curTerms as $curTerm) {
+	foreach ($curTerms as $curTerm)
+	{
 		$curTermId = $curTerm[TermFetcher::DB_COLUMN_ID];
 		$curTermName = $curTerm[TermFetcher::DB_COLUMN_NAME];
 		$curTermStartDateTime = new DateTime($curTerm[TermFetcher::DB_COLUMN_START_DATE]);
@@ -43,6 +47,7 @@ try {
 		fclose($f);
 	}
 	exit();
-} catch (\Exception $e) {
+} catch (\Exception $e)
+{
 	Mailer::sendDevelopers('mysqldump-php error: ' . $e->getMessage(), __FILE__);
 }

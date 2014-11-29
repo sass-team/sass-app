@@ -16,13 +16,15 @@ include_once(ROOT_PATH . '/plugins/mysqldump-php-1.4.1/src/Ifsnop/Mysqldump/Mysq
 use Dropbox as dbx;
 
 
-try {
-
+try
+{
 	date_default_timezone_set('Europe/Athens');
-	$curWorkingDate = new DateTime();
-	$curWorkingHour = intval($curWorkingDate->format('H'));
-	// save resources - only run cron at hours 08:00 - 18:00
-	if ($curWorkingHour < App::WORKING_HOUR_START || $curWorkingHour > App::WORKING_HOUR_END) exit();
+
+	// run script only during working hours every 2 hours
+	if ( ! App::isWorkingDateTimeOn() )
+	{
+		exit();
+	}
 
 	$filePath = ROOT_PATH . 'storage/backups/';
 	$fileName = 'sass app db ' . date('m-d-Y Hi') . '.sql';
@@ -30,21 +32,21 @@ try {
 	$zippedFullFileName = $filePath . $zippedFileName;
 	$curWorkingDateYear = $curWorkingDate->format('Y');
 
-	$dumpSettings = array(
-		'compress' => Ifsnop\Mysqldump\Mysqldump::GZIP,
-		'no-data' => false,
-		'add-drop-table' => true,
-		'single-transaction' => false,
-		'lock-tables' => true,
-		'add-locks' => true,
-		'extended-insert' => true,
+	$dumpSettings = [
+		'compress'                   => Ifsnop\Mysqldump\Mysqldump::GZIP,
+		'no-data'                    => false,
+		'add-drop-table'             => true,
+		'single-transaction'         => false,
+		'lock-tables'                => true,
+		'add-locks'                  => true,
+		'extended-insert'            => true,
 		'disable-foreign-keys-check' => true,
-		'skip-triggers' => false,
-		'add-drop-trigger' => true,
-		'databases' => false,
-		'add-drop-database' => false,
-		'hex-blob' => true
-	);
+		'skip-triggers'              => false,
+		'add-drop-trigger'           => true,
+		'databases'                  => false,
+		'add-drop-database'          => false,
+		'hex-blob'                   => true
+	];
 
 	$dump = new Ifsnop\Mysqldump\Mysqldump(DatabaseManager::$dsn[DatabaseManager::DB_NAME],
 		DatabaseManager::$dsn[DatabaseManager::DB_USERNAME],
@@ -62,6 +64,7 @@ try {
 	fclose($f);
 
 //	Mailer::sendDevelopers("Backup created: " . $filename, __FILE__);
-} catch (\Exception $e) {
+} catch (\Exception $e)
+{
 	Mailer::sendDevelopers('mysqldump-php error: ' . $e->getMessage(), __FILE__);
 }
