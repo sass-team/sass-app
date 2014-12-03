@@ -30,7 +30,7 @@ try
 	$fileName = 'sass app db ' . date('m-d-Y Hi') . '.sql';
 	$zippedFileName = $fileName . '.gz';
 	$zippedFullFileName = $filePath . $zippedFileName;
-	$curWorkingDateYear = $curWorkingDate->format('Y');
+	$curWorkingDateYear = App::getCurWorkingDate()->format('Y');
 
 	$dumpSettings = [
 		'compress'                   => Ifsnop\Mysqldump\Mysqldump::GZIP,

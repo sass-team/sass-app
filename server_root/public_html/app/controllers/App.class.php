@@ -35,5 +35,13 @@ class App {
 		return true;
 	}
 
+	static function getCurWorkingDate()
+	{
+		date_default_timezone_set('Europe/Athens');
+
+		$curWorkingDate = new DateTime();
+
+		return $curWorkingDate;
+	}
 
 }
