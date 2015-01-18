@@ -32,6 +32,12 @@
 
 <?php
 
+if($_SERVER["HTTPS"] != "on") {
+       header("HTTP/1.1 301 Moved Permanently");
+       header("Location: https://" . $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"]);
+       exit();
+}
+
 // these two constants are used to create root-relative web addresses
 // amd absolute server paths throught all the code
 define("BASE_URL", "/");

@@ -23,4 +23,14 @@ atlassian-ide-plugin.xml
 com_crashlytics_export_strings.xml
 
 server_root/public_html/app/config/app.php
-server_root/public_html/app/config/DatabaseManager.class.php
+server_root/public_html/app/config/DatabaseManager.class.php.bash_history/*
+.cache/
+.bash_history/
+.ssh/
+.vim/
+.viminfo/
+.vimrc/
+DO_NOT_UPLOAD_HERE
+.viminfo
+.bash_history
+.vimrc
