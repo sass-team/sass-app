@@ -469,7 +469,7 @@ $(function () {
 
 		var data = [];
 		var singleTutorScheduleCalendar = {
-			url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/schedules",
+			url: "<?php echo "https://" . $_SERVER['SERVER_NAME']; ?>/api/schedules",
 			type: 'GET',
 			dataType: "json",
 			data: {
@@ -495,7 +495,7 @@ $(function () {
 			}
 		};
 		var singleTutorAppointmentsCalendar = {
-			url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/appointments",
+			url: "<?php echo "https://" . $_SERVER['SERVER_NAME']; ?>/api/appointments",
 			type: 'GET',
 			dataType: "json",
 			data: {
@@ -522,7 +522,7 @@ $(function () {
 		};
 
 		var manyTutorScheduleCalendar = {
-			url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/schedules",
+			url: "<?php echo "https://" . $_SERVER['SERVER_NAME']; ?>/api/schedules",
 			type: 'GET',
 			dataType: "json",
 			data: {
@@ -548,7 +548,7 @@ $(function () {
 			}
 		};
 		var manyTutorAppointmentsCalendar = {
-			url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/appointments",
+			url: "<?php echo "https://" . $_SERVER['SERVER_NAME']; ?>/api/appointments",
 			type: 'GET',
 			dataType: "json",
 			data: {
@@ -574,7 +574,7 @@ $(function () {
 			}
 		};
 		var allSchedulesCalendar = {
-			url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/schedules",
+			url: "<?php echo "https://" . $_SERVER['SERVER_NAME']; ?>/api/schedules",
 			type: 'GET',
 			dataType: "json",
 			data: {
@@ -600,7 +600,7 @@ $(function () {
 			}
 		};
 		var allAppointmentsCalendar = {
-			url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/appointments",
+			url: "<?php echo "https://" . $_SERVER['SERVER_NAME']; ?>/api/appointments",
 			type: 'GET',
 			dataType: "json",
 			data: {
@@ -779,7 +779,7 @@ $(function () {
 		$.ajax({
 			type: "GET",
 			dataType: "json",
-			url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/courses",
+			url: "<?php echo "https://" . $_SERVER['SERVER_NAME']; ?>/api/courses",
 			data: data,
 			success: function (inData) {
 				// reset label test
@@ -836,7 +836,7 @@ $(function () {
 		$.ajax({
 			type: "GET",
 			dataType: "json",
-			url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/courses",
+			url: "<?php echo "https://" . $_SERVER['SERVER_NAME']; ?>/api/courses",
 			data: data,
 			success: function (inData) {
 				console.log(inData);

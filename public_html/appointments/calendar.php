@@ -379,7 +379,7 @@ require ROOT_PATH . 'views/sidebar.php';
 			if ($termId.val() === null || !$termId.select2('val').match(/^[0-9]+$/)) throw new Error("Term is missing");
 
 			var singleTutorAppointmentsCalendar = {
-				url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/appointments",
+				url: "<?php echo "https://" . $_SERVER['SERVER_NAME']; ?>/api/appointments",
 				type: 'GET',
 				dataType: "json",
 				data: {
@@ -409,7 +409,7 @@ require ROOT_PATH . 'views/sidebar.php';
 			};
 
 			var allTutorsAppointmentsCalendar = {
-				url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/appointments",
+				url: "<?php echo "https://" . $_SERVER['SERVER_NAME']; ?>/api/appointments",
 				type: 'GET',
 				dataType: "json",
 				data: {

@@ -80,7 +80,7 @@ function isForgotBtnPressed() {
 		<meta name="keywords" content="CMS,university,SASS,tutor,tutoring"/>
 		<link rel="shortcut icon" href="<?php echo BASE_URL; ?>assets/img/logos/favicon.ico">
 		<link rel="stylesheet"
-		      href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,800italic,400,600,800"
+		      href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,800italic,400,600,800"
 		      type="text/css">
 		<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
@@ -253,7 +253,7 @@ function isForgotBtnPressed() {
 	<script src="<?php echo BASE_URL; ?>assets/js/Login.js"></script>
 
 	<!-- Warming Up -->
-	<link href='http://fonts.googleapis.com/css?family=Buenard:700' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Buenard:700' rel='stylesheet' type='text/css'>
 	<script src="http://pupunzi.com/mb.components/mb.YTPlayer/demo/inc/jquery.mb.YTPlayer.js"></script>
 
 	<script type="text/javascript">
