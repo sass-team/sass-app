@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__.'/../lib/Dropbox/strict.php';
+require_once __DIR__ . '/../lib/Dropbox/strict.php';
 
 use \Dropbox as dbx;
 

@@ -7,7 +7,7 @@
 	<link rel="shortcut icon" href="<?php echo BASE_URL; ?>assets/img/logos/favicon.ico">
 
 	<link rel="stylesheet"
-    	      href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,800italic,400,600,800"
+    	      href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,800italic,400,600,800"
     	      type="text/css">
 	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <!--	 Latest compiled and minified CSS -->
