@@ -2,8 +2,8 @@
 RewriteEngine On
 RewriteBase /
 
-RewriteCond %{HTTPS} off
-RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+# RewriteCond %{HTTPS} off
+# RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
 RewriteRule ^cloud/success$ /cloud.php?success=y1!qp [L]
 RewriteCond %{REQUEST_FILENAME} !-d
