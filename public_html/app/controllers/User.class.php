@@ -327,7 +327,29 @@ abstract class User extends Person
 	public static function retrieveAll() {
 		$query = "SELECT user.id, user.f_name, user.l_name, user.img_loc, user.profile_description, user.date, user.mobile, user.email, user_types.type
 		         FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.user
-						LEFT OUTER JOIN user_types ON user.`user_types_id` = `user_types`.id";
+						LEFT OUTER JOIN user_types ON user.`user_types_id` = `user_types`.id
+						WHERE active=1";
+
+
+
+		try {
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
+			$query->execute();
+			$rows = $query->fetchAll();
+
+			return $rows;
+		} catch (PDOException $e) {
+			throw new Exception("Something terrible happened. Could not retrieve users data from database.: ");
+			// end catch
+		}
+	}
+
+	public static function retrieveAllInactive() {
+		$query = "SELECT user.id, user.f_name, user.l_name, user.img_loc, user.profile_description, user.date, user.mobile, user.email, user_types.type
+		         FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.user
+						LEFT OUTER JOIN user_types ON user.`user_types_id` = `user_types`.id
+						WHERE active=0";
 
 
 

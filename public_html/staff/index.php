@@ -64,6 +64,11 @@ try {
 		$pageTitle = "All Staff Members";
 		$users = User::retrieveAll();
 		$courses = CourseFetcher::retrieveAll();
+
+		if (isBtnInactivePrsd()) {
+			$users = User::retrieveAllInactive();
+		}
+		
 	} else {
 		header('Location: ' . BASE_URL . 'error-404');
 		exit();
@@ -89,6 +94,10 @@ function isEditBttnPressed() {
 
 function isModifyBttnPressed() {
 	return isset($_POST['hidden_submit_pressed']) && empty($_POST['hidden_submit_pressed']);
+}
+
+function isBtnInactivePrsd() {
+	return isset($_POST['inactive']) && empty($_POST['inactive']);
 }
 
 $section = "staff";
@@ -339,8 +348,43 @@ else: ?>
 
 								<h3>
 									<i class="fa fa-group"></i>
-									View and Manage Members
+									<?php if ($user->isTutor()) { ?>
+										View Active Members
+									<?php } else { ?>
+										View and Manage Members
+									<?php } ?>
+									
 								</h3>
+
+								<?php if (!$user->isTutor()) { ?>
+								<div class="portlet-tools pull-right">
+									<div class="btn-group ">
+										<button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+											<i class="fa fa-group"></i> &nbsp;
+											Active / Inactive <span class="caret"></span>
+										</button>
+
+										<ul class="dropdown-menu" role="menu">
+											<li>
+
+												<a>Active Members</a>
+
+												<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+													<input type="hidden" name="active"/>
+												</form>
+											</li>
+											<li>
+												<a>Inactive Members</a>
+
+												<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+													<input type="hidden" name="inactive"/>
+												</form>
+											</li>
+										</ul>
+									</div>
+								</div>
+								<?php } ?>
+
 							</div>
 							<!-- /.portlet-header -->
 
