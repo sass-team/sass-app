@@ -126,3 +126,7 @@ http://www.toolheap.com/test-mail-server-tool/
 Just install the above app. Run "Test Mail Server Tool". Allow to connect to internet if prompted.  
 
 # [ssh](https://help.github.com/articles/generating-ssh-keys)
+
+
+### Active/Inactive Members
+- This is used only for blocking appointnets/add  - schedule appoinments
