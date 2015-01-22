@@ -1,5 +1,7 @@
 <?php
 require __DIR__ . '/../app/init.php';
+require_once ROOT_PATH . 'controllers/App.class.php';
+
 $general->loggedOutProtect();
 
 // redirect if user elevation is not that of secretary or admin
@@ -469,7 +471,7 @@ $(function () {
 
 		var data = [];
 		var singleTutorScheduleCalendar = {
-			url: "<?php echo "https://" . $_SERVER['SERVER_NAME']; ?>/api/schedules",
+            url: "<?php echo App::getDomainName(); ?>/api/schedules",
 			type: 'GET',
 			dataType: "json",
 			data: {
@@ -495,7 +497,7 @@ $(function () {
 			}
 		};
 		var singleTutorAppointmentsCalendar = {
-			url: "<?php echo "https://" . $_SERVER['SERVER_NAME']; ?>/api/appointments",
+			url: "<?php echo App::getDomainName(); ?>/api/appointments",
 			type: 'GET',
 			dataType: "json",
 			data: {
@@ -522,7 +524,7 @@ $(function () {
 		};
 
 		var manyTutorScheduleCalendar = {
-			url: "<?php echo "https://" . $_SERVER['SERVER_NAME']; ?>/api/schedules",
+			url: "<?php echo App::getDomainName(); ?>/api/schedules",
 			type: 'GET',
 			dataType: "json",
 			data: {
@@ -548,7 +550,7 @@ $(function () {
 			}
 		};
 		var manyTutorAppointmentsCalendar = {
-			url: "<?php echo "https://" . $_SERVER['SERVER_NAME']; ?>/api/appointments",
+			url: "<?php echo App::getDomainName(); ?>/api/appointments",
 			type: 'GET',
 			dataType: "json",
 			data: {
@@ -574,7 +576,7 @@ $(function () {
 			}
 		};
 		var allSchedulesCalendar = {
-			url: "<?php echo "https://" . $_SERVER['SERVER_NAME']; ?>/api/schedules",
+			url: "<?php echo App::getDomainName(); ?>/api/schedules",
 			type: 'GET',
 			dataType: "json",
 			data: {
@@ -600,7 +602,7 @@ $(function () {
 			}
 		};
 		var allAppointmentsCalendar = {
-			url: "<?php echo "https://" . $_SERVER['SERVER_NAME']; ?>/api/appointments",
+			url: "<?php echo App::getDomainName(); ?>/api/appointments",
 			type: 'GET',
 			dataType: "json",
 			data: {
@@ -779,7 +781,7 @@ $(function () {
 		$.ajax({
 			type: "GET",
 			dataType: "json",
-			url: "<?php echo "https://" . $_SERVER['SERVER_NAME']; ?>/api/courses",
+			url: "<?php echo App::getDomainName(); ?>/api/courses",
 			data: data,
 			success: function (inData) {
 				// reset label test
@@ -836,7 +838,7 @@ $(function () {
 		$.ajax({
 			type: "GET",
 			dataType: "json",
-			url: "<?php echo "https://" . $_SERVER['SERVER_NAME']; ?>/api/courses",
+			url: "<?php echo App::getDomainName(); ?>/api/courses",
 			data: data,
 			success: function (inData) {
 				console.log(inData);
