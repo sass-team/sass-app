@@ -13,6 +13,7 @@ class App {
 	const NAME = "SASS App";
 	const VERSION = "v1.5.0";
 	const DATE_FORMAT = "m/d/Y g:i A";
+    const PRODUCTION_HOST = "sass-app.in";
 
 	const WORKING_DAY_END = 5;
 

@@ -34,4 +34,3 @@ DO_NOT_UPLOAD_HERE
 .vimrc
 
 public_html/app/config/DatabaseManager.class.php
-public_html/app/config/app.php
