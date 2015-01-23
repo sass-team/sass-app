@@ -7,10 +7,10 @@
  */
 
 require_once ROOT_PATH . "config/DatabaseManager.class.php";
+require_once ROOT_PATH . "config/App.class.php";
 
 // identical to require; but php will include it only if it has not already been included
 require_once ROOT_PATH . "controllers/General.class.php";
-require_once ROOT_PATH . "controllers/App.class.php";
 require_once ROOT_PATH . "controllers/Person.class.php";
 require_once ROOT_PATH . "controllers/User.class.php";
 require_once ROOT_PATH . "controllers/Admin.class.php";

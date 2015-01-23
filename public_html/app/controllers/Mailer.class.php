@@ -23,6 +23,7 @@
  * THE SOFTWARE.
  */
 
+require_once ROOT_PATH . 'config/App.class.php';
 require ROOT_PATH . 'vendor/autoload.php';
 use Mailgun\Mailgun;
 
@@ -215,8 +216,8 @@ class Mailer
 	public static function sendNewAccount($newUserId, $receiverEmail, $receiverName)
 	{
 		# First, instantiate the SDK with your API credentials and define your domain.
-		$mg = new Mailgun("key-2b1ca8e2d4e89be6042a78ec39b81ced");
-		$domain = "sandbox75bb94f9c9c54e4d9eba4f09843eef51.mailgun.org";
+		$mg = new Mailgun(App::MAILGUN_KEY);
+		$domain = App::MAILGUN_DOMAIN;
 
 		// Load mail template
 		$emailVerificationTemplate = file_get_contents(ROOT_PATH . 'mail/templates/verify_email.html');
@@ -230,9 +231,9 @@ class Mailer
 		# Now, compose and send the message.
 		$mg->sendMessage($domain,
 			[
-				'from'                => "admin@" . App::PRODUCTION_HOST,
+				'from'                => "SASS App admin@" . App::PRODUCTION_HOST,
 				'to'                  => $receiverEmail,
-				'subject'             => 'SASS | Welcome to SASS App',
+				'subject'             => 'Welcome',
 				'text'                => 'Your mail does not support html',
 				'html'                => $emailVerificationTemplate,
 				'recipient-variables' => '{"' . $receiverEmail . '": {"id":' . $newUserId . ',"setPasswordLink":"' . $setPasswordLink . '","fullName":"' . $receiverName . '"}}'

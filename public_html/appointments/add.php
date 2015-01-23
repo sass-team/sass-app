@@ -1,6 +1,6 @@
 <?php
 require __DIR__ . '/../app/init.php';
-require_once ROOT_PATH . 'controllers/App.class.php';
+require_once ROOT_PATH . 'config/App.class.php';
 
 $general->loggedOutProtect();
 

@@ -36,7 +36,7 @@
 define("BASE_URL", "/");
 define("ROOT_PATH", __DIR__ . "/../");
 
-require_once ROOT_PATH . "controllers/App.class.php";
+require_once ROOT_PATH . "config/App.class.php";
 
 
 if (strcmp(App::PRODUCTION_HOST, $_SERVER['SERVER_NAME']) === 0 && $_SERVER["HTTPS"] != "on") {
