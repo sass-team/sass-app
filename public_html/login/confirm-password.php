@@ -183,11 +183,7 @@ if (isContinueBtnPressed()) {
                     <input required type="email" class="form-control" id="login-email" name="email" placeholder="Email">
                 </div>
 
-                <div class="form-group">
-                    <div class="col-md-10 col-md-push-0">
-                        <div class="g-recaptcha" data-sitekey="<?php echo $siteKey; ?>"></div>
-                    </div>
-                </div>
+                <div class="g-recaptcha" data-sitekey="<?php echo $siteKey; ?>"></div>
                 <script type="text/javascript"
                         src="https://www.google.com/recaptcha/api.js">
                 </script>
