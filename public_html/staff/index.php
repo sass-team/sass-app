@@ -35,13 +35,15 @@ require __DIR__ . '/../app/init.php';
 $general->loggedOutProtect();
 
 
+$pageTitle = "Personnel";
+
 try {
 
 // protect again any sql injections on url
 	if (isset($_GET['id']) && preg_match("/^[0-9]+$/", $_GET['id'])) {
 		$userId = $_GET['id'];
 		$pageTitle = "Profile";
-		if (($data = User::getSingle($userId)) === FALSE) {
+		if (($data = User::getSingle($userId)) === false) {
 			header('Location: ' . BASE_URL . 'error-404');
 			exit();
 		}
@@ -60,15 +62,13 @@ try {
 			throw new Exception("Something terrible has happened with the database. <br/>The software developers will tremble with fear.");
 		}
 
+	} else if (isBtnInactivePrsd()) {
+		$users = User::retrieveAllInactive();
+		$section = "Inactive Members";
 	} else if (empty($_GET)) {
-		$pageTitle = "All Staff Members";
 		$users = User::retrieveAll();
 		$courses = CourseFetcher::retrieveAll();
-
-		if (isBtnInactivePrsd()) {
-			$users = User::retrieveAllInactive();
-		}
-		
+		$section = "Active Members";
 	} else {
 		header('Location: ' . BASE_URL . 'error-404');
 		exit();
@@ -80,7 +80,8 @@ try {
 }
 
 
-function get($objects, $findId, $column) {
+function get($objects, $findId, $column)
+{
 	foreach ($objects as $object) {
 		if ($object[$column] === $findId) return $object;
 	}
@@ -88,19 +89,21 @@ function get($objects, $findId, $column) {
 	return false;
 }
 
-function isEditBttnPressed() {
+function isEditBttnPressed()
+{
 	return isset($_GET['id']) && preg_match('/^[0-9]+$/', $_GET['id']);
 }
 
-function isModifyBttnPressed() {
+function isModifyBttnPressed()
+{
 	return isset($_POST['hidden_submit_pressed']) && empty($_POST['hidden_submit_pressed']);
 }
 
-function isBtnInactivePrsd() {
+function isBtnInactivePrsd()
+{
 	return isset($_POST['inactive']) && empty($_POST['inactive']);
 }
 
-$section = "staff";
 ?>
 
 <!DOCTYPE html>
@@ -115,170 +118,174 @@ $section = "staff";
 <?php require ROOT_PATH . 'views/head.php'; ?>
 <body>
 <div id="wrapper">
-<?php
-require ROOT_PATH . 'views/header.php';
-require ROOT_PATH . 'views/sidebar.php';
-?>
+	<?php
+	require ROOT_PATH . 'views/header.php';
+	require ROOT_PATH . 'views/sidebar.php';
+	?>
 
 
 
-<div id="content">
+	<div id="content">
 
-<div id="content-header">
-	<h1><?php echo $pageTitle; ?></h1>
-</div>
-<!-- #content-header -->
-
-
-<?php if (!empty($userId)): ?>
-	<div id="content-container">
+		<div id="content-header">
+			<h1><?php echo $pageTitle; ?></h1>
+		</div>
+		<!-- #content-header -->
 
 
-		<div class="row">
+		<?php if (!empty($userId)): ?>
+			<div id="content-container">
 
-			<div class="col-md-9">
 
 				<div class="row">
 
-					<div class="col-md-4 col-sm-5">
+					<div class="col-md-9">
 
-						<div class="thumbnail">
-							<img src="<?php echo BASE_URL . $curUser->getAvatarImgLoc(); ?>"
-							     alt="Profile Picture"/>
+						<div class="row">
+
+							<div class="col-md-4 col-sm-5">
+
+								<div class="thumbnail">
+									<img src="<?php echo BASE_URL . $curUser->getAvatarImgLoc(); ?>"
+									     alt="Profile Picture"/>
+								</div>
+								<!-- /.thumbnail -->
+
+								<br/>
+
+							</div>
+							<!-- /.col -->
+
+
+							<div class="col-md-8 col-sm-7">
+
+								<h2><?php echo $curUser->getFirstName() . " " . $curUser->getLastName(); ?></h2>
+
+								<h4>Position: <?php echo ucfirst($curUser->getUserType()) ?></h4>
+
+								<hr/>
+
+
+								<ul class="icons-list">
+									<li><i class="icon-li fa fa-envelope"></i> <?php echo $curUser->getEmail(); ?></li>
+									<li>
+										<i class="icon-li fa fa-phone"></i>Mobile: <?php echo $curUser->getMobileNum() ?>
+									</li>
+								</ul>
+								<?php if ($curUser->isTutor()) { ?>
+
+									Major: <strong><?php echo $curUser->getMajorId(); ?></strong>
+
+								<?php } ?>
+								<br/>
+								<br/>
+
+								<h3>About me</h3>
+
+								<p><?php echo $curUser->getProfileDescription() ?></p>
+
+								<hr/>
+
+								<br/>
+
+							</div>
+
 						</div>
-						<!-- /.thumbnail -->
-
-						<br/>
-
-					</div>
-					<!-- /.col -->
-
-
-					<div class="col-md-8 col-sm-7">
-
-						<h2><?php echo $curUser->getFirstName() . " " . $curUser->getLastName(); ?></h2>
-
-						<h4>Position: <?php echo ucfirst($curUser->getUserType()) ?></h4>
-
-						<hr/>
-
-
-						<ul class="icons-list">
-							<li><i class="icon-li fa fa-envelope"></i> <?php echo $curUser->getEmail(); ?></li>
-							<li><i class="icon-li fa fa-phone"></i>Mobile: <?php echo $curUser->getMobileNum() ?></li>
-						</ul>
-						<?php if ($curUser->isTutor()) { ?>
-
-							Major: <strong><?php echo $curUser->getMajorId(); ?></strong>
-
-						<?php } ?>
-						<br/>
-						<br/>
-
-						<h3>About me</h3>
-
-						<p><?php echo $curUser->getProfileDescription() ?></p>
-
-						<hr/>
-
-						<br/>
 
 					</div>
 
 				</div>
-
-			</div>
-
-		</div>
-		<!-- /.row -->
-
-		<?php if (!$user->isTutor()): ?>
-			<?php if ($curUser->isTutor()): ?>
-
 				<!-- /.row -->
-				<div class="row">
 
-					<div class="col-md-10">
-						<h3 class="heading">Special Information</h3>
+				<?php if (!$user->isTutor()): ?>
+					<?php if ($curUser->isTutor()): ?>
+
+						<!-- /.row -->
+						<div class="row">
+
+							<div class="col-md-10">
+								<h3 class="heading">Special Information</h3>
 
 
-						<div class="panel-group accordion" id="accordion">
+								<div class="panel-group accordion" id="accordion">
 
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title">
-										<a class="accordion-toggle" data-toggle="collapse" data-parent=".accordion"
-										   href="#collapseOne">
-											<i class="fa fa-book"></i>
-											<?php
-											if (empty($teachingCourses)) {
-												echo 'The list of Teaching Courses of the current term is empty!';
-											} else {
-												echo 'Current Teaching Courses - ' . $teachingCourses[0][TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_NAME];
-											}
-											?>
-										</a>
-									</h4>
-								</div>
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											<h4 class="panel-title">
+												<a class="accordion-toggle" data-toggle="collapse"
+												   data-parent=".accordion"
+												   href="#collapseOne">
+													<i class="fa fa-book"></i>
+													<?php
+													if (empty($teachingCourses)) {
+														echo 'The list of Teaching Courses of the current term is empty!';
+													} else {
+														echo 'Current Teaching Courses - ' . $teachingCourses[0][TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_NAME];
+													}
+													?>
+												</a>
+											</h4>
+										</div>
 
-								<div id="collapseOne" class="panel-collapse collapse in">
-									<div class="panel-body">
-										<table class="table table-hover">
-											<thead>
-											<tr>
-												<th class="text-center">#</th>
-												<th class="text-center">Course Code</th>
-												<th class="text-center">Course Name</th>
-												<th class="text-center">Status</th>
-											</tr>
-											</thead>
-											<tbody>
+										<div id="collapseOne" class="panel-collapse collapse in">
+											<div class="panel-body">
+												<table class="table table-hover">
+													<thead>
+													<tr>
+														<th class="text-center">#</th>
+														<th class="text-center">Course Code</th>
+														<th class="text-center">Course Name</th>
+														<th class="text-center">Status</th>
+													</tr>
+													</thead>
+													<tbody>
 
-											<?php
-											if (empty($errors) === true) {
-												$counter = 1;
-												foreach ($teachingCourses as $course) {
-													include(ROOT_PATH . "views/partials/course/table-data-profile-view.html.php");
-													$counter = $counter + 1;
-												}
-											} ?>
-											</tbody>
-										</table>
+													<?php
+													if (empty($errors) === true) {
+														$counter = 1;
+														foreach ($teachingCourses as $course) {
+															include(ROOT_PATH . "views/partials/course/table-data-profile-view.html.php");
+															$counter = $counter + 1;
+														}
+													} ?>
+													</tbody>
+												</table>
+											</div>
+										</div>
+										<!-- #collapseOne -->
 									</div>
-								</div>
-								<!-- #collapseOne -->
-							</div>
-							<!-- /.panel-default -->
+									<!-- /.panel-default -->
 
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title">
-										<a class="accordion-toggle" data-toggle="collapse" data-parent=".accordion"
-										   href="#collapseTwo">
-											<i class="fa fa-clock-o"></i>
-											<?php
-											if (empty($schedules)){
-												echo 'Current schedule is empty!';
-											}else{
-												echo 'Current Schedule - ' . $teachingCourses[0][TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_NAME];
-											}
-											?>
-										</a>
-									</h4>
-								</div>
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											<h4 class="panel-title">
+												<a class="accordion-toggle" data-toggle="collapse"
+												   data-parent=".accordion"
+												   href="#collapseTwo">
+													<i class="fa fa-clock-o"></i>
+													<?php
+													if (empty($schedules)) {
+														echo 'Current schedule is empty!';
+													} else {
+														echo 'Current Schedule - ' . $teachingCourses[0][TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_NAME];
+													}
+													?>
+												</a>
+											</h4>
+										</div>
 
-								<div id="collapseTwo" class="panel-collapse collapse">
-									<div class="panel-body">
-										
+										<div id="collapseTwo" class="panel-collapse collapse">
+											<div class="panel-body">
+
 												<div class="table-responsive">
 													<table class="table table-hover">
 
 														<thead>
-															<tr>
-																<th class="text-center">Days</th>
-																<th class="text-center">Start - End</th>
-																<th class="text-center">Term</th>
-																<th class="text-center">Status</th>
+														<tr>
+															<th class="text-center">Days</th>
+															<th class="text-center">Start - End</th>
+															<th class="text-center">Term</th>
+															<th class="text-center">Status</th>
 														</tr>
 														</thead>
 														<tbody>
@@ -295,10 +302,10 @@ require ROOT_PATH . 'views/sidebar.php';
 												</div>
 												<!-- /.table-responsive -->
 
-											<!-- <div class="col-md-9">
-												<div class="portlet-header">
+												<!-- <div class="col-md-9">
+													<div class="portlet-header">
 
-												</div> -->
+													</div> -->
 												<!-- /.portlet-header -->
 
 												<!-- <div class="portlet-content">
@@ -307,82 +314,80 @@ require ROOT_PATH . 'views/sidebar.php';
 												</div>
 											</div> -->
 
+											</div>
+											<!-- /.panel-default -->
+										</div>
+										<!-- #collapseTwo -->
 									</div>
 									<!-- /.panel-default -->
 								</div>
-								<!-- #collapseTwo -->
+								<!-- /.accordion -->
 							</div>
-							<!-- /.panel-default -->
+
 						</div>
-						<!-- /.accordion -->
-					</div>
+					<?php endif; ?>
+				<?php endif; ?>
 
-				</div>
-			<?php endif; ?>
-		<?php endif; ?>
-
-	</div>
-	<!-- /#content-container -->
-
-<?php
-// show all users
-else: ?>
-
-	<div id="content-container">
-		<?php
-		if (empty($errors) === false) {
-			?>
-			<div class="alert alert-danger">
-				<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-				<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
 			</div>
+			<!-- /#content-container -->
+
 		<?php
-		} ?>
-		<div class="row">
+		// show all users
+		else: ?>
 
-			<div class="col-md-12 col-sm-12">
+			<div id="content-container">
+				<?php
+				if (empty($errors) === false) {
+					?>
+					<div class="alert alert-danger">
+						<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+						<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
+					</div>
+				<?php
+				} ?>
+				<div class="row">
 
-				<div class="portlet">
+					<div class="col-md-12 col-sm-12">
+
+						<div class="portlet">
 
 							<div class="portlet-header">
 
 								<h3>
 									<i class="fa fa-group"></i>
-									<?php if ($user->isTutor()) { ?>
-										View Active Members
-									<?php } else { ?>
-										View and Manage Members
-									<?php } ?>
-									
+<?php echo $section ?>
 								</h3>
 
 								<?php if (!$user->isTutor()) { ?>
-								<div class="portlet-tools pull-right">
-									<div class="btn-group ">
-										<button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
-											<i class="fa fa-group"></i> &nbsp;
-											Active / Inactive <span class="caret"></span>
-										</button>
+									<div class="portlet-tools pull-right">
+										<div class="btn-group ">
+											<button class="btn btn-default btn-sm dropdown-toggle" type="button"
+											        data-toggle="dropdown">
+												<i class="fa fa-group"></i> &nbsp;
+												Active / Inactive <span class="caret"></span>
+											</button>
 
-										<ul class="dropdown-menu" role="menu">
-											<li>
+											<ul class="dropdown-menu" role="menu">
+												<li>
 
-												<a onclick="submitActiveFunction()">Active Members</a>
+													<a onclick="submitActiveFunction()">Active Members</a>
 
-												<form id="active" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-													<input type="hidden" name="active"/>
-												</form>
-											</li>
-											<li>
-												<a onclick="submitInactiveFunction()">Inactive Members</a>
+													<form id="active" method="post"
+													      action="">
+														<input type="hidden" name="active"/>
+													</form>
+												</li>
+												<li>
+													<a onclick="submitInactiveFunction()">Inactive Members</a>
 
-												<form id="inactive" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-													<input type="hidden" name="inactive"/>
-												</form>
-											</li>
-										</ul>
+													<form id="inactive" method="post"
+													      action="">
+														<input type="hidden" name="inactive"/>
+													</form>
+												</li>
+											</ul>
+										</div>
 									</div>
-								</div>
 								<?php } ?>
 
 							</div>
@@ -409,24 +414,32 @@ else: ?>
 											    data-sortable="false">
 												Email
 											</th>
-											<th class="text-center" data-filterable="true" data-sortable="true">Position</th>
-											<th class="text-center" data-filterable="true" data-sortable="false">Mobile</th>
-											<th class="text-center" data-filterable="false" class="hidden-xs hidden-sm">Profile
+											<th class="text-center" data-filterable="true" data-sortable="true">
+												Position
+											</th>
+											<th class="text-center" data-filterable="true" data-sortable="false">
+												Mobile
+											</th>
+											<th class="text-center" data-filterable="false" class="hidden-xs hidden-sm">
+												Profile
 											</th>
 
 											<?php if (!$user->isTutor()): ?>
-												<th class="text-center" data-filterable="false" class="hidden-xs hidden-sm">Teaching
+												<th class="text-center" data-filterable="false"
+												    class="hidden-xs hidden-sm">Teaching
 												</th>
 											<?php endif; ?>
 
 											<?php if (!$user->isTutor()): ?>
-												<th class="text-center" data-filterable="false" class="hidden-xs hidden-sm">Schedule
+												<th class="text-center" data-filterable="false"
+												    class="hidden-xs hidden-sm">Schedule
 												</th>
 											<?php endif; ?>
 
 
 											<?php if ($user->isAdmin()): ?>
-												<th class="text-center" data-filterable="false" class="hidden-xs hidden-sm">Data
+												<th class="text-center" data-filterable="false"
+												    class="hidden-xs hidden-sm">Data
 												</th>
 											<?php endif; ?>
 										</tr>
@@ -446,22 +459,22 @@ else: ?>
 
 							</div>
 
+						</div>
+						<!-- /.portlet -->
+
+					</div>
+					<!-- /.col -->
+
 				</div>
-				<!-- /.portlet -->
+				<!-- /.row -->
+
 
 			</div>
-			<!-- /.col -->
-
-		</div>
-		<!-- /.row -->
-
-
+		<?php endif; ?>
 	</div>
-<?php endif; ?>
-</div>
-<!-- #content -->
+	<!-- #content -->
 
-<?php include ROOT_PATH . "views/footer.php"; ?>
+	<?php include ROOT_PATH . "views/footer.php"; ?>
 
 </div>
 <!-- #wrapper -->
@@ -483,11 +496,11 @@ else: ?>
 <script type="text/javascript">
 
 	function submitActiveFunction() {
-    	document.getElementById("active").submit();
-}
+		document.getElementById("active").submit();
+	}
 	function submitInactiveFunction() {
-    	document.getElementById("inactive").submit();
-}
+		document.getElementById("inactive").submit();
+	}
 </script>
 </body>
 </html>
