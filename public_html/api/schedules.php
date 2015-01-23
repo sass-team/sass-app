@@ -1,10 +1,14 @@
 <?php
 
 if (is_ajax()) {
+
 	require "../app/config/app.php";
+
 	header('Content-Type: application/json');
+
 	if (isset($_GET["action"]) && !empty($_GET["action"])) { //Checks if action value exists
 		$action = $_GET["action"];
+
 		switch ($action) { //Switch case for value of action
 			case "all_tutors_working_hours":
 				printAllTutorsSchedules($_GET["termId"], $_GET["start"], $_GET["end"]);

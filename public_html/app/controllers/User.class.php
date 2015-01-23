@@ -370,7 +370,6 @@ abstract class User extends Person
 						LEFT OUTER JOIN user_types ON user.`user_types_id` = `user_types`.id
 						WHERE active=0";
 
-
 		try {
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
@@ -501,7 +500,7 @@ abstract class User extends Person
 		}
 
 		if (User::isGeneratedStringExpired($id, $generatedString)) {
-			throw new Exception("Sorry that link has expired. Please <a href='http://" . $_SERVER['SERVER_NAME']
+			throw new Exception("Sorry that link has expired. Please <a href='" . App::getDomainName()
 				. "/login/confirm-password'
 							target='_self'>request</a> a new one");
 		}
