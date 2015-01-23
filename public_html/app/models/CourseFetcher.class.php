@@ -43,7 +43,7 @@ class CourseFetcher
 
 		$query =
 			"SELECT `" . self::DB_COLUMN_CODE . "`, `" . self::DB_COLUMN_NAME . "`, `" . self::DB_COLUMN_ID . "`
-			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
 			ORDER BY `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` DESC";
 
 		try {
@@ -64,9 +64,9 @@ class CourseFetcher
 		$query =
 			"SELECT DISTINCT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_CODE . "`, `" . self::DB_TABLE . "`.`" .
 			self::DB_COLUMN_NAME . "`, `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`
-			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
-			INNER JOIN  `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . Tutor_has_course_has_termFetcher::DB_TABLE . "`
-			ON `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . Tutor_has_course_has_termFetcher::DB_TABLE . "`.`" . Tutor_has_course_has_termFetcher::DB_COLUMN_COURSE_ID . "`  = `" .
+			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			INNER JOIN  `" . App::$dsn[App::DB_NAME] . "`.`" . Tutor_has_course_has_termFetcher::DB_TABLE . "`
+			ON `" . App::$dsn[App::DB_NAME] . "`.`" . Tutor_has_course_has_termFetcher::DB_TABLE . "`.`" . Tutor_has_course_has_termFetcher::DB_COLUMN_COURSE_ID . "`  = `" .
 			CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_ID . "`
 			WHERE `" . Tutor_has_course_has_termFetcher::DB_TABLE . "`.`" . Tutor_has_course_has_termFetcher::DB_COLUMN_TERM_ID . "` = :term_id
 			ORDER BY`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_NAME . "` ASC";
@@ -90,12 +90,12 @@ class CourseFetcher
 			"SELECT DISTINCT `" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "`, `" . UserFetcher::DB_TABLE
 			. "`.`" . UserFetcher::DB_COLUMN_FIRST_NAME . "`, `" . UserFetcher::DB_TABLE . "`.`" .
 			UserFetcher::DB_COLUMN_LAST_NAME . "`
-			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . UserFetcher::DB_TABLE . "`
-			INNER JOIN  `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . Tutor_has_course_has_termFetcher::DB_TABLE . "`
-			ON `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . Tutor_has_course_has_termFetcher::DB_TABLE . "`.`" . Tutor_has_course_has_termFetcher::DB_COLUMN_TUTOR_USER_ID . "`  = `" .
+			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . UserFetcher::DB_TABLE . "`
+			INNER JOIN  `" . App::$dsn[App::DB_NAME] . "`.`" . Tutor_has_course_has_termFetcher::DB_TABLE . "`
+			ON `" . App::$dsn[App::DB_NAME] . "`.`" . Tutor_has_course_has_termFetcher::DB_TABLE . "`.`" . Tutor_has_course_has_termFetcher::DB_COLUMN_TUTOR_USER_ID . "`  = `" .
 			UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "`
-			INNER JOIN  `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . CourseFetcher::DB_TABLE . "`
-			ON `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . Tutor_has_course_has_termFetcher::DB_TABLE . "`.`" . Tutor_has_course_has_termFetcher::DB_COLUMN_COURSE_ID . "`  = `" .
+			INNER JOIN  `" . App::$dsn[App::DB_NAME] . "`.`" . CourseFetcher::DB_TABLE . "`
+			ON `" . App::$dsn[App::DB_NAME] . "`.`" . Tutor_has_course_has_termFetcher::DB_TABLE . "`.`" . Tutor_has_course_has_termFetcher::DB_COLUMN_COURSE_ID . "`  = `" .
 			CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_ID . "`
 			WHERE `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_ID . "` = :courseId";
 		try {
@@ -113,7 +113,7 @@ class CourseFetcher
 
 	public static function retrieveSingle($id) {
 		$query = "SELECT `" . self::DB_COLUMN_CODE . "`, `" . self::DB_COLUMN_NAME . "`, `" . self::DB_COLUMN_ID . "`
-		FROM `" .  DatabaseManager::$dsn[DatabaseManager::DB_NAME]  . "`.`" . self::DB_TABLE . "`
+		FROM `" .  App::$dsn[App::DB_NAME]  . "`.`" . self::DB_TABLE . "`
 		WHERE `" . self::DB_COLUMN_ID . "`=:id";
 
 		try {
@@ -133,7 +133,7 @@ class CourseFetcher
 
 	public static function courseExists($id) {
 
-		$query = "SELECT COUNT(`" . self::DB_COLUMN_ID . "`) FROM `" .  DatabaseManager::$dsn[DatabaseManager::DB_NAME]  . "`.`" . self::DB_TABLE . "` WHERE
+		$query = "SELECT COUNT(`" . self::DB_COLUMN_ID . "`) FROM `" .  App::$dsn[App::DB_NAME]  . "`.`" . self::DB_TABLE . "` WHERE
         `" . self::DB_COLUMN_ID . "`= :id";
 
 		$dbConnection = DatabaseManager::getConnection();
@@ -155,7 +155,7 @@ class CourseFetcher
 
 	public static function insert($code, $name) {
 		try {
-			$query = "INSERT INTO `" .  DatabaseManager::$dsn[DatabaseManager::DB_NAME]  . "`.`" . self::DB_TABLE . "` (`" . self::DB_COLUMN_CODE .
+			$query = "INSERT INTO `" .  App::$dsn[App::DB_NAME]  . "`.`" . self::DB_TABLE . "` (`" . self::DB_COLUMN_CODE .
 				"`, `" . self::DB_COLUMN_NAME . "`)
 				VALUES(
 					:code,
@@ -178,7 +178,7 @@ class CourseFetcher
 	public static function updateName($id, $newName) {
 		$newName = trim($newName);
 
-		$query = "UPDATE `" .  DatabaseManager::$dsn[DatabaseManager::DB_NAME]  . "`.`" . self::DB_TABLE . "`
+		$query = "UPDATE `" .  App::$dsn[App::DB_NAME]  . "`.`" . self::DB_TABLE . "`
 					SET	`" . self::DB_COLUMN_NAME . "`= :newName
 					WHERE `id`= :id";
 
@@ -198,7 +198,7 @@ class CourseFetcher
 	public static function updateCode($id, $newCode) {
 		$newCode = trim($newCode);
 
-		$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
+		$query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
 					SET	`" . self::DB_COLUMN_CODE . "`= :newCode
 					WHERE `id`= :id";
 
@@ -218,7 +218,7 @@ class CourseFetcher
 
 	public static function codeExists($courseCode) {
 		try {
-			$query = "SELECT COUNT(" . self::DB_COLUMN_CODE . ") FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" .
+			$query = "SELECT COUNT(" . self::DB_COLUMN_CODE . ") FROM `" . App::$dsn[App::DB_NAME] . "`.`" .
 				self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_CODE . "` = :courseCode";
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
@@ -236,7 +236,7 @@ class CourseFetcher
 
 	public static function idExists($id) {
 		try {
-			$query = "SELECT COUNT(" . self::DB_COLUMN_ID . ") FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" .
+			$query = "SELECT COUNT(" . self::DB_COLUMN_ID . ") FROM `" . App::$dsn[App::DB_NAME] . "`.`" .
 				self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :id";
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
@@ -255,7 +255,7 @@ class CourseFetcher
 
 	public static function nameExists($courseName) {
 		try {
-			$query = "SELECT COUNT(" . self::DB_COLUMN_NAME . ") FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" .
+			$query = "SELECT COUNT(" . self::DB_COLUMN_NAME . ") FROM `" . App::$dsn[App::DB_NAME] . "`.`" .
 				self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_NAME . "` = :courseName";
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
@@ -273,7 +273,7 @@ class CourseFetcher
 
 	public static function delete($id) {
 		try {
-			$query = "DELETE FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :id";
+			$query = "DELETE FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :id";
 
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);

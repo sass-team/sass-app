@@ -97,10 +97,10 @@ try {
 			'hex-blob' => true
 		);
 
-		$dump = new Ifsnop\Mysqldump\Mysqldump(DatabaseManager::$dsn[DatabaseManager::DB_NAME],
-			DatabaseManager::$dsn[DatabaseManager::DB_USERNAME],
-			DatabaseManager::$dsn[DatabaseManager::DB_PASSWORD],
-			DatabaseManager::$dsn[DatabaseManager::DB_HOST], 'mysql', $dumpSettings);
+		$dump = new Ifsnop\Mysqldump\Mysqldump(App::$dsn[App::DB_NAME],
+			App::$dsn[DatabaseManager::DB_USERNAME],
+			App::$dsn[DatabaseManager::DB_PASSWORD],
+			App::$dsn[DatabaseManager::DB_HOST], 'mysql', $dumpSettings);
 		$dump->start($fullPathName);
 
 		// all credits: http://stackoverflow.com/q/22046020/2790481

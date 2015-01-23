@@ -1,5 +1,7 @@
 <?php
 
+require_once ROOT_PATH . 'config/App.class.php';
+
 /**
  * Created by PhpStorm.
  * User: Rizart
@@ -27,7 +29,7 @@ class UserFetcher
 	public static function existsMobileNum($newMobileNum) {
 
 		try {
-			$query = "SELECT COUNT(" . self::DB_COLUMN_MOBILE . ") FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" .
+			$query = "SELECT COUNT(" . self::DB_COLUMN_MOBILE . ") FROM `" . App::$dsn[App::DB_NAME] . "`.`" .
 				self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_MOBILE . "` = :mobileNum";
 			$dbConnection = DatabaseManager::getConnection();
 
@@ -48,7 +50,7 @@ class UserFetcher
 	public static function retrieveUsingEmail($email) {
 		$query = "SELECT `" . self::DB_COLUMN_ID . "`, `" . self::DB_COLUMN_FIRST_NAME . "`, `" .
 			self::DB_COLUMN_LAST_NAME . "` , `" . self::DB_COLUMN_ACTIVE . "`
-			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
 			WHERE `" .
 			self::DB_COLUMN_EMAIL . "`=:email";
 		try {
@@ -67,7 +69,7 @@ class UserFetcher
 
 	public static function retrieveGenStringDate($id) {
 		$query = "SELECT `" . self::DB_COLUMN_GEN_STRING_UPDATE_AT . "`
-		FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
+		FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
 		WHERE `" . self::DB_COLUMN_ID . "`=:id";
 		try {
 			$dbConnection = DatabaseManager::getConnection();
@@ -92,7 +94,7 @@ class UserFetcher
 			self::DB_COLUMN_PROFILE_DESCRIPTION . "`, `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_MOBILE . "`,
 			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ACTIVE . "`, `" . UserTypesFetcher::DB_TABLE . "`.`" .
 			UserTypesFetcher::DB_COLUMN_TYPE . "`
-			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
 			INNER JOIN `" . UserTypesFetcher::DB_TABLE . "`
 				ON `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_USER_TYPES_ID . "` = `" . UserTypesFetcher::DB_TABLE . "`.`" .
 			UserTypesFetcher::DB_COLUMN_ID . "`
@@ -122,7 +124,7 @@ class UserFetcher
 
 		try {
 
-			$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			$query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
 			SET `" . self::DB_COLUMN_GEN_STRING_UPDATE_AT . "`= :data_modified
 			WHERE `" . self::DB_COLUMN_ID . "`= :id";
 			$dbConnection = DatabaseManager::getConnection();
@@ -140,7 +142,7 @@ class UserFetcher
 	public static function generatedStringExists($id, $generatedString) {
 		try {
 			$query = "SELECT COUNT(" . self::DB_COLUMN_GEN_STRING . ")
-			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
 			WHERE `" . self::DB_COLUMN_ID . "` = :id
 			AND `" . self::DB_COLUMN_GEN_STRING . "` = :genString";
 
@@ -163,7 +165,7 @@ class UserFetcher
 		try {
 			$new_password_hashed = password_hash($newPassword, PASSWORD_DEFAULT);
 
-			$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`user`
+			$query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`user`
 			SET `password`= :password, `gen_string`=''
 			WHERE `id`= :id";
 
@@ -181,7 +183,7 @@ class UserFetcher
 
 	public static function existsId($id) {
 		try {
-			$sql = "SELECT COUNT(" . self::DB_COLUMN_ID . ") FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" .
+			$sql = "SELECT COUNT(" . self::DB_COLUMN_ID . ") FROM `" . App::$dsn[App::DB_NAME] . "`.`" .
 				self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :id";
 
 			$dbConnection = DatabaseManager::getConnection();
@@ -199,7 +201,7 @@ class UserFetcher
 
 	public static function updateGenString($id, $generatedString) {
 		try {
-			$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`user` SET `gen_string` = :gen_string WHERE `id` = :id";
+			$query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`user` SET `gen_string` = :gen_string WHERE `id` = :id";
 
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);

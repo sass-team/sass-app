@@ -85,7 +85,7 @@ abstract class Person
 	 */
 	public static function emailExists($email, $table) {
 		$email = trim($email);
-		$query = "SELECT COUNT(id) FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . $table . "` WHERE email = :email";
+		$query = "SELECT COUNT(id) FROM `" . App::$dsn[App::DB_NAME] . "`.`" . $table . "` WHERE email = :email";
 
 		$dbConnection = DatabaseManager::getConnection();
 		$dbConnection = $dbConnection->prepare($query);

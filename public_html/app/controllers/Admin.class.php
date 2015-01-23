@@ -20,7 +20,7 @@ class Admin extends User
 		//$this->validate_teaching_course($teaching_courses);
 
 		try {
-			$queryInsertUser = "INSERT INTO `" .  DatabaseManager::$dsn[DatabaseManager::DB_NAME]  . "`.`" . User::DB_TABLE . "` (`" . User::DB_COLUMN_EMAIL . "`,
+			$queryInsertUser = "INSERT INTO `" .  App::$dsn[App::DB_NAME]  . "`.`" . User::DB_TABLE . "` (`" . User::DB_COLUMN_EMAIL . "`,
 			`" . User::DB_COLUMN_FIRST_NAME . "`, `" . User::DB_COLUMN_LAST_NAME . "`, `" . User::DB_COLUMN_USER_TYPES_ID . "`)
 				VALUES(
 					:email,
@@ -68,19 +68,20 @@ class Admin extends User
 	 * @param $what
 	 * @param $field
 	 * @param $value
+	 * @param $id
 	 * @return mixed
-	 * @throws InvalidArgumentException
+	 * @throws Exception
 	 */
 	public function updateInfo($what, $field, $value, $id) {
 		// I have only added few, but you can add more. However do not add 'password' even though the parameters will only be given by you and not the user, in our system.
-		$allowed = array('id', 'username', 'f_name', 'l_name', 'email', 'COUNT(mobile)',
-			'mobile', 'user', 'gen_string', 'COUNT(gen_string)', 'COUNT(id)', 'img_loc');
+		$allowed = ['id', 'username', 'f_name', 'l_name', 'email', 'COUNT(mobile)',
+			'mobile', 'user', 'gen_string', 'COUNT(gen_string)', 'COUNT(id)', 'img_loc'];
 		if (!in_array($what, $allowed, true) || !in_array($field, $allowed, true)) {
 			throw new InvalidArgumentException;
 		} else {
 			try {
 
-				$query = "UPDATE `" .  DatabaseManager::$dsn[DatabaseManager::DB_NAME]  . "`.`" . $field . "` SET `$what` = ? WHERE `id`= ?";
+				$query = "UPDATE `" .  App::$dsn[App::DB_NAME]  . "`.`" . $field . "` SET `$what` = ? WHERE `id`= ?";
 
 				$dbConnection = DatabaseManager::getConnection();
 				$query = $dbConnection->prepare($query);

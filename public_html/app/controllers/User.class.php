@@ -123,7 +123,7 @@ abstract class User extends Person
 		$newStatus = $oldStatus == 1 ? 0 : 1;
 
 		try {
-			$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`user` SET `active`= :accountStatus WHERE `id`=:id";
+			$query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`user` SET `active`= :accountStatus WHERE `id`=:id";
 
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
@@ -153,7 +153,7 @@ abstract class User extends Person
 		}
 
 
-		$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.user
+		$query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.user
 					SET `f_name`= :first_name, `l_name`= :last_name, `mobile`= :mobile,
 						`profile_description`= :profile_description
 						WHERE `id`= :id";
@@ -183,7 +183,7 @@ abstract class User extends Person
 			throw new Exception('Names may contain only letters of size 1-35 letters.');
 		}
 
-		$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
+		$query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
 					SET `" . $column . "`= :newFirstName WHERE `id`= :id";
 		try {
 			$dbConnection = DatabaseManager::getConnection();
@@ -208,7 +208,7 @@ abstract class User extends Person
 			target='_blank'>word characters</a>, spaces, carriage returns, line feeds and special characters <strong>.,-2</strong> of max size 512 characters.");
 		}
 
-		$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
+		$query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
 					SET `" . self::DB_COLUMN_PROFILE_DESCRIPTION . "`= :newProfileDescription WHERE `id`= :id";
 		try {
 			$dbConnection = DatabaseManager::getConnection();
@@ -230,7 +230,7 @@ abstract class User extends Person
 
 		try {
 
-			$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			$query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
 					SET `mobile`= :mobile WHERE `id`= :id";
 
 			$dbConnection = DatabaseManager::getConnection();
@@ -286,7 +286,7 @@ abstract class User extends Person
 		try {
 			$new_password_hashed = password_hash($newPassword1, PASSWORD_DEFAULT);
 
-			$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`user`
+			$query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`user`
 			SET `password`= :password
 			WHERE `id`= :id";
 
@@ -327,7 +327,7 @@ abstract class User extends Person
 
 	public static function getHashedPassword($id)
 	{
-		$query = "SELECT password FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.user WHERE id = :id";
+		$query = "SELECT password FROM `" . App::$dsn[App::DB_NAME] . "`.user WHERE id = :id";
 
 		try {
 			$dbConnection = DatabaseManager::getConnection();
@@ -345,7 +345,7 @@ abstract class User extends Person
 	public static function retrieveAll()
 	{
 		$query = "SELECT user.id, user.f_name, user.l_name, user.img_loc, user.profile_description, user.date, user.mobile, user.email, user_types.type
-		         FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.user
+		         FROM `" . App::$dsn[App::DB_NAME] . "`.user
 						LEFT OUTER JOIN user_types ON user.`user_types_id` = `user_types`.id
 						WHERE active=1";
 
@@ -366,7 +366,7 @@ abstract class User extends Person
 	public static function retrieveAllInactive()
 	{
 		$query = "SELECT user.id, user.f_name, user.l_name, user.img_loc, user.profile_description, user.date, user.mobile, user.email, user_types.type
-		         FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.user
+		         FROM `" . App::$dsn[App::DB_NAME] . "`.user
 						LEFT OUTER JOIN user_types ON user.`user_types_id` = `user_types`.id
 						WHERE active=0";
 
@@ -405,7 +405,7 @@ abstract class User extends Person
 		} else if (self::emailExists($email, self::DB_TABLE) === false) {
 			throw new Exception('Sorry that email doesn\'t exists.');
 		}
-		$query = "SELECT id, active, password, email FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.user WHERE email = :email";
+		$query = "SELECT id, active, password, email FROM `" . App::$dsn[App::DB_NAME] . "`.user WHERE email = :email";
 		$dbConnection = DatabaseManager::getConnection();
 		$dbConnection = $dbConnection->prepare($query);
 		$dbConnection->bindParam(':email', $email);
@@ -462,7 +462,7 @@ abstract class User extends Person
 			throw new InvalidArgumentException;
 		} else {
 			try {
-				$query = "SELECT `" . $what . "` FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . $field . "` WHERE $where = :value";
+				$query = "SELECT `" . $what . "` FROM `" . App::$dsn[App::DB_NAME] . "`.`" . $field . "` WHERE $where = :value";
 				$dbConnection = DatabaseManager::getConnection();
 				$query = $dbConnection->prepare($query);
 
@@ -568,7 +568,7 @@ abstract class User extends Person
 
 		try {
 
-			$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.user SET `img_loc`= :avatar_img WHERE `id`= :user_id";
+			$query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.user SET `img_loc`= :avatar_img WHERE `id`= :user_id";
 
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);

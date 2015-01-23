@@ -22,7 +22,7 @@ class ConclusionWrapUpFetcher
 	public static function delete($reportId) {
 		try {
 			$query =
-				"DELETE FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
+				"DELETE FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
 				WHERE `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_REPORT_ID . "` = :report_id";
 
 
@@ -73,7 +73,7 @@ class ConclusionWrapUpFetcher
 			}
 		}
 
-		$query = "UPDATE `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
+		$query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
 			SET `" . self::DB_COLUMN_QUESTIONS_ADDRESSED . "` = :questions_addressed,
 			`" . self::DB_COLUMN_ANOTHER_SCHEDULE . "` = :another_schedule,
 			`" . self::DB_COLUMN_CLARIFY_CONCERNS . "` = :clarify_concerns
@@ -101,7 +101,7 @@ class ConclusionWrapUpFetcher
 	public static function exists($reportId) {
 		try {
 			$query = "SELECT COUNT(" . self::DB_COLUMN_REPORT_ID . ")
-			FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
 			WHERE `" . self::DB_COLUMN_REPORT_ID . "` = :report_id";
 
 			$dbConnection = DatabaseManager::getConnection();
@@ -122,7 +122,7 @@ class ConclusionWrapUpFetcher
 
 		try {
 
-			$query = "INSERT INTO `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			$query = "INSERT INTO `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
 			(`" . self::DB_COLUMN_REPORT_ID . "`)
 			VALUES(:report_id)";
 
