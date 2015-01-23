@@ -38,18 +38,11 @@ define("ROOT_PATH", __DIR__ . "/../");
 
 require_once ROOT_PATH . "controllers/App.class.php";
 
-<<<<<<< HEAD
-// if($_SERVER["HTTPS"] != "on") {
-//        header("HTTP/1.1 301 Moved Permanently");
-//        header("Location: https://" . $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"]);
-//        exit();
-// }
-=======
+
 if (strcmp(App::PRODUCTION_HOST, $_SERVER['SERVER_NAME']) === 0 && $_SERVER["HTTPS"] != "on") {
        header("HTTP/1.1 301 Moved Permanently");
        header("Location: https://" . $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"]);
        exit();
 }
->>>>>>> 66691811d9c5ea6441a5fb8099ecb289678aebce
 
 require ROOT_PATH . "config/loadAllClasses.php";

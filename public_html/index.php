@@ -487,7 +487,7 @@ function countLabelsStatusAppointments($day, $i, $appointments) {
 
 <?php include ROOT_PATH . "views/footer.php"; ?>
 </div>
-<!-- #wrapper<!-- #content -->
+<!-- #wrapper #content -->
 
 <?php include ROOT_PATH . "views/assets/footer_common.php"; ?>
 

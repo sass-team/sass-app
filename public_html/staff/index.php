@@ -367,16 +367,16 @@ else: ?>
 										<ul class="dropdown-menu" role="menu">
 											<li>
 
-												<a>Active Members</a>
+												<a onclick="submitActiveFunction()">Active Members</a>
 
-												<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+												<form id="active" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
 													<input type="hidden" name="active"/>
 												</form>
 											</li>
 											<li>
-												<a>Inactive Members</a>
+												<a onclick="submitInactiveFunction()">Inactive Members</a>
 
-												<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+												<form id="inactive" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
 													<input type="hidden" name="inactive"/>
 												</form>
 											</li>
@@ -480,6 +480,15 @@ else: ?>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/autosize/jquery.autosize.min.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/demos/form-extended.js"></script>
 
+<script type="text/javascript">
+
+	function submitActiveFunction() {
+    	document.getElementById("active").submit();
+}
+	function submitInactiveFunction() {
+    	document.getElementById("inactive").submit();
+}
+</script>
 </body>
 </html>
 
