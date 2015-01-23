@@ -36,48 +36,67 @@ ob_start();
 // TODO: Add option-functionality to resend email if password forgot
 // TODO: sql make 'img' of database to NOT NULL & refactor name to 'img_location'
 require __DIR__ . '/../app/init.php';
-require_once(ROOT_PATH . 'plugins/recaptcha-php-1.11/recaptchalib.php');
-require_once(ROOT_PATH . 'models/ReCAPTCHA.class.php');
-
-$publicKey = ReCAPTCHA::retrievePublicKey();
-$privateKey = ReCAPTCHA::retrievePrivateKey();;
+require_once(ROOT_PATH . 'plugins/recaptchalib.php');
 
 // if there is an active log in process redirect to students.class.php; load page only if no
 // logged in user exists
 $general->loggedInProtect();
 $pageTitle = "Log In";
+$siteKey = App::RECAPTCHA_SITE_KEY;
+$lang = "en";
 
 /**
  * @return bool
  */
-function isContinueBtnPressed() {
-	return isset($_POST['hidden_forgot_continue']) && empty($_POST['hidden_forgot_continue']);
+function isContinueBtnPressed()
+{
+    return isset($_POST['hidden_forgot_continue']) && empty($_POST['hidden_forgot_continue']);
 }
 
 /**
  * @return bool
  */
-function isVerified() {
-	return isset($_GET['success']) === true && empty ($_GET['success']);
+function isVerified()
+{
+    return isset($_GET['success']) === true && empty ($_GET['success']);
 }
 
 // $staff->email_exists($_POST['email'])) {
 if (isContinueBtnPressed()) {
-	try {
-		$email = $_POST['email'];
-		$resp = recaptcha_check_answer($privateKey, $_SERVER["REMOTE_ADDR"], $_POST["recaptcha_challenge_field"],
-			$_POST["recaptcha_response_field"]);
+    try {
 
-		// What happens when the CAPTCHA was entered incorrectly
-		if (!$resp->is_valid) throw new Exception ("The reCAPTCHA wasn't entered correctly.");
 
-		Mailer::sendRecover( $email);
-		header('Location: ' . BASE_URL . 'login/confirm-password/success');
-		exit();
-	} catch (Exception $e) {
-		Mailer::sendDevelopers($e->getMessage(), __DIR__);
-		$errors[] = $e->getMessage();
-	}
+        $email = $_POST['email'];
+        // Google recaptcha preparations | ALERT: if you update this then also update public/app/js/main.js
+        $secret = App::RECAPTCHA_SECRET_KEY;
+
+        // The response from reCAPTCHA
+        $resp = null;
+        // The error code from reCAPTCHA, if any
+        $error = null;
+        $reCaptcha = new ReCaptcha($secret);
+
+
+        // Was there a reCAPTCHA response?
+        if ($_POST["g-recaptcha-response"]) {
+            $resp = $reCaptcha->verifyResponse(
+                $_SERVER["REMOTE_ADDR"],
+                $_POST["g-recaptcha-response"]
+            );
+        }
+
+        // Someone tried to bypass recaptcha. Block them.
+        if (!($resp != null && $resp->success)) {
+            throw new Exception ("Please verify your are not a robot.");
+        }
+
+        Mailer::sendRecover($email);
+        header('Location: ' . BASE_URL . 'login/confirm-password/success');
+        exit();
+    } catch (Exception $e) {
+//        Mailer::sendDevelopers($e->getMessage(), __DIR__);
+        $errors[] = $e->getMessage();
+    }
 } // end outer if
 ?>
 
@@ -93,107 +112,107 @@ if (isContinueBtnPressed()) {
 <html class="no-js"> <!--<![endif]-->
 <head>
 
-	<title>Login - Canvas Admin</title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-	<meta name="description" content="">
-	<meta name="author" content=""/>
-	<link rel="shortcut icon" href="<?php echo BASE_URL; ?>assets/img/logos/logo-login.png">
+    <title>Login - Canvas Admin</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="">
+    <meta name="author" content=""/>
+    <link rel="shortcut icon" href="<?php echo BASE_URL; ?>assets/img/logos/logo-login.png">
 
-	<link rel="stylesheet"
-	      href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,800italic,400,600,800"
-	      type="text/css">
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/font-awesome.min.css" type="text/css"/>
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/bootstrap.min.css" type="text/css"/>
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/js/libs/css/ui-lightness/jquery-ui-1.9.2.custom.css"
-	      type="text/css"/>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,800italic,400,600,800"
+          type="text/css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/font-awesome.min.css" type="text/css"/>
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/bootstrap.min.css" type="text/css"/>
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/js/libs/css/ui-lightness/jquery-ui-1.9.2.custom.css"
+          type="text/css"/>
 
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/App.css" type="text/css"/>
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/Login.css" type="text/css"/>
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/App.css" type="text/css"/>
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/Login.css" type="text/css"/>
 
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/custom.css" type="text/css"/>
-	<script type="text/javascript">
-		var RecaptchaOptions = {
-			theme: 'blackglass'
-		};
-	</script>
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/custom.css" type="text/css"/>
 
-	<style>
-		#recaptcha_area, #recaptcha_table {
-			margin: auto !important;;
-		}
-	</style>
+    <style>
+        #recaptcha_area, #recaptcha_table {
+            margin: auto !important;;
+        }
+    </style>
 </head>
 
 <body>
 <div id="login-container">
 
-	<div id="logo">
-		<a href="<?php echo BASE_URL; ?>login">
-			<img src="<?php echo BASE_URL; ?>assets/img/logos/logo-login.png" alt="Logo"/>
-		</a>
-	</div>
+    <div id="logo">
+        <a href="<?php echo BASE_URL; ?>login">
+            <img src="<?php echo BASE_URL; ?>assets/img/logos/logo-login.png" alt="Logo"/>
+        </a>
+    </div>
 
-	<?php if (isVerified()) { ?>
+    <?php if (isVerified()) { ?>
 
-		<!-- /#forgot -->
-		<div id="login">
-			<h4>Thank you.</h4>
-			<hr/>
+        <!-- /#forgot -->
+        <div id="login">
+            <h4>Thank you.</h4>
+            <hr/>
 
-			<h5>Please check your email to confirm your request for a new password.</h5>
+            <h5>Please check your email to confirm your request for a new password.</h5>
 
-			<hr/>
-			<?php
-			if (empty($errors) === false) {
-				?>
-				<div class="alert alert-danger">
-					<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-					<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
-				</div>
-			<?php
-			}
-			?>
-		</div>
-		<!-- /#forgot -->
+            <hr/>
+            <?php
+            if (empty($errors) === false) {
+                ?>
+                <div class="alert alert-danger">
+                    <a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+                    <strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
+                </div>
+            <?php
+            }
+            ?>
+        </div>
+        <!-- /#forgot -->
 
-	<?php } else { ?>
-		<!-- /#forgot -->
-		<div id="login">
-			<h4>Password Recovery</h4>
-			<h5>Submit your email address and we'll send you a link to reset it.</h5>
+    <?php } else { ?>
+        <!-- /#forgot -->
+        <div id="login">
+            <h4>Password Recovery</h4>
+            <h5>Submit your email address and we'll send you a link to reset it.</h5>
 
-			<form method="post" id="login-form" action="confirm-password" class="form">
-				<div class="form-group">
-					<label for="login-email">Email</label>
-					<input required type="email" class="form-control" id="login-email" name="email" placeholder="Email">
-				</div>
+            <form method="post" id="login-form" action="confirm-password" class="form">
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input required type="email" class="form-control" id="login-email" name="email" placeholder="Email">
+                </div>
 
-				<div class="form-group text-center">
-					<?php echo recaptcha_get_html($publicKey); ?>
-				</div>
+                <div class="form-group">
+                    <div class="col-md-10 col-md-push-0">
+                        <div class="g-recaptcha" data-sitekey="<?php echo $siteKey; ?>"></div>
+                    </div>
+                </div>
+                <script type="text/javascript"
+                        src="https://www.google.com/recaptcha/api.js">
+                </script>
 
-				<div class="form-group">
-					<input type="hidden" name="hidden_forgot_continue">
-					<button type="submit" id="login-btn" class="btn btn-primary btn-block">Continue <i
-							class="glyphicon glyphicon-envelope"></i></button>
-				</div>
-			</form>
+                <div class="form-group">
+                    <input type="hidden" name="hidden_forgot_continue">
+                    <button type="submit" id="login-btn" class="btn btn-primary btn-block">Continue <i
+                            class="glyphicon glyphicon-envelope"></i></button>
+                </div>
+            </form>
 
-			<?php
-			if (empty($errors) === false) {
-				?>
-				<div class="alert alert-danger">
-					<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-					<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
-				</div>
-			<?php
-			}
-			?>
-		</div>
-		<!-- /#forgot -->
+            <?php
+            if (empty($errors) === false) {
+                ?>
+                <div class="alert alert-danger">
+                    <a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
+                    <strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
+                </div>
+            <?php
+            }
+            ?>
+        </div>
+        <!-- /#forgot -->
 
-	<?php } ?>
+    <?php } ?>
 </div>
 <!-- /#forgot-container -->
 
