@@ -46,7 +46,8 @@ abstract class User extends Person
 	 * @param $accountActiveStatus
 	 * @internal param $database
 	 */
-	public function __construct($id, $firstName, $lastName, $email, $mobileNum, $avatarImgLoc, $profileDescription, $dateAccountCreated, $userType, $accountActiveStatus) {
+	public function __construct($id, $firstName, $lastName, $email, $mobileNum, $avatarImgLoc, $profileDescription, $dateAccountCreated, $userType, $accountActiveStatus)
+	{
 		parent::__construct($id, $firstName, $lastName, $email, $mobileNum);
 
 		$this->setAvatarImgLoc($avatarImgLoc);
@@ -59,35 +60,40 @@ abstract class User extends Person
 	/**
 	 * @param mixed $avatarImgLoc
 	 */
-	private function setAvatarImgLoc($avatarImgLoc) {
+	private function setAvatarImgLoc($avatarImgLoc)
+	{
 		$this->avatarImgLoc = $avatarImgLoc;
 	}
 
 	/**
 	 * @param mixed $profileDescription
 	 */
-	private function setProfileDescription($profileDescription) {
+	private function setProfileDescription($profileDescription)
+	{
 		$this->profileDescription = $profileDescription;
 	} // end __construct
 
 	/**
 	 * @param mixed $dateAccountCreated
 	 */
-	private function setDateAccountCreated($dateAccountCreated) {
+	private function setDateAccountCreated($dateAccountCreated)
+	{
 		$this->dateAccountCreated = $dateAccountCreated;
 	}
 
 	/**
 	 * @param mixed $userType
 	 */
-	private function setUserType($userType) {
+	private function setUserType($userType)
+	{
 		$this->userType = $userType;
 	}
 
 	/**
 	 * @param mixed $active
 	 */
-	public function setActive($active) {
+	public function setActive($active)
+	{
 		$this->active = $active;
 	}
 
@@ -97,19 +103,22 @@ abstract class User extends Person
 	 * @throws Exception
 	 * @internal param $db
 	 */
-	public static function  getSingle($id) {
+	public static function  getSingle($id)
+	{
 		self::validateId($id);
 
 		return UserFetcher::retrieveSingle($id);
 	}
 
-	public static function validateId($id) {
+	public static function validateId($id)
+	{
 		if (!preg_match('/^[0-9]+$/', $id) || !UserFetcher::existsId($id)) {
 			throw new Exception('Data tempering detected. Aborting.');
 		}
 	}
 
-	public static function updateActiveStatus( $id, $oldStatus) {
+	public static function updateActiveStatus($id, $oldStatus)
+	{
 		$newStatus = $oldStatus == 1 ? 0 : 1;
 
 		try {
@@ -128,7 +137,8 @@ abstract class User extends Person
 		} // end catch
 	}
 
-	static function updateProfile( $id, $firstName, $lastName, $prevMobileNum, $newMobileNum, $description) {
+	static function updateProfile($id, $firstName, $lastName, $prevMobileNum, $newMobileNum, $description)
+	{
 		$firstName = trim($firstName);
 		$lastName = trim($lastName);
 		$newMobileNum = trim($newMobileNum);
@@ -164,7 +174,8 @@ abstract class User extends Person
 
 	}
 
-	public static function updateName( $id, $column, $newFirstName) {
+	public static function updateName($id, $column, $newFirstName)
+	{
 		$newFirstName = trim($newFirstName);
 
 		if (!preg_match("/^[a-zA-Z]{1,35}$/", $newFirstName)) {
@@ -188,7 +199,8 @@ abstract class User extends Person
 
 	}
 
-	public static function updateProfileDescription( $id, $newProfileDescription) {
+	public static function updateProfileDescription($id, $newProfileDescription)
+	{
 
 		if (!preg_match("/^[\\w\t\n\r .,\\-]{0,512}$/", $newProfileDescription)) {
 			throw new Exception("Description can contain only <a href='http://www.regular-expressions.info/shorthand.html'
@@ -211,8 +223,9 @@ abstract class User extends Person
 		}
 	}
 
-	public static function updateMobileNumber( $id, $newMobileNum) {
-		self::validateMobileNumber( $newMobileNum);
+	public static function updateMobileNumber($id, $newMobileNum)
+	{
+		self::validateMobileNumber($newMobileNum);
 
 		try {
 
@@ -239,9 +252,10 @@ abstract class User extends Person
 	 * @return null
 	 * @throws Exception
 	 */
-	public static function validateMobileNumber( $newMobileNum) {
-		if (empty($newMobileNum) === TRUE) {
-			return NULL; // no mobilenumber
+	public static function validateMobileNumber($newMobileNum)
+	{
+		if (empty($newMobileNum) === true) {
+			return null; // no mobilenumber
 		}
 		if (!preg_match('/^[0-9]{10}$/', $newMobileNum)) {
 			throw new Exception('Mobile number should contain only digits of total length 10');
@@ -254,7 +268,8 @@ abstract class User extends Person
 		return $newMobileNum;
 	}
 
-	public static function updatePassword( $id, $oldPassword, $newPassword1, $newPassword2) {
+	public static function updatePassword($id, $oldPassword, $newPassword1, $newPassword2)
+	{
 
 		if ($newPassword1 !== $newPassword2) {
 			throw new Exception("There was a mismatch with the new passwords");
@@ -262,7 +277,7 @@ abstract class User extends Person
 
 		self::validatePassword($newPassword1);
 
-		$old_password_hashed = self::getHashedPassword( $id);
+		$old_password_hashed = self::getHashedPassword($id);
 		if (!password_verify($oldPassword, $old_password_hashed)) {
 			throw new Exception("Sorry, the old password is incorrect.");
 		}
@@ -285,12 +300,13 @@ abstract class User extends Person
 		}
 	}
 
-	public static function validatePassword($password) {
+	public static function validatePassword($password)
+	{
 		$r1 = '/[A-Z]/'; //Uppercase
 		$r2 = '/[a-z]/'; //lowercase
 		$r3 = '/[0-9]/'; //numbers
 
-		$correctPassword = TRUE;
+		$correctPassword = true;
 
 		$correctPassword = $correctPassword && preg_match($r1, $password);
 		$correctPassword = $correctPassword && preg_match($r2, $password);
@@ -308,7 +324,8 @@ abstract class User extends Person
 		}
 	}
 
-	public static function getHashedPassword( $id) {
+	public static function getHashedPassword($id)
+	{
 		$query = "SELECT password FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.user WHERE id = :id";
 
 		try {
@@ -324,11 +341,11 @@ abstract class User extends Person
 		}
 	}
 
-	public static function retrieveAll() {
+	public static function retrieveAll()
+	{
 		$query = "SELECT user.id, user.f_name, user.l_name, user.img_loc, user.profile_description, user.date, user.mobile, user.email, user_types.type
 		         FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.user
 						LEFT OUTER JOIN user_types ON user.`user_types_id` = `user_types`.id";
-
 
 
 		try {
@@ -358,7 +375,8 @@ abstract class User extends Person
 	 * @throws Exception
 	 * @return bool|string
 	 */
-	public static function login($email, $password) {
+	public static function login($email, $password)
+	{
 
 		if (empty($email) === true || empty($password) === true) {
 			throw new Exception('Sorry, but we need both your email and password.');
@@ -367,7 +385,7 @@ abstract class User extends Person
 		}
 		$query = "SELECT id, active, password, email FROM `" . DatabaseManager::$dsn[DatabaseManager::DB_NAME] . "`.user WHERE email = :email";
 		$dbConnection = DatabaseManager::getConnection();
-		$dbConnection =$dbConnection->prepare($query);
+		$dbConnection = $dbConnection->prepare($query);
 		$dbConnection->bindParam(':email', $email);
 
 		try {
@@ -391,7 +409,8 @@ abstract class User extends Person
 		}
 	}
 
-	public static function validateUserType($user_type) {
+	public static function validateUserType($user_type)
+	{
 		switch ($user_type) {
 			case self::TUTOR:
 			case self::SECRETARY:
@@ -404,17 +423,19 @@ abstract class User extends Person
 
 	/**
 	 *  Returns a single column from the next row of a result set or FALSE if there are no more rows.
-	 * @param $db
 	 * @param $what
 	 * @param $field
 	 * @param $where
 	 * @param $value
+	 * @return string
 	 * @throws Exception
+	 * @internal param $db
 	 */
-	public static function fetchInfo( $what, $field, $where, $value) {
+	public static function fetchInfo($what, $field, $where, $value)
+	{
 		// I have only added few, but you can add more. However do not add 'password' even though the parameters will only be given by you and not the user, in our system.
-		$allowed = array('id', 'username', 'f_name', 'l_name', 'email', 'COUNT(mobile)',
-			'mobile', 'user', 'gen_string', 'COUNT(gen_string)', 'COUNT(id)', 'img_loc', 'user_types', 'type');
+		$allowed = ['id', 'username', 'f_name', 'l_name', 'email', 'COUNT(mobile)',
+			'mobile', 'user', 'gen_string', 'COUNT(gen_string)', 'COUNT(id)', 'img_loc', 'user_types', 'type'];
 		if (!in_array($what, $allowed, true) || !in_array($field, $allowed, true)) {
 			throw new InvalidArgumentException;
 		} else {
@@ -435,7 +456,8 @@ abstract class User extends Person
 		}
 	}
 
-	public static function addNewPassword( $id, $newPassword1, $newPassword2, $generatedString) {
+	public static function addNewPassword($id, $newPassword1, $newPassword2, $generatedString)
+	{
 		if (strcmp($newPassword1, $newPassword2) !== 0) {
 			throw new Exception("There was a mismatch with the new passwords");
 		}
@@ -446,7 +468,8 @@ abstract class User extends Person
 		UserFetcher::updatePassword($id, $newPassword1);
 	}
 
-	public static function recoverPassword( $id, $newPassword1, $newPassword2, $generatedString) {
+	public static function recoverPassword($id, $newPassword1, $newPassword2, $generatedString)
+	{
 		if (strcmp($newPassword1, $newPassword2) !== 0) throw new Exception("There was a mismatch with the new passwords");
 		User::validatePassword($newPassword1);
 
@@ -454,15 +477,16 @@ abstract class User extends Person
 			throw new Exception("Could not verify generated string exists. Please make sure url sent was not modified.");
 		}
 
-		if (User::isGeneratedStringExpired( $id, $generatedString)) {
-			throw new Exception("Sorry that link has expired. Please <a href='http://" . $_SERVER['SERVER_NAME']
+		if (User::isGeneratedStringExpired($id, $generatedString)) {
+			throw new Exception("Sorry that link has expired. Please <a href='" . App::getDomainName()
 				. "/login/confirm-password'
 							target='_self'>request</a> a new one");
 		}
 		UserFetcher::updatePassword($id, $newPassword1);
 	}
 
-	public static function isGeneratedStringExpired( $id, $generatedString) {
+	public static function isGeneratedStringExpired($id, $generatedString)
+	{
 		date_default_timezone_set('Europe/Athens');
 		$generatedStringDate = UserFetcher::retrieveGenStringDate($id);
 
@@ -474,7 +498,8 @@ abstract class User extends Person
 	}
 
 
-	public static function generateNewPasswordString( $id) {
+	public static function generateNewPasswordString($id)
+	{
 		$unique = uniqid('', true); // generate a unique string
 		$random = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 10); // generate a more random string
 		$generatedString = $unique . $random; // a random and unique string
@@ -485,7 +510,8 @@ abstract class User extends Person
 		return $generatedString;
 	}
 
-	public static function isUserTypeTutor($userType) {
+	public static function isUserTypeTutor($userType)
+	{
 		if (strcmp($userType, TutorFetcher::DB_TABLE) === 0) return true;
 		return false;
 	}
@@ -493,25 +519,29 @@ abstract class User extends Person
 	/**
 	 * @return mixed
 	 */
-	public function getAccountActiveStatus() {
+	public function getAccountActiveStatus()
+	{
 		return $this->accountActiveStatus;
 	} // end getAllData
 
 	/**
 	 * @param mixed $accountActiveStatus
 	 */
-	public function setAccountActiveStatus($accountActiveStatus) {
+	public function setAccountActiveStatus($accountActiveStatus)
+	{
 		$this->accountActiveStatus = $accountActiveStatus;
 	} // end getAllData
 
 	/**
 	 * @return mixed
 	 */
-	public function isActive() {
+	public function isActive()
+	{
 		return $this->active;
 	}
 
-	public function updateAvatarImg($avatar_img_loc) {
+	public function updateAvatarImg($avatar_img_loc)
+	{
 		$id = $this->getId();
 
 		try {
@@ -533,47 +563,55 @@ abstract class User extends Person
 	/**
 	 * @return mixed
 	 */
-	public function getAvatarImgLoc() {
+	public function getAvatarImgLoc()
+	{
 		return $this->avatarImgLoc;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getDateAccountCreated() {
+	public function getDateAccountCreated()
+	{
 		return $this->dateAccountCreated;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getProfileDescription() {
+	public function getProfileDescription()
+	{
 		return $this->profileDescription;
 	}
 
-	public function isAdmin() {
+	public function isAdmin()
+	{
 		return false;
 	}
 
-	public function isTutor() {
+	public function isTutor()
+	{
 		return false;
 	}
 
-	public function isSecretary() {
+	public function isSecretary()
+	{
 		return false;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getUserType() {
+	public function getUserType()
+	{
 		return $this->userType;
 	}
 
 	/**
 	 * @param mixed $users
 	 */
-	public function setUsers($users) {
+	public function setUsers($users)
+	{
 		$this->users = $users;
 	}
 }

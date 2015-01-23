@@ -54,7 +54,7 @@ if (isUpdatePasswordBtnPressed()) {
 		$newPassword2 = $_POST['new-password-2'];
 		$id = $_GET['id'];
 		$genString = $_GET['gen_string'];
-		User::addNewPassword( $id, $newPassword1, $newPassword2, $genString);
+		User::addNewPassword($id, $newPassword1, $newPassword2, $genString);
 		header('Location: ' . BASE_URL . 'login/set/success');
 		exit();
 	} catch (Exception $e) {
@@ -66,21 +66,24 @@ if (isUpdatePasswordBtnPressed()) {
 	//exit();
 }
 
-function isUpdatePasswordBtnPressed() {
+function isUpdatePasswordBtnPressed()
+{
 	return isset($_POST['form_action_update_password']) && empty($_POST['form_action_update_password']);
 }
 
 /**
  * @return bool
  */
-function isVerified() {
+function isVerified()
+{
 	return isset($_GET['success']) === true && empty ($_GET['success']);
 }
 
 /**
  * @return bool
  */
-function isUrlOriginal() {
+function isUrlOriginal()
+{
 	return isset($_GET['id'], $_GET['gen_string']) === true;
 }
 
