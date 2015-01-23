@@ -36,6 +36,7 @@ $general->loggedOutProtect();
 
 
 $pageTitle = "Personnel";
+$section = "staff";
 
 try {
 
@@ -64,11 +65,11 @@ try {
 
 	} else if (isBtnInactivePrsd()) {
 		$users = User::retrieveAllInactive();
-		$section = "Inactive Members";
+		$sectionTitle = "Inactive Members";
 	} else if (empty($_GET)) {
 		$users = User::retrieveAll();
 		$courses = CourseFetcher::retrieveAll();
-		$section = "Active Members";
+		$sectionTitle = "Active Members";
 	} else {
 		header('Location: ' . BASE_URL . 'error-404');
 		exit();
@@ -355,7 +356,7 @@ function isBtnInactivePrsd()
 
 								<h3>
 									<i class="fa fa-group"></i>
-<?php echo $section ?>
+									<?php echo $sectionTitle ?>
 								</h3>
 
 								<?php if (!$user->isTutor()) { ?>

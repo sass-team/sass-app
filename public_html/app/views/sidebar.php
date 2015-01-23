@@ -24,6 +24,7 @@
 		<li class="<?php if ($section == "dashboard") {
 			echo "active";
 		} ?>">
+
 			<a href="<?php echo BASE_URL; ?>">
 				<i class="fa fa-dashboard"></i>
 				Dashboard

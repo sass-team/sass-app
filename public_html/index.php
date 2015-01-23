@@ -43,7 +43,7 @@ try {
 }
 
 // viewers
-$pageTitle = "Dashboard - SASS App";
+$pageTitle = "Dashboard";
 $section = "dashboard";
 
 
