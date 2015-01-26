@@ -105,7 +105,6 @@ function isBtnUpdatePrsd()
 
 }
 
-var_dump($appointments);
 ?>
 
 <!DOCTYPE html>
