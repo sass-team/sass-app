@@ -7,39 +7,33 @@
  */
 
 
-try
-{
-	require "../public_html/app/config/app.php";
-	date_default_timezone_set('Europe/Athens');
+try {
+    require "../public_html/app/config/app.php";
+    date_default_timezone_set('Europe/Athens');
 
 
-	// run script only during working hours  every two hours
-	if ( ! App::isWorkingDateTimeOn())
-	{
-		exit();
-	}
+    // run script only during working hours  every two hours
+    if (!App::isWorkingDateTimeOn()) exit();
 
-	$appointments = AppointmentFetcher::retrieveCmpltWithoutRptsOnCurTerms();
 
-	foreach ($appointments as $appointment)
-	{
+    $appointments = AppointmentFetcher::retrieveCmpltWithoutRptsOnCurTerms();
 
-		$students = AppointmentHasStudentFetcher::retrieveStudentsWithAppointment($appointment[AppointmentFetcher::DB_COLUMN_ID]);
-		foreach ($students as $student)
-		{
-			$reportId = ReportFetcher::insert($student[AppointmentHasStudentFetcher::DB_COLUMN_STUDENT_ID],
-				$student[AppointmentHasStudentFetcher::DB_COLUMN_ID], $student[AppointmentHasStudentFetcher::DB_COLUMN_INSTRUCTOR_ID]);
-		}
+    foreach ($appointments as $appointment) {
 
-		AppointmentFetcher::updateLabel($appointment[AppointmentFetcher::DB_COLUMN_ID], Appointment::LABEL_MESSAGE_COMPLETE, Appointment::LABEL_COLOR_SUCCESS);
+        $students = AppointmentHasStudentFetcher::retrieveStudentsWithAppointment($appointment[AppointmentFetcher::DB_COLUMN_ID]);
+        foreach ($students as $student) {
+            $reportId = ReportFetcher::insert($student[AppointmentHasStudentFetcher::DB_COLUMN_STUDENT_ID],
+                $student[AppointmentHasStudentFetcher::DB_COLUMN_ID], $student[AppointmentHasStudentFetcher::DB_COLUMN_INSTRUCTOR_ID]);
+        }
+
+        AppointmentFetcher::updateLabel($appointment[AppointmentFetcher::DB_COLUMN_ID], Appointment::LABEL_MESSAGE_COMPLETE, Appointment::LABEL_COLOR_SUCCESS);
 
 //		Mailer::sendTutorNewReportsCronOnly($appointment);
-	}
+    }
 
-} catch (Exception $e)
-{
-	Mailer::sendDevelopers($e, __FILE__);
+} catch (Exception $e) {
+    Mailer::sendDevelopers($e, __FILE__);
 }
 
-require __DIR__ . "/export-appointments-excel.php";
+//require __DIR__ . "/export-appointments-excel.php";
 
