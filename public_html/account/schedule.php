@@ -202,7 +202,7 @@ function get($objects, $findId, $column) {
 
 			var data = [];
 			var singleTutorScheduleCalendar = {
-				url: "<?php echo "http://" . $_SERVER['SERVER_NAME']; ?>/api/schedules",
+				url: "<?php echo App::getDomainName(); ?>/api/schedules",
 				type: 'GET',
 				dataType: "json",
 				data: {

@@ -160,7 +160,7 @@ function generateDay($startTerm, $endTerm, $weekStart, $dayOfWeek, $workingHour)
 	$dayScheduleEnd->setISODate($dayScheduleYearEnd, $weekStart, $dayOfWeek);
 
 	$tutorName = $workingHour[UserFetcher::DB_COLUMN_FIRST_NAME] . " " . $workingHour[UserFetcher::DB_COLUMN_LAST_NAME];
-	$tutorsUrl = "http://" . $_SERVER['SERVER_NAME'] . "/staff/edit/" . $workingHour[UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_ID];
+	$tutorsUrl = App::getDomainName() . "/staff/edit/" . $workingHour[UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_ID];
 
 	return array('title' => $tutorName, 'start' => $dayScheduleStart->format('Y-m-d H:i:s'), 'end' =>
 		$dayScheduleEnd->format('Y-m-d H:i:s'), 'allDay' => false, 'url' => $tutorsUrl, 'color' => '#f0ad4e');
