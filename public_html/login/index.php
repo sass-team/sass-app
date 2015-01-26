@@ -254,7 +254,7 @@ function isForgotBtnPressed() {
 
 	<!-- Warming Up -->
 	<link href='https://fonts.googleapis.com/css?family=Buenard:700' rel='stylesheet' type='text/css'>
-	<script src="http://pupunzi.com/mb.components/mb.YTPlayer/demo/inc/jquery.mb.YTPlayer.js"></script>
+	<script src="<?php echo BASE_URL; ?>assets/js/libs/jquery.mb.YTPlayer.js"></script>
 
 	<script type="text/javascript">
 		$(document).ready(function () {
