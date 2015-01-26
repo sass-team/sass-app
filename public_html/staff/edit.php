@@ -599,8 +599,7 @@ require ROOT_PATH . 'views/sidebar.php';
 						<?php } ?>
 
 						<div class="alert alert-info" role="alert">
-							Your are able to add courses to courses
-							<a href="<?php echo BASE_URL; ?>academia/terms" class="alert-link">during the duration of terms</a>!
+							Your are able to add courses to tutors during the duration of <a href="<?php echo BASE_URL; ?>academia/terms" class="alert-link">terms</a>!
 						</div>
 
 						<div class="portlet-content">
