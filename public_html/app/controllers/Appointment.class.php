@@ -408,8 +408,47 @@ class Appointment
 
     }
 
-    public static function getAppointmentsForStudentWithId($studentId, $appointments)
+    /**
+     * Search sql results for student ID. Preferred over slq search due to performance, that is doing a single query, instead of hundreds.
+     * @param $studentId
+     * @param $appointments
+     * @return array
+     */
+    public static function findAppointmentsForStudentWithId($studentId, $appointments)
     {
+        $validAppointments = [];
 
+        foreach ($appointments as $appointment) {
+
+            $currStudentId = $appointment[AppointmentHasStudentFetcher::DB_COLUMN_STUDENT_ID];
+
+            if (strcmp($studentId, $currStudentId) === 0) $validAppointments[] = $appointment;
+
+        }
+
+        return $validAppointments;
+    }
+
+    /**
+     * Print appointments. Used for hover: /academia/students
+     * @param $appointments
+     */
+    public static function printAppointmentsForHover($appointments)
+    {
+        $appointmentsPrint = "<ul>";
+
+        if (!empty($appointments)) {
+
+            foreach ($appointments as $appointment) {
+
+                $appointmentsPrint .= "<li>" . $appointment[CourseFetcher::DB_COLUMN_CODE] . " " .
+                    $appointment[CourseFetcher::DB_COLUMN_NAME] . " <br/> " .
+                    $appointment[AppointmentFetcher::DB_COLUMN_START_TIME] . " </li>";
+            }
+
+            $appointmentsPrint .= "</ul>";
+        }
+
+        echo $appointmentsPrint;
     }
 }

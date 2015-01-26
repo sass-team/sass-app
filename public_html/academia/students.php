@@ -208,7 +208,7 @@ var_dump($appointments);
                                         </th>
                                         <?php if (!$user->isTutor()): ?>
                                             <th class="text-center" data-filterable="false" class="hidden-xs hidden-sm">
-                                                Appointments
+                                                Pending Appointments
                                             </th>
                                         <?php endif; ?>
                                         <th class="text-center" data-filterable="true" data-sortable="false">Mobile</th>
@@ -229,7 +229,7 @@ var_dump($appointments);
 
                                     <?php
                                     foreach (array_reverse($students) as $student) {
-                                        $appointments = getAppointmentsForStudentWithId($student[StudentFetcher::DB_COLUMN_ID], $appointments);
+                                        $studentAppointments = Appointment::findAppointmentsForStudentWithId($student[StudentFetcher::DB_COLUMN_ID], $appointments);
                                         include(ROOT_PATH . "views/partials/student/update-table-data-view.html.php");
                                     } ?>
                                     </tbody>
