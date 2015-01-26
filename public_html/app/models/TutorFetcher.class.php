@@ -183,6 +183,28 @@ class TutorFetcher
         } // end catch
     }
 
+    public static function retrieveAllActive()
+    {
+        $query =
+            "SELECT `" . UserFetcher::DB_COLUMN_FIRST_NAME . "`, `" . UserFetcher::DB_COLUMN_LAST_NAME . "`,  `" .
+            self::DB_COLUMN_USER_ID . "`
+                FROM `" . App::$dsn[App::DB_NAME] . "`.`" . UserFetcher::DB_TABLE . "`
+                INNER JOIN `" . self::DB_TABLE . "`
+                ON `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_USER_ID . "`=`" . UserFetcher::DB_TABLE . "`.`" .
+            UserFetcher::DB_COLUMN_ID . "`
+                WHERE `" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ACTIVE . "`='1' ";
+
+        try {
+            $dbConnection = DatabaseManager::getConnection();
+            $query = $dbConnection->prepare($query);
+            $query->execute();
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            Mailer::sendDevelopers($e->getMessage(), __FILE__);
+            throw new Exception("Something terrible happened . Could not data from database .: ");
+        } // end catch
+    }
+
     public static function existsUserId($id)
     {
         try {
