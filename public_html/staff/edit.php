@@ -345,7 +345,9 @@ require ROOT_PATH . 'views/sidebar.php';
 
 			<br/>
 
-			<div class="form-group">
+			<?php if ($curUser->isActive()) { ?>
+
+				<div class="form-group">
 
 				<a data-toggle="modal" id="bttn-coursesModal" href="#coursesModal" class="btn btn-primary">
 					Add Teaching Courses
@@ -354,6 +356,14 @@ require ROOT_PATH . 'views/sidebar.php';
 
 			</div>
 			<!-- /.form - group-->
+			<?php } else { ?>
+
+				<div class="alert alert-danger" role="alert">
+					This tutor is currently <strong>inactive</strong> and cannot be assigned courses. Activate first.
+				<div>
+			<?php } ?>
+
+			
 		</div>
 		<!-- /.col -->
 
@@ -599,7 +609,7 @@ require ROOT_PATH . 'views/sidebar.php';
 						<?php } ?>
 
 						<div class="alert alert-info" role="alert">
-							Your are able to add courses to tutors during the duration of <a href="<?php echo BASE_URL; ?>academia/terms" class="alert-link">terms</a>!
+							You are able to add courses to tutors during the duration of <a href="<?php echo BASE_URL; ?>academia/terms" class="alert-link">terms</a>!
 						</div>
 
 						<div class="portlet-content">
