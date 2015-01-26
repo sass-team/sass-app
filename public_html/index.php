@@ -74,9 +74,6 @@ function getAppointmentsForYearDay($appointments, $findYearDay) {
 	return $appointmentsPerDay;
 }
 
-//var_dump($appointments);
-
-
 /**
  * http://blog.ekini.net/2009/07/09/php-get-start-and-end-dates-of-a-week-from-datew/
  *
@@ -108,7 +105,6 @@ function isBtnChangeWeekAfterNxtWeekPrsd() {
 function isBtnChangePrevWeekPrsd() {
 	return isset($_POST['prevWeek']) && empty($_POST['prevWeek']);
 }
-
 
 ?>
 

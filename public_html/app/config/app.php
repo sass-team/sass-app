@@ -39,13 +39,10 @@ define("ROOT_PATH", __DIR__ . "/../");
 require_once ROOT_PATH . "config/App.class.php";
 
 
-if ((strcmp(App::PRODUCTION_HOST, App::getDomainName()) === 0 ||
-    strcmp(App::DEV_SSL_HOST, App::getDomainName()) === 0)
-    && $_SERVER["HTTPS"] != "on") {
-
-	header("HTTP/1.1 301 Moved Permanently");
-	header("Location: https://" . $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"]);
-	exit();
+if (!App::isSecure()) {
+    header("HTTP/1.1 301 Moved Permanently");
+    header("Location: https://" . $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"]);
+    exit();
 }
 
 require ROOT_PATH . "config/loadAllClasses.php";
