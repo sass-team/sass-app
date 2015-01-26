@@ -6,7 +6,7 @@
  *  * Time: 2:35 PM
  *
  */
-require "./../public_html/app/config/app.php";
+require __DIR__ . "/../public_html/app/config/app.php";
 
 $appInfoFile = ROOT_PATH . "config/dropbox.app";
 # Include the Dropbox SDK libraries
