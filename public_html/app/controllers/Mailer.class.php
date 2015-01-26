@@ -65,11 +65,11 @@ class Mailer
 			$reportLink = "<a style='background-color:#008dd0;color:#fff;border-radius:4px;display:block;
 		text-decoration:none;margin-top:30px;margin-bottom:15px;margin-right:0px;margin-left:0px;padding-top:20px;
 		padding-bottom:20px;padding-right:20px;padding-left:20px;text-align:center'
-		href='http://" . (isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : "sass.zz.vc") . "/appointments/" .
+		href='https://" . (isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : App::PRODUCTION_HOST) . "/appointments/" .
 				$appointmentData[AppointmentFetcher::DB_COLUMN_ID] . "' target='_blank' >View Report</a><br/>";
 			$appointmentStart = new DateTime($appointmentData[AppointmentFetcher::DB_COLUMN_START_TIME]);
 			$appointmentEnd = new DateTime($appointmentData[AppointmentFetcher::DB_COLUMN_END_TIME]);
-			$senderEmail = self::NO_REPLY_EMAIL_PREFIX . (isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'sass.zz.vc');
+			$senderEmail = self::NO_REPLY_EMAIL_PREFIX . (isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : App::PRODUCTION_HOST);
 			$senderName = self::SASS_APP_AUTOMATIC_SYSTEM;
 			$receiverEmail = $tutorUser[UserFetcher::DB_COLUMN_EMAIL];
 			$receiverName = $tutorUser[UserFetcher::DB_COLUMN_FIRST_NAME] . " " . $tutorUser[UserFetcher::DB_COLUMN_LAST_NAME];;
@@ -143,7 +143,7 @@ class Mailer
 			$setViewScheduleLink = "<a style='background-color:#008dd0;color:#fff;border-radius:4px;display:block;
 		text-decoration:none;margin-top:30px;margin-bottom:15px;margin-right:0px;margin-left:0px;padding-top:20px;
 		padding-bottom:20px;padding-right:20px;padding-left:20px;text-align:center'
-		href='http://" . $_SERVER['SERVER_NAME'] . "/appointments/" . $appointment[AppointmentFetcher::DB_COLUMN_ID] . "' target='_blank' >Appointment Details</a>";
+		href='" . App::getDomainName() . "/appointments/" . $appointment[AppointmentFetcher::DB_COLUMN_ID] . "' target='_blank' >Appointment Details</a>";
 
 			$senderEmail = self::NO_REPLY_EMAIL_PREFIX . $_SERVER['SERVER_NAME'];
 			$senderName = $secretaryName;
@@ -254,11 +254,10 @@ class Mailer
 		$alternativeName = self::SASS_APP_AUTOMATIC_SYSTEM_DEVELOPERS;
 		$passwordRecoveryLink = "<a style='background-color:#008dd0;color:#fff;border-radius:4px;display:block;
 		text-decoration:none;margin-top:30px;margin-bottom:15px;margin-right:0px;margin-left:0px;padding-top:20px;
-		padding-bottom:20px;padding-right:20px;padding-left:20px;text-align:center' href='http://" .
-			$_SERVER['SERVER_NAME'] . "/login/recover/" . $id . "/" . $genString . "' target='_blank' >Reset Password</a>";
-		$sassPageLogin = "<a href='http://" . $_SERVER['SERVER_NAME'] . "/login/' target='_blank' >log in</a>";
-		$sassPageRecover = "<a href='http://" . $_SERVER['SERVER_NAME'] . "/login/confirm-password' target='_blank' >password recovery</a>";
-		$senderEmail = self::NO_REPLY_EMAIL_PREFIX . $_SERVER['SERVER_NAME'];
+		padding-bottom:20px;padding-right:20px;padding-left:20px;text-align:center' href='" . App::getDomainName() . "/login/recover/" . $id . "/" . $genString . "' target='_blank' >Reset Password</a>";
+		$sassPageLogin = "<a href='" . App::getDomainName() . "/login/' target='_blank' >log in</a>";
+		$sassPageRecover = "<a href='" . App::getDomainName() . "/login/confirm-password' target='_blank' >password recovery</a>";
+		$senderEmail = self::NO_REPLY_EMAIL_PREFIX . App::getDomainName() ;
 		$senderName = self::SASS_APP_AUTOMATIC_SYSTEM;
 		$receiverEmail = $email;
 		$receiverName = $name;
