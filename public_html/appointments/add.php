@@ -21,8 +21,6 @@ try {
     $instructors = InstructorFetcher::retrieveAll();
     $students = StudentFetcher::retrieveAll();
 
-    $appointments = AppointmentFetcher::retrieveAll();
-
     if (isBtnAddStudentPrsd()) {
         $secretaryName = $user->getFirstName() . " " . $user->getLastName();
         Appointment::add($user, $_POST['dateTimePickerStart'], $_POST['dateTimePickerEnd'], $_POST['courseId'], $_POST['studentsIds'], $_POST['tutorId'], $_POST['instructorIds'], $_POST['termId'], $secretaryName);

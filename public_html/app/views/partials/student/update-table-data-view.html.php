@@ -21,7 +21,7 @@ $credits = $student[StudentFetcher::DB_COLUMN_CREDITS];
 $majorName = $student[MajorFetcher::DB_COLUMN_NAME];
 $majorCode = $student[MajorFetcher::DB_COLUMN_CODE];
 $majorId = $student[StudentFetcher::DB_COLUMN_MAJOR_ID];
-
+// $appointments received externally: $startDate, $course code
 ?>
 <tr>
 	<td class="text-center"><span><?php echo $first_name; ?></span>&#32;<span><?php echo $last_name; ?></span></td>

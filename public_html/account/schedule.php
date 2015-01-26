@@ -10,8 +10,6 @@ try {
 	$terms = TermFetcher::retrieveCurrTerm();
 	$students = StudentFetcher::retrieveAll();
 
-	$appointments = AppointmentFetcher::retrieveAll();
-
 
 } catch (Exception $e) {
 	$errors[] = $e->getMessage();
