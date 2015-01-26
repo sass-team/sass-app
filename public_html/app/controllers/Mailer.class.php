@@ -277,7 +277,7 @@ class Mailer
         $domain = App::MAILGUN_DOMAIN;
 
         // Load mail template
-        $emailVerificationTemplate = file_get_contents(ROOT_PATH . 'mail/templates/verify_email.html');
+        $emailVerificationTemplate = file_get_contents(ROOT_PATH . 'mail/templates/verify_recovery.html');
         $verifyAccountRecoveryLink = App::getDomainName() . "/login/set/" . $userId . "/" . $genString;
 
         # Now, compose and send the message.
@@ -288,7 +288,7 @@ class Mailer
                 'subject' => 'SASS Account Recovery',
                 'text' => 'Your mail does not support html',
                 'html' => $emailVerificationTemplate,
-                'recipient-variables' => '{"' . $email . '": {"id":' . $userId . ',"verifyAccountRecovery":"' .
+                'recipient-variables' => '{"' . $email . '": {"id":' . $userId . ',"verifyAccountRecoveryLink":"' .
                     $verifyAccountRecoveryLink . '","fullName":"' . $receiverName . '"}}'
             ]);
     }
