@@ -1,2 +1,0 @@
-1. cascade delete/update for instrucctor_has_courses
-2. tutor_teaches_course -> tutor_has_course (automatic creation for mysql workbench)
