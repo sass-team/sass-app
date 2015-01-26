@@ -135,6 +135,11 @@ function isForgotBtnPressed() {
 				font-size: 1px;
 			}
 
+			@media(max-width: 767px){
+				#footer{
+					display: none;
+				}
+			}
 		</style>
 
 	</head>
@@ -200,7 +205,7 @@ function isForgotBtnPressed() {
 		</div>
 		<!-- /#login-container -->
 
-		<footer id="footer" class="navbar navbar-fixed-bottom">
+		<footer id="footer" class="footer navbar-fixed-bottom">
 			<ul class="nav pull-left">
 				<li>
 					For bugs, improvements, proposals and tasks please use the <a
