@@ -106,7 +106,7 @@ function isUrlOriginal() {
 		<link rel="shortcut icon" href="<?php echo BASE_URL; ?>assets/img/logos/logo-login.png">
 
 		<link rel="stylesheet"
-		      href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,800italic,400,600,800"
+		      href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,800italic,400,600,800"
 		      type="text/css">
 		<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/font-awesome.min.css" type="text/css"/>
 		<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/bootstrap.min.css" type="text/css"/>

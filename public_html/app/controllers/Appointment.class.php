@@ -140,7 +140,7 @@ class Appointment
 
             $startDate = new DateTime($appointmentHour[AppointmentFetcher::DB_COLUMN_START_TIME]);
             $endDate = new DateTime($appointmentHour[AppointmentFetcher::DB_COLUMN_END_TIME]);
-            $appointmentUrl = "http://" . $_SERVER['SERVER_NAME'] . "/appointments/" . $appointmentHour[UserFetcher::DB_COLUMN_ID];
+            $appointmentUrl = App::getDomainName() . "/appointments/" . $appointmentHour[UserFetcher::DB_COLUMN_ID];
 
             switch ($appointmentHour[AppointmentFetcher::DB_COLUMN_LABEL_COLOR]) {
                 case Appointment::LABEL_COLOR_PENDING:
@@ -187,7 +187,7 @@ class Appointment
 
             $startDate = new DateTime($appointmentHour[AppointmentFetcher::DB_COLUMN_START_TIME]);
             $endDate = new DateTime($appointmentHour[AppointmentFetcher::DB_COLUMN_END_TIME]);
-            $appointmentUrl = "http://" . $_SERVER['SERVER_NAME'] . "/appointments/" . $appointmentHour[UserFetcher::DB_COLUMN_ID];
+            $appointmentUrl = App::getDomainName() . "/appointments/" . $appointmentHour[UserFetcher::DB_COLUMN_ID];
 
             switch ($appointmentHour[AppointmentFetcher::DB_COLUMN_LABEL_COLOR]) {
                 case Appointment::LABEL_COLOR_PENDING:
@@ -242,7 +242,7 @@ class Appointment
 
             $startDate = new DateTime($appointmentHour[AppointmentFetcher::DB_COLUMN_START_TIME]);
             $endDate = new DateTime($appointmentHour[AppointmentFetcher::DB_COLUMN_END_TIME]);
-            $appointmentUrl = "http://" . $_SERVER['SERVER_NAME'] . "/appointments/" . $appointmentHour[UserFetcher::DB_COLUMN_ID];
+            $appointmentUrl = App::getDomainName() . "/appointments/" . $appointmentHour[UserFetcher::DB_COLUMN_ID];
 
             switch ($appointmentHour[AppointmentFetcher::DB_COLUMN_LABEL_COLOR]) {
                 case Appointment::LABEL_COLOR_PENDING:
