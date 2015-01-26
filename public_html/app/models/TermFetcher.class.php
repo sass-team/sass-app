@@ -30,246 +30,257 @@
  */
 class TermFetcher
 {
-	const DB_TABLE = "term";
-	const DB_COLUMN_ID = "id";
-	const DB_COLUMN_NAME = "name";
-	const DB_COLUMN_START_DATE = "start_date";
-	const DB_COLUMN_END_DATE = "end_date";
+    const DB_TABLE = "term";
+    const DB_COLUMN_ID = "id";
+    const DB_COLUMN_NAME = "name";
+    const DB_COLUMN_START_DATE = "start_date";
+    const DB_COLUMN_END_DATE = "end_date";
 
 
 //m-d-Y h:i A
-	public static function retrieveAllButCur() {
-		$query =
-			"SELECT `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_NAME . "` , `" . self::DB_COLUMN_START_DATE . "`,
+    public static function retrieveAllButCur()
+    {
+        $query =
+            "SELECT `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_NAME . "` , `" . self::DB_COLUMN_START_DATE . "`,
 			 `" . self::DB_COLUMN_END_DATE . "`
 			 FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
 			 WHERE (:now NOT BETWEEN `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" .
-			TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_END_DATE . "`)
+            TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_END_DATE . "`)
 			 order by `" .
-			self::DB_TABLE . "`.`" . self::DB_COLUMN_START_DATE . "` DESC";
+            self::DB_TABLE . "`.`" . self::DB_COLUMN_START_DATE . "` DESC";
 
-		try {
-			date_default_timezone_set('Europe/Athens');
-			$now = new DateTime();
-			$now = $now->format(Dates::DATE_FORMAT_IN);
+        try {
+            date_default_timezone_set('Europe/Athens');
+            $now = new DateTime();
+            $now = $now->format(Dates::DATE_FORMAT_IN);
 
-			$dbConnection = DatabaseManager::getConnection();
-			$query = $dbConnection->prepare($query);
-			$query->bindParam(':now', $now, PDO::PARAM_STR);
-			$query->execute();
+            $dbConnection = DatabaseManager::getConnection();
+            $query = $dbConnection->prepare($query);
+            $query->bindParam(':now', $now, PDO::PARAM_STR);
+            $query->execute();
 
-			return $query->fetchAll(PDO::FETCH_ASSOC);
-		} catch (PDOException $e) {
-			Mailer::sendDevelopers($e->getMessage(), __FILE__);
-			throw new Exception("Could not retrieve terms data from database.");
-		}
-	}
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            Mailer::sendDevelopers($e->getMessage(), __FILE__);
+            throw new Exception("Could not retrieve terms data from database.");
+        }
+    }
 
-	//m-d-Y h:i A
-	public static function retrieveAll() {
-		$query =
-			"SELECT `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_NAME . "` , `" . self::DB_COLUMN_START_DATE . "`,
+    //m-d-Y h:i A
+    public static function retrieveAll()
+    {
+        $query =
+            "SELECT `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_NAME . "` , `" . self::DB_COLUMN_START_DATE . "`,
 			 `" . self::DB_COLUMN_END_DATE . "`
 			 FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
 			order by `" .
-			self::DB_TABLE . "`.`" . self::DB_COLUMN_START_DATE . "` DESC";
+            self::DB_TABLE . "`.`" . self::DB_COLUMN_START_DATE . "` DESC";
 
-		try {
-			$dbConnection = DatabaseManager::getConnection();
-			$query = $dbConnection->prepare($query);
-			$query->execute();
+        try {
+            $dbConnection = DatabaseManager::getConnection();
+            $query = $dbConnection->prepare($query);
+            $query->execute();
 
-			return $query->fetchAll(PDO::FETCH_ASSOC);
-		} catch (PDOException $e) {
-			Mailer::sendDevelopers($e->getMessage(), __FILE__);
-			throw new Exception("Could not retrieve terms data from database.");
-		}
-	}
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            Mailer::sendDevelopers($e->getMessage(), __FILE__);
+            throw new Exception("Could not retrieve terms data from database.");
+        }
+    }
 
 
-	public static function retrieveCurrTerm() {
-		$query =
-			"SELECT `" . self::DB_COLUMN_ID . "` ,
-					`" . self::DB_COLUMN_NAME . "`
+    public static function retrieveCurrTerm()
+    {
+        $query =
+            "SELECT `" . self::DB_COLUMN_ID . "`, `" . self::DB_COLUMN_NAME . "`, `" . self::DB_COLUMN_START_DATE . "`,
+            	`" . self::DB_COLUMN_END_DATE . "`
 			 	FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
 			 	WHERE :now BETWEEN `" . self::DB_COLUMN_START_DATE . "` AND `" . self::DB_COLUMN_END_DATE . "`";
 
-		try {
-			date_default_timezone_set('Europe/Athens');
-			$now = new DateTime();
-			$now = $now->format(Dates::DATE_FORMAT_IN);
+        try {
+            date_default_timezone_set('Europe/Athens');
+            $now = new DateTime();
+            $now = $now->format(Dates::DATE_FORMAT_IN);
 
-			$dbConnection = DatabaseManager::getConnection();
-			$query = $dbConnection->prepare($query);
-			$query->bindParam(':now', $now, PDO::PARAM_STR);
+            $dbConnection = DatabaseManager::getConnection();
+            $query = $dbConnection->prepare($query);
+            $query->bindParam(':now', $now, PDO::PARAM_STR);
 
-			$query->execute();
+            $query->execute();
 
-			return $query->fetchAll(PDO::FETCH_ASSOC);
-		} catch (PDOException $e) {
-			Mailer::sendDevelopers($e->getMessage(), __FILE__);
-			throw new Exception("Could not retrieve current term from database.");
-		}
-	}
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            Mailer::sendDevelopers($e->getMessage(), __FILE__);
+            throw new Exception("Could not retrieve current term from database.");
+        }
+    }
 
 
-	public static function retrieveSingle($id) {
-		$query = "SELECT  `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_NAME . "` , `" . self::DB_COLUMN_START_DATE
-			. "`,		 `" . self::DB_COLUMN_END_DATE . "`
+    public static function retrieveSingle($id)
+    {
+        $query = "SELECT  `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_NAME . "` , `" . self::DB_COLUMN_START_DATE
+            . "`,		 `" . self::DB_COLUMN_END_DATE . "`
 			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
 			WHERE `" . self::DB_COLUMN_ID . "`=:id";
 
-		try {
-			$dbConnection = DatabaseManager::getConnection();
-			$query = $dbConnection->prepare($query);
-			$query->bindParam(':id', $id, PDO::PARAM_INT);
+        try {
+            $dbConnection = DatabaseManager::getConnection();
+            $query = $dbConnection->prepare($query);
+            $query->bindParam(':id', $id, PDO::PARAM_INT);
 
-			$query->execute();
-			return $query->fetch(PDO::FETCH_ASSOC);
-		} catch (PDOException $e) {
-			Mailer::sendDevelopers($e->getMessage(), __FILE__);
-			throw new Exception("Could not retrieve data from database .: ");
-		} // end catch
-	}
+            $query->execute();
+            return $query->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            Mailer::sendDevelopers($e->getMessage(), __FILE__);
+            throw new Exception("Could not retrieve data from database .: ");
+        } // end catch
+    }
 
-	public static function updateName($id, $newName) {
-		$query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+    public static function updateName($id, $newName)
+    {
+        $query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
 					SET	`" . self::DB_COLUMN_NAME . "`= :newName
 					WHERE `id`= :id";
 
-		try {
-			$dbConnection = DatabaseManager::getConnection();
-			$query = $dbConnection->prepare($query);
-			$query->bindParam(':id', $id, PDO::PARAM_INT);
-			$query->bindParam(':newName', $newName, PDO::PARAM_STR);
-			$query->execute();
+        try {
+            $dbConnection = DatabaseManager::getConnection();
+            $query = $dbConnection->prepare($query);
+            $query->bindParam(':id', $id, PDO::PARAM_INT);
+            $query->bindParam(':newName', $newName, PDO::PARAM_STR);
+            $query->execute();
 
-			return true;
-		} catch (Exception $e) {
-			Mailer::sendDevelopers($e->getMessage(), __FILE__);
-			throw new Exception("Something terrible happened. Could not update term name");
-		}
-	}
+            return true;
+        } catch (Exception $e) {
+            Mailer::sendDevelopers($e->getMessage(), __FILE__);
+            throw new Exception("Something terrible happened. Could not update term name");
+        }
+    }
 
-	public static function  updateStartingDate($id, $newStartingDate) {
-		$query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+    public static function  updateStartingDate($id, $newStartingDate)
+    {
+        $query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
 					SET	`" . self::DB_COLUMN_START_DATE . "`= :newName
 					WHERE `id`= :id";
 
-		try {
-			$dbConnection = DatabaseManager::getConnection();
-			$query = $dbConnection->prepare($query);
-			$query->bindParam(':id', $id, PDO::PARAM_INT);
-			$query->bindParam(':newName', $newStartingDate, PDO::PARAM_STR);
-			$query->execute();
+        try {
+            $dbConnection = DatabaseManager::getConnection();
+            $query = $dbConnection->prepare($query);
+            $query->bindParam(':id', $id, PDO::PARAM_INT);
+            $query->bindParam(':newName', $newStartingDate, PDO::PARAM_STR);
+            $query->execute();
 
-			return true;
-		} catch (Exception $e) {
-			Mailer::sendDevelopers($e->getMessage(), __FILE__);
-			throw new Exception("Something terrible happened. Could not update starting date");
-		}
-	}
+            return true;
+        } catch (Exception $e) {
+            Mailer::sendDevelopers($e->getMessage(), __FILE__);
+            throw new Exception("Something terrible happened. Could not update starting date");
+        }
+    }
 
 
-	public static function updateSingleColumn($id, $column, $value, $valueType) {
-		$query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+    public static function updateSingleColumn($id, $column, $value, $valueType)
+    {
+        $query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
 					SET	`" . $column . "`= :column
 					WHERE `id`= :id";
 
-		try {
-			$dbConnection = DatabaseManager::getConnection();
-			$query = $dbConnection->prepare($query);
-			$query->bindParam(':id', $id, PDO::PARAM_INT);
-			$query->bindParam(':column', $value, $valueType);
-			$query->execute();
+        try {
+            $dbConnection = DatabaseManager::getConnection();
+            $query = $dbConnection->prepare($query);
+            $query->bindParam(':id', $id, PDO::PARAM_INT);
+            $query->bindParam(':column', $value, $valueType);
+            $query->execute();
 
-			return true;
-		} catch (Exception $e) {
-			Mailer::sendDevelopers($e->getMessage(), __FILE__);
-			throw new Exception("Something went wrong. Could not update term table.");
-		}
-	}
+            return true;
+        } catch (Exception $e) {
+            Mailer::sendDevelopers($e->getMessage(), __FILE__);
+            throw new Exception("Something went wrong. Could not update term table.");
+        }
+    }
 
-	public static function insert($name, $startDate, $endDate) {
-		date_default_timezone_set('Europe/Athens');
+    public static function insert($name, $startDate, $endDate)
+    {
+        date_default_timezone_set('Europe/Athens');
 
-		$startDate = $startDate->format(Dates::DATE_FORMAT_IN);
-		$endDate = $endDate->format(Dates::DATE_FORMAT_IN);
+        $startDate = $startDate->format(Dates::DATE_FORMAT_IN);
+        $endDate = $endDate->format(Dates::DATE_FORMAT_IN);
 
-		try {
-			$query = "INSERT INTO `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "` (`" . self::DB_COLUMN_NAME .
-				"`, `" . self::DB_COLUMN_START_DATE . "`, `" . self::DB_COLUMN_END_DATE . "`)
+        try {
+            $query = "INSERT INTO `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "` (`" . self::DB_COLUMN_NAME .
+                "`, `" . self::DB_COLUMN_START_DATE . "`, `" . self::DB_COLUMN_END_DATE . "`)
 				VALUES(
 					:name,
 					:start_date,
 					:end_date
 				)";
 
-			$dbConnection = DatabaseManager::getConnection();
-			$query = $dbConnection->prepare($query);
-			$query->bindParam(':name', $name, PDO::PARAM_STR);
-			$query->bindParam(':start_date', $startDate);
-			$query->bindParam(':end_date', $endDate);
-			$query->execute();
-			return true;
-		} catch (Exception $e) {
-			Mailer::sendDevelopers($e->getMessage(), __FILE__);
-			throw new Exception("Could not insert term data into database.");
-		}
-	}
+            $dbConnection = DatabaseManager::getConnection();
+            $query = $dbConnection->prepare($query);
+            $query->bindParam(':name', $name, PDO::PARAM_STR);
+            $query->bindParam(':start_date', $startDate);
+            $query->bindParam(':end_date', $endDate);
+            $query->execute();
+            return true;
+        } catch (Exception $e) {
+            Mailer::sendDevelopers($e->getMessage(), __FILE__);
+            throw new Exception("Could not insert term data into database.");
+        }
+    }
 
-	public static function idExists($id) {
-		try {
-			$query = "SELECT COUNT(" . self::DB_COLUMN_ID . ")
+    public static function idExists($id)
+    {
+        try {
+            $query = "SELECT COUNT(" . self::DB_COLUMN_ID . ")
 			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
 			WHERE `" . self::DB_COLUMN_ID . "` = :id";
 
-			$dbConnection = DatabaseManager::getConnection();
-			$query = $dbConnection->prepare($query);
-			$query->bindParam(':id', $id, PDO::PARAM_INT);
-			$query->execute();
+            $dbConnection = DatabaseManager::getConnection();
+            $query = $dbConnection->prepare($query);
+            $query->bindParam(':id', $id, PDO::PARAM_INT);
+            $query->execute();
 
-			if ($query->fetchColumn() === 0) return false;
-		} catch (Exception $e) {
-			Mailer::sendDevelopers($e->getMessage(), __FILE__);
-			throw new Exception("There a problem with the database.<br/> Aborting process.");
-		}
+            if ($query->fetchColumn() === 0) return false;
+        } catch (Exception $e) {
+            Mailer::sendDevelopers($e->getMessage(), __FILE__);
+            throw new Exception("There a problem with the database.<br/> Aborting process.");
+        }
 
-		return true;
-	}
-
-
-	public static function delete($id) {
-		try {
-			$query = "DELETE FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :id";
-			$dbConnection = DatabaseManager::getConnection();
-			$query = $dbConnection->prepare($query);
-			$query->bindParam(':id', $id, PDO::PARAM_INT);
-			$query->execute();
-			return true;
-		} catch (Exception $e) {
-			Mailer::sendDevelopers($e->getMessage(), __FILE__);
-			throw new Exception("Could not delete term from database.");
-		}
-	}
+        return true;
+    }
 
 
-	public static function existsName($name) {
-		try {
-			$query = "SELECT COUNT(" . self::DB_COLUMN_NAME . ") FROM `" . App::$dsn[App::DB_NAME] . "`.`" .
-				self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_NAME . "` = :name";
-			$dbConnection = DatabaseManager::getConnection();
-			$query = $dbConnection->prepare($query);
-			$query->bindParam(':name', $name, PDO::PARAM_STR);
-			$query->execute();
+    public static function delete($id)
+    {
+        try {
+            $query = "DELETE FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :id";
+            $dbConnection = DatabaseManager::getConnection();
+            $query = $dbConnection->prepare($query);
+            $query->bindParam(':id', $id, PDO::PARAM_INT);
+            $query->execute();
+            return true;
+        } catch (Exception $e) {
+            Mailer::sendDevelopers($e->getMessage(), __FILE__);
+            throw new Exception("Could not delete term from database.");
+        }
+    }
 
-			if ($query->fetchColumn() === '0') return false;
-		} catch (Exception $e) {
-			Mailer::sendDevelopers($e->getMessage(), __FILE__);
-			throw new Exception("Could not check if term name already exists on database. <br/> Aborting process.");
-		}
 
-		return true;
+    public static function existsName($name)
+    {
+        try {
+            $query = "SELECT COUNT(" . self::DB_COLUMN_NAME . ") FROM `" . App::$dsn[App::DB_NAME] . "`.`" .
+                self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_NAME . "` = :name";
+            $dbConnection = DatabaseManager::getConnection();
+            $query = $dbConnection->prepare($query);
+            $query->bindParam(':name', $name, PDO::PARAM_STR);
+            $query->execute();
 
-	}
+            if ($query->fetchColumn() === '0') return false;
+        } catch (Exception $e) {
+            Mailer::sendDevelopers($e->getMessage(), __FILE__);
+            throw new Exception("Could not check if term name already exists on database. <br/> Aborting process.");
+        }
+
+        return true;
+
+    }
 } 
