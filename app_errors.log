@@ -17,4 +17,4 @@ Stack trace:
 #0 {main}exception 'Exception' in /var/www/sass.app/cron/backup.php:22
 Stack trace:
 #0 {main}test
-	2015sassOutput file is not writable
+	2015sassOutput file is not writableOutput file is not writable
