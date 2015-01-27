@@ -8,7 +8,7 @@
  */
 class App
 {
-	public static $settings;
+	private static $settings;
 
 	/**
 	 * Check if current time is during working hours
@@ -16,7 +16,7 @@ class App
 	 */
 	static function isWorkingDateTimeOn()
 	{
-		date_default_timezone_set(self::getTimeZone());
+		date_default_timezone_set('Europe/Athens');
 
 		$curWorkingDate = new DateTime();
 		$curWorkingHour = intval($curWorkingDate->format('H'));
@@ -31,11 +31,6 @@ class App
 		}
 
 		return true;
-	}
-
-	public static function getTimeZone()
-	{
-		return self::$settings['TimeZone'];
 	}
 
 	public static function getFirstWorkingHour()
@@ -64,6 +59,11 @@ class App
 		$curWorkingDate = new DateTime();
 
 		return $curWorkingDate;
+	}
+
+	public static function getTimeZone()
+	{
+		return self::$settings['TIMEZONE'];
 	}
 
 	/**
@@ -128,6 +128,7 @@ class App
 	 */
 	public static function loadSettings($settingsFile)
 	{
+
 		self::$settings = require $settingsFile;
 	}
 
@@ -212,5 +213,20 @@ class App
 	public static function getGithubNewIssueUrl()
 	{
 		return self::$settings['GITHUB_NEW_ISSUE_URL'];
+	}
+
+	/**
+	 * Write the contents to the file, using the FILE_APPEND flag to append the content to the end of the file
+	 * and the LOCK_EX flag to prevent anyone else writing to the file at the same time
+	 * @param $messsage
+	 * @internal param $e
+	 */
+	public static function storeError($messsage)
+	{
+		$file = ROOT_PATH . '../../app_errors.log';
+
+		file_put_contents($file, $messsage, FILE_APPEND | LOCK_EX);
+
+		var_dump($messsage);
 	}
 }

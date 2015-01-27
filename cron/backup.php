@@ -18,13 +18,15 @@ use Dropbox as dbx;
 
 try
 {
-	date_default_timezone_set('Europe/Athens');
+	date_default_timezone_set(App::getTimeZone());
 
-	// run script only during working hours every 2 hours
-	if ( ! App::isWorkingDateTimeOn() )
+	// run script only during working hours
+	if (!App::isWorkingDateTimeOn())
 	{
 		exit();
 	}
+
+
 
 	$filePath = ROOT_PATH . 'storage/backups/';
 	$fileName = 'sass app db ' . date('m-d-Y Hi') . '.sql';
@@ -48,7 +50,7 @@ try
 		'hex-blob'                   => true
 	];
 
-	$dump = new Ifsnop\Mysqldump\Mysqldump(App::$dsn[App::getDbName()],
+	$dump = new Ifsnop\Mysqldump\Mysqldump(App::getDbName(),
 		App::getDbUsername(),
 		App::getDbPassword(),
 		App::getDbHost(), 'mysql', $dumpSettings);
@@ -63,8 +65,9 @@ try
 	$result = $dbxClient->uploadFile("/storage/backups/$curWorkingDateYear/$zippedFileName", dbx\WriteMode::add(), $f);
 	fclose($f);
 
-//	Mailer::sendDevelopers("Backup created: " . $filename, __FILE__);
-} catch (\Exception $e)
+
+} catch (Exception $e)
 {
-	Mailer::sendDevelopers('mysqldump-php error: ' . $e->getMessage(), __FILE__);
+	App::storeError($e->getMessage());
+	exit();
 }

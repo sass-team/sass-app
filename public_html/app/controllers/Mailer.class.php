@@ -322,7 +322,7 @@ class Mailer
 			$alternativeEmail = self::EMAIL_DEV_SASS;
 			$alternativeName = self::SASS_APP_AUTOMATIC_SYSTEM_DEVELOPERS;
 			$dateGenerated = new DateTime();
-			$senderEmail = self::NO_REPLY_EMAIL_PREFIX . $_SERVER['SERVER_NAME'];
+			$senderEmail = self::NO_REPLY_EMAIL_PREFIX . App::getHostname();
 			$senderName = self::SASS_APP_AUTOMATIC_SYSTEM;
 			$receiverEmail = self::EMAIL_DEV_SASS;
 			$receiverName = self::EMAIL_DEV_NAME_SASS;

@@ -44,6 +44,6 @@ try {
     }
     exit();
 } catch (\Exception $e) {
-    Mailer::sendDevelopers('mysqldump-php error: ' . $e->getMessage(), __FILE__);
+    App::storeError($e);
     exit();
 }
