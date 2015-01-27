@@ -35,14 +35,16 @@ define("ROOT_PATH", __DIR__ . "/../");
 
 require ROOT_PATH . 'vendor/autoload.php';
 
-Dotenv::load(ROOT_PATH . '../../');
+# Load configuration functions & credentials
 require_once ROOT_PATH . "config/App.class.php";
+App::loadSettings(ROOT_PATH . '../../.env.php');
 
-
-if (isset($_SERVER['SERVER_NAME']) && !App::isSecure()) {
+# Redirect to ssl if current call not a cron job
+if (!App::isSecure() && isset($_SERVER['SERVER_NAME'])) {
     header("HTTP/1.1 301 Moved Permanently");
     header("Location: https://" . $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"]);
     exit();
 }
 
+# Load all SASS App functions
 require ROOT_PATH . "config/loadAllClasses.php";

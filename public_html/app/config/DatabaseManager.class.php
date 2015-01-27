@@ -25,14 +25,14 @@ class DatabaseManager
 		try { // connects to database
 
 			$this->dbConnection =
-				new PDO("mysql:host=" . App::$dsn[App::DB_HOST] . ";dbname=" . App::$dsn[App::DB_NAME] .
-					";port=" . App::$dsn[App::DB_PORT], App::$dsn[App::DB_USERNAME],
-					App::$dsn[App::DB_PASSWORD]);
+				new PDO("mysql:host=" . App::getDbHost() . ";dbname=" . App::$dsn[App::DB_NAME] .
+					";port=" . App::getDbPort(), App::getDbUsername(),
+					App::getDbPassword());
 
 			$this->dbConnection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // CHANGE THE ERROR MODE, THROW AN EXCEPTION WHEN AN ERROR IS FOUND
 			$this->dbConnection->exec("SET NAMES 'utf8'");
 		} catch (PDOException $e) { // program ends if exception is found
-			throw new Exception("Could not connect to the database." . $e->getMessage() .  App::$dsn[App::DB_HOST]);
+			throw new Exception("Could not connect to the database.". $e->getMessage());
 		} // end
 	}
 

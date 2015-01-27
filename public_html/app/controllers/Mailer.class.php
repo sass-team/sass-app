@@ -243,8 +243,8 @@ class Mailer
     public static function sendNewAccount($newUserId, $receiverEmail, $receiverName)
     {
         # First, instantiate the SDK with your API credentials and define your domain.
-        $mg = new Mailgun(getenv('MAILGUN_KEY'));
-        $domain = getenv('MAILGUN_DOMAIN');
+        $mg = new Mailgun(App::getMailgunKey());
+        $domain = App::getMailgunDomain();
 
         // Load mail template
         $emailVerificationTemplate = file_get_contents(ROOT_PATH . 'mail/templates/verify_email.html');
@@ -273,8 +273,8 @@ class Mailer
         $genString = User::generateNewPasswordString($userId);
 
         # First, instantiate the SDK with your API credentials and define your domain.
-        $mg = new Mailgun(getenv('MAILGUN_KEY'));
-        $domain = getenv('MAILGUN_DOMAIN');
+        $mg = new Mailgun(App::getMailgunKey());
+        $domain = App::getMailgunDomain();
 
         // Load mail template
         $emailVerificationTemplate = file_get_contents(ROOT_PATH . 'mail/templates/verify_recovery.html');

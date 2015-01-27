@@ -3,7 +3,6 @@
     "vendor-dir": "public_html/app/vendor"
   },
   "require": {
-    "mailgun/mailgun-php": "~1.7.2",
-    "vlucas/phpdotenv": "~1.1"
+    "mailgun/mailgun-php": "~1.7.2"
   }
 }

@@ -427,7 +427,7 @@ abstract class User extends Person
 			return $data['id'];
 		} catch (PDOException $e) {
 			// "Sorry could not connect to the database."
-			throw new Exception("Could not connect to the database: ");
+			throw new Exception("Could not connect to the database");
 		}
 	}
 

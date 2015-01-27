@@ -11,5 +11,4 @@ return array(
     'Mailgun' => array($vendorDir . '/mailgun/mailgun-php/src'),
     'Guzzle\\Tests' => array($vendorDir . '/guzzle/guzzle/tests'),
     'Guzzle' => array($vendorDir . '/guzzle/guzzle/src'),
-    'Dotenv' => array($vendorDir . '/vlucas/phpdotenv/src'),
 );

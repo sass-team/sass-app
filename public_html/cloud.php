@@ -98,9 +98,9 @@ try {
 		);
 
 		$dump = new Ifsnop\Mysqldump\Mysqldump(App::$dsn[App::DB_NAME],
-			App::$dsn[App::DB_USERNAME],
-			App::$dsn[App::DB_PASSWORD],
-			App::$dsn[App::DB_HOST], 'mysql', $dumpSettings);
+			App::getDbUsername(),
+			App::getDbPassword(),
+			App::getDbHost(), 'mysql', $dumpSettings);
 		$dump->start($fullPathName);
 
 		// all credits: http://stackoverflow.com/q/22046020/2790481

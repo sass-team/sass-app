@@ -42,7 +42,7 @@ require_once(ROOT_PATH . 'plugins/recaptchalib.php');
 // logged in user exists
 $general->loggedInProtect();
 $pageTitle = "Log In";
-$siteKey = getenv('RECAPTCHA_SITE_KEY');
+$siteKey = App::getReCaptchaSiteKey();
 $lang = "en";
 
 /**
@@ -68,7 +68,7 @@ if (isContinueBtnPressed()) {
 
         $email = $_POST['email'];
         // Google recaptcha preparations | ALERT: if you update this then also update public/app/js/main.js
-        $secret = getenv('RECAPTCHA_SECRET_KEY');
+        $secret = App::getReCaptchaSecretKey();
 
         // The response from reCAPTCHA
         $resp = null;
