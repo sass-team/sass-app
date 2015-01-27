@@ -18,7 +18,7 @@ class InstructorFetcher extends Person
 	 */
 	public static function retrieveAll() {
 		$query = "SELECT `" . self::DB_COLUMN_ID . "`, `" . self::DB_COLUMN_FIRST_NAME . "`, `" .
-			self::DB_COLUMN_LAST_NAME . "` FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`";
+			self::DB_COLUMN_LAST_NAME . "` FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`";
 
 		try {
 			$dbConnection = DatabaseManager::getConnection();
@@ -35,7 +35,7 @@ class InstructorFetcher extends Person
 
 	public static function idExists($instructorId) {
 		try {
-			$query = "SELECT COUNT(" . self::DB_COLUMN_ID . ") FROM `" . App::$dsn[App::DB_NAME] . "`.`" .
+			$query = "SELECT COUNT(" . self::DB_COLUMN_ID . ") FROM `" . App::getDbName() . "`.`" .
 				self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :instructorId";
 
 			$dbConnection = DatabaseManager::getConnection();
@@ -60,7 +60,7 @@ class InstructorFetcher extends Person
 		//$this->validate_teaching_course($teaching_courses);
 
 		try {
-			$query = "INSERT INTO `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "` (`f_name`, `l_name`) VALUES
+			$query = "INSERT INTO `" . App::getDbName() . "`.`" . self::DB_TABLE . "` (`f_name`, `l_name`) VALUES
 			(:firstName, :lastName)";
 
 			$dbConnection = DatabaseManager::getConnection();
@@ -79,7 +79,7 @@ class InstructorFetcher extends Person
 		$newInstructorFirstname = trim($newInstructorFirstname);
 		$newInstructorLastname = trim($newInstructorLastname);
 
-		$query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . InstructorFetcher::DB_TABLE . "`
+		$query = "UPDATE `" . App::getDbName() . "`.`" . InstructorFetcher::DB_TABLE . "`
 					SET `" . self::DB_COLUMN_FIRST_NAME . "`= :newInstructorFirstname,
 						`" . self::DB_COLUMN_LAST_NAME . "`= :newInstructorLastname
 					WHERE `" . self::DB_COLUMN_ID . "`= :instructorId";
@@ -101,7 +101,7 @@ class InstructorFetcher extends Person
 	public static function updateLname($id, $newLname) {
 		$newLname = trim($newLname);
 
-		$query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . InstructorFetcher::DB_TABLE . "`
+		$query = "UPDATE `" . App::getDbName() . "`.`" . InstructorFetcher::DB_TABLE . "`
 					SET	`" . self::DB_COLUMN_LAST_NAME . "`= :newInstructorLastname
 					WHERE  `" . self::DB_COLUMN_ID . "`= :instructorId";
 
@@ -122,7 +122,7 @@ class InstructorFetcher extends Person
 	public static function updateFname($id, $newFname) {
 		$newFname = trim($newFname);
 
-		$query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . InstructorFetcher::DB_TABLE . "`
+		$query = "UPDATE `" . App::getDbName() . "`.`" . InstructorFetcher::DB_TABLE . "`
 					SET	`" . self::DB_COLUMN_FIRST_NAME . "`= :newFname
 					WHERE  `" . self::DB_COLUMN_ID . "`= :instructorId";
 
@@ -142,7 +142,7 @@ class InstructorFetcher extends Person
 
 	public static function delete($id) {
 		try {
-			$query = "DELETE FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :id";
+			$query = "DELETE FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :id";
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
 			$query->bindParam(':id', $id, PDO::PARAM_INT);

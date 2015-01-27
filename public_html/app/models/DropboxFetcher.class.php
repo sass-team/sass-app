@@ -15,7 +15,7 @@ class DropboxFetcher
 
 	public static function insertAccessToken($accessToken, $userId, $serviceType) {
 		try {
-			$query = "INSERT INTO `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			$query = "INSERT INTO `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 			(`" . self::DB_COLUMN_ACCESS_TOKEN . "`, `" . self::DB_COLUMN_USER_ID . "`, `" . self::DB_COLUMN_SERVICE_TYPE . "`)
 				VALUES(
 					:access_token, :user_id, :service_type
@@ -40,7 +40,7 @@ class DropboxFetcher
 	public static function existsAccessToken($serviceType) {
 		try {
 			$query = "SELECT COUNT(" . self::DB_COLUMN_ACCESS_TOKEN . ")
-			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 			WHERE `" . self::DB_COLUMN_SERVICE_TYPE . "` = :service_type";
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
@@ -59,7 +59,7 @@ class DropboxFetcher
 
 	public static function retrieveAccessToken($serviceType) {
 		$query = "SELECT `" . self::DB_COLUMN_ACCESS_TOKEN . "`
-		FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+		FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 		WHERE `" . self::DB_COLUMN_SERVICE_TYPE . "` = :service_type";
 
 		try {
@@ -79,7 +79,7 @@ class DropboxFetcher
 	public static function disconnectServiceType($serviceType) {
 		try {
 			$query = "DELETE
-			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 			WHERE `" . self::DB_COLUMN_SERVICE_TYPE . "` = :service_type";
 
 			$dbConnection = DatabaseManager::getConnection();

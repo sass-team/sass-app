@@ -47,7 +47,7 @@ class Student extends Person
     public static function retrieve()
     {
         $query = "SELECT id, email, f_name, l_name, mobile, ci, credits
-		         FROM `" . App::$dsn[App::DB_NAME] . "`.student";
+		         FROM `" . App::getDbName() . "`.student";
 
 
         try {

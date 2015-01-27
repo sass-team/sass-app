@@ -20,7 +20,7 @@ class Admin extends User
 		//$this->validate_teaching_course($teaching_courses);
 
 		try {
-			$queryInsertUser = "INSERT INTO `" .  App::$dsn[App::DB_NAME]  . "`.`" . User::DB_TABLE . "` (`" . User::DB_COLUMN_EMAIL . "`,
+			$queryInsertUser = "INSERT INTO `" .  App::getDbName()  . "`.`" . User::DB_TABLE . "` (`" . User::DB_COLUMN_EMAIL . "`,
 			`" . User::DB_COLUMN_FIRST_NAME . "`, `" . User::DB_COLUMN_LAST_NAME . "`, `" . User::DB_COLUMN_USER_TYPES_ID . "`)
 				VALUES(
 					:email,
@@ -81,7 +81,7 @@ class Admin extends User
 		} else {
 			try {
 
-				$query = "UPDATE `" .  App::$dsn[App::DB_NAME]  . "`.`" . $field . "` SET `$what` = ? WHERE `id`= ?";
+				$query = "UPDATE `" .  App::getDbName()  . "`.`" . $field . "` SET `$what` = ? WHERE `id`= ?";
 
 				$dbConnection = DatabaseManager::getConnection();
 				$query = $dbConnection->prepare($query);

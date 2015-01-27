@@ -40,15 +40,15 @@ class Tutor extends User
 	}
 
 	/**
-	 * @param $db
 	 * @param $newCourseId
 	 * @param $tutorId
 	 * @param $termId
 	 * @return bool
+	 * @internal param $db
 	 */
 	public static function teachesCourseWithIdOnTerm($newCourseId, $tutorId, $termId) {
 		$query = "SELECT `" . self::DB_COLUMN_COURSE_ID . "`
-			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE_TUTOR_HAS_COURSE_HAS_TERM . "`
+			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE_TUTOR_HAS_COURSE_HAS_TERM . "`
 			WHERE `" . self::DB_COLUMN_COURSE_ID . "`  = :courseId
 			AND `" . self::DB_TABLE_TUTOR_HAS_COURSE_HAS_TERM_TUTOR_USER_ID . "`  = :tutorId
 			AND `" . self::DB_TABLE_TUTOR_HAS_COURSE_HAS_TERM_TERM_ID . "`  = :term_id";
@@ -96,10 +96,10 @@ class Tutor extends User
 		$query =
 			"SELECT `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_CODE . "` AS 'code', `" . CourseFetcher::DB_TABLE . "`.`" .
 			CourseFetcher::DB_COLUMN_NAME . "` AS 'name',  `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_ID . "`
-		FROM  `" . App::$dsn[App::DB_NAME] . "`.`" . CourseFetcher::DB_TABLE . "`
+		FROM  `" . App::getDbName() . "`.`" . CourseFetcher::DB_TABLE . "`
 		WHERE NOT EXISTS (
 			SELECT `" . self::DB_TABLE_TUTOR_HAS_COURSE_HAS_TERM . "`.`" . self::DB_COLUMN_COURSE_ID . "`
-			FROM  `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE_TUTOR_HAS_COURSE_HAS_TERM . "`
+			FROM  `" . App::getDbName() . "`.`" . self::DB_TABLE_TUTOR_HAS_COURSE_HAS_TERM . "`
 			WHERE `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_ID . "` = `" . self::DB_TABLE_TUTOR_HAS_COURSE_HAS_TERM . "`.`" . self::DB_COLUMN_COURSE_ID . "`
 			AND
 			`" . self::DB_TABLE_TUTOR_HAS_COURSE_HAS_TERM . "`.`" . self::DB_TABLE_TUTOR_HAS_COURSE_HAS_TERM_TUTOR_USER_ID . "` = :tutorUserId
@@ -122,7 +122,7 @@ class Tutor extends User
 
 		$query = "SELECT `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_CODE . "` , `" . CourseFetcher::DB_TABLE . "`.`" .
 			CourseFetcher::DB_COLUMN_NAME . "` , `" . self::DB_TABLE_TUTOR_HAS_COURSE_HAS_TERM . "`.`" . self::DB_COLUMN_COURSE_ID . "`
-					FROM `" . App::$dsn[App::DB_NAME] . "`.`" . CourseFetcher::DB_TABLE . "`, `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE_TUTOR_HAS_COURSE_HAS_TERM . "`
+					FROM `" . App::getDbName() . "`.`" . CourseFetcher::DB_TABLE . "`, `" . App::getDbName() . "`.`" . self::DB_TABLE_TUTOR_HAS_COURSE_HAS_TERM . "`
 					WHERE `" . self::DB_TABLE_TUTOR_HAS_COURSE_HAS_TERM . "`.`" . self::DB_COLUMN_COURSE_ID . "` =
 					`" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_ID . "` AND
 					`" . self::DB_TABLE_TUTOR_HAS_COURSE_HAS_TERM . "`.`" . self::DB_TABLE_TUTOR_HAS_COURSE_HAS_TERM_TUTOR_USER_ID . "` = :tutorId;";
@@ -154,7 +154,7 @@ class Tutor extends User
 		}
 
 		try {
-			$query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE_TUTOR_HAS_COURSE_HAS_TERM . "` SET `course_id`= :newCourseId WHERE `tutor_user_id`= :tutorId and`course_id`= :oldCourseId";
+			$query = "UPDATE `" . App::getDbName() . "`.`" . self::DB_TABLE_TUTOR_HAS_COURSE_HAS_TERM . "` SET `course_id`= :newCourseId WHERE `tutor_user_id`= :tutorId and`course_id`= :oldCourseId";
 
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
@@ -225,7 +225,7 @@ class Tutor extends User
 
 		try {
 
-			$query = "DELETE FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE_TUTOR_HAS_COURSE_HAS_TERM . "` WHERE `tutor_user_id`=:id AND`course_id`=:courseId;";
+			$query = "DELETE FROM `" . App::getDbName() . "`.`" . self::DB_TABLE_TUTOR_HAS_COURSE_HAS_TERM . "` WHERE `tutor_user_id`=:id AND`course_id`=:courseId;";
 
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);

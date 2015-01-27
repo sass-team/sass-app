@@ -19,7 +19,7 @@ class MajorFetcher
 			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_CODE . "`,
 	        			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_NAME . "`,
 	        			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`
-					FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+					FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 					order by `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` asc"; //ordering tis way so "Undecided" and "I do not know" to be first
 
 		try {
@@ -41,7 +41,7 @@ class MajorFetcher
 			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_CODE . "`,
 	        			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_NAME . "`,
 	        			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`
-				   FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+				   FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 				  WHERE `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_CODE . "` != 'A'
 				  AND   `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_CODE . "` != 'B'
 					order by `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` desc";
@@ -60,7 +60,7 @@ class MajorFetcher
 
 	public static function idExists($majorId) {
 		try {
-			$sql = "SELECT COUNT(`" . self::DB_COLUMN_ID . "`) FROM `" . App::$dsn[App::DB_NAME] . "`.`" .
+			$sql = "SELECT COUNT(`" . self::DB_COLUMN_ID . "`) FROM `" . App::getDbName() . "`.`" .
 				self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :majorId";
 
 			$dbConnection = DatabaseManager::getConnection();
@@ -79,7 +79,7 @@ class MajorFetcher
 
 	public static function insert($majorCode, $majorName) {
 		try {
-			$query = "INSERT INTO `" . App::$dsn[App::DB_NAME] . "`.`" . MajorFetcher::DB_TABLE . "` (`" . MajorFetcher::DB_COLUMN_CODE .
+			$query = "INSERT INTO `" . App::getDbName() . "`.`" . MajorFetcher::DB_TABLE . "` (`" . MajorFetcher::DB_COLUMN_CODE .
 				"`, `" . MajorFetcher::DB_COLUMN_NAME . "`)
 				VALUES(
 					:major_code,
@@ -103,7 +103,7 @@ class MajorFetcher
 		$newMajorCode = trim($newMajorCode);
 		$newMajorName = trim($newMajorName);
 
-		$query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . MajorFetcher::DB_TABLE . "`
+		$query = "UPDATE `" . App::getDbName() . "`.`" . MajorFetcher::DB_TABLE . "`
 					SET `" . self::DB_COLUMN_CODE . "`= :newMajorCode, 
 						`" . self::DB_COLUMN_NAME . "`= :newMajorName
 					WHERE `" . self::DB_COLUMN_ID . "`= :majorId";
@@ -125,7 +125,7 @@ class MajorFetcher
 	public static function updateName($id, $newName) {
 		$newName = trim($newName);
 
-		$query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . MajorFetcher::DB_TABLE . "`
+		$query = "UPDATE `" . App::getDbName() . "`.`" . MajorFetcher::DB_TABLE . "`
 					SET	`" . self::DB_COLUMN_NAME . "`= :newMajorName
 					WHERE  `" . self::DB_COLUMN_ID . "`= :majorId";
 
@@ -146,7 +146,7 @@ class MajorFetcher
 	public static function updateCode($id, $newCode) {
 		$newCode = trim($newCode);
 
-		$query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . MajorFetcher::DB_TABLE . "`
+		$query = "UPDATE `" . App::getDbName() . "`.`" . MajorFetcher::DB_TABLE . "`
 					SET	`" . self::DB_COLUMN_CODE . "`= :newCode
 					WHERE  `" . self::DB_COLUMN_ID . "`= :majorId";
 
@@ -166,7 +166,7 @@ class MajorFetcher
 
 	public static function codeExists($majorCode) {
 		try {
-			$query = "SELECT COUNT(" . self::DB_COLUMN_CODE . ") FROM `" . App::$dsn[App::DB_NAME] . "`.`" .
+			$query = "SELECT COUNT(" . self::DB_COLUMN_CODE . ") FROM `" . App::getDbName() . "`.`" .
 				self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_CODE . "` = :majorCode";
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
@@ -185,7 +185,7 @@ class MajorFetcher
 
 	public static function nameExists($majorName) {
 		try {
-			$query = "SELECT COUNT(" . self::DB_COLUMN_NAME . ") FROM `" . App::$dsn[App::DB_NAME] . "`.`" .
+			$query = "SELECT COUNT(" . self::DB_COLUMN_NAME . ") FROM `" . App::getDbName() . "`.`" .
 				self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_NAME . "` = :majorName";
 
 			$dbConnection = DatabaseManager::getConnection();
@@ -204,7 +204,7 @@ class MajorFetcher
 
 	public static function delete($id) {
 		try {
-			$query = "DELETE FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :id";
+			$query = "DELETE FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :id";
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
 			$query->bindParam(':id', $id, PDO::PARAM_INT);
@@ -219,7 +219,7 @@ class MajorFetcher
 	public function getMajors() {
 
 		$query = "SELECT major.code AS 'Code', major.name AS 'Name', major.id
-				FROM `" . App::$dsn[App::DB_NAME] . "`.major";
+				FROM `" . App::getDbName() . "`.major";
 		try {
 			$query = $this->db->prepare($query);
 			$query->execute();

@@ -16,7 +16,7 @@ class TutorFetcher
     {
 
         try {
-            $query = "INSERT INTO `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+            $query = "INSERT INTO `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 				(`" . self::DB_COLUMN_USER_ID . "`, `" . self::DB_COLUMN_MAJOR_ID . "`) VALUES (:user_id, :major_id)";
 
 	        $dbConnection = DatabaseManager::getConnection();
@@ -39,8 +39,8 @@ class TutorFetcher
 		`" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_CODE . "` , `" . CourseFetcher::DB_TABLE . "`.`" .
             CourseFetcher::DB_COLUMN_NAME . "`,	`" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_NAME . "` AS
 						" . TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_NAME . "
-			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . CourseFetcher::DB_TABLE . "`
-			INNER JOIN `" . App::$dsn[App::DB_NAME] . "`.`" . Tutor_has_course_has_termFetcher::DB_TABLE . "`
+			FROM `" . App::getDbName() . "`.`" . CourseFetcher::DB_TABLE . "`
+			INNER JOIN `" . App::getDbName() . "`.`" . Tutor_has_course_has_termFetcher::DB_TABLE . "`
 				ON `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_ID . "` = `" .
             Tutor_has_course_has_termFetcher::DB_TABLE . "`.`" . Tutor_has_course_has_termFetcher::DB_COLUMN_COURSE_ID . "`
 			INNER JOIN `" . TermFetcher::DB_TABLE . "`
@@ -75,7 +75,7 @@ class TutorFetcher
             "SELECT `" . AppointmentFetcher::DB_COLUMN_START_TIME . "`, `" . AppointmentFetcher::DB_COLUMN_END_TIME . "`,
 			`" . AppointmentFetcher::DB_COLUMN_COURSE_ID . "`, `" . AppointmentFetcher::DB_COLUMN_TUTOR_USER_ID . "`,
 			`" . AppointmentFetcher::DB_COLUMN_TERM_ID . "`
-				FROM `" . App::$dsn[App::DB_NAME] . "`.`" . AppointmentFetcher::DB_TABLE . "`
+				FROM `" . App::getDbName() . "`.`" . AppointmentFetcher::DB_TABLE . "`
 				WHERE `" . AppointmentFetcher::DB_COLUMN_TUTOR_USER_ID . "`=:id";
 
         try {
@@ -97,7 +97,7 @@ class TutorFetcher
     {
         try {
 	        $query = "SELECT COUNT(" . AppointmentFetcher::DB_COLUMN_ID . ")
-            FROM `" . App::$dsn[App::DB_NAME] . "`.`" . AppointmentFetcher::DB_TABLE . "`
+            FROM `" . App::getDbName() . "`.`" . AppointmentFetcher::DB_TABLE . "`
             WHERE `" . AppointmentFetcher::DB_COLUMN_TUTOR_USER_ID . "` = :tutor_id
             AND  `" . AppointmentFetcher::DB_COLUMN_ID . "` = :appointment_id";
 
@@ -119,7 +119,7 @@ class TutorFetcher
 
     public static function replaceMajorId($id, $newMajorId)
     {
-        $query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+        $query = "UPDATE `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 					SET	`" . self::DB_COLUMN_MAJOR_ID . "`= :major_id
 					WHERE `" . self::DB_COLUMN_USER_ID . "`= :id";
 
@@ -143,7 +143,7 @@ class TutorFetcher
         $query =
             "SELECT `" . self::DB_COLUMN_MAJOR_ID . "`, `" . self::DB_COLUMN_USER_ID . "`, `" . MajorFetcher::DB_TABLE .
             "`.`" . MajorFetcher::DB_COLUMN_CODE . "`,`" . MajorFetcher::DB_TABLE . "`.`" . MajorFetcher::DB_COLUMN_NAME . "`
-		FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+		FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 		INNER JOIN `" . MajorFetcher::DB_TABLE . "`
 			ON `" . MajorFetcher::DB_TABLE . "`.`" . MajorFetcher::DB_COLUMN_ID . "` = `" . TutorFetcher::DB_TABLE . "`.`"
             . TutorFetcher::DB_COLUMN_MAJOR_ID . "`
@@ -167,7 +167,7 @@ class TutorFetcher
         $query =
             "SELECT `" . UserFetcher::DB_COLUMN_FIRST_NAME . "`, `" . UserFetcher::DB_COLUMN_LAST_NAME . "`,  `" .
             self::DB_COLUMN_USER_ID . "`
-				FROM `" . App::$dsn[App::DB_NAME] . "`.`" . UserFetcher::DB_TABLE . "`
+				FROM `" . App::getDbName() . "`.`" . UserFetcher::DB_TABLE . "`
 				INNER JOIN `" . self::DB_TABLE . "`
 				ON `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_USER_ID . "`=`" . UserFetcher::DB_TABLE . "`.`" .
             UserFetcher::DB_COLUMN_ID . "`";
@@ -188,7 +188,7 @@ class TutorFetcher
         $query =
             "SELECT `" . UserFetcher::DB_COLUMN_FIRST_NAME . "`, `" . UserFetcher::DB_COLUMN_LAST_NAME . "`,  `" .
             self::DB_COLUMN_USER_ID . "`
-                FROM `" . App::$dsn[App::DB_NAME] . "`.`" . UserFetcher::DB_TABLE . "`
+                FROM `" . App::getDbName() . "`.`" . UserFetcher::DB_TABLE . "`
                 INNER JOIN `" . self::DB_TABLE . "`
                 ON `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_USER_ID . "`=`" . UserFetcher::DB_TABLE . "`.`" .
             UserFetcher::DB_COLUMN_ID . "`
@@ -208,7 +208,7 @@ class TutorFetcher
     public static function existsUserId($id)
     {
         try {
-            $sql = "SELECT COUNT(" . self::DB_COLUMN_USER_ID . ") FROM `" . App::$dsn[App::DB_NAME] . "`.`" .
+            $sql = "SELECT COUNT(" . self::DB_COLUMN_USER_ID . ") FROM `" . App::getDbName() . "`.`" .
                 self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_USER_ID . "` = :user_id";
 	        $dbConnection = DatabaseManager::getConnection();
 

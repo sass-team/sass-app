@@ -401,7 +401,7 @@ function countLabelsStatusAppointments($day, $i, $appointments) {
 									<tr>
 										<td><?php echo $tutor[UserFetcher::DB_COLUMN_LAST_NAME]; ?></td>
 										<td><?php echo $course[CourseFetcher::DB_COLUMN_CODE]; ?></td>
-										<td><?php echo $appointmentStartDate->format(App::DATE_FORMAT); ?></td>
+										<td><?php echo $appointmentStartDate->format(App::getDefaultDateFormat()); ?></td>
 										<td><a href="<?php echo BASE_URL . "appointments/$appointmentId"; ?>"
 										       class="btn btn-xs btn-tertiary">View &nbsp;&nbsp;<i
 													class="fa fa-chevron-right"></i></a></td>

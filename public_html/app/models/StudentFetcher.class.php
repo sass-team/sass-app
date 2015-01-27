@@ -38,7 +38,7 @@ class StudentFetcher extends Person
 				`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_CREDITS . "`, `" . MajorFetcher::DB_TABLE . "`.`" .
             MajorFetcher::DB_COLUMN_ID . "` AS `" . self::DB_COLUMN_MAJOR_ID . "`,`" . MajorFetcher::DB_TABLE . "`.`" .
             MajorFetcher::DB_COLUMN_NAME . "` , `" . MajorFetcher::DB_TABLE . "`.`" .
-            MajorFetcher::DB_COLUMN_CODE . "` FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`, `" . App::$dsn[App::DB_NAME] . "`.`" .
+            MajorFetcher::DB_COLUMN_CODE . "` FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`, `" . App::getDbName() . "`.`" .
             MajorFetcher::DB_TABLE . "`
 			WHERE `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_MAJOR_ID . "` = `" . MajorFetcher::DB_TABLE . "`.`" .
             MajorFetcher::DB_COLUMN_ID . "`;";
@@ -61,7 +61,7 @@ class StudentFetcher extends Person
     {
 
         try {
-            $query = "INSERT INTO `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+            $query = "INSERT INTO `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 			(`" . self::DB_COLUMN_STUDENT_ID . "`,	`" . self::DB_COLUMN_EMAIL . "`, `" . self::DB_COLUMN_FIRST_NAME . "`,
 			`" . self::DB_COLUMN_LAST_NAME . "`, `" . self::DB_COLUMN_MOBILE . "`,  `" . self::DB_COLUMN_CI . "`,
 			`" . self::DB_COLUMN_CREDITS . "`, `" . self::DB_COLUMN_MAJOR_ID . "`
@@ -103,7 +103,7 @@ class StudentFetcher extends Person
     public static function existsMobileNum($newMobileNum)
     {
         try {
-            $query = "SELECT COUNT(" . self::DB_COLUMN_MOBILE . ") FROM `" . App::$dsn[App::DB_NAME] . "`.`" .
+            $query = "SELECT COUNT(" . self::DB_COLUMN_MOBILE . ") FROM `" . App::getDbName() . "`.`" .
                 self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_MOBILE . "` = :mobileNum";
             $dbConnection = DatabaseManager::getConnection();
             $query = $dbConnection->prepare($query);
@@ -122,7 +122,7 @@ class StudentFetcher extends Person
     public static function exists($column, $value, $type)
     {
         try {
-            $query = "SELECT COUNT(" . self::DB_COLUMN_ID . ") FROM `" . App::$dsn[App::DB_NAME] . "`.`" .
+            $query = "SELECT COUNT(" . self::DB_COLUMN_ID . ") FROM `" . App::getDbName() . "`.`" .
                 self::DB_TABLE . "` WHERE `" . $column . "` = :column_value";
 
             $dbConnection = DatabaseManager::getConnection();
@@ -141,7 +141,7 @@ class StudentFetcher extends Person
 
     public static function updateFirstName($id, $newName)
     {
-        $query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+        $query = "UPDATE `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 					SET	`" . self::DB_COLUMN_FIRST_NAME . "`= :newName
 					WHERE `" . self::DB_COLUMN_ID . "`= :id";
 
@@ -161,7 +161,7 @@ class StudentFetcher extends Person
 
     public static function updateLastName($id, $newName)
     {
-        $query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+        $query = "UPDATE `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 					SET	`" . self::DB_COLUMN_LAST_NAME . "`= :newName
 					WHERE `" . self::DB_COLUMN_ID . "`= :id";
 
@@ -181,7 +181,7 @@ class StudentFetcher extends Person
 
     public static function updateMobileNum($id, $mobileNum)
     {
-        $query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+        $query = "UPDATE `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 					SET	`" . self::DB_COLUMN_MOBILE . "`= :mobileNum
 					WHERE `" . self::DB_COLUMN_ID . "`= :id";
 
@@ -201,7 +201,7 @@ class StudentFetcher extends Person
 
     public static function updateStudentId($id, $studentId)
     {
-        $query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+        $query = "UPDATE `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 					SET	`" . self::DB_COLUMN_STUDENT_ID . "`= :newStudentId
 					WHERE `" . self::DB_COLUMN_ID . "`= :id";
 
@@ -221,7 +221,7 @@ class StudentFetcher extends Person
 
     public static function updateMajorId($id, $majorId)
     {
-        $query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+        $query = "UPDATE `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 					SET	`" . self::DB_COLUMN_MAJOR_ID . "`= :majorId
 					WHERE `" . self::DB_COLUMN_ID . "`= :id";
 
@@ -241,7 +241,7 @@ class StudentFetcher extends Person
 
     public static function updateCi($id, $newCi)
     {
-        $query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+        $query = "UPDATE `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 					SET	`" . self::DB_COLUMN_CI . "`= :ci
 					WHERE `" . self::DB_COLUMN_ID . "`= :id";
 
@@ -261,7 +261,7 @@ class StudentFetcher extends Person
 
     public static function updateCredits($id, $credits)
     {
-        $query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+        $query = "UPDATE `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 					SET	`" . self::DB_COLUMN_CREDITS . "`= :credits
 					WHERE `" . self::DB_COLUMN_ID . "`= :id";
 
@@ -284,7 +284,7 @@ class StudentFetcher extends Person
     {
         try {
             $email = trim($email);
-            $query = "SELECT COUNT(`" . self::DB_COLUMN_ID . "`) FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "` WHERE `" .
+            $query = "SELECT COUNT(`" . self::DB_COLUMN_ID . "`) FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "` WHERE `" .
                 self::DB_COLUMN_EMAIL . "` = :email";
 
             $dbConnection = DatabaseManager::getConnection();
@@ -308,7 +308,7 @@ class StudentFetcher extends Person
     {
         try {
 
-            $query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "` SET `" . self::DB_COLUMN_EMAIL . "` = :email WHERE `" .
+            $query = "UPDATE `" . App::getDbName() . "`.`" . self::DB_TABLE . "` SET `" . self::DB_COLUMN_EMAIL . "` = :email WHERE `" .
                 self::DB_COLUMN_ID . "`= :id";
 
             $dbConnection = DatabaseManager::getConnection();
@@ -328,7 +328,7 @@ class StudentFetcher extends Person
     public static function existsStudentId($studentId)
     {
         try {
-            $query = "SELECT COUNT(" . self::DB_COLUMN_STUDENT_ID . ") FROM `" . App::$dsn[App::DB_NAME] . "`.`" .
+            $query = "SELECT COUNT(" . self::DB_COLUMN_STUDENT_ID . ") FROM `" . App::getDbName() . "`.`" .
                 self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_STUDENT_ID . "` = :studentId";
 
             $dbConnection = DatabaseManager::getConnection();

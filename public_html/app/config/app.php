@@ -39,11 +39,12 @@ require ROOT_PATH . 'vendor/autoload.php';
 require_once ROOT_PATH . "config/App.class.php";
 App::loadSettings(ROOT_PATH . '../../.env.php');
 
-# Redirect to ssl if current call not a cron job
-if (!App::isSecure() && isset($_SERVER['SERVER_NAME'])) {
-    header("HTTP/1.1 301 Moved Permanently");
-    header("Location: https://" . $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"]);
-    exit();
+# Redirect to ssl if current call not a cron job and hostname not in list with ssl (see .env.php)
+if (!App::isSecure() && isset($_SERVER['SERVER_NAME']) && App::isHostnameInSSLList())
+{
+	header("HTTP/1.1 301 Moved Permanently");
+	header("Location: https://" . $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"]);
+	exit();
 }
 
 # Load all SASS App functions

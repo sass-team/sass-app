@@ -47,7 +47,7 @@ class ScheduleFetcher
         }
 
         try {
-            $queryInsertUser = "INSERT INTO `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+            $queryInsertUser = "INSERT INTO `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
             (`" . self::DB_COLUMN_START_TIME . "`, `" . self::DB_COLUMN_END_TIME . "`, `" . self::DB_COLUMN_TERM_ID . "`,
              `" . self::DB_COLUMN_TUTOR_USER_ID . "`, `" . self::DB_COLUMN_MONDAY . "`, `" . self::DB_COLUMN_TUESDAY . "`,
              `" . self::DB_COLUMN_WEDNESDAY . "`,`" . self::DB_COLUMN_THURSDAY . "`,`" . self::DB_COLUMN_FRIDAY . "`)
@@ -90,7 +90,7 @@ class ScheduleFetcher
     public static function existsId($id)
     {
         try {
-            $query = "SELECT COUNT(" . self::DB_COLUMN_ID . ") FROM `" . App::$dsn[App::DB_NAME] . "`.`" .
+            $query = "SELECT COUNT(" . self::DB_COLUMN_ID . ") FROM `" . App::getDbName() . "`.`" .
                 self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :id";
             $dbConnection = DatabaseManager::getConnection();
             $query = $dbConnection->prepare($query);
@@ -111,7 +111,7 @@ class ScheduleFetcher
         $query =
             "SELECT `" . self::DB_COLUMN_START_TIME . "`, `" . self::DB_COLUMN_END_TIME . "`, `" .
             self::DB_COLUMN_TUTOR_USER_ID . "`, `" . self::DB_COLUMN_TERM_ID . "`
-			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "` order by `" .
+			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "` order by `" .
             self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "` DESC";
 
         try {
@@ -134,12 +134,12 @@ class ScheduleFetcher
 			`" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_FIRST_NAME . "`, `" . UserFetcher::DB_TABLE . "`.`"
             . UserFetcher::DB_COLUMN_LAST_NAME . "`, `" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "`  AS
 			" . UserFetcher::DB_TABLE . "_" . UserFetcher::DB_COLUMN_ID . "
-			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
-			INNER JOIN  `" . App::$dsn[App::DB_NAME] . "`.`" . UserFetcher::DB_TABLE . "`
-			ON `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "`  = `" .
+			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
+			INNER JOIN  `" . App::getDbName() . "`.`" . UserFetcher::DB_TABLE . "`
+			ON `" . App::getDbName() . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "`  = `" .
             UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "`
-			INNER JOIN  `" . App::$dsn[App::DB_NAME] . "`.`" . TermFetcher::DB_TABLE . "`
-			ON `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`  = `" .
+			INNER JOIN  `" . App::getDbName() . "`.`" . TermFetcher::DB_TABLE . "`
+			ON `" . App::getDbName() . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`  = `" .
             TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "`
 			WHERE :now BETWEEN `" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" . TermFetcher::DB_COLUMN_END_DATE . "`";
 
@@ -175,12 +175,12 @@ class ScheduleFetcher
             `" . self::DB_COLUMN_MONDAY . "`, `" .
             self::DB_COLUMN_TUESDAY . "`, `" . self::DB_COLUMN_WEDNESDAY . "`,`" . self::DB_COLUMN_THURSDAY . "`,`" .
             self::DB_COLUMN_FRIDAY . "`
-			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
-			INNER JOIN  `" . App::$dsn[App::DB_NAME] . "`.`" . UserFetcher::DB_TABLE . "`
-			ON `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "`  = `" .
+			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
+			INNER JOIN  `" . App::getDbName() . "`.`" . UserFetcher::DB_TABLE . "`
+			ON `" . App::getDbName() . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "`  = `" .
             UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "`
-			INNER JOIN  `" . App::$dsn[App::DB_NAME] . "`.`" . TermFetcher::DB_TABLE . "`
-			ON `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`  = `" .
+			INNER JOIN  `" . App::getDbName() . "`.`" . TermFetcher::DB_TABLE . "`
+			ON `" . App::getDbName() . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`  = `" .
             TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "`
 			WHERE `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "` = :term_id";
 
@@ -211,15 +211,15 @@ class ScheduleFetcher
             `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_MONDAY . "`, `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUESDAY . "`,
             `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_WEDNESDAY . "`,`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_THURSDAY . "`,
             `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_FRIDAY . "`
-			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
-			INNER JOIN  `" . App::$dsn[App::DB_NAME] . "`.`" . UserFetcher::DB_TABLE . "`
-			ON `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "`  = `" .
+			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
+			INNER JOIN  `" . App::getDbName() . "`.`" . UserFetcher::DB_TABLE . "`
+			ON `" . App::getDbName() . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "`  = `" .
             UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "`
-			INNER JOIN  `" . App::$dsn[App::DB_NAME] . "`.`" . TermFetcher::DB_TABLE . "`
-			ON `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`  = `" .
+			INNER JOIN  `" . App::getDbName() . "`.`" . TermFetcher::DB_TABLE . "`
+			ON `" . App::getDbName() . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`  = `" .
             TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "`
-			INNER JOIN  `" . App::$dsn[App::DB_NAME] . "`.`" . Tutor_has_course_has_termFetcher::DB_TABLE . "`
-			ON `" . App::$dsn[App::DB_NAME] . "`.`" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "`  = `" .
+			INNER JOIN  `" . App::getDbName() . "`.`" . Tutor_has_course_has_termFetcher::DB_TABLE . "`
+			ON `" . App::getDbName() . "`.`" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "`  = `" .
             Tutor_has_course_has_termFetcher::DB_TABLE . "`.`" . Tutor_has_course_has_termFetcher::DB_COLUMN_TUTOR_USER_ID . "`
 			WHERE `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "` = :term_id
 			AND `" . Tutor_has_course_has_termFetcher::DB_TABLE . "`.`" . Tutor_has_course_has_termFetcher::DB_COLUMN_COURSE_ID . "` = :course_id";
@@ -252,12 +252,12 @@ class ScheduleFetcher
 			" . TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_ID . ", `" . self::DB_COLUMN_MONDAY . "`, `" .
             self::DB_COLUMN_TUESDAY . "`, `" . self::DB_COLUMN_WEDNESDAY . "`,`" . self::DB_COLUMN_THURSDAY . "`,`" .
             self::DB_COLUMN_FRIDAY . "`
-			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
-			INNER JOIN  `" . App::$dsn[App::DB_NAME] . "`.`" . UserFetcher::DB_TABLE . "`
-			ON `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "`  = `" .
+			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
+			INNER JOIN  `" . App::getDbName() . "`.`" . UserFetcher::DB_TABLE . "`
+			ON `" . App::getDbName() . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "`  = `" .
             UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "`
-			INNER JOIN  `" . App::$dsn[App::DB_NAME] . "`.`" . TermFetcher::DB_TABLE . "`
-			ON `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`  = `" .
+			INNER JOIN  `" . App::getDbName() . "`.`" . TermFetcher::DB_TABLE . "`
+			ON `" . App::getDbName() . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`  = `" .
             TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "`
 			WHERE :now BETWEEN `" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" . TermFetcher::DB_COLUMN_END_DATE . "`";
 
@@ -292,12 +292,12 @@ class ScheduleFetcher
             . ", `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_END_DATE . "`  AS " . TermFetcher::DB_TABLE
             . "_" . TermFetcher::DB_COLUMN_END_DATE . ",`" . self::DB_COLUMN_MONDAY . "`, `" . self::DB_COLUMN_TUESDAY .
             "`, `" . self::DB_COLUMN_WEDNESDAY . "`,`" . self::DB_COLUMN_THURSDAY . "`,`" . self::DB_COLUMN_FRIDAY . "`
-			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
-			INNER JOIN  `" . App::$dsn[App::DB_NAME] . "`.`" . UserFetcher::DB_TABLE . "`
-			ON `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "`  = `" .
+			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
+			INNER JOIN  `" . App::getDbName() . "`.`" . UserFetcher::DB_TABLE . "`
+			ON `" . App::getDbName() . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "`  = `" .
             UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "`
-			INNER JOIN  `" . App::$dsn[App::DB_NAME] . "`.`" . TermFetcher::DB_TABLE . "`
-			ON `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`  = `" .
+			INNER JOIN  `" . App::getDbName() . "`.`" . TermFetcher::DB_TABLE . "`
+			ON `" . App::getDbName() . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`  = `" .
             TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "`
 			WHERE `" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "` = :tutor_id
 			AND `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "` = :term_id
@@ -323,7 +323,7 @@ class ScheduleFetcher
         $query =
             "SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`, `" . self::DB_COLUMN_START_TIME . "`, `" .
             self::DB_COLUMN_END_TIME . "`, `" . self::DB_COLUMN_TUTOR_USER_ID . "`, `" . self::DB_COLUMN_TERM_ID . "`
-			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 			WHERE `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "`=:tutor_id
 			AND `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`=:term_id";
 
@@ -357,9 +357,9 @@ class ScheduleFetcher
                     `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_NAME . "`,
                     `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "`  AS
                     " . TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_ID . "
-            FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
-            INNER JOIN  `" . App::$dsn[App::DB_NAME] . "`.`" . TermFetcher::DB_TABLE . "`
-            ON `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`  = `" .
+            FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
+            INNER JOIN  `" . App::getDbName() . "`.`" . TermFetcher::DB_TABLE . "`
+            ON `" . App::getDbName() . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`  = `" .
             TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "`
             WHERE `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "`=:tutor_id
             AND :now BETWEEN `" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" . TermFetcher::DB_COLUMN_END_DATE . "`
@@ -400,7 +400,7 @@ class ScheduleFetcher
 
         try {
             $query = "SELECT COUNT(`" . self::DB_COLUMN_ID . "`)
-			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 			WHERE `" . self::DB_COLUMN_TUTOR_USER_ID . "` = :tutor_user_id
 			AND `$startDayColumn` = 1
 			AND `" . self::DB_COLUMN_TERM_ID . "`=:term_id
@@ -463,7 +463,7 @@ class ScheduleFetcher
 						  `" . self::DB_COLUMN_TUTOR_USER_ID . "` ,
 						  `" . self::DB_COLUMN_START_TIME . "`,
 						  `" . self::DB_COLUMN_END_TIME . "`
-			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 			WHERE `" . self::DB_COLUMN_ID . "`=:id";
 
         try {
@@ -481,7 +481,7 @@ class ScheduleFetcher
 
     public static function  updateStartingDate($id, $newStartingDate)
     {
-        $query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+        $query = "UPDATE `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 					SET	`" . self::DB_COLUMN_START_TIME . "`= :newName
 					WHERE `id`= :id";
 
@@ -501,7 +501,7 @@ class ScheduleFetcher
 
     public static function updateSingleColumn($id, $column, $value, $valueType)
     {
-        $query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+        $query = "UPDATE `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 					SET	`" . $column . "`= :column
 					WHERE `id`= :id";
 
@@ -522,7 +522,7 @@ class ScheduleFetcher
     public static function idExists($id)
     {
         try {
-            $query = "SELECT COUNT(" . self::DB_COLUMN_ID . ") FROM `" . App::$dsn[App::DB_NAME] . "`.`" .
+            $query = "SELECT COUNT(" . self::DB_COLUMN_ID . ") FROM `" . App::getDbName() . "`.`" .
                 self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :id";
             $dbConnection = DatabaseManager::getConnection();
             $query = $dbConnection->prepare($query);
@@ -540,7 +540,7 @@ class ScheduleFetcher
     public static function delete($id)
     {
         try {
-            $query = "DELETE FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :id";
+            $query = "DELETE FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :id";
             $dbConnection = DatabaseManager::getConnection();
             $query = $dbConnection->prepare($query);
             $query->bindParam(':id', $id, PDO::PARAM_INT);
@@ -568,7 +568,7 @@ class ScheduleFetcher
         $dateEnd = $dateEnd->format(Dates::DATE_FORMAT_IN);
 
         $query = "SELECT COUNT(`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`),`" . CourseFetcher::DB_TABLE . "`
-			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 			WHERE `" . self::DB_COLUMN_TUTOR_USER_ID . "` = :tutor_id
 			AND(`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "`  BETWEEN $dateStart AND $dateEnd)";
 

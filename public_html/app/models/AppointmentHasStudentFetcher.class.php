@@ -17,7 +17,7 @@ class AppointmentHasStudentFetcher
 
 	public static function insert($appointmentId, $studentId, $instructorId) {
 		try {
-			$queryInsertUser = "INSERT INTO `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "` (`" . self::DB_COLUMN_APPOINTMENT_ID
+			$queryInsertUser = "INSERT INTO `" . App::getDbName() . "`.`" . self::DB_TABLE . "` (`" . self::DB_COLUMN_APPOINTMENT_ID
 				. "`,	`" . self::DB_COLUMN_STUDENT_ID . "`, `" . self::DB_COLUMN_INSTRUCTOR_ID . "`
 				)
 				VALUES(
@@ -42,7 +42,7 @@ class AppointmentHasStudentFetcher
 	}
 
 	public static function update($appointmentId, $reportId) {
-		$query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+		$query = "UPDATE `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 					SET `" . self::DB_COLUMN_REPORT_ID . "`= :report_id
 					WHERE `" . self::DB_COLUMN_ID . "` = :appointment_id";
 
@@ -65,7 +65,7 @@ class AppointmentHasStudentFetcher
 	}
 
 	public static function updateStudentId($oldStudentIds, $newStudentIds, $appointmentId) {
-		$query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+		$query = "UPDATE `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 					SET `" . self::DB_COLUMN_STUDENT_ID . "`= :new_student_id
 					WHERE `" . self::DB_COLUMN_STUDENT_ID . "` = :old_student_id
 					AND  `" . self::DB_COLUMN_APPOINTMENT_ID . "` = :appointment_id";
@@ -87,7 +87,7 @@ class AppointmentHasStudentFetcher
 	}
 
 	public static function updateInstructorIdForStudentId($oldInstructorId, $studentId, $newInstructorId, $appointmentId) {
-		$query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+		$query = "UPDATE `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 					SET `" . self::DB_COLUMN_INSTRUCTOR_ID . "`= :new_instructor_id
 					WHERE `" . self::DB_COLUMN_INSTRUCTOR_ID . "` = :old_instructor_id
 					AND  `" . self::DB_COLUMN_APPOINTMENT_ID . "` = :appointment_id
@@ -115,7 +115,7 @@ class AppointmentHasStudentFetcher
 	public static function disconnectReport($reportId) {
 		try {
 			$query =
-				"UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+				"UPDATE `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 				SET `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_REPORT_ID . "` = NULL
 				WHERE `" . self::DB_COLUMN_REPORT_ID . "` = :report_id";
 
@@ -136,7 +136,7 @@ class AppointmentHasStudentFetcher
 	public static function delete($appointmentId) {
 		try {
 			$query =
-				"DELETE FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+				"DELETE FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 				WHERE `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_APPOINTMENT_ID . "` = :appointment_id";
 
 
@@ -155,7 +155,7 @@ class AppointmentHasStudentFetcher
 
 	public static function existsId($id) {
 		try {
-			$query = "SELECT COUNT(" . self::DB_COLUMN_ID . ") FROM `" . App::$dsn[App::DB_NAME] . "`.`" .
+			$query = "SELECT COUNT(" . self::DB_COLUMN_ID . ") FROM `" . App::getDbName() . "`.`" .
 				self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :id";
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
@@ -175,7 +175,7 @@ class AppointmentHasStudentFetcher
 		$query =
 			"SELECT `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_APPOINTMENT_ID . "` , `" .
 			self::DB_COLUMN_STUDENT_ID . "`, `" . self::DB_COLUMN_REPORT_ID . "`,  `" . self::DB_COLUMN_INSTRUCTOR_ID . "`
-			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`";
+			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`";
 
 		try {
 			$dbConnection = DatabaseManager::getConnection();
@@ -212,17 +212,17 @@ class AppointmentHasStudentFetcher
 			`" . MajorFetcher::DB_TABLE . "`.`" .
 			MajorFetcher::DB_COLUMN_CODE . "`, `" . MajorFetcher::DB_TABLE . "`.`" .
 			MajorFetcher::DB_COLUMN_NAME . "`
-			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . AppointmentFetcher::DB_TABLE . "`
-			INNER JOIN `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			FROM `" . App::getDbName() . "`.`" . AppointmentFetcher::DB_TABLE . "`
+			INNER JOIN `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 			ON `" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_ID . "` =
 			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_APPOINTMENT_ID . "`
-			INNER JOIN `" . App::$dsn[App::DB_NAME] . "`.`" . StudentFetcher::DB_TABLE . "`
+			INNER JOIN `" . App::getDbName() . "`.`" . StudentFetcher::DB_TABLE . "`
 			ON `" . StudentFetcher::DB_TABLE . "`.`" . StudentFetcher::DB_COLUMN_ID . "` =
 			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_STUDENT_ID . "`
-			INNER JOIN `" . App::$dsn[App::DB_NAME] . "`.`" . MajorFetcher::DB_TABLE . "`
+			INNER JOIN `" . App::getDbName() . "`.`" . MajorFetcher::DB_TABLE . "`
 			ON `" . MajorFetcher::DB_TABLE . "`.`" . MajorFetcher::DB_COLUMN_ID . "` =
 			`" . StudentFetcher::DB_TABLE . "`.`" . StudentFetcher::DB_COLUMN_MAJOR_ID . "`
-				INNER JOIN `" . App::$dsn[App::DB_NAME] . "`.`" . InstructorFetcher::DB_TABLE . "`
+				INNER JOIN `" . App::getDbName() . "`.`" . InstructorFetcher::DB_TABLE . "`
 			ON `" . InstructorFetcher::DB_TABLE . "`.`" . InstructorFetcher::DB_COLUMN_ID . "` =
 			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_INSTRUCTOR_ID . "`
 			WHERE `" . AppointmentFetcher::DB_COLUMN_TERM_ID . "` = :term_id";
@@ -247,16 +247,16 @@ class AppointmentHasStudentFetcher
 			self::DB_COLUMN_APPOINTMENT_ID . "` , `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_STUDENT_ID . "`,
 			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_REPORT_ID . "`,  `" . self::DB_TABLE . "`.`" .
 			self::DB_COLUMN_INSTRUCTOR_ID . "`, `" . StudentFetcher::DB_TABLE . "`.`" . StudentFetcher::DB_COLUMN_STUDENT_ID . "`
-			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
-			INNER JOIN  `" . App::$dsn[App::DB_NAME] . "`.`" . AppointmentFetcher::DB_TABLE . "`
-			ON `" . App::$dsn[App::DB_NAME] . "`.`" . AppointmentFetcher::DB_TABLE . "`.`" .
+			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
+			INNER JOIN  `" . App::getDbName() . "`.`" . AppointmentFetcher::DB_TABLE . "`
+			ON `" . App::getDbName() . "`.`" . AppointmentFetcher::DB_TABLE . "`.`" .
 			AppointmentFetcher::DB_COLUMN_ID . "`  = `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_APPOINTMENT_ID . "`
-			INNER JOIN  `" . App::$dsn[App::DB_NAME] . "`.`" . TermFetcher::DB_TABLE . "`
-			ON `" . App::$dsn[App::DB_NAME] . "`.`" . TermFetcher::DB_TABLE . "`.`" .
+			INNER JOIN  `" . App::getDbName() . "`.`" . TermFetcher::DB_TABLE . "`
+			ON `" . App::getDbName() . "`.`" . TermFetcher::DB_TABLE . "`.`" .
 			TermFetcher::DB_COLUMN_ID . "`  = `" . AppointmentFetcher::DB_TABLE . "`.`" .
 			AppointmentFetcher::DB_COLUMN_TERM_ID . "`
-			INNER JOIN  `" . App::$dsn[App::DB_NAME] . "`.`" . StudentFetcher::DB_TABLE . "`
-			ON `" . App::$dsn[App::DB_NAME] . "`.`" . StudentFetcher::DB_TABLE . "`.`" .
+			INNER JOIN  `" . App::getDbName() . "`.`" . StudentFetcher::DB_TABLE . "`
+			ON `" . App::getDbName() . "`.`" . StudentFetcher::DB_TABLE . "`.`" .
 			StudentFetcher::DB_COLUMN_ID . "`  = `" . self::DB_TABLE . "`.`" .
 			self::DB_COLUMN_STUDENT_ID . "`
 			WHERE :now
@@ -285,7 +285,7 @@ class AppointmentHasStudentFetcher
 		$query =
 			"SELECT `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_APPOINTMENT_ID . "` , `" . self::DB_COLUMN_STUDENT_ID . "`,
 			 `" . self::DB_COLUMN_REPORT_ID . "`,  `" . self::DB_COLUMN_INSTRUCTOR_ID . "`
-			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 			WHERE `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_APPOINTMENT_ID . "`=:appointment_id";
 
 		try {
@@ -331,18 +331,18 @@ class AppointmentHasStudentFetcher
 			`" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_ID . "` AS
 			" . AppointmentFetcher::DB_TABLE . "_" . AppointmentFetcher::DB_COLUMN_ID . "
 			,  `" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_LABEL_COLOR . "`
-			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
-			INNER JOIN  `" . App::$dsn[App::DB_NAME] . "`.`" . StudentFetcher::DB_TABLE . "`
-			ON `" . App::$dsn[App::DB_NAME] . "`.`" . StudentFetcher::DB_TABLE . "`.`" . StudentFetcher::DB_COLUMN_ID . "`  = `" .
+			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
+			INNER JOIN  `" . App::getDbName() . "`.`" . StudentFetcher::DB_TABLE . "`
+			ON `" . App::getDbName() . "`.`" . StudentFetcher::DB_TABLE . "`.`" . StudentFetcher::DB_COLUMN_ID . "`  = `" .
 			self::DB_TABLE . "`.`" . self::DB_COLUMN_STUDENT_ID . "`
-            INNER JOIN  `" . App::$dsn[App::DB_NAME] . "`.`" . AppointmentFetcher::DB_TABLE . "`
-			ON `" . App::$dsn[App::DB_NAME] . "`.`" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_ID . "`  = `" .
+            INNER JOIN  `" . App::getDbName() . "`.`" . AppointmentFetcher::DB_TABLE . "`
+			ON `" . App::getDbName() . "`.`" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_ID . "`  = `" .
 			self::DB_TABLE . "`.`" . self::DB_COLUMN_APPOINTMENT_ID . "`
-            INNER JOIN  `" . App::$dsn[App::DB_NAME] . "`.`" . UserFetcher::DB_TABLE . "`
-			ON `" . App::$dsn[App::DB_NAME] . "`.`" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_TUTOR_USER_ID
+            INNER JOIN  `" . App::getDbName() . "`.`" . UserFetcher::DB_TABLE . "`
+			ON `" . App::getDbName() . "`.`" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_TUTOR_USER_ID
 			. "`  = `" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "`
-            INNER JOIN  `" . App::$dsn[App::DB_NAME] . "`.`" . InstructorFetcher::DB_TABLE . "`
-			ON `" . App::$dsn[App::DB_NAME] . "`.`" . InstructorFetcher::DB_TABLE . "`.`" . InstructorFetcher::DB_COLUMN_ID . "`  = `" .
+            INNER JOIN  `" . App::getDbName() . "`.`" . InstructorFetcher::DB_TABLE . "`
+			ON `" . App::getDbName() . "`.`" . InstructorFetcher::DB_TABLE . "`.`" . InstructorFetcher::DB_COLUMN_ID . "`  = `" .
 			self::DB_TABLE . "`.`" . self::DB_COLUMN_INSTRUCTOR_ID . "`
 			WHERE `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_APPOINTMENT_ID . "`=:appointment_id";
 

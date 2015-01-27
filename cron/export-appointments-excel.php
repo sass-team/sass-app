@@ -36,7 +36,7 @@ try {
         $fileName = pathinfo($fullPathFile)['filename'] . "." . pathinfo($fullPathFile)['extension'];
         $accessToken = DropboxFetcher::retrieveAccessToken(DropboxCon::SERVICE_APP_EXCEL_BACKUP)[DropboxFetcher::DB_COLUMN_ACCESS_TOKEN];
 
-        $dbxClient = new dbx\Client($accessToken, App::VERSION);
+        $dbxClient = new dbx\Client($accessToken, App::getVersion());
         $adminAccountInfo = $dbxClient->getAccountInfo();
         $f = fopen($fullPathFile, "rb");
         $result = $dbxClient->uploadFile("/storage/excel/$curTermYear/$fileName", dbx\WriteMode::force(), $f);

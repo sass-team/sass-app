@@ -14,18 +14,14 @@ require_once ROOT_PATH . 'config/App.class.php';
  */
 class DatabaseManager
 {
-
 	private static $instance;
 	private $dbConnection;
-
-
-	// Constructor
 
 	private function __construct() {
 		try { // connects to database
 
 			$this->dbConnection =
-				new PDO("mysql:host=" . App::getDbHost() . ";dbname=" . App::$dsn[App::DB_NAME] .
+				new PDO("mysql:host=" . App::getDbHost() . ";dbname=" . App::getDbName() .
 					";port=" . App::getDbPort(), App::getDbUsername(),
 					App::getDbPassword());
 

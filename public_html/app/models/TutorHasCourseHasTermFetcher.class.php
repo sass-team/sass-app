@@ -16,7 +16,7 @@ class Tutor_has_course_has_termFetcher
 	public static function insertMany($id, $coursesId, $termId) {
 		try {
 			foreach ($coursesId as $courseId) {
-				$query = "INSERT INTO `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE .
+				$query = "INSERT INTO `" . App::getDbName() . "`.`" . self::DB_TABLE .
 					"` (`" . self::DB_COLUMN_TUTOR_USER_ID . "`, `" . self::DB_COLUMN_COURSE_ID .
 					"`, `" . self::DB_COLUMN_TERM_ID . "`) VALUES(:id, :courseId, :term_id)";
 
@@ -44,8 +44,8 @@ class Tutor_has_course_has_termFetcher
 						 `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_NAME . "`,
 						 `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_NAME . "` AS
 						" . TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_NAME . "
-			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
-			INNER JOIN `" . App::$dsn[App::DB_NAME] . "`.`" . UserFetcher::DB_TABLE . "`
+			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
+			INNER JOIN `" . App::getDbName() . "`.`" . UserFetcher::DB_TABLE . "`
 				ON `" . Tutor_has_course_has_termFetcher::DB_TABLE . "`.`" . Tutor_has_course_has_termFetcher::DB_COLUMN_TUTOR_USER_ID . "` = `" .
 			UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "`
 			INNER JOIN `" . TermFetcher::DB_TABLE . "`

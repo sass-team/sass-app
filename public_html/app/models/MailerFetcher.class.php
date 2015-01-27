@@ -20,7 +20,7 @@ class MailerFetcher
 
 		try {
 			$query = "SELECT COUNT(`" . self::DB_COLUMN_LAST_SENT . "`)
-			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 			WHERE `" . self::DB_COLUMN_LAST_SENT . "` >= :now";
 
 			$dbConnection = DatabaseManager::getConnection();
@@ -44,7 +44,7 @@ class MailerFetcher
 
 		try {
 
-			$query = "INSERT INTO `" . App::$dsn[App::DB_NAME] . "`.`" .
+			$query = "INSERT INTO `" . App::getDbName() . "`.`" .
 				self::DB_TABLE . "`
 				VALUES(
 					:now

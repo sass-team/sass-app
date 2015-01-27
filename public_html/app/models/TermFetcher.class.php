@@ -43,7 +43,7 @@ class TermFetcher
         $query =
             "SELECT `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_NAME . "` , `" . self::DB_COLUMN_START_DATE . "`,
 			 `" . self::DB_COLUMN_END_DATE . "`
-			 FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			 FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 			 WHERE (:now NOT BETWEEN `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" .
             TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_END_DATE . "`)
 			 order by `" .
@@ -72,7 +72,7 @@ class TermFetcher
         $query =
             "SELECT `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_NAME . "` , `" . self::DB_COLUMN_START_DATE . "`,
 			 `" . self::DB_COLUMN_END_DATE . "`
-			 FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			 FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 			order by `" .
             self::DB_TABLE . "`.`" . self::DB_COLUMN_START_DATE . "` DESC";
 
@@ -94,7 +94,7 @@ class TermFetcher
         $query =
             "SELECT `" . self::DB_COLUMN_ID . "`, `" . self::DB_COLUMN_NAME . "`, `" . self::DB_COLUMN_START_DATE . "`,
             	`" . self::DB_COLUMN_END_DATE . "`
-			 	FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			 	FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 			 	WHERE :now BETWEEN `" . self::DB_COLUMN_START_DATE . "` AND `" . self::DB_COLUMN_END_DATE . "`";
 
         try {
@@ -120,7 +120,7 @@ class TermFetcher
     {
         $query = "SELECT  `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_NAME . "` , `" . self::DB_COLUMN_START_DATE
             . "`,		 `" . self::DB_COLUMN_END_DATE . "`
-			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 			WHERE `" . self::DB_COLUMN_ID . "`=:id";
 
         try {
@@ -138,7 +138,7 @@ class TermFetcher
 
     public static function updateName($id, $newName)
     {
-        $query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+        $query = "UPDATE `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 					SET	`" . self::DB_COLUMN_NAME . "`= :newName
 					WHERE `id`= :id";
 
@@ -158,7 +158,7 @@ class TermFetcher
 
     public static function  updateStartingDate($id, $newStartingDate)
     {
-        $query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+        $query = "UPDATE `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 					SET	`" . self::DB_COLUMN_START_DATE . "`= :newName
 					WHERE `id`= :id";
 
@@ -179,7 +179,7 @@ class TermFetcher
 
     public static function updateSingleColumn($id, $column, $value, $valueType)
     {
-        $query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+        $query = "UPDATE `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 					SET	`" . $column . "`= :column
 					WHERE `id`= :id";
 
@@ -205,7 +205,7 @@ class TermFetcher
         $endDate = $endDate->format(Dates::DATE_FORMAT_IN);
 
         try {
-            $query = "INSERT INTO `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "` (`" . self::DB_COLUMN_NAME .
+            $query = "INSERT INTO `" . App::getDbName() . "`.`" . self::DB_TABLE . "` (`" . self::DB_COLUMN_NAME .
                 "`, `" . self::DB_COLUMN_START_DATE . "`, `" . self::DB_COLUMN_END_DATE . "`)
 				VALUES(
 					:name,
@@ -230,7 +230,7 @@ class TermFetcher
     {
         try {
             $query = "SELECT COUNT(" . self::DB_COLUMN_ID . ")
-			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 			WHERE `" . self::DB_COLUMN_ID . "` = :id";
 
             $dbConnection = DatabaseManager::getConnection();
@@ -251,7 +251,7 @@ class TermFetcher
     public static function delete($id)
     {
         try {
-            $query = "DELETE FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :id";
+            $query = "DELETE FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :id";
             $dbConnection = DatabaseManager::getConnection();
             $query = $dbConnection->prepare($query);
             $query->bindParam(':id', $id, PDO::PARAM_INT);
@@ -267,7 +267,7 @@ class TermFetcher
     public static function existsName($name)
     {
         try {
-            $query = "SELECT COUNT(" . self::DB_COLUMN_NAME . ") FROM `" . App::$dsn[App::DB_NAME] . "`.`" .
+            $query = "SELECT COUNT(" . self::DB_COLUMN_NAME . ") FROM `" . App::getDbName() . "`.`" .
                 self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_NAME . "` = :name";
             $dbConnection = DatabaseManager::getConnection();
             $query = $dbConnection->prepare($query);

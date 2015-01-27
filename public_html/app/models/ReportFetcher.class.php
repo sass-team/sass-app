@@ -95,21 +95,21 @@ class ReportFetcher
 			`" . ConclusionWrapUpFetcher::DB_TABLE . "`.`" . ConclusionWrapUpFetcher::DB_COLUMN_ANOTHER_SCHEDULE . "`,
 			`" . ConclusionWrapUpFetcher::DB_TABLE . "`.`" . ConclusionWrapUpFetcher::DB_COLUMN_CLARIFY_CONCERNS . "`
 
-			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
-			INNER JOIN  `" . App::$dsn[App::DB_NAME] . "`.`" . AppointmentHasStudentFetcher::DB_TABLE . "`
-			ON `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`  = `" .
+			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
+			INNER JOIN  `" . App::getDbName() . "`.`" . AppointmentHasStudentFetcher::DB_TABLE . "`
+			ON `" . App::getDbName() . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`  = `" .
 			AppointmentHasStudentFetcher::DB_TABLE . "`.`" . AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID . "`
-			INNER JOIN  `" . App::$dsn[App::DB_NAME] . "`.`" . StudentFetcher::DB_TABLE . "`
-			ON `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_STUDENT_ID . "`  = `" .
+			INNER JOIN  `" . App::getDbName() . "`.`" . StudentFetcher::DB_TABLE . "`
+			ON `" . App::getDbName() . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_STUDENT_ID . "`  = `" .
 			StudentFetcher::DB_TABLE . "`.`" . StudentFetcher::DB_COLUMN_ID . "`
-			INNER JOIN  `" . App::$dsn[App::DB_NAME] . "`.`" . StudentBroughtAlongFetcher::DB_TABLE . "`
-			ON `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`  = `" .
+			INNER JOIN  `" . App::getDbName() . "`.`" . StudentBroughtAlongFetcher::DB_TABLE . "`
+			ON `" . App::getDbName() . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`  = `" .
 			StudentBroughtAlongFetcher::DB_TABLE . "`.`" . StudentBroughtAlongFetcher::DB_COLUMN_REPORT_ID . "`
-			INNER JOIN  `" . App::$dsn[App::DB_NAME] . "`.`" . PrimaryFocusOfConferenceFetcher::DB_TABLE . "`
-			ON `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`  = `" .
+			INNER JOIN  `" . App::getDbName() . "`.`" . PrimaryFocusOfConferenceFetcher::DB_TABLE . "`
+			ON `" . App::getDbName() . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`  = `" .
 			PrimaryFocusOfConferenceFetcher::DB_TABLE . "`.`" . PrimaryFocusOfConferenceFetcher::DB_COLUMN_REPORT_ID . "`
-			INNER JOIN  `" . App::$dsn[App::DB_NAME] . "`.`" . ConclusionWrapUpFetcher::DB_TABLE . "`
-			ON `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`  = `" .
+			INNER JOIN  `" . App::getDbName() . "`.`" . ConclusionWrapUpFetcher::DB_TABLE . "`
+			ON `" . App::getDbName() . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`  = `" .
 			ConclusionWrapUpFetcher::DB_TABLE . "`.`" . ConclusionWrapUpFetcher::DB_COLUMN_REPORT_ID . "`
 			WHERE `" . AppointmentHasStudentFetcher::DB_TABLE . "`.`" .
 			AppointmentHasStudentFetcher::DB_COLUMN_APPOINTMENT_ID . "` = :appointment_id";
@@ -129,7 +129,7 @@ class ReportFetcher
 
 	public static function delete($reportId) {
 		$query =
-			"DELETE FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			"DELETE FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 					WHERE `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` = :report_id;";
 
 		try {
@@ -157,11 +157,11 @@ class ReportFetcher
 			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`, `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_LABEL_MESSAGE . "`,
 			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_LABEL_COLOR . "`, `" . AppointmentFetcher::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`
 			AS " . AppointmentFetcher::DB_TABLE . "_" . AppointmentFetcher::DB_COLUMN_ID . "
-			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
-			INNER JOIN `" . App::$dsn[App::DB_NAME] . "`.`" . AppointmentHasStudentFetcher::DB_TABLE . "`
+			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
+			INNER JOIN `" . App::getDbName() . "`.`" . AppointmentHasStudentFetcher::DB_TABLE . "`
 				ON `" . AppointmentHasStudentFetcher::DB_TABLE . "`.`" . AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID . "` =
 					`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`
-			INNER JOIN `" . App::$dsn[App::DB_NAME] . "`.`" . AppointmentFetcher::DB_TABLE . "`
+			INNER JOIN `" . App::getDbName() . "`.`" . AppointmentFetcher::DB_TABLE . "`
 				ON `" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_ID . "` =
 					`" . AppointmentHasStudentFetcher::DB_TABLE . "`.`" . AppointmentHasStudentFetcher::DB_COLUMN_APPOINTMENT_ID . "`
 			INNER JOIN `" . TermFetcher::DB_TABLE . "`
@@ -198,11 +198,11 @@ class ReportFetcher
 			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`, `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_LABEL_MESSAGE . "`,
 			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_LABEL_COLOR . "`, `" . AppointmentFetcher::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`
 			AS " . AppointmentFetcher::DB_TABLE . "_" . AppointmentFetcher::DB_COLUMN_ID . "
-			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
-			INNER JOIN `" . App::$dsn[App::DB_NAME] . "`.`" . AppointmentHasStudentFetcher::DB_TABLE . "`
+			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
+			INNER JOIN `" . App::getDbName() . "`.`" . AppointmentHasStudentFetcher::DB_TABLE . "`
 				ON `" . AppointmentHasStudentFetcher::DB_TABLE . "`.`" . AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID . "` =
 					`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`
-			INNER JOIN `" . App::$dsn[App::DB_NAME] . "`.`" . AppointmentFetcher::DB_TABLE . "`
+			INNER JOIN `" . App::getDbName() . "`.`" . AppointmentFetcher::DB_TABLE . "`
 				ON `" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_ID . "` =
 					`" . AppointmentHasStudentFetcher::DB_TABLE . "`.`" . AppointmentHasStudentFetcher::DB_COLUMN_APPOINTMENT_ID . "`
 			INNER JOIN `" . TermFetcher::DB_TABLE . "`
@@ -231,7 +231,7 @@ class ReportFetcher
 	}
 
 	public static function updateLabel($reportId, $labelMessage, $labelColor) {
-		$query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+		$query = "UPDATE `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 					SET `" . self::DB_COLUMN_LABEL_MESSAGE . "`= :label_message, `" . self::DB_COLUMN_LABEL_COLOR . "` =
 					:label_color
 					WHERE `" . self::DB_COLUMN_ID . "` = :id";
@@ -255,7 +255,7 @@ class ReportFetcher
 	public static function insert($studentId, $appointmentId, $instructorId) {
 
 		try {
-			$query = "INSERT INTO `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			$query = "INSERT INTO `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 			(`" . self::DB_COLUMN_STUDENT_ID . "`,	`" . self::DB_COLUMN_INSTRUCTOR_ID . "`)
 				VALUES
 				(
@@ -292,7 +292,7 @@ class ReportFetcher
 	public static function existsId($id) {
 		try {
 			$query = "SELECT COUNT(" . self::DB_COLUMN_ID . ")
-			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 			WHERE `" . self::DB_COLUMN_ID . "` = :id";
 
 			$dbConnection = DatabaseManager::getConnection();
@@ -310,7 +310,7 @@ class ReportFetcher
 	}
 
 	public static function updateSingleColumn($reportId, $newText, $column) {
-		$query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+		$query = "UPDATE `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 					SET `" . $column . "`= :new_text
 					WHERE `" . self::DB_COLUMN_ID . "` = :report_id";
 
@@ -334,7 +334,7 @@ class ReportFetcher
 	($reportId, $projectTopicOtherNew, $otherTextArea, $studentsConcernsTextArea, $relevantFeedbackGuidelines,
 	 $studentBroughtAlongNew, $studentBroughtAlongOld, $conclusionAdditionalComments, $primaryFocusOfConferenceNew,
 	 $primaryFocusOfConferenceOld, $conclusionWrapUpNew, $conclusionWrapUpOld) {
-		$query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+		$query = "UPDATE `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 					SET  `" . self::DB_COLUMN_PROJECT_TOPIC_OTHER . "`= :project_topic_other,
 					`" . self::DB_COLUMN_OTHER_TEXT_AREA . "`= :other_text_area,
 					`" . self::DB_COLUMN_STUDENT_CONCERNS . "`= :students_concerns_text_area,
@@ -378,7 +378,7 @@ class ReportFetcher
 			"SELECT `" . self::DB_COLUMN_ID . "`, `" . self::DB_COLUMN_STUDENT_ID . "`, `" . self::DB_COLUMN_INSTRUCTOR_ID . "`,
 			`" . self::DB_COLUMN_STUDENT_CONCERNS . "`			, `" . self::DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES . "`
 			, `" . self::DB_COLUMN_ADDITIONAL_COMMENTS . "`
-			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 			ORDER BY `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` DESC";
 
 		try {
@@ -399,7 +399,7 @@ class ReportFetcher
 			self::DB_COLUMN_STUDENT_ID . "`, `" . self::DB_COLUMN_STUDENT_CONCERNS . "`, `" .
 			self::DB_COLUMN_PROJECT_TOPIC_OTHER . "`, `" . self::DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES . ",`" .
 			self::DB_COLUMN_ADDITIONAL_COMMENTS . "`
-			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 			WHERE `" . self::DB_COLUMN_ID . "`=:id";
 
 		try {

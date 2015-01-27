@@ -48,7 +48,7 @@ try
 		'hex-blob'                   => true
 	];
 
-	$dump = new Ifsnop\Mysqldump\Mysqldump(App::$dsn[App::DB_NAME],
+	$dump = new Ifsnop\Mysqldump\Mysqldump(App::$dsn[App::getDbName()],
 		App::getDbUsername(),
 		App::getDbPassword(),
 		App::getDbHost(), 'mysql', $dumpSettings);
@@ -57,7 +57,7 @@ try
 
 	$accessToken = DropboxFetcher::retrieveAccessToken(DropboxCon::SERVICE_APP_DATABASE_BACKUP)[DropboxFetcher::DB_COLUMN_ACCESS_TOKEN];
 
-	$dbxClient = new dbx\Client($accessToken, App::VERSION);
+	$dbxClient = new dbx\Client($accessToken, App::getVersion());
 	$adminAccountInfo = $dbxClient->getAccountInfo();
 	$f = fopen($zippedFullFileName, "rb");
 	$result = $dbxClient->uploadFile("/storage/backups/$curWorkingDateYear/$zippedFileName", dbx\WriteMode::add(), $f);

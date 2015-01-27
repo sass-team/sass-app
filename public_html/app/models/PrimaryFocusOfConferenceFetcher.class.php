@@ -41,14 +41,14 @@ class PrimaryFocusOfConferenceFetcher
 			self::DB_COLUMN_OTHER . "`,`" . AppointmentHasStudentFetcher::DB_TABLE . "`.`" .
 			AppointmentHasStudentFetcher::DB_COLUMN_APPOINTMENT_ID . "`
 
-			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
-			INNER JOIN `" . App::$dsn[App::DB_NAME] . "`.`" . ReportFetcher::DB_TABLE . "`
+			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
+			INNER JOIN `" . App::getDbName() . "`.`" . ReportFetcher::DB_TABLE . "`
 			ON `" . ReportFetcher::DB_TABLE . "`.`" . ReportFetcher::DB_COLUMN_ID . "` =
 			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_REPORT_ID . "`
-			INNER JOIN `" . App::$dsn[App::DB_NAME] . "`.`" . AppointmentHasStudentFetcher::DB_TABLE . "`
+			INNER JOIN `" . App::getDbName() . "`.`" . AppointmentHasStudentFetcher::DB_TABLE . "`
 			ON `" . AppointmentHasStudentFetcher::DB_TABLE . "`.`" . AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID . "` =
 			`" . ReportFetcher::DB_TABLE . "`.`" . ReportFetcher::DB_COLUMN_ID . "`
-			INNER JOIN `" . App::$dsn[App::DB_NAME] . "`.`" . AppointmentFetcher::DB_TABLE . "`
+			INNER JOIN `" . App::getDbName() . "`.`" . AppointmentFetcher::DB_TABLE . "`
 			ON `" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_ID . "` =
 			`" . AppointmentHasStudentFetcher::DB_TABLE . "`.`" . AppointmentHasStudentFetcher::DB_COLUMN_APPOINTMENT_ID . "`
 			WHERE `" . AppointmentFetcher::DB_COLUMN_TERM_ID . "` = :term_id";
@@ -69,7 +69,7 @@ class PrimaryFocusOfConferenceFetcher
 	public static function delete($reportId) {
 		try {
 			$query =
-				"DELETE FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+				"DELETE FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 				WHERE `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_REPORT_ID . "` = :report_id";
 
 
@@ -147,7 +147,7 @@ class PrimaryFocusOfConferenceFetcher
 			}
 		}
 
-		$query = "UPDATE `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+		$query = "UPDATE `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 			SET `" . self::DB_COLUMN_DISCUSSION_OF_CONCEPTS . "` = :discussion_of_concepts,
 			`" . self::DB_COLUMN_ORGANIZATION_THOUGHTS_IDEAS . "` = :organization_thoughts_ideas,
 			`" . self::DB_COLUMN_EXPRESSION_GRAMMAR_SYNTAX_ETC . "` = :expression_grammar_syntax,
@@ -182,7 +182,7 @@ class PrimaryFocusOfConferenceFetcher
 	public static function exists($reportId) {
 		try {
 			$query = "SELECT COUNT(" . self::DB_COLUMN_REPORT_ID . ")
-			FROM `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 			WHERE `" . self::DB_COLUMN_REPORT_ID . "` = :report_id";
 
 			$dbConnection = DatabaseManager::getConnection();
@@ -203,7 +203,7 @@ class PrimaryFocusOfConferenceFetcher
 
 		try {
 
-			$query = "INSERT INTO `" . App::$dsn[App::DB_NAME] . "`.`" . self::DB_TABLE . "`
+			$query = "INSERT INTO `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 			(`" . self::DB_COLUMN_REPORT_ID . "`)
 			VALUES(:report_id)";
 

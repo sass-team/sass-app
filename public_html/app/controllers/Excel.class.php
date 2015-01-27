@@ -94,8 +94,8 @@ class Excel
 
 
 		$objPHPExcel = new PHPExcel();
-		$objPHPExcel->getProperties()->setCreator(App::NAME)
-			->setLastModifiedBy(App::NAME)
+		$objPHPExcel->getProperties()->setCreator(App::getName())
+			->setLastModifiedBy(App::getName())
 			->setTitle(self::TITLE_VISIT_LOG . " - " . $termName)
 			->setSubject("Appointments")
 			->setDescription("List of appointments for $termName.")

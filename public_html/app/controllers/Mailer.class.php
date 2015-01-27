@@ -65,11 +65,11 @@ class Mailer
             $reportLink = "<a style='background-color:#008dd0;color:#fff;border-radius:4px;display:block;
 		text-decoration:none;margin-top:30px;margin-bottom:15px;margin-right:0px;margin-left:0px;padding-top:20px;
 		padding-bottom:20px;padding-right:20px;padding-left:20px;text-align:center'
-		href='https://" . (isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : App::PRODUCTION_HOST) . "/appointments/" .
+		href='https://" . App::getHostname() . "/appointments/" .
                 $appointmentData[AppointmentFetcher::DB_COLUMN_ID] . "' target='_blank' >View Report</a><br/>";
             $appointmentStart = new DateTime($appointmentData[AppointmentFetcher::DB_COLUMN_START_TIME]);
             $appointmentEnd = new DateTime($appointmentData[AppointmentFetcher::DB_COLUMN_END_TIME]);
-            $senderEmail = self::NO_REPLY_EMAIL_PREFIX . (isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : App::PRODUCTION_HOST);
+            $senderEmail = self::NO_REPLY_EMAIL_PREFIX . App::getHostname();
             $senderName = self::SASS_APP_AUTOMATIC_SYSTEM;
             $receiverEmail = $tutorUser[UserFetcher::DB_COLUMN_EMAIL];
             $receiverName = $tutorUser[UserFetcher::DB_COLUMN_FIRST_NAME] . " " . $tutorUser[UserFetcher::DB_COLUMN_LAST_NAME];;
@@ -254,7 +254,7 @@ class Mailer
         # Now, compose and send the message.
         $mg->sendMessage($domain,
             [
-                'from' => "SASS App admin@" . App::PRODUCTION_HOST,
+                'from' => "SASS App admin@" . App::getHostname(),
                 'to' => $receiverEmail,
                 'subject' => 'Welcome',
                 'text' => 'Your mail does not support html',
@@ -283,7 +283,7 @@ class Mailer
         # Now, compose and send the message.
         $mg->sendMessage($domain,
             [
-                'from' => "SASS App admin@" . App::PRODUCTION_HOST,
+                'from' => "SASS App admin@" . App::getHostname(),
                 'to' => $email,
                 'subject' => 'SASS Account Recovery',
                 'text' => 'Your mail does not support html',

@@ -97,7 +97,7 @@ try {
 			'hex-blob' => true
 		);
 
-		$dump = new Ifsnop\Mysqldump\Mysqldump(App::$dsn[App::DB_NAME],
+		$dump = new Ifsnop\Mysqldump\Mysqldump(App::getDbName(),
 			App::getDbUsername(),
 			App::getDbPassword(),
 			App::getDbHost(), 'mysql', $dumpSettings);
