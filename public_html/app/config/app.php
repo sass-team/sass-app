@@ -28,14 +28,14 @@
  * @since 9/7/14.
  */
 
-?>
-
-<?php
 // these two constants are used to create root-relative web addresses
 // and absolute server paths through the code
 define("BASE_URL", "/");
 define("ROOT_PATH", __DIR__ . "/../");
 
+require ROOT_PATH . 'vendor/autoload.php';
+
+Dotenv::load(ROOT_PATH . '../../');
 require_once ROOT_PATH . "config/App.class.php";
 
 

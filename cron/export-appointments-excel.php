@@ -20,9 +20,8 @@ try {
     date_default_timezone_set('Europe/Athens');
 
     // run script only during working hours
-    if (!App::isWorkingDateTimeOn()) {
-        exit();
-    }
+    if (!App::isWorkingDateTimeOn()) exit();
+
 
     $filePath = ROOT_PATH . 'storage/excel/';
     $curTerms = TermFetcher::retrieveCurrTerm();

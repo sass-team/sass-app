@@ -1,5 +1,5 @@
-# Should contain key for database, mailgun, recaptcha
-public_html/app/config/App.class.php
+# Should contain key for database, mailgun, recaptcha. Check .env.example
+.env
 
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
 
@@ -36,5 +36,3 @@ DO_NOT_UPLOAD_HERE
 .bash_history
 .vimrc
 
-
-/vendor/
