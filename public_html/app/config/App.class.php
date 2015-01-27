@@ -193,4 +193,24 @@ class App
 	{
 		return self::$settings['DEFAULT_DATE_FORMAT'];
 	}
+
+	public static function getHostname()
+	{
+		$hosts = self::getHostNames();
+		$hostsWithSSL = $hosts['SSL'];
+
+		$hostname = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : $hostsWithSSL['production'];
+
+		return $hostname;
+	}
+
+	public static function getPDOErrorMode()
+	{
+		return self::$settings['PDO_ERROR_MODE'];
+	}
+
+	public static function getGithubNewIssueUrl()
+	{
+		return self::$settings['GITHUB_NEW_ISSUE_URL'];
+	}
 }

@@ -36,7 +36,7 @@ ob_start();
 // TODO: Add option-functionality to resend email if password forgot
 // TODO: sql make 'img' of database to NOT NULL & refactor name to 'img_location'
 require __DIR__ . '/../app/init.php';
-require_once(ROOT_PATH . 'plugins/recaptchalib.php');
+require_once (ROOT_PATH . 'plugins/recaptchalib.php');
 
 // if there is an active log in process redirect to students.class.php; load page only if no
 // logged in user exists

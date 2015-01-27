@@ -25,7 +25,7 @@ class DatabaseManager
 					";port=" . App::getDbPort(), App::getDbUsername(),
 					App::getDbPassword());
 
-			$this->dbConnection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // CHANGE THE ERROR MODE, THROW AN EXCEPTION WHEN AN ERROR IS FOUND
+			$this->dbConnection->setAttribute(PDO::ATTR_ERRMODE, App::getPDOErrorMode()); // CHANGE THE ERROR MODE, THROW AN EXCEPTION WHEN AN ERROR IS FOUND
 			$this->dbConnection->exec("SET NAMES 'utf8'");
 		} catch (PDOException $e) { // program ends if exception is found
 			throw new Exception("Could not connect to the database.". $e->getMessage());
