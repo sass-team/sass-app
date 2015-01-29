@@ -5,19 +5,18 @@
  * Date: 9/26/2014
  * Time: 10:41 AM
  */
-?>
-
-<?php
 require __DIR__ . '/../app/init.php';
 $general->loggedOutProtect();
 
 $section = "appointments";
-if (isset($_SESSION['success'])) {
+if (isset($_SESSION['success']))
+{
 	$successMessage[] = $_SESSION['success'];
 	unset($_SESSION['success']);
 }
 
-if ($user->isTutor()) {
+if ($user->isTutor())
+{
 	$pageTitle = "" . $user->getFirstName() . " " . $user->getLastName();
 	$appointments = AppointmentFetcher::retrieveAllOfCurrTermsByTutor($user->getId());
 	$allReports = ReportFetcher::retrieveAllOfCurrTermsByTutor($user->getId());
@@ -25,17 +24,21 @@ if ($user->isTutor()) {
 	// TODO: add sepearate retrieval function for tutor. currently retrieves all students \/
 	$students = AppointmentHasStudentFetcher::retrieveAllOnCurTerm();
 
-} else {
+} else
+{
 	$pageTitle = "All Tutors";
 	$appointments = AppointmentFetcher::retrieveAllOfCurrTerms();
 	$allReports = ReportFetcher::retrieveAllOfCurrTerms();
 	$students = AppointmentHasStudentFetcher::retrieveAllOnCurTerm();
 }
 
-function getStudentsIds($students, $appointmentId) {
+function getStudentsIds($students, $appointmentId)
+{
 	$studentsIds = "";
-	foreach ($students as $student) {
-		if (strcmp($student[AppointmentHasStudentFetcher::DB_COLUMN_APPOINTMENT_ID], $appointmentId) === 0) {
+	foreach ($students as $student)
+	{
+		if (strcmp($student[AppointmentHasStudentFetcher::DB_COLUMN_APPOINTMENT_ID], $appointmentId) === 0)
+		{
 			$studentsIds = $student[StudentFetcher::DB_COLUMN_STUDENT_ID] . ", " . $studentsIds;
 		}
 	}
@@ -44,7 +47,6 @@ function getStudentsIds($students, $appointmentId) {
 }
 
 ?>
-
 <!DOCTYPE html>
 <!--[if lt IE 7]>
 <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -109,9 +111,11 @@ function getStudentsIds($students, $appointmentId) {
 									>
 									<thead>
 									<tr>
-										<th class="text-center" data-direction="desc" data-filterable="true" data-sortable="true">ID
+										<th class="text-center" data-direction="desc" data-filterable="true"
+										    data-sortable="true">ID
 										</th>
-										<?php if (!$user->isTutor()) { ?>
+										<?php if (!$user->isTutor())
+										{ ?>
 											<th class="text-center" data-filterable="true" data-sortable="true">Tutor
 											</th>
 										<?php } ?>
@@ -141,9 +145,12 @@ function getStudentsIds($students, $appointmentId) {
 
 
 
-									if (empty($successMessage) === true) {
-										if ($user->isTutor()) {
-											foreach ($appointments as $appointment) {
+									if (empty($successMessage) === true)
+									{
+										if ($user->isTutor())
+										{
+											foreach ($appointments as $appointment)
+											{
 												$studentsIds = getStudentsIds($students,
 													$appointment[AppointmentFetcher::DB_TABLE . "_" .
 													AppointmentFetcher::DB_COLUMN_ID]);
@@ -151,8 +158,10 @@ function getStudentsIds($students, $appointmentId) {
 												$reports = Report::getWithAppointmentId($allReports, $appointment[AppointmentFetcher::DB_TABLE . "_" . AppointmentFetcher::DB_COLUMN_ID]);
 												include(ROOT_PATH . "views/partials/appointments/table-data-by-tutor-view.html.php");
 											}
-										} else {
-											foreach ($appointments as $appointment) {
+										} else
+										{
+											foreach ($appointments as $appointment)
+											{
 												$studentsIds = getStudentsIds($students,
 													$appointment[AppointmentFetcher::DB_TABLE . "_" .
 													AppointmentFetcher::DB_COLUMN_ID]);
@@ -160,7 +169,7 @@ function getStudentsIds($students, $appointmentId) {
 												include(ROOT_PATH . "views/partials/appointments/table-data-view.html.php");
 											}
 										}
-									}?>
+									} ?>
 									</tbody>
 								</table>
 							</div>

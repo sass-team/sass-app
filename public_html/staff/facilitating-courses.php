@@ -28,9 +28,6 @@
  * @author George Skarlatos
  * @since 9/19/2014
  */
-?>
-
-<?php
 require __DIR__ . '/../app/init.php';
 $general->loggedOutProtect();
 
@@ -42,7 +39,6 @@ $currentTerms = TermFetcher::retrieveCurrTerm();
 //$users = UserFetcher::
 $courses = Tutor_has_course_has_termFetcher::retrieveCurrTermAllTeachingCourses();
 ?>
-
 <!DOCTYPE html>
 <!--[if lt IE 7]>
 <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->

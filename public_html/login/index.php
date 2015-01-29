@@ -7,14 +7,6 @@ require __DIR__ . '/../app/init.php';
 $general->loggedInProtect();
 $pageTitle = "Log In";
 
-?>
-
-<!-- ************  IF THE LOG IN BUTTON IS SUBMITTED ************** -->
-<!-- 1. It's preferred to create a hidden input for security purposes, as well verifying that this input or another dummy
-is not filled, as to protect from robots/spam.
-    2. It's preferred to have the php code on the beginning of the script and the view code afterwards. More neat & organized.-->
-<?php
-
 if (isLoginBtnPressed()) {
 
     try {
@@ -61,7 +53,6 @@ function isForgotBtnPressed()
 {
     return isset($_POST['hidden_forgot_pressed']) && empty($_POST['hidden_forgot_pressed']);
 }
-
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>

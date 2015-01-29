@@ -29,11 +29,8 @@
  * @since 8/16/14.
  */
 
-?>
-<?php
 require __DIR__ . '/../app/init.php';
 $general->loggedOutProtect();
-
 
 $pageTitle = "Personnel";
 $section = "staff";
@@ -75,11 +72,9 @@ try {
         exit();
     }
 
-
 } catch (Exception $e) {
     $errors[] = $e->getMessage();
 }
-
 
 function get($objects, $findId, $column)
 {
@@ -106,7 +101,6 @@ function isBtnInactivePrsd()
 }
 
 ?>
-
 <!DOCTYPE html>
 <!--[if lt IE 7]>
 <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->

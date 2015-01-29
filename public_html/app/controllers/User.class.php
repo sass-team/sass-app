@@ -113,7 +113,8 @@ abstract class User extends Person
 
 	public static function validateId($id)
 	{
-		if (!preg_match('/^[0-9]+$/', $id) || !UserFetcher::existsId($id)) {
+		if (!preg_match('/^[0-9]+$/', $id) || !UserFetcher::existsId($id))
+		{
 			throw new Exception('Data tempering detected. Aborting.');
 		}
 	}
@@ -122,7 +123,8 @@ abstract class User extends Person
 	{
 		$newStatus = $oldStatus == 1 ? 0 : 1;
 
-		try {
+		try
+		{
 			$query = "UPDATE `" . App::getDbName() . "`.`user` SET `active`= :accountStatus WHERE `id`=:id";
 
 			$dbConnection = DatabaseManager::getConnection();
@@ -133,7 +135,8 @@ abstract class User extends Person
 			$query->execute();
 
 			return true;
-		} catch (PDOException $e) {
+		} catch (PDOException $e)
+		{
 			throw new Exception("Could not update database.");
 		} // end catch
 	}
@@ -148,7 +151,8 @@ abstract class User extends Person
 		$isProfileDataCorrect = self::isProfileDataCorrect($firstName, $lastName,
 			$newMobileNum);
 
-		if ($isProfileDataCorrect !== true) {
+		if ($isProfileDataCorrect !== true)
+		{
 			throw new Exception(implode("<br>", $isProfileDataCorrect)); // the array of errors messages
 		}
 
@@ -157,7 +161,8 @@ abstract class User extends Person
 					SET `f_name`= :first_name, `l_name`= :last_name, `mobile`= :mobile,
 						`profile_description`= :profile_description
 						WHERE `id`= :id";
-		try {
+		try
+		{
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
 			$query->bindParam(':first_name', $firstName, PDO::PARAM_STR);
@@ -169,7 +174,8 @@ abstract class User extends Person
 			$query->execute();
 
 			return true;
-		} catch (Exception $e) {
+		} catch (Exception $e)
+		{
 			throw new Exception("Something terrible happened. Could not update profile.");
 		}
 
@@ -179,13 +185,15 @@ abstract class User extends Person
 	{
 		$newFirstName = trim($newFirstName);
 
-		if (!preg_match("/^[a-zA-Z]{1,35}$/", $newFirstName)) {
+		if (!preg_match("/^[a-zA-Z]{1,35}$/", $newFirstName))
+		{
 			throw new Exception('Names may contain only letters of size 1-35 letters.');
 		}
 
 		$query = "UPDATE `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 					SET `" . $column . "`= :newFirstName WHERE `id`= :id";
-		try {
+		try
+		{
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
 			$query->bindParam(':newFirstName', $newFirstName, PDO::PARAM_STR);
@@ -194,7 +202,8 @@ abstract class User extends Person
 			$query->execute();
 
 			return true;
-		} catch (Exception $e) {
+		} catch (Exception $e)
+		{
 			throw new Exception("Something terrible happened. Could not update profile.");
 		}
 
@@ -203,14 +212,16 @@ abstract class User extends Person
 	public static function updateProfileDescription($id, $newProfileDescription)
 	{
 
-		if (!preg_match("/^[\\w\t\n\r .,\\-]{0,512}$/", $newProfileDescription)) {
+		if (!preg_match("/^[\\w\t\n\r .,\\-]{0,512}$/", $newProfileDescription))
+		{
 			throw new Exception("Description can contain only <a href='http://www.regular-expressions.info/shorthand.html'
 			target='_blank'>word characters</a>, spaces, carriage returns, line feeds and special characters <strong>.,-2</strong> of max size 512 characters.");
 		}
 
 		$query = "UPDATE `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 					SET `" . self::DB_COLUMN_PROFILE_DESCRIPTION . "`= :newProfileDescription WHERE `id`= :id";
-		try {
+		try
+		{
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
 			$query->bindParam(':newProfileDescription', $newProfileDescription, PDO::PARAM_STR);
@@ -219,7 +230,8 @@ abstract class User extends Person
 			$query->execute();
 
 			return true;
-		} catch (Exception $e) {
+		} catch (Exception $e)
+		{
 			throw new Exception("Something terrible happened. Could not update profile description.");
 		}
 	}
@@ -228,7 +240,8 @@ abstract class User extends Person
 	{
 		self::validateMobileNumber($newMobileNum);
 
-		try {
+		try
+		{
 
 			$query = "UPDATE `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 					SET `mobile`= :mobile WHERE `id`= :id";
@@ -241,7 +254,8 @@ abstract class User extends Person
 			$query->execute();
 
 			return true;
-		} catch (Exception $e) {
+		} catch (Exception $e)
+		{
 			throw new Exception("Something terrible happened. Could not update profile.");
 		}
 
@@ -255,14 +269,17 @@ abstract class User extends Person
 	 */
 	public static function validateMobileNumber($newMobileNum)
 	{
-		if (empty($newMobileNum) === true) {
+		if (empty($newMobileNum) === true)
+		{
 			return null; // no mobilenumber
 		}
-		if (!preg_match('/^[0-9]{10}$/', $newMobileNum)) {
+		if (!preg_match('/^[0-9]{10}$/', $newMobileNum))
+		{
 			throw new Exception('Mobile number should contain only digits of total length 10');
 		}
 
-		if (UserFetcher::existsMobileNum($newMobileNum)) {
+		if (UserFetcher::existsMobileNum($newMobileNum))
+		{
 			throw new Exception("Mobile entered number already exists in database."); // the array of errors messages
 		}
 
@@ -272,18 +289,21 @@ abstract class User extends Person
 	public static function updatePassword($id, $oldPassword, $newPassword1, $newPassword2)
 	{
 
-		if ($newPassword1 !== $newPassword2) {
+		if ($newPassword1 !== $newPassword2)
+		{
 			throw new Exception("There was a mismatch with the new passwords");
 		}
 
 		self::validatePassword($newPassword1);
 
 		$old_password_hashed = self::getHashedPassword($id);
-		if (!password_verify($oldPassword, $old_password_hashed)) {
+		if (!password_verify($oldPassword, $old_password_hashed))
+		{
 			throw new Exception("Sorry, the old password is incorrect.");
 		}
 
-		try {
+		try
+		{
 			$new_password_hashed = password_hash($newPassword1, PASSWORD_DEFAULT);
 
 			$query = "UPDATE `" . App::getDbName() . "`.`user`
@@ -296,7 +316,8 @@ abstract class User extends Person
 			$query->bindParam(':password', $new_password_hashed);
 
 			$query->execute();
-		} catch (Exception $e) {
+		} catch (Exception $e)
+		{
 			throw new Exception("Could not connect to database.");
 		}
 	}
@@ -314,7 +335,8 @@ abstract class User extends Person
 		$correctPassword = $correctPassword && preg_match($r3, $password);
 		$correctPassword = $correctPassword && (strlen($password) > 5);
 
-		if (!$correctPassword) {
+		if (!$correctPassword)
+		{
 			throw new Exception("Password should:
 			<ul>
 				<li>Contain at least one capitalized letter. [A-Z]</li>
@@ -329,15 +351,18 @@ abstract class User extends Person
 	{
 		$query = "SELECT password FROM `" . App::getDbName() . "`.user WHERE id = :id";
 
-		try {
+		try
+		{
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
 			$query->bindParam(':id', $id);
 			$query->execute();
 			$data = $query->fetch();
 			$hash_password = $data['password'];
+
 			return $hash_password;
-		} catch (Exception $e) {
+		} catch (Exception $e)
+		{
 			throw new Exception("Could not connect to database.");
 		}
 	}
@@ -350,14 +375,16 @@ abstract class User extends Person
 						WHERE active=1";
 
 
-		try {
+		try
+		{
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
 			$query->execute();
 			$rows = $query->fetchAll();
 
 			return $rows;
-		} catch (PDOException $e) {
+		} catch (PDOException $e)
+		{
 			throw new Exception("Something terrible happened. Could not retrieve users data from database.: ");
 			// end catch
 		}
@@ -370,14 +397,16 @@ abstract class User extends Person
 						LEFT OUTER JOIN user_types ON user.`user_types_id` = `user_types`.id
 						WHERE active=0";
 
-		try {
+		try
+		{
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
 			$query->execute();
 			$rows = $query->fetchAll();
 
 			return $rows;
-		} catch (PDOException $e) {
+		} catch (PDOException $e)
+		{
 			throw new Exception("Something terrible happened. Could not retrieve users data from database.: ");
 			// end catch
 		}
@@ -400,32 +429,42 @@ abstract class User extends Person
 	public static function login($email, $password)
 	{
 
-		if (empty($email) === true || empty($password) === true) {
+		if (empty($email) === true || empty($password) === true)
+		{
 			throw new Exception('Sorry, but we need both your email and password.');
-		} else if (self::emailExists($email, self::DB_TABLE) === false) {
-			throw new Exception('Sorry that email doesn\'t exists.');
+		} else
+		{
+			if (self::emailExists($email, self::DB_TABLE) === false)
+			{
+				throw new Exception('Sorry that email doesn\'t exists.');
+			}
 		}
 		$query = "SELECT id, active, password, email FROM `" . App::getDbName() . "`.user WHERE email = :email";
 		$dbConnection = DatabaseManager::getConnection();
 		$dbConnection = $dbConnection->prepare($query);
 		$dbConnection->bindParam(':email', $email);
 
-		try {
+		try
+		{
 
 			$dbConnection->execute();
 			$data = $dbConnection->fetch();
 			$hash_password = $data['password'];
 
 			// using the verify method to compare the password with the stored hashed password.
-			if (!password_verify($password, $hash_password)) {
+			if (!password_verify($password, $hash_password))
+			{
 				throw new Exception('That email/password is invalid.');
 			}
 
-			if ($data['active'] == 0) {
+			if ($data['active'] == 0)
+			{
 				throw new Exception('Your account has been deactivated.');
 			}
+
 			return $data['id'];
-		} catch (PDOException $e) {
+		} catch (PDOException $e)
+		{
 			// "Sorry could not connect to the database."
 			throw new Exception("Could not connect to the database");
 		}
@@ -433,7 +472,8 @@ abstract class User extends Person
 
 	public static function validateUserType($user_type)
 	{
-		switch ($user_type) {
+		switch ($user_type)
+		{
 			case self::TUTOR:
 			case self::SECRETARY:
 			case self::ADMIN:
@@ -458,10 +498,13 @@ abstract class User extends Person
 		// I have only added few, but you can add more. However do not add 'password' even though the parameters will only be given by you and not the user, in our system.
 		$allowed = ['id', 'username', 'f_name', 'l_name', 'email', 'COUNT(mobile)',
 			'mobile', 'user', 'gen_string', 'COUNT(gen_string)', 'COUNT(id)', 'img_loc', 'user_types', 'type'];
-		if (!in_array($what, $allowed, true) || !in_array($field, $allowed, true)) {
+		if (!in_array($what, $allowed, true) || !in_array($field, $allowed, true))
+		{
 			throw new InvalidArgumentException;
-		} else {
-			try {
+		} else
+		{
+			try
+			{
 				$query = "SELECT `" . $what . "` FROM `" . App::getDbName() . "`.`" . $field . "` WHERE $where = :value";
 				$dbConnection = DatabaseManager::getConnection();
 				$query = $dbConnection->prepare($query);
@@ -469,9 +512,11 @@ abstract class User extends Person
 				$query->bindParam(':value', $value, PDO::PARAM_STR);
 
 				$query->execute();
+
 				return $query->fetchColumn();
 				//return $sql;
-			} catch (Exception $e) {
+			} catch (Exception $e)
+			{
 				throw new Exception($e->getMessage());
 			}
 
@@ -480,11 +525,13 @@ abstract class User extends Person
 
 	public static function addNewPassword($id, $newPassword1, $newPassword2, $generatedString)
 	{
-		if (strcmp($newPassword1, $newPassword2) !== 0) {
+		if (strcmp($newPassword1, $newPassword2) !== 0)
+		{
 			throw new Exception("There was a mismatch with the new passwords");
 		}
 		User::validatePassword($newPassword1);
-		if (!UserFetcher::generatedStringExists($id, $generatedString)) {
+		if (!UserFetcher::generatedStringExists($id, $generatedString))
+		{
 			throw new Exception("Could not verify generated string exists. Please make sure url sent was not modified.");
 		}
 		UserFetcher::updatePassword($id, $newPassword1);
@@ -492,14 +539,19 @@ abstract class User extends Person
 
 	public static function recoverPassword($id, $newPassword1, $newPassword2, $generatedString)
 	{
-		if (strcmp($newPassword1, $newPassword2) !== 0) throw new Exception("There was a mismatch with the new passwords");
+		if (strcmp($newPassword1, $newPassword2) !== 0)
+		{
+			throw new Exception("There was a mismatch with the new passwords");
+		}
 		User::validatePassword($newPassword1);
 
-		if (!UserFetcher::generatedStringExists($id, $generatedString)) {
+		if (!UserFetcher::generatedStringExists($id, $generatedString))
+		{
 			throw new Exception("Could not verify generated string exists. Please make sure url sent was not modified.");
 		}
 
-		if (User::isGeneratedStringExpired($id, $generatedString)) {
+		if (User::isGeneratedStringExpired($id, $generatedString))
+		{
 			throw new Exception("Sorry that link has expired. Please <a href='" . App::getDomainName()
 				. "/login/confirm-password'
 							target='_self'>request</a> a new one");
@@ -529,12 +581,17 @@ abstract class User extends Person
 		User::validateId($id);
 		UserFetcher::updateGenString($id, $generatedString);
 		UserFetcher::updateGenStringTimeUpdate($id);
+
 		return $generatedString;
 	}
 
 	public static function isUserTypeTutor($userType)
 	{
-		if (strcmp($userType, TutorFetcher::DB_TABLE) === 0) return true;
+		if (strcmp($userType, TutorFetcher::DB_TABLE) === 0)
+		{
+			return true;
+		}
+
 		return false;
 	}
 
@@ -566,7 +623,8 @@ abstract class User extends Person
 	{
 		$id = $this->getId();
 
-		try {
+		try
+		{
 
 			$query = "UPDATE `" . App::getDbName() . "`.user SET `img_loc`= :avatar_img WHERE `id`= :user_id";
 
@@ -576,8 +634,10 @@ abstract class User extends Person
 			$query->bindParam(':user_id', $id, PDO::PARAM_INT);
 
 			$query->execute();
+
 			return true;
-		} catch (PDOException $e) {
+		} catch (PDOException $e)
+		{
 			throw new Exception("Something terrible happened. Could not update database.");
 		} // end try catch
 	}
@@ -611,11 +671,6 @@ abstract class User extends Person
 		return false;
 	}
 
-	public function isTutor()
-	{
-		return false;
-	}
-
 	public function isSecretary()
 	{
 		return false;
@@ -636,6 +691,21 @@ abstract class User extends Person
 	{
 		$this->users = $users;
 	}
+
+	/**
+	 * Redirect if user elevation is not that of secretary or admin
+	 */
+	public function denyTutor()
+	{
+		if ($this->isTutor())
+		{
+			header('Location: ' . BASE_URL . "error-403");
+			exit();
+		}
+	}
+
+	public function isTutor()
+	{
+		return false;
+	}
 }
-
-

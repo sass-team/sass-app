@@ -1,3 +1,6 @@
+<?php
+require __DIR__ . '/app/init.php';
+?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>
 <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -8,7 +11,7 @@
 <!--[if gt IE 8]><!-->
 <html class="no-js"> <!--<![endif]-->
 <head>
-	<base href="http://<?php echo $_SERVER['HTTP_HOST']; ?>">
+	<base href="<?php echo App::getDomainName(); ?>">
 	<title>File not found</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -16,7 +19,7 @@
 	<meta name="author" content=""/>
 
 	<link rel="stylesheet"
-	      href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,800italic,400,600,800"
+	      href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,800italic,400,600,800"
 	      type="text/css">
 	<link rel="stylesheet" href="assets/css/font-awesome.min.css" type="text/css"/>
 	<link rel="stylesheet" href="assets/css/bootstrap.min.css" type="text/css"/>
@@ -129,19 +132,24 @@
 </div>
 <!-- #wrapper -->
 
-<?php function auto_copyright($year = 'auto') { ?>
-	<?php if (intval($year) == 'auto') {
-		$year = date('Y');
-	} ?>
-	<?php if (intval($year) == date('Y')) {
-		echo intval($year);
-	} ?>
-	<?php if (intval($year) < date('Y')) {
-		echo intval($year) . ' - ' . date('Y');
-	} ?>
-	<?php if (intval($year) > date('Y')) {
-		echo date('Y');
-	} ?>
+<?php function auto_copyright($year = 'auto')
+{ ?>
+	<?php if (intval($year) == 'auto')
+{
+	$year = date('Y');
+} ?>
+	<?php if (intval($year) == date('Y'))
+{
+	echo intval($year);
+} ?>
+	<?php if (intval($year) < date('Y'))
+{
+	echo intval($year) . ' - ' . date('Y');
+} ?>
+	<?php if (intval($year) > date('Y'))
+{
+	echo date('Y');
+} ?>
 <?php } ?>
 
 <footer id="footer" class="navbar navbar-fixed-bottom">
