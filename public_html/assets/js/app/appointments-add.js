@@ -14,6 +14,7 @@ $(function () {
 	var $calendarTitle = $('#calendar-title');
 	var $calendar = $("#appointments-schedule-calendar");
 	var $pendingAppointmentsBtn = $('#show-pending-appointments');
+	var $workingHoursBtn = $("#show-only-working-hours");
 
 	// Server side data
 	var isAdmin = $('#isAdmin').val();
@@ -103,20 +104,23 @@ $(function () {
 		allowClear : false
 	});
 	$instructorId.select2({
-		placeholder: "Select one"
+		placeholder: "Select one",
+		allowClear : false
 	});
 	$studentId.select2({
-		placeholder: "Select one"
+		placeholder: "Select one",
+		allowClear : false
 	});
 	$tutorId.select2({
-		placeholder: "Course required"
+		placeholder: "Course required",
+		allowClear : false
 	});
 
 	// Event Listeners
 	$courseId.click(function () {
 		try {
 			retrieveTutors();
-			reloadCalendar('appointments_and_schedules_for_single_course');
+			reloadCalendar('getAppointmentsAndSchedulesForCourse');
 			$courseId.select2({
 				placeholder: $courseId.select2("val")
 			});
@@ -155,7 +159,7 @@ $(function () {
 	});
 	$tutorId.click(function () {
 		try {
-			reloadCalendar('single_tutor_appointment_and_schedule');
+			reloadCalendar('getAppointmentsAndSchedulesForSingleTutor');
 		} catch (err) {
 			// clear options
 			$tutorId.empty().append("<option></option>");
@@ -244,193 +248,66 @@ $(function () {
 			throw new Error("term is missing");
 		}
 
-		var data = [];
-		var singleTutorScheduleCalendar = {
-			url       : domainName + "/api/schedules",
-			type      : 'get',
-			dataType  : "json",
-			data      : {
-				action : 'single_tutor_working_hours',
-				tutorId: $tutorId.select2('val'),
-				termId : $termId.select2('val')
-			},
-			error     : function (xhr, status, error) {
-				$calendarTitle.text("there was an error while retrieving schedules");
-				console.log(xhr.responseText);
-			},
-			beforeSend: function () {
-				if (spinner == null) {
-					spinner = new Spinner(opts).spin(calendar);
-				}
-
-			},
-			complete  : function () {
-				if (spinner != null) {
-					spinner.stop();
-					spinner = null;
-				}
-			}
+		var data = {
+			termId: $termId.select2('val'), courseId: $courseId.select2('val'), tutorId: $tutorId.select2('val')
 		};
-		var singleTutorAppointmentsCalendar = {
-			url       : domainName + "/api/appointments",
-			type      : 'get',
-			dataType  : "json",
-			data      : {
-				action : 'single_tutor_appointments',
-				tutorId: $tutorId.select2('val'),
-				termId : $termId.select2('val')
-			},
-			error     : function (xhr, status, error) {
-				$calendarTitle.text("there was an error while fetching tutor's appointments");
-				console.log(xhr.responseText);
-			},
-			beforeSend: function () {
-				if (spinner == null) {
-					spinner = new Spinner(opts).spin(calendar);
-				}
+		var pendingAppointments = formatCalendarEventSource('/api/appointments', 'get', 'json', 'getPendingAppointments', data);
+		var pendingAppointmentsWithCourse = formatCalendarEventSource('/api/appointments', 'get', 'json', 'getPendingAppointmentsWithCourse', data);
+		var allAppointmentsCalendar = formatCalendarEventSource('/api/appointments', 'get', 'json', 'getAppointments', data);
+		var allSchedulesCalendar = formatCalendarEventSource('/api/schedules', 'get', 'json', 'getSchedules', data);
+		// Require course id and term id
+		var getAppointmentsWithCourse = formatCalendarEventSource('/api/appointments', 'get', 'json', 'getAppointmentsWithCourse', data);
+		var getSchedulesWithCourse = formatCalendarEventSource('/api/schedules', 'get', 'json', 'getSchedulesWithCourse', data);
 
-			},
-			complete  : function () {
-				if (spinner != null) {
-					spinner.stop();
-					spinner = null;
-				}
-			}
-		};
-		var manyTutorScheduleCalendar = {
-			url       : domainName + "/api/schedules",
-			type      : 'get',
-			dataType  : "json",
-			data      : {
-				action  : 'many_tutor_working_hours',
-				courseId: $courseId.select2('val'),
-				termId  : $termId.select2('val')
-			},
-			error     : function (xhr, status, error) {
-				$calendarTitle.text("There was an error while retrieving schedules");
-				console.log(xhr.responseText);
-			},
-			beforeSend: function () {
-				if (spinner == null) {
-					spinner = new Spinner(opts).spin(calendar);
-				}
+		var getAppointmentsForTutor = formatCalendarEventSource('/api/appointments', 'get', 'json', 'getAppointmentsForTutor', data);
+		var getScheduleForTutor = formatCalendarEventSource('/api/schedules', 'get', 'json', 'getScheduleForTutor', data);
 
-			},
-			complete  : function () {
-				if (spinner != null) {
-					spinner.stop();
-					spinner = null;
-				}
-			}
-		};
-		var manyTutorAppointmentsCalendar = {
-			url       : domainName + "/api/appointments",
-			type      : 'get',
-			dataType  : "json",
-			data      : {
-				action  : 'many_tutors_appointments',
-				courseId: $courseId.select2('val'),
-				termId  : $termId.select2('val')
-			},
-			error     : function (xhr, status, error) {
-				$calendarTitle.text("could not fetch tutor's appointments.");
-				console.log(xhr.responseText);
-			},
-			beforeSend: function () {
-				if (spinner == null) {
-					spinner = new Spinner(opts).spin(calendar);
-				}
+		/**
+		 *
+		 * @param subdomain
+		 * @param methodType
+		 * @param dataTypeFile
+		 * @param serverAction
+		 * @param termId
+		 * @returns {{url: *, type: *, dataType: *, data: {action: *, termId: *}, error: Function, beforeSend: Function, complete: Function}}
+		 */
+		function formatCalendarEventSource(subdomain, methodType, dataTypeFile, serverAction, data) {
+			return {
+				url       : domainName + subdomain,
+				type      : methodType,
+				dataType  : dataTypeFile,
+				data      : {
+					action  : serverAction,
+					termId  : data.termId,
+					courseId: data.courseId,
+					tutorId : data.tutorId
+				},
+				error     : function (xhr, status, error) {
+					$calendarTitle.text("Could not connect to database. Please refresh page.");
+					console.log(error);
+				},
+				beforeSend: function () {
+					if (spinner == null) {
+						spinner = new Spinner(opts).spin(calendar);
+					}
 
-			},
-			complete  : function () {
-				if (spinner != null) {
-					spinner.stop();
-					spinner = null;
+				},
+				complete  : function () {
+					if (spinner != null) {
+						spinner.stop();
+						spinner = null;
+					}
 				}
-			}
-		};
-		var allSchedulesCalendar = {
-			url       : domainName + "/api/schedules",
-			type      : 'get',
-			dataType  : "json",
-			data      : {
-				action: 'all_tutors_working_hours',
-				termId: $termId.val()
-			},
-			error     : function (xhr, status, error) {
-				$calendarTitle.text("Sorry, an error occurred. Please try refresh the page.");
-				console.log(xhr.responseText);
+			};
+		}
 
-			},
-			beforeSend: function () {
-				if (spinner == null) {
-					spinner = new Spinner(opts).spin(calendar);
-				}
-
-			},
-			complete  : function () {
-				if (spinner != null) {
-					spinner.stop();
-					spinner = null;
-				}
-			}
-		};
-		var allAppointmentsCalendar = {
-			url       : domainName + "/api/appointments",
-			type      : 'get',
-			dataType  : "json",
-			data      : {
-				action: 'all_tutors_appointments',
-				termId: $termId.val()
-			},
-			error     : function (xhr, status, error) {
-				$calendarTitle.text("There was an error while fetching all appointments");
-			},
-			beforeSend: function () {
-				if (spinner == null) {
-					spinner = new Spinner(opts).spin(calendar);
-				}
-
-			},
-			complete  : function () {
-				if (spinner != null) {
-					spinner.stop();
-					spinner = null;
-				}
-			}
-		};
-		var pendingAppointmentsCalendar = {
-			url       : domainName + "/api/appointments",
-			type      : 'get',
-			dataType  : "json",
-			data      : {
-				action: 'getPendingAppointments',
-				termId: $termId.val()
-			},
-			error     : function (xhr, status, error) {
-				$calendarTitle.text("Could not connect to database. Please refresh page.");
-				console.log(error);
-			},
-			beforeSend: function () {
-				if (spinner == null) {
-					spinner = new Spinner(opts).spin(calendar);
-				}
-
-			},
-			complete  : function () {
-				if (spinner != null) {
-					spinner.stop();
-					spinner = null;
-				}
-			}
-		};
-		$calendar.fullCalendar('removeEventSource', singleTutorScheduleCalendar);
-		$calendar.fullCalendar('removeEventSource', singleTutorAppointmentsCalendar);
+		$calendar.fullCalendar('removeEventSource', getScheduleForTutor);
+		$calendar.fullCalendar('removeEventSource', getAppointmentsForTutor);
 		$calendar.fullCalendar('removeEventSource', allSchedulesCalendar);
 		$calendar.fullCalendar('removeEventSource', allAppointmentsCalendar);
-		$calendar.fullCalendar('removeEventSource', manyTutorAppointmentsCalendar);
-		$calendar.fullCalendar('removeEventSource', manyTutorScheduleCalendar);
-		$calendar.fullCalendar('removeEventSource', pendingAppointmentsCalendar);
+		$calendar.fullCalendar('removeEventSource', getAppointmentsWithCourse);
+		$calendar.fullCalendar('removeEventSource', getSchedulesWithCourse);
+		$calendar.fullCalendar('removeEventSource', pendingAppointments);
 
 		switch (choice) {
 			case 'all_appointments_schedule':
@@ -438,7 +315,7 @@ $(function () {
 				$calendar.fullCalendar('addEventSource', allAppointmentsCalendar);
 				$calendar.fullCalendar('addEventSource', allSchedulesCalendar);
 				break;
-			case 'single_tutor_appointment_and_schedule':
+			case 'getAppointmentsAndSchedulesForSingleTutor':
 				if (!$tutorId.select2('val').match(/^[0-9]+$/)) {
 					throw new Error("tutor is missing");
 				}
@@ -448,25 +325,25 @@ $(function () {
 				if (!$termId.select2("val").match(/^[0-9]+$/)) {
 					throw new Error("term is missing");
 				}
-				$calendar.fullCalendar('addEventSource', singleTutorScheduleCalendar);
-				$calendar.fullCalendar('addEventSource', singleTutorAppointmentsCalendar);
+				$calendar.fullCalendar('addEventSource', getScheduleForTutor);
+				$calendar.fullCalendar('addEventSource', getAppointmentsForTutor);
 				break;
-			case 'appointments_and_schedules_for_single_course':
+			case 'getAppointmentsAndSchedulesForCourse':
 				if (!$courseId.select2("val").match(/^[0-9]+$/)) {
-					throw new Error("course is missing");
+					throw new Error("Course is missing");
 				}
 				if (!$termId.select2("val").match(/^[0-9]+$/)) {
-					throw new Error("term is missing");
+					throw new Error("Term is missing");
 				}
-				$calendar.fullCalendar('addEventSource', manyTutorScheduleCalendar);
-				$calendar.fullCalendar('addEventSource', manyTutorAppointmentsCalendar);
+				$calendar.fullCalendar('addEventSource', getSchedulesWithCourse);
+				$calendar.fullCalendar('addEventSource', getAppointmentsWithCourse);
 				break;
 			case 'working_hours_only':
 				if (!$tutorId.select2('val').match(/^[0-9]+$/)) {
 					$calendar.fullCalendar('addEventSource', allSchedulesCalendar);
 				}
 				else {
-					$calendar.fullCalendar('addEventSource', singleTutorScheduleCalendar);
+					$calendar.fullCalendar('addEventSource', getScheduleForTutor);
 				}
 				break;
 			case 'appointments_only':
@@ -475,17 +352,21 @@ $(function () {
 					$calendarTitle.text("Appointments for all tutors.");
 				}
 				else {
-					$calendar.fullCalendar('addEventSource', singleTutorAppointmentsCalendar);
+					$calendar.fullCalendar('addEventSource', getAppointmentsForTutor);
 					$calendarTitle.text("Appointments for " + $tutorId.select2('data').text);
 				}
 				break;
 			case 'getPendingAppointments':
 				// all pending appointments
 				if (!$tutorId.select2('val').match(/^[0-9]+$/) && !$courseId.select2('val').match(/^[0-9]+$/)) {
-					$calendar.fullCalendar('addEventSource', pendingAppointmentsCalendar);
+					$calendar.fullCalendar('addEventSource', pendingAppointments);
 					$calendarTitle.text("All pending appointments");
 				}
-				/// pending appointments for select course
+				/// pending appointments for selected course
+				if (!$tutorId.select2('val').match(/^[0-9]+$/) && $courseId.select2('val').match(/^[0-9]+$/)) {
+					$calendar.fullCalendar('addEventSource', pendingAppointmentsWithCourse);
+					$calendarTitle.text("All pending appointments");
+				}
 				// pending appointments for selected tutor
 				// pending appointments for selected course and tutor
 				break;
@@ -505,24 +386,6 @@ $(function () {
 			$calendarTitle.text($tutorId.select2('data').text);
 		}
 
-	}
-
-	function loadAllCalendars() {
-		try {
-			reloadCalendar('single_tutor_appointment_and_schedule');
-		} catch (err) {
-			// clear options
-			$tutorId.empty().append("<option></option>");
-			$tutorId.select2({
-				placeholder: err.message
-			});
-		}
-
-		try {
-			reloadCalendar('all_appointments_schedule');
-		} catch (err) {
-			$calendarTitle.text(err);
-		}
 	}
 
 	function retrieveTutors() {
@@ -659,7 +522,7 @@ $(function () {
 	}
 	//retrieveTutors();
 	//try {
-	//	reloadCalendar('single_tutor_appointment_and_schedule');
+	//	reloadCalendar('getAppointmentsAndSchedulesForSingleTutor');
 	//} catch (err) {
 	//	// clear options
 	//	$tutorId.empty().append("<option></option>");
@@ -676,7 +539,7 @@ $(function () {
 
 	//$calendar.fullCalendar({
 	//	events: domainName + '/api/appointments',
-	//	action: 'all_tutors_appointments',
+	//	action: 'getAppointments',
 	//	termId: $termId.val()
 	//})
 	// ;

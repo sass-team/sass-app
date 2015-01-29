@@ -226,7 +226,5 @@ class App
 		$file = ROOT_PATH . '../../app_errors.log';
 
 		file_put_contents($file, $messsage, FILE_APPEND | LOCK_EX);
-
-		var_dump($messsage);
 	}
 }

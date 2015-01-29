@@ -10,13 +10,13 @@ if (is_ajax()) {
 		$action = $_GET["action"];
 
 		switch ($action) { //Switch case for value of action
-			case "all_tutors_working_hours":
+			case "getSchedules":
 				printAllTutorsSchedules($_GET["termId"], $_GET["start"], $_GET["end"]);
 				break;
-			case "single_tutor_working_hours":
+			case "getScheduleForTutor":
 				printSingleTutorSchedules($_GET["tutorId"], $_GET["termId"], $_GET["start"], $_GET["end"]);
 				break;
-			case "many_tutor_working_hours":
+			case "getSchedulesWithCourse":
 				printManyTutorSchedulesForCourse($_GET["courseId"], $_GET["termId"], $_GET["start"], $_GET["end"]);
 				break;
 

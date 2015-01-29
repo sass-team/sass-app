@@ -14,17 +14,20 @@ if (isset($_GET["action"]) && !empty($_GET["action"]))
 	$action = $_GET["action"];
 	switch ($action)
 	{ //Switch case for value of action
-		case "all_tutors_appointments":
+		case "getAppointments":
 			echo Appointment::getCalendarAllAppointmentsOnTerm($_GET["termId"]);
 			break;
-		case "single_tutor_appointments":
+		case "getAppointmentsForTutor":
 			echo Appointment::getCalendarSingleTutorAppointments($_GET["tutorId"], $_GET["termId"]);
 			break;
-		case "many_tutors_appointments":
+		case "getAppointmentsWithCourse":
 			echo Appointment::getCalendarAllAppointmentsForTutorsTeachingOnTerm($_GET["courseId"], $_GET["termId"]);
 			break;
 		case "getPendingAppointments":
 			echo Appointment::getPendingAppointments($_GET["termId"]);
+			break;
+		case "getPendingAppointmentsWithCourse":
+			echo Appointment::getPendingAppointmentsWithCourse($_GET["courseId"], $_GET["termId"]);
 			break;
 	}
 } else
