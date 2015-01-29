@@ -317,15 +317,15 @@ function get($objects, $findId, $column)
 
 							<h3>
 								<i class="fa fa-calendar"></i>
+								Calendar
 								<span id="calendar-title">
 									<i class='fa fa-circle-o-notch fa-spin'></i>
 								</span>
-
 								<button id="show-only-working-hours" type="button"
-								        class="btn btn-primary btn-xs btn-secondary">
+								        class="btn btn-xs btn-secondary">
 									Working Hours
 								</button>
-								<button id="show-only-appointments" type="button" class="btn btn-default btn-xs">
+								<button id="show-only-appointments" type="button" class="btn btn-info btn-xs">
 									All Appointments
 								</button>
 								<button id="show-pending-appointments" type="button" class="btn btn-tertiary btn-xs">
@@ -338,6 +338,7 @@ function get($objects, $findId, $column)
 								<button type="button" class="btn btn-primary btn-xs" disabled>
 									Canceled Appointments
 								</button>
+
 							</h3>
 
 						</div>
@@ -387,6 +388,7 @@ function get($objects, $findId, $column)
 	src="<?php echo BASE_URL; ?>assets/packages/bootstrap-toggle/js/bootstrap-toggle.min.js">
 </script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/fullcalendar/fullcalendar.min.js"></script>
+<script src="<?php echo BASE_URL; ?>assets/packages/pnotify/pnotify.custom.min.js"></script>
 
 <!-- Custom js -->
 <script src="<?php echo BASE_URL; ?>assets/js/app/appointments-add.js"></script>

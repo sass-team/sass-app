@@ -25,6 +25,7 @@
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/js/plugins/fullcalendar/fullcalendar.css"
 	      type="text/css"/>
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/App.css" type="text/css"/>
+	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/packages/pnotify/pnotify.custom.min.css" type="text/css"/>
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/packages/bootstrap-toggle/css/bootstrap-toggle.min.css"
 	      type="text/css"/>
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/parsley.css" type="text/css"/>

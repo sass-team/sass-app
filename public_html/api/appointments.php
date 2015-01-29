@@ -29,6 +29,12 @@ if (isset($_GET["action"]) && !empty($_GET["action"]))
 		case "getPendingAppointmentsWithCourse":
 			echo Appointment::getPendingAppointmentsWithCourse($_GET["courseId"], $_GET["termId"]);
 			break;
+		case "getPendingAppointWithCourseAndTutor":
+			echo Appointment::getPendingAppointmentsWithCourseAndTutor($_GET["tutorId"], $_GET["courseId"], $_GET["termId"]);
+			break;
+		case "getAppointmentWithCourseAndTutor":
+			echo Appointment::getAppointmentsForCourseAndTutor($_GET["tutorId"], $_GET["courseId"], $_GET["termId"]);
+			break;
 	}
 } else
 {

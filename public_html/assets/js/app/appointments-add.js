@@ -64,6 +64,29 @@ $(function () {
 		top      : '50%', // top position relative to parent
 		left     : '50%' // left position relative to parent
 	};
+	var stack_bottomright = {"dir1": "up", "dir2": "left", "firstpos1": 25, "firstpos2": 25};
+	var pnotifySettingsInfo = {
+		title        : 'Calendar Notice',
+		text         : '',
+		type         : 'info',
+		delay        : 3000,
+		history      : {history: true, menu: true},
+		addclass     : "stack-bottomright", // This is one of the included default classes.
+		stack        : stack_bottomright,
+		animation    : "slide",
+		animate_speed: "slow"
+	};
+	var pnotifySettingsWarning = {
+		title        : 'Calendar Warning',
+		text         : '',
+		type         : 'error',
+		delay        : 7000,
+		history      : {history: true, menu: true},
+		addclass     : "stack-bottomright", // This is one of the included default classes.
+		stack        : stack_bottomright,
+		animation    : "slide",
+		animate_speed: "slow"
+	};
 	// init $calendar
 	$calendar.fullCalendar({
 		header      : {
@@ -261,6 +284,8 @@ $(function () {
 
 		var getAppointmentsForTutor = formatCalendarEventSource('/api/appointments', 'get', 'json', 'getAppointmentsForTutor', data);
 		var getScheduleForTutor = formatCalendarEventSource('/api/schedules', 'get', 'json', 'getScheduleForTutor', data);
+		var pendingAppointmentsWithCourseAndTutor = formatCalendarEventSource('/api/appointments', 'get', 'json', 'getPendingAppointWithCourseAndTutor', data);
+		var getAppointmentsForCourseAndTutor = formatCalendarEventSource('/api/appointments', 'get', 'json', 'getAppointmentWithCourseAndTutor', data);
 
 		/**
 		 *
@@ -283,8 +308,8 @@ $(function () {
 					tutorId : data.tutorId
 				},
 				error     : function (xhr, status, error) {
-					$calendarTitle.text("Could not connect to database. Please refresh page.");
-					console.log(error);
+					pnotifySettingsWarning.text = "Could not connect to database. Please try to refresh the web page.";
+					new PNotify(pnotifySettingsWarning);
 				},
 				beforeSend: function () {
 					if (spinner == null) {
@@ -308,6 +333,8 @@ $(function () {
 		$calendar.fullCalendar('removeEventSource', getAppointmentsWithCourse);
 		$calendar.fullCalendar('removeEventSource', getSchedulesWithCourse);
 		$calendar.fullCalendar('removeEventSource', pendingAppointments);
+		$calendar.fullCalendar('removeEventSource', pendingAppointmentsWithCourseAndTutor);
+		$calendar.fullCalendar('removeEventSource', getAppointmentsForCourseAndTutor);
 
 		switch (choice) {
 			case 'all_appointments_schedule':
@@ -317,16 +344,21 @@ $(function () {
 				break;
 			case 'getAppointmentsAndSchedulesForSingleTutor':
 				if (!$tutorId.select2('val').match(/^[0-9]+$/)) {
-					throw new Error("tutor is missing");
+					pnotifySettingsWarning.text = "Tutor is missing";
+					new PNotify(pnotifySettingsWarning);
 				}
 				if (!$courseId.select2("val").match(/^[0-9]+$/)) {
-					throw new Error("course is missing");
+					pnotifySettingsWarning.text = "Course is missing";
+					new PNotify(pnotifySettingsWarning);
 				}
 				if (!$termId.select2("val").match(/^[0-9]+$/)) {
-					throw new Error("term is missing");
+					pnotifySettingsWarning.text = "Term is missing";
+					new PNotify(pnotifySettingsWarning);
 				}
 				$calendar.fullCalendar('addEventSource', getScheduleForTutor);
 				$calendar.fullCalendar('addEventSource', getAppointmentsForTutor);
+				pnotifySettingsInfo.text = "Retrieved appointments and working hours for " + $tutorId.select2('data').text;
+				new PNotify(pnotifySettingsInfo);
 				break;
 			case 'getAppointmentsAndSchedulesForCourse':
 				if (!$courseId.select2("val").match(/^[0-9]+$/)) {
@@ -337,55 +369,69 @@ $(function () {
 				}
 				$calendar.fullCalendar('addEventSource', getSchedulesWithCourse);
 				$calendar.fullCalendar('addEventSource', getAppointmentsWithCourse);
+
+				pnotifySettingsInfo.text = "Retrieved all appointments and working hours for " + $courseId.select2('data').text;
+				new PNotify(pnotifySettingsInfo);
 				break;
 			case 'working_hours_only':
 				if (!$tutorId.select2('val').match(/^[0-9]+$/)) {
 					$calendar.fullCalendar('addEventSource', allSchedulesCalendar);
+					pnotifySettingsInfo.text = "Retrieved all working hours";
+					new PNotify(pnotifySettingsInfo);
 				}
 				else {
 					$calendar.fullCalendar('addEventSource', getScheduleForTutor);
+					pnotifySettingsInfo.text = "Retrieved all working hours for " + $courseId.select2('data').text + ".";
+					new PNotify(pnotifySettingsInfo);
 				}
 				break;
 			case 'appointments_only':
-				if (!$tutorId.select2('val').match(/^[0-9]+$/)) {
+				if (!$courseId.select2('val').match(/^[0-9]+$/) && !$courseId.select2('val').match(/^[0-9]+$/)) {
 					$calendar.fullCalendar('addEventSource', allAppointmentsCalendar);
-					$calendarTitle.text("Appointments for all tutors.");
+					pnotifySettingsInfo.text = "Retrieved the appointments of all tutors.";
+					new PNotify(pnotifySettingsInfo);
+					break;
 				}
-				else {
-					$calendar.fullCalendar('addEventSource', getAppointmentsForTutor);
-					$calendarTitle.text("Appointments for " + $tutorId.select2('data').text);
+				else if ($courseId.select2('val').match(/^[0-9]+$/) && !$tutorId.select2('val').match(/^[0-9]+$/)) {
+					$calendar.fullCalendar('addEventSource', allAppointmentsCalendar);
+					pnotifySettingsInfo.text = "Retrieved the appointments for " + $courseId.select2('data').text + ".";
+					new PNotify(pnotifySettingsInfo);
+				}
+				else if ($courseId.select2('val').match(/^[0-9]+$/) && $tutorId.select2('val').match(/^[0-9]+$/)) {
+					$calendar.fullCalendar('addEventSource', getAppointmentsForCourseAndTutor);
+					pnotifySettingsInfo.text = "Retrieved the appointments of " + $tutorId.select2('data').text + ".";
+					new PNotify(pnotifySettingsInfo);
 				}
 				break;
 			case 'getPendingAppointments':
 				// all pending appointments
 				if (!$tutorId.select2('val').match(/^[0-9]+$/) && !$courseId.select2('val').match(/^[0-9]+$/)) {
 					$calendar.fullCalendar('addEventSource', pendingAppointments);
-					$calendarTitle.text("All pending appointments");
+					pnotifySettingsInfo.text = "Retrieved all pending appointments.";
+					new PNotify(pnotifySettingsInfo);
+					break;
 				}
 				/// pending appointments for selected course
 				if (!$tutorId.select2('val').match(/^[0-9]+$/) && $courseId.select2('val').match(/^[0-9]+$/)) {
 					$calendar.fullCalendar('addEventSource', pendingAppointmentsWithCourse);
-					$calendarTitle.text("All pending appointments");
+					pnotifySettingsInfo.text = "Retrieved all pending appointments for " + $courseId.select2('data').text;
+					new PNotify(pnotifySettingsInfo);
+					break;
 				}
 				// pending appointments for selected tutor
+				if ($tutorId.select2('val').match(/^[0-9]+$/) && $courseId.select2('val').match(/^[0-9]+$/)) {
+					$calendar.fullCalendar('addEventSource', pendingAppointmentsWithCourseAndTutor);
+					pnotifySettingsInfo.text = "Retrieved all pending appointments for " + $tutorId.select2('data').text
+					+ " for course " + $courseId.select2('data').text;
+					new PNotify(pnotifySettingsInfo);
+					break;
+				}
 				// pending appointments for selected course and tutor
 				break;
 			default:
 				break;
 		}
-
 		$calendar.fullCalendar('refetchEvents');
-
-		if (!$tutorId.select2('val').match(/^[0-9]+$/) && !$courseId.select2('val').match(/^[0-9]+$/)) {
-			$calendarTitle.text("All tutors.");
-		}
-		else if (!$tutorId.select2('val').match(/^[0-9]+$/) && $courseId.select2('val').match(/^[0-9]+$/)) {
-			$calendarTitle.text("Tutors able to facilitate this course.");
-		}
-		else {
-			$calendarTitle.text($tutorId.select2('data').text);
-		}
-
 	}
 
 	function retrieveTutors() {
@@ -393,10 +439,12 @@ $(function () {
 		var termId = $("#termId").select2("val");
 
 		if (!courseId.match(/^[0-9]+$/)) {
-			throw new Error("course is missing");
+			pnotifySettingsInfo.text = "Course is missing";
+			new PNotify(pnotifySettingsInfo);
 		}
 		if (!termId.match(/^[0-9]+$/)) {
-			throw new Error("term is missing");
+			pnotifySettingsInfo.text = "Term is missing";
+			new PNotify(pnotifySettingsInfo);
 		}
 
 		var $labelInstructorText = $('#label-instructor-text');
