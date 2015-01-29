@@ -393,8 +393,8 @@ $(function () {
 					break;
 				}
 				else if ($courseId.select2('val').match(/^[0-9]+$/) && !$tutorId.select2('val').match(/^[0-9]+$/)) {
-					$calendar.fullCalendar('addEventSource', allAppointmentsCalendar);
-					pnotifySettingsInfo.text = "Retrieved the appointments for " + $courseId.select2('data').text + ".";
+					$calendar.fullCalendar('addEventSource', getAppointmentsWithCourse);
+					pnotifySettingsInfo.text = "Retrieved the appointments with course " + $courseId.select2('data').text + ".";
 					new PNotify(pnotifySettingsInfo);
 				}
 				else if ($courseId.select2('val').match(/^[0-9]+$/) && $tutorId.select2('val').match(/^[0-9]+$/)) {
