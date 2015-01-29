@@ -26,8 +26,6 @@ try
 		exit();
 	}
 
-
-
 	$filePath = ROOT_PATH . 'storage/backups/';
 	$fileName = 'sass app db ' . date('m-d-Y Hi') . '.sql';
 	$zippedFileName = $fileName . '.gz';

@@ -539,4 +539,52 @@ class Appointment
 
 		echo $appointmentsPrint;
 	}
+	public static function  getPendingAppointments($termId)
+	{
+		Term::validateId($termId);
+
+		$appointmentHours = AppointmentFetcher::retrievePending($termId);
+		$appointmentHoursJSON = [];
+		foreach ($appointmentHours as $appointmentHour)
+		{
+			$appointmentTitle = $appointmentHour[CourseFetcher::DB_COLUMN_CODE] . " - " .
+				$appointmentHour[UserFetcher::DB_COLUMN_FIRST_NAME] . " " . $appointmentHour[UserFetcher::DB_COLUMN_LAST_NAME];
+
+			$students = AppointmentHasStudentFetcher::retrieveStudentsWithAppointment($appointmentHour[AppointmentFetcher::DB_COLUMN_ID]);
+			$appointmentTitle .= " - ";
+			foreach ($students as $student)
+			{
+				$appointmentTitle .= $student[StudentFetcher::DB_TABLE . "_" . StudentFetcher::DB_COLUMN_FIRST_NAME] . " " .
+					$student[StudentFetcher::DB_TABLE . "_" . StudentFetcher::DB_COLUMN_LAST_NAME] . ", ";
+			}
+			$appointmentTitle = rtrim($appointmentTitle, ", ");
+
+			$startDate = new DateTime($appointmentHour[AppointmentFetcher::DB_COLUMN_START_TIME]);
+			$endDate = new DateTime($appointmentHour[AppointmentFetcher::DB_COLUMN_END_TIME]);
+			$appointmentUrl = App::getDomainName() . "/appointments/" . $appointmentHour[UserFetcher::DB_COLUMN_ID];
+
+			switch ($appointmentHour[AppointmentFetcher::DB_COLUMN_LABEL_COLOR])
+			{
+				case Appointment::LABEL_COLOR_PENDING:
+					$color = '#888888';
+					break;
+				case Appointment::LABEL_COLOR_CANCELED:
+					$color = '#e5412d';
+					break;
+				case Appointment::LABEL_COLOR_SUCCESS:
+					$color = '#3fa67a';
+					break;
+				case Appointment::LABEL_COLOR_WARNING:
+					$color = '#f0ad4e';
+					break;
+				default:
+					$color = '#444';
+					break;
+			}
+			$appointmentHoursJSON[] = ['title'            => $appointmentTitle, 'start' => $startDate->format('Y-m-d H:i:s'), 'end' =>
+				$endDate->format('Y-m-d H:i:s'), 'allDay' => false, 'url' => $appointmentUrl, 'color' => $color];
+		}
+
+		return json_encode($appointmentHoursJSON);
+	}
 }

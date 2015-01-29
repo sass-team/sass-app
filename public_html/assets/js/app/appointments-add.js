@@ -13,7 +13,7 @@ $(function () {
 	var $studentId = $("#studentId1");
 	var $calendarTitle = $('#calendar-title');
 	var $calendar = $("#appointments-schedule-calendar");
-	var $maximizeChoices = $("#maximize-inputs");
+	var $pendingAppointmentsBtn = $('#show-pending-appointments');
 
 	// Server side data
 	var isAdmin = $('#isAdmin').val();
@@ -25,6 +25,25 @@ $(function () {
 	var dateTimePickerEndServerSide = $('#dateTimePickerEndServerSide').val();
 	var domainName = $('#domainName').val();
 
+	// Config data
+	var startDateDefault;
+	var spinner;
+	if (moment().minute() >= 30) {
+		startDateDefault = moment().add('1', 'hours');
+		startDateDefault.minutes(0);
+	}
+	else {
+		startDateDefault = moment();
+		startDateDefault.minutes(30);
+	}
+	var minimumStartDate = startDateDefault.clone();
+	minimumStartDate.subtract('31', 'minutes');
+	var minimumMaxDate = moment().add('14', 'day');
+	var endDateDefault = startDateDefault.clone();
+	endDateDefault.add('30', 'minutes');
+	var minimumEndDate = endDateDefault.clone();
+	minimumEndDate.subtract('31', 'minutes');
+	// Config settings
 	// spinner config
 	var opts = {
 		lines    : 13, // The number of lines to draw
@@ -44,7 +63,6 @@ $(function () {
 		top      : '50%', // top position relative to parent
 		left     : '50%' // left position relative to parent
 	};
-
 	// init $calendar
 	$calendar.fullCalendar({
 		header      : {
@@ -54,18 +72,47 @@ $(function () {
 		},
 		weekends    : false, // will hide saturdays and sundays
 		minTime     : "09:00:00",
-		maxTime     : "22:00:00",
+		maxTime     : "23:59:59",
 		defaultView : "agendaWeek",
 		editable    : false,
 		droppable   : false,
 		eventSources: []
 	});
+	$dateTimePickerStart.datetimepicker({
+		defaultDate       : startDateDefault,
+		minDate           : (userId == 9 || isAdmin) ? false : minimumStartDate,
+		maxDate           : minimumMaxDate,
+		minuteStepping    : 30,
+		daysOfWeekDisabled: [0, 6],
+		sideBySide        : true,
+		strict            : true
+	});
+	$dateTimePickerEnd.datetimepicker({
+		defaultDate       : endDateDefault,
+		minDate           : (userId == 9 || isAdmin) ? false : minimumEndDate,
+		minuteStepping    : 30,
+		daysOfWeekDisabled: [0, 6],
+		sideBySide        : true,
+		strict            : true
+	});
+	$termId.select2();
 
+	// Place holders
 	$courseId.select2({
 		placeholder: "Select one",
 		allowClear : false
 	});
+	$instructorId.select2({
+		placeholder: "Select one"
+	});
+	$studentId.select2({
+		placeholder: "Select one"
+	});
+	$tutorId.select2({
+		placeholder: "Course required"
+	});
 
+	// Event Listeners
 	$courseId.click(function () {
 		try {
 			retrieveTutors();
@@ -96,44 +143,6 @@ $(function () {
 			});
 		}
 	});
-
-	var startDateDefault;
-	if (moment().minute() >= 30) {
-		startDateDefault = moment().add('1', 'hours');
-		startDateDefault.minutes(0);
-	}
-	else {
-		startDateDefault = moment();
-		startDateDefault.minutes(30);
-	}
-
-	var minimumStartDate = startDateDefault.clone();
-	minimumStartDate.subtract('31', 'minutes');
-	var minimumMaxDate = moment().add('14', 'day');
-
-	var endDateDefault = startDateDefault.clone();
-	endDateDefault.add('30', 'minutes');
-	var minimumEndDate = endDateDefault.clone();
-	minimumEndDate.subtract('31', 'minutes');
-
-	$dateTimePickerStart.datetimepicker({
-		defaultDate       : startDateDefault,
-		minDate           : (userId == 9 || isAdmin) ? false : minimumStartDate,
-		maxDate           : minimumMaxDate,
-		minuteStepping    : 30,
-		daysOfWeekDisabled: [0, 6],
-		sideBySide        : true,
-		strict            : true
-	});
-	$dateTimePickerEnd.datetimepicker({
-		defaultDate       : endDateDefault,
-		minDate           : (userId == 9 || isAdmin) ? false : minimumEndDate,
-		minuteStepping    : 30,
-		daysOfWeekDisabled: [0, 6],
-		sideBySide        : true,
-		strict            : true
-	})
-	;
 	$dateTimePickerStart.on("dp.change", function (e) {
 		var newEndDateDefault = $(this).data("DateTimePicker").getDate().clone();
 
@@ -144,17 +153,6 @@ $(function () {
 		$dateTimePickerEnd2.data("DateTimePicker").setMinDate(newMinimumEndDate);
 		$dateTimePickerEnd2.data("DateTimePicker").setDate(newEndDateDefault);
 	});
-	$termId.select2();
-	$instructorId.select2({
-		placeholder: "Select one"
-	});
-	$studentId.select2({
-		placeholder: "Select one"
-	});
-	$tutorId.select2({
-		placeholder: "Course required"
-	});
-
 	$tutorId.click(function () {
 		try {
 			reloadCalendar('single_tutor_appointment_and_schedule');
@@ -166,15 +164,75 @@ $(function () {
 			});
 		}
 	});
-
 	$("#show-only-working-hours").on('click', function () {
 		reloadCalendar("working_hours_only");
 	});
-
 	$("#show-only-appointments").on('click', function () {
 		reloadCalendar("appointments_only");
 	});
+	$('.addButton').on('click', function () {
+		var index = $(this).data('index');
 
+		if (!index) {
+			index = 1;
+			$(this).data('index', 1);
+		}
+		index++;
+		$(this).data('index', index);
+
+		var template = $(this).attr('data-template'),
+			$templateEle = $('#' + template + 'Template'),
+			$row = $templateEle.clone().removeAttr('id').insertBefore($templateEle).removeClass('hide'),
+			$el = $row.find('input').eq(0).attr('name', template + '[]');
+
+		var newStudentId = 'studentId' + index;
+		var newInstructorId = 'instructorId' + index;
+
+		var $curStudentRow = $('#student-instructor');
+		//$curStudentRow.addClass('row');
+		//$curStudentRow.parent.addClass('row');
+		$studentId.select2("destroy");
+		$instructorId.select2("destroy");
+
+		var newRow = $curStudentRow.clone();
+		$('#studentId1', newRow).attr('id', newStudentId);
+		$('#instructorId1', newRow).attr('id', newInstructorId);
+
+		$row.prepend(newRow);
+
+		$("#studentId1").select2({
+			placeholder: "Select one"
+		});
+		$("#instructorid1").select2({
+			placeholder: "Select one"
+		});
+		$("#" + newStudentId).select2({
+			placeholder: "Select one"
+		});
+		$("#" + newInstructorId).select2({
+			placeholder: "Select one"
+		});
+
+		$row.on('click', '.removeButton', function (e) {
+			$row.remove();
+			newRow.remove();
+		});
+	});
+	$('#toggle-details-calendar-partial').change(function () {
+		var isCheckedDetails = $(this).prop('checked');
+		var $portletDetails = $('#portletDetails');
+
+		if (!isCheckedDetails) {
+			$portletDetails.addClass('hide');
+			return;
+		}
+
+		$portletDetails.removeClass('hide');
+	});
+	$pendingAppointmentsBtn.click(function () {
+		reloadCalendar("getPendingAppointments");
+	});
+	// Custom functions
 	function reloadCalendar(choice) {
 		var calendar = document.getElementById('appointments-schedule-calendar');
 		var spinner;
@@ -239,7 +297,6 @@ $(function () {
 				}
 			}
 		};
-
 		var manyTutorScheduleCalendar = {
 			url       : domainName + "/api/schedules",
 			type      : 'get',
@@ -250,7 +307,7 @@ $(function () {
 				termId  : $termId.select2('val')
 			},
 			error     : function (xhr, status, error) {
-				$calendarTitle.text("there was an error while retrieving schedules");
+				$calendarTitle.text("There was an error while retrieving schedules");
 				console.log(xhr.responseText);
 			},
 			beforeSend: function () {
@@ -301,7 +358,7 @@ $(function () {
 				termId: $termId.val()
 			},
 			error     : function (xhr, status, error) {
-				$('#calendar-title').text("Sorry, an error occurred. Please try refresh the page.");
+				$calendarTitle.text("Sorry, an error occurred. Please try refresh the page.");
 				console.log(xhr.responseText);
 
 			},
@@ -327,7 +384,32 @@ $(function () {
 				termId: $termId.val()
 			},
 			error     : function (xhr, status, error) {
-				$('#calendar-title').text("there was an error while fetching all appointments");
+				$calendarTitle.text("There was an error while fetching all appointments");
+			},
+			beforeSend: function () {
+				if (spinner == null) {
+					spinner = new Spinner(opts).spin(calendar);
+				}
+
+			},
+			complete  : function () {
+				if (spinner != null) {
+					spinner.stop();
+					spinner = null;
+				}
+			}
+		};
+		var pendingAppointmentsCalendar = {
+			url       : domainName + "/api/appointments",
+			type      : 'get',
+			dataType  : "json",
+			data      : {
+				action: 'getPendingAppointments',
+				termId: $termId.val()
+			},
+			error     : function (xhr, status, error) {
+				$calendarTitle.text("Could not connect to database. Please refresh page.");
+				console.log(error);
 			},
 			beforeSend: function () {
 				if (spinner == null) {
@@ -348,6 +430,7 @@ $(function () {
 		$calendar.fullCalendar('removeEventSource', allAppointmentsCalendar);
 		$calendar.fullCalendar('removeEventSource', manyTutorAppointmentsCalendar);
 		$calendar.fullCalendar('removeEventSource', manyTutorScheduleCalendar);
+		$calendar.fullCalendar('removeEventSource', pendingAppointmentsCalendar);
 
 		switch (choice) {
 			case 'all_appointments_schedule':
@@ -389,12 +472,22 @@ $(function () {
 			case 'appointments_only':
 				if (!$tutorId.select2('val').match(/^[0-9]+$/)) {
 					$calendar.fullCalendar('addEventSource', allAppointmentsCalendar);
-					$('#calendar-title').text("Appointments for all tutors.");
+					$calendarTitle.text("Appointments for all tutors.");
 				}
 				else {
 					$calendar.fullCalendar('addEventSource', singleTutorAppointmentsCalendar);
-					$('#calendar-title').text("Appointments for " + $tutorId.select2('data').text);
+					$calendarTitle.text("Appointments for " + $tutorId.select2('data').text);
 				}
+				break;
+			case 'getPendingAppointments':
+				// all pending appointments
+				if (!$tutorId.select2('val').match(/^[0-9]+$/) && !$courseId.select2('val').match(/^[0-9]+$/)) {
+					$calendar.fullCalendar('addEventSource', pendingAppointmentsCalendar);
+					$calendarTitle.text("All pending appointments");
+				}
+				/// pending appointments for select course
+				// pending appointments for selected tutor
+				// pending appointments for selected course and tutor
 				break;
 			default:
 				break;
@@ -431,55 +524,6 @@ $(function () {
 			$calendarTitle.text(err);
 		}
 	}
-
-	$('.addButton').on('click', function () {
-		var index = $(this).data('index');
-
-		if (!index) {
-			index = 1;
-			$(this).data('index', 1);
-		}
-		index++;
-		$(this).data('index', index);
-
-		var template = $(this).attr('data-template'),
-			$templateEle = $('#' + template + 'Template'),
-			$row = $templateEle.clone().removeAttr('id').insertBefore($templateEle).removeClass('hide'),
-			$el = $row.find('input').eq(0).attr('name', template + '[]');
-
-		var newStudentId = 'studentId' + index;
-		var newInstructorId = 'instructorId' + index;
-
-		var $curStudentRow = $('#student-instructor');
-		//$curStudentRow.addClass('row');
-		//$curStudentRow.parent.addClass('row');
-		$studentId.select2("destroy");
-		$instructorId.select2("destroy");
-
-		var newRow = $curStudentRow.clone();
-		$('#studentId1', newRow).attr('id', newStudentId);
-		$('#instructorId1', newRow).attr('id', newInstructorId);
-
-		$row.prepend(newRow);
-
-		$("#studentId1").select2({
-			placeholder: "Select one"
-		});
-		$("#instructorid1").select2({
-			placeholder: "Select one"
-		});
-		$("#" + newStudentId).select2({
-			placeholder: "Select one"
-		});
-		$("#" + newInstructorId).select2({
-			placeholder: "Select one"
-		});
-
-		$row.on('click', '.removeButton', function (e) {
-			$row.remove();
-			newRow.remove();
-		});
-	});
 
 	function retrieveTutors() {
 		var courseId = $("#courseId").select2("val");
@@ -628,16 +672,13 @@ $(function () {
 		$dateTimePickerEnd.data("DateTimePicker").setDate(dateTimePickerStartServerSide);
 	}
 
-	$('#toggle-details-calendar-partial').change(function () {
-		var isCheckedDetails = $(this).prop('checked');
-		var $portletDetails = $('#portletDetails');
-
-		if (!isCheckedDetails) {
-			$portletDetails.addClass('hide');
-			return;
-		}
-
-		$portletDetails.removeClass('hide');
-	});
 	reloadCalendar("appointments_only");
+
+	//$calendar.fullCalendar({
+	//	events: domainName + '/api/appointments',
+	//	action: 'all_tutors_appointments',
+	//	termId: $termId.val()
+	//})
+	// ;
+
 });

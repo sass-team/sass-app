@@ -80,7 +80,8 @@ function get($objects, $findId, $column)
 				New Appointment
 				<div class="col-md-1 col-lg-pull-1 col-lg-1 col-md-pull-1 col-sm-pull-1 pull-right">
 					<input checked id="toggle-details-calendar-partial" data-toggle="toggle" type="checkbox"
-					       data-on="Details" data-off="Calendar">
+					       data-on="<i class='fa fa-plus-square'></i>  Details" data-onstyle="info" data-size="normal"
+					       data-off="<i class='fa fa-calendar'></i>  Calendar">
 				</div>
 			</h1>
 
@@ -115,7 +116,7 @@ function get($objects, $findId, $column)
 						<div class="portlet-header">
 
 							<h3 class="col-md-10 pull-left">
-								<i class="fa fa-calendar"></i>
+								<i class="fa fa-plus-square"></i>
 								Details
 
 							</h3>
@@ -290,9 +291,10 @@ function get($objects, $findId, $column)
 
 
 									<div class="row">
-										<div class="col-lg-6 col-lg-push-3 col-md-8 col-md-push-2 col-sm-10 col-sm-push-1">
+										<div
+											class="col-lg-6 col-lg-push-3 col-md-8 col-md-push-2 col-sm-10 col-sm-push-1">
 											<div class="form-group">
-												<button type="submit" class="btn btn-block btn-primary">Add</button>
+												<button type="submit" class="btn btn-block btn-info">Add</button>
 												<input type="hidden" name="hiddenSubmitPrsd" value="">
 											</div>
 										</div>
@@ -318,7 +320,7 @@ function get($objects, $findId, $column)
 								<span id="calendar-title">
 									<i class='fa fa-circle-o-notch fa-spin'></i>
 								</span>
-								  
+
 								<button id="show-only-working-hours" type="button"
 								        class="btn btn-primary btn-xs btn-secondary">
 									Working Hours
@@ -326,10 +328,11 @@ function get($objects, $findId, $column)
 								<button id="show-only-appointments" type="button" class="btn btn-default btn-xs">
 									All Appointments
 								</button>
-								<button id="show-only-appointments" type="button" class="btn btn-tertiary btn-xs" disabled>
+								<button id="show-pending-appointments" type="button" class="btn btn-tertiary btn-xs">
 									Pending Appointments
 								</button>
-								<button id="show-only-appointments" type="button" class="btn btn-success btn-xs" disabled>
+								<button id="show-only-appointments" type="button" class="btn btn-success btn-xs"
+								        disabled>
 									Completed Appointments
 								</button>
 								<button type="button" class="btn btn-primary btn-xs" disabled>
