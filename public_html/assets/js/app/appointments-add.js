@@ -70,6 +70,9 @@ $(function () {
 		try {
 			retrieveTutors();
 			reloadCalendar('appointments_and_schedules_for_single_course');
+			$courseId.select2({
+				placeholder: $courseId.select2("val")
+			});
 		}
 		catch (err) {
 			$tutorId.select2({
@@ -131,7 +134,7 @@ $(function () {
 		strict            : true
 	})
 	;
-	$dateTimePickerStart.on("dp.change", function () {
+	$dateTimePickerStart.on("dp.change", function (e) {
 		var newEndDateDefault = $(this).data("DateTimePicker").getDate().clone();
 
 		newEndDateDefault.add('30', 'minutes');
@@ -146,7 +149,7 @@ $(function () {
 		placeholder: "select an instructor"
 	});
 	$studentId.select2({
-		placeholder: "select one"
+		placeholder: "Select one"
 	});
 	$tutorId.select2({
 		placeholder: "first select a course"
@@ -398,7 +401,7 @@ $(function () {
 		$calendar.fullCalendar('refetchEvents');
 
 		if (!$tutorId.select2('val').match(/^[0-9]+$/)) {
-			$calendarTitle.text("all");
+			$calendarTitle.text("Appointments & Working Hours");
 		}
 		else {
 			$calendarTitle.text($tutorId.select2('data').text);
@@ -426,7 +429,7 @@ $(function () {
 
 	$('.addButton').on('click', function () {
 		var index = $(this).data('index');
-		
+
 		if (!index) {
 			index = 1;
 			$(this).data('index', 1);
@@ -435,34 +438,36 @@ $(function () {
 		$(this).data('index', index);
 
 		var template = $(this).attr('data-template'),
-			$templateEle = $('#' + template + 'template'),
-			$row = $templateEle.clone().removeAttribute('id').insertBefore($templateEle).removeClass('hide'),
+			$templateEle = $('#' + template + 'Template'),
+			$row = $templateEle.clone().removeAttr('id').insertBefore($templateEle).removeClass('hide'),
 			$el = $row.find('input').eq(0).attr('name', template + '[]');
 
 		var newStudentId = 'studentId' + index;
 		var newInstructorId = 'instructorId' + index;
 
 		var $curStudentRow = $('#student-instructor');
+		//$curStudentRow.addClass('row');
+		//$curStudentRow.parent.addClass('row');
 		$studentId.select2("destroy");
 		$instructorId.select2("destroy");
 
 		var newRow = $curStudentRow.clone();
-		$('#studentid1', newRow).attr('id', newStudentId);
-		$('#instructorid1', newRow).attr('id', newInstructorId);
+		$('#studentId1', newRow).attr('id', newStudentId);
+		$('#instructorId1', newRow).attr('id', newInstructorId);
 
 		$row.prepend(newRow);
 
-		$("#studentid1").select2({
-			placeholder: "select one"
+		$("#studentId1").select2({
+			placeholder: "Select one"
 		});
 		$("#instructorid1").select2({
-			placeholder: "select one"
+			placeholder: "Select one"
 		});
 		$("#" + newStudentId).select2({
-			placeholder: "select one"
+			placeholder: "Select one"
 		});
 		$("#" + newInstructorId).select2({
-			placeholder: "select one"
+			placeholder: "Select one"
 		});
 
 		$row.on('click', '.removeButton', function (e) {
@@ -500,7 +505,7 @@ $(function () {
 			data    : data,
 			success : function (indata) {
 				// reset label test
-				$('#label-instructor-text').text("tutors");
+				$('#label-instructor-text').text("Tutors");
 
 				// prepare new data for options
 				var newTutors = [];
@@ -585,7 +590,7 @@ $(function () {
 						.attr("value", value.id).text(value.text));
 				});
 
-				var placeholder = jQuery.isEmptyObject(indata) ? "no courses found" : "select one";
+				var placeholder = jQuery.isEmptyObject(indata) ? "no courses found" : "Select one";
 				$el.select2({
 					placeholder: placeholder,
 					allowClear : false

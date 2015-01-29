@@ -78,8 +78,7 @@ function get($objects, $findId, $column)
 			<h1>
 				<i class="fa fa-calendar"></i>
 				New Appointment
-
-				<div class="col-md-1 pull-right">
+				<div class="col-md-1 col-lg-pull-1 col-lg-1 col-md-pull-1 col-sm-pull-1 pull-right">
 					<input checked id="toggle-details-calendar-partial" data-toggle="toggle" type="checkbox"
 					       data-on="Details" data-off="Calendar">
 				</div>
@@ -244,29 +243,6 @@ function get($objects, $findId, $column)
 									<!-- /.row -->
 
 									<div class="row">
-
-										<div class="col-lg-6 col-md-12 pull-right">
-											<div class="form-group pull-right">
-												<div class="input-group">
-													<button type="button" class="btn btn-default btn-sm addButton"
-													        data-template="textbox">
-														Add One More Student
-													</button>
-												</div>
-											</div>
-										</div>
-									</div>
-									<!-- /.row -->
-
-									<div class="form-group hide" id="textboxTemplate">
-										<div class="input-group">
-											<button type="button" class="btn btn-default btn-sm removeButton">Remove
-											</button>
-										</div>
-									</div>
-
-									<div class="row">
-
 										<div class="col-lg-6 col-md-12 pull-right">
 											<div class="form-group">
 												<div class="input-group">
@@ -284,12 +260,44 @@ function get($objects, $findId, $column)
 											</div>
 										</div>
 									</div>
-
-
-									<div class="form-group">
-										<button type="submit" class="btn btn-block btn-primary">Add</button>
-										<input type="hidden" name="hiddenSubmitPrsd" value="">
+									<!-- /.row -->
+									<div class="row">
+										<hr/>
+										<div class="col-lg-6 col-md-12 pull-right hide" id="textboxTemplate">
+											<div class="form-group pull-right">
+												<div class="input-group">
+													<button type="button" class="btn btn-default btn-sm removeButton">
+														Remove
+													</button>
+												</div>
+											</div>
+										</div>
 									</div>
+
+									<div class="row">
+										<div class="col-lg-6 col-md-12 pull-right">
+											<div class="form-group pull-right">
+												<div class="input-group">
+													<button type="button" class="btn btn-default btn-sm addButton"
+													        data-template="textbox">
+														Add One More Student
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- /.row -->
+
+
+									<div class="row">
+										<div class="col-lg-6 col-lg-push-3 col-md-8 col-md-push-2 col-sm-10 col-sm-push-1">
+											<div class="form-group">
+												<button type="submit" class="btn btn-block btn-primary">Add</button>
+												<input type="hidden" name="hiddenSubmitPrsd" value="">
+											</div>
+										</div>
+									</div>
+									<!-- /.row -->
 								</form>
 							</div>
 							<!-- /.form-group -->
