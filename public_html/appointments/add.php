@@ -318,12 +318,22 @@ function get($objects, $findId, $column)
 								<span id="calendar-title">
 									<i class='fa fa-circle-o-notch fa-spin'></i>
 								</span>
+								  
 								<button id="show-only-working-hours" type="button"
 								        class="btn btn-primary btn-xs btn-secondary">
 									Working Hours
 								</button>
-								<button id="show-only-appointments" type="button" class="btn btn-primary btn-xs">
-									Appointments
+								<button id="show-only-appointments" type="button" class="btn btn-default btn-xs">
+									All Appointments
+								</button>
+								<button id="show-only-appointments" type="button" class="btn btn-tertiary btn-xs" disabled>
+									Pending Appointments
+								</button>
+								<button id="show-only-appointments" type="button" class="btn btn-success btn-xs" disabled>
+									Completed Appointments
+								</button>
+								<button type="button" class="btn btn-primary btn-xs" disabled>
+									Canceled Appointments
 								</button>
 							</h3>
 

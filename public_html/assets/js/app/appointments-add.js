@@ -62,7 +62,7 @@ $(function () {
 	});
 
 	$courseId.select2({
-		placeholder: "select a course",
+		placeholder: "Select one",
 		allowClear : false
 	});
 
@@ -146,13 +146,13 @@ $(function () {
 	});
 	$termId.select2();
 	$instructorId.select2({
-		placeholder: "select an instructor"
+		placeholder: "Select one"
 	});
 	$studentId.select2({
 		placeholder: "Select one"
 	});
 	$tutorId.select2({
-		placeholder: "first select a course"
+		placeholder: "Course required"
 	});
 
 	$tutorId.click(function () {
@@ -301,7 +301,7 @@ $(function () {
 				termId: $termId.val()
 			},
 			error     : function (xhr, status, error) {
-				$('#calendar-title').text("there was an error while retrieving schedules");
+				$('#calendar-title').text("Sorry, an error occurred. Please try refresh the page.");
 				console.log(xhr.responseText);
 
 			},
@@ -389,9 +389,11 @@ $(function () {
 			case 'appointments_only':
 				if (!$tutorId.select2('val').match(/^[0-9]+$/)) {
 					$calendar.fullCalendar('addEventSource', allAppointmentsCalendar);
+					$('#calendar-title').text("Appointments for all tutors.");
 				}
 				else {
 					$calendar.fullCalendar('addEventSource', singleTutorAppointmentsCalendar);
+					$('#calendar-title').text("Appointments for " + $tutorId.select2('data').text);
 				}
 				break;
 			default:
@@ -400,8 +402,11 @@ $(function () {
 
 		$calendar.fullCalendar('refetchEvents');
 
-		if (!$tutorId.select2('val').match(/^[0-9]+$/)) {
-			$calendarTitle.text("Appointments & Working Hours");
+		if (!$tutorId.select2('val').match(/^[0-9]+$/) && !$courseId.select2('val').match(/^[0-9]+$/)) {
+			$calendarTitle.text("All tutors.");
+		}
+		else if (!$tutorId.select2('val').match(/^[0-9]+$/) && $courseId.select2('val').match(/^[0-9]+$/)) {
+			$calendarTitle.text("Tutors able to facilitate this course.");
 		}
 		else {
 			$calendarTitle.text($tutorId.select2('data').text);
@@ -527,7 +532,7 @@ $(function () {
 						.attr("value", value.id).text(value.text));
 				});
 
-				var placeholder = jQuery.isEmptyObject(indata) ? "no tutors found" : "select a tutor";
+				var placeholder = jQuery.isEmptyObject(indata) ? "Not tutors for select course" : "Select one";
 				$el.select2({
 					placeholder: placeholder,
 					allowClear : false
@@ -609,15 +614,15 @@ $(function () {
 		$courseId.select2("val", courseIdServerSide);
 	}
 	//retrieveTutors();
-	try {
-		reloadCalendar('single_tutor_appointment_and_schedule');
-	} catch (err) {
-		// clear options
-		$tutorId.empty().append("<option></option>");
-		$tutorId.select2({
-			placeholder: err.message
-		});
-	}
+	//try {
+	//	reloadCalendar('single_tutor_appointment_and_schedule');
+	//} catch (err) {
+	//	// clear options
+	//	$tutorId.empty().append("<option></option>");
+	//	$tutorId.select2({
+	//		placeholder: err.message
+	//	});
+	//}
 	if (isBtnAddStudentPrsd) {
 		$dateTimePickerStart.data("DateTimePicker").setDate(dateTimePickerStartServerSide);
 		$dateTimePickerEnd.data("DateTimePicker").setDate(dateTimePickerStartServerSide);
@@ -625,7 +630,6 @@ $(function () {
 
 	$('#toggle-details-calendar-partial').change(function () {
 		var isCheckedDetails = $(this).prop('checked');
-		var $portletCalendar = $('#portletCalendar');
 		var $portletDetails = $('#portletDetails');
 
 		if (!isCheckedDetails) {
@@ -634,6 +638,6 @@ $(function () {
 		}
 
 		$portletDetails.removeClass('hide');
-		//loadAllCalendars();
 	});
+	reloadCalendar("appointments_only");
 });
