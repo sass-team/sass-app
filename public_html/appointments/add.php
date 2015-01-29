@@ -71,8 +71,6 @@ function get($objects, $findId, $column)
 	require ROOT_PATH . 'views/header.php';
 	require ROOT_PATH . 'views/sidebar.php';
 	?>
-
-
 	<div id="content">
 
 		<div id="content-header">
@@ -80,11 +78,15 @@ function get($objects, $findId, $column)
 			<h1>
 				<i class="fa fa-calendar"></i>
 				New Appointment
+
+				<div class="col-md-1 pull-right">
+					<input checked id="toggle-details-calendar-partial" data-toggle="toggle" type="checkbox"
+					       data-on="Details" data-off="Calendar">
+				</div>
 			</h1>
 
 		</div>
 		<!-- #content-header -->
-
 		<div id="content-container">
 			<?php
 			if (empty($errors) === false)
@@ -108,10 +110,8 @@ function get($objects, $findId, $column)
 					</div>
 				<?php }
 			} ?>
-
 			<div class="portlet">
-				<div class="row">
-
+				<div class="row" id="portletDetails">
 					<div class="col-lg-12 col-md-12">
 						<div class="portlet-header">
 
@@ -121,11 +121,6 @@ function get($objects, $findId, $column)
 
 							</h3>
 
-							<div class="col-md-1 pull-right">
-								<button type="button" class="btn btn-default btn-xs fa fa-arrows-alt"
-								        id="maximize-inputs">
-								</button>
-							</div>
 						</div>
 						<!-- /.portlet-header -->
 
@@ -136,100 +131,132 @@ function get($objects, $findId, $column)
 								      action="<?php echo BASE_URL . 'appointments/add'; ?>"
 								      class="form">
 
+									<div class="row">
 
-									<div class="form-group" id="student-instructor">
-										<div class="form-group">
-											<div class="input-group">
-												<span class="input-group-addon"><label for="studentId1">Student</label></span>
-												<select id="studentId1" name="studentsIds[]" class="form-control"
-												        required>
-													<option></option>
-													<?php
-													foreach ($students as $student):
-														include(ROOT_PATH . "views/partials/student/select-options-view.html.php");
-													endforeach;
-													?>
-												</select>
+										<div class="col-lg-6 col-md-12">
+											<div class="form-group" id="student-instructor">
+												<div class="form-group">
+													<div class="input-group">
+													<span class="input-group-addon"><label
+															for="studentId1">Student</label></span>
+														<select id="studentId1" name="studentsIds[]"
+														        class="form-control"
+														        required>
+															<option></option>
+															<?php
+															foreach ($students as $student):
+																include(ROOT_PATH . "views/partials/student/select-options-view.html.php");
+															endforeach;
+															?>
+														</select>
+													</div>
+												</div>
 											</div>
 										</div>
-										<div class="form-group">
-											<div class="input-group">
 
-                                        <span class="input-group-addon"><label
-		                                        for="instructorId1">Instructor</label></span>
-												<select id="instructorId1" name="instructorIds[]" class="form-control"
-												        required>
-													<option></option>
-													<?php foreach ($instructors as $instructor)
-													{
-														include(ROOT_PATH . "views/partials/instructor/select-options-view.html.php");
-													}
-													?>
-												</select>
+										<div class="col-lg-6 col-md-12">
+											<div class="form-group">
+												<div class="input-group">
+														<span class="input-group-addon">
+															<label for="instructorId1">Instructor</label>
+														</span>
+													<select id="instructorId1" name="instructorIds[]"
+													        class="form-control"
+													        required>
+														<option></option>
+														<?php foreach ($instructors as $instructor)
+														{
+															include(ROOT_PATH . "views/partials/instructor/select-options-view.html.php");
+														}
+														?>
+													</select>
+												</div>
 											</div>
 										</div>
 									</div>
-									<hr/>
+									<!-- /.row -->
 
-									<div class="form-group">
-										<div class="input-group">
-									<span class="input-group-addon"><label for="courseId"
-									                                       id="label-course-text">Course</label></span>
-											<select id="courseId" name="courseId" class="form-control" required>
-												<option></option>
-												<?php foreach ($coursesForCurTerm as $course)
-												{
-													include(ROOT_PATH . "views/partials/course/select-options-view.html.php");
-												}
-												?>
-											</select>
+									<div class="row">
+
+										<div class="col-lg-6 col-md-12">
+											<div class="form-group">
+												<div class="input-group">
+													<span class="input-group-addon">
+														<label for="courseId" id="label-course-text">Course</label>
+													</span>
+													<select id="courseId" name="courseId" class="form-control" required>
+														<option></option>
+														<?php foreach ($coursesForCurTerm as $course)
+														{
+															include(ROOT_PATH . "views/partials/course/select-options-view.html.php");
+														}
+														?>
+													</select>
+												</div>
+											</div>
+										</div>
+
+										<div class="col-lg-6 col-md-12">
+											<div class="form-group">
+												<div class="input-group">
+													<span class="input-group-addon"><label id="label-instructor-text"
+													                                       for="tutorId">Tutors</label></span>
+													<select id="tutorId" name="tutorId" class="form-control" required>
+														<option></option>
+													</select>
+													<input id="value" type="hidden" style="width:300px"/>
+												</div>
+											</div>
 										</div>
 									</div>
+									<!-- /.row -->
 
+									<div class="row">
 
-									<div class="form-group">
-										<div class="input-group">
-										<span class="input-group-addon"><label id="label-instructor-text"
-										                                       for="tutorId">Tutors</label></span>
-											<select id="tutorId" name="tutorId" class="form-control" required>
-												<option></option>
-											</select>
-											<input id="value" type="hidden" style="width:300px"/>
+										<div class="col-lg-6 col-md-12">
+											<div class="form-group">
+												<div class='input-group date' id='dateTimePickerStart'>
+													<span class="input-group-addon"><label for="dateTimePickerStart">
+															Starts At</label></span>
+													<input type='text' name='dateTimePickerStart' class="form-control"
+													       required/>
+													 <span class="input-group-addon"><span
+															 class="glyphicon glyphicon-calendar"></span>
+												</div>
+											</div>
+										</div>
+
+										<div class="col-lg-6 col-md-12">
+											<div class="form-group">
+												<div class='input-group date' id='dateTimePickerEnd'>
+													<span class="input-group-addon"><label for="dateTimePickerEnd">Ends
+															At</label></span>
+													<input type='text' name='dateTimePickerEnd' class="form-control"
+													       required/>
+													<span class="input-group-addon">
+														<span class="glyphicon glyphicon-calendar">
+													</span>
+												</div>
+											</div>
+										</div>
+
+									</div>
+									<!-- /.row -->
+
+									<div class="row">
+
+										<div class="col-lg-6 col-md-12 pull-right">
+											<div class="form-group pull-right">
+												<div class="input-group">
+													<button type="button" class="btn btn-default btn-sm addButton"
+													        data-template="textbox">
+														Add One More Student
+													</button>
+												</div>
+											</div>
 										</div>
 									</div>
-
-
-									<div class="form-group">
-										<div class='input-group date' id='dateTimePickerStart'>
-											<span class="input-group-addon"><label for="dateTimePickerStart">
-													Starts At</label></span>
-											<input type='text' name='dateTimePickerStart' class="form-control"
-											       required/>
-                                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
-										</div>
-									</div>
-
-
-									<div class="form-group">
-										<div class='input-group date' id='dateTimePickerEnd'>
-                                        <span class="input-group-addon"><label for="dateTimePickerEnd">Ends
-		                                        At</label></span>
-											<input type='text' name='dateTimePickerEnd' class="form-control" required/>
-										<span class="input-group-addon">
-											<span class="glyphicon glyphicon-calendar">
-										</span>
-										</div>
-									</div>
-
-
-									<div class="form-group">
-										<div class="input-group">
-											<button type="button" class="btn btn-default btn-sm addButton"
-											        data-template="textbox">
-												Add One More Student
-											</button>
-										</div>
-									</div>
+									<!-- /.row -->
 
 									<div class="form-group hide" id="textboxTemplate">
 										<div class="input-group">
@@ -237,19 +264,27 @@ function get($objects, $findId, $column)
 											</button>
 										</div>
 									</div>
-									<div class="form-group">
-										<div class="input-group">
-											<span class="input-group-addon"><label for="termId">Term</label></span>
-											<select id="termId" name="termId" class="form-control" required>
-												<?php
-												foreach ($curTerms as $term)
-												{
-													include(ROOT_PATH . "views/partials/term/select-options-view.html.php");
-												}
-												?>
-											</select>
+
+									<div class="row">
+
+										<div class="col-lg-6 col-md-12 pull-right">
+											<div class="form-group">
+												<div class="input-group">
+													<span class="input-group-addon"><label
+															for="termId">Term</label></span>
+													<select id="termId" name="termId" class="form-control" required>
+														<?php
+														foreach ($curTerms as $term)
+														{
+															include(ROOT_PATH . "views/partials/term/select-options-view.html.php");
+														}
+														?>
+													</select>
+												</div>
+											</div>
 										</div>
 									</div>
+
 
 									<div class="form-group">
 										<button type="submit" class="btn btn-block btn-primary">Add</button>
@@ -262,15 +297,19 @@ function get($objects, $findId, $column)
 						</div>
 					</div>
 
+				</div>
+				<!-- /.row -->
 
-					<div class="col-lg-12 col-md-12">
+				<div class="row">
+
+					<div class="col-lg-12 col-md-12" id="portletCalendar">
 						<div class="portlet-header">
 
 							<h3>
 								<i class="fa fa-calendar"></i>
-							<span id="calendar-title">
-								<i class='fa fa-circle-o-notch fa-spin'></i>
-							</span>
+								<span id="calendar-title">
+									<i class='fa fa-circle-o-notch fa-spin'></i>
+								</span>
 								<button id="show-only-working-hours" type="button"
 								        class="btn btn-primary btn-xs btn-secondary">
 									Working Hours
@@ -288,10 +327,7 @@ function get($objects, $findId, $column)
 							<div id="appointments-schedule-calendar"></div>
 						</div>
 					</div>
-
 				</div>
-				<!-- /.row -->
-
 
 			</div>
 			<!-- /.portlet -->
@@ -306,6 +342,8 @@ function get($objects, $findId, $column)
 	<?php include ROOT_PATH . "views/footer.php"; ?>
 </div>
 <!-- #wrapper<!-- #content -->
+
+<!--data for js features.-->
 <input type="hidden" id="isAdmin" value="<?php echo $user->isAdmin(); ?>"/>
 <input type="hidden" id="userId" value="<?php echo $user->getId(); ?>"/>
 <input type="hidden" id="isBtnAddStudentPrsd" value="<?php echo isBtnAddStudentPrsd(); ?>"/>
@@ -323,6 +361,9 @@ function get($objects, $findId, $column)
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/select2/select2.js"></script>
 <script
 	src="<?php echo BASE_URL; ?>assets/js/plugins/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js">
+</script>
+<script
+	src="<?php echo BASE_URL; ?>assets/packages/bootstrap-toggle/js/bootstrap-toggle.min.js">
 </script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/fullcalendar/fullcalendar.min.js"></script>
 

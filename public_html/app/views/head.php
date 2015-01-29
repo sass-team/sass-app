@@ -2,10 +2,9 @@
 	<title>SASS &middot; <?php echo $pageTitle; ?></title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-	<meta name="description" content="">
-	<meta name="author" content=""/>
+	<meta name="description" content="Content Management System for Peer Tutoring Workshops">
+	<meta name="author" content="Rizart Dokollar & George Skarlatos"/>
 	<link rel="shortcut icon" href="<?php echo BASE_URL; ?>assets/img/logos/favicon.ico">
-
 	<link rel="stylesheet"
 	      href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,800italic,400,600,800"
 	      type="text/css">
@@ -13,34 +12,28 @@
 	<!--	 Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 	<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.0/themes/smoothness/jquery-ui.css"/>
-
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/js/plugins/icheck/skins/minimal/blue.css"
 	      type="text/css"/>
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/js/plugins/icheck/skins/square/green.css">
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/js/plugins/icheck/skins/square/red.css">
-
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/js/plugins/select2/select2.css" type="text/css"/>
 	<link rel="stylesheet"
 	      href="<?php echo BASE_URL; ?>assets/js/plugins/simplecolorpicker/jquery.simplecolorpicker.css"
 	      type="text/css"/>
-
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/js/plugins/fileupload/bootstrap-fileupload.css"
 	      type="text/css"/>
-
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/js/plugins/fullcalendar/fullcalendar.css"
 	      type="text/css"/>
-
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/App.css" type="text/css"/>
+	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/packages/bootstrap-toggle/css/bootstrap-toggle.min.css"
+	      type="text/css"/>
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/parsley.css" type="text/css"/>
-
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/js/plugins/timepicker/bootstrap-timepicker.css"/>
-
 	<link rel="stylesheet"
 	      href="<?php echo BASE_URL; ?>assets/js/plugins/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css"
 	      type="text/css"/>
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/font-awesome-animation.min.css">
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/custom.css" type="text/css"/>
-
 
 	<style type="text/css">
 		#wrapper {

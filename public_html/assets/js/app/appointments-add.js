@@ -1,5 +1,4 @@
-$(function ()
-{
+$(function () {
 	// http://momentjs.com/docs/#/manipulating/add/
 	// http://eonasdan.github.io/bootstrap-datetimepicker
 	moment().format();
@@ -26,6 +25,7 @@ $(function ()
 	var dateTimePickerEndServerSide = $('#dateTimePickerEndServerSide').val();
 	var domainName = $('#domainName').val();
 
+	// spinner config
 	var opts = {
 		lines    : 13, // The number of lines to draw
 		length   : 20, // The length of each line
@@ -45,39 +45,45 @@ $(function ()
 		left     : '50%' // left position relative to parent
 	};
 
-	$maximizeChoices.on("click", function ()
-	{
-
+	// init $calendar
+	$calendar.fullCalendar({
+		header      : {
+			left  : 'prev,next',
+			center: 'title',
+			right : 'agendaWeek,month,agendaDay'
+		},
+		weekends    : false, // will hide saturdays and sundays
+		minTime     : "09:00:00",
+		maxTime     : "22:00:00",
+		defaultView : "agendaWeek",
+		editable    : false,
+		droppable   : false,
+		eventSources: []
 	});
+
 	$courseId.select2({
 		placeholder: "select a course",
 		allowClear : false
 	});
 
-	$courseId.click(function ()
-	{
-		try
-		{
+	$courseId.click(function () {
+		try {
 			retrieveTutors();
 			reloadCalendar('appointments_and_schedules_for_single_course');
 		}
-		catch (err)
-		{
+		catch (err) {
 			$tutorId.select2({
 				placeholder: err.message
 			});
 		}
 	});
-	$termId.click(function ()
-	{
-		try
-		{
+	$termId.click(function () {
+		try {
 			retrieveCourses();
 			retrieveTutors();
 			reloadCalendar('term_change');
 		}
-		catch (err)
-		{
+		catch (err) {
 			// clear options
 			$tutorId.empty(); // remove old options
 			// add new options
@@ -89,13 +95,11 @@ $(function ()
 	});
 
 	var startDateDefault;
-	if (moment().minute() >= 30)
-	{
+	if (moment().minute() >= 30) {
 		startDateDefault = moment().add('1', 'hours');
 		startDateDefault.minutes(0);
 	}
-	else
-	{
+	else {
 		startDateDefault = moment();
 		startDateDefault.minutes(30);
 	}
@@ -127,8 +131,7 @@ $(function ()
 		strict            : true
 	})
 	;
-	$dateTimePickerStart.on("dp.change", function ()
-	{
+	$dateTimePickerStart.on("dp.change", function () {
 		var newEndDateDefault = $(this).data("DateTimePicker").getDate().clone();
 
 		newEndDateDefault.add('30', 'minutes');
@@ -149,13 +152,10 @@ $(function ()
 		placeholder: "first select a course"
 	});
 
-	$tutorId.click(function ()
-	{
-		try
-		{
+	$tutorId.click(function () {
+		try {
 			reloadCalendar('single_tutor_appointment_and_schedule');
-		} catch (err)
-		{
+		} catch (err) {
 			// clear options
 			$tutorId.empty().append("<option></option>");
 			$tutorId.select2({
@@ -164,26 +164,22 @@ $(function ()
 		}
 	});
 
-	$("#show-only-working-hours").on('click', function ()
-	{
+	$("#show-only-working-hours").on('click', function () {
 		reloadCalendar("working_hours_only");
 	});
 
-	$("#show-only-appointments").on('click', function ()
-	{
+	$("#show-only-appointments").on('click', function () {
 		reloadCalendar("appointments_only");
 	});
 
-	function reloadCalendar(choice)
-	{
+	function reloadCalendar(choice) {
 		var calendar = document.getElementById('appointments-schedule-calendar');
 		var spinner;
 
 		$calendarTitle.text("");
 //		$calendarTitle.append("<i class='fa fa-circle-o-notch fa-spin'></i>");
 
-		if ($termId.val() === null || !$termId.select2('val').match(/^[0-9]+$/))
-		{
+		if ($termId.val() === null || !$termId.select2('val').match(/^[0-9]+$/)) {
 			throw new Error("term is missing");
 		}
 
@@ -197,23 +193,18 @@ $(function ()
 				tutorId: $tutorId.select2('val'),
 				termId : $termId.select2('val')
 			},
-			error     : function (xhr, status, error)
-			{
+			error     : function (xhr, status, error) {
 				$calendarTitle.text("there was an error while retrieving schedules");
 				console.log(xhr.responseText);
 			},
-			beforeSend: function ()
-			{
-				if (spinner == null)
-				{
+			beforeSend: function () {
+				if (spinner == null) {
 					spinner = new Spinner(opts).spin(calendar);
 				}
 
 			},
-			complete  : function ()
-			{
-				if (spinner != null)
-				{
+			complete  : function () {
+				if (spinner != null) {
 					spinner.stop();
 					spinner = null;
 				}
@@ -228,23 +219,18 @@ $(function ()
 				tutorId: $tutorId.select2('val'),
 				termId : $termId.select2('val')
 			},
-			error     : function (xhr, status, error)
-			{
+			error     : function (xhr, status, error) {
 				$calendarTitle.text("there was an error while fetching tutor's appointments");
 				console.log(xhr.responseText);
 			},
-			beforeSend: function ()
-			{
-				if (spinner == null)
-				{
+			beforeSend: function () {
+				if (spinner == null) {
 					spinner = new Spinner(opts).spin(calendar);
 				}
 
 			},
-			complete  : function ()
-			{
-				if (spinner != null)
-				{
+			complete  : function () {
+				if (spinner != null) {
 					spinner.stop();
 					spinner = null;
 				}
@@ -260,23 +246,18 @@ $(function ()
 				courseId: $courseId.select2('val'),
 				termId  : $termId.select2('val')
 			},
-			error     : function (xhr, status, error)
-			{
+			error     : function (xhr, status, error) {
 				$calendarTitle.text("there was an error while retrieving schedules");
 				console.log(xhr.responseText);
 			},
-			beforeSend: function ()
-			{
-				if (spinner == null)
-				{
+			beforeSend: function () {
+				if (spinner == null) {
 					spinner = new Spinner(opts).spin(calendar);
 				}
 
 			},
-			complete  : function ()
-			{
-				if (spinner != null)
-				{
+			complete  : function () {
+				if (spinner != null) {
 					spinner.stop();
 					spinner = null;
 				}
@@ -291,23 +272,18 @@ $(function ()
 				courseId: $courseId.select2('val'),
 				termId  : $termId.select2('val')
 			},
-			error     : function (xhr, status, error)
-			{
+			error     : function (xhr, status, error) {
 				$calendarTitle.text("could not fetch tutor's appointments.");
 				console.log(xhr.responseText);
 			},
-			beforeSend: function ()
-			{
-				if (spinner == null)
-				{
+			beforeSend: function () {
+				if (spinner == null) {
 					spinner = new Spinner(opts).spin(calendar);
 				}
 
 			},
-			complete  : function ()
-			{
-				if (spinner != null)
-				{
+			complete  : function () {
+				if (spinner != null) {
 					spinner.stop();
 					spinner = null;
 				}
@@ -321,24 +297,19 @@ $(function ()
 				action: 'all_tutors_working_hours',
 				termId: $termId.val()
 			},
-			error     : function (xhr, status, error)
-			{
+			error     : function (xhr, status, error) {
 				$('#calendar-title').text("there was an error while retrieving schedules");
 				console.log(xhr.responseText);
 
 			},
-			beforeSend: function ()
-			{
-				if (spinner == null)
-				{
+			beforeSend: function () {
+				if (spinner == null) {
 					spinner = new Spinner(opts).spin(calendar);
 				}
 
 			},
-			complete  : function ()
-			{
-				if (spinner != null)
-				{
+			complete  : function () {
+				if (spinner != null) {
 					spinner.stop();
 					spinner = null;
 				}
@@ -352,22 +323,17 @@ $(function ()
 				action: 'all_tutors_appointments',
 				termId: $termId.val()
 			},
-			error     : function (xhr, status, error)
-			{
+			error     : function (xhr, status, error) {
 				$('#calendar-title').text("there was an error while fetching all appointments");
 			},
-			beforeSend: function ()
-			{
-				if (spinner == null)
-				{
+			beforeSend: function () {
+				if (spinner == null) {
 					spinner = new Spinner(opts).spin(calendar);
 				}
 
 			},
-			complete  : function ()
-			{
-				if (spinner != null)
-				{
+			complete  : function () {
+				if (spinner != null) {
 					spinner.stop();
 					spinner = null;
 				}
@@ -380,58 +346,48 @@ $(function ()
 		$calendar.fullCalendar('removeEventSource', manyTutorAppointmentsCalendar);
 		$calendar.fullCalendar('removeEventSource', manyTutorScheduleCalendar);
 
-		switch (choice)
-		{
+		switch (choice) {
 			case 'all_appointments_schedule':
 			case 'term_change':
 				$calendar.fullCalendar('addEventSource', allAppointmentsCalendar);
 				$calendar.fullCalendar('addEventSource', allSchedulesCalendar);
 				break;
 			case 'single_tutor_appointment_and_schedule':
-				if (!$tutorId.select2('val').match(/^[0-9]+$/))
-				{
+				if (!$tutorId.select2('val').match(/^[0-9]+$/)) {
 					throw new Error("tutor is missing");
 				}
-				if (!$courseId.select2("val").match(/^[0-9]+$/))
-				{
+				if (!$courseId.select2("val").match(/^[0-9]+$/)) {
 					throw new Error("course is missing");
 				}
-				if (!$termId.select2("val").match(/^[0-9]+$/))
-				{
+				if (!$termId.select2("val").match(/^[0-9]+$/)) {
 					throw new Error("term is missing");
 				}
 				$calendar.fullCalendar('addEventSource', singleTutorScheduleCalendar);
 				$calendar.fullCalendar('addEventSource', singleTutorAppointmentsCalendar);
 				break;
 			case 'appointments_and_schedules_for_single_course':
-				if (!$courseId.select2("val").match(/^[0-9]+$/))
-				{
+				if (!$courseId.select2("val").match(/^[0-9]+$/)) {
 					throw new Error("course is missing");
 				}
-				if (!$termId.select2("val").match(/^[0-9]+$/))
-				{
+				if (!$termId.select2("val").match(/^[0-9]+$/)) {
 					throw new Error("term is missing");
 				}
 				$calendar.fullCalendar('addEventSource', manyTutorScheduleCalendar);
 				$calendar.fullCalendar('addEventSource', manyTutorAppointmentsCalendar);
 				break;
 			case 'working_hours_only':
-				if (!$tutorId.select2('val').match(/^[0-9]+$/))
-				{
+				if (!$tutorId.select2('val').match(/^[0-9]+$/)) {
 					$calendar.fullCalendar('addEventSource', allSchedulesCalendar);
 				}
-				else
-				{
+				else {
 					$calendar.fullCalendar('addEventSource', singleTutorScheduleCalendar);
 				}
 				break;
 			case 'appointments_only':
-				if (!$tutorId.select2('val').match(/^[0-9]+$/))
-				{
+				if (!$tutorId.select2('val').match(/^[0-9]+$/)) {
 					$calendar.fullCalendar('addEventSource', allAppointmentsCalendar);
 				}
-				else
-				{
+				else {
 					$calendar.fullCalendar('addEventSource', singleTutorAppointmentsCalendar);
 				}
 				break;
@@ -441,24 +397,19 @@ $(function ()
 
 		$calendar.fullCalendar('refetchEvents');
 
-		if (!$tutorId.select2('val').match(/^[0-9]+$/))
-		{
+		if (!$tutorId.select2('val').match(/^[0-9]+$/)) {
 			$calendarTitle.text("all");
 		}
-		else
-		{
+		else {
 			$calendarTitle.text($tutorId.select2('data').text);
 		}
 
 	}
 
-	function loadAllCalendars()
-	{
-		try
-		{
+	function loadAllCalendars() {
+		try {
 			reloadCalendar('single_tutor_appointment_and_schedule');
-		} catch (err)
-		{
+		} catch (err) {
 			// clear options
 			$tutorId.empty().append("<option></option>");
 			$tutorId.select2({
@@ -466,36 +417,17 @@ $(function ()
 			});
 		}
 
-		try
-		{
+		try {
 			reloadCalendar('all_appointments_schedule');
-		} catch (err)
-		{
+		} catch (err) {
 			$calendarTitle.text(err);
 		}
 	}
 
-	$calendar.fullCalendar({
-		header      : {
-			left  : 'prev,next',
-			center: 'title',
-			right : 'agendaWeek,month,agendaDay'
-		},
-		weekends    : false, // will hide saturdays and sundays
-		defaultView : "agendaWeek",
-		editable    : false,
-		droppable   : false,
-		eventSources: []
-	});
-
-	loadAllCalendars();
-
-	$('.addButton').on('click', function ()
-	{
-
+	$('.addButton').on('click', function () {
 		var index = $(this).data('index');
-		if (!index)
-		{
+		
+		if (!index) {
 			index = 1;
 			$(this).data('index', 1);
 		}
@@ -507,8 +439,8 @@ $(function ()
 			$row = $templateEle.clone().removeAttribute('id').insertBefore($templateEle).removeClass('hide'),
 			$el = $row.find('input').eq(0).attr('name', template + '[]');
 
-		var newStudentId = 'studentid' + index;
-		var newInstructorId = 'instructorid' + index;
+		var newStudentId = 'studentId' + index;
+		var newInstructorId = 'instructorId' + index;
 
 		var $curStudentRow = $('#student-instructor');
 		$studentId.select2("destroy");
@@ -533,24 +465,20 @@ $(function ()
 			placeholder: "select one"
 		});
 
-		$row.on('click', '.removeButton', function (e)
-		{
+		$row.on('click', '.removeButton', function (e) {
 			$row.remove();
 			newRow.remove();
 		});
 	});
 
-	function retrieveTutors()
-	{
+	function retrieveTutors() {
 		var courseId = $("#courseId").select2("val");
 		var termId = $("#termId").select2("val");
 
-		if (!courseId.match(/^[0-9]+$/))
-		{
+		if (!courseId.match(/^[0-9]+$/)) {
 			throw new Error("course is missing");
 		}
-		if (!termId.match(/^[0-9]+$/))
-		{
+		if (!termId.match(/^[0-9]+$/)) {
 			throw new Error("term is missing");
 		}
 
@@ -570,15 +498,13 @@ $(function ()
 			dataType: "json",
 			url     : domainName + "/api/courses",
 			data    : data,
-			success : function (indata)
-			{
+			success : function (indata) {
 				// reset label test
 				$('#label-instructor-text').text("tutors");
 
 				// prepare new data for options
 				var newTutors = [];
-				$.each(indata, function (idx, obj)
-				{
+				$.each(indata, function (idx, obj) {
 					newTutors.push({
 						id  : obj.id,
 						text: obj.f_name + " " + obj.l_name
@@ -591,8 +517,7 @@ $(function ()
 
 				// add new options
 				$el.append("<option></option>");
-				$.each(newTutors, function (key, value)
-				{
+				$.each(newTutors, function (key, value) {
 					$el.append($("<option></option>")
 						.attr("value", value.id).text(value.text));
 				});
@@ -603,23 +528,19 @@ $(function ()
 					allowClear : false
 				});
 
-				if (isBtnAddStudentPrsd)
-				{
+				if (isBtnAddStudentPrsd) {
 					$tutorId.select2("val", tutorIdServerSide);
 				}
 			},
-			error   : function (e)
-			{
+			error   : function (e) {
 				$labelInstructorText.text("connection errors.");
 			}
 		});
 	}
 
-	function retrieveCourses()
-	{
+	function retrieveCourses() {
 		var termId = $("#termId").select2("val");
-		if (!termId.match(/^[0-9]+$/))
-		{
+		if (!termId.match(/^[0-9]+$/)) {
 			throw new Error("term is missing");
 		}
 
@@ -639,16 +560,14 @@ $(function ()
 			dataType: "json",
 			url     : domainName + "/api/courses",
 			data    : data,
-			success : function (indata)
-			{
+			success : function (indata) {
 				console.log(indata);
 				// reset label test
 				$('#label-course-text').text("courses");
 
 				// prepare new data for options
 				var newCourses = [];
-				$.each(indata, function (idx, obj)
-				{
+				$.each(indata, function (idx, obj) {
 					newCourses.push({
 						id  : obj.id,
 						text: obj.code + " - " + obj.name
@@ -661,8 +580,7 @@ $(function ()
 
 				// add new options
 				$el.append("<option></option>");
-				$.each(newCourses, function (key, value)
-				{
+				$.each(newCourses, function (key, value) {
 					$el.append($("<option></option>")
 						.attr("value", value.id).text(value.text));
 				});
@@ -672,37 +590,45 @@ $(function ()
 					placeholder: placeholder,
 					allowClear : false
 				});
-				if (isBtnAddStudentPrsd)
-				{
+				if (isBtnAddStudentPrsd) {
 					$tutorId.select2("val", tutorIdServerSide);
 				}
 			},
-			error   : function (e)
-			{
+			error   : function (e) {
 				$('#label-course-text').text("connection errors.");
 			}
 		});
 	}
 
-	if (isBtnAddStudentPrsd)
-	{
+	if (isBtnAddStudentPrsd) {
 		$courseId.select2("val", courseIdServerSide);
 	}
 	//retrieveTutors();
-	try
-	{
+	try {
 		reloadCalendar('single_tutor_appointment_and_schedule');
-	} catch (err)
-	{
+	} catch (err) {
 		// clear options
 		$tutorId.empty().append("<option></option>");
 		$tutorId.select2({
 			placeholder: err.message
 		});
 	}
-	if (isBtnAddStudentPrsd)
-	{
+	if (isBtnAddStudentPrsd) {
 		$dateTimePickerStart.data("DateTimePicker").setDate(dateTimePickerStartServerSide);
 		$dateTimePickerEnd.data("DateTimePicker").setDate(dateTimePickerStartServerSide);
 	}
+
+	$('#toggle-details-calendar-partial').change(function () {
+		var isCheckedDetails = $(this).prop('checked');
+		var $portletCalendar = $('#portletCalendar');
+		var $portletDetails = $('#portletDetails');
+
+		if (!isCheckedDetails) {
+			$portletDetails.addClass('hide');
+			return;
+		}
+
+		$portletDetails.removeClass('hide');
+		//loadAllCalendars();
+	});
 });
