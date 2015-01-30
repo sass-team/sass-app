@@ -355,9 +355,10 @@ $(function () {
 					pnotifySettingsWarning.text = "Term is missing";
 					new PNotify(pnotifySettingsWarning);
 				}
+				$calendar.fullCalendar('addEventSource', getAppointmentsForCourseAndTutor);
 				$calendar.fullCalendar('addEventSource', getScheduleForTutor);
-				$calendar.fullCalendar('addEventSource', getAppointmentsForTutor);
-				pnotifySettingsInfo.text = "Retrieved appointments and working hours for " + $tutorId.select2('data').text;
+				pnotifySettingsInfo.text = "Retrieved appointments and working hours for " +
+				$tutorId.select2('data').text + " for course " + $courseId.select2('data').text;
 				new PNotify(pnotifySettingsInfo);
 				break;
 			case 'getAppointmentsAndSchedulesForCourse':
@@ -374,12 +375,18 @@ $(function () {
 				new PNotify(pnotifySettingsInfo);
 				break;
 			case 'working_hours_only':
-				if (!$tutorId.select2('val').match(/^[0-9]+$/)) {
+				if (!$courseId.select2('val').match(/^[0-9]+$/) && !$tutorId.select2('val').match(/^[0-9]+$/)) {
 					$calendar.fullCalendar('addEventSource', allSchedulesCalendar);
 					pnotifySettingsInfo.text = "Retrieved all working hours";
 					new PNotify(pnotifySettingsInfo);
 				}
-				else {
+				else if ($courseId.select2('val').match(/^[0-9]+$/) && !$tutorId.select2('val').match(/^[0-9]+$/)) {
+					$calendar.fullCalendar('addEventSource', getSchedulesWithCourse);
+					pnotifySettingsInfo.text = "Retrieved all working hours for " + $courseId.select2('data').text + ".";
+					new PNotify(pnotifySettingsInfo);
+				}
+				else if ($courseId.select2('val').match(/^[0-9]+$/) && $tutorId.select2('val').match(/^[0-9]+$/)) {
+					$calendar.fullCalendar('addEventSource', getSchedulesWithCourse);
 					$calendar.fullCalendar('addEventSource', getScheduleForTutor);
 					pnotifySettingsInfo.text = "Retrieved all working hours for " + $courseId.select2('data').text + ".";
 					new PNotify(pnotifySettingsInfo);
