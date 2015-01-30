@@ -200,7 +200,7 @@ class ScheduleFetcher
     public static function retrieveTutorsOnTermOnCourse($courseId, $termId)
     {
         $query =
-            "SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`, `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "`,
+            "SELECT DISTINCT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`, `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "`,
 			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_END_TIME . "`, `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "`,
 			 `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`, `" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_FIRST_NAME . "`, `" . UserFetcher::DB_TABLE . "`.`"
             . UserFetcher::DB_COLUMN_LAST_NAME . "`, `" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "`  AS

@@ -274,18 +274,17 @@ $(function () {
 		var data = {
 			termId: $termId.select2('val'), courseId: $courseId.select2('val'), tutorId: $tutorId.select2('val')
 		};
-		var pendingAppointments = formatCalendarEventSource('/api/appointments', 'get', 'json', 'getPendingAppointments', data);
-		var pendingAppointmentsWithCourse = formatCalendarEventSource('/api/appointments', 'get', 'json', 'getPendingAppointmentsWithCourse', data);
 		var allAppointmentsCalendar = formatCalendarEventSource('/api/appointments', 'get', 'json', 'getAppointments', data);
 		var allSchedulesCalendar = formatCalendarEventSource('/api/schedules', 'get', 'json', 'getSchedules', data);
-		// Require course id and term id
 		var getAppointmentsWithCourse = formatCalendarEventSource('/api/appointments', 'get', 'json', 'getAppointmentsWithCourse', data);
 		var getSchedulesWithCourse = formatCalendarEventSource('/api/schedules', 'get', 'json', 'getSchedulesWithCourse', data);
-
 		var getAppointmentsForTutor = formatCalendarEventSource('/api/appointments', 'get', 'json', 'getAppointmentsForTutor', data);
 		var getScheduleForTutor = formatCalendarEventSource('/api/schedules', 'get', 'json', 'getScheduleForTutor', data);
-		var pendingAppointmentsWithCourseAndTutor = formatCalendarEventSource('/api/appointments', 'get', 'json', 'getPendingAppointWithCourseAndTutor', data);
 		var getAppointmentsForCourseAndTutor = formatCalendarEventSource('/api/appointments', 'get', 'json', 'getAppointmentWithCourseAndTutor', data);
+		var pendingAppointments = formatCalendarEventSource('/api/appointments', 'get', 'json', 'getPendingAppointments', data);
+		var pendingAppointmentsWithCourseAndTutor = formatCalendarEventSource('/api/appointments', 'get', 'json', 'getPendingAppointWithCourseAndTutor', data);
+		var pendingAppointmentsWithCourse = formatCalendarEventSource('/api/appointments', 'get', 'json', 'getPendingAppointmentsWithCourse', data);
+		// Require course id and term id
 
 		/**
 		 *
@@ -326,15 +325,16 @@ $(function () {
 			};
 		}
 
-		$calendar.fullCalendar('removeEventSource', getScheduleForTutor);
-		$calendar.fullCalendar('removeEventSource', getAppointmentsForTutor);
 		$calendar.fullCalendar('removeEventSource', allSchedulesCalendar);
 		$calendar.fullCalendar('removeEventSource', allAppointmentsCalendar);
+		$calendar.fullCalendar('removeEventSource', getScheduleForTutor);
+		$calendar.fullCalendar('removeEventSource', getAppointmentsForCourseAndTutor);
+		$calendar.fullCalendar('removeEventSource', getAppointmentsForTutor);
 		$calendar.fullCalendar('removeEventSource', getAppointmentsWithCourse);
 		$calendar.fullCalendar('removeEventSource', getSchedulesWithCourse);
 		$calendar.fullCalendar('removeEventSource', pendingAppointments);
 		$calendar.fullCalendar('removeEventSource', pendingAppointmentsWithCourseAndTutor);
-		$calendar.fullCalendar('removeEventSource', getAppointmentsForCourseAndTutor);
+		$calendar.fullCalendar('removeEventSource', pendingAppointmentsWithCourse);
 
 		switch (choice) {
 			case 'all_appointments_schedule':
