@@ -356,7 +356,7 @@ $(function () {
 					pnotifySettingsWarning.text = "Term is missing";
 					new PNotify(pnotifySettingsWarning);
 				}
-				$calendar.fullCalendar('addEventSource', getAppointmentsForCourseAndTutor);
+				$calendar.fullCalendar('addEventSource', getAppointmentsForTutor);
 				$calendar.fullCalendar('addEventSource', getScheduleForTutor);
 				pnotifySettingsInfo.text = "Retrieved appointments and working hours for " +
 				$tutorId.select2('data').text + " for course " + $courseId.select2('data').text;
