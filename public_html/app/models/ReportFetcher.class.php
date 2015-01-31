@@ -21,22 +21,27 @@ class ReportFetcher
 	const DB_COLUMN_LABEL_MESSAGE = "label_message";
 	const DB_COLUMN_LABEL_COLOR = "label_color";
 
-	public static function deleteWithAppointmentId($appointmentId) {
+	public static function deleteWithAppointmentId($appointmentId)
+	{
 
-		try {
+		try
+		{
 			$reports = ReportFetcher::retrieveAllWithAppointmentId($appointmentId);
 
 			$dbConnection = DatabaseManager::getConnection();
 
 
-			try {
+			try
+			{
 				$dbConnection->beginTransaction();
 				$prevTransFromParent = false;
-			} catch (PDOException $e) {
+			} catch (PDOException $e)
+			{
 				$prevTransFromParent = true;
 			}
 
-			foreach ($reports as $report) {
+			foreach ($reports as $report)
+			{
 				$reportId = $report[self::DB_COLUMN_ID];
 
 				ConclusionWrapUpFetcher::delete($reportId);
@@ -48,17 +53,26 @@ class ReportFetcher
 
 			AppointmentFetcher::updateLabel($appointmentId, Appointment::LABEL_MESSAGE_ADMIN_DISABLED, Appointment::LABEL_COLOR_CANCELED);
 
-			if (!$prevTransFromParent) $dbConnection->commit();
+			if (!$prevTransFromParent)
+			{
+				$dbConnection->commit();
+			}
 
 			return true;
-		} catch (Exception $e) {
-			if (isset($dbConnection)) $dbConnection->rollback();
+		} catch (Exception $e)
+		{
+			if (isset($dbConnection))
+			{
+				$dbConnection->rollback();
+			}
 			throw new Exception($e->getMessage());
 		}
+
 		return false;
 	}
 
-	public static function retrieveAllWithAppointmentId($appointmentId) {
+	public static function retrieveAllWithAppointmentId($appointmentId)
+	{
 		$query =
 			"SELECT `" . StudentFetcher::DB_TABLE . "`.`" . StudentFetcher::DB_COLUMN_FIRST_NAME . "` ,
 			`" . StudentFetcher::DB_TABLE . "`.`" . StudentFetcher::DB_COLUMN_LAST_NAME . "` ,
@@ -114,7 +128,8 @@ class ReportFetcher
 			WHERE `" . AppointmentHasStudentFetcher::DB_TABLE . "`.`" .
 			AppointmentHasStudentFetcher::DB_COLUMN_APPOINTMENT_ID . "` = :appointment_id";
 
-		try {
+		try
+		{
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
 			$query->bindParam(':appointment_id', $appointmentId, PDO::PARAM_INT);
@@ -122,37 +137,47 @@ class ReportFetcher
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
-		} catch (PDOException $e) {
+		} catch (PDOException $e)
+		{
 			throw new Exception("Could not retrieve reports data from database.");
 		}
 	}
 
-	public static function delete($reportId) {
+	public static function delete($reportId)
+	{
 		$query =
 			"DELETE FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 					WHERE `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` = :report_id;";
 
-		try {
+		try
+		{
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
 			$query->bindParam(':report_id', $reportId, PDO::PARAM_INT);
 			$query->execute();
 
 			return $query->rowCount();
-		} catch (Exception $e) {
-			if (isset($dbConnection)) $dbConnection->rollback();
+		} catch (Exception $e)
+		{
+			if (isset($dbConnection))
+			{
+				$dbConnection->rollback();
+			}
 			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not update report data appointment.");
 		}
+
 		return false;
 	}
 
 	/**
 	 * @param $tutorId
+	 * @return array
 	 * @throws Exception
 	 * @internal param $db
 	 */
-	public static function retrieveAllOfCurrTermsByTutor($tutorId) {
+	public static function retrieveAllOfCurrTermsByTutor($tutorId)
+	{
 		$query =
 			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`, `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_LABEL_MESSAGE . "`,
 			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_LABEL_COLOR . "`, `" . AppointmentFetcher::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`
@@ -171,7 +196,8 @@ class ReportFetcher
 			AND `" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_TUTOR_USER_ID . "` = :tutor_id
 			ORDER BY `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` ASC";
 
-		try {
+		try
+		{
 			date_default_timezone_set('Europe/Athens');
 			$now = new DateTime();
 			$now = $now->format(Dates::DATE_FORMAT_IN);
@@ -183,7 +209,8 @@ class ReportFetcher
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
-		} catch (PDOException $e) {
+		} catch (PDOException $e)
+		{
 			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve data from database.");
 		}
@@ -193,7 +220,8 @@ class ReportFetcher
 	 * @throws Exception
 	 * @internal param $db
 	 */
-	public static function retrieveAllOfCurrTerms() {
+	public static function retrieveAllOfCurrTerms()
+	{
 		$query =
 			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`, `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_LABEL_MESSAGE . "`,
 			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_LABEL_COLOR . "`, `" . AppointmentFetcher::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`
@@ -212,7 +240,8 @@ class ReportFetcher
 			WHERE :now BETWEEN `" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" . TermFetcher::DB_COLUMN_END_DATE . "`
 			ORDER BY `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` ASC";
 
-		try {
+		try
+		{
 			date_default_timezone_set('Europe/Athens');
 			$now = new DateTime();
 			$now = $now->format(Dates::DATE_FORMAT_IN);
@@ -224,19 +253,22 @@ class ReportFetcher
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
-		} catch (PDOException $e) {
+		} catch (PDOException $e)
+		{
 			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve data from database.");
 		}
 	}
 
-	public static function updateLabel($reportId, $labelMessage, $labelColor) {
+	public static function updateLabel($reportId, $labelMessage, $labelColor)
+	{
 		$query = "UPDATE `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 					SET `" . self::DB_COLUMN_LABEL_MESSAGE . "`= :label_message, `" . self::DB_COLUMN_LABEL_COLOR . "` =
 					:label_color
 					WHERE `" . self::DB_COLUMN_ID . "` = :id";
 
-		try {
+		try
+		{
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
 			$query->bindParam(':id', $reportId, PDO::PARAM_INT);
@@ -244,17 +276,22 @@ class ReportFetcher
 			$query->bindParam(':label_color', $labelColor, PDO::PARAM_STR);
 
 			$query->execute();
+
 			return true;
-		} catch (Exception $e) {
+		} catch (Exception $e)
+		{
 			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not update data.");
 		}
+
 		return false;
 	}
 
-	public static function insert($studentId, $appointmentId, $instructorId) {
+	public static function insert($studentId, $appointmentId, $instructorId)
+	{
 
-		try {
+		try
+		{
 			$query = "INSERT INTO `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 			(`" . self::DB_COLUMN_STUDENT_ID . "`,	`" . self::DB_COLUMN_INSTRUCTOR_ID . "`)
 				VALUES
@@ -280,17 +317,24 @@ class ReportFetcher
 			AppointmentHasStudentFetcher::update($appointmentId, $reportId);
 
 			$dbConnection->commit();
+
 			return $reportId;
-		} catch (Exception $e) {
-			if (isset($dbConnection)) $dbConnection->rollback();
+		} catch (Exception $e)
+		{
+			if (isset($dbConnection))
+			{
+				$dbConnection->rollback();
+			}
 			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not insert data into database.");
 		}
 
 	}
 
-	public static function existsId($id) {
-		try {
+	public static function existsId($id)
+	{
+		try
+		{
 			$query = "SELECT COUNT(" . self::DB_COLUMN_ID . ")
 			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 			WHERE `" . self::DB_COLUMN_ID . "` = :id";
@@ -300,8 +344,12 @@ class ReportFetcher
 			$query->bindParam(':id', $id, PDO::PARAM_INT);
 			$query->execute();
 
-			if ($query->fetchColumn() === '0') return false;
-		} catch (Exception $e) {
+			if ($query->fetchColumn() === '0')
+			{
+				return false;
+			}
+		} catch (Exception $e)
+		{
 			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not check if data exists on database.");
 		}
@@ -309,12 +357,14 @@ class ReportFetcher
 		return true;
 	}
 
-	public static function updateSingleColumn($reportId, $newText, $column) {
+	public static function updateSingleColumn($reportId, $newText, $column)
+	{
 		$query = "UPDATE `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 					SET `" . $column . "`= :new_text
 					WHERE `" . self::DB_COLUMN_ID . "` = :report_id";
 
-		try {
+		try
+		{
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
 			$query->bindParam(':new_text', $newText, PDO::PARAM_STR);
@@ -323,17 +373,20 @@ class ReportFetcher
 			$query->execute();
 
 			return true;
-		} catch (Exception $e) {
+		} catch (Exception $e)
+		{
 			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not update data.");
 		}
+
 		return false;
 	}
 
 	public static function updateAllColumns
 	($reportId, $projectTopicOtherNew, $otherTextArea, $studentsConcernsTextArea, $relevantFeedbackGuidelines,
 	 $studentBroughtAlongNew, $studentBroughtAlongOld, $conclusionAdditionalComments, $primaryFocusOfConferenceNew,
-	 $primaryFocusOfConferenceOld, $conclusionWrapUpNew, $conclusionWrapUpOld) {
+	 $primaryFocusOfConferenceOld, $conclusionWrapUpNew, $conclusionWrapUpOld)
+	{
 		$query = "UPDATE `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 					SET  `" . self::DB_COLUMN_PROJECT_TOPIC_OTHER . "`= :project_topic_other,
 					`" . self::DB_COLUMN_OTHER_TEXT_AREA . "`= :other_text_area,
@@ -342,7 +395,8 @@ class ReportFetcher
 					`" . self::DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES . "`= :relevant_feedback_guidelines
 					WHERE `" . self::DB_COLUMN_ID . "` = :report_id";
 
-		try {
+		try
+		{
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
 			$query->bindParam(':project_topic_other', $projectTopicOtherNew, PDO::PARAM_STR);
@@ -362,16 +416,20 @@ class ReportFetcher
 			Report::updateConclusionWrapUp($reportId, $conclusionWrapUpNew, $conclusionWrapUpOld);
 
 			return true;
-		} catch (PDOException $e) {
+		} catch (PDOException $e)
+		{
 			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not update data.");
-		} catch (Exception $e) {
+		} catch (Exception $e)
+		{
 			throw new Exception($e->getMessage());
 		}
+
 		return false;
 	}
 
-	public static function retrieveAll() {
+	public static function retrieveAll()
+	{
 		date_default_timezone_set('Europe/Athens');
 
 		$query =
@@ -381,20 +439,23 @@ class ReportFetcher
 			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 			ORDER BY `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` DESC";
 
-		try {
+		try
+		{
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
-		} catch (PDOException $e) {
+		} catch (PDOException $e)
+		{
 			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve report data from database.");
 		}
 	}
 
 
-	public static function retrieveSingle($id) {
+	public static function retrieveSingle($id)
+	{
 		$query = "SELECT `" . self::DB_COLUMN_ID . "`, `" . self::DB_COLUMN_INSTRUCTOR_ID . "`, `" .
 			self::DB_COLUMN_STUDENT_ID . "`, `" . self::DB_COLUMN_STUDENT_CONCERNS . "`, `" .
 			self::DB_COLUMN_PROJECT_TOPIC_OTHER . "`, `" . self::DB_COLUMN_RELEVANT_FEEDBACK_OR_GUIDELINES . ",`" .
@@ -402,17 +463,68 @@ class ReportFetcher
 			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 			WHERE `" . self::DB_COLUMN_ID . "`=:id";
 
-		try {
+		try
+		{
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
 			$query->bindParam(':id', $id, PDO::PARAM_INT);
 
 			$query->execute();
+
 			return $query->fetch(PDO::FETCH_ASSOC);
-		} catch (PDOException $e) {
+		} catch (PDOException $e)
+		{
 			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve data from database.");
 		} // end catch
 	}
 
+	/**
+	 * Retrieve pending report give a tutor id for current terms.
+	 * @param $tutorId
+	 * @return array
+	 * @throws Exception
+	 */
+	public function retrievePendingForCurrentTerms($tutorId)
+	{
+		$query =
+			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`, `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_LABEL_MESSAGE . "`,
+			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_LABEL_COLOR . "`, `" . AppointmentFetcher::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`
+			AS " . AppointmentFetcher::DB_TABLE . "_" . AppointmentFetcher::DB_COLUMN_ID . "
+			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
+			INNER JOIN `" . App::getDbName() . "`.`" . AppointmentHasStudentFetcher::DB_TABLE . "`
+				ON `" . AppointmentHasStudentFetcher::DB_TABLE . "`.`" . AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID . "` =
+					`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`
+			INNER JOIN `" . App::getDbName() . "`.`" . AppointmentFetcher::DB_TABLE . "`
+				ON `" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_ID . "` =
+					`" . AppointmentHasStudentFetcher::DB_TABLE . "`.`" . AppointmentHasStudentFetcher::DB_COLUMN_APPOINTMENT_ID . "`
+			INNER JOIN `" . TermFetcher::DB_TABLE . "`
+				ON `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "` =
+					`" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_TERM_ID . "`
+
+			WHERE (:now BETWEEN `" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" . TermFetcher::DB_COLUMN_END_DATE . "`)
+			AND `" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_TUTOR_USER_ID . "`=:tutor_id
+			AND `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_LABEL_MESSAGE . "`='" . Report::LABEL_MESSAGE_PENDING_FILL . "'
+			ORDER BY `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` ASC";
+
+		try
+		{
+			$now = App::getCurrentTime();
+
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
+
+			$query->bindParam(':now', $now, PDO::PARAM_STR);
+			$query->bindParam(':tutor_id', $tutorId, PDO::PARAM_STR);
+
+			$query->execute();
+
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+
+		} catch (PDOException $e)
+		{
+			App::storeError($e->getMessage());
+			throw new Exception("Could not retrieve data from database.");
+		}
+	}
 }

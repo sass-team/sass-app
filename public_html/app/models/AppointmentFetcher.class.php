@@ -1000,6 +1000,7 @@ class AppointmentFetcher
 			throw new Exception("Could not retrieve data from database.");
 		}
 	}
+
 	public static function getAppointmentsForTutorAndCourse($tutorId, $courseId, $termId)
 	{
 		$query =
@@ -1038,6 +1039,52 @@ class AppointmentFetcher
 		} catch (PDOException $e)
 		{
 			Mailer::sendDevelopers($e->getMessage(), __FILE__);
+			throw new Exception("Could not retrieve data from database.");
+		}
+	}
+
+	/**
+	 * Retrieve pending appointments for current terms for given tutorId.
+	 * Pending appointments start time will be at least 30 minutes away from it's starting time
+	 * @param $tutorId
+	 * @return array
+	 * @throws Exception
+	 */
+	public static function retrievePendingForCurrentTerms($tutorId)
+	{
+		$query =
+			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` , `" . self::DB_TABLE . "`.`" .
+			self::DB_COLUMN_START_TIME . "` , `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_END_TIME . "`,
+			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`,
+			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_COURSE_ID . "`, `" . self::DB_TABLE . "`.`" .
+			self::DB_COLUMN_TUTOR_USER_ID . "`,  `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "`,
+			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_LABEL_MESSAGE . "`
+			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
+			LEFT JOIN  `" . App::getDbName() . "`.`" . TermFetcher::DB_TABLE . "`
+			ON `" . App::getDbName() . "`.`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`=`" .
+			TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "`
+			WHERE `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "` = :tutor_id
+			AND `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_LABEL_MESSAGE . "` ='" . Appointment::LABEL_MESSAGE_PENDING . "'
+			AND :now BETWEEN `" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" . TermFetcher::DB_COLUMN_END_DATE . "`
+			ORDER BY `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "` DESC";
+
+		try
+		{
+			$now = App::getCurrentTime();
+
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
+
+			$query->bindParam(':now', $now, PDO::PARAM_STR);
+			$query->bindParam(':tutor_id', $tutorId, PDO::PARAM_INT);
+
+			$query->execute();
+
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+
+		} catch (PDOException $e)
+		{
+			App::storeError($e->getMessage());
 			throw new Exception("Could not retrieve data from database.");
 		}
 	}

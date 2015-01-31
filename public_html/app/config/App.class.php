@@ -8,6 +8,8 @@
  */
 class App
 {
+	const APPOINTMENT_BTN_URL = 'appointmentBtn';
+	const REPORT_BTN_URL = 'reportBtn';
 	private static $settings;
 
 	/**
@@ -16,9 +18,10 @@ class App
 	 */
 	static function isWorkingDateTimeOn()
 	{
-		date_default_timezone_set('Europe/Athens');
+		date_default_timezone_set(App::getTimeZone());
 
 		$curWorkingDate = new DateTime();
+
 		$curWorkingHour = intval($curWorkingDate->format('H'));
 		$curWorkingDay = intval($curWorkingDate->format('N'));
 
@@ -31,6 +34,11 @@ class App
 		}
 
 		return true;
+	}
+
+	public static function getTimeZone()
+	{
+		return self::$settings['TIMEZONE'];
 	}
 
 	public static function getFirstWorkingHour()
@@ -59,45 +67,6 @@ class App
 		$curWorkingDate = new DateTime();
 
 		return $curWorkingDate;
-	}
-
-	public static function getTimeZone()
-	{
-		return self::$settings['TIMEZONE'];
-	}
-
-	/**
-	 * Format App url to ssl
-	 *
-	 * @return string
-	 */
-	public static function getDomainName()
-	{
-		if (self::isHostnameInSSLList())
-		{
-			return "https://" . $_SERVER['SERVER_NAME'];
-		}
-
-		return "http://" . $_SERVER['SERVER_NAME'];
-	}
-
-	/**
-	 * @return array
-	 */
-	public static function isHostnameInSSLList()
-	{
-		$domainName = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : "cron";
-
-		$hosts = self::getHostNames();
-
-		$hostsWithSSL = $hosts['SSL'];
-
-		return in_array($domainName, $hostsWithSSL);
-	}
-
-	public static function getHostNames()
-	{
-		return self::$settings['HOST_NAMES'];
 	}
 
 	/**
@@ -190,11 +159,6 @@ class App
 		return self::$settings['VERSION'];
 	}
 
-	public static function getDefaultDateFormat()
-	{
-		return self::$settings['DEFAULT_DATE_FORMAT'];
-	}
-
 	public static function getHostname()
 	{
 		$hosts = self::getHostNames();
@@ -203,6 +167,11 @@ class App
 		$hostname = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : $hostsWithSSL['production'];
 
 		return $hostname;
+	}
+
+	public static function getHostNames()
+	{
+		return self::$settings['HOST_NAMES'];
 	}
 
 	public static function getPDOErrorMode()
@@ -225,6 +194,65 @@ class App
 	{
 		$file = ROOT_PATH . '../../app_errors.log';
 
+		$messsage = App::getCurrentTime() . $messsage;
+
 		file_put_contents($file, $messsage, FILE_APPEND | LOCK_EX);
+	}
+
+	/**
+	 * Format a current time to be used sql calculations.
+	 * @return string
+	 */
+	public static function getCurrentTime()
+	{
+		date_default_timezone_set(self::getTimeZone());
+
+		$now = new DateTime();
+
+		return $now->format(Dates::DATE_FORMAT_IN);
+	}
+
+	public static function getDefaultDateFormat()
+	{
+		return self::$settings['DEFAULT_DATE_FORMAT'];
+	}
+
+	public static function getAppointmentsListUrl()
+	{
+		return self::getHostname() . '/appointments/list';
+	}
+
+	/**
+	 * Format App url to ssl
+	 *
+	 * @return string
+	 */
+	public static function getDomainName()
+	{
+		if (self::isHostnameInSSLList())
+		{
+			return "https://" . $_SERVER['SERVER_NAME'];
+		}
+
+		return "http://" . $_SERVER['SERVER_NAME'];
+	}
+
+	/**
+	 * @return array
+	 */
+	public static function isHostnameInSSLList()
+	{
+		$domainName = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : "cron";
+
+		$hosts = self::getHostNames();
+
+		$hostsWithSSL = $hosts['SSL'];
+
+		return in_array($domainName, $hostsWithSSL);
+	}
+
+	public static function getReportsListUrl()
+	{
+		return self::getHostname() . '/appointments/list';
 	}
 }

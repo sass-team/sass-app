@@ -14,6 +14,7 @@ abstract class User extends Person
 	const DEACTIVE_STRING = 'deactivateAccount';
 	const ACTIVE_STATUS = self::PASSWORD_EXPIRATION_TIME_MINUTES;
 	const DEACTIVE_STATUS = 0;
+	const ACCOUNT_STATUS_ACTIVATED = '1';
 
 	// representation of database info
 	const DB_TABLE = "user";

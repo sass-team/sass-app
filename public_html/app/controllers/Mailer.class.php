@@ -379,4 +379,55 @@ class Mailer
 		}
 	}
 
+	public static function sendPending($buttonsPending, $receiverId, $receiverEmail, $fullName)
+	{
+
+		list($btnUrl, $emailVerificationTemplate, $subjectMail) = self::extractMailData($buttonsPending);
+
+		$mg = new Mailgun(App::getMailgunKey());
+		$domain = App::getMailgunDomain();
+
+		$mg->sendMessage($domain,
+			[
+				'from'                => 'SASS App <admin@' . App::getHostname() . '>',
+				'to'                  => $receiverEmail,
+				'subject'             => $subjectMail,
+				'text'                => 'Your mail does not support html',
+				'html'                => $emailVerificationTemplate,
+				'recipient-variables' => '{"' . $receiverEmail . '": {"id":' . $receiverId . ',"btnUrl":"' .
+					$btnUrl . '","fullName":"' . $fullName . '"}}'
+			]
+		);
+	}
+
+	/**
+	 * @param $buttonsPending
+	 * @return array
+	 */
+	public static function extractMailData($buttonsPending)
+	{
+		if ($buttonsPending[App::APPOINTMENT_BTN_URL] && $buttonsPending[App::REPORT_BTN_URL])
+		{
+			$btnUrl = 'http://' . App::getAppointmentsListUrl() . '/?appointments=1&reports=1';
+			$emailVerificationTemplate = file_get_contents(ROOT_PATH . 'mail/templates/notify_pending_appointments_reports.html');
+			$subjectMail = "Pending Appointments and Reports";
+
+			return [$btnUrl, $emailVerificationTemplate, $subjectMail];
+		} elseif ($buttonsPending[App::APPOINTMENT_BTN_URL])
+		{
+			$btnUrl = 'http://' . App::getAppointmentsListUrl() . '/?appointments=1&reports=0';
+			$emailVerificationTemplate = file_get_contents(ROOT_PATH . 'mail/templates/notify_pending_appointments.html');
+			$subjectMail = "Pending Appointments";
+
+			return [$btnUrl, $emailVerificationTemplate, $subjectMail];
+		} else
+		{
+			$btnUrl = 'http://' . App::getAppointmentsListUrl() . '/?appointments=0&reports=1';
+			$emailVerificationTemplate = file_get_contents(ROOT_PATH . 'mail/templates/notify_pending_reports.html');
+			$subjectMail = "Pending Reports";
+
+			return [$btnUrl, $emailVerificationTemplate, $subjectMail];
+		}
+	}
+
 }

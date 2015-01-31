@@ -26,9 +26,11 @@ class UserFetcher
 	const DB_COLUMN_DATE_CREATED = "date";
 
 
-	public static function existsMobileNum($newMobileNum) {
+	public static function existsMobileNum($newMobileNum)
+	{
 
-		try {
+		try
+		{
 			$query = "SELECT COUNT(" . self::DB_COLUMN_MOBILE . ") FROM `" . App::getDbName() . "`.`" .
 				self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_MOBILE . "` = :mobileNum";
 			$dbConnection = DatabaseManager::getConnection();
@@ -37,8 +39,12 @@ class UserFetcher
 			$query->bindParam(':mobileNum', $newMobileNum, PDO::PARAM_INT);
 			$query->execute();
 
-			if ($query->fetchColumn() === '0') return false;
-		} catch (Exception $e) {
+			if ($query->fetchColumn() === '0')
+			{
+				return false;
+			}
+		} catch (Exception $e)
+		{
 			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not check if new mobile number already exists on database.");
 		}
@@ -47,45 +53,54 @@ class UserFetcher
 
 	}
 
-	public static function retrieveUsingEmail($email) {
+	public static function retrieveUsingEmail($email)
+	{
 		$query = "SELECT `" . self::DB_COLUMN_ID . "`, `" . self::DB_COLUMN_FIRST_NAME . "`, `" .
 			self::DB_COLUMN_LAST_NAME . "` , `" . self::DB_COLUMN_ACTIVE . "`
 			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 			WHERE `" .
 			self::DB_COLUMN_EMAIL . "`=:email";
-		try {
+		try
+		{
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
 			$query->bindParam(':email', $email, PDO::PARAM_STR);
 
 			$query->execute();
+
 			return $query->fetch(PDO::FETCH_ASSOC);
-		} catch (Exception $e) {
+		} catch (Exception $e)
+		{
 			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Something terrible happened. Could not retrieve email data.");
 			// end try
 		}
 	}
 
-	public static function retrieveGenStringDate($id) {
+	public static function retrieveGenStringDate($id)
+	{
 		$query = "SELECT `" . self::DB_COLUMN_GEN_STRING_UPDATE_AT . "`
 		FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 		WHERE `" . self::DB_COLUMN_ID . "`=:id";
-		try {
+		try
+		{
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
 			$query->bindParam(':id', $id, PDO::PARAM_STR);
 
 			$query->execute();
+
 			return $query->fetchColumn();
-		} catch (Exception $e) {
+		} catch (Exception $e)
+		{
 			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Something terrible happened. Could not retrieve database.");
 			// end try
 		}
 	}
 
-	public static function retrieveSingle($id) {
+	public static function retrieveSingle($id)
+	{
 		$query =
 			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_EMAIL . "`, `" . self::DB_TABLE . "`.`" .
 			self::DB_COLUMN_ID . "`, `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_FIRST_NAME . "`, `" . self::DB_TABLE
@@ -101,15 +116,18 @@ class UserFetcher
 			WHERE `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` = :id";
 
 
-		try {
+		try
+		{
 			$dbConnection = DatabaseManager::getConnection();
 
 			$dbConnection = $dbConnection->prepare($query);
 			$dbConnection->bindParam(':id', $id, PDO::PARAM_INT);
 
 			$dbConnection->execute();
+
 			return $dbConnection->fetch(PDO::FETCH_ASSOC);
-		} catch (Exception $e) {
+		} catch (Exception $e)
+		{
 			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve user data.");
 			// end try
@@ -118,11 +136,13 @@ class UserFetcher
 
 
 	public
-	static function updateGenStringTimeUpdate($id) {
+	static function updateGenStringTimeUpdate($id)
+	{
 		date_default_timezone_set('Europe/Athens');
 		$date_modified = date("Y-m-d H:i:s");
 
-		try {
+		try
+		{
 
 			$query = "UPDATE `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 			SET `" . self::DB_COLUMN_GEN_STRING_UPDATE_AT . "`= :data_modified
@@ -133,14 +153,17 @@ class UserFetcher
 			$query->bindParam(':data_modified', $date_modified);
 
 			$query->execute();
-		} catch (Exception $e) {
+		} catch (Exception $e)
+		{
 			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not update data for password recovery.");
 		}
 	}
 
-	public static function generatedStringExists($id, $generatedString) {
-		try {
+	public static function generatedStringExists($id, $generatedString)
+	{
+		try
+		{
 			$query = "SELECT COUNT(" . self::DB_COLUMN_GEN_STRING . ")
 			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 			WHERE `" . self::DB_COLUMN_ID . "` = :id
@@ -153,16 +176,23 @@ class UserFetcher
 
 			$query->execute();
 
-			if ($query->fetchColumn() === '0') return false;
-		} catch (Exception $e) {
+			if ($query->fetchColumn() === '0')
+			{
+				return false;
+			}
+		} catch (Exception $e)
+		{
 			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not check if user id already exists on database.");
 		}
+
 		return true;
 	}
 
-	public static function updatePassword($id, $newPassword) {
-		try {
+	public static function updatePassword($id, $newPassword)
+	{
+		try
+		{
 			$new_password_hashed = password_hash($newPassword, PASSWORD_DEFAULT);
 
 			$query = "UPDATE `" . App::getDbName() . "`.`user`
@@ -175,14 +205,17 @@ class UserFetcher
 			$query->bindParam(':password', $new_password_hashed);
 
 			$query->execute();
-		} catch (Exception $e) {
+		} catch (Exception $e)
+		{
 			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not update password.");
 		}
 	}
 
-	public static function existsId($id) {
-		try {
+	public static function existsId($id)
+	{
+		try
+		{
 			$sql = "SELECT COUNT(" . self::DB_COLUMN_ID . ") FROM `" . App::getDbName() . "`.`" .
 				self::DB_TABLE . "` WHERE `" . self::DB_COLUMN_ID . "` = :id";
 
@@ -191,16 +224,23 @@ class UserFetcher
 			$dbConnection->bindParam(':id', $id, PDO::PARAM_INT);
 			$dbConnection->execute();
 
-			if ($dbConnection->fetchColumn() === '0') return false;
-		} catch (Exception $e) {
+			if ($dbConnection->fetchColumn() === '0')
+			{
+				return false;
+			}
+		} catch (Exception $e)
+		{
 			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not check if user id already exists on database.");
 		}
+
 		return true;
 	}
 
-	public static function updateGenString($id, $generatedString) {
-		try {
+	public static function updateGenString($id, $generatedString)
+	{
+		try
+		{
 			$query = "UPDATE `" . App::getDbName() . "`.`user` SET `gen_string` = :gen_string WHERE `id` = :id";
 
 			$dbConnection = DatabaseManager::getConnection();
@@ -209,7 +249,8 @@ class UserFetcher
 			$query->bindParam(':id', $id, PDO::PARAM_INT);
 
 			$query->execute();
-		} catch (Exception $e) {
+		} catch (Exception $e)
+		{
 			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not update generated string. Please re-send password link to user that was created.");
 		}

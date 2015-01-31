@@ -33,7 +33,7 @@ $general->loggedOutProtect();
 
 try
 {
-	$tutors = TutorFetcher::retrieveAllActive();
+	$tutors = TutorFetcher::retrieveActive();
 	$currentTerms = TermFetcher::retrieveCurrTerm();
 	$schedules = ScheduleFetcher::retrieveTutorsOnCurrentTerms();
 

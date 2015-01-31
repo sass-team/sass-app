@@ -46,6 +46,26 @@ function getStudentsIds($students, $appointmentId)
 	return rtrim($studentsIds, ", ");
 }
 
+function requestRequiresPendingAppointmentsAndReports()
+{
+	if (!isset($_GET['appointments']) || !isset($_GET['appointments']))
+	{
+		return;
+	}
+
+	return strcmp($_GET['appointments'], '1') === 0 && strcmp($_GET['reports'], '1') === 0;
+}
+
+function requestRequiresPendingAppointments()
+{
+	if (!isset($_GET['appointments']) || !isset($_GET['appointments']))
+	{
+		return;
+	}
+
+	return (strcmp($_GET['appointments'], '1') === 0) && (strcmp($_GET['reports'], '1') !== 0);
+}
+
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>
@@ -209,5 +229,19 @@ function getStudentsIds($students, $appointmentId)
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/textarea-counter/jquery.textarea-counter.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/autosize/jquery.autosize.min.js"></script>
 
+<script>
+	$(document).ready(function () {
+		var oTable = $('#usersTable').dataTable();
+
+		// filter data from redirect
+		<?php if (requestRequiresPendingAppointmentsAndReports()): ?>
+		oTable.fnFilter('pending');
+		<?php elseif(requestRequiresPendingAppointments()): ?>
+		oTable.fnFilter('pending', 2);
+		<?php else: ?>
+		oTable.fnFilter('pending fill', 3);
+		<?php endif; ?>
+	});
+</script>
 </body>
 </html>
