@@ -1,5 +1,3 @@
-[TOC]
-
 ## About 
 A system to managing hours for peer tutoring for a university.
 
