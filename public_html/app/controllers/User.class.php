@@ -704,6 +704,17 @@ abstract class User extends Person
 			exit();
 		}
 	}
+	/**
+	 * Redirect if user elevation is not that of tutor
+	 */
+	public function allowTutor()
+	{
+		if (!$this->isTutor())
+		{
+			header('Location: ' . BASE_URL . "error-403");
+			exit();
+		}
+	}
 
 	public function isTutor()
 	{

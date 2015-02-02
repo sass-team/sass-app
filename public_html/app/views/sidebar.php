@@ -50,12 +50,14 @@
 						</a>
 					</li>
 				<?php endif; ?>
+				<?php if ($user->isTutor()): ?>
 				<li>
 					<a href="<?php echo BASE_URL; ?>appointments/calendar">
 						<i class="fa fa-calendar"></i>
 						Calendar
 					</a>
 				</li>
+				<?php endif; ?>
 				<li>
 					<a href="<?php echo BASE_URL; ?>appointments/list">
 						<i class="fa fa-list"></i>

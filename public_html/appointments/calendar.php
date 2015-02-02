@@ -1,6 +1,7 @@
 <?php
 require __DIR__ . '/../app/init.php';
 $general->loggedOutProtect();
+$user->allowTutor();
 
 $section = "appointments";
 
@@ -315,6 +316,8 @@ require ROOT_PATH . 'views/sidebar.php';
 </div>
 <!-- #wrapper<!-- #content -->
 
+<input type="hidden" id="userId" value="<?php echo $user->getId(); ?>"/>
+<input type="hidden" id="domainName" value="<?php echo App::getDomainName(); ?>"/>
 
 <?php include ROOT_PATH . "views/assets/footer_common.php"; ?>
 
@@ -323,160 +326,16 @@ require ROOT_PATH . 'views/sidebar.php';
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/select2/select2.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/spin/spin.min.js"></script>
 
-
 <script
 	src="<?php echo BASE_URL; ?>assets/js/plugins/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js">
 </script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/fullcalendar/fullcalendar.min.js"></script>
 <script type="text/javascript"
         src="//cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.1/js/bootstrapValidator.min.js"></script>
+<script src="<?php echo BASE_URL; ?>assets/packages/pnotify/pnotify.custom.min.js"></script>
 
-<script type="text/javascript">
-	// http://momentjs.com/docs/#/manipulating/add/
-	// http://eonasdan.github.io/bootstrap-datetimepicker
-	$(function () {
-		var $calendar = $("#appointments-calendar");
-		var $termId = $('#termId');
-		$termId.select2();
-		var $calendarTitle = $('#calendar-title');
-		var opts = {
-			lines: 13, // The number of lines to draw
-			length: 20, // The length of each line
-			width: 10, // The line thickness
-			radius: 30, // The radius of the inner circle
-			corners: 1, // Corner roundness (0..1)
-			rotate: 0, // The rotation offset
-			direction: 1, // 1: clockwise, -1: counterclockwise
-			color: '#000', // #rgb or #rrggbb or array of colors
-			speed: 2.2, // Rounds per second
-			trail: 60, // Afterglow percentage
-			shadow: false, // Whether to render a shadow
-			hwaccel: false, // Whether to use hardware acceleration
-			className: 'spinner', // The CSS class to assign to the spinner
-			zIndex: 2e9, // The z-index (defaults to 2000000000)
-			top: '50%', // Top position relative to parent
-			left: '50%' // Left position relative to parent
-		};
-
-		$termId.click(function () {
-			reloadCalendar('term_change');
-		});
-
-		function loadAllCalendars() {
-			try {
-				reloadCalendar();
-			} catch (err) {
-				$calendarTitle.text(err);
-			}
-		}
-
-		function reloadCalendar(choice) {
-			var spinner;
-			var calendar = document.getElementById('appointments-calendar');
-
-			if ($termId.val() === null || !$termId.select2('val').match(/^[0-9]+$/)) throw new Error("Term is missing");
-
-			var singleTutorAppointmentsCalendar = {
-				url: "<?php echo App::getDomainName(); ?>/api/appointments",
-				type: 'GET',
-				dataType: "json",
-				data: {
-					action: 'single_tutor_appointments',
-					tutorId: <?php echo $requestedTutorId; ?>,
-					termId: $termId.select2('val')
-				},
-				error: function (xhr, status, error) {
-					$calendarTitle.text("Could not retrieve appointments.");
-					console.log(error);
-				},
-				success: function () {
-					$calendarTitle.text();
-				},
-				beforeSend: function () {
-					if (spinner == null) {
-						spinner = new Spinner(opts).spin(calendar);
-					}
-
-				},
-				complete: function () {
-					if (spinner != null) {
-						spinner.stop();
-						spinner = null;
-					}
-				}
-			};
-
-			var allTutorsAppointmentsCalendar = {
-				url: "<?php echo App::getDomainName(); ?>/api/appointments",
-				type: 'GET',
-				dataType: "json",
-				data: {
-					action: 'all_tutors_appointments',
-					termId: $termId.select2('val')
-				},
-				error: function (xhr, status, error) {
-					$('#calendar-title').text("Could not retrieve appointments.");
-					console.log(xhr.responseText);
-				},
-				success: function () {
-					$calendarTitle.text("All tutors appointments");
-				},
-				beforeSend: function () {
-					if (spinner == null) {
-						spinner = new Spinner(opts).spin(calendar);
-					}
-
-				},
-				complete: function () {
-					if (spinner != null) {
-						spinner.stop();
-						spinner = null;
-					}
-				}
-			};
-
-			$calendar.fullCalendar('removeEventSource', allTutorsAppointmentsCalendar);
-			$calendar.fullCalendar('removeEventSource', singleTutorAppointmentsCalendar);
-
-			switch (choice) {
-				case 'all_appointments':
-				case 'term_change':
-					$calendar.fullCalendar('addEventSource', allTutorsAppointmentsCalendar);
-					break;
-				case 'single_tutor_appointment':
-					$calendar.fullCalendar('addEventSource', singleTutorAppointmentsCalendar);
-					break;
-				default:
-					break;
-			}
-			$calendar.fullCalendar('refetchEvents');
-
-		}
-
-
-		$("#appointments-calendar").fullCalendar({
-			header: {
-				left: 'prev,next',
-				center: 'title',
-				right: 'agendaWeek,month,agendaDay'
-			},
-			weekends: false, // will hide Saturdays and Sundays
-			defaultView: "agendaWeek",
-			editable: false,
-			droppable: false,
-			eventSources: []
-		});
-
-		<?php if(isUrlRequestingAllAppointments()){
-			if( $user->isTutor()) {?>
-		reloadCalendar('single_tutor_appointment');
-		<?php }else { ?>
-		reloadCalendar('all_appointments');
-		<?php }?>
-		<?php }?>
-
-	});
-</script>
+<!-- Custom js -->
+<script src="<?php echo BASE_URL; ?>assets/js/app/appointments.js"></script>
 
 </body>
 </html>

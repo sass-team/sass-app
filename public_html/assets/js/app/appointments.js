@@ -1,11 +1,7 @@
 $(function () {
-	// http://momentjs.com/docs/#/manipulating/add/
-	// http://eonasdan.github.io/bootstrap-datetimepicker
-	moment().format();
-
 	var $termId = $("#termId");
 	var $calendarTitle = $('#calendar-title');
-	var $calendar = $("#schedule-calendar");
+	var $calendar = $("#appointments-calendar");
 
 	// Server side data
 	var userId = $('#userId').val();
@@ -13,8 +9,6 @@ $(function () {
 
 	// Config data
 	var spinner;
-	// Config settings
-	// spinner config
 	var opts = {
 		lines    : 13, // The number of lines to draw
 		length   : 20, // The length of each line
@@ -77,20 +71,16 @@ $(function () {
 	$termId.click(function () {
 		reloadCalendar('term_change');
 	});
+
 	// Custom functions
 	function reloadCalendar(choice) {
-		var calendar = document.getElementById('schedule-calendar');
+		var calendar = document.getElementById('appointments-calendar');
 		var spinner;
 
-		$calendarTitle.text("");
-//		$calendarTitle.append("<i class='fa fa-circle-o-notch fa-spin'></i>");
-
-		if ($termId.val() === null || !$termId.select2('val').match(/^[0-9]+$/)) {
-			pnotifySettingsWarning.text = "Could not detect a term. Please try to fresh the web page.";
+		if (!$termId.select2("val").match(/^[0-9]+$/)) {
+			pnotifySettingsWarning.text = "Could not detect term. Please try to refresh the page.";
 			new PNotify(pnotifySettingsWarning);
 		}
-
-		// Require course id and term id
 
 		/**
 		 *
@@ -134,16 +124,22 @@ $(function () {
 		var data = {
 			termId: $termId.select2('val'), tutorId: userId
 		};
-		var getScheduleForTutor = formatCalendarEventSource('/api/schedules', 'get', 'json', 'getScheduleForTutor', data);
+		var getAppointmentsForTutor = formatCalendarEventSource('/api/appointments', 'get', 'json', 'getAppointmentsForTutor', data);
 
-		$calendar.fullCalendar('removeEventSource', getScheduleForTutor);
+		$calendar.fullCalendar('removeEventSource', getAppointmentsForTutor);
 
 		switch (choice) {
-			case 'working_hours_only':
-					//$calendar.fullCalendar('addEventSource', getSchedulesWithCourse);
-					$calendar.fullCalendar('addEventSource', getScheduleForTutor);
-					pnotifySettingsInfo.text = "Retrieved all working hours.";
-					new PNotify(pnotifySettingsInfo);
+			case 'term_change':
+				$calendar.fullCalendar('addEventSource', getAppointmentsForTutor);
+				break;
+			case 'appointments_only':
+				if (!$termId.select2("val").match(/^[0-9]+$/)) {
+					pnotifySettingsWarning.text = "Could not detect term. Please try to refresh the page.";
+					new PNotify(pnotifySettingsWarning);
+				}
+				$calendar.fullCalendar('addEventSource', getAppointmentsForTutor);
+				pnotifySettingsInfo.text = "Retrieved all your appointments.";
+				new PNotify(pnotifySettingsInfo);
 				break;
 			default:
 				break;
@@ -151,6 +147,6 @@ $(function () {
 		$calendar.fullCalendar('refetchEvents');
 	}
 
-	reloadCalendar("working_hours_only");
+	reloadCalendar("appointments_only");
 
 });
