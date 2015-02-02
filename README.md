@@ -1,9 +1,5 @@
-[TOC]
-
-# README 
+## About 
 A system to managing hours for peer tutoring for a university.
-
-# [Server Info](http://www.hostinger.gr/diadiktiaki-filoksenia)
 
 # [GIT (CVS)](http://git-scm.com/book/en/Getting-Started-About-Version-Control)
 What is version control, and why should you care? Version control is a system that records changes to a file or set of files over time so that you can recall specific versions later. 

@@ -1,5 +1,6 @@
 # Should contain key for database, mailgun, recaptcha. Check .env.example
 .env.php
+app_errors.log
 
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
 
