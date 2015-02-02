@@ -273,7 +273,7 @@ require ROOT_PATH . 'views/sidebar.php';
 								Details
 							</span>
 
-						<span class="label label-danger">Working Hours</span>
+						<span class="label label-info">Appointments</span>
 
 					</h3>
 
