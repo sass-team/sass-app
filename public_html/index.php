@@ -540,9 +540,38 @@ function isBtnChangePrevWeekPrsd()
 
 <script src="<?php echo BASE_URL; ?>assets/js/demos/dashboard.js"></script>
 
+<script src="<?php echo BASE_URL; ?>assets/packages/pnotify/pnotify.custom.min.js"></script>
+
 <script type="text/javascript">
 	$(function ()
 	{
+		var stack_bottomright = {"dir1": "up", "dir2": "left", "firstpos1": 25, "firstpos2": 25};
+		var pnotifySettingsInfo = {
+			title        : 'Tutor Notice',
+			text         : '',
+			type         : 'info',
+			delay        : 13000,
+			history      : {history: true, menu: true},
+			addclass     : "stack-bottomright", // This is one of the included default classes.
+			stack        : stack_bottomright,
+			animation    : "slide",
+			animate_speed: "slow"
+		};
+		var pnotifySettingsWarning = {
+			title        : 'Tutor Warning',
+			text         : '',
+			type         : 'error',
+			delay        : 7000,
+			history      : {history: true, menu: true},
+			addclass     : "stack-bottomright", // This is one of the included default classes.
+			stack        : stack_bottomright,
+			animation    : "slide",
+			animate_speed: "slow"
+		};
+		pnotifySettingsInfo.text = "Starting from today 09:00 tutors should daily receive one email if they have any pending appointments/reports. This email contain " +
+		"links to their corresponding pending appointments & reports to be filled.<br/> If you had pending " +
+		"appointments/reports and didn't receive your email please contact the secretariat or submit a <a href='<?php echo App::getGithubNewIssueUrl()?>'>new issue</a>." ;
+		new PNotify(pnotifySettingsInfo);
 		$('.changeWeek').on('click', function ()
 		{
 			var $a = $(this);
