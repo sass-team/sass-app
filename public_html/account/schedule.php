@@ -107,7 +107,7 @@ function get($objects, $findId, $column) {
 
 						<div class="portlet-content" id="calendar-portlet">
 
-							<div id="appointments-schedule-calendar"></div>
+							<div id="schedule-calendar"></div>
 						</div>
 					</div>
 
@@ -130,6 +130,9 @@ function get($objects, $findId, $column) {
 <!-- #wrapper<!-- #content -->
 
 
+<input type="hidden" id="userId" value="<?php echo $user->getId(); ?>"/>
+<input type="hidden" id="domainName" value="<?php echo App::getDomainName(); ?>"/>
+
 <?php include ROOT_PATH . "views/assets/footer_common.php"; ?>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/spin/spin.min.js"></script>
 
@@ -140,112 +143,10 @@ function get($objects, $findId, $column) {
 	src="<?php echo BASE_URL; ?>assets/js/plugins/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js">
 </script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/fullcalendar/fullcalendar.min.js"></script>
+<script src="<?php echo BASE_URL; ?>assets/packages/pnotify/pnotify.custom.min.js"></script>
 
-<script type="text/javascript">
-	$(function () {
-		// http://momentjs.com/docs/#/manipulating/add/
-		// http://eonasdan.github.io/bootstrap-datetimepicker
-		moment().format();
-
-		var $termId = $("#termId");
-		var $calendarTitle = $('#calendar-title');
-		var $calendar = $("#appointments-schedule-calendar");
-		var $maximizeChoices = $("#maximize-inputs");
-		var opts = {
-			lines: 13, // The number of lines to draw
-			length: 20, // The length of each line
-			width: 10, // The line thickness
-			radius: 30, // The radius of the inner circle
-			corners: 1, // Corner roundness (0..1)
-			rotate: 0, // The rotation offset
-			direction: 1, // 1: clockwise, -1: counterclockwise
-			color: '#000', // #rgb or #rrggbb or array of colors
-			speed: 2.2, // Rounds per second
-			trail: 60, // Afterglow percentage
-			shadow: false, // Whether to render a shadow
-			hwaccel: false, // Whether to use hardware acceleration
-			className: 'spinner', // The CSS class to assign to the spinner
-			zIndex: 2e9, // The z-index (defaults to 2000000000)
-			top: '50%', // Top position relative to parent
-			left: '50%' // Left position relative to parent
-		};
-
-		$maximizeChoices.on("click", function () {
-
-		});
-
-		$termId.select2();
-		$termId.click(function () {
-			reloadCalendar();
-		});
-
-
-		$("#show-only-working-hours").on('click', function () {
-			reloadCalendar("working_hours_only");
-		});
-
-		$("#show-only-appointments").on('click', function () {
-			reloadCalendar("appointments_only");
-		});
-
-		function reloadCalendar(choice) {
-			var calendar = document.getElementById('appointments-schedule-calendar');
-			var spinner = new Spinner(opts).spin(calendar);
-
-			$calendarTitle.text("");
-			$calendarTitle.append("<i class='fa fa-circle-o-notch fa-spin'></i>");
-
-			if ($termId.val() === null || !$termId.select2('val').match(/^[0-9]+$/)) throw new Error("Term is missing");
-
-			var data = [];
-			var singleTutorScheduleCalendar = {
-				url: "<?php echo App::getDomainName(); ?>/api/schedules",
-				type: 'GET',
-				dataType: "json",
-				data: {
-					action: 'single_tutor_working_hours',
-					tutorId: <?php echo $user->getId(); ?>,
-					termId: $termId.select2('val')
-				},
-				error: function (xhr, status, error) {
-					$calendarTitle.text("there was an error while retrieving schedules");
-					console.log(xhr.responseText);
-				}
-			};
-
-			$calendar.fullCalendar('removeEventSource', singleTutorScheduleCalendar);
-			$calendar.fullCalendar('addEventSource', singleTutorScheduleCalendar);
-			$calendar.fullCalendar('refetchEvents');
-
-			spinner.stop();
-			$calendarTitle.text("");
-		}
-
-		function loadAllCalendars() {
-			try {
-				reloadCalendar();
-			} catch (err) {
-				$calendarTitle.text(err);
-			}
-		}
-
-		$calendar.fullCalendar({
-			header: {
-				left: 'prev,next',
-				center: 'title',
-				right: 'agendaWeek,month,agendaDay'
-			},
-			weekends: false, // will hide Saturdays and Sundays
-			defaultView: "agendaWeek",
-			editable: false,
-			droppable: false,
-			eventSources: []
-		});
-
-		loadAllCalendars();
-
-	});
-</script>
+<!-- Custom js -->
+<script src="<?php echo BASE_URL; ?>assets/js/app/schedule.js"></script>
 
 </body>
 </html>
