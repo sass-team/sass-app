@@ -48,7 +48,7 @@ function getStudentsIds($students, $appointmentId)
 
 function requestRequiresPendingAppointmentsAndReports()
 {
-	if (!isset($_GET['appointments']) || !isset($_GET['appointments']))
+	if (!isset($_GET['appointments']) || !isset($_GET['reports']))
 	{
 		return;
 	}
@@ -58,12 +58,22 @@ function requestRequiresPendingAppointmentsAndReports()
 
 function requestRequiresPendingAppointments()
 {
-	if (!isset($_GET['appointments']) || !isset($_GET['appointments']))
+	if (!isset($_GET['appointments']) || !isset($_GET['reports']))
 	{
 		return;
 	}
 
 	return (strcmp($_GET['appointments'], '1') === 0) && (strcmp($_GET['reports'], '1') !== 0);
+}
+
+function requestRequiresPendingReports()
+{
+	if (!isset($_GET['appointments']) || !isset($_GET['reports']))
+	{
+		return;
+	}
+
+	return (strcmp($_GET['appointments'], '1') !== 0) && (strcmp($_GET['reports'], '1') === 0);
 }
 
 ?>
@@ -237,10 +247,11 @@ function requestRequiresPendingAppointments()
 		<?php if (requestRequiresPendingAppointmentsAndReports()): ?>
 		oTable.fnFilter('pending');
 		<?php elseif(requestRequiresPendingAppointments()): ?>
-		oTable.fnFilter('pending', 2);
-		<?php else: ?>
+        oTable.fnFilter('pending', 2);
+		<?php elseif(requestRequiresPendingReports()): ?>
 		oTable.fnFilter('pending fill', 3);
-		<?php endif; ?>
+        <?php endif; ?>
+
 	});
 </script>
 </body>
