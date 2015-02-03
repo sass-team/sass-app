@@ -230,7 +230,7 @@ $(function () {
 		$("#studentId1").select2({
 			placeholder: "Select one"
 		});
-		$("#instructorid1").select2({
+		$("#instructorId1").select2({
 			placeholder: "Select one"
 		});
 		$("#" + newStudentId).select2({

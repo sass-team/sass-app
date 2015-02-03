@@ -131,50 +131,49 @@ function get($objects, $findId, $column)
 								      action="<?php echo BASE_URL . 'appointments/add'; ?>"
 								      class="form">
 
-									<div class="row">
+									<div class="row"id="student-instructor">
 
-										<div class="col-lg-6 col-md-12">
-											<div class="form-group" id="student-instructor">
+											<div class="form-group">
 
-												<div class="form-group">
-													<div class="input-group">
+												<div class="col-lg-6 col-md-12">
+													<div class="form-group">
+														<div class="input-group">
 													<span class="input-group-addon"><label
 															for="studentId1">Student</label></span>
-														<select id="studentId1" name="studentsIds[]"
-														        class="form-control"
-														        required>
-															<option></option>
-															<?php
-															foreach ($students as $student):
-																include(ROOT_PATH . "views/partials/student/select-options-view.html.php");
-															endforeach;
-															?>
-														</select>
+															<select id="studentId1" name="studentsIds[]"
+															        class="form-control"
+															        required>
+																<option></option>
+																<?php
+																foreach ($students as $student):
+																	include(ROOT_PATH . "views/partials/student/select-options-view.html.php");
+																endforeach;
+																?>
+															</select>
+														</div>
 													</div>
 												</div>
-												<div class="form-group">
-													<div class="input-group">
+												<div class="col-lg-6 col-md-12">
+													<div class="form-group">
+														<div class="input-group">
 														<span class="input-group-addon">
 															<label for="instructorId1">Instructor</label>
 														</span>
-														<select id="instructorId1" name="instructorIds[]"
-														        class="form-control"
-														        required>
-															<option></option>
-															<?php foreach ($instructors as $instructor)
-															{
-																include(ROOT_PATH . "views/partials/instructor/select-options-view.html.php");
-															}
-															?>
-														</select>
+															<select id="instructorId1" name="instructorIds[]"
+															        class="form-control"
+															        required>
+																<option></option>
+																<?php foreach ($instructors as $instructor)
+																{
+																	include(ROOT_PATH . "views/partials/instructor/select-options-view.html.php");
+																}
+																?>
+															</select>
+														</div>
 													</div>
 												</div>
-
 											</div>
-										</div>
 
-										<div class="col-lg-6 col-md-12">
-										</div>
 									</div>
 									<!-- /.row -->
 

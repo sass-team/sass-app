@@ -568,7 +568,7 @@ function isBtnChangePrevWeekPrsd()
 			animation    : "slide",
 			animate_speed: "slow"
 		};
-		pnotifySettingsInfo.text = "Starting from today 09:00 tutors should daily receive one email if they have any pending appointments/reports. This email contain " +
+		pnotifySettingsInfo.text = "Please notice tutors daily receive one email if they have any pending appointments/reports. This email contain " +
 		"links to their corresponding pending appointments & reports to be filled.<br/> If you had pending " +
 		"appointments/reports and didn't receive your email please contact the secretariat or submit a <a href='<?php echo App::getGithubNewIssueUrl()?>'>new issue</a>." ;
 		new PNotify(pnotifySettingsInfo);
