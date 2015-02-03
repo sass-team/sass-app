@@ -201,8 +201,8 @@ $(function () {
 		var index = $(this).data('index');
 
 		if (!index) {
-			index = 1;
-			$(this).data('index', 1);
+			index = 2;
+			$(this).data('index', 2);
 		}
 		index++;
 		$(this).data('index', index);
