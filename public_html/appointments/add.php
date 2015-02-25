@@ -10,7 +10,7 @@ $section = "appointments";
 try
 {
 	$curTerms = TermFetcher::retrieveCurrTerm();
-	$coursesForCurTerm = sizeof($curTerms) > 0 ? CourseFetcher::retrieveForTerm($curTerms[0][TermFetcher::DB_COLUMN_ID]) : "";
+	$coursesForCurTerm = sizeof($curTerms) > 0 ? CourseFetcher::retrieveForTerm($curTerms[0][ TermFetcher::DB_COLUMN_ID ]) : "";
 	$instructors = InstructorFetcher::retrieveAll();
 	$students = StudentFetcher::retrieveAll();
 
@@ -45,7 +45,7 @@ function get($objects, $findId, $column)
 {
 	foreach ($objects as $object)
 	{
-		if ($object[$column] === $findId)
+		if ($object[ $column ] === $findId)
 		{
 			return $object;
 		}
@@ -131,48 +131,48 @@ function get($objects, $findId, $column)
 								      action="<?php echo BASE_URL . 'appointments/add'; ?>"
 								      class="form">
 
-									<div class="row"id="student-instructor">
+									<div class="row" id="student-instructor">
 
-											<div class="form-group">
+										<div class="form-group">
 
-												<div class="col-lg-6 col-md-12">
-													<div class="form-group">
-														<div class="input-group">
+											<div class="col-lg-6 col-md-12">
+												<div class="form-group">
+													<div class="input-group">
 													<span class="input-group-addon"><label
 															for="studentId1">Student</label></span>
-															<select id="studentId1" name="studentsIds[]"
-															        class="form-control"
-															        required>
-																<option></option>
-																<?php
-																foreach ($students as $student):
-																	include(ROOT_PATH . "views/partials/student/select-options-view.html.php");
-																endforeach;
-																?>
-															</select>
-														</div>
-													</div>
-												</div>
-												<div class="col-lg-6 col-md-12">
-													<div class="form-group">
-														<div class="input-group">
-														<span class="input-group-addon">
-															<label for="instructorId1">Instructor</label>
-														</span>
-															<select id="instructorId1" name="instructorIds[]"
-															        class="form-control"
-															        required>
-																<option></option>
-																<?php foreach ($instructors as $instructor)
-																{
-																	include(ROOT_PATH . "views/partials/instructor/select-options-view.html.php");
-																}
-																?>
-															</select>
-														</div>
+														<select id="studentId1" name="studentsIds[]"
+														        class="form-control"
+														        required>
+															<option></option>
+															<?php
+															foreach ($students as $student):
+																include(ROOT_PATH . "views/partials/student/select-options-view.html.php");
+															endforeach;
+															?>
+														</select>
 													</div>
 												</div>
 											</div>
+											<div class="col-lg-6 col-md-12">
+												<div class="form-group">
+													<div class="input-group">
+														<span class="input-group-addon">
+															<label for="instructorId1">Instructor</label>
+														</span>
+														<select id="instructorId1" name="instructorIds[]"
+														        class="form-control"
+														        required>
+															<option></option>
+															<?php foreach ($instructors as $instructor)
+															{
+																include(ROOT_PATH . "views/partials/instructor/select-options-view.html.php");
+															}
+															?>
+														</select>
+													</div>
+												</div>
+											</div>
+										</div>
 
 									</div>
 									<!-- /.row -->
@@ -295,7 +295,7 @@ function get($objects, $findId, $column)
 										<div
 											class="col-lg-6 col-lg-push-3 col-md-8 col-md-push-2 col-sm-10 col-sm-push-1">
 											<div class="form-group">
-												<button type="submit" class="btn btn-block btn-info">Add</button>
+												<button type="submit" class="btn btn-block btn-primary">Add</button>
 												<input type="hidden" name="hiddenSubmitPrsd" value="">
 											</div>
 										</div>
@@ -370,10 +370,18 @@ function get($objects, $findId, $column)
 <input type="hidden" id="isAdmin" value="<?php echo $user->isAdmin(); ?>"/>
 <input type="hidden" id="userId" value="<?php echo $user->getId(); ?>"/>
 <input type="hidden" id="isBtnAddStudentPrsd" value="<?php echo isBtnAddStudentPrsd(); ?>"/>
-<input type="hidden" id="tutorIdServerSide" value="<?php echo $_POST['tutorId']; ?>"/>
-<input type="hidden" id="courseIdServerSide" value="<?php echo $_POST['courseId']; ?>"/>
-<input type="hidden" id="dateTimePickerStartServerSide" value="<?php echo $_POST['dateTimePickerStart']; ?>"/>
-<input type="hidden" id="dateTimePickerEndServerSide" value="<?php echo $_POST['dateTimePickerEnd']; ?>"/>
+<?php if (isset($_POST['tutorId'])): ?>
+	<input type="hidden" id="tutorIdServerSide" value="<?php echo $_POST['tutorId']; ?>"/>
+<?php endif; ?>
+<?php if (isset($_POST['courseId'])): ?>
+	<input type="hidden" id="courseIdServerSide" value="<?php echo $_POST['courseId']; ?>"/>
+<?php endif; ?>
+<?php if (isset($_POST['dateTimePickerStart'])): ?>
+	<input type="hidden" id="dateTimePickerStartServerSide" value="<?php echo $_POST['dateTimePickerStart']; ?>"/>
+<?php endif;; ?>
+<?php if (isset($_POST['dateTimePickerEnd'])): ?>
+	<input type="hidden" id="dateTimePickerEndServerSide" value="<?php echo $_POST['dateTimePickerEnd']; ?>"/>
+<?php endif;; ?>
 <input type="hidden" id="domainName" value="<?php echo App::getDomainName(); ?>"/>
 
 <!-- Vendor Libraries -->
