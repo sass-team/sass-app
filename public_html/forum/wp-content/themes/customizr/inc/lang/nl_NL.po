@@ -1,0 +1,2832 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: * Customizr v3.3.1\n"
+"POT-Creation-Date: 2015-01-21 16:44+0100\n"
+"PO-Revision-Date: 2015-01-21 16:44+0100\n"
+"Last-Translator: Nicolas <contact@themesandco.com>\n"
+"Language-Team: Nicolas G. <contact@themesandco.com>\n"
+"Language: nl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.7\n"
+"X-Poedit-KeywordsList: __;_e;_n\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../class-fire-init.php:49 ../class-fire-init.php:50
+msgid "Right sidebar"
+msgstr "Rechter zijbalk"
+
+#: ../class-fire-init.php:55 ../class-fire-init.php:56
+msgid "Left sidebar"
+msgstr "Linker zijbalk"
+
+#: ../class-fire-init.php:61 ../class-fire-init.php:62
+msgid "2 sidebars : Right and Left"
+msgstr "2 zijbalken : Rechts en Links"
+
+#: ../class-fire-init.php:67 ../class-fire-init.php:68
+msgid "No sidebars : full width layout"
+msgstr "Geen zijbalken : volle breedte layout"
+
+#: ../class-fire-init.php:79
+msgid "Blue"
+msgstr "Blauw"
+
+#: ../class-fire-init.php:80
+msgid "Black"
+msgstr "Zwart"
+
+#: ../class-fire-init.php:81
+msgid "Flat black"
+msgstr "Basis zwart"
+
+#: ../class-fire-init.php:82
+msgid "Grey"
+msgstr "Grijs"
+
+#: ../class-fire-init.php:83
+msgid "Ligth grey"
+msgstr "Lichtgrijs"
+
+#: ../class-fire-init.php:84
+msgid "Flat purple"
+msgstr "Basis paars"
+
+#: ../class-fire-init.php:85
+msgid "Purple"
+msgstr "Paars"
+
+#: ../class-fire-init.php:86
+msgid "Flat red"
+msgstr "Basis rood"
+
+#: ../class-fire-init.php:87
+msgid "Red"
+msgstr "Rood"
+
+#: ../class-fire-init.php:88
+msgid "Orange"
+msgstr "Oranje"
+
+#: ../class-fire-init.php:89
+msgid "Flat orange"
+msgstr "Basis oranje"
+
+#: ../class-fire-init.php:90
+msgid "Yellow"
+msgstr "Geel"
+
+#: ../class-fire-init.php:91
+msgid "Flat yellow"
+msgstr "Basis geel"
+
+#: ../class-fire-init.php:92
+msgid "Green"
+msgstr "Groen"
+
+#: ../class-fire-init.php:93
+msgid "Light green"
+msgstr "Lichtgroen"
+
+#: ../class-fire-init.php:94
+msgid "Green blue"
+msgstr "Groen blauw"
+
+#: ../class-fire-init.php:95
+msgid "Light blue "
+msgstr "Lichtblauw"
+
+#: ../class-fire-init.php:123
+msgid "Google fonts pairs"
+msgstr ""
+
+#: ../class-fire-init.php:143
+msgid "Web safe fonts pairs"
+msgstr ""
+
+#: ../class-fire-init.php:152
+#, fuzzy
+msgid "Single fonts"
+msgstr "Enkel bericht"
+
+#: ../class-fire-init.php:190
+msgid "Subscribe to my rss feed"
+msgstr "Abonneer op onze RSS feed"
+
+#: ../class-fire-init.php:191
+msgid "RSS feed (default is the wordpress feed)"
+msgstr "RSS feed (standaard is de WordPress feed)"
+
+#: ../class-fire-init.php:195
+msgid "Follow me on Twitter"
+msgstr "Volg ons op Twitter"
+
+#: ../class-fire-init.php:196
+msgid "Twitter profile url"
+msgstr "Twitter profiel URL"
+
+#: ../class-fire-init.php:200
+msgid "Follow me on Facebook"
+msgstr "Volg ons op Facebook"
+
+#: ../class-fire-init.php:201
+msgid "Facebook profile url"
+msgstr "Facebook profiel URL"
+
+#: ../class-fire-init.php:205
+msgid "Follow me on Google+"
+msgstr "Volg ons op Google+"
+
+#: ../class-fire-init.php:206
+msgid "Google+ profile url"
+msgstr "Google+ profiel URL"
+
+#: ../class-fire-init.php:210
+msgid "Follow me on Instagram"
+msgstr "Volg ons op Instagram"
+
+#: ../class-fire-init.php:211
+msgid "Instagram profile url"
+msgstr "Instagram profiel URL"
+
+#: ../class-fire-init.php:215
+msgid "Follow me on Tumblr"
+msgstr "Volg ons op Tumblr"
+
+#: ../class-fire-init.php:216
+msgid "Tumblr url"
+msgstr "Tumbl URL"
+
+#: ../class-fire-init.php:220
+msgid "Follow me on Flickr"
+msgstr "Volg ons op Flickr"
+
+#: ../class-fire-init.php:221
+msgid "Flickr url"
+msgstr "Flickr URL"
+
+#: ../class-fire-init.php:225
+msgid "Follow me on WordPress"
+msgstr "Volg ons op WordPress"
+
+#: ../class-fire-init.php:226
+msgid "WordPress profile url"
+msgstr "WordPress profiel URL"
+
+#: ../class-fire-init.php:230
+msgid "Follow me on Youtube"
+msgstr "Volg ons op Youtube"
+
+#: ../class-fire-init.php:231
+msgid "Youtube profile url"
+msgstr "Youtube profiel URL"
+
+#: ../class-fire-init.php:235
+msgid "Pin me on Pinterest"
+msgstr "Pin ons op Pinterest"
+
+#: ../class-fire-init.php:236
+msgid "Pinterest profile url"
+msgstr "Pinterest profiel URL"
+
+#: ../class-fire-init.php:240
+msgid "Follow me on Github"
+msgstr "Volg ons op Github"
+
+#: ../class-fire-init.php:241
+msgid "Github profile url"
+msgstr "Github profiel URL"
+
+#: ../class-fire-init.php:245
+msgid "Follow me on Dribbble"
+msgstr "Volg ons op Dribble"
+
+#: ../class-fire-init.php:246
+msgid "Dribbble profile url"
+msgstr "Dribble profiel URL"
+
+#: ../class-fire-init.php:250
+msgid "Follow me on LinkedIn"
+msgstr "Volg ons op inkedIn"
+
+#: ../class-fire-init.php:251
+msgid "LinkedIn profile url"
+msgstr "LinkedIn profiel URL"
+
+#: ../class-fire-init.php:260
+msgid "Right Sidebar"
+msgstr "Rechter zijbalk"
+
+#: ../class-fire-init.php:261 ../class-fire-init.php:265
+msgid "Appears on posts, static pages, archives and search pages"
+msgstr "Verschijnt op posts, statische pagina's, archieven en zoekpagina's"
+
+#: ../class-fire-init.php:264
+msgid "Left Sidebar"
+msgstr "Linker zijbalk"
+
+#: ../class-fire-init.php:272
+msgid "Footer Widget Area One"
+msgstr "Footer Widget gebied één"
+
+#: ../class-fire-init.php:273 ../class-fire-init.php:277
+#: ../class-fire-init.php:281
+msgid "Just use it as you want !"
+msgstr "Gebruik het zoals je wilt!"
+
+#: ../class-fire-init.php:276
+msgid "Footer Widget Area Two"
+msgstr "Footer Widget gebied twee"
+
+#: ../class-fire-init.php:280
+msgid "Footer Widget Area Three"
+msgstr "Footer Widget gebied drie"
+
+#: ../class-fire-init.php:298
+msgid "Speaking the Truth in times of universal deceit is a revolutionary act."
+msgstr ""
+"De waarheid spreken in tijden van universeel bedrog is een revolutionaire "
+"daad."
+
+#: ../class-fire-init.php:299
+msgid "George Orwell"
+msgstr "George Orwell"
+
+#: ../class-fire-init.php:300
+msgid ""
+"Sorry, but the requested page is not found. You might try a search below."
+msgstr ""
+"Sorry, de gevraagde pagina is niet gevonden. U kunt een zoekopdracht "
+"proberen hieronder."
+
+#: ../class-fire-init.php:305
+msgid ""
+"Success is the ability to go from one failure to another with no loss of "
+"enthusiasm..."
+msgstr ""
+"Succes is de mogelijkheid om van de ene storing naar de andere te gaan "
+"zonder verlies van enthousiasme..."
+
+#: ../class-fire-init.php:306
+msgid "Sir Winston Churchill"
+msgstr "Sir Winston Churchill"
+
+#: ../class-fire-init.php:307
+msgid ""
+"Sorry, but nothing matched your search criteria. Please try again with some "
+"different keywords."
+msgstr ""
+"Sorry, er voldoet niets aan uw zoek criteria. Probeer het nog eens met "
+"andere woorden."
+
+#: ../class-fire-init.php:322
+msgid "Customizr is a clean responsive theme"
+msgstr "Customizr is een schoon en snel thema"
+
+#: ../class-fire-init.php:327 ../class-fire-init.php:336
+msgid "Style your WordPress site live!"
+msgstr "Stijl uw WordPress site live!"
+
+#: ../class-fire-init.php:328
+msgid ""
+"Many layout and design options are available from the WordPress customizer "
+"screen : see your changes live !"
+msgstr ""
+"Vele lay-out en ontwerp opties zijn beschikbaar vanuit het WordPress "
+"systeemaanpasser scherm: uw wijzigingen live zien!"
+
+#: ../class-fire-init.php:329
+msgid "Just try it!"
+msgstr "Probeer het!"
+
+#: ../class-fire-init.php:341 ../class-fire-init.php:350
+msgid "Create beautiful sliders"
+msgstr "Maak prachtige sliders"
+
+#: ../class-fire-init.php:342
+msgid ""
+"Customizr comes with a cool slider generator : add a slider to any post or "
+"page!"
+msgstr ""
+"Customizr komt met een mooie slider generator : voeg een slider toe aan elke "
+"post of pagina!"
+
+#: ../class-fire-init.php:343
+msgid "Discover the features"
+msgstr "Ontdek de mogelijkheden"
+
+#: ../class-fire-init.php:455
+msgid "Main Menu"
+msgstr "Hoofdmenu"
+
+#: ../class-fire-init.php:880
+msgid "Help"
+msgstr "Hulp"
+
+#: ../class-fire-init.php:883
+msgid "Need help with Customizr? Click here!"
+msgstr "Hulp nodig met Customizr? Klik hier!"
+
+#: ../class-fire-utils.php:417
+#, php-format
+msgid "Page %s"
+msgstr "Pagina %s"
+
+#: ../class-fire-utils_settings_map.php:47
+msgid "Home featured page one"
+msgstr "Uitgelichte pagina één"
+
+#: ../class-fire-utils_settings_map.php:48
+msgid "Home featured page two"
+msgstr "Uitgelichte pagina twee"
+
+#: ../class-fire-utils_settings_map.php:49
+msgid "Home featured page three"
+msgstr "Uitgelichte pagina drie"
+
+#: ../class-fire-utils_settings_map.php:52
+msgid "Featured text one (200 car. max)"
+msgstr "Uitgelichte tekst één (max 200 kar.)"
+
+#: ../class-fire-utils_settings_map.php:53
+msgid "Featured text two (200 car. max)"
+msgstr "Uitgelichte tekst twee (max 200 kar.)"
+
+#: ../class-fire-utils_settings_map.php:54
+msgid "Featured text three (200 car. max)"
+msgstr "Uitgelichte tekst drie (max 200 kar.)"
+
+#: ../class-fire-utils_settings_map.php:70
+#, php-format
+msgid "Custom featured page %1$s"
+msgstr "Aangepaste Aanbevolen pagina %1$s"
+
+#: ../class-fire-utils_settings_map.php:86
+#, php-format
+msgid "Featured text %1$s (200 car. max)"
+msgstr "Aanbevolen tekst %1$s (200 kar. max.)"
+
+#: ../class-fire-utils_settings_map.php:89
+msgid ""
+"You need to select a page first. Leave this field empty if you want to use "
+"the page excerpt."
+msgstr ""
+"U moet eerst een pagina selecteren. Laat dit veld leeg om de standaard tekst "
+"te tonen."
+
+#: ../class-fire-utils_settings_map.php:200
+msgid "&mdash; No slider &mdash;"
+msgstr "&mdash; Geen slider &mdash;"
+
+#: ../class-fire-utils_settings_map.php:201
+msgid "&mdash; Demo Slider &mdash;"
+msgstr "&mdash; Demo slider &mdash;"
+
+#: ../class-fire-utils_settings_map.php:242
+msgid "Global settings"
+msgstr "Globale instellingen"
+
+#: ../class-fire-utils_settings_map.php:243
+msgid "Global settings for the Customizr theme :skin, socials, links..."
+msgstr "Globale instellingen vor het Customizr thema :skin, socials, links..."
+
+#: ../class-fire-utils_settings_map.php:248
+msgid "Header"
+msgstr ""
+
+#: ../class-fire-utils_settings_map.php:249
+msgid "Header settings for the Customizr theme."
+msgstr "Kop instellingen voor het Customizr thema."
+
+#: ../class-fire-utils_settings_map.php:254
+msgid "Content : home, posts, ..."
+msgstr "Inhoud : home, posts, ..."
+
+#: ../class-fire-utils_settings_map.php:255
+msgid "Content settings for the Customizr theme."
+msgstr "Inhoud instellingen voor het Customizr thema."
+
+#: ../class-fire-utils_settings_map.php:260
+msgid "Footer"
+msgstr "Voettekst"
+
+#: ../class-fire-utils_settings_map.php:261
+msgid "Footer settings for the Customizr theme."
+msgstr "Voettekst instellingen voor het Customizr thema."
+
+#: ../class-fire-utils_settings_map.php:266
+msgid "Advanced options"
+msgstr "Geavanceerde opties"
+
+#: ../class-fire-utils_settings_map.php:267
+msgid "Advanced settings for the Customizr theme."
+msgstr "Geavanceerde instellingen voor het Customizr thema."
+
+#: ../class-fire-utils_settings_map.php:288
+#: ../class-fire-utils_settings_map.php:1009
+msgid "Skin"
+msgstr "Skin"
+
+#: ../class-fire-utils_settings_map.php:290
+#: ../class-fire-utils_settings_map.php:1011
+msgid "Select a skin for Customizr"
+msgstr "Selecteer een skin voor Customizr"
+
+#: ../class-fire-utils_settings_map.php:294
+#: ../class-fire-utils_settings_map.php:1003
+msgid "Logo &amp; Favicon"
+msgstr "Logo &amp; Favicon"
+
+#: ../class-fire-utils_settings_map.php:296
+#: ../class-fire-utils_settings_map.php:1005
+msgid "Set up logo and favicon options"
+msgstr "Pas logo en favicon aan"
+
+#: ../class-fire-utils_settings_map.php:300
+#: ../class-fire-utils_settings_map.php:1070
+msgid "Front Page"
+msgstr "Front pagina"
+
+#: ../class-fire-utils_settings_map.php:302
+#: ../class-fire-utils_settings_map.php:1072
+msgid "Set up front page options"
+msgstr "Pas front pagina opties aan"
+
+#: ../class-fire-utils_settings_map.php:306
+#: ../class-fire-utils_settings_map.php:1077
+msgid "Pages &amp; Posts Layout"
+msgstr "Pagina's &amp; posts layout"
+
+#: ../class-fire-utils_settings_map.php:308
+#: ../class-fire-utils_settings_map.php:1079
+msgid "Set up layout options"
+msgstr "Pas layout opties aan"
+
+#: ../class-fire-utils_settings_map.php:312
+#: ../class-fire-utils_settings_map.php:1122
+msgid "Comments"
+msgstr "Commentaren"
+
+#: ../class-fire-utils_settings_map.php:314
+#: ../class-fire-utils_settings_map.php:1124
+msgid "Set up comments options"
+msgstr "Pas commentaar opties aan"
+
+#: ../class-fire-utils_settings_map.php:318
+#: ../class-fire-utils_settings_map.php:1021
+#: ../class-fire-utils_settings_map.php:2015
+msgid "Social links"
+msgstr "Social links"
+
+#: ../class-fire-utils_settings_map.php:320
+#: ../class-fire-utils_settings_map.php:1023
+msgid "Set up your social links"
+msgstr "Pas social links aan"
+
+#: ../class-fire-utils_settings_map.php:324
+msgid "Images"
+msgstr "Plaatjes"
+
+#: ../class-fire-utils_settings_map.php:326
+#: ../class-fire-utils_settings_map.php:1041
+msgid "Various images settings"
+msgstr "Diverse afbeeldingsinstellingen"
+
+#: ../class-fire-utils_settings_map.php:330
+msgid "Links"
+msgstr "Links"
+
+#: ../class-fire-utils_settings_map.php:332
+#: ../class-fire-utils_settings_map.php:1029
+msgid "Various links settings"
+msgstr "Diverse link instellingen"
+
+#: ../class-fire-utils_settings_map.php:336
+#: ../class-fire-utils_settings_map.php:1134
+msgid "Custom CSS"
+msgstr "Eigen CSS"
+
+#: ../class-fire-utils_settings_map.php:338
+#: ../class-fire-utils_settings_map.php:1136
+msgid "Add your own CSS"
+msgstr "Voeg eigen CSS toe"
+
+#: ../class-fire-utils_settings_map.php:342
+#: ../class-fire-utils_settings_map.php:1045
+msgid "Responsive settings"
+msgstr "Responsieve instellingen"
+
+#: ../class-fire-utils_settings_map.php:344
+#: ../class-fire-utils_settings_map.php:1047
+msgid "Various settings for responsive display"
+msgstr "Diverse instellingen voor het responsieve  beeld"
+
+#: ../class-fire-utils_settings_map.php:373
+msgid "Manage menus"
+msgstr "Beheer menus"
+
+#: ../class-fire-utils_settings_map.php:380
+#, fuzzy
+msgid "Design and effects"
+msgstr "Ontwerp en layout"
+
+#: ../class-fire-utils_settings_map.php:381
+msgid "Select a submenu expansion option"
+msgstr "Selecteer een optie voor de uitbreiding van het submenu"
+
+#: ../class-fire-utils_settings_map.php:385
+msgid "Expand submenus on click"
+msgstr "Uitvouwen van submenu's bij klikken"
+
+#: ../class-fire-utils_settings_map.php:386
+msgid "Expand submenus on hover"
+msgstr "Uitvouwen van submenu's bij aanwijzen"
+
+#: ../class-fire-utils_settings_map.php:402
+msgid "Choose a predefined skin"
+msgstr "Kies een vooraf gedefinieerde skin"
+
+#: ../class-fire-utils_settings_map.php:412
+msgid "Performance : use the minified CSS stylesheet"
+msgstr "Prestaties : gebruik het minified CSS stijlsheet"
+
+#: ../class-fire-utils_settings_map.php:415
+msgid ""
+"Using the minified version of the skin stylesheet will speed up your webpage "
+"load time."
+msgstr ""
+"Gebruik van de minified versie van de skin stijlsheet zal uw pagina sneller "
+"doen laden."
+
+#: ../class-fire-utils_settings_map.php:421
+#: ../class-fire-utils_settings_map.php:1297
+msgid "Display top border"
+msgstr "Toon top rand"
+
+#: ../class-fire-utils_settings_map.php:425
+#: ../class-fire-utils_settings_map.php:1301
+msgid "Uncheck this option to remove the colored top border."
+msgstr "Deselecteer deze optie om de gekleurde top rand te verwijderen."
+
+#: ../class-fire-utils_settings_map.php:437
+msgid "Logo Upload (supported formats : .jpg, .png, .gif, svg, svgz)"
+msgstr "Logo Upload (ondersteunde indelingen : .jpg, .png, .gif, .svg, .svgz)"
+
+#: ../class-fire-utils_settings_map.php:438
+msgid "LOGO"
+msgstr ""
+
+#: ../class-fire-utils_settings_map.php:447
+msgid "Force logo dimensions to max-width:250px and max-height:100px"
+msgstr "Forceer logo grootte naar maximaal 250px breed en 100px hoog"
+
+#: ../class-fire-utils_settings_map.php:454
+#, fuzzy
+msgid "Sticky Logo Upload (supported formats : .jpg, .png, .gif, svg, svgz)"
+msgstr "Logo Upload (ondersteunde indelingen : .jpg, .png, .gif, .svg, .svgz)"
+
+#: ../class-fire-utils_settings_map.php:458
+msgid ""
+"Use this upload control to specify a different logo on sticky header mode."
+msgstr ""
+
+#: ../class-fire-utils_settings_map.php:464
+msgid "Favicon Upload (supported formats : .ico, .png, .gif)"
+msgstr "Favicon Upload (Ondersteunde indelingen : .ico, .png, .gif)"
+
+#: ../class-fire-utils_settings_map.php:465
+msgid "FAVICON"
+msgstr ""
+
+#: ../class-fire-utils_settings_map.php:483
+msgid "Choose content and layout"
+msgstr "Kies inhoud en layout"
+
+#: ../class-fire-utils_settings_map.php:491
+msgid "Front page displays"
+msgstr "Front pagina toont"
+
+#: ../class-fire-utils_settings_map.php:496
+msgid "Don't show any posts or page"
+msgstr "Laat geen enkele post of pagina zien"
+
+#: ../class-fire-utils_settings_map.php:497
+msgid "Your latest posts"
+msgstr "Uw laatste posts"
+
+#: ../class-fire-utils_settings_map.php:498
+msgid "A static page"
+msgstr "Een statische pagina"
+
+#: ../class-fire-utils_settings_map.php:504
+msgid "Front page"
+msgstr "Front pagina"
+
+#: ../class-fire-utils_settings_map.php:512
+msgid "Posts page"
+msgstr "Posts pagina"
+
+#: ../class-fire-utils_settings_map.php:521
+msgid "Set up the front page layout"
+msgstr "Pas de Front pagina layout aan"
+
+#: ../class-fire-utils_settings_map.php:532
+msgid "Slider options"
+msgstr "Slider opties"
+
+#: ../class-fire-utils_settings_map.php:533
+msgid "Select front page slider"
+msgstr "Selecteer Front pagina slider"
+
+#: ../class-fire-utils_settings_map.php:545
+msgid "Full width slider"
+msgstr "Volle breedte slider"
+
+#: ../class-fire-utils_settings_map.php:556
+msgid "Delay between each slides"
+msgstr "Pauze tussen elke slide"
+
+#: ../class-fire-utils_settings_map.php:561
+msgid "in ms : 1000ms = 1s"
+msgstr "in ms : 1000ms = 1s"
+
+#: ../class-fire-utils_settings_map.php:569
+msgid "Featured pages options"
+msgstr "Uitgelichte pagina's opties"
+
+#: ../class-fire-utils_settings_map.php:570
+msgid "Display home featured pages area"
+msgstr "Toon uitgelichte pagina's"
+
+#: ../class-fire-utils_settings_map.php:574
+msgid "Enable"
+msgstr "Aan"
+
+#: ../class-fire-utils_settings_map.php:575
+msgid "Disable"
+msgstr "Uit"
+
+#: ../class-fire-utils_settings_map.php:584
+msgid "Show images"
+msgstr "Toon afbeeldingen"
+
+#: ../class-fire-utils_settings_map.php:587
+msgid ""
+"The images are set with the \"featured image\" of each pages (in the page "
+"edit screen). Uncheck the option above to disable the featured page images."
+msgstr ""
+"De afbeeldingen past u aan met de \"Uitgelichte afbeelding\" bij elke pagina "
+"(in het pagina bewerken scherm). Haal het vinkje hierboven weg om deze "
+"afbeelding niet te tonen."
+
+#: ../class-fire-utils_settings_map.php:593
+msgid "Read more &raquo;"
+msgstr "Lees verder &raquo;"
+
+#: ../class-fire-utils_settings_map.php:595
+msgid "Button text"
+msgstr "Knop tekst"
+
+#: ../class-fire-utils_settings_map.php:616
+#: ../class-fire-utils_settings_map.php:1181
+msgid "Display Breadcrumb"
+msgstr "Toon Breadcrumb"
+
+#: ../class-fire-utils_settings_map.php:626
+#: ../class-fire-utils_settings_map.php:1191
+msgid "Choose the global default layout"
+msgstr "Kies het globale standaard layout"
+
+#: ../class-fire-utils_settings_map.php:637
+#: ../class-fire-utils_settings_map.php:1203
+msgid "Force default layout everywhere"
+msgstr "Forceer standaard layout overal"
+
+#: ../class-fire-utils_settings_map.php:640
+#: ../class-fire-utils_settings_map.php:1206
+msgid ""
+"This option will override the specific layouts on all posts/pages, including "
+"the front page."
+msgstr ""
+"Deze optie overschrijft de specifieke layouts op alle posts/pagina's, "
+"inclusief de Front pagina."
+
+#: ../class-fire-utils_settings_map.php:647
+#: ../class-fire-utils_settings_map.php:1212
+msgid "Choose the posts default layout"
+msgstr "Kies de standaard layout voor Posts"
+
+#: ../class-fire-utils_settings_map.php:659
+#: ../class-fire-utils_settings_map.php:1235
+msgid "Maximum number of posts per page"
+msgstr "Maximum aantal posts per pagina"
+
+#: ../class-fire-utils_settings_map.php:670
+#: ../class-fire-utils_settings_map.php:1245
+msgid "Select the length of posts in lists (home, search, archives, ...)"
+msgstr ""
+"Selecteer de lengte van berichten in lijsten (home, zoeken, archieven,...)"
+
+#: ../class-fire-utils_settings_map.php:674
+#: ../class-fire-utils_settings_map.php:1249
+msgid "Display the excerpt"
+msgstr "Fragment weergeven"
+
+#: ../class-fire-utils_settings_map.php:675
+#: ../class-fire-utils_settings_map.php:1250
+msgid "Display the full content"
+msgstr "Volledige inhoud weergeven"
+
+#: ../class-fire-utils_settings_map.php:683
+#: ../class-fire-utils_settings_map.php:1221
+msgid "Choose the pages default layout"
+msgstr "Kies de default layout voor pagina's"
+
+#: ../class-fire-utils_settings_map.php:702
+#: ../class-fire-utils_settings_map.php:1953
+msgid "Enable comments on pages"
+msgstr "Sta commentaren toe op pagina's"
+
+#: ../class-fire-utils_settings_map.php:706
+msgid ""
+"This option will enable comments on pages. You can disable comments for a "
+"single page in the quick edit mode of the page list screen."
+msgstr ""
+"Deze optie activeert commentaren op pagina's. U kunt commentaren deactiveren "
+"voor een enkele pagina in de snel bewerken modus het pagina lijst scherm."
+
+#: ../class-fire-utils_settings_map.php:720
+#: ../class-fire-utils_settings_map.php:1979
+msgid "Social links in header"
+msgstr "Sociale links in de header"
+
+#: ../class-fire-utils_settings_map.php:729
+#: ../class-fire-utils_settings_map.php:1997
+msgid "Social links in left sidebar"
+msgstr "Sociale links in de linker zijbalk"
+
+#: ../class-fire-utils_settings_map.php:738
+#: ../class-fire-utils_settings_map.php:2007
+msgid "Social links in right sidebar"
+msgstr "Sociale links in de rechter zijbalk"
+
+#: ../class-fire-utils_settings_map.php:746
+#: ../class-fire-utils_settings_map.php:1988
+msgid "Social links in footer"
+msgstr "Sociale links in de footer"
+
+#: ../class-fire-utils_settings_map.php:767
+msgid "Enable/disable lightbox effect on images"
+msgstr "Zet lightbox effect op plaatjes aan/uit"
+
+#: ../class-fire-utils_settings_map.php:770
+msgid ""
+"If enabled, this option activate a popin window whith a zoom effect when an "
+"image is clicked. This will not apply to image gallery."
+msgstr ""
+"Wanneer aangezet activeert deze optie een popin scherm met een zoom effect "
+"als een afbeelding wordt aangeklikt. Dit gebeurd niet bij de afbeelding "
+"gallerij."
+
+#: ../class-fire-utils_settings_map.php:776
+msgid "Autoscale images on zoom"
+msgstr "Automatische schaling van afbeeldingen bij zoomen"
+
+#: ../class-fire-utils_settings_map.php:779
+msgid ""
+"If enabled, this option will force images to fit the screen on lightbox zoom."
+msgstr ""
+"Wanneer aangezet forceert deze optie de afbeelding grootte zodat deze ast in "
+"het scherm bij lightbox zoom."
+
+#: ../class-fire-utils_settings_map.php:785
+msgid "Enable/disable retina support"
+msgstr "Zet retina support aan/uit"
+
+#: ../class-fire-utils_settings_map.php:789
+msgid ""
+"If enabled, your website will include support for high resolution devices."
+msgstr "Hiermee ondersteund uw website hoge resolutie apparaten."
+
+#: ../class-fire-utils_settings_map.php:790
+msgid ""
+"It is strongly recommended to regenerate your media library images in high "
+"definition with this free plugin"
+msgstr ""
+"Het is sterk aanbevolen om uw media bibliotheek afbeeldingen in high "
+"definition met deze gratis plugin opnieuw te genereren"
+
+#: ../class-fire-utils_settings_map.php:791
+msgid "regenerate thumbnails"
+msgstr "genereren van miniaturen"
+
+#: ../class-fire-utils_settings_map.php:793
+msgid "Open the description page of the Regenerate thumbnails plugin"
+msgstr ""
+"Open de pagina met de beschrijving van de plugin voor het regenereren van de "
+"miniaturen"
+
+#: ../class-fire-utils_settings_map.php:799
+msgid "Sliders : display on loading icon before rendering the slides"
+msgstr "Sliders : toon het laad icoon voor het renderen van de slides"
+
+#: ../class-fire-utils_settings_map.php:802
+#, fuzzy
+msgid ""
+"When checked, this option displays a loading icon when the slides are being "
+"setup."
+msgstr ""
+"Wannneer deze optie is ingeschakeld zal er een laad icoon getoond worden "
+"wanneer de slides worden gemaakt."
+
+#: ../class-fire-utils_settings_map.php:815
+msgid "Enable/disable smooth scroll on click"
+msgstr "Zet vloeiend schuiven aan/uit"
+
+#: ../class-fire-utils_settings_map.php:818
+msgid ""
+"If enabled, this option activates a smooth page scroll when clicking on a "
+"link to an anchor of the same page."
+msgstr ""
+"deze optie activeert een vloeiende pagina verschuiving wanneer er wordt "
+"geklikt op een link naar een anker van dezelfde pagina."
+
+#: ../class-fire-utils_settings_map.php:831
+msgid "Enable/disable blocks reordering on small devices"
+msgstr ""
+"In- of uitschakelen van het opnieuw ordenen van blokken op kleine schermen"
+
+#: ../class-fire-utils_settings_map.php:834
+msgid ""
+"On responsive mode, for smartphone viewport, the sidebars are moved after "
+"the main content block."
+msgstr ""
+"In responsieve modus, voor smartphone viewport, zijn de zijbalken verplaatst "
+"achter het hoofd inhoudsblok."
+
+#: ../class-fire-utils_settings_map.php:840
+msgid "Enable/disable slider's slides centering on any devices"
+msgstr ""
+"In- of uitschakelen van het centreren van de slider afbeeldingen op elk "
+"apparaat"
+
+#: ../class-fire-utils_settings_map.php:843
+msgid ""
+"This option centers your slider (carousel) pictures vertically and "
+"horizontally on any devices when displayed in full width mode"
+msgstr ""
+"Deze optie centreert uw slider (carousel) afbeeldingen verticaal en "
+"horizontaal op elk apparaat als deze op de volledige breedte wordt "
+"weergegeven"
+
+#: ../class-fire-utils_settings_map.php:858
+#: ../class-fire-utils_settings_map.php:2027
+msgid "Add your custom css here and design live! (for advanced users)"
+msgstr ""
+"Voeg je eigen CSS hier toe en ontwerp live (voor gevorderde gebruikers)"
+
+#: ../class-fire-utils_settings_map.php:862
+#: ../class-fire-utils_settings_map.php:2031
+msgid ""
+"Use this field to test small chunks of CSS code. For important CSS "
+"customizations, you'll want to modify the style.css file of a"
+msgstr ""
+"Gebruik dit veld voor het testen van kleine stukjes CSS-code. Voor "
+"belangrijke CSS aanpassingen, wijzigt u het style.css bestand van een"
+
+#: ../class-fire-utils_settings_map.php:863
+#: ../class-fire-utils_settings_map.php:2032
+msgid "child theme."
+msgstr "child thema."
+
+#: ../class-fire-utils_settings_map.php:864
+#: ../class-fire-utils_settings_map.php:2033
+msgid "How to create and use a child theme ?"
+msgstr "Hoe maakt en gebruik ik een child thema?"
+
+#: ../class-fire-utils_settings_map.php:998
+msgid "Site Title & Tagline"
+msgstr "Website titel & slogan"
+
+#: ../class-fire-utils_settings_map.php:1015
+msgid "Fonts"
+msgstr ""
+
+#: ../class-fire-utils_settings_map.php:1017
+#, fuzzy
+msgid "Set up the font global settings"
+msgstr "Pas globale voettekst opties aan"
+
+#: ../class-fire-utils_settings_map.php:1027
+msgid "Links style and effects"
+msgstr "Stijl en effecten van links"
+
+#: ../class-fire-utils_settings_map.php:1033
+msgid "Titles icons settings"
+msgstr "Titel icoon instellingen"
+
+#: ../class-fire-utils_settings_map.php:1035
+msgid "Set up the titles icons options"
+msgstr "Pas titel icoon opties aan"
+
+#: ../class-fire-utils_settings_map.php:1039
+msgid "Image settings"
+msgstr "Afbeeldingsinstellingen"
+
+#: ../class-fire-utils_settings_map.php:1051
+msgid "Authors"
+msgstr ""
+
+#: ../class-fire-utils_settings_map.php:1053
+#, fuzzy
+msgid "Post authors settings"
+msgstr "Post auteur"
+
+#: ../class-fire-utils_settings_map.php:1057
+#: ../class-fire-utils_settings_map.php:1296
+msgid "Header design and layout"
+msgstr "Kop ontwerp en layout"
+
+#: ../class-fire-utils_settings_map.php:1057
+msgid "Design and layout"
+msgstr "Ontwerp en layout"
+
+#: ../class-fire-utils_settings_map.php:1062
+msgid "Navigation"
+msgstr "Navigatie"
+
+#: ../class-fire-utils_settings_map.php:1065
+#, php-format
+msgid "Your theme supports %s menu. Select which menu you would like to use."
+msgstr "Uw thema ondersteund %s menu. Selecteer welk menu u wilt gebruiken."
+
+#: ../class-fire-utils_settings_map.php:1065
+msgid ""
+"You can edit your menu content on the Menus screen in the Appearance section."
+msgstr ""
+"Uw kunt uw menu inhoud wijzigen op het Menu scherm in de Opmaak sectie."
+
+#: ../class-fire-utils_settings_map.php:1084
+msgid "Post lists : blog, archives, ..."
+msgstr "Berichtlijsten : blog, archieven, ..."
+
+#: ../class-fire-utils_settings_map.php:1086
+msgid "Set up post lists options"
+msgstr "Pas berichtenlijst instellingen aan"
+
+#: ../class-fire-utils_settings_map.php:1090
+msgid "Single posts"
+msgstr "Enkel bericht"
+
+#: ../class-fire-utils_settings_map.php:1092
+msgid "Set up single posts options"
+msgstr "Pas enkel bericht opties aan"
+
+#: ../class-fire-utils_settings_map.php:1096
+msgid "Breadcrumb"
+msgstr "Breadcrumb"
+
+#: ../class-fire-utils_settings_map.php:1098
+msgid "Set up breadcrumb options"
+msgstr "Pas breadcrumb opties aan"
+
+#: ../class-fire-utils_settings_map.php:1110
+msgid "Post metas (category, tags, custom taxonomies)"
+msgstr "Berichten meta's (categorie, tags, aangepaste taxonomiën)"
+
+#: ../class-fire-utils_settings_map.php:1112
+msgid "Set up post metas options"
+msgstr "Pas berichten meta opties aan"
+
+#: ../class-fire-utils_settings_map.php:1116
+msgid "Paragraphs"
+msgstr ""
+
+#: ../class-fire-utils_settings_map.php:1118
+#, fuzzy
+msgid "Set up paragraphs options"
+msgstr "Pas berichten meta opties aan"
+
+#: ../class-fire-utils_settings_map.php:1128
+msgid "Footer global settings"
+msgstr "Globale instellingen voettekst"
+
+#: ../class-fire-utils_settings_map.php:1130
+msgid "Set up footer global options"
+msgstr "Pas globale voettekst opties aan"
+
+#: ../class-fire-utils_settings_map.php:1195
+msgid "Note : the home page layout has to be set in the home page section"
+msgstr ""
+"Notitie: de layout voor de Home pagina moet ingesteld worden in de Home "
+"pagina sectie"
+
+#: ../class-fire-utils_settings_map.php:1234
+#, fuzzy
+msgid "Global Post Lists Settings"
+msgstr "Globale instellingen"
+
+#: ../class-fire-utils_settings_map.php:1260
+#, fuzzy
+msgid "Display an author box after each single post content"
+msgstr "Toon een bericht iccon naast de berichtentitel"
+
+#: ../class-fire-utils_settings_map.php:1264
+msgid ""
+"Check this option to display an author info block after each single post "
+"content. Note : the Biographical info field must be filled out in the user "
+"profile."
+msgstr ""
+
+#: ../class-fire-utils_settings_map.php:1270
+msgid ""
+"Select a beautiful font pair (headings &amp; default fonts) or single font "
+"for your website."
+msgstr ""
+
+#: ../class-fire-utils_settings_map.php:1277
+msgid ""
+"This font picker allows you to preview and select among a handy selection of "
+"font pairs and single fonts. If you choose a pair, the first font will be "
+"applied to the site main headings : site name, site description, titles h1, "
+"h2, h3., while the second will be the default font of your website for any "
+"texts or paragraphs."
+msgstr ""
+
+#: ../class-fire-utils_settings_map.php:1282
+msgid "Set your website default font size in pixels."
+msgstr ""
+
+#: ../class-fire-utils_settings_map.php:1290
+msgid ""
+"This option sets the default font size applied to any text element of your "
+"website, when no font size is already applied."
+msgstr ""
+
+#: ../class-fire-utils_settings_map.php:1307
+msgid "Display the tagline"
+msgstr "Toon de slogan"
+
+#: ../class-fire-utils_settings_map.php:1316
+msgid "Display menu in a box"
+msgstr "Toon het menu in een vak"
+
+#: ../class-fire-utils_settings_map.php:1321
+msgid ""
+"If checked, this option wraps the header menu/tagline/social in a light grey "
+"box."
+msgstr ""
+"Wanneer deze optie is ingeschakeld zal het hoofdmenu/de slogan/social media "
+"getoond worden in een lichtgrijs vak."
+
+#: ../class-fire-utils_settings_map.php:1326
+msgid "Layout"
+msgstr "Layout"
+
+#: ../class-fire-utils_settings_map.php:1330
+msgid "Logo / title on the left"
+msgstr "Logo / titel links"
+
+#: ../class-fire-utils_settings_map.php:1331
+msgid "Logo / title centered"
+msgstr "Logo / titel gecentreerd"
+
+#: ../class-fire-utils_settings_map.php:1332
+msgid "Logo / title on the right"
+msgstr "Logo / titel rechts"
+
+#: ../class-fire-utils_settings_map.php:1340
+#, fuzzy
+msgid "Sticky header settings"
+msgstr "Vaste kop : toon de slogan"
+
+#: ../class-fire-utils_settings_map.php:1341
+msgid "Sticky on scroll"
+msgstr "Vastzetten bij scrollen"
+
+#: ../class-fire-utils_settings_map.php:1346
+msgid ""
+"If checked, this option makes the header stick to the top of the page on "
+"scroll down."
+msgstr ""
+"Wanneer deze optie is ingeschakeld zal de kop zichtbaar blijven wanneer er "
+"gescrold wordt. "
+
+#: ../class-fire-utils_settings_map.php:1351
+msgid "Sticky header : display the tagline"
+msgstr "Vaste kop : toon de slogan"
+
+#: ../class-fire-utils_settings_map.php:1360
+msgid "Sticky header : display the title / logo"
+msgstr "Vaste kop : toon de titel / logo"
+
+#: ../class-fire-utils_settings_map.php:1369
+msgid "Sticky header : shrink title / logo"
+msgstr "Vaste kop : verklein titel / logo"
+
+#: ../class-fire-utils_settings_map.php:1378
+msgid "Sticky header : display the menu"
+msgstr "Vaste kop : toon het menu"
+
+#: ../class-fire-utils_settings_map.php:1387
+msgid "Sticky header : semi-transparent on scroll"
+msgstr "Vaste kop : semi-transparant bij scrollen"
+
+#: ../class-fire-utils_settings_map.php:1397
+msgid "Set the header z-index"
+msgstr "Pas de z-index van de kop aan"
+
+#: ../class-fire-utils_settings_map.php:1405
+msgid "What is"
+msgstr "Wat is"
+
+#: ../class-fire-utils_settings_map.php:1406
+msgid "the z-index"
+msgstr "de z-index"
+
+#: ../class-fire-utils_settings_map.php:1414
+msgid "Menu position"
+msgstr "Menu positie"
+
+#: ../class-fire-utils_settings_map.php:1418
+msgid "Menu on the left"
+msgstr "Menu links"
+
+#: ../class-fire-utils_settings_map.php:1419
+msgid "Menu on the right"
+msgstr "Menu rechts"
+
+#: ../class-fire-utils_settings_map.php:1427
+msgid "Reveal the sub-menus blocks with a fade effect"
+msgstr "Onthul het submenu met een fade-effect"
+
+#: ../class-fire-utils_settings_map.php:1436
+msgid "Hover move effect for the sub menu items"
+msgstr "Hover effect voor de submenu-items"
+
+#: ../class-fire-utils_settings_map.php:1445
+msgid ""
+"In responsive mode, limit the height of the dropdown menu block to the "
+"visible viewport"
+msgstr ""
+"In de responsieve modus, beperk de hoogte van het dropdown menu blok naar de "
+"zichtbare 'viewport'"
+
+#: ../class-fire-utils_settings_map.php:1455
+msgid "Fade effect on link hover"
+msgstr "Fade effect bij hover op een link"
+
+#: ../class-fire-utils_settings_map.php:1465
+#, fuzzy
+msgid "Display an icon next to external links"
+msgstr "Toon een icoon naast de archieftitel"
+
+#: ../class-fire-utils_settings_map.php:1469
+#: ../class-fire-utils_settings_map.php:1480
+msgid ""
+"This will be applied to the links included in post or page content only."
+msgstr ""
+
+#: ../class-fire-utils_settings_map.php:1476
+msgid "Open external links in a new tab"
+msgstr ""
+
+#: ../class-fire-utils_settings_map.php:1487
+msgid "Display the breadcrumb on home page"
+msgstr "Toon Breadcrumb op de home pagina"
+
+#: ../class-fire-utils_settings_map.php:1495
+msgid "Display the breadcrumb in pages"
+msgstr "Toon Breadcrumb op pagina's"
+
+#: ../class-fire-utils_settings_map.php:1504
+msgid "Display the breadcrumb in single posts"
+msgstr "Toon Breadcrumb op berichtpagina"
+
+#: ../class-fire-utils_settings_map.php:1513
+msgid ""
+"Display the breadcrumb in posts lists : blog page, archives, search "
+"results..."
+msgstr ""
+"'breadcrumb' tonen in post lijsten : blog pagina, archieven, "
+"zoekresultaten..."
+
+#: ../class-fire-utils_settings_map.php:1524
+msgid "Display icons next to titles"
+msgstr "Toon iconen naast de titels"
+
+#: ../class-fire-utils_settings_map.php:1528
+msgid ""
+"When this option is checked, a contextual icon is displayed next to the "
+"titles of pages, posts, archives, and WP built-in widgets."
+msgstr ""
+"Wanneer deze optie is ingeschakeld, wordt een contextuele pictogram "
+"weergegeven naast de titels van pagina's, berichten, archieven en WP "
+"ingebouwde widgets."
+
+#: ../class-fire-utils_settings_map.php:1534
+msgid "Display a page icon next to the page title"
+msgstr "Toon een pagina icoon naast de paginatitel"
+
+#: ../class-fire-utils_settings_map.php:1543
+msgid "Display a post icon next to the single post title"
+msgstr "Toon een bericht iccon naast de berichtentitel"
+
+#: ../class-fire-utils_settings_map.php:1552
+msgid "Display an icon next to the archive title"
+msgstr "Toon een icoon naast de archieftitel"
+
+#: ../class-fire-utils_settings_map.php:1555
+msgid ""
+"When this option is checked, an archive type icon is displayed in the "
+"heading of every types of archives, on the left of the title. An archive "
+"page can be : category, tag, author, date archive, custom taxonomies, search "
+"results."
+msgstr ""
+"Wanneer deze optie is ingeschakeld, wordt een archiefpictogram weergegeven "
+"in de kop van elk soort archief aan de linkerkant van de titel. Een "
+"archiefpagina kan worden: categorie, tag, auteur, datum archief, aangepaste "
+"taxonomieën, zoekresultaten."
+
+#: ../class-fire-utils_settings_map.php:1562
+msgid "Display an icon next to each post title in an archive page"
+msgstr "Toon een icoon naast elke berichttitel op een archiefpagina"
+
+#: ../class-fire-utils_settings_map.php:1565
+msgid ""
+"When this option is checked, a post type icon is displayed on the left of "
+"each post titles in an archive page. An archive page can be : category, tag, "
+"author, date archive, custom taxonomies, search results."
+msgstr ""
+"Wanneer deze optie is ingeschakeld, wordt een berichtenicoon aan de "
+"linkerkant van elk berichtentitel in een archiefpagina weergegeven. Een "
+"archiefpagina kan worden: categorie, tag, auteur, datum archief, aangepaste "
+"taxonomieën, zoekresultaten."
+
+#: ../class-fire-utils_settings_map.php:1572
+msgid "WP sidebar widgets : display icons next to titles"
+msgstr "WP zijbalk widgets: pictogrammen naast titels weergeven"
+
+#: ../class-fire-utils_settings_map.php:1581
+msgid "WP footer widgets : display icons next to titles"
+msgstr "WP voettekst widgets : pictogrammen naast titels weergeven"
+
+#: ../class-fire-utils_settings_map.php:1593
+msgid "Display posts metas"
+msgstr "Toon berichten meta's"
+
+#: ../class-fire-utils_settings_map.php:1596
+msgid ""
+"When this option is checked, the post metas (like taxonomies, date and "
+"author) are displayed below the post titles."
+msgstr ""
+"Wanneer deze optie is ingeschakeld, worden de berichten meta's (zoals "
+"taxonomieën, datum en auteur) weergegeven onder de posttitels."
+
+#: ../class-fire-utils_settings_map.php:1603
+msgid "Select the contexts"
+msgstr "Selecteer de contexten"
+
+#: ../class-fire-utils_settings_map.php:1604
+msgid "Display posts metas on home"
+msgstr "Toon berichten meta's op Home"
+
+#: ../class-fire-utils_settings_map.php:1613
+msgid "Display posts metas for single posts"
+msgstr "Toon berichten meta's voor enkel bericht"
+
+#: ../class-fire-utils_settings_map.php:1622
+msgid "Display posts metas in post lists (archives, blog page)"
+msgstr "Toon berichten meta's in berichtenlijsten (archieven, blog pagina)"
+
+#: ../class-fire-utils_settings_map.php:1632
+msgid "Select the metas to display"
+msgstr "Selecteer de weer te geven Meta's"
+
+#: ../class-fire-utils_settings_map.php:1633
+msgid "Display hierarchical taxonomies (like categories)"
+msgstr "Weergeven van hiërarchische taxonomieën (als categorieën)"
+
+#: ../class-fire-utils_settings_map.php:1642
+msgid "Display non-hierarchical taxonomies (like tags)"
+msgstr "Weergeven van niet-hiërarchische taxonomieën (zoals tags)"
+
+#: ../class-fire-utils_settings_map.php:1651
+msgid "Display the publication date"
+msgstr "Weergeven van de plaatsingsdatum"
+
+#: ../class-fire-utils_settings_map.php:1659
+msgid "Display the author"
+msgstr "Auteur weergeven"
+
+#: ../class-fire-utils_settings_map.php:1667
+msgid "Display the update date"
+msgstr "Datum van update weergeven"
+
+#: ../class-fire-utils_settings_map.php:1671
+msgid ""
+"If this option is checked, additional date informations about the the last "
+"post update can be displayed (nothing will show up if the post has never "
+"been updated)."
+msgstr ""
+"Als deze optie is ingeschakeld, kan er extra datum informatie van de laatste "
+"update van de post worden weergegeven (niets zal verschijnen als de post "
+"nooit is bijgewerkt)."
+
+#: ../class-fire-utils_settings_map.php:1677
+msgid "Select the last update format"
+msgstr "Selecteer de notatie van de laatste update"
+
+#: ../class-fire-utils_settings_map.php:1681
+msgid "Nb of days since last update"
+msgstr "Aantal dagen sinds de laatste update"
+
+#: ../class-fire-utils_settings_map.php:1682
+msgid "Date of the last update"
+msgstr "Datum van de laatste update"
+
+#: ../class-fire-utils_settings_map.php:1690
+msgid "Recent update notice after post titles"
+msgstr ""
+
+#: ../class-fire-utils_settings_map.php:1691
+msgid "Display a recent update notice"
+msgstr "Een recente update notificatie weergegeven"
+
+#: ../class-fire-utils_settings_map.php:1695
+msgid ""
+"If this option is checked, a customizable recent update notice is displayed "
+"next to the post title."
+msgstr ""
+"Als deze optie is ingeschakeld, wordt een aanpasbare recente update "
+"notificatie weergegeven naast de berichttitel."
+
+#: ../class-fire-utils_settings_map.php:1701
+msgid ""
+"Display the notice if the last update is less (strictly) than n days old"
+msgstr ""
+"Het bericht weergegeven als de laatste update minder (strikt) dan n dagen "
+"oud is"
+
+#: ../class-fire-utils_settings_map.php:1707
+msgid ""
+"Set a maximum interval (in days) during which the last update notice will be "
+"displayed."
+msgstr ""
+"Stel een maximale interval (in dagen) in waarop de laatste update "
+"aankondiging zal worden weergegeven."
+
+#: ../class-fire-utils_settings_map.php:1710
+msgid "Recently updated !"
+msgstr "Onlangs bijgewerkt!"
+
+#: ../class-fire-utils_settings_map.php:1712
+msgid "Update notice text"
+msgstr "Bericht tekst bijwerken"
+
+#: ../class-fire-utils_settings_map.php:1721
+msgid "Update notice style"
+msgstr "Update kennisgeving stijl"
+
+#: ../class-fire-utils_settings_map.php:1725
+msgid "Default (grey)"
+msgstr "Standaard (grijs)"
+
+#: ../class-fire-utils_settings_map.php:1726
+msgid "Success (green)"
+msgstr "Succes (groen)"
+
+#: ../class-fire-utils_settings_map.php:1727
+msgid "Alert (orange)"
+msgstr "Waarschuwing (oranje)"
+
+#: ../class-fire-utils_settings_map.php:1728
+msgid "Important (red)"
+msgstr "Belangrijk (rood)"
+
+#: ../class-fire-utils_settings_map.php:1729
+msgid "Info (blue)"
+msgstr "Info (blauw)"
+
+#: ../class-fire-utils_settings_map.php:1740
+msgid "Set the excerpt length (in number of words) "
+msgstr "De lengte van het fragment instellen (in aantal woorden)"
+
+#: ../class-fire-utils_settings_map.php:1750
+msgid "Thumbnails options"
+msgstr "Miniatuur opties"
+
+#: ../class-fire-utils_settings_map.php:1751
+msgid "Display the post thumbnails"
+msgstr "Toon de bericht miniatuur"
+
+#: ../class-fire-utils_settings_map.php:1755
+msgid ""
+"When this option is checked, the post thumbnails are displayed in all post "
+"lists : blog, archives, author page, search pages, ..."
+msgstr ""
+"Wanneer deze optie is ingeschakeld, worden de berichtminiaturen weergegeven "
+"in alle berichtlijsten: blog, archieven, auteur pagina, zoekpagina's..."
+
+#: ../class-fire-utils_settings_map.php:1760
+msgid "If no featured image is set, use the last image attached to this post."
+msgstr ""
+"Als er geen aanbevolen afbeelding is ingesteld, gebruikt dan de laatste "
+"afbeelding die aan dit bericht is gekoppeld."
+
+#: ../class-fire-utils_settings_map.php:1768
+msgid "Thumbnails shape"
+msgstr "Vorm miniaturen"
+
+#: ../class-fire-utils_settings_map.php:1772
+msgid "Rounded, expand on hover"
+msgstr "Afgerond, vergroten bij aanwijzen"
+
+#: ../class-fire-utils_settings_map.php:1773
+msgid "Rounded, no expansion"
+msgstr "Afgerond, geen vergroting"
+
+#: ../class-fire-utils_settings_map.php:1774
+msgid "Squared, expand on hover"
+msgstr "Vierkant, vergroten bij aanwijzen"
+
+#: ../class-fire-utils_settings_map.php:1775
+msgid "Squared, no expansion"
+msgstr "Vierkant, geen vergroting"
+
+#: ../class-fire-utils_settings_map.php:1776
+msgid "Rectangular with no effect"
+msgstr "Rechthoekig zonder effect"
+
+#: ../class-fire-utils_settings_map.php:1777
+msgid "Rectangular with blur effect on hover"
+msgstr "Rechthoekig met vervaag effect bij aanwijzen"
+
+#: ../class-fire-utils_settings_map.php:1778
+msgid "Rectangular with unblur effect on hover"
+msgstr "Rechthoekig met verscherp effect bij aanwijzen"
+
+#: ../class-fire-utils_settings_map.php:1786
+#: ../class-fire-utils_settings_map.php:1836
+msgid "Set the thumbnail's max height in pixels"
+msgstr "Maximale hoogte van de miniatuur in pixels instellen"
+
+#: ../class-fire-utils_settings_map.php:1797
+msgid "Thumbnails position"
+msgstr "Positie miniatuur"
+
+#: ../class-fire-utils_settings_map.php:1801
+msgid "Top"
+msgstr "Boven"
+
+#: ../class-fire-utils_settings_map.php:1802
+msgid "Right"
+msgstr "Droite"
+
+#: ../class-fire-utils_settings_map.php:1803
+msgid "Bottom"
+msgstr "Onder"
+
+#: ../class-fire-utils_settings_map.php:1804
+msgid "Left"
+msgstr "Gauche"
+
+#: ../class-fire-utils_settings_map.php:1812
+msgid "Alternate thumbnail/content"
+msgstr "Alternatieve miniatuur/inhoud"
+
+#: ../class-fire-utils_settings_map.php:1821
+msgid "Post thumbnail position"
+msgstr "Bericht miniatuur positie"
+
+#: ../class-fire-utils_settings_map.php:1825
+msgid "Don't display"
+msgstr "Niet tonen"
+
+#: ../class-fire-utils_settings_map.php:1826
+msgid "Before the title in full width"
+msgstr "Voor de titel in volledige breedte"
+
+#: ../class-fire-utils_settings_map.php:1827
+msgid "Before the title boxed"
+msgstr "Voor de titel in vak"
+
+#: ../class-fire-utils_settings_map.php:1828
+msgid "After the title"
+msgstr "Achter de titel"
+
+#: ../class-fire-utils_settings_map.php:1848
+msgid "Drop caps"
+msgstr ""
+
+#: ../class-fire-utils_settings_map.php:1849
+msgid "Enable drop caps"
+msgstr ""
+
+#: ../class-fire-utils_settings_map.php:1851
+msgid "Apply a drop cap to the first paragraph of your post / page content."
+msgstr ""
+
+#: ../class-fire-utils_settings_map.php:1860
+msgid ""
+"Apply a drop cap when the paragraph includes at least the following number "
+"of words :"
+msgstr ""
+
+#: ../class-fire-utils_settings_map.php:1861
+msgid "(number of words)"
+msgstr ""
+
+#: ../class-fire-utils_settings_map.php:1871
+msgid "Drop cap style"
+msgstr ""
+
+#: ../class-fire-utils_settings_map.php:1875
+#, fuzzy
+msgid "Skin color with shadow"
+msgstr "Kleur van de skin"
+
+#: ../class-fire-utils_settings_map.php:1876
+#, fuzzy
+msgid "Simple black"
+msgstr "Basis zwart"
+
+#: ../class-fire-utils_settings_map.php:1882
+msgid "Enable drop caps in posts"
+msgstr ""
+
+#: ../class-fire-utils_settings_map.php:1884
+msgid "Apply a drop cap to the first paragraph of your single posts content"
+msgstr ""
+
+#: ../class-fire-utils_settings_map.php:1891
+#, fuzzy
+msgid "Enable drop caps in pages"
+msgstr "Sta commentaren toe op pagina's"
+
+#: ../class-fire-utils_settings_map.php:1893
+msgid "Apply a drop cap to the first paragraph of your pages"
+msgstr ""
+
+#: ../class-fire-utils_settings_map.php:1903
+msgid "Comments bubbles"
+msgstr "Opmerkingen bubbels"
+
+#: ../class-fire-utils_settings_map.php:1905
+msgid "Display the number of comments in a bubble next to the post title"
+msgstr "Het aantal opmerkingen in een bubbel naast de berichttitel weergeven"
+
+#: ../class-fire-utils_settings_map.php:1914
+msgid "Comments bubble shape"
+msgstr "Vorm van opmerkingen bubbel"
+
+#: ../class-fire-utils_settings_map.php:1918
+msgid "Small bubbles"
+msgstr "Kleine bubbels"
+
+#: ../class-fire-utils_settings_map.php:1919
+msgid "Large bubbles"
+msgstr "Grote bubbels"
+
+#: ../class-fire-utils_settings_map.php:1927
+#: ../class-fire-utils_settings_map.php:1940
+msgid "Comments bubble color"
+msgstr "Kleur van opmerkingen bubbel"
+
+#: ../class-fire-utils_settings_map.php:1931
+msgid "Skin color"
+msgstr "Kleur van de skin"
+
+#: ../class-fire-utils_settings_map.php:1932
+msgid "Custom"
+msgstr "Aangepast"
+
+#: ../class-fire-utils_settings_map.php:1952
+msgid "Other comments settings"
+msgstr "Overige instellingen voor opmerkingen"
+
+#: ../class-fire-utils_settings_map.php:1958
+msgid ""
+"If checked, this option will enable comments on pages. You can disable "
+"comments for a single page in the quick edit mode of the page list screen."
+msgstr ""
+"Indien aangevinkt, zal deze optie opmerkingen op pagina's inschakelen. U "
+"kunt opmerkingen voor een enkele pagina uitschakelen in de snelle "
+"bewerkingsmodus van de pagina lijst uitschakelen."
+
+#: ../class-fire-utils_settings_map.php:1959
+msgid "Change other comments settings in the"
+msgstr "Andere opmerkingen wijzigen in de"
+
+#: ../class-fire-utils_settings_map.php:1961
+msgid "discussion settings page."
+msgstr "Pagina voor het instellen van discussies."
+
+#: ../class-fire-utils_settings_map.php:1969
+msgid "Display a back to top arrow on scroll"
+msgstr "Toon een zwarte pijl naar boven bij scrollen"
+
+#: ../class-fire-utils_settings_map.php:2016
+msgid "Social link title in sidebars"
+msgstr "Sociale links in de zijbalken"
+
+#: ../class-fire-utils_settings_map.php:2022
+msgid "Will be hidden if empty"
+msgstr "Verborgen wanneer leeg"
+
+#: ../class-fire-utils_settings_map.php:2042
+msgid "Set slider's height in pixels"
+msgstr "Slider hoogte in pixels"
+
+#: ../class-fire-utils_settings_map.php:2052
+msgid "Apply this height to all sliders"
+msgstr "Hoogte van toepassing op alle sliders"
+
+#: ../class-fire-utils_settings_map.php:2060
+msgid "Replace the default image slider's height"
+msgstr "Vervang de standaard hoogte van de slider afbeelding"
+
+#: ../class-fire-utils_settings_map.php:2066
+msgid ""
+"If this option is checked, your images will be resized with your custom "
+"height on upload. This is better for your overall loading performance."
+msgstr ""
+"Als deze optie is aangevinkt, zal uw afbeeldingen worden aangepast met de "
+"aangepaste hoogte tijdens het uploaden. Dit is beter voor de algehele "
+"laadprestaties."
+
+#: ../class-fire-utils_settings_map.php:2067
+msgid "You might want to regenerate your thumbnails."
+msgstr "Wellicht wilt u de miniaturen opnieuw genereren"
+
+#: ../admin/class-admin-customize.php:364
+msgid "Hi! This is"
+msgstr ""
+
+#: ../admin/class-admin-customize.php:365
+#, fuzzy
+msgid ", developer of the Customizr theme"
+msgstr "Geavanceerde instellingen voor het Customizr thema."
+
+#: ../admin/class-admin-customize.php:368
+#, fuzzy
+msgid ""
+"I'm doing my best to make Customizr the perfect free theme for you. If you "
+"think it helped you in any way to build a better web presence, please "
+"support it's continued development with a donation of $20, $50, ..."
+msgstr ""
+"<strong>We doen ons best voor u om van Customizr het perfecte gratis thema "
+"te maken!</strong><br/> Met een donatie van $20, $50 of zelfs $100 helpt u "
+"mee om de ontwikkeling door te laten gaan."
+
+#: ../admin/class-admin-customize.php:372
+#, fuzzy
+msgid "Make a donation for Customizr"
+msgstr "Selecteer een skin voor Customizr"
+
+#: ../admin/class-admin-customize.php:375
+msgid ""
+"Once clicked the 'Hide forever' button, this donation block will not be "
+"displayed anymore.<br/>Either you are using Customizr for personal or "
+"business purposes, any kind of sponsorship will be appreciated to support "
+"this free theme.<br/><strong>Already donator? Thanks, you rock!<br/><br/> "
+"Live long and prosper with Customizr!</strong>"
+msgstr ""
+
+#: ../admin/class-admin-customize.php:376
+msgid "Hide forever"
+msgstr ""
+
+#: ../admin/class-admin-customize.php:377
+msgid "Let me think twice"
+msgstr ""
+
+#: ../admin/class-admin-customize.php:386
+msgid "Need more customizations options and premium support ?"
+msgstr ""
+
+#: ../admin/class-admin-customize.php:388
+#: ../admin/class-admin-customize.php:400
+#: ../admin/class-admin-customize.php:412
+#, fuzzy
+msgid "Discover Customizr Pro"
+msgstr "Ontdek Customizr : snelle video introductie"
+
+#: ../admin/class-admin-customize.php:398
+msgid ""
+"Need more control on your fonts ? Style any text in live preview ( size, "
+"color, font family, effect, ...) with the Customizr Pro theme."
+msgstr ""
+
+#: ../admin/class-admin-customize.php:410
+msgid "Add unlimited featured pages with Customizr Pro"
+msgstr ""
+
+#: ../admin/class-admin-meta_boxes.php:87
+msgid "Layout Options"
+msgstr "Layout opties"
+
+#: ../admin/class-admin-meta_boxes.php:95
+#: ../admin/class-admin-meta_boxes.php:466
+msgid "Slider Options"
+msgstr "Slider opties"
+
+#: ../admin/class-admin-meta_boxes.php:164
+#, php-format
+msgid "Default %1$s layout is set to : %2$s"
+msgstr "Standaard %1$s layout staat op : %2$s"
+
+#: ../admin/class-admin-meta_boxes.php:164
+msgid "pages"
+msgstr "pagina's"
+
+#: ../admin/class-admin-meta_boxes.php:164
+msgid "posts"
+msgstr "posts"
+
+#: ../admin/class-admin-meta_boxes.php:169
+msgid ""
+"You have checked the <i>\"Force global default layout for all posts and pages"
+"\"</i>, you must unchecked this option to enable a specific layout for this "
+"post."
+msgstr ""
+"U heeft de <i>\"Forceer globale standaard layout voor alle posts en pagina's"
+"\"</i> geselecteerd. Deze moet u deselecteren om een specifieke layout voor "
+"deze post te kunnen gebruiken."
+
+#: ../admin/class-admin-meta_boxes.php:170
+msgid "Change layout options"
+msgstr "Pas layout opties aan"
+
+#: ../admin/class-admin-meta_boxes.php:174
+#, php-format
+msgid ""
+"You can define a specific layout for %1$s by using the pre-defined left and "
+"right sidebars. The default layouts can be defined in the WordPress "
+"customizer screen %2$s.<br />"
+msgstr ""
+"U kunt een specifieke layout voor %1$s definiëren door de voor gedefinieerde "
+"linker en rechter zijbalken te gebruiken. De standaard layouts kunnen "
+"gedefinieerd worden in het WordPress aanpas scherm %2$s.<br />"
+
+#: ../admin/class-admin-meta_boxes.php:175
+#: ../admin/class-admin-meta_boxes.php:180
+msgid "this page"
+msgstr "deze pagina"
+
+#: ../admin/class-admin-meta_boxes.php:175
+#: ../admin/class-admin-meta_boxes.php:180
+msgid "this post"
+msgstr "deze post"
+
+#: ../admin/class-admin-meta_boxes.php:176
+msgid "here"
+msgstr "hier"
+
+#: ../admin/class-admin-meta_boxes.php:179
+#, php-format
+msgid "Select a specific layout for %1$s"
+msgstr "Selecteer een specifieke layout voor %1$s"
+
+#: ../admin/class-admin-meta_boxes.php:183
+#, php-format
+msgid "Default layout %1s"
+msgstr "Standaard layout %1s"
+
+#: ../admin/class-admin-meta_boxes.php:225
+msgid "Add a slider to this post/page"
+msgstr "Voeg een slider toe aan deze post/pagina"
+
+#: ../admin/class-admin-meta_boxes.php:289
+#: ../admin/class-admin-meta_boxes.php:673
+msgid "Choose a slider"
+msgstr "Kies een slider"
+
+#: ../admin/class-admin-meta_boxes.php:296
+#: ../admin/class-admin-meta_boxes.php:688
+msgid "&mdash; Select a slider &mdash; "
+msgstr "&mdash; Selecteer eent slider &mdash; "
+
+#: ../admin/class-admin-meta_boxes.php:301
+msgid ""
+"To create a new slider : open the media library, edit your images and add "
+"them to your new slider."
+msgstr ""
+"Om een nieuwe slider te maken : open de media library en pas uw afbeeldingen "
+"aan. Voeg ze daarna toe aan de nieuwe slider."
+
+#: ../admin/class-admin-meta_boxes.php:305
+msgid "Delay between each slides in milliseconds (default : 5000 ms)"
+msgstr "Pauze tussen elke slide in milliseconden (standaard : 5000 ms)"
+
+#: ../admin/class-admin-meta_boxes.php:312
+msgid "Slider Layout : set the slider in full width"
+msgstr "Slider layout : zet de slider op volledige breedte"
+
+#: ../admin/class-admin-meta_boxes.php:329
+#: ../admin/class-admin-meta_boxes.php:697
+msgid "Delete this slider"
+msgstr "Verwijder deze slider"
+
+#: ../admin/class-admin-meta_boxes.php:334
+#: ../admin/class-admin-meta_boxes.php:701
+msgid ""
+"The slider will be deleted permanently (images, call to actions and link "
+"will be kept)."
+msgstr ""
+"De slider zal permanent verwijderd worden (afbeeldingen, acties en link "
+"blijven bewaard)."
+
+#: ../admin/class-admin-meta_boxes.php:337
+#: ../admin/class-admin-meta_boxes.php:704
+msgid "Delete slider"
+msgstr "Verwijder slider"
+
+#: ../admin/class-admin-meta_boxes.php:345 ../admin/class-controls.php:122
+msgid ""
+"You haven't create any slider yet. Go to the media library, edit your images "
+"and add them to your sliders."
+msgstr ""
+"U heeft nog geen slider aangemaakt. Ga naar de media bibliotheek en pas uw "
+"afbeeldingen aan. Voeg ze daarna toe aan de sliders."
+
+#: ../admin/class-admin-meta_boxes.php:495
+msgid "Add to a slider"
+msgstr "Voeg aan een slider toe"
+
+#: ../admin/class-admin-meta_boxes.php:497
+msgid "Add to a slider (create one if needed)"
+msgstr "Voeg aan een slider toe (maak een slider indien nodig)"
+
+#: ../admin/class-admin-meta_boxes.php:630
+msgid "Title text (80 car. max length)"
+msgstr "Titel tekst (max. 80 kar.)"
+
+#: ../admin/class-admin-meta_boxes.php:637
+msgid "Description text (below the title, 250 car. max length)"
+msgstr "Omschrijving tekst (onder de titel, max. 250 kar.)"
+
+#: ../admin/class-admin-meta_boxes.php:644
+msgid "Title and text color"
+msgstr "Titel en tekst kleur"
+
+#: ../admin/class-admin-meta_boxes.php:652
+msgid "Button text (80 car. max length)"
+msgstr "Knop tekst (max. 80 kar.)"
+
+#: ../admin/class-admin-meta_boxes.php:659
+msgid "Choose a linked page or post (among the last 100)."
+msgstr "Kies een pagina of post (van de laaste 100)."
+
+#: ../admin/class-admin-meta_boxes.php:664
+msgid "No link"
+msgstr "Geen link"
+
+#: ../admin/class-admin-meta_boxes.php:694
+#: ../admin/class-admin-meta_boxes.php:723
+msgid "Add a slider"
+msgstr "Voeg een slider toe"
+
+#: ../admin/class-admin-meta_boxes.php:721
+msgid ""
+"You haven't create any slider yet. Write a slider name and click on the "
+"button to add you first slider."
+msgstr ""
+"U heeft nog geen slider gemaakt. Type een naam voor de slider en klik op de "
+"knop om uw eerste slider aan te maken."
+
+#: ../admin/class-admin-meta_boxes.php:838
+msgid ""
+"This slider has not slides to show. Go to the media library and start adding "
+"images to it."
+msgstr ""
+"Deze slider bevat nog geen slides. Ga naar de media bibliotheek en voeg "
+"afbeeldingen aan de slider toe."
+
+#: ../admin/class-admin-meta_boxes.php:848
+msgid "Slide Image"
+msgstr "Slide afbeelding"
+
+#: ../admin/class-admin-meta_boxes.php:849
+msgid "Title"
+msgstr "Titel"
+
+#: ../admin/class-admin-meta_boxes.php:850
+msgid "Slide Text"
+msgstr "Slide tekst"
+
+#: ../admin/class-admin-meta_boxes.php:851
+msgid "Button Text"
+msgstr "Knop tekst"
+
+#: ../admin/class-admin-meta_boxes.php:852
+msgid "Button Link"
+msgstr "Knop link"
+
+#: ../admin/class-admin-meta_boxes.php:853
+#: ../parts/class-content-breadcrumb.php:645
+#: ../parts/class-content-breadcrumb.php:678
+#: ../parts/class-content-breadcrumb.php:693
+#: ../parts/class-content-breadcrumb.php:721
+#: ../parts/class-content-comments.php:160
+#: ../parts/class-content-featured_pages.php:251
+#: ../parts/class-content-headings.php:247
+#: ../parts/class-content-slider.php:359
+msgid "Edit"
+msgstr "Wijzigen"
+
+#: ../admin/class-admin-meta_boxes.php:894
+msgid "No Image Selected"
+msgstr "Geen afbeelding geselecteerd"
+
+#: ../admin/class-admin-meta_boxes.php:920
+msgid "Edit this slide"
+msgstr "Wijzig deze slide"
+
+#: ../admin/class-admin-meta_boxes.php:922
+msgid "Current slide"
+msgstr "Huidige slide"
+
+#: ../admin/class-controls.php:122
+msgid "Create a slider"
+msgstr "Maak een slider"
+
+#: ../admin/class-controls.php:284
+msgid "Upload"
+msgstr "Upload"
+
+#: ../admin/class-controls.php:285
+msgid "Remove"
+msgstr "Verwijderen"
+
+#: ../admin/class-fire-admin_init.php:84 ../admin/class-fire-admin_init.php:85
+msgid "Upgrade WP"
+msgstr "Upgrade WP"
+
+#: ../admin/class-fire-admin_init.php:104
+msgid "This theme requires WordPress 3.4+"
+msgstr "Dit theme vereist WordPress 3.4+"
+
+#: ../admin/class-fire-admin_init.php:107
+#: ../admin/class-fire-admin_init.php:108
+msgid "Upgrade Wordpress Now"
+msgstr "Upgrade WordPress nu"
+
+#: ../admin/class-fire-admin_init.php:125
+#: ../admin/class-fire-admin_init.php:126
+#: ../admin/class-fire-admin_page.php:40
+msgid "About Customizr"
+msgstr "Over Customizr"
+
+#: ../admin/class-fire-admin_init.php:148
+#: ../admin/class-fire-admin_page.php:68
+msgid "Need help with Customizr ?"
+msgstr "Hulp nodig met Customizr ?"
+
+#: ../admin/class-fire-admin_init.php:150
+#: ../admin/class-fire-admin_page.php:70
+#, php-format
+msgid "Welcome to Customizr %s"
+msgstr "Welkom bij Customizr %s"
+
+#: ../admin/class-fire-admin_init.php:157
+#: ../admin/class-fire-admin_page.php:78
+#, php-format
+msgid ""
+"You can start by watching the <a href=\"%1$s\" target=\"_blank"
+"\">introduction video</a> or by reading <a href=\"%2$s\" target=\"_blank"
+"\">the documentation</a>.<br/> If you don't find an answer to your issue, "
+"don't panic! Since Customizr is used by a growing community of webmasters "
+"reporting bugs and making continuous improvements, you will probably find a "
+"solution to your problem either in the FAQ or in the user forum."
+msgstr ""
+"U kunt beginnen door de <a href=\"%1$s\" target=\"_blank\">introductie "
+"video</a> te bekijken of door het lezen van <a href=\"%2$s\" target=\"_blank"
+"\">de documentatie</a>.<br/>Als u geen antwoord op uw vraag vindt hoeft u "
+"niet in paniek te raken! Customizr wordt door steeds meer webmasters "
+"gebruikt die bugs rapporteren en verbeteringen aanbrengen. Daardoor vindt u "
+"hoogst waarschijnlijk wel een oplossing voor uw probleem in de FAQ of in het "
+"gebruikersforum."
+
+#: ../admin/class-fire-admin_init.php:165
+#: ../admin/class-fire-admin_page.php:86
+msgid "Read the documentation"
+msgstr "Lees de documentatie"
+
+#: ../admin/class-fire-admin_init.php:169
+#: ../admin/class-fire-admin_page.php:90
+msgid "Check the FAQ"
+msgstr "Bekijk de FAQ"
+
+#: ../admin/class-fire-admin_init.php:174
+#: ../admin/class-fire-admin_page.php:95
+msgid "Code snippets"
+msgstr "code fragmenten"
+
+#: ../admin/class-fire-admin_init.php:177
+msgid "Discuss in the user forum"
+msgstr "Discusseer in het gebruikersforum"
+
+#: ../admin/class-fire-admin_init.php:185
+#: ../admin/class-fire-admin_page.php:106
+#, php-format
+msgid ""
+"Thank you for using Customizr! Customizr %1$s has more features, is safer "
+"and more stable than ever <a href=\"#customizr-changelog\">(see the "
+"changelog)</a> to help you build an awesome website. Watch the <a href=\"%2$s"
+"\" target=\"_blank\">introduction video</a> and find inspiration in the <a "
+"href=\"#showcase\">showcase</a>.<br/>Enjoy it! "
+msgstr ""
+"Bedankt dat u Customizr gebruikt! Customizr %1$s heeft meer mogelijkheden, "
+"is veiliger en stabieler dan ooit <a href=\"#customizr-changelog\">(bekijk "
+"changelog)</a> om u te helpen bij het maken van een prachtige website. "
+"Bekijk de <a href=\"%2$s\" target=\"_blank\">introductie video</a> en vind "
+"inspiratie in de <a href=\"#showcase\">showcase</a>.<br/> Veel plezier!"
+
+#: ../admin/class-fire-admin_init.php:199
+#: ../admin/class-fire-admin_page.php:120
+#, php-format
+msgid ""
+"You are using a child theme of Customizr %1$s : always check the %2$s after "
+"upgrading to see if a function or a template has been deprecated."
+msgstr ""
+"U gebruikt een child theme van Customizr %1$s : controleer altijd de %2$s na "
+"een upgrade om te zien of er een functie of template is verdwenen."
+
+#: ../admin/class-fire-admin_init.php:214
+#: ../admin/class-fire-admin_page.php:137
+msgid "We need sponsors!"
+msgstr "We zijn sponsoren nodig!"
+
+#: ../admin/class-fire-admin_init.php:215
+#: ../admin/class-fire-admin_page.php:138
+msgid ""
+"<strong>We do our best do make Customizr the perfect free theme for you!</"
+"strong><br/> Please help support it's continued development with a donation "
+"of $20, $50, or even $100."
+msgstr ""
+"<strong>We doen ons best voor u om van Customizr het perfecte gratis thema "
+"te maken!</strong><br/> Met een donatie van $20, $50 of zelfs $100 helpt u "
+"mee om de ontwikkeling door te laten gaan."
+
+#: ../admin/class-fire-admin_init.php:222
+#: ../admin/class-fire-admin_page.php:145
+msgid "Happy user of Customizr?"
+msgstr "Tevreden gebruiker van Customizr?"
+
+#: ../admin/class-fire-admin_init.php:223
+#: ../admin/class-fire-admin_page.php:146
+msgid ""
+"If you are happy with the theme, say it on wordpress.org and give Customizr "
+"a nice review! <br />(We are addicted to your feedbacks...)"
+msgstr ""
+"Als u tevreden bent met het theme, maak het kenbaar op wordpress.org en geef "
+"Customizr een mooie review! <br />(We zijn verzot op uw terugkoppelingen...)"
+
+#: ../admin/class-fire-admin_init.php:228
+#: ../admin/class-fire-admin_page.php:151
+msgid "Follow us"
+msgstr "Volg ons"
+
+#: ../admin/class-fire-admin_init.php:236
+#: ../admin/class-fire-admin_page.php:160
+msgid "Customizr's extensions"
+msgstr "Customizrs extenties"
+
+#: ../admin/class-fire-admin_init.php:239
+#: ../admin/class-fire-admin_init.php:248
+#: ../admin/class-fire-admin_page.php:163
+#: ../admin/class-fire-admin_page.php:172
+msgid "Visit the extension's page"
+msgstr "Bezoek de extensies pagina"
+
+#: ../admin/class-fire-admin_init.php:240
+#: ../admin/class-fire-admin_page.php:164
+msgid "Easily take your web design one step further"
+msgstr "Gemakkelijk uw web ontwerp een stap verder brengen"
+
+#: ../admin/class-fire-admin_init.php:241
+#: ../admin/class-fire-admin_page.php:165
+msgid ""
+"The Customizr's extensions are plugins developed to extend the Customizr "
+"theme with great features. Nicely integrated with the theme's built-in "
+"options, they can be enabled/disabled safely with no side effects on your "
+"existing settings or customizations."
+msgstr ""
+"De Customizr extensies zijn plugins ontwikkeld voor het uitbreiden van het "
+"thema Customizr met geweldige functies. Mooi geïntegreerd met ingebouwde "
+"opties van het thema. Ze kunnen veilig worden in- en uitgeschakeld zonder "
+"bijwerkingen op uw bestaande instellingen of aanpassingen."
+
+#: ../admin/class-fire-admin_init.php:243
+#: ../admin/class-fire-admin_page.php:167
+msgid ""
+"These modules are designed to be simple to use for everyone. They are a good "
+"solution to add some creative customizations whitout needing to dive into "
+"the code."
+msgstr ""
+"Deze modules zijn ontworpen om eenvoudig te gebruiken voor iedereen. Ze zijn "
+"een goede oplossing om creatieve aanpassingen te doen zonder dat u in de "
+"code hoeft te duiken."
+
+#: ../admin/class-fire-admin_init.php:245
+#: ../admin/class-fire-admin_page.php:169
+msgid ""
+"Customizr's extensions are installed and upgraded from your WordPress admin, "
+"like any other WordPress plugins. Well documented and easily extendable with "
+"hooks, they come with a dedicated support forum on themesandco.com."
+msgstr ""
+"Customizr extensies worden geïnstalleerd en bijgewerkt vanuit uw WordPress "
+"admin, zoals elke andere WordPress plugin. Goed gedocumenteerd en eenvoudig "
+"uitbreidbaar. Er is een support forum beschikbaar op themesandco.com."
+
+#: ../admin/class-fire-admin_init.php:254
+#: ../admin/class-fire-admin_page.php:179
+msgid "Customizr Showcase"
+msgstr "Customizr showcase"
+
+#: ../admin/class-fire-admin_init.php:257
+#: ../admin/class-fire-admin_init.php:264
+#: ../admin/class-fire-admin_page.php:182
+#: ../admin/class-fire-admin_page.php:189
+msgid "Visit the showcase"
+msgstr "Bezoek de showcase"
+
+#: ../admin/class-fire-admin_init.php:258
+#: ../admin/class-fire-admin_page.php:183
+msgid "Find inspiration for your next Customizr based website!"
+msgstr "Vind inspiratie voor uw volgende Customizr gebaseerde website!"
+
+#: ../admin/class-fire-admin_init.php:259
+#: ../admin/class-fire-admin_page.php:184
+msgid ""
+"This showcase aims to show what can be done with Customizr and helping other "
+"users to find inspiration for their web design."
+msgstr ""
+"Deze showcase laat zien wat er met Customizer gedaan kan worden en helpt "
+"andere gebruikers om inspiratie re vinden voor hun webdesign."
+
+#: ../admin/class-fire-admin_init.php:261
+#: ../admin/class-fire-admin_page.php:186
+msgid ""
+"Do you think you made an awesome website that can inspire people? Submitting "
+"a site for review is quick and easy to do."
+msgstr ""
+"Denkt u dat u een geweldige website heeft gemaakt die een inspiratie kan "
+"zijn voor anderen? Een website inzenden voor een review is snel en makkelijk "
+"te doen."
+
+#: ../admin/class-fire-admin_init.php:271
+#: ../admin/class-fire-admin_page.php:256
+#, php-format
+msgid "Changelog in version %1$s"
+msgstr "Changelog in versie %1$s"
+
+#: ../admin/class-fire-admin_init.php:280
+#: ../admin/class-fire-admin_page.php:198
+msgid "Go to Dashboard &rarr; Home"
+msgstr "Ga naar het Dashboard &rarr; Home"
+
+#: ../admin/class-fire-admin_init.php:280
+#: ../admin/class-fire-admin_page.php:198
+msgid "Go to Dashboard"
+msgstr "Ga naar Dashboard"
+
+#: ../admin/class-fire-admin_page.php:98
+#, fuzzy
+msgid "Get support in the forum"
+msgstr "Discusseer in het gebruikersforum"
+
+#: ../admin/class-fire-admin_page.php:273
+msgid "System Informations"
+msgstr "Systeem informatie"
+
+#: ../admin/class-fire-admin_page.php:274
+msgid "Please include the following informations when posting support requests"
+msgstr "Vermeld de volgende informatie bij het aanvragen van ondersteuning"
+
+#: ../admin/class-fire-admin_page.php:275
+msgid ""
+"To copy the system infos, click below then press Ctrl + C (PC) or Cmd + C "
+"(Mac)."
+msgstr ""
+"Als u de systeem informatie wilt kopiëren, klik dan hieronder en druk op "
+"Ctrl + C (PC) of Cmd + C (Mac)."
+
+#: ../parts/class-content-attachment.php:41
+msgid "&larr; Previous"
+msgstr "&larr; Vorige"
+
+#: ../parts/class-content-attachment.php:42
+msgid "Next &rarr;"
+msgstr "Volgende &rarr;"
+
+#: ../parts/class-content-breadcrumb.php:38
+#: ../parts/class-content-breadcrumb.php:50
+msgid "Home"
+msgstr "Home"
+
+#: ../parts/class-content-breadcrumb.php:47
+msgid "Browse:"
+msgstr "Browse:"
+
+#: ../parts/class-content-breadcrumb.php:524
+msgid "g:i a"
+msgstr "g:i a"
+
+#: ../parts/class-content-breadcrumb.php:527
+#, php-format
+msgid "Minute %1$s"
+msgstr "Minuut %1$s"
+
+#: ../parts/class-content-breadcrumb.php:527
+msgid "i"
+msgstr "i"
+
+#: ../parts/class-content-breadcrumb.php:530
+msgid "g a"
+msgstr "g a"
+
+#: ../parts/class-content-breadcrumb.php:546
+#: ../parts/class-content-breadcrumb.php:556
+#: ../parts/class-content-breadcrumb.php:565
+#: ../parts/class-content-breadcrumb.php:576
+#: ../parts/class-content-breadcrumb.php:578
+#: ../parts/class-content-breadcrumb.php:777
+msgid "Y"
+msgstr "Y"
+
+#: ../parts/class-content-breadcrumb.php:547
+#: ../parts/class-content-breadcrumb.php:568
+#: ../parts/class-content-breadcrumb.php:570
+#: ../parts/class-content-breadcrumb.php:781
+msgid "F"
+msgstr "F"
+
+#: ../parts/class-content-breadcrumb.php:550
+#: ../parts/class-content-breadcrumb.php:552
+#: ../parts/class-content-breadcrumb.php:785
+msgid "d"
+msgstr "d"
+
+#: ../parts/class-content-breadcrumb.php:559
+#: ../parts/class-content-breadcrumb.php:561
+#, php-format
+msgid "Week %1$s"
+msgstr "Week %1$s"
+
+#: ../parts/class-content-breadcrumb.php:587
+#: ../parts/class-content-breadcrumb.php:589
+#, php-format
+msgid "Search results for &quot;%1$s&quot;"
+msgstr "Zoek resultaat voor &quot;%1$s&quot;"
+
+#: ../parts/class-content-breadcrumb.php:594
+msgid "404 Not Found"
+msgstr "404 Niet gevonden"
+
+#: ../parts/class-content-breadcrumb.php:599
+#: ../parts/class-content-breadcrumb.php:601
+#, php-format
+msgid "Page %d"
+msgstr "Pagina %d"
+
+#: ../parts/class-content-breadcrumb.php:670
+msgid "Split"
+msgstr "Split"
+
+#: ../parts/class-content-breadcrumb.php:674
+msgid "Merge"
+msgstr "Samenvoegen"
+
+#: ../parts/class-content-comments.php:57
+msgid "One thought on"
+msgstr "Een gedachte over"
+
+#: ../parts/class-content-comments.php:59
+msgid "thoughts on"
+msgstr "Gedachten over"
+
+#: ../parts/class-content-comments.php:119
+msgid "Pingback:"
+msgstr "Pingback:"
+
+#: ../parts/class-content-comments.php:119
+msgid "(Edit)"
+msgstr "(Wijzig)"
+
+#: ../parts/class-content-comments.php:146
+msgid "Reply"
+msgstr "Reply"
+
+#: ../parts/class-content-comments.php:159
+msgid "Post author"
+msgstr "Post auteur"
+
+#: ../parts/class-content-comments.php:166
+#, php-format
+msgid "%1$s at %2$s"
+msgstr "%1$s op %2$s"
+
+#: ../parts/class-content-comments.php:171
+msgid "Your comment is awaiting moderation."
+msgstr "Uw commentaar is in afwachting van goedkeuring"
+
+#: ../parts/class-content-comments.php:206
+msgid "Comment navigation"
+msgstr "Commentaar navigatie"
+
+#: ../parts/class-content-comments.php:212
+msgid "<span class=\"meta-nav\">&larr;</span> Older Comments"
+msgstr "<span class=\"meta-nav\">&larr;</span> Oudere commentaren"
+
+#: ../parts/class-content-comments.php:220
+msgid "Newer Comments <span class=\"meta-nav\">&rarr;</span>"
+msgstr "Nieuwere commentaren <span class=\"meta-nav\">&rarr;</span>"
+
+#: ../parts/class-content-comments.php:252
+msgid "Comments are closed."
+msgstr "Commentaren gesloten."
+
+#: ../parts/class-content-comments.php:267
+msgid "Leave a comment"
+msgstr "Laat commentaar achter"
+
+#: ../parts/class-content-featured_pages.php:127
+msgid "Customizer screen"
+msgstr "Customizer scherm"
+
+#: ../parts/class-content-featured_pages.php:127
+msgid " here"
+msgstr " here"
+
+#: ../parts/class-content-featured_pages.php:131
+msgid "Featured page"
+msgstr "Uitgelichte pagina"
+
+#: ../parts/class-content-featured_pages.php:134
+#, php-format
+msgid ""
+"Featured page description text : use the page excerpt or set your own custom "
+"text in the Customizr screen%s."
+msgstr ""
+"Uitgelichte pagina omschrijving : gebruik pagina fragment of plaats uw eigen "
+"tekst in het Customizr scherm%s."
+
+#: ../parts/class-content-gallery.php:187
+msgid "Missing Attachment"
+msgstr "Ontbrekende bijlage"
+
+#: ../parts/class-content-headings.php:170
+#: ../parts/class-content-headings.php:175
+msgid "{no title} Read the post &raquo;"
+msgstr "{geen titel} Lees post &raquo;"
+
+#: ../parts/class-content-headings.php:174
+#, php-format
+msgid "Permalink to %s"
+msgstr "Permalink naar %s"
+
+#: ../parts/class-content-headings.php:217
+msgid "Comment(s) on"
+msgstr "Commentaar op"
+
+#: ../parts/class-content-headings.php:323
+msgid "Ooops, page not found"
+msgstr "Oeps, pagina niet gevonden"
+
+#: ../parts/class-content-headings.php:334
+msgid "No"
+msgstr "Geen"
+
+#: ../parts/class-content-headings.php:335
+msgid "Search Results for :"
+msgstr "Zoek resultaten voor :"
+
+#: ../parts/class-content-headings.php:350
+msgid "Author Archives :"
+msgstr "Auteur archieven :"
+
+#: ../parts/class-content-headings.php:364 ../parts/class-content-post.php:161
+#, php-format
+msgid "About %s"
+msgstr "Over %s"
+
+#: ../parts/class-content-headings.php:377
+msgid "Category Archives :"
+msgstr "Categorie archieven :"
+
+#: ../parts/class-content-headings.php:393
+msgid "Tag Archives :"
+msgstr "Tag archieven :"
+
+#: ../parts/class-content-headings.php:406
+#, php-format
+msgid "Daily Archives: %s"
+msgstr "Dagelijkse archieven: %s"
+
+#: ../parts/class-content-headings.php:406
+msgid "Archives"
+msgstr "Archieven"
+
+#: ../parts/class-content-headings.php:407
+#, php-format
+msgid "Monthly Archives: %s"
+msgstr "Maandelijkse archieven: %s"
+
+#: ../parts/class-content-headings.php:408
+#, php-format
+msgid "Yearly Archives: %s"
+msgstr "Jaarlijkse archieven: %s"
+
+#: ../parts/class-content-headings.php:477
+msgid "comment"
+msgstr "commentaar"
+
+#: ../parts/class-content-page.php:42 ../parts/class-content-post.php:120
+#: ../parts/class-content-post_list.php:149
+msgid "Continue reading <span class=\"meta-nav\">&rarr;</span>"
+msgstr "verder lezen <span class=\"meta-nav\">&rarr;</span>"
+
+#: ../parts/class-content-page.php:44 ../parts/class-content-post.php:121
+#: ../parts/class-content-post_list.php:150
+msgid "Pages:"
+msgstr "Pagina's:"
+
+#: ../parts/class-content-post.php:165
+#, php-format
+msgid "View all posts by %s <span class=\"meta-nav\">&rarr;</span>"
+msgstr "Bekijk alle posts door %s <span class=\"meta-nav\">&rarr;</span>"
+
+#: ../parts/class-content-post_metas.php:87
+#, php-format
+msgid "This entry was posted on %3$s<span class=\"by-author\"> by %4$s</span>."
+msgstr "Dit item is gepost op %3$s<span class=\"by-author\"> door %4$s</span>."
+
+#: ../parts/class-content-post_metas.php:121
+msgid "Published"
+msgstr "Gepubliceerd"
+
+#: ../parts/class-content-post_metas.php:124
+msgid "at dimensions"
+msgstr "bij dimensies"
+
+#: ../parts/class-content-post_metas.php:124
+msgid "Link to full-size image"
+msgstr "Link naar afbeelding op ware grootte"
+
+#: ../parts/class-content-post_metas.php:125
+msgid "in"
+msgstr "in"
+
+#: ../parts/class-content-post_metas.php:125
+msgid "Return to "
+msgstr "Terug naar "
+
+#: ../parts/class-content-post_metas.php:153
+#: ../parts/class-content-post_metas.php:181
+#, php-format
+msgid "View all posts in %s"
+msgstr "Bekijk alle posts in %s"
+
+#: ../parts/class-content-post_metas.php:299
+#, php-format
+msgid "View all posts by %s"
+msgstr "Bekijk alle posts van %s"
+
+#: ../parts/class-content-post_metas.php:319
+msgid "Open"
+msgstr ""
+
+#: ../parts/class-content-post_metas.php:412
+#, php-format
+msgid "This entry was posted in %1$s and tagged %2$s"
+msgstr "Dit bericht werd gepost in %1$s en getagt %2$ s"
+
+#: ../parts/class-content-post_metas.php:414
+#, php-format
+msgid "This entry was posted in %1$s"
+msgstr "Dit bericht werd gepost in %1$s"
+
+#: ../parts/class-content-post_metas.php:416
+#, php-format
+msgid "This entry was tagged %2$s"
+msgstr "Dit bericht is getagt %2$ s"
+
+#: ../parts/class-content-post_metas.php:421
+#, php-format
+msgid "This entry was posted on %3$s"
+msgstr "Dit bericht is geplaatst op %3$ s"
+
+#: ../parts/class-content-post_metas.php:423
+#, php-format
+msgid "on %3$s"
+msgstr "op %3$s"
+
+#: ../parts/class-content-post_metas.php:425
+#, php-format
+msgid "and posted on %3$s"
+msgstr "en geplaatst op %3$ s"
+
+#: ../parts/class-content-post_metas.php:432
+msgid "This entry was posted"
+msgstr "Dit bericht is geplaatst"
+
+#: ../parts/class-content-post_metas.php:432
+#: ../parts/class-content-post_metas.php:434
+#, php-format
+msgid "by %4$s"
+msgstr "door %4$s"
+
+#: ../parts/class-content-post_metas.php:442
+msgid "(updated today)"
+msgstr "(vandaag bijgewerkt)"
+
+#: ../parts/class-content-post_metas.php:442
+#, php-format
+msgid "(updated %6$s days ago)"
+msgstr "(%6$s dagen geleden bijgewerkt)"
+
+#: ../parts/class-content-post_metas.php:443
+msgid "(updated 1 day ago)"
+msgstr "(1 dag geleden bijgewerkt)"
+
+#: ../parts/class-content-post_metas.php:446
+#, php-format
+msgid "(updated on %5$s)"
+msgstr "(bijgewerkt op %5$s)"
+
+#: ../parts/class-content-post_navigation.php:54
+#: ../parts/class-content-post_navigation.php:109
+msgid "Post navigation"
+msgstr "Post navigatie"
+
+#: ../parts/class-content-post_navigation.php:122
+msgid "<span class=\"meta-nav\">&larr;</span> Older posts"
+msgstr "<span class=\"meta-nav\">&larr;</span> Oudere posts"
+
+#: ../parts/class-content-post_navigation.php:142
+msgid "Newer posts <span class=\"meta-nav\">&rarr;</span>"
+msgstr "Nieuwere posts <span class=\"meta-nav\">&rarr;</span>"
+
+#: ../parts/class-footer-footer_main.php:177
+msgid "Back to top"
+msgstr "Terug naar boven"
+
+#: ../parts/class-header-header_main.php:256
+msgid "Back Home"
+msgstr "Terug naar Home"
+
+#: ../parts/class-header-menu.php:129
+msgid "Add a menu"
+msgstr "Voeg menu toe"
+
+#~ msgid "Header : title, logo, menu, ..."
+#~ msgstr "Kop : titel, logo, menu, ..."
+
+#~ msgid ""
+#~ "Always use this field to add your custom css instead of editing directly "
+#~ "the style.css file : it will not be deleted during theme updates. You can "
+#~ "also paste your custom css in the style.css file of a child theme."
+#~ msgstr ""
+#~ "Gebruik altijd dit veld om eigen CSS toe te voegen i.p.v. het aanpassen "
+#~ "van het style.css bestand : dit wordt niet verwijderd bij theme updates. "
+#~ "U kunt ook eigen CSS toevoegen in het style.css bestand van een subthema "
+#~ "(child theme)."
+
+#~ msgid ""
+#~ "This entry was posted in %1$s on %3$s<span class=\"by-author\"> by %4$s</"
+#~ "span>."
+#~ msgstr ""
+#~ "Dit item is gepost in %1$s op %3$s<span class=\"by-author\"> door %4$s</"
+#~ "span>."
+
+#~ msgid "Customiz'it!"
+#~ msgstr "Customiz'it!"
+
+#~ msgid "Customize your website at any time!"
+#~ msgstr "Verander je website op elk tijdstip!"
+
+#~ msgid "One thought on &ldquo;%2$s&rdquo;"
+#~ msgstr "Een gedachte op &ldquo;%2$s&rdquo;"
+
+#~ msgid "Let your creativity speak and easily customiz'it the way you want!"
+#~ msgstr "Laat uw creativiteit spreken en customiz'it op jouw manier!"
+
+#~ msgid "Learn more"
+#~ msgstr "Leer meer"
+
+#~ msgid "Dev Tools (advanced users)"
+#~ msgstr "Dev Tools (gevorderde gebruikers)"
+
+#~ msgid "Enable/disable the Dev Tools"
+#~ msgstr "Zet Dev Tools aan/uit"
+
+#~ msgid "Two sidebars"
+#~ msgstr "Twee zijbalken"
+
+#~ msgid "Full Width"
+#~ msgstr "Volledige breedte"
+
+#~ msgid "Featured text two "
+#~ msgstr "Uitgelichte tekst twee "
+
+#~ msgid "Developer Box"
+#~ msgstr "Developer Box"
+
+#~ msgid "Only visible for logged in users with an admin profile."
+#~ msgstr "Alleen zichtbaar voor aangemelde admin gebruikers,"
+
+#~ msgid ""
+#~ "If enabled, this option displays a draggable information box to help you "
+#~ "develop or debug your Customizr based website."
+#~ msgstr ""
+#~ "Wanneer geactiveerd toont deze optie een verpaatsbare informatie box om u "
+#~ "te helpen bij het ontwikkelen of foutzoeken van uw op Customizr "
+#~ "gebaseerde website."
+
+#~ msgid "Developer tooltips"
+#~ msgstr "Developer tooltips"
+
+#~ msgid ""
+#~ "If enabled, this option displays clickable contextual tooltips right "
+#~ "inside your website."
+#~ msgstr ""
+#~ "Wanneer geactiveerd toont deze optie klikbare contextuele tooltips op uw "
+#~ "website."
+
+#~ msgid "New! Customizr Developer Tools"
+#~ msgstr "Nieuw! Customizr Developer Tools"
+
+#~ msgid "Easily drill down into Customizr code with the dev tools!"
+#~ msgstr "Gemakkelijk de Customizr code bewerken met de dev tools!"
+
+#~ msgid ""
+#~ "A new section called \"Dev Tools\" has been added to the customizer "
+#~ "options.<br/> There you will find two optional new features : <br/"
+#~ "><strong>-The developer box</strong> : this draggable box is a developer "
+#~ "dashboard allowing you to have an overview of your theme settings "
+#~ "(plugins, custom post types, theme options,...) and providing useful "
+#~ "informations for debug and development : a loading timeline of any pages, "
+#~ "contextual data ( like conditional tags and query), the hook's structure "
+#~ "of the theme and a note section about the code logic of Customizr.<br/"
+#~ "><strong>-The embedded tooltips</strong> : this option displays clickable "
+#~ "(and draggable) contextual tooltips right inside your website. They help "
+#~ "you understand which part of the php code handles any front-end block or "
+#~ "element. The informations provided are : class -> method, hook, file, "
+#~ "function description and possible filter.<br/><br/><i>Those tools are "
+#~ "only displayed to logged in users with an admin capability profile.</i>"
+#~ msgstr ""
+#~ "Een nieuwe sectie genaamd \"Dev Tools\" is toegevoegd aan de Customizr "
+#~ "opties.<br/> Daar vindt u twee optionele nieuwe voorzieningen: <br/"
+#~ "><strong>-De deveoper box</strong> :  deze verplaatsbare box is een "
+#~ "ontwikkelaar dashboard welke u een overzicht van uw thema-instellingen "
+#~ "(aangepaste bericht typen, plugins, thema opties,...) geeft en het "
+#~ "verstrekken van nuttige informatie voor foutopsporing en ontwikkeling : "
+#~ "een tijdlijn laden van pagina's, contextuele gegevens (zoals "
+#~ "voorwaardelijke tags en query), de haak structuur van het thema en een "
+#~ "opmerking over de code logica van Customizr.<br/><strong>-De ingesloten "
+#~ "tooltips</strong> : deze optie toont klikbare (en verplaatsbare) "
+#~ "contextafhankelijke tooltips rechtsstreeks op uw website. Zij helpen u "
+#~ "meer inzicht te krijgen in welk deel van de php-code elke front-end-blok "
+#~ "of element bestuurd. De informatie die wordt verstrekt is : class -> "
+#~ "methode, hook, bestand (file), functiebeschrijving en mogelijke filter."
+#~ "<br/><br/><i>Deze tools worden alleen getoont aan gebruikers met een "
+#~ "aangemeld admin account.</i>"
+
+#~ msgid "Edit page"
+#~ msgstr "Wijzig pagina"
+
+#~ msgid ""
+#~ "Thank you for updating to the latest version! Customizr %1$s has more "
+#~ "features, is safer and more stable than ever <a href=\"#customizr-"
+#~ "changelog\">(see changelog)</a> to help you build an awesome website. "
+#~ "Watch the <a href=\"#introduction\">introduction video</a> and find "
+#~ "inspiration in the <a href=\"#showcase\">showcase</a>.<br/> Enjoy it! "
+#~ msgstr ""
+#~ "Bedankt voor het updaten naar de laatste versie! Customizr %1$s heeft "
+#~ "meer features, is veiliger en stabieler dan ooit <a href=\"#customizr-"
+#~ "changelog\">(bekijk changelog)</a> om u te helpen bij het maken van een "
+#~ "prachtige website. Bekijk de <a href=\"#introduction\">introductie video</"
+#~ "a> en vind inspiratie in de <a href=\"#showcase\">showcase</a>.<br/> Veel "
+#~ "plezier!"
+
+#~ msgid ""
+#~ "Welcome to the new version of Customizr. You will be redirected to the "
+#~ "About screen. If not, click <a href=\"%1$s\">here</a>."
+#~ msgstr ""
+#~ "Welkom bij de nieuwe versie van Customizr. U wordt doorgezet naar het "
+#~ "About scherm. Gebeurd dit niet, klik <a href=\"%1$s\">hier</a>."
+
+#~ msgid ""
+#~ "<span class=\"meta-prep meta-prep-entry-date\">Published </span> <span "
+#~ "class=\"entry-date\"><time class=\"entry-date\" datetime=\"%1$s\">%2$s</"
+#~ "time></span> at <a href=\"%3$s\" title=\"Link to full-size image\">%4$s "
+#~ "&times; %5$s</a> in <a href=\"%6$s\" title=\"Return to %7$s\" rel="
+#~ "\"gallery\">%8$s</a>."
+#~ msgstr ""
+#~ "<span class=\"meta-prep meta-prep-entry-date\">Gepubliceerd </span> <span "
+#~ "class=\"entry-date\"><time class=\"entry-date\" datetime=\"%1$s\">%2$s</"
+#~ "time></span> op <a href=\"%3$s\" title=\"Link naar full-size afbeelding\">"
+#~ "%4$s &times; %5$s</a> in <a href=\"%6$s\" title=\"Terug naar %7$s\" rel="
+#~ "\"gallery\">%8$s</a>."
+
+#~ msgid "Favicon Upload"
+#~ msgstr "Favicon upload"
+
+#~ msgid "Customizr Help"
+#~ msgstr "Customizr help"
+
+#~ msgid "We need coffee..."
+#~ msgstr "We zijn koffie nodig..."
+
+#~ msgid ""
+#~ "Either you are using Customizr for personal or business purposes, "
+#~ "<strong>we do our best do make it the perfect free theme for you</strong>."
+#~ "<br /> Any kind of sponsorship will be appreciated!"
+#~ msgstr ""
+#~ "Of u Customizr gebruikt voor persoonlijke of zakelijke doeleinden, "
+#~ "<strong>we doen ons best om het het voor u het perfecte theme te maken</"
+#~ "strong>.<br />Elke vorm van sponsoring wordt gewaardeerd!"
+
+#~ msgid "&larr; Older Comments"
+#~ msgstr "&larr; Ouder commentaar"
+
+#~ msgid "Newer Comments &rarr;"
+#~ msgstr "Nieuwer commentaar &rarr;"
+
+#, fuzzy
+#~ msgid "Ajust the slider size"
+#~ msgstr "Texte de description (sous le titre) de la diapositive"
+
+#, fuzzy
+#~ msgid "Choose a font"
+#~ msgstr "Choisir une page"
+
+#~ msgid "Slide Entry"
+#~ msgstr "Diapositive"
+
+#~ msgid "Edit Slide Entry"
+#~ msgstr "Modifier la diapositive"
+
+#~ msgid "Search Slide Entries"
+#~ msgstr "Rechercher dans les diapositives"
+
+#~ msgid "Edit Slider Name"
+#~ msgstr "Modifier le nom du diporama"
+
+#~ msgid "Front Page Widget Area One"
+#~ msgstr "Première zone de widgets de page d'accueil"
+
+#~ msgid "Front Page Widget Area Two"
+#~ msgstr "Deuxième zone de widgets de page d'accueil"
+
+#~ msgid "Front Page Widget Area Three"
+#~ msgstr "Troisième zone de widgets de page d'accueil"
+
+#~ msgid "If this field is empty, it will display an excerpt of the page."
+#~ msgstr "Si le champ est vide, un extrait de la page est affiché."
+
+#~ msgid "Force logo to fit in the left header block"
+#~ msgstr "Forcer le redimensionnement du logo dans le bloc gauche du header"
+
+#~ msgid ""
+#~ "Force default layout for all posts and pages (including front page and "
+#~ "pages/posts with a specific layout)"
+#~ msgstr ""
+#~ "Forcer la structure par défaut pour toutes les pages du sites (y compris "
+#~ "la page d'accueil ainsi que les pages et billets qui ont une structure "
+#~ "spécifique)"
+
+#~ msgid "0"
+#~ msgstr "0"
+
+#~ msgid "1"
+#~ msgstr "1"
+
+#~ msgid "%"
+#~ msgstr "%"
+
+#~ msgid "Manage widgets"
+#~ msgstr "Gérer les widgets"
+
+#~ msgid "View details &raquo;"
+#~ msgstr "Voir les détails &raquo;"
+
+#~ msgid "Length of the excerpt (default 200)"
+#~ msgstr "Longueur de l'extrait (200 car. par défaut)"
+
+#~ msgid " checked=\"checked\""
+#~ msgstr " "
+
+#~ msgid "Sample Checkbox"
+#~ msgstr "Exemple"
+
+#~ msgid ""
+#~ "Appears on posts and pages except the optional Front Page template, which "
+#~ "has its own widgets"
+#~ msgstr "Affichée dans les posts et les pages, hormis l"
