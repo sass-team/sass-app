@@ -768,10 +768,10 @@ function isBtnUpdatePrsd()
 		$(".btnUpdateStudent").click(function ()
 		{
 			var id = $(this).next().val();
-			var studentsCredits = ($(this).parent().prev().prev().text());
-			var studentCi = ($(this).parent().prev().prev().prev().text());
-			var studentMajorId = ($(this).parent().prev().prev().prev().prev().find("input:first")).val();
-			var studentMobile = ($(this).parent().prev().prev().prev().prev().prev().text());
+			var studentsCredits = ($(this).parent().prev().text());
+			var studentCi = ($(this).parent().prev().prev().text());
+			var studentMajorId = ($(this).parent().prev().prev().prev().find("input:first")).val();
+			var studentMobile = ($(this).parent().prev().prev().prev().prev().text());
 			var studentEmail = ($(this).parent().prev().prev().prev().prev().prev().prev().text());
 			var studentId = ($(this).parent().prev().prev().prev().prev().prev().prev().prev().text());
 			var firstName = ($(this).parent().prev().prev().prev().prev().prev().prev().prev().prev().find("span:first")).text();
