@@ -50,13 +50,169 @@ $section = "search";
                                     <?php echo 'Search Criterias' ?>
                                 </h3>
 
-                             
-
                             </div>
                             <!-- /.portlet-header -->
 
                             <div class="portlet-content">
                                 
+                            <h4>Range of Appointments or term(s)</h4>
+
+                            <div class="row">
+                            	<div class="col-sm-3">
+                            		<input class="form-control" type="text" placeholder="Start date" id="dpStart" data-date-format="mm-dd-yyyy" data-date-autoclose="true">
+                            	</div>
+
+                            	<div class="col-sm-3">
+                            		<input class="form-control" type="text" placeholder="End date" id="dpEnd" data-date-format="mm-dd-yyyy" data-date-autoclose="true">
+                            	</div>
+
+                            	<!-- </div> -->
+
+                            	<div class="col-sm-6">
+
+                            		<select id="s2_multi_value" class="form-control" placeholder="Select term(s)"multiple>
+                            			<optgroup label="Alaskan/Hawaiian Time Zone">
+                            				<option value="AK">Alaska</option>
+                            				<option value="HI">Hawaii</option>
+                            			</optgroup>
+                            			<optgroup label="Pacific Time Zone">
+                            				<option value="CA">California</option>
+                            				<option value="NV">Nevada</option>
+                            			</optgroup>
+                            			<optgroup label="Mountain Time Zone">
+                            				<option value="AZ">Arizona</option>
+                            				<option value="CO">Colorado</option>
+                            			</optgroup>
+                            			<optgroup label="Central Time Zone">
+                            				<option value="AL">Alabama</option>
+                            				<option value="AR">Arkansas</option>
+                            			</optgroup>
+                            			<optgroup label="Eastern Time Zone">
+                            				<option value="CT">Connecticut</option>
+                            				<option value="DE">Delaware</option>
+                            				<option value="FL">Florida</option>
+                            			</optgroup>
+                            		</select>
+                            	</div>
+
+                        </div>
+                    <!-- row -->
+                    <hr>
+                    <div class="row">
+
+                    	<div class="col-sm-6">
+                    		<div class="form-group">	
+								<label for="select-input">Appointment Status</label>
+								<select id="select-input" class="form-control">
+									<option>Complete</option>
+									<option>Canceled by tutor</option>
+									<option>Canceled by student</option>
+									<option>No show by student</option>
+									<option>No show by tutor</option>
+									<option>Disabled by admin</option>
+								</select>
+							</div>
+                    	</div>
+                    	<div class="col-sm-6">
+                    		<div class="form-group">	
+								<label for="select-input">Report Status</label>
+								<select id="select-input" class="form-control">
+									<option>Complete</option>
+									<option>Pending fill</option>
+									<option>Pending validation</option>
+								</select>
+							</div>
+                    	</div>
+
+                    </div>
+                    <!-- row -->
+                    <hr>
+                    <div class="row">
+
+                    	<div class="col-sm-3 ">
+
+                        <label for="s2_basic">Select a L.F.</label>
+                            <select id="s2_basic" class="form-control">
+                                
+								<optgroup label="Mountain Time Zone">
+									<option value="AZ">Arizona</option>
+									<option value="CO">Colorado</option>
+									<option value="ID">Idaho</option>
+									<option value="MT">Montana</option>
+									<option value="NE">Nebraska</option>
+									<option value="NM">New Mexico</option>
+									<option value="ND">North Dakota</option>
+									<option value="UT">Utah</option>
+									<option value="WY">Wyoming</option>
+								</optgroup>
+                            </select>
+
+                        </div>
+                        <div class="col-sm-3 ">
+
+                            <label for="s2_basic">Select a Student</label>
+                            <select id="s2_basic" class="form-control">
+                                
+								<optgroup label="Mountain Time Zone">
+									<option value="AZ">Arizona</option>
+									<option value="CO">Colorado</option>
+									<option value="ID">Idaho</option>
+									<option value="MT">Montana</option>
+									<option value="NE">Nebraska</option>
+									<option value="NM">New Mexico</option>
+									<option value="ND">North Dakota</option>
+									<option value="UT">Utah</option>
+									<option value="WY">Wyoming</option>
+								</optgroup>
+                            </select>
+
+                        </div>
+                        <div class="col-sm-3 ">
+
+                            <label for="s2_basic">Select a Course</label>
+                            <select id="s2_basic" class="form-control">
+                                
+								<optgroup label="Mountain Time Zone">
+									<option value="AZ">Arizona</option>
+									<option value="CO">Colorado</option>
+									<option value="ID">Idaho</option>
+									<option value="MT">Montana</option>
+									<option value="NE">Nebraska</option>
+									<option value="NM">New Mexico</option>
+									<option value="ND">North Dakota</option>
+									<option value="UT">Utah</option>
+									<option value="WY">Wyoming</option>
+								</optgroup>
+                            </select>
+
+                        </div>
+                        <div class="col-sm-3 ">
+
+                            <label for="s2_basic">Select an Instructor</label>
+                            <select id="s2_basic" class="form-control">
+                                
+								<optgroup label="Mountain Time Zone">
+									<option value="AZ">Arizona</option>
+									<option value="CO">Colorado</option>
+									<option value="ID">Idaho</option>
+									<option value="MT">Montana</option>
+									<option value="NE">Nebraska</option>
+									<option value="NM">New Mexico</option>
+									<option value="ND">North Dakota</option>
+									<option value="UT">Utah</option>
+									<option value="WY">Wyoming</option>
+								</optgroup>
+                            </select>
+
+                        </div>
+
+                    </div>
+                    <!-- row -->
+
+
+
+
+
 
                             </div>
                             <!-- portlet-content -->
