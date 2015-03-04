@@ -150,8 +150,8 @@ $section = "search";
                         </div>
                         <div class="col-sm-3 ">
 
-                            <label for="s2_basic">Select a Student</label>
-                            <select id="s2_basic" class="form-control">
+                            <label for="s3_basic">Select a Student</label>
+                            <select id="s3_basic" class="form-control">
                                 
 								<optgroup label="Mountain Time Zone">
 									<option value="AZ">Arizona</option>
@@ -169,8 +169,8 @@ $section = "search";
                         </div>
                         <div class="col-sm-3 ">
 
-                            <label for="s2_basic">Select a Course</label>
-                            <select id="s2_basic" class="form-control">
+                            <label for="s4_basic">Select a Course</label>
+                            <select id="s4_basic" class="form-control">
                                 
 								<optgroup label="Mountain Time Zone">
 									<option value="AZ">Arizona</option>
@@ -188,8 +188,8 @@ $section = "search";
                         </div>
                         <div class="col-sm-3 ">
 
-                            <label for="s2_basic">Select an Instructor</label>
-                            <select id="s2_basic" class="form-control">
+                            <label for="s5_basic">Select an Instructor</label>
+                            <select id="s5_basic" class="form-control">
                                 
 								<optgroup label="Mountain Time Zone">
 									<option value="AZ">Arizona</option>
@@ -208,11 +208,17 @@ $section = "search";
 
                     </div>
                     <!-- row -->
-
-
-
-
-
+                    <br>
+                    <div class="row">
+                        <div
+                        class="col-lg-6 col-lg-push-3 col-md-8 col-md-push-2 col-sm-10 col-sm-push-1">
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-block btn-primary">Search</button>
+                                <input type="hidden" name="hiddenSubmitPrsd" value="">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.row -->
 
                             </div>
                             <!-- portlet-content -->
