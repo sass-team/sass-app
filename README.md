@@ -5,7 +5,7 @@ SASS App is a CMS (Content management system) and TMS (Time Management System) f
 ![SASS App Showcase][sass_app_showcase]
 
 ## Contribution
-For details on contributing to SASS App, visit the [developers wiki](https://github.com/sass-team/sass-app/wiki/Developers).  
+For details on contributing to SASS App, visit the [developers wiki](https://github.com/sass-team/sass-app/wiki/1.-Developers).  
 
 ## License
 SASS App is released under the MIT license and is copyright 2015 [rdok][rdok_github_url] & [geoif][geoif_linkedin_url]. See [License FAQs](https://github.com/sass-team/sass-app/wiki/2.-License) for more.
