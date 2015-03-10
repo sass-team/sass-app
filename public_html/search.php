@@ -8,6 +8,12 @@ if (!$user->isAdmin())
 	exit();
 }
 
+$curTerms = TermFetcher::retrieveAll();
+$students = StudentFetcher::retrieveAll();
+$courses = CourseFetcher::retrieveAll();
+$instructors = InstructorFetcher::retrieveAll();
+$tutors = TutorFetcher::retrieveAll();
+
 $pageTitle = "Search";
 $section = "search";
 ?>
@@ -74,30 +80,14 @@ $section = "search";
 								<!-- </div> -->
 
 								<div class="col-sm-6">
-
-									<select id="selectedTerms" class="form-control" placeholder="Select term(s)"
-									        multiple>
-										<optgroup label="Alaskan/Hawaiian Time Zone">
-											<option value="AK">Alaska</option>
-											<option value="HI">Hawaii</option>
-										</optgroup>
-										<optgroup label="Pacific Time Zone">
-											<option value="CA">California</option>
-											<option value="NV">Nevada</option>
-										</optgroup>
-										<optgroup label="Mountain Time Zone">
-											<option value="AZ">Arizona</option>
-											<option value="CO">Colorado</option>
-										</optgroup>
-										<optgroup label="Central Time Zone">
-											<option value="AL">Alabama</option>
-											<option value="AR">Arkansas</option>
-										</optgroup>
-										<optgroup label="Eastern Time Zone">
-											<option value="CT">Connecticut</option>
-											<option value="DE">Delaware</option>
-											<option value="FL">Florida</option>
-										</optgroup>
+									<select id="selectedTerms" name="selectedTerms" class="form-control" required
+									        multiple placeholder="Select term(s)">
+										<?php
+										foreach ($curTerms as $term)
+										{
+											include(ROOT_PATH . "views/partials/term/select-options-view.html.php");
+										}
+										?>
 									</select>
 								</div>
 
@@ -109,7 +99,8 @@ $section = "search";
 								<div class="col-sm-6">
 									<div class="form-group">
 										<label for="select-appointments-status">Appointment Status</label>
-										<select id="select-appointments-status" class="form-control" multiple>
+										<select id="select-appointments-status" class="form-control" multiple
+										        placeholder="Statuses list">
 											<option>Complete</option>
 											<option>Canceled by tutor</option>
 											<option>Canceled by student</option>
@@ -122,7 +113,8 @@ $section = "search";
 								<div class="col-sm-6">
 									<div class="form-group">
 										<label for="select-reports-status">Report Status</label>
-										<select id="select-reports-status" class="form-control" multiple>
+										<select id="select-reports-status" class="form-control" multiple
+										        placeholder="Statuses list">
 											<option>Complete</option>
 											<option>Pending fill</option>
 											<option>Pending validation</option>
@@ -140,76 +132,54 @@ $section = "search";
 									<label for="select-learning-facilitator">Select a L.F.</label>
 									<select id="select-learning-facilitator" class="form-control">
 
-										<optgroup label="Mountain Time Zone">
-											<option value="AZ">Arizona</option>
-											<option value="CO">Colorado</option>
-											<option value="ID">Idaho</option>
-											<option value="MT">Montana</option>
-											<option value="NE">Nebraska</option>
-											<option value="NM">New Mexico</option>
-											<option value="ND">North Dakota</option>
-											<option value="UT">Utah</option>
-											<option value="WY">Wyoming</option>
-										</optgroup>
+										<?php
+										foreach ($tutors as $tutor):
+											include(ROOT_PATH . "views/partials/tutor/select-options-view.html.php");
+										endforeach;
+										?>
 									</select>
 
 								</div>
 								<div class="col-sm-3 ">
 
 									<label for="select-student">Select a Student</label>
-									<select id="select-student" class="form-control">
-
-										<optgroup label="Mountain Time Zone">
-											<option value="AZ">Arizona</option>
-											<option value="CO">Colorado</option>
-											<option value="ID">Idaho</option>
-											<option value="MT">Montana</option>
-											<option value="NE">Nebraska</option>
-											<option value="NM">New Mexico</option>
-											<option value="ND">North Dakota</option>
-											<option value="UT">Utah</option>
-											<option value="WY">Wyoming</option>
-										</optgroup>
+									<select id="select-student" name="studentsIds[]" class="form-control"
+									        placeholder="Students list">
+										<option></option>
+										<?php
+										foreach ($students as $student):
+											include(ROOT_PATH . "views/partials/student/select-options-view.html.php");
+										endforeach;
+										?>
 									</select>
 
 								</div>
 								<div class="col-sm-3 ">
 
 									<label for="select-course">Select a Course</label>
-									<select id="select-course" class="form-control">
-
-										<optgroup label="Mountain Time Zone">
-											<option value="AZ">Arizona</option>
-											<option value="CO">Colorado</option>
-											<option value="ID">Idaho</option>
-											<option value="MT">Montana</option>
-											<option value="NE">Nebraska</option>
-											<option value="NM">New Mexico</option>
-											<option value="ND">North Dakota</option>
-											<option value="UT">Utah</option>
-											<option value="WY">Wyoming</option>
-										</optgroup>
+									<select id="select-course" name="select-course" class="form-control"
+									        placeholder="Courses list">
+										<option></option>
+										<?php foreach ($courses as $course)
+										{
+											include(ROOT_PATH . "views/partials/course/select-options-view.html.php");
+										}
+										?>
 									</select>
 
 								</div>
 								<div class="col-sm-3 ">
 
 									<label for="select-instructor">Select an Instructor</label>
-									<select id="select-instructor" class="form-control">
-
-										<optgroup label="Mountain Time Zone">
-											<option value="AZ">Arizona</option>
-											<option value="CO">Colorado</option>
-											<option value="ID">Idaho</option>
-											<option value="MT">Montana</option>
-											<option value="NE">Nebraska</option>
-											<option value="NM">New Mexico</option>
-											<option value="ND">North Dakota</option>
-											<option value="UT">Utah</option>
-											<option value="WY">Wyoming</option>
-										</optgroup>
+									<select id="select-instructor" name="select-instructor" class="form-control"
+									        placeholder="Instructors list">
+										<option></option>
+										<?php foreach ($instructors as $instructor)
+										{
+											include(ROOT_PATH . "views/partials/instructor/select-options-view.html.php");
+										}
+										?>
 									</select>
-
 								</div>
 
 							</div>
