@@ -195,6 +195,16 @@
 		</li>
 
 		<?php if ($user->isAdmin()) { ?>
+			<li class="<?php if ($section == "search") echo "active"; ?>">
+				<a href="<?php echo BASE_URL; ?>search">
+					<i class="fa fa-search"></i>
+					Search
+				</a>
+			</li>
+
+		<?php } ?>
+
+		<?php if ($user->isAdmin()) { ?>
 			<li class="<?php if ($section == "cloud") echo "active"; ?>">
 				<a href="<?php echo BASE_URL; ?>cloud">
 					<i class="fa fa-cloud"></i>

@@ -6,12 +6,12 @@ $(function () {
 	$('#dp-ex-4').datepicker ()
 	$('#dp-ex-5').datepicker ()
 
-	$('#dpStart').datepicker ().on ('changeDate', function (e) {
-		$('#dpEnd').datepicker ('setStartDate', e.date);
+	$('#appointmentStartDate').datepicker ().on ('changeDate', function (e) {
+		$('#appointmentEndDate').datepicker ('setStartDate', e.date);
 	})
 
-	$('#dpEnd').datepicker ().on ('changeDate', function (e) {
-		$('#dpStart').datepicker ('setEndDate', e.date)
+	$('#appointmentEndDate').datepicker ().on ('changeDate', function (e) {
+		$('#appointmentStartDate').datepicker ('setEndDate', e.date)
 	})
 
 	$('#tp-ex-1').timepicker ()
@@ -40,12 +40,12 @@ $(function () {
 		displayFormat : '#input/#max | #words words'
 	})
 
-	$('#s2_basic').select2 ({
+	$('#select-learning-facilitator').select2 ({
 		allowClear: true,
 		placeholder: "Select..."
 	})
 
-	$('#s2_multi_value').select2 ({
+	$('#selectedTerms').select2 ({
 		placeholder: "Select..."
 	})
 
