@@ -6,8 +6,7 @@
  * Date: 9/17/2014
  * Time: 6:28 AM
  */
-class ReportFetcher
-{
+class ReportFetcher {
 	const DB_TABLE = "report";
 	const DB_COLUMN_ID = "id";
 	const DB_COLUMN_STUDENT_ID = "student_id";
@@ -53,7 +52,7 @@ class ReportFetcher
 
 			AppointmentFetcher::updateLabel($appointmentId, Appointment::LABEL_MESSAGE_ADMIN_DISABLED, Appointment::LABEL_COLOR_CANCELED);
 
-			if (!$prevTransFromParent)
+			if ( ! $prevTransFromParent)
 			{
 				$dbConnection->commit();
 			}
@@ -256,6 +255,49 @@ class ReportFetcher
 		} catch (PDOException $e)
 		{
 			Mailer::sendDevelopers($e->getMessage(), __FILE__);
+			throw new Exception("Could not retrieve data from database.");
+		}
+	}
+
+	/**
+	 * @param $termId
+	 * @return array
+	 * @throws Exception
+	 * @internal param $db
+	 */
+	public static function findWithTermId($termId)
+	{
+		$query =
+			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`, `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_LABEL_MESSAGE . "`,
+			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_LABEL_COLOR . "`, `" . AppointmentFetcher::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`
+			AS " . AppointmentFetcher::DB_TABLE . "_" . AppointmentFetcher::DB_COLUMN_ID . "
+			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
+			INNER JOIN `" . App::getDbName() . "`.`" . AppointmentHasStudentFetcher::DB_TABLE . "`
+				ON `" . AppointmentHasStudentFetcher::DB_TABLE . "`.`" . AppointmentHasStudentFetcher::DB_COLUMN_REPORT_ID . "` =
+					`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`
+			INNER JOIN `" . App::getDbName() . "`.`" . AppointmentFetcher::DB_TABLE . "`
+				ON `" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_ID . "` =
+					`" . AppointmentHasStudentFetcher::DB_TABLE . "`.`" . AppointmentHasStudentFetcher::DB_COLUMN_APPOINTMENT_ID . "`
+			INNER JOIN `" . TermFetcher::DB_TABLE . "`
+				ON `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "` =
+					`" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_TERM_ID . "`
+
+			WHERE `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "` = :term_id
+			ORDER BY `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` ASC";
+
+		try
+		{
+			date_default_timezone_set('Europe/Athens');
+
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
+			$query->bindParam(':term_id', $termId, PDO::PARAM_INT);
+
+			$query->execute();
+
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+		} catch (PDOException $e)
+		{
 			throw new Exception("Could not retrieve data from database.");
 		}
 	}

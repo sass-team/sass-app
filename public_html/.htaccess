@@ -2,8 +2,6 @@
 RewriteEngine On
 RewriteBase /
 
-
-
 RewriteRule ^cloud/success$ /cloud.php?success=y1!qp [L]
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^([a-z\-]+)/([a-z\-]+)/?$ /$1/$2.php [L]

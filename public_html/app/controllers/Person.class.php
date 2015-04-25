@@ -9,7 +9,7 @@
 abstract class Person
 {
 
-	private  $id, $firstName, $lastName, $email, $mobileNum;
+	public  $id, $firstName, $lastName, $email, $mobileNum;
 
 	public function __construct($id, $firstName, $lastName, $email, $mobileNum) {
 		$this->setId($id);

@@ -4,8 +4,7 @@
  * Class User will contain prototype for staff; tutors, secretary and admin.
  * Log In, Log Out.
  */
-abstract class User extends Person
-{
+abstract class User extends Person {
 
 	const ADMIN = 'admin';
 	const TUTOR = 'tutor';
@@ -114,7 +113,7 @@ abstract class User extends Person
 
 	public static function validateId($id)
 	{
-		if (!preg_match('/^[0-9]+$/', $id) || !UserFetcher::existsId($id))
+		if ( ! preg_match('/^[0-9]+$/', $id) || ! UserFetcher::existsId($id))
 		{
 			throw new Exception('Data tempering detected. Aborting.');
 		}
@@ -186,7 +185,7 @@ abstract class User extends Person
 	{
 		$newFirstName = trim($newFirstName);
 
-		if (!preg_match("/^[a-zA-Z]{1,35}$/", $newFirstName))
+		if ( ! preg_match("/^[a-zA-Z]{1,35}$/", $newFirstName))
 		{
 			throw new Exception('Names may contain only letters of size 1-35 letters.');
 		}
@@ -213,7 +212,7 @@ abstract class User extends Person
 	public static function updateProfileDescription($id, $newProfileDescription)
 	{
 
-		if (!preg_match("/^[\\w\t\n\r .,\\-]{0,512}$/", $newProfileDescription))
+		if ( ! preg_match("/^[\\w\t\n\r .,\\-]{0,512}$/", $newProfileDescription))
 		{
 			throw new Exception("Description can contain only <a href='http://www.regular-expressions.info/shorthand.html'
 			target='_blank'>word characters</a>, spaces, carriage returns, line feeds and special characters <strong>.,-2</strong> of max size 512 characters.");
@@ -274,7 +273,7 @@ abstract class User extends Person
 		{
 			return null; // no mobilenumber
 		}
-		if (!preg_match('/^[0-9]{10}$/', $newMobileNum))
+		if ( ! preg_match('/^[0-9]{10}$/', $newMobileNum))
 		{
 			throw new Exception('Mobile number should contain only digits of total length 10');
 		}
@@ -298,7 +297,7 @@ abstract class User extends Person
 		self::validatePassword($newPassword1);
 
 		$old_password_hashed = self::getHashedPassword($id);
-		if (!password_verify($oldPassword, $old_password_hashed))
+		if ( ! password_verify($oldPassword, $old_password_hashed))
 		{
 			throw new Exception("Sorry, the old password is incorrect.");
 		}
@@ -336,7 +335,7 @@ abstract class User extends Person
 		$correctPassword = $correctPassword && preg_match($r3, $password);
 		$correctPassword = $correctPassword && (strlen($password) > 5);
 
-		if (!$correctPassword)
+		if ( ! $correctPassword)
 		{
 			throw new Exception("Password should:
 			<ul>
@@ -453,7 +452,7 @@ abstract class User extends Person
 			$hash_password = $data['password'];
 
 			// using the verify method to compare the password with the stored hashed password.
-			if (!password_verify($password, $hash_password))
+			if ( ! password_verify($password, $hash_password))
 			{
 				throw new Exception('That email/password is invalid.');
 			}
@@ -499,7 +498,7 @@ abstract class User extends Person
 		// I have only added few, but you can add more. However do not add 'password' even though the parameters will only be given by you and not the user, in our system.
 		$allowed = ['id', 'username', 'f_name', 'l_name', 'email', 'COUNT(mobile)',
 			'mobile', 'user', 'gen_string', 'COUNT(gen_string)', 'COUNT(id)', 'img_loc', 'user_types', 'type'];
-		if (!in_array($what, $allowed, true) || !in_array($field, $allowed, true))
+		if ( ! in_array($what, $allowed, true) || ! in_array($field, $allowed, true))
 		{
 			throw new InvalidArgumentException;
 		} else
@@ -531,7 +530,7 @@ abstract class User extends Person
 			throw new Exception("There was a mismatch with the new passwords");
 		}
 		User::validatePassword($newPassword1);
-		if (!UserFetcher::generatedStringExists($id, $generatedString))
+		if ( ! UserFetcher::generatedStringExists($id, $generatedString))
 		{
 			throw new Exception("Could not verify generated string exists. Please make sure url sent was not modified.");
 		}
@@ -546,7 +545,7 @@ abstract class User extends Person
 		}
 		User::validatePassword($newPassword1);
 
-		if (!UserFetcher::generatedStringExists($id, $generatedString))
+		if ( ! UserFetcher::generatedStringExists($id, $generatedString))
 		{
 			throw new Exception("Could not verify generated string exists. Please make sure url sent was not modified.");
 		}
@@ -704,20 +703,30 @@ abstract class User extends Person
 			exit();
 		}
 	}
-	/**
-	 * Redirect if user elevation is not that of tutor
-	 */
-	public function allowTutor()
+
+	public function isTutor()
 	{
-		if (!$this->isTutor())
+		return false;
+	}
+
+	public function allowDoctorKatsas()
+	{
+		if (! $this->email === 'grkatsas@acg.edu' && $this->email === 'r.dokollari@gmail.com')
 		{
 			header('Location: ' . BASE_URL . "error-403");
 			exit();
 		}
 	}
 
-	public function isTutor()
+	/**
+	 * Redirect if user elevation is not that of tutor
+	 */
+	public function allowTutor()
 	{
-		return false;
+		if ( ! $this->isTutor())
+		{
+			header('Location: ' . BASE_URL . "error-403");
+			exit();
+		}
 	}
 }

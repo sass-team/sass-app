@@ -6,8 +6,7 @@
  * Date: 9/16/2014
  * Time: 8:02 PM
  */
-class AppointmentFetcher
-{
+class AppointmentFetcher {
 	const DB_TABLE = "appointment";
 	const DB_COLUMN_ID = "id";
 	const DB_COLUMN_START_TIME = "start_time";
@@ -45,7 +44,7 @@ class AppointmentFetcher
 			$query->execute();
 
 
-			if (!$prevTransFromParent)
+			if ( ! $prevTransFromParent)
 			{
 				$dbConnection->commit();
 			}
@@ -477,7 +476,14 @@ class AppointmentFetcher
 			 `" . self::DB_COLUMN_LABEL_COLOR . "`,
 
 			`" . UserFetcher::DB_COLUMN_FIRST_NAME . "`, `" . UserFetcher::DB_COLUMN_LAST_NAME . "`,
-			`" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_CODE . "`
+			`" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_CODE . "`,
+
+			`" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_NAME .
+			"` AS " . CourseFetcher::DB_TABLE . "_" . CourseFetcher::DB_COLUMN_NAME . ",
+
+			`" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_NAME .
+			"` AS " . TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_NAME . "
+
 			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 			INNER JOIN `" . App::getDbName() . "`.`" . UserFetcher::DB_TABLE . "`
 				ON `" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "` =
@@ -485,6 +491,9 @@ class AppointmentFetcher
 			INNER JOIN `" . App::getDbName() . "`.`" . CourseFetcher::DB_TABLE . "`
 				ON `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_ID . "` =
 				`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_COURSE_ID . "`
+			INNER JOIN `" . App::getDbName() . "`.`" . TermFetcher::DB_TABLE . "`
+				ON `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "` =
+				`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`
 			WHERE `" . self::DB_COLUMN_TERM_ID . "` = :term_id
 			ORDER BY `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "` ASC";
 
@@ -1085,6 +1094,55 @@ class AppointmentFetcher
 		} catch (PDOException $e)
 		{
 			App::storeError($e->getMessage());
+			throw new Exception("Could not retrieve data from database.");
+		}
+	}
+
+	public static function retrieveForCurrentTerms()
+	{
+		$query =
+			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_START_TIME . "` ,
+			`" . self::DB_COLUMN_END_TIME . "`, `" . self::DB_COLUMN_COURSE_ID . "`,  `" . self::DB_COLUMN_TUTOR_USER_ID
+			. "`,  `" . self::DB_COLUMN_TUTOR_USER_ID . "`,  `" . self::DB_COLUMN_LABEL_MESSAGE . "`,
+			 `" . self::DB_COLUMN_LABEL_COLOR . "`,
+
+			`" . UserFetcher::DB_COLUMN_FIRST_NAME . "`, `" . UserFetcher::DB_COLUMN_LAST_NAME . "`,
+			`" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_CODE . "`,
+
+			`" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_NAME .
+			"` AS " . CourseFetcher::DB_TABLE . "_" . CourseFetcher::DB_COLUMN_NAME . ",
+
+			`" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_NAME .
+			"` AS " . TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_NAME . "
+
+			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
+			INNER JOIN `" . App::getDbName() . "`.`" . UserFetcher::DB_TABLE . "`
+				ON `" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "` =
+				`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "`
+			INNER JOIN `" . App::getDbName() . "`.`" . CourseFetcher::DB_TABLE . "`
+				ON `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_ID . "` =
+				`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_COURSE_ID . "`
+			INNER JOIN `" . App::getDbName() . "`.`" . TermFetcher::DB_TABLE . "`
+				ON `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "` =
+				`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`
+			WHERE :now BETWEEN `" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" . TermFetcher::DB_COLUMN_END_DATE . "`
+			ORDER BY `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "` ASC";
+
+		try
+		{
+			date_default_timezone_set('Europe/Athens');
+			$now = new DateTime();
+			$now = $now->format(Dates::DATE_FORMAT_IN);
+
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
+			$query->bindParam(':now', $now, PDO::PARAM_STR);
+			$query->execute();
+
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+		} catch (PDOException $e)
+		{
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
 			throw new Exception("Could not retrieve data from database.");
 		}
 	}
