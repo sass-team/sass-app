@@ -220,7 +220,7 @@
 				</a>
 			</li>
 
-			<?php if ($user->email === 'grkatsas@acg.edu' || $user->email === 'r.dokollari@gmail.com'): ?>
+			<?php if ($user->email === 'grkatsas@acg.edu'): ?>
 
 				<li class="<?php if ($section == "appointments-terms") echo "active"; ?>">
 					<a href="<?php echo BASE_URL; ?>appointments-terms.php">
