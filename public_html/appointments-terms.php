@@ -18,6 +18,7 @@ if (empty($_GET['term-id']))
 	$appointments = AppointmentFetcher::retrieveForCurrentTerms();
 	$allReports = ReportFetcher::retrieveAllOfCurrTerms();
 	$students = AppointmentHasStudentFetcher::retrieveAllOnCurTerm();
+	$instructors = AppointmentHasStudentFetcher::retrieveInstructorsOnCurTerm();
 	$termTitle = 'current terms';
 } else
 {
@@ -25,6 +26,7 @@ if (empty($_GET['term-id']))
 	$appointments = AppointmentFetcher::retrieveForTerm($termId);
 	$allReports = ReportFetcher::findWithTermId($termId);
 	$students = AppointmentHasStudentFetcher::retrieveForTerm($termId);
+	$instructors = AppointmentHasStudentFetcher::retrieveInstructorsForTerm($termId);
 	$termTitle = $appointments[0][TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_NAME];
 }
 
@@ -42,6 +44,21 @@ function getStudentsIds($students, $appointmentId)
 	}
 
 	return rtrim($studentsIds, ", ");
+}
+
+function getInstructorNames($instructors, $appointmentId)
+{
+	$instructorNames = "";
+	foreach ($instructors as $instructor)
+	{
+		if (strcmp($instructor[AppointmentHasStudentFetcher::DB_COLUMN_APPOINTMENT_ID], $appointmentId) === 0)
+		{
+			$instructorNames = $instructor[InstructorFetcher::DB_COLUMN_FIRST_NAME] . " " . $instructor[InstructorFetcher::DB_COLUMN_LAST_NAME] .
+			 ", " . $instructorNames;
+		}
+	}
+
+	return rtrim($instructorNames, ", ");
 }
 
 ?>
@@ -151,6 +168,8 @@ function getStudentsIds($students, $appointmentId)
 										</th>
 										<th class="text-center" data-filterable="true" data-sortable="true">Course
 										</th>
+										<th class="text-center" data-filterable="true" data-sortable="true">Instructor(s)
+										</th>
 										<th class="text-center" data-filterable="true" data-sortable="true">Term
 										</th>
 
@@ -160,6 +179,8 @@ function getStudentsIds($students, $appointmentId)
 
 									<?php foreach ($appointments as $appointment):
 										$studentsIds = getStudentsIds($students,
+											$appointment[AppointmentFetcher::DB_COLUMN_ID]);
+										$instructorNames = getInstructorNames($instructors,
 											$appointment[AppointmentFetcher::DB_COLUMN_ID]);
 
 										$reports = Report::getWithAppointmentId($allReports, $appointment[AppointmentFetcher::DB_COLUMN_ID]);
@@ -195,8 +216,9 @@ function getStudentsIds($students, $appointmentId)
 												</a>
 											</td>
 											<td class="text-center"><?php echo $dateStart->format('H:i') . " - " . $dateEnd->format('H:i, jS F Y'); ?></td>
-											<td class="text-center"><?php echo htmlentities($appointment[CourseFetcher::DB_COLUMN_CODE]) . " " . htmlentities($appointment[CourseFetcher::DB_TABLE . "_" . CourseFetcher::DB_COLUMN_NAME]); ?>
+											<td class="text-center"><?php echo htmlentities($appointment[CourseFetcher::DB_COLUMN_CODE]) . " - " . htmlentities($appointment[CourseFetcher::DB_TABLE . "_" . CourseFetcher::DB_COLUMN_NAME]); ?>
 											</td>
+											<td class="text-center"><?php echo $instructorNames; ?></td>
 											<td class="text-center">
 												<?php echo htmlentities($appointment[TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_NAME]); ?>
 											</td>

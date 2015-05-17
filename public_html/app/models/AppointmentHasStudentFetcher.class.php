@@ -282,6 +282,42 @@ class AppointmentHasStudentFetcher
 		}
 	}
 
+	public static function retrieveInstructorsForTerm($termId)
+	{
+		$query =
+			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` , `" . self::DB_TABLE . "`.`" .
+			self::DB_COLUMN_APPOINTMENT_ID . "` , `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_STUDENT_ID . "`,
+			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_REPORT_ID . "`,  `" . self::DB_TABLE . "`.`" .
+			self::DB_COLUMN_INSTRUCTOR_ID . "`,
+
+			`" . InstructorFetcher::DB_TABLE . "`.`" . InstructorFetcher::DB_COLUMN_ID . "`,
+			`" . InstructorFetcher::DB_TABLE . "`.`" . InstructorFetcher::DB_COLUMN_FIRST_NAME . "` ,
+			`" . InstructorFetcher::DB_TABLE . "`.`" . InstructorFetcher::DB_COLUMN_LAST_NAME . "` 
+
+			FROM `" . App::getDbName() . "`.`" . AppointmentFetcher::DB_TABLE . "`
+			INNER JOIN `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
+			ON `" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_ID . "` =
+			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_APPOINTMENT_ID . "`
+			INNER JOIN `" . App::getDbName() . "`.`" . InstructorFetcher::DB_TABLE . "`
+			ON `" . InstructorFetcher::DB_TABLE . "`.`" . InstructorFetcher::DB_COLUMN_ID . "` =
+			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_INSTRUCTOR_ID . "`
+			WHERE `" . AppointmentFetcher::DB_COLUMN_TERM_ID . "` = :term_id";
+
+		try
+		{
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
+			$query->bindParam(':term_id', $termId, PDO::PARAM_INT);
+			$query->execute();
+
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+		} catch (PDOException $e)
+		{
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
+			throw new Exception("Could not retrieve data from database.");
+		}
+	}
+
 
 	public static function retrieveAllOnCurTerm()
 	{
@@ -306,6 +342,52 @@ class AppointmentHasStudentFetcher
 				BETWEEN `" . TermFetcher::DB_COLUMN_START_DATE . "`
 				AND `" . TermFetcher::DB_COLUMN_END_DATE . "`";
 
+
+		try
+		{
+			date_default_timezone_set('Europe/Athens');
+			$now = new DateTime();
+			$now = $now->format(Dates::DATE_FORMAT_IN);
+
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
+			$query->bindParam(':now', $now, PDO::PARAM_STR);
+			$query->execute();
+
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+		} catch (PDOException $e)
+		{
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
+			throw new Exception("Could not retrieve data from database.");
+		}
+	}
+
+	public static function retrieveInstructorsOnCurTerm()
+	{
+		$query =
+			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` , `" . self::DB_TABLE . "`.`" .
+			self::DB_COLUMN_APPOINTMENT_ID . "` , `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_STUDENT_ID . "`,
+			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_REPORT_ID . "`,  `" . self::DB_TABLE . "`.`" .
+			self::DB_COLUMN_INSTRUCTOR_ID . "`,
+
+			`" . InstructorFetcher::DB_TABLE . "`.`" . InstructorFetcher::DB_COLUMN_ID . "`,
+			`" . InstructorFetcher::DB_TABLE . "`.`" . InstructorFetcher::DB_COLUMN_FIRST_NAME . "` ,
+			`" . InstructorFetcher::DB_TABLE . "`.`" . InstructorFetcher::DB_COLUMN_LAST_NAME . "` 
+
+			FROM `" . App::getDbName() . "`.`" . AppointmentFetcher::DB_TABLE . "`
+			INNER JOIN `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
+			ON `" . AppointmentFetcher::DB_TABLE . "`.`" . AppointmentFetcher::DB_COLUMN_ID . "` =
+			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_APPOINTMENT_ID . "`
+			INNER JOIN `" . App::getDbName() . "`.`" . InstructorFetcher::DB_TABLE . "`
+			ON `" . InstructorFetcher::DB_TABLE . "`.`" . InstructorFetcher::DB_COLUMN_ID . "` =
+			`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_INSTRUCTOR_ID . "`
+			INNER JOIN  `" . App::getDbName() . "`.`" . TermFetcher::DB_TABLE . "`
+			ON `" . App::getDbName() . "`.`" . TermFetcher::DB_TABLE . "`.`" .
+			TermFetcher::DB_COLUMN_ID . "`  = `" . AppointmentFetcher::DB_TABLE . "`.`" .
+			AppointmentFetcher::DB_COLUMN_TERM_ID . "`
+			WHERE :now
+				BETWEEN `" . TermFetcher::DB_COLUMN_START_DATE . "`
+				AND `" . TermFetcher::DB_COLUMN_END_DATE . "`";
 
 		try
 		{
