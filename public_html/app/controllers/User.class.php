@@ -711,7 +711,7 @@ abstract class User extends Person {
 
 	public function allowDoctorKatsas()
 	{
-		if ( ! ($this->email === 'grkatsas@acg.edu'))
+		if ( ! (($this->email === 'grkatsas@acg.edu') || ($this->email === 'r.dokollari@gmail.com')))
 		{
 			header('Location: ' . BASE_URL . "error-403");
 			exit();

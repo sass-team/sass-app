@@ -134,11 +134,8 @@ function getStudentsIds($students, $appointmentId)
 										<th class="text-center" data-direction="desc" data-filterable="true"
 										    data-sortable="true">ID
 										</th>
-										<?php if ( ! $user->isTutor())
-										{ ?>
-											<th class="text-center" data-filterable="true" data-sortable="true">Tutor
-											</th>
-										<?php } ?>
+										<th class="text-center" data-filterable="true" data-sortable="true">Tutor
+										</th>
 										<th class="text-center" data-filterable="true" data-sortable="true">Student(s)
 											ID
 										</th>
@@ -161,8 +158,7 @@ function getStudentsIds($students, $appointmentId)
 									</thead>
 									<tbody>
 
-									<?php foreach ($appointments as $appointment)
-									{
+									<?php foreach ($appointments as $appointment):
 										$studentsIds = getStudentsIds($students,
 											$appointment[AppointmentFetcher::DB_COLUMN_ID]);
 
@@ -192,17 +188,20 @@ function getStudentsIds($students, $appointmentId)
 											</td>
 											<td class="text-center">
 												<a data-toggle="modal"
-												   href="<?php echo BASE_URL . "appointments/" . $appointment[AppointmentFetcher::DB_TABLE . "_" . AppointmentFetcher::DB_COLUMN_ID]; ?>"
+												   href="<?php echo BASE_URL . "appointments/" .
+													   $appointment[AppointmentFetcher::DB_COLUMN_ID]; ?>"
 												   class="btn btn-default btn-sm center-block">
 													<i class="fa fa-edit"></i> View
 												</a>
 											</td>
 											<td class="text-center"><?php echo $dateStart->format('H:i') . " - " . $dateEnd->format('H:i, jS F Y'); ?></td>
-											<td class="text-center"><?php echo htmlentities($appointment[CourseFetcher::DB_COLUMN_CODE]) . " " . htmlentities($appointment[CourseFetcher::DB_TABLE . "_" . CourseFetcher::DB_COLUMN_NAME]); ?></td>
-											<td class="text-center"><?php echo htmlentities($appointment[TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_NAME]); ?></td>
-
+											<td class="text-center"><?php echo htmlentities($appointment[CourseFetcher::DB_COLUMN_CODE]) . " " . htmlentities($appointment[CourseFetcher::DB_TABLE . "_" . CourseFetcher::DB_COLUMN_NAME]); ?>
+											</td>
+											<td class="text-center">
+												<?php echo htmlentities($appointment[TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_NAME]); ?>
+											</td>
 										</tr>
-									<?php } ?>
+									<?php endforeach; ?>
 
 									</tbody>
 								</table>
