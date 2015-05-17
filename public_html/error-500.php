@@ -86,24 +86,23 @@
 
 						<?php
 						session_start();
-						$errors[] = $_SESSION['errors'];
-						unset($_SESSION['errors']);
+
+						if ( ! empty($_SESSION['errors']))
+						{
+							$errors[] = $_SESSION['errors'];
+							unset($_SESSION['errors']);
+						}
 						?>
 
 						<div class="error-details">
 							<h4>There was a problem serving the requested page.</h4>
 
-							<?php
-							if (isset($_SESSION['errors']) && !empty($_SESSION['errors'])) {
-								?>
-
+							<?php if ( ! empty($_SESSION['errors'])): ?>
 								<div class="alert alert-danger">
 									<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
 									<?php echo '<p>' . implode('</p><p>', $errors) . '</p>'; ?>
 								</div>
-							<?php
-							}
-							?>
+							<?php endif; ?>
 
 							<br/>
 

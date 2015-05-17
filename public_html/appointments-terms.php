@@ -4,7 +4,9 @@
  * @since 25/4/2015
  */
 require __DIR__ . '/app/init.php';
+
 $general->loggedOutProtect();
+
 $user->allowDoctorKatsas();
 
 $section = "appointments-terms";
