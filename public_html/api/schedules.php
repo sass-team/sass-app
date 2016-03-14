@@ -73,6 +73,7 @@ function generateCalendarData($start, $end, $workingHours) {
 	$requestedStart = new DateTime();
 	$requestedEnd = new DateTime();
 	$requestedStart->setTimestamp($start);
+	$requestedStart->sub(new DateInterval('P3D'));
 	$requestedEnd->setTimestamp($end);
 
 	$workingHoursJSON = array();
