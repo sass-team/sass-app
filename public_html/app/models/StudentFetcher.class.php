@@ -26,7 +26,6 @@ class StudentFetcher extends Person
 
     /**
      * @throws Exception
-     * @internal param $db
      */
     public static function retrieveAll()
     {
