@@ -97,7 +97,8 @@ class CourseFetcher
 			INNER JOIN  `" . App::getDbName() . "`.`" . CourseFetcher::DB_TABLE . "`
 			ON `" . App::getDbName() . "`.`" . Tutor_has_course_has_termFetcher::DB_TABLE . "`.`" . Tutor_has_course_has_termFetcher::DB_COLUMN_COURSE_ID . "`  = `" .
 			CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_ID . "`
-			WHERE `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_ID . "` = :courseId";
+			WHERE `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_ID . "` = :courseId
+			AND `" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ACTIVE . "` = 1";
 		try {
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
