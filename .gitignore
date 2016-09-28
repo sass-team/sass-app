@@ -2,6 +2,16 @@
 .env.php
 app_errors.log
 public_html/forum/wp-config.php
+public_html/app/storage/*
+public_html/stage/
+public_html/forum/
+public_html/timestamp/
+!public_html/app/storage/.gitkeep
+.profile
+.NERDTreeBookmarks
+.bashrc
+.git-prompt.sh
+.logs/
 
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
 
