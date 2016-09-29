@@ -84,7 +84,7 @@ class CourseFetcher
 		}
 	}
 
-	public static function retrieveTutors($courseId) {
+	public static function retrieveTutors($courseId, $termId) {
 
 		$query =
 			"SELECT DISTINCT `" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "`, `" . UserFetcher::DB_TABLE
@@ -98,11 +98,13 @@ class CourseFetcher
 			ON `" . App::getDbName() . "`.`" . Tutor_has_course_has_termFetcher::DB_TABLE . "`.`" . Tutor_has_course_has_termFetcher::DB_COLUMN_COURSE_ID . "`  = `" .
 			CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_ID . "`
 			WHERE `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_ID . "` = :courseId
-			AND `" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ACTIVE . "` = 1";
+			AND `" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ACTIVE . "` = 1
+			AND `" . Tutor_has_course_has_termFetcher::DB_TABLE . "`.`" . Tutor_has_course_has_termFetcher::DB_COLUMN_TERM_ID . "` = :termId";
 		try {
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
 			$query->bindParam(':courseId', $courseId, PDO::PARAM_INT);
+			$query->bindParam(':termId', $termId, PDO::PARAM_INT);
 			$query->execute();
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);

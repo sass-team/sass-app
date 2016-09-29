@@ -31,7 +31,7 @@ function is_ajax() {
 }
 
 function printTutorHasCourses() {
-	$tutors = Course::getTutors($_GET['courseId']);
+	$tutors = Course::getTutors($_GET['courseId'], $_GET['termId']);
 	echo json_encode($tutors);
 }
 
