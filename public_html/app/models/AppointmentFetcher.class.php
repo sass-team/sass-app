@@ -1147,12 +1147,13 @@ class AppointmentFetcher {
 		}
 	}
 
-    public static function retrieveByGroupedDateForTermIds($termIds, $groupBy = 'hour') {
+    public static function retrieveByGroupedDateForTermIds($termIds, $groupBy = 'hour', $labels = ['pending', 'complete', 'canceled by student', 'disabled by admin', 'canceled by tutor']) {
         foreach($termIds as $key => $termId){
             $termBindParams[] = ":term_id_{$termId}";
         }
         $termBindParams = implode(',', $termBindParams);
 
+        $labelBindParams = "'" . implode("', '", $labels) . "'";
 
 		$query =
             "SELECT COUNT(`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`) as total,
@@ -1160,6 +1161,7 @@ class AppointmentFetcher {
 
 			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 			WHERE `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "` in ({$termBindParams})
+            AND `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_LABEL_MESSAGE . "` in ({$labelBindParams})
             GROUP BY {$groupBy}(`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "`)";
 
 		try

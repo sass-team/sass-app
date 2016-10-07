@@ -24,13 +24,13 @@ try
 
     foreach ( $hourlyAppointments as $appointment ){
         $date = date("h:i", strtotime($appointment['date']));
-        $hourlyAppointmentsJson[] = ['period' => $date, 'planned' => $appointment['total'], 'achieved' => 0, 'canceled' => 0];
+        $hourlyAppointmentsJson[] = ['period' => $date, 'total' => $appointment['total'], 'achieved' => 0, 'canceled' => 0];
     }
     $hourlyAppointmentsJson = json_encode($hourlyAppointmentsJson);
 
     foreach ( $dailyAppointments as $appointment ){
         $date = date("Y-m-d", strtotime($appointment['date']));
-        $dailyAppointmentsJson[] = ['period' => $date, 'planned' => $appointment['total'], 'achieved' => 0, 'canceled' => 0];
+        $dailyAppointmentsJson[] = ['period' => $date, 'total' => $appointment['total'], 'achieved' => 0, 'canceled' => 0];
     }
     $dailyAppointmentsJson = json_encode($dailyAppointmentsJson);
 
@@ -303,8 +303,8 @@ function area(renderData, elementId)
         behaveLikeLine: true,
         data          : renderData,
         xkey          : 'period',
-        ykeys         : ['planned', 'achieved', 'canceled'],
-        labels        : ['planned', 'achieved', 'canceled'],
+        ykeys         : ['total'],
+        labels        : ['total'],
         pointSize     : 3,
         hideHover     : 'auto',
         lineColors    : [App.chartColors[4], '#3fa67a', '#f0ad4e'],
