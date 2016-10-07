@@ -221,7 +221,7 @@ class ScheduleFetcher
 			INNER JOIN  `" . App::getDbName() . "`.`" . Tutor_has_course_has_termFetcher::DB_TABLE . "`
 			ON `" . App::getDbName() . "`.`" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "`  = `" .
             Tutor_has_course_has_termFetcher::DB_TABLE . "`.`" . Tutor_has_course_has_termFetcher::DB_COLUMN_TUTOR_USER_ID . "`
-			WHERE `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "` = :term_id
+			WHERE `" . Tutor_has_course_has_termFetcher::DB_TABLE . "`.`" . Tutor_has_course_has_termFetcher::DB_COLUMN_TERM_ID . "` = :term_id
 			AND `" . Tutor_has_course_has_termFetcher::DB_TABLE . "`.`" . Tutor_has_course_has_termFetcher::DB_COLUMN_COURSE_ID . "` = :course_id";
 
         try {
@@ -346,11 +346,11 @@ class ScheduleFetcher
     {
         $query =
             "SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "`,
-                    `" . self::DB_COLUMN_END_TIME . "`, 
-                    `" . self::DB_COLUMN_TUTOR_USER_ID . "`, 
-                    `" . self::DB_COLUMN_TERM_ID . "`, 
-                    `" . self::DB_COLUMN_MONDAY . "`, 
-                    `" . self::DB_COLUMN_TUESDAY . "`, 
+                    `" . self::DB_COLUMN_END_TIME . "`,
+                    `" . self::DB_COLUMN_TUTOR_USER_ID . "`,
+                    `" . self::DB_COLUMN_TERM_ID . "`,
+                    `" . self::DB_COLUMN_MONDAY . "`,
+                    `" . self::DB_COLUMN_TUESDAY . "`,
                     `" . self::DB_COLUMN_WEDNESDAY . "`,
                     `" . self::DB_COLUMN_THURSDAY . "`,
                     `" . self::DB_COLUMN_FRIDAY . "`,
