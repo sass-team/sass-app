@@ -1183,4 +1183,35 @@ class AppointmentFetcher {
 			throw new Exception("Could not retrieve data from database.");
 		}
     }
+
+    public static function countForTermids($termIds, $labels = ['pending', 'complete', 'canceled by student', 'disabled by admin', 'canceled by tutor']) {
+        foreach($termIds as $key => $termId){
+            $termBindParams[] = ":term_id_{$termId}";
+        }
+        $termBindParams = implode(',', $termBindParams);
+
+        $labelBindParams = "'" . implode("', '", $labels) . "'";
+
+		$query =
+            "SELECT COUNT(" . self::DB_COLUMN_ID . ") AS total
+			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
+            WHERE `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "` in ({$termBindParams})
+            AND `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_LABEL_MESSAGE . "` in ({$labelBindParams})";
+
+		try
+		{
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
+            foreach($termIds as $key => $termId){
+               $query->bindParam(":term_id_{$termId}", $termId, PDO::PARAM_INT);
+            }
+			$query->execute();
+
+			return $query->fetch(PDO::FETCH_ASSOC)['total'];
+		} catch (PDOException $e)
+		{
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
+			throw new Exception("Could not retrieve data from database.");
+		}
+    }
 }

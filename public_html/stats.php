@@ -16,6 +16,9 @@ try
 	$nowString = $currentTerms[0]['start_date'];
     $endString = $currentTerms[0]['end_date'];
 
+    $totalAppointments = AppointmentFetcher::countForTermids($currentTermIds);
+    $achievedAppointments = AppointmentFetcher::countForTermids($currentTermIds, ['complete']);
+    $canceledAppointments = AppointmentFetcher::countForTermids($currentTermIds, ['canceled by student', 'disabled by admin', 'canceled by tutor']);
     $hourlyAppointments = AppointmentFetcher::retrieveByGroupedDateForTermIds($currentTermIds, 'hour');
     $dailyAppointments = AppointmentFetcher::retrieveByGroupedDateForTermIds($currentTermIds, 'date');
 
@@ -131,7 +134,7 @@ $section = "stats";
 
 						<div class="details">
 							<span class="content">Planned</span>
-							<span class="value"><?php echo $countAppointmentsForCurWeek; ?></span>
+							<span class="value"><?php echo $totalAppointments; ?></span>
 						</div>
 						<!-- /.details -->
 
@@ -151,7 +154,7 @@ $section = "stats";
 
 						<div class="details">
 							<span class="content">Achieved</span>
-							<span class="value"><?php echo $countAchievedAppointmentsForCurWeek; ?></span>
+							<span class="value"><?php echo $achievedAppointments; ?></span>
 						</div>
 						<!-- /.details -->
 
@@ -173,7 +176,7 @@ $section = "stats";
 
 						<div class="details">
 							<span class="content">Canceled</span>
-							<span class="value"><?php echo $countCanceledAppointmentsForCurWeek; ?></span>
+							<span class="value"><?php echo $canceledAppointments; ?></span>
 						</div>
 						<!-- /.details -->
 
@@ -293,6 +296,7 @@ $(function ()
 
 function area(renderData, elementId)
 {
+    var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     $('#' + elementId).empty();
     Morris.Area({
         element       : elementId,
