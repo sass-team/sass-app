@@ -518,20 +518,20 @@ class AppointmentFetcher {
 			"SELECT `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` AS " . self::DB_TABLE . "_" . self::DB_COLUMN_ID . ",
 			`" . self::DB_COLUMN_START_TIME . "` , `" . self::DB_COLUMN_END_TIME . "`, `" . self::DB_TABLE . "`.`" .
 			self::DB_COLUMN_LABEL_MESSAGE . "`, `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_LABEL_COLOR . "`,
-			`" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_CODE . "`, 
-			`" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_NAME . "`, 
-			`" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_FIRST_NAME . "`, 
-			`" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_LAST_NAME . "`, 
-			`" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_NAME . "` AS " . TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_NAME . " 
+			`" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_CODE . "`,
+			`" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_NAME . "`,
+			`" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_FIRST_NAME . "`,
+			`" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_LAST_NAME . "`,
+			`" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_NAME . "` AS " . TermFetcher::DB_TABLE . "_" . TermFetcher::DB_COLUMN_NAME . "
 			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 			INNER JOIN `" . App::getDbName() . "`.`" . CourseFetcher::DB_TABLE . "`
-				ON `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_ID . "` = 
-					`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_COURSE_ID . "` 
+				ON `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_ID . "` =
+					`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_COURSE_ID . "`
 			INNER JOIN `" . App::getDbName() . "`.`" . UserFetcher::DB_TABLE . "`
-				ON `" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "` = 
-					`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "` 
-			INNER JOIN `" . TermFetcher::DB_TABLE . "` 
-				ON `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "` = 
+				ON `" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "` =
+					`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "`
+			INNER JOIN `" . TermFetcher::DB_TABLE . "`
+				ON `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "` =
 					`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`
 			WHERE :now BETWEEN `" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" . TermFetcher::DB_COLUMN_END_DATE . "`
 			ORDER BY `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "` DESC"; // IS USED BY DASHBOARD FOR SHOWING LATEST APPOINTMENTS
@@ -569,13 +569,13 @@ class AppointmentFetcher {
 			. TermFetcher::DB_COLUMN_NAME . "
 			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 			INNER JOIN `" . App::getDbName() . "`.`" . CourseFetcher::DB_TABLE . "`
-				ON `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_ID . "` = 
-					`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_COURSE_ID . "` 
+				ON `" . CourseFetcher::DB_TABLE . "`.`" . CourseFetcher::DB_COLUMN_ID . "` =
+					`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_COURSE_ID . "`
 			INNER JOIN `" . App::getDbName() . "`.`" . UserFetcher::DB_TABLE . "`
-				ON `" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "` = 
-					`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "` 
-			INNER JOIN `" . TermFetcher::DB_TABLE . "` 
-				ON `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "` = 
+				ON `" . UserFetcher::DB_TABLE . "`.`" . UserFetcher::DB_COLUMN_ID . "` =
+					`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TUTOR_USER_ID . "`
+			INNER JOIN `" . TermFetcher::DB_TABLE . "`
+				ON `" . TermFetcher::DB_TABLE . "`.`" . TermFetcher::DB_COLUMN_ID . "` =
 					`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "`
 			WHERE `" . self::DB_COLUMN_TUTOR_USER_ID . "` = :tutor_id AND
 			:now BETWEEN `" . TermFetcher::DB_COLUMN_START_DATE . "` AND `" . TermFetcher::DB_COLUMN_END_DATE . "`";
@@ -1146,4 +1146,41 @@ class AppointmentFetcher {
 			throw new Exception("Could not retrieve data from database.");
 		}
 	}
+
+    public static function retrieveByGroupedDateForTermIds($termIds, $groupBy = 'hour') {
+        foreach($termIds as $key => $termId){
+            $termBindParams[] = ":term_id_{$termId}";
+        }
+        $termBindParams = implode(',', $termBindParams);
+
+
+		$query =
+            "SELECT COUNT(`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`) as total,
+               `" . self::DB_COLUMN_START_TIME . "` as date
+
+			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
+			WHERE `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "` in ({$termBindParams})
+            GROUP BY {$groupBy}(`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "`)";
+
+		try
+		{
+			date_default_timezone_set('Europe/Athens');
+			$now = new DateTime();
+			$now = $now->format(Dates::DATE_FORMAT_IN);
+
+			$dbConnection = DatabaseManager::getConnection();
+			$query = $dbConnection->prepare($query);
+            foreach($termIds as $key => $termId){
+                $query->bindParam(":term_id_{$termId}", $termId, PDO::PARAM_INT);
+            }
+			$query->execute();
+
+
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+		} catch (PDOException $e)
+		{
+			Mailer::sendDevelopers($e->getMessage(), __FILE__);
+			throw new Exception("Could not retrieve data from database.");
+		}
+    }
 }

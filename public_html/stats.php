@@ -9,29 +9,28 @@ if (!$user->isAdmin()) {
 try
 {
 	date_default_timezone_set('Europe/Athens');
-    $currentTerm = TermFetcher::retrieveCurrTerm();
-	$now = new DateTime($currentTerm[0]['start_date']);
-    $end = new DateTime($currentTerm[0]['end_date']);
-	$nowString = $currentTerm[0]['start_date'];
-    $endString = $currentTerm[0]['end_date'];
+    $currentTerms = TermFetcher::retrieveCurrTerm();
+    $currentTermIds = array_column($currentTerms, 'id');
+	$now = new DateTime($currentTerms[0]['start_date']);
+    $end = new DateTime($currentTerms[0]['end_date']);
+	$nowString = $currentTerms[0]['start_date'];
+    $endString = $currentTerms[0]['end_date'];
 
+    $hourlyAppointments = AppointmentFetcher::retrieveByGroupedDateForTermIds($currentTermIds, 'hour');
+    $dailyAppointments = AppointmentFetcher::retrieveByGroupedDateForTermIds($currentTermIds, 'date');
 
+    foreach ( $hourlyAppointments as $appointment ){
+        $date = date("h:i", strtotime($appointment['date']));
+        $hourlyAppointmentsJson[] = ['period' => $date, 'planned' => $appointment['total'], 'achieved' => 0, 'canceled' => 0];
+    }
+    $hourlyAppointmentsJson = json_encode($hourlyAppointmentsJson);
 
-	$courses = CourseFetcher::retrieveAll();
-	$tutors = TutorFetcher::retrieveAll();
+    foreach ( $dailyAppointments as $appointment ){
+        $date = date("Y-m-d", strtotime($appointment['date']));
+        $dailyAppointmentsJson[] = ['period' => $date, 'planned' => $appointment['total'], 'achieved' => 0, 'canceled' => 0];
+    }
+    $dailyAppointmentsJson = json_encode($dailyAppointmentsJson);
 
-    $appointments = AppointmentFetcher::retrieveBetweenDates($nowString, $endString);
-
-	//$now = new DateTime(); //<< Breaks area chart
-    $currentTerm = TermFetcher::retrieveCurrTerm();
-
-	$courses = CourseFetcher::retrieveAll();
-	$tutors = TutorFetcher::retrieveAll();
-    $countAppointmentsForCurWeek = sizeof($appointments);
-    $countAchievedAppointmentsForCurWeek = Appointment::countWithLabelMessage($appointments, Appointment::LABEL_MESSAGE_COMPLETE);
-    $canceledLabelMessagesForWeek = [Appointment::LABEL_MESSAGE_STUDENT_NO_SHOW,
-        Appointment::LABEL_MESSAGE_TUTOR_CANCELED, Appointment::LABEL_MESSAGE_TUTOR_NO_SHOW, Appointment::LABEL_MESSAGE_STUDENT_CANCELED];
-    $countCanceledAppointmentsForCurWeek = Appointment::countWithLabelMessages($appointments, $canceledLabelMessagesForWeek);
 
 } catch (Exception $e)
 {
@@ -42,43 +41,6 @@ try
 $pageTitle = "Stats";
 $section = "stats";
 
-
-/**
- * http://stackoverflow.com/a/4128377/2790481
- *
- * @param $findId
- * @param $objects
- * @return bool
- */
-function get($objects, $findId, $column)
-{
-	foreach ($objects as $object)
-	{
-		if ($object[$column] === $findId)
-		{
-			return $object;
-		}
-	}
-
-	return false;
-}
-
-
-function getAppointmentsForYearDay($appointments, $findYearDay)
-{
-	$appointmentsPerDay = [];
-
-	foreach ($appointments as $appointment)
-	{
-		$tempDate = new DateTime($appointment[AppointmentFetcher::DB_COLUMN_START_TIME]);
-		if ($tempDate->format('z') == $findYearDay->format('z'))
-		{
-			$appointmentsPerDay[] = $appointment;
-		}
-	}
-
-	return $appointmentsPerDay;
-}
 
 ?>
 <!DOCTYPE html>
@@ -261,73 +223,31 @@ function getAppointmentsForYearDay($appointments, $findYearDay)
 
 
 			<div class="row">
-
-				<div class="col-md-9">
-
+				<div class="col-md-12">
 					<div class="portlet">
-
 						<div class="portlet-header">
-
-							<h3>
-								<i class="fa fa-bar-chart-o"></i>
-								Workshop Sessions 							</h3>
-
+							<h3><i class="fa fa-bar-chart-o"></i>Hourly</h3>
 						</div>
-						<!-- /.portlet-header -->
-
 						<div class="portlet-content">
-							<div id="area-chart-appointments" class="chart-holder" style="height: 250px"></div>
-							<!-- /#bar-chart -->
-
+							<div id="area-chart-appointments" class="chart-holder" style="height: 500"></div>
 						</div>
-						<!-- /.portlet-content -->
-
 					</div>
-					<!-- /.portlet -->
-
-
-					<!-- /.row -->
-
-
 				</div>
-				<!-- /.row -->
-
-				<div class="col-md-3">
+            </div>
+			<div class="row">
+				<div class="col-md-12">
 					<div class="portlet">
-
 						<div class="portlet-header">
-							<h3>
-								<i class="fa fa-bar-chart-o"></i>
-								Workshop Sessions - Donut Chart
-							</h3>
+							<h3><i class="fa fa-bar-chart-o"></i>Daily</h3>
 						</div>
-						<!-- /.portlet-header -->
-
 						<div class="portlet-content">
-							<div id="workshop-chart" class="chart-holder" style="height: 250px"></div>
+							<div id="appointments-date" class="chart-holder" style="height: 500"></div>
 						</div>
-						<!-- /.portlet-content -->
-
 					</div>
-					<!-- /.portlet -->
-
-
-					<div class="portlet"></div>
-					<!-- /.portlet -->
-
-
-					<!-- /.portlet -->
-
 				</div>
-				<!-- /.col -->
-
-			</div>
-			<!-- /.row -->
-
-
+            </div>
 		</div>
 		<!-- /#content-container -->
-
 
 	</div>
 	<!-- #content -->
@@ -360,125 +280,33 @@ function getAppointmentsForYearDay($appointments, $findYearDay)
 <script src="<?php echo BASE_URL; ?>assets/packages/pnotify/pnotify.custom.min.js"></script>
 
 <script type="text/javascript">
-	$(function ()
-	{
-		var stack_bottomright = {"dir1": "up", "dir2": "left", "firstpos1": 25, "firstpos2": 25};
-		var pnotifySettingsInfo = {
-			title        : 'Tutor Notice',
-			text         : '',
-			type         : 'info',
-			delay        : 13000,
-			history      : {history: true, menu: true},
-			addclass     : "stack-bottomright", // This is one of the included default classes.
-			stack        : stack_bottomright,
-			animation    : "slide",
-			animate_speed: "slow"
-		};
-		var pnotifySettingsWarning = {
-			title        : 'Tutor Warning',
-			text         : '',
-			type         : 'error',
-			delay        : 7000,
-			history      : {history: true, menu: true},
-			addclass     : "stack-bottomright", // This is one of the included default classes.
-			stack        : stack_bottomright,
-			animation    : "slide",
-			animate_speed: "slow"
-		};
-		pnotifySettingsInfo.text = "Please notice tutors daily receive one email if they have any pending appointments/reports. This email contain " +
-		"links to their corresponding pending appointments & reports to be filled.<br/> If you had pending " +
-		"appointments/reports and didn't receive your email please contact the secretariat or submit a <a href='<?php echo App::getGithubNewIssueUrl()?>'>new issue</a>." ;
-		new PNotify(pnotifySettingsInfo);
-		$('.changeWeek').on('click', function ()
-		{
-			var $a = $(this);
-			var $form = $a.next();
-			$form.submit();
-		});
+$(function ()
+{
+    var hourlyAppointments = <?php echo $hourlyAppointmentsJson; ?>;
+    var dailyAppointments = <?php echo $dailyAppointmentsJson; ?>;
 
-		if (!$('#workshop-chart').length)
-		{
-			return false;
-		}
-		if (!$('#area-chart-appointments').length)
-		{
-			return false;
-		}
+    area(hourlyAppointments, 'area-chart-appointments');
+    area(dailyAppointments, 'appointments-date');
 
-		workshop();
-		area();
+    $(window).resize(App.debounce(area, 500));
+});
 
-		$(window).resize(App.debounce(workshop, 325));
-		$(window).resize(App.debounce(area, 250));
-	});
-
-	function workshop()
-	{
-		$('#workshop-chart').empty();
-
-		Morris.Donut({
-			element  : 'workshop-chart',
-			data     : [
-				{
-					label: 'Successful',
-					value: <?php echo ((int)$countAppointmentsForCurWeek) === 0 ? 0 :
-						(int)(($countAchievedAppointmentsForCurWeek * 100 / $countAppointmentsForCurWeek)); ?>
-				},
-				{
-					label: 'Canceled',
-					value: <?php echo ((int)$countAppointmentsForCurWeek) === 0 ? 0 :
-						(int)($countCanceledAppointmentsForCurWeek * 100 / $countAppointmentsForCurWeek); ?>
-
-				},
-				{
-					label: 'Pending',
-					value: <?php echo ((int)$countAppointmentsForCurWeek) === 0 ? 0 :
-						(int)((($countAppointmentsForCurWeek-
-						$countCanceledAppointmentsForCurWeek-$countAchievedAppointmentsForCurWeek) * 100)/$countAppointmentsForCurWeek); ?>
-				}
-			],
-			colors   : ['#0BA462', '#f0ad4e', '#888888'],
-			hideHover: true,
-			formatter: function (y)
-			{
-				return y + "%"
-			}
-		});
-	}
-
-	function area()
-	{
-		$('#area-chart-appointments').empty();
-
-		Morris.Area({
-			element       : 'area-chart-appointments',
-			behaveLikeLine: true,
-			data          : [
-				<?php
-				$day = clone $now;
-				$data = "";
-				$lastWorkingDay = 5;
-				for ($i = 1; $i <= $lastWorkingDay; $i++):
-					list($weekOfYear, $year, $dateFormatted, $appointmentsForDay, $countAppointmentsForDay, $countAchievedAppointmentsForDay,
-						$canceledLabelMessagesForDay, $countCanceledAppointmentsForDay) = countLabelsStatusAppointments($day, $i, $appointments);
-
-					$data = $data . "{period: '$dateFormatted', planned: $countAppointmentsForDay, achieved: $countAchievedAppointmentsForDay, canceled: $countCanceledAppointmentsForDay},";
-
-				endfor;
-				$data = rtrim($data, ",");
-				echo $data;
-				?>
-
-			],
-			xkey          : 'period',
-			ykeys         : ['planned', 'achieved', 'canceled'],
-			labels        : ['planned', 'achieved', 'canceled'],
-			pointSize     : 3,
-			hideHover     : 'auto',
-			lineColors    : [App.chartColors[4], '#3fa67a', '#f0ad4e'],
-			parseTime     : false
-		});
-	}
+function area(renderData, elementId)
+{
+    $('#' + elementId).empty();
+    Morris.Area({
+        element       : elementId,
+        behaveLikeLine: true,
+        data          : renderData,
+        xkey          : 'period',
+        ykeys         : ['planned', 'achieved', 'canceled'],
+        labels        : ['planned', 'achieved', 'canceled'],
+        pointSize     : 3,
+        hideHover     : 'auto',
+        lineColors    : [App.chartColors[4], '#3fa67a', '#f0ad4e'],
+        parseTime     : false
+    });
+}
 </script>
 
 </body>
