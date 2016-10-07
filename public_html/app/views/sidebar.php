@@ -32,6 +32,12 @@
 				</a>
 			</li>
 
+            <li class="<?php echo $section != "stats" ?: "active" ?>">
+				<a href="<?php echo BASE_URL; ?>stats">
+					<i class="fa fa-bar-chart-o"></i>
+					Stats (Pre-Alpha Test)
+				</a>
+			</li>
 			<li class="dropdown <?php if ($section == "appointments")
 			{
 				echo "active";
