@@ -36,6 +36,31 @@ class TermFetcher
     const DB_COLUMN_START_DATE = "start_date";
     const DB_COLUMN_END_DATE = "end_date";
 
+    public static function whereIdIn(array $ids){
+        foreach($ids as $key => $id){
+            $termBindParams[] = ':id_' . $key;
+        }
+        $termBindParams = implode(', ', $termBindParams);
+
+        $query = "SELECT  `" . self::DB_COLUMN_ID . "` , `" . self::DB_COLUMN_NAME . "` , `" . self::DB_COLUMN_START_DATE
+            . "`,		 `" . self::DB_COLUMN_END_DATE . "`
+			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
+            WHERE `" . self::DB_COLUMN_ID . "` in ({$termBindParams})";
+
+        try {
+            $dbConnection = DatabaseManager::getConnection();
+            $query = $dbConnection->prepare($query);
+            foreach($ids as $key => $termId){
+               $query->bindValue(":id_{$key}", $termId, PDO::PARAM_INT);
+            }
+
+            $query->execute();
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            Mailer::sendDevelopers($e->getMessage(), __FILE__);
+            throw new Exception("Could not retrieve data from database .: ");
+        } // end catch
+    }
 
 //m-d-Y h:i A
     public static function retrieveAllButCur()
@@ -283,4 +308,4 @@ class TermFetcher
         return true;
 
     }
-} 
+}

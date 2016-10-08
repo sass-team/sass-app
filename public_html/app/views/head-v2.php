@@ -14,18 +14,10 @@
 	<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.0/themes/smoothness/jquery-ui.css"/>
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/js/plugins/icheck/skins/minimal/blue.css"
 	      type="text/css"/>
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/js/plugins/icheck/skins/square/green.css">
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/js/plugins/icheck/skins/square/red.css">
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/js/plugins/select2/select2.css" type="text/css"/>
-	<link rel="stylesheet"
-	      href="<?php echo BASE_URL; ?>assets/js/plugins/simplecolorpicker/jquery.simplecolorpicker.css"
-	      type="text/css"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/js/plugins/fileupload/bootstrap-fileupload.css"
 	      type="text/css"/>
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/js/plugins/fullcalendar/fullcalendar.css"
-	      type="text/css"/>
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/App.css" type="text/css"/>
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/packages/pnotify/pnotify.custom.min.css" type="text/css"/>
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/packages/bootstrap-toggle/css/bootstrap-toggle.min.css"
 	      type="text/css"/>
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/parsley.css" type="text/css"/>

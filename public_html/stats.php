@@ -8,7 +8,14 @@ if (!$user->isAdmin()) {
 }
 try
 {
-    $currentTerms = TermFetcher::retrieveAll();
+
+    if( isset($_GET['termIds'])  ){
+        $termIds = explode(',', $_GET['termIds']);
+        $currentTerms = TermFetcher::whereIdIn($termIds);
+    } else {
+        $currentTerms = TermFetcher::retrieveCurrTerm();
+    }
+    $allTerms =TermFetcher::retrieveAll();
     $currentTermIds = array_column($currentTerms, 'id');
 	$now = new DateTime($currentTerms[0]['start_date']);
     $end = new DateTime($currentTerms[0]['end_date']);
@@ -54,7 +61,7 @@ try
 }
 
 // viewers
-$pageTitle = "Stats";
+$pageTitle = "Workshop Sessions Stats";
 $section = "stats";
 
 
@@ -68,7 +75,7 @@ $section = "stats";
 <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!-->
 <html class="no-js"> <!--<![endif]-->
-<?php require ROOT_PATH . 'views/head.php'; ?>
+<?php require ROOT_PATH . 'views/head-v2.php'; ?>
 <body>
 <div id="wrapper">
 	<?php
@@ -85,20 +92,35 @@ $section = "stats";
 
 
 		<div id="content-container">
-			<div>
-				<h4 class="heading-inline">Workshop Sessions Stats
-					&nbsp;&nbsp;
-					<small>All Terms</small>
-					&nbsp;&nbsp;
-				</h4>
-
-			</div>
-
-			<br/>
-
-
-			<div class="row">
-
+            <div class="row">
+                    <div class="col-xs-6">
+                        <div class="input-group">
+                            <span class="input-group-addon"><label
+                                    for="termId">Terms</label></span>
+                            <select id="termIds" name="termIds" class="form-control" required  multiple="multiple">
+                                <?php
+                                foreach ($allTerms as $term)
+                                {
+                                    include(ROOT_PATH . "views/partials/term/select-options-view.html.php");
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-3">
+                        <div class="checkbox">
+                            <label>
+                            <input type="checkbox" id="select-all-terms-checkbox"> <h5>Select All</h5>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-3">
+                        <a href="#" class="btn btn-block btn-primary" id="btn-load-stats">
+                            Load
+                        </a>
+                    </div>
+                </div>
+            <div class="row">
 				<!-- /.col-md-3 -->
 
 				<div class="col-md-3 col-sm-6">
@@ -268,10 +290,13 @@ $section = "stats";
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/morris/morris.min.js"></script>
 
 <script src="<?php echo BASE_URL; ?>assets/js/demos/charts/morris/donut.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+
 
 <script type="text/javascript">
 $(function ()
 {
+    // Charts
     var hourlyAppointments = <?php echo $hourlyAppointmentsJson; ?>;
     var dailyAppointments = <?php echo $dailyAppointmentsJson; ?>;
     var monthlyAppointments = <?php echo $monthlyAppointmentsJson; ?>;
@@ -283,6 +308,33 @@ $(function ()
     area(yearlyAppointments, 'appointments-yearly');
 
     $(window).resize(App.debounce(area, 500));
+
+
+    // Terms
+	var $termIds = $("#termIds");
+	var $selectAllTermsCheckbox = $("#select-all-terms-checkbox");
+    var possibleTerms = $('#termIds option').map(function() { return this.value });
+
+	$termIds.select2();
+    $selectAllTermsCheckbox.click(function(){
+        if($(this).is(':checked') ){
+            $termIds.val(possibleTerms).trigger("change");
+        }else{
+            $termIds.val('').trigger("change");
+        }
+    });
+    var selectedTerms = <?php echo json_encode(isset($_GET['termIds']) ? explode(',', $_GET['termIds']) : array_column($currentTerms, 'id')); ?>;
+    $termIds.val(selectedTerms).trigger("change");
+
+
+    // Load button
+    var defaulStatsUlr = '<?php echo BASE_URL; ?>stats';
+    var $loadButton = $("#btn-load-stats");
+    $loadButton.click(function(){
+        termIds = $termIds.val();
+        var url = termIds != null ? defaulStatsUlr + '?termIds=' + termIds.join(',') : defaulStatsUlr;
+        window.location.href = url;
+    });
 });
 
 function area(renderData, elementId, parseTime = false, ymin = 'auto')
