@@ -17,6 +17,15 @@ class AppointmentFetcher {
 	const DB_COLUMN_LABEL_MESSAGE = "label_message";
 	const DB_COLUMN_LABEL_COLOR = "label_color";
 
+    private static $labels = [
+        Appointment::LABEL_MESSAGE_TUTOR_CANCELED,
+        Appointment::LABEL_MESSAGE_STUDENT_CANCELED,
+        Appointment::LABEL_MESSAGE_STUDENT_NO_SHOW,
+        Appointment::LABEL_MESSAGE_TUTOR_NO_SHOW,
+        Appointment::LABEL_MESSAGE_COMPLETE,
+        Appointment::LABEL_MESSAGE_ADMIN_DISABLED,
+    ];
+
 	public static function delete($appointmentId)
 	{
 		try
@@ -1147,36 +1156,40 @@ class AppointmentFetcher {
 		}
 	}
 
-    public static function retrieveByGroupedDateForTermIds($termIds, $groupBy = 'hour', $labels = ['pending', 'complete', 'canceled by student', 'disabled by admin', 'canceled by tutor']) {
+    public static function retrieveByGroupedDateForTermIds($termIds, $groupBy = ['year','month', 'hour'], $labels = []) {
+        if(empty($labels)){
+            $labels = self::$labels;
+        }
         foreach($termIds as $key => $termId){
-            $termBindParams[] = ":term_id_{$termId}";
+            $termBindParams[] = ":term_id_{$key}";
         }
         $termBindParams = implode(',', $termBindParams);
-
         $labelBindParams = "'" . implode("', '", $labels) . "'";
+
+        $groupByQuery = '';
+        foreach($groupBy as $group){
+            $groupByQuery .= "GROUP BY {$group}(date), ";
+        }
+        $groupByQuery = rtrim($groupByQuery, ', ');
 
 		$query =
             "SELECT COUNT(`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_ID . "`) as total,
-               `" . self::DB_COLUMN_START_TIME . "` as date
+            `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "` as date
 
 			FROM `" . App::getDbName() . "`.`" . self::DB_TABLE . "`
 			WHERE `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_TERM_ID . "` in ({$termBindParams})
             AND `" . self::DB_TABLE . "`.`" . self::DB_COLUMN_LABEL_MESSAGE . "` in ({$labelBindParams})
-            GROUP BY {$groupBy}(`" . self::DB_TABLE . "`.`" . self::DB_COLUMN_START_TIME . "`)";
+            $groupByQuery
+            ";
 
 		try
 		{
-			date_default_timezone_set('Europe/Athens');
-			$now = new DateTime();
-			$now = $now->format(Dates::DATE_FORMAT_IN);
-
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
             foreach($termIds as $key => $termId){
-                $query->bindParam(":term_id_{$termId}", $termId, PDO::PARAM_INT);
+                $query->bindValue(":term_id_{$key}", $termId, PDO::PARAM_INT);
             }
 			$query->execute();
-
 
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e)
@@ -1186,11 +1199,15 @@ class AppointmentFetcher {
 		}
     }
 
-    public static function countForTermids($termIds, $labels = ['pending', 'complete', 'canceled by student', 'disabled by admin', 'canceled by tutor']) {
-        foreach($termIds as $key => $termId){
-            $termBindParams[] = ":term_id_{$termId}";
+    public static function countForTermIds($termIds, $labels = []) {
+        if(empty($labels)){
+            $labels = self::$labels;
         }
-        $termBindParams = implode(',', $termBindParams);
+
+        foreach($termIds as $key => $termId){
+            $termBindParams[] = ':term_id_' . $key;
+        }
+        $termBindParams = implode(', ', $termBindParams);
 
         $labelBindParams = "'" . implode("', '", $labels) . "'";
 
@@ -1205,7 +1222,7 @@ class AppointmentFetcher {
 			$dbConnection = DatabaseManager::getConnection();
 			$query = $dbConnection->prepare($query);
             foreach($termIds as $key => $termId){
-               $query->bindParam(":term_id_{$termId}", $termId, PDO::PARAM_INT);
+               $query->bindValue(":term_id_{$key}", $termId, PDO::PARAM_INT);
             }
 			$query->execute();
 

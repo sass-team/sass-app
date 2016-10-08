@@ -8,31 +8,44 @@ if (!$user->isAdmin()) {
 }
 try
 {
-	date_default_timezone_set('Europe/Athens');
-    $currentTerms = TermFetcher::retrieveCurrTerm();
+    $currentTerms = TermFetcher::retrieveAll();
     $currentTermIds = array_column($currentTerms, 'id');
 	$now = new DateTime($currentTerms[0]['start_date']);
     $end = new DateTime($currentTerms[0]['end_date']);
 	$nowString = $currentTerms[0]['start_date'];
     $endString = $currentTerms[0]['end_date'];
 
-    $totalAppointments = AppointmentFetcher::countForTermids($currentTermIds);
+    $totalAppointments = AppointmentFetcher::countForTermIds($currentTermIds);
     $achievedAppointments = AppointmentFetcher::countForTermids($currentTermIds, ['complete']);
     $canceledAppointments = AppointmentFetcher::countForTermids($currentTermIds, ['canceled by student', 'disabled by admin', 'canceled by tutor']);
-    $hourlyAppointments = AppointmentFetcher::retrieveByGroupedDateForTermIds($currentTermIds, 'hour');
-    $dailyAppointments = AppointmentFetcher::retrieveByGroupedDateForTermIds($currentTermIds, 'date');
+    $hourlyAppointments = AppointmentFetcher::retrieveByGroupedDateForTermIds($currentTermIds, ['hour']);
+    $dailyAppointments = AppointmentFetcher::retrieveByGroupedDateForTermIds($currentTermIds, ['date']);
+    $monthlyAppointments = AppointmentFetcher::retrieveByGroupedDateForTermIds($currentTermIds, ['month']);
+    $yearlyAppointments = AppointmentFetcher::retrieveByGroupedDateForTermIds($currentTermIds, ['year']);
 
     foreach ( $hourlyAppointments as $appointment ){
-        $date = date("h:i", strtotime($appointment['date']));
-        $hourlyAppointmentsJson[] = ['period' => $date, 'total' => $appointment['total'], 'achieved' => 0, 'canceled' => 0];
+        $date = date("H:i", strtotime($appointment['date']));
+        $hourlyAppointmentsJson[] = ['period' => $date, 'total' => $appointment['total']];
     }
     $hourlyAppointmentsJson = json_encode($hourlyAppointmentsJson);
 
     foreach ( $dailyAppointments as $appointment ){
         $date = date("Y-m-d", strtotime($appointment['date']));
-        $dailyAppointmentsJson[] = ['period' => $date, 'total' => $appointment['total'], 'achieved' => 0, 'canceled' => 0];
+        $dailyAppointmentsJson[] = ['period' => $date, 'total' => $appointment['total']];
     }
     $dailyAppointmentsJson = json_encode($dailyAppointmentsJson);
+
+    foreach ( $monthlyAppointments as $appointment ){
+        $date = date("F", strtotime($appointment['date']));
+        $monthlyAppointmentsJson[] = ['period' => $date, 'total' => $appointment['total']];
+    }
+    $monthlyAppointmentsJson = json_encode($monthlyAppointmentsJson);
+
+    foreach ( $yearlyAppointments as $appointment ){
+        $date = date("Y", strtotime($appointment['date']));
+        $yearlyAppointmentsJson[] = ['period' => $date, 'total' => $appointment['total']];
+    }
+    $yearlyAppointmentsJson = json_encode($yearlyAppointmentsJson);
 
 
 } catch (Exception $e)
@@ -72,49 +85,13 @@ $section = "stats";
 
 
 		<div id="content-container">
-			<?php
-			$day = clone $now;
-			/**
-			 * @param $day
-			 * @param $i
-			 * @param $appointments
-			 * @return array
-			 */
-			function countLabelsStatusAppointments($day, $i, $appointments)
-			{
-				$weekOfYear = $day->format('W');
-				$year = $day->format('Y');
-				$day->setISODate($year, $weekOfYear, $i);
-				$dateFormatted = $day->format('Y-m-d');
-
-				$appointmentsForDay = getAppointmentsForYearDay($appointments, $day);
-				$countAppointmentsForDay = sizeof($appointmentsForDay);
-				$countAchievedAppointmentsForDay = Appointment::countWithLabelMessage($appointmentsForDay, Appointment::LABEL_MESSAGE_COMPLETE);
-				$canceledLabelMessagesForDay = [Appointment::LABEL_MESSAGE_STUDENT_NO_SHOW,
-					Appointment::LABEL_MESSAGE_TUTOR_CANCELED, Appointment::LABEL_MESSAGE_TUTOR_NO_SHOW, Appointment::LABEL_MESSAGE_STUDENT_CANCELED];
-				$countCanceledAppointmentsForDay = Appointment::countWithLabelMessages($appointmentsForDay, $canceledLabelMessagesForDay);
-
-				return [$weekOfYear, $year, $dateFormatted, $appointmentsForDay, $countAppointmentsForDay, $countAchievedAppointmentsForDay, $canceledLabelMessagesForDay, $countCanceledAppointmentsForDay];
-			}
-
-			?>
 			<div>
 				<h4 class="heading-inline">Workshop Sessions Stats
 					&nbsp;&nbsp;
-					<small>For the period of <?php echo $now->format('M d, o') . " - " . $end->format('M d, o'); ?></small>
+					<small>All Terms</small>
 					&nbsp;&nbsp;
 				</h4>
 
-				<?php
-				if (empty($errors) === false)
-				{
-					?>
-					<div class="alert alert-danger">
-						<a class="close" data-dismiss="alert" href="#" aria-hidden="true">×</a>
-						<strong>Oh snap!</strong><?php echo '<p>' . implode('</p><p>', $errors) . '</p>';
-						?>
-					</div>
-				<?php } ?>
 			</div>
 
 			<br/>
@@ -249,6 +226,30 @@ $section = "stats";
 					</div>
 				</div>
             </div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="portlet">
+						<div class="portlet-header">
+							<h3><i class="fa fa-bar-chart-o"></i>Monthly</h3>
+						</div>
+						<div class="portlet-content">
+							<div id="appointments-monthly" class="chart-holder" style="height: 500"></div>
+						</div>
+					</div>
+				</div>
+            </div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="portlet">
+						<div class="portlet-header">
+							<h3><i class="fa fa-bar-chart-o"></i>Yearly</h3>
+						</div>
+						<div class="portlet-content">
+							<div id="appointments-yearly" class="chart-holder" style="height: 500"></div>
+						</div>
+					</div>
+				</div>
+            </div>
 		</div>
 		<!-- /#content-container -->
 
@@ -262,41 +263,30 @@ $section = "stats";
 
 <?php include ROOT_PATH . "views/assets/footer_common.php"; ?>
 
-<!-- dashboard assets -->
-<script src="<?php echo BASE_URL; ?>assets/js/plugins/icheck/jquery.icheck.min.js"></script>
-<script src="<?php echo BASE_URL; ?>assets/js/plugins/tableCheckable/jquery.tableCheckable.js"></script>
 
 <script src="<?php echo BASE_URL; ?>assets/js/libs/raphael-2.1.2.min.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/plugins/morris/morris.min.js"></script>
 
-<!--<script src="--><?php //echo BASE_URL; ?><!--assets/js/demos/charts/morris/area.js"></script>-->
 <script src="<?php echo BASE_URL; ?>assets/js/demos/charts/morris/donut.js"></script>
-
-<script src="<?php echo BASE_URL; ?>assets/js/plugins/sparkline/jquery.sparkline.min.js"></script>
-
-<script src="<?php echo BASE_URL; ?>assets/js/plugins/fullcalendar/fullcalendar.min.js"></script>
-
-<script src="<?php echo BASE_URL; ?>assets/js/demos/calendar.js"></script>
-
-<script src="<?php echo BASE_URL; ?>assets/js/demos/dashboard.js"></script>
-
-<script src="<?php echo BASE_URL; ?>assets/packages/pnotify/pnotify.custom.min.js"></script>
 
 <script type="text/javascript">
 $(function ()
 {
     var hourlyAppointments = <?php echo $hourlyAppointmentsJson; ?>;
     var dailyAppointments = <?php echo $dailyAppointmentsJson; ?>;
+    var monthlyAppointments = <?php echo $monthlyAppointmentsJson; ?>;
+    var yearlyAppointments = <?php echo $yearlyAppointmentsJson; ?>;
 
     area(hourlyAppointments, 'area-chart-appointments');
     area(dailyAppointments, 'appointments-date');
+    area(monthlyAppointments, 'appointments-monthly');
+    area(yearlyAppointments, 'appointments-yearly');
 
     $(window).resize(App.debounce(area, 500));
 });
 
-function area(renderData, elementId)
+function area(renderData, elementId, parseTime = false, ymin = 'auto')
 {
-    var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     $('#' + elementId).empty();
     Morris.Area({
         element       : elementId,
@@ -304,11 +294,12 @@ function area(renderData, elementId)
         data          : renderData,
         xkey          : 'period',
         ykeys         : ['total'],
+        ymin          : ymin,
         labels        : ['total'],
         pointSize     : 3,
         hideHover     : 'auto',
         lineColors    : [App.chartColors[4], '#3fa67a', '#f0ad4e'],
-        parseTime     : false
+        parseTime     : parseTime
     });
 }
 </script>
