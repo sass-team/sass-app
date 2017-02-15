@@ -1249,7 +1249,9 @@ function getReport($reportId, $reports)
 														       value="<?php echo $reports[ $i ][ ReportFetcher::DB_COLUMN_ID ]; ?>">
 														<?php
 													}
-												} else if ($user->isAdmin())
+                                                }
+
+                                                if ($user->isAdmin())
 												{
 													// show when report status is "pending fill"
 													if (strcmp($reports[ $i ][ ReportFetcher::DB_COLUMN_LABEL_MESSAGE ], Report::LABEL_MESSAGE_PENDING_VALIDATION) === 0)
