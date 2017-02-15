@@ -1219,7 +1219,7 @@ function getReport($reportId, $reports)
 
 											<div class="col-md-12">
 												<?php
-												if ($user->isTutor())
+												if ($user->isTutor() || $user->isAdmin())
 												{
 													// show when report status is "pending fill"
 													if (strcmp($reports[ $i ][ ReportFetcher::DB_COLUMN_LABEL_MESSAGE ], Report::LABEL_MESSAGE_PENDING_FILL) === 0)

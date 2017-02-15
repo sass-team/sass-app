@@ -50,3 +50,5 @@ DO_NOT_UPLOAD_HERE
 
 vendor
 
+.cagefs/
+.cl.selector/

@@ -61,7 +61,7 @@ try
 }
 
 // viewers
-$pageTitle = "Workshop Sessions Stats";
+$pageTitle = "Appointments Stats";
 $section = "stats";
 
 
@@ -110,7 +110,7 @@ $section = "stats";
                     <div class="col-xs-3">
                         <div class="checkbox">
                             <label>
-                            <input type="checkbox" id="select-all-terms-checkbox"> <h5>Select All</h5>
+                            <input type="checkbox" id="select-all-terms-checkbox"> <h5>Select/Deselect All</h5>
                             </label>
                         </div>
                     </div>
