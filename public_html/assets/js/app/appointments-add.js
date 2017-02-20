@@ -39,7 +39,7 @@ $(function () {
 	}
 	var minimumStartDate = startDateDefault.clone();
 	minimumStartDate.subtract('31', 'minutes');
-	var minimumMaxDate = moment().add('14', 'day');
+	var minimumMaxDate = moment().add('X', 'day');		//X = numbers of days of full current semester!!!
 	var endDateDefault = startDateDefault.clone();
 	endDateDefault.add('30', 'minutes');
 	var minimumEndDate = endDateDefault.clone();
