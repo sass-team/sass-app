@@ -14,6 +14,17 @@ try
 	$instructors = InstructorFetcher::retrieveAll();
 	$students = StudentFetcher::retrieveAll();
 
+    $termDaysLeft = [];
+    $now = new DateTime();
+
+    foreach($curTerms as $currentTerm){
+        $endDate = new DateTime($currentTerm['end_date']);
+
+        $diffDays = $now->diff($endDate)->format("%a");
+
+        $termDaysLeft[$currentTerm['id']] = $diffDays;
+    }
+
 	if (isBtnAddStudentPrsd())
 	{
 		Appointment::add($user, $_POST['dateTimePickerStart'], $_POST['dateTimePickerEnd'], $_POST['courseId'], $_POST['studentsIds'], $_POST['tutorId'], $_POST['instructorIds'], $_POST['termId'], $user->getFirstName() . " " . $user->getLastName());
@@ -370,6 +381,9 @@ function get($objects, $findId, $column)
 <input type="hidden" id="isAdmin" value="<?php echo $user->isAdmin(); ?>"/>
 <input type="hidden" id="userId" value="<?php echo $user->getId(); ?>"/>
 <input type="hidden" id="isBtnAddStudentPrsd" value="<?php echo isBtnAddStudentPrsd(); ?>"/>
+<?php foreach($termDaysLeft as $key => $value){
+    echo "<input type='hidden' name='term-days-left[$key]' value='$value'/>";
+} ?>
 <?php if (isset($_POST['tutorId'])): ?>
 	<input type="hidden" id="tutorIdServerSide" value="<?php echo $_POST['tutorId']; ?>"/>
 <?php endif; ?>

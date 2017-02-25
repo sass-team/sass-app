@@ -15,6 +15,7 @@ $(function () {
 	var $calendar = $("#appointments-schedule-calendar");
 	var $pendingAppointmentsBtn = $('#show-pending-appointments');
 	var $workingHoursBtn = $("#show-only-working-hours");
+	var $termDaysLeft = $('input[name="term-days-left[]"]');
 
 	// Server side data
 	var isAdmin = $('#isAdmin').val();
@@ -120,6 +121,9 @@ $(function () {
 		strict            : true
 	});
 	$termId.select2();
+	//console.log('test');
+	//	    console.log($termId.val());
+	   //     minimumMaxDate = moment().add('14', 'day');
 
 	// Place holders
 	$courseId.select2({
@@ -156,6 +160,7 @@ $(function () {
 	});
 	$termId.click(function () {
 		try {
+
 			retrieveCourses();
 			retrieveTutors();
 			reloadCalendar('term_change');
