@@ -494,32 +494,7 @@ function getReport($reportId, $reports)
 																		</button>
 																	</form>
 																</li>
-																<li class="divider"></li>
-																<li>
-																	<form method="post"
-																	      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
-																	>
-																		<input type="hidden"
-																		       name="hiddenNoShowByStudent" value="">
-																		<button type="submit"
-																		        class="btn btn-block btn-default">
-																			No show by student
-																		</button>
-																	</form>
-																</li>
-																<li class="divider"></li>
-																<li>
-																	<form method="post"
-																	      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
-																	>
-																		<input type="hidden" name="hiddenNoShowByTutor"
-																		       value="">
-																		<button type="submit"
-																		        class="btn btn-block btn-default">
-																			No show by tutor
-																		</button>
-																	</form>
-																</li>
+																
 															<?php endif; ?>
 
 															<?php
@@ -563,6 +538,36 @@ function getReport($reportId, $reports)
 															<?php endif; ?>
 
 														<?php endif; ?>
+														
+														<?php if ( ! $user->isTutor()): ?>
+																<li class="divider"></li>
+																<li>
+																	<form method="post"
+																	      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
+																	>
+																		<input type="hidden"
+																		       name="hiddenNoShowByStudent" value="">
+																		<button type="submit"
+																		        class="btn btn-block btn-default">
+																			No show by student
+																		</button>
+																	</form>
+																</li>
+																<li class="divider"></li>
+																<li>
+																	<form method="post"
+																	      action="<?php echo BASE_URL . 'appointments/' . $appointmentId; ?>"
+																	>
+																		<input type="hidden" name="hiddenNoShowByTutor"
+																		       value="">
+																		<button type="submit"
+																		        class="btn btn-block btn-default">
+																			No show by tutor
+																		</button>
+																	</form>
+																</li>
+														<?php endif; ?>
+														
 														<?php if ($user->isAdmin()): ?>
 															<li class="divider"></li>
 															<li>
