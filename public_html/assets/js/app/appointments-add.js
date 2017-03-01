@@ -40,7 +40,7 @@ $(function () {
 	}
 	var minimumStartDate = startDateDefault.clone();
 	minimumStartDate.subtract('31', 'minutes');
-	var minimumMaxDate = moment().add('14', 'day');
+	var minimumMaxDate = moment().add('100', 'day');
 	var endDateDefault = startDateDefault.clone();
 	endDateDefault.add('30', 'minutes');
 	var minimumEndDate = endDateDefault.clone();
