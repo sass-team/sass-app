@@ -3,6 +3,6 @@
     "vendor-dir": "public_html/app/vendor"
   },
   "require": {
-    "mailgun/mailgun-php": "~1.7.2"
+    "mailgun/mailgun-php": "^2.4"
   }
 }
