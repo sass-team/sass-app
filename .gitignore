@@ -12,6 +12,7 @@ public_html/timestamp/
 .bashrc
 .git-prompt.sh
 .logs/
+Homestead.yaml
 
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
 
@@ -52,3 +53,4 @@ vendor
 
 .cagefs/
 .cl.selector/
+ubuntu-xenial-16.04-cloudimg-console.log
