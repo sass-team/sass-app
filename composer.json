@@ -3,8 +3,6 @@
     "vendor-dir": "public_html/app/vendor"
   },
   "require": {
-  },
-  "require-dev": {
-    "laravel/homestead": "^7.1"
+    "mailgun/mailgun-php": "^2.4"
   }
 }
