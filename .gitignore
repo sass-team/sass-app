@@ -54,3 +54,5 @@ vendor
 .cagefs/
 .cl.selector/
 ubuntu-xenial-16.04-cloudimg-console.log
+scripts/database.sql
+.vagrant

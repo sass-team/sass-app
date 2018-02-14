@@ -1,22 +1,16 @@
 <?php
 
-require __DIR__ . '/../../../public_html/app/init.php';
+namespace Tests\Integration\Mails;
+
+use Mailer;
+use Tests\TestCase;
 
 /**
  * @author  Rizart Dokollari <r.dokollari@gmail.com>
  * @since   2/13/18
  */
-class RecoverMailTest extends PHPUnit_Framework_TestCase
+class RecoverMailTest extends TestCase
 {
-    public static function setUpBeforeClass()
-    {
-        parent::setUpBeforeClass();
-
-        $_SERVER['SERVER_NAME'] = 'sass';
-
-        putenv("env=testing");
-    }
-
     /** @test */
     public function the_mailer_can_send_recover_emails()
     {

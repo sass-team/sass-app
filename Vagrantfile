@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 confDir = $confDir ||= File.expand_path(File.dirname(__FILE__))
-afterScriptPath = confDir + "/after.sh"
+afterScriptPath = confDir + "/scripts/after.sh"
 
 
 Vagrant.configure("2") do |config|

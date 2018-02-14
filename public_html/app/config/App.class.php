@@ -209,6 +209,7 @@ class App
         if (App::env('testing')) return 'sass.app';
 
         $hosts = self::getHostNames();
+
         $hostsWithSSL = $hosts['SSL'];
 
         $hostname = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : $hostsWithSSL['production'];
@@ -224,6 +225,11 @@ class App
     public static function getHostNames()
     {
         return self::$settings['HOST_NAMES'];
+    }
+
+    public static function mailFrom()
+    {
+        return "noreply@" . App::getMailgunDomain();
     }
 
     /**

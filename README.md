@@ -5,7 +5,13 @@ SASS App is a CMS (Content management system) and TMS (Time Management System) f
 ![SASS App Showcase][sass_app_showcase]
 
 ## Developer
-- `vagrant up`
+- append to your hosts file: `192.168.33.10 sass`
+- Get a copy of the sass database, rename it to database.sql and put it to the 
+scripts/ folder
+- Vagrant up
+- ssh to the machine, and import the database.
+- Visit http://sass/
+
 
 ## License
 SASS App is released under the MIT license and is copyright 2015 [rdok][rdok_github_url] & [geoif][geoif_linkedin_url]. See [License FAQs](https://github.com/sass-team/sass-app/wiki/2.-License) for more.

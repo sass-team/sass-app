@@ -283,7 +283,7 @@ class Mailer
         try {
             # Now, compose and send the message.
             $mg->sendMessage($domain, [
-                'from'                => "noreply@" . App::getHostname(),
+                'from'                => App::mailFrom(),
                 'to'                  => $email,
                 'subject'             => 'SASS Account Recovery',
                 'text'                => 'Your mail does not support html',

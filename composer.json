@@ -5,7 +5,15 @@
   "require": {
     "mailgun/mailgun-php": "~1.7.2"
   },
-  "required-dev": {
+  "require-dev": {
     "phpunit/phpunit": "^5.7"
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    },
+    "files": [
+      "public_html/app/helpers.php"
+    ]
   }
 }
