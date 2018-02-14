@@ -26,20 +26,22 @@ printf "\n${green}Install MySQL Server in a Non-Interactive mode.${done}"
 echo "mysql-server-5.6 mysql-server/root_password password secret" | sudo debconf-set-selections
 echo "mysql-server-5.6 mysql-server/root_password_again password secret" | sudo debconf-set-selections
 sudo apt -y install mysql-server
-sudo mysql -uroot -psecret -e "create databases sass";
+sudo mysql -uroot -psecret -e "create databases if not exists sass";
 
 
 printf "\n${green}Install PHP5.6.${done}"
 sudo apt -y install python-software-properties
 sudo add-apt-repository ppa:ondrej/php -y
 sudo apt update
-sudo apt -y install php5.6 php5.6-mcrypt php5.6-mysql
+sudo apt -y install php5.6 php5.6-mcrypt php5.6-mysql php5.6-zip php5.6-xml php5.6-mbstring
+
 
 
 printf "\n${green}Install Apache.${done}"
 sudo apt install apache2 -y
 sudo apache2ctl configtest
 sudo ufw allow in "Apache Full"
+sudo a2enmod rewrite
 
 
 printf "\n${green}Setup shared directory.${done}"
@@ -47,6 +49,12 @@ sudo cp /var/www/sass/scripts/sass.conf /etc/apache2/sites-available/sass.conf
 sudo a2ensite sass.conf
 sudo a2dissite 000-default.conf
 sudo systemctl restart apache2
+
+printf "\n${green}Install composer.${done}"
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+php -r "if (hash_file('SHA384', 'composer-setup.php') === '544e09ee996cdf60ece3804abc52599c22b1f40f4323403c44d44fdfdd586475ca9813a858088ffbc1f233e9b180f061') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+php composer-setup.php
+sudo mv composer.phar /usr/local/bin/composer
 
 
 printf "\n${green}Setup terminal prompt.${done}"

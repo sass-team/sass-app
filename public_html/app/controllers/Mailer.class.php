@@ -26,6 +26,7 @@
 require_once ROOT_PATH . 'config/App.class.php';
 require ROOT_PATH . 'vendor/autoload.php';
 use Mailgun\Mailgun;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * @author Rizart Dokollari
@@ -259,6 +260,7 @@ class Mailer
             ]);
     }
 
+    /** @return ResponseInterface */
     public static function sendRecover($email)
     {
         User::validateExistingEmail($email, UserFetcher::DB_TABLE);
@@ -294,6 +296,8 @@ class Mailer
             throw new Exception("Sorry, we could not send your recovery email. Please contact the secretariat at your earliest
 			convenience or submit a bug issue <a href='" . App::getGithubNewIssueUrl() . "' target='_blank'>here</a>.");
         }
+
+        return $mg->getLastResponse();
     }
 
     public static function sendDevelopers($systemMessage, $pathFileMessage)
