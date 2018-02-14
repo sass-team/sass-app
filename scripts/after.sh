@@ -28,7 +28,7 @@ echo "mysql-server-5.6 mysql-server/root_password password secret" | sudo debcon
 echo "mysql-server-5.6 mysql-server/root_password_again password secret" | sudo debconf-set-selections
 sudo apt -y install mysql-server
 sudo mysql -uroot -psecret -e "create database if not exists sass;";
-sudo mysql -uroot -psecret sass < "/var/www/sass/after/database.sql"
+sudo mysql -uroot -psecret sass < "/var/www/sass/scripts/database.sql"
 
 
 printf "\n${green}Install PHP5.6.${done}"

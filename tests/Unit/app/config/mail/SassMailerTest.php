@@ -11,16 +11,13 @@ use App\mail\SassMailer;
 class SassMailerTest extends \Tests\TestCase
 {
     /** @test */
-    public function the_sass_mailer_can_send_an_email()
+    public function replace_html_variables()
     {
         $sassMailer = new SassMailer();
 
-        $requestSucceeded = $sassMailer->send([
-            'to'      => 'r.dokollari@gmail.com',
-            'subject' => 'SASS Account Recovery',
-            'html'    => 'some-html',
-        ]);
-
-        $this->assertTrue($requestSucceeded);
+        $this->assertEquals(
+            'value',
+            $sassMailer->replaceRecipientVariables('%key%', ['key' => 'value'])
+        );
     }
 }

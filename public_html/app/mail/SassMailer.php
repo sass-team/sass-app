@@ -18,7 +18,17 @@ class SassMailer
         $phpMailer->setFrom(App::mailFrom());
         $phpMailer->addAddress($data['to']);
         $phpMailer->Subject = $data['subject'];
-        $phpMailer->msgHTML($data['html']);
+
+        $html = $data['html'];
+
+        if (array_key_exists('recipient-variables', $data)) {
+            $html = $this->replaceRecipientVariables(
+                $data['html'],
+                $data['recipient-variables']
+            );
+        }
+
+        $phpMailer->msgHTML($html);
 
         $phpMailer = $this->setupTestingEnv($phpMailer);
 
@@ -27,6 +37,15 @@ class SassMailer
         }
 
         return true;
+    }
+
+    public function replaceRecipientVariables($html, array $variables)
+    {
+        foreach ($variables as $key => $value) {
+            $html = str_replace('%' . $key . '%', $value, $html);
+        }
+
+        return $html;
     }
 
     private function setupTestingEnv(PHPMailer $phpMailer)

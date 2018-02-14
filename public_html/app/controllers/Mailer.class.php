@@ -25,6 +25,7 @@
 
 require_once ROOT_PATH . 'config/App.class.php';
 require ROOT_PATH . 'vendor/autoload.php';
+use App\mail\SassMailer;
 use Mailgun\Mailgun;
 use Psr\Http\Message\ResponseInterface;
 
@@ -284,15 +285,14 @@ class Mailer
         try {
             $sassMailer = new SassMailer();
 
-            # Now, compose and send the message.
             $sassMailer->send([
                 'to'                  => $email,
                 'subject'             => 'SASS Account Recovery',
-                'text'                => 'Your mail does not support html',
                 'html'                => $emailVerificationTemplate,
-                'recipient-variables' => '{"' . $email . '": {"id":' . $userId . ',"verifyAccountRecoveryLink":"' .
-                    $verifyAccountRecoveryLink . '","fullName":"' . $receiverName . '"}}'
-            ]);
+                'recipient-variables' => [
+                    'recipient.verifyAccountRecoveryLink' => $verifyAccountRecoveryLink,
+                    'recipient.fullName'                  => $receiverName,
+                ]]);
 
         } catch (Exception $e) {
 
