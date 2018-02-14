@@ -8,251 +8,254 @@
  */
 class App
 {
-	const APPOINTMENT_BTN_URL = 'appointmentBtn';
-	const REPORT_BTN_URL = 'reportBtn';
-	private static $settings;
+    const APPOINTMENT_BTN_URL = 'appointmentBtn';
+    const REPORT_BTN_URL = 'reportBtn';
+    private static $settings;
 
-	/**
-	 * Check if current time is during working hours
-	 * @return bool
-	 */
-	static function isWorkingDateTimeOn()
-	{
-		date_default_timezone_set(App::getTimeZone());
+    /**
+     * Check if current time is during working hours
+     * @return bool
+     */
+    static function isWorkingDateTimeOn()
+    {
+        date_default_timezone_set(App::getTimeZone());
 
-		$curWorkingDate = new DateTime();
+        $curWorkingDate = new DateTime();
 
-		$curWorkingHour = intval($curWorkingDate->format('H'));
-		$curWorkingDay = intval($curWorkingDate->format('N'));
+        $curWorkingHour = intval($curWorkingDate->format('H'));
+        $curWorkingDay = intval($curWorkingDate->format('N'));
 
-		// save resources - only run cron at working hours/day (monday - friday)
-		if ($curWorkingHour < self::getFirstWorkingHour() || $curWorkingHour > self::getLastWorkingHour() ||
-			$curWorkingDay > self::getLastWorkingDay()
-		)
-		{
-			return false;
-		}
+        // save resources - only run cron at working hours/day (monday - friday)
+        if ($curWorkingHour < self::getFirstWorkingHour() || $curWorkingHour > self::getLastWorkingHour() ||
+            $curWorkingDay > self::getLastWorkingDay()
+        ) {
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	public static function getTimeZone()
-	{
-		return self::$settings['TIMEZONE'];
-	}
+    public static function getTimeZone()
+    {
+        return self::$settings['TIMEZONE'];
+    }
 
-	public static function getFirstWorkingHour()
-	{
-		return self::$settings['FIRST_WORKING_HOUR'];
-	}
+    public static function getFirstWorkingHour()
+    {
+        return self::$settings['FIRST_WORKING_HOUR'];
+    }
 
-	public static function getLastWorkingHour()
-	{
-		return self::$settings['LAST_WORKING_HOUR'];
-	}
+    public static function getLastWorkingHour()
+    {
+        return self::$settings['LAST_WORKING_HOUR'];
+    }
 
-	public static function getLastWorkingDay()
-	{
-		return self::$settings['LAST_WORKING_DAY'];
-	}
+    public static function getLastWorkingDay()
+    {
+        return self::$settings['LAST_WORKING_DAY'];
+    }
 
-	/**
-	 * Force Date default time zone
-	 * @return DateTime
-	 */
-	static function getCurWorkingDate()
-	{
-		date_default_timezone_set(self::getTimeZone());
+    /**
+     * Force Date default time zone
+     * @return DateTime
+     */
+    static function getCurWorkingDate()
+    {
+        date_default_timezone_set(self::getTimeZone());
 
-		$curWorkingDate = new DateTime();
+        $curWorkingDate = new DateTime();
 
-		return $curWorkingDate;
-	}
+        return $curWorkingDate;
+    }
 
-	/**
-	 * Check if App is accessed from ssl
-	 *
-	 * @return bool
-	 */
-	public static function isSecure()
-	{
-		if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on')
-		{
-			return true;
-		}
+    /**
+     * Check if App is accessed from ssl
+     *
+     * @return bool
+     */
+    public static function isSecure()
+    {
+        if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+            return true;
+        }
 
-		if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' ||
-			!empty($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] == 'on'
-		)
-		{
-			return true;
-		}
+        if ( ! empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' ||
+            ! empty($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] == 'on'
+        ) {
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	/**
-	 * Load App Settings (database, email & ReCaptcha credentials as well as working hours.)
-	 * @param $settingsFile
-	 */
-	public static function loadSettings($settingsFile)
-	{
+    /**
+     * Load App Settings (database, email & ReCaptcha credentials as well as working hours.)
+     * @param $settingsFile
+     */
+    public static function loadSettings($settingsFile)
+    {
 
-		self::$settings = require $settingsFile;
-	}
+        self::$settings = require $settingsFile;
+    }
 
-	/**
-	 * @return mixed
-	 */
-	public static function getDbHost()
-	{
-		return self::$settings['DB_HOST'];
-	}
+    /**
+     * @return mixed
+     */
+    public static function getDbHost()
+    {
+        return self::$settings['DB_HOST'];
+    }
 
-	public static function getDbName()
-	{
-		return self::$settings['DB_NAME'];
-	}
+    public static function getDbName()
+    {
+        return self::$settings['DB_NAME'];
+    }
 
-	public static function getDbUsername()
-	{
-		return self::$settings['DB_USERNAME'];
-	}
+    public static function getDbUsername()
+    {
+        return self::$settings['DB_USERNAME'];
+    }
 
-	public static function getDbPassword()
-	{
-		return self::$settings['DB_PASSWORD'];
-	}
+    public static function getDbPassword()
+    {
+        return self::$settings['DB_PASSWORD'];
+    }
 
-	public static function getDbPort()
-	{
-		return self::$settings['DB_PORT'];
-	}
+    public static function getDbPort()
+    {
+        return self::$settings['DB_PORT'];
+    }
 
-	public static function getMailgunKey()
-	{
-		return self::$settings['MAILGUN_KEY'];
-	}
+    public static function getMailgunKey()
+    {
+        return self::$settings['MAILGUN_KEY'];
+    }
 
-	public static function getMailgunDomain()
-	{
-		return self::$settings['MAILGUN_DOMAIN'];
-	}
+    public static function getMailgunDomain()
+    {
+        return self::$settings['MAILGUN_DOMAIN'];
+    }
 
-	public static function getReCaptchaSiteKey()
-	{
-		return self::$settings['RECAPTCHA_SITE_KEY'];
-	}
+    public static function getReCaptchaSiteKey()
+    {
+        return self::$settings['RECAPTCHA_SITE_KEY'];
+    }
 
-	public static function getReCaptchaSecretKey()
-	{
-		return self::$settings['RECAPTCHA_SECRET_KEY'];
-	}
+    public static function getReCaptchaSecretKey()
+    {
+        return self::$settings['RECAPTCHA_SECRET_KEY'];
+    }
 
-	public static function getName()
-	{
-		return self::$settings['NAME'];
-	}
+    public static function getName()
+    {
+        return self::$settings['NAME'];
+    }
 
-	public static function getVersion()
-	{
-		return self::$settings['VERSION'];
-	}
+    public static function getVersion()
+    {
+        return self::$settings['VERSION'];
+    }
 
-	public static function getHostname()
-	{
-		$hosts = self::getHostNames();
-		$hostsWithSSL = $hosts['SSL'];
+    public static function getPDOErrorMode()
+    {
+        return self::$settings['PDO_ERROR_MODE'];
+    }
 
-		$hostname = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : $hostsWithSSL['production'];
+    public static function getGithubNewIssueUrl()
+    {
+        return self::$settings['GITHUB_NEW_ISSUE_URL'];
+    }
 
-		return $hostname;
-	}
+    /**
+     * Write the contents to the file, using the FILE_APPEND flag to append the content to the end of the file
+     * and the LOCK_EX flag to prevent anyone else writing to the file at the same time
+     * @param $messsage
+     * @internal param $e
+     */
+    public static function storeError($messsage)
+    {
+        $file = ROOT_PATH . '../../app_errors.log';
 
-	public static function getHostNames()
-	{
-		return self::$settings['HOST_NAMES'];
-	}
+        $messsage = App::getCurrentTime() . $messsage;
 
-	public static function getPDOErrorMode()
-	{
-		return self::$settings['PDO_ERROR_MODE'];
-	}
+        file_put_contents($file, $messsage, FILE_APPEND | LOCK_EX);
+    }
 
-	public static function getGithubNewIssueUrl()
-	{
-		return self::$settings['GITHUB_NEW_ISSUE_URL'];
-	}
+    /**
+     * Format a current time to be used sql calculations.
+     * @return string
+     */
+    public static function getCurrentTime()
+    {
+        date_default_timezone_set(self::getTimeZone());
 
-	/**
-	 * Write the contents to the file, using the FILE_APPEND flag to append the content to the end of the file
-	 * and the LOCK_EX flag to prevent anyone else writing to the file at the same time
-	 * @param $messsage
-	 * @internal param $e
-	 */
-	public static function storeError($messsage)
-	{
-		$file = ROOT_PATH . '../../app_errors.log';
+        $now = new DateTime();
 
-		$messsage = App::getCurrentTime() . $messsage;
+        return $now->format(Dates::DATE_FORMAT_IN);
+    }
 
-		file_put_contents($file, $messsage, FILE_APPEND | LOCK_EX);
-	}
+    public static function getDefaultDateFormat()
+    {
+        return self::$settings['DEFAULT_DATE_FORMAT'];
+    }
 
-	/**
-	 * Format a current time to be used sql calculations.
-	 * @return string
-	 */
-	public static function getCurrentTime()
-	{
-		date_default_timezone_set(self::getTimeZone());
+    public static function getAppointmentsListUrl()
+    {
+        return self::getHostname() . '/appointments/list';
+    }
 
-		$now = new DateTime();
+    public static function getHostname()
+    {
+        if (App::env('testing')) return 'sass.app';
 
-		return $now->format(Dates::DATE_FORMAT_IN);
-	}
+        $hosts = self::getHostNames();
+        $hostsWithSSL = $hosts['SSL'];
 
-	public static function getDefaultDateFormat()
-	{
-		return self::$settings['DEFAULT_DATE_FORMAT'];
-	}
+        $hostname = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : $hostsWithSSL['production'];
 
-	public static function getAppointmentsListUrl()
-	{
-		return self::getHostname() . '/appointments/list';
-	}
+        return $hostname;
+    }
 
-	/**
-	 * Format App url to ssl
-	 *
-	 * @return string
-	 */
-	public static function getDomainName()
-	{
-		if (self::isHostnameInSSLList())
-		{
-			return "https://" . $_SERVER['SERVER_NAME'];
-		}
+    public static function env($string)
+    {
+        return getenv('env') == $string;
+    }
 
-		return "http://" . $_SERVER['SERVER_NAME'];
-	}
+    public static function getHostNames()
+    {
+        return self::$settings['HOST_NAMES'];
+    }
 
-	/**
-	 * @return array
-	 */
-	public static function isHostnameInSSLList()
-	{
-		$domainName = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : "cron";
+    /**
+     * Format App url to ssl
+     *
+     * @return string
+     */
+    public static function getDomainName()
+    {
+        if (self::isHostnameInSSLList()) {
+            return "https://" . $_SERVER['SERVER_NAME'];
+        }
 
-		$hosts = self::getHostNames();
+        return "http://" . $_SERVER['SERVER_NAME'];
+    }
 
-		$hostsWithSSL = $hosts['SSL'];
+    /**
+     * @return array
+     */
+    public static function isHostnameInSSLList()
+    {
+        $domainName = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : "cron";
 
-		return in_array($domainName, $hostsWithSSL);
-	}
+        $hosts = self::getHostNames();
 
-	public static function getReportsListUrl()
-	{
-		return self::getHostname() . '/appointments/list';
-	}
+        $hostsWithSSL = $hosts['SSL'];
+
+        return in_array($domainName, $hostsWithSSL);
+    }
+
+    public static function getReportsListUrl()
+    {
+        return self::getHostname() . '/appointments/list';
+    }
 }

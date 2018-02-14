@@ -282,22 +282,21 @@ class Mailer
 
         try {
             # Now, compose and send the message.
-            $mg->sendMessage($domain,
-                [
-                    'from'                => "SASS App admin@" . App::getHostname(),
-                    'to'                  => $email,
-                    'subject'             => 'SASS Account Recovery',
-                    'text'                => 'Your mail does not support html',
-                    'html'                => $emailVerificationTemplate,
-                    'recipient-variables' => '{"' . $email . '": {"id":' . $userId . ',"verifyAccountRecoveryLink":"' .
-                        $verifyAccountRecoveryLink . '","fullName":"' . $receiverName . '"}}'
-                ]);
+            $mg->sendMessage($domain, [
+                'from'                => "noreply@" . App::getHostname(),
+                'to'                  => $email,
+                'subject'             => 'SASS Account Recovery',
+                'text'                => 'Your mail does not support html',
+                'html'                => $emailVerificationTemplate,
+                'recipient-variables' => '{"' . $email . '": {"id":' . $userId . ',"verifyAccountRecoveryLink":"' .
+                    $verifyAccountRecoveryLink . '","fullName":"' . $receiverName . '"}}'
+            ]);
         } catch (Exception $e) {
+            if (App::env('testing')) throw $e;
+
             throw new Exception("Sorry, we could not send your recovery email. Please contact the secretariat at your earliest
 			convenience or submit a bug issue <a href='" . App::getGithubNewIssueUrl() . "' target='_blank'>here</a>.");
         }
-
-        return $mg->getLastResponse();
     }
 
     public static function sendDevelopers($systemMessage, $pathFileMessage)

@@ -7,5 +7,8 @@ $baseDir = dirname(dirname(dirname($vendorDir)));
 
 return array(
     'Prophecy\\' => array($vendorDir . '/phpspec/prophecy/src'),
+    'Mailgun\\Tests' => array($vendorDir . '/mailgun/mailgun-php/tests'),
     'Mailgun' => array($vendorDir . '/mailgun/mailgun-php/src'),
+    'Guzzle\\Tests' => array($vendorDir . '/guzzle/guzzle/tests'),
+    'Guzzle' => array($vendorDir . '/guzzle/guzzle/src'),
 );

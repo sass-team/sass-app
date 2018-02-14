@@ -33,7 +33,8 @@ printf "\n${green}Install PHP5.6.${done}"
 sudo apt -y install python-software-properties
 sudo add-apt-repository ppa:ondrej/php -y
 sudo apt update
-sudo apt -y install php5.6 php5.6-mcrypt php5.6-mysql php5.6-zip php5.6-xml php5.6-mbstring
+sudo apt -y install php5.6 php5.6-mcrypt php5.6-mysql php5.6-zip php5.6-xml \
+ php5.6-mbstring php5.6-curl
 
 
 
