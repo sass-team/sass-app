@@ -11,6 +11,9 @@ require "config/app.php";
 
 $errors = array();
 
+date_default_timezone_set('Europe/Athens');
+
+
 try {
 //	$staff = new Users(->getDbConnection());
 	$general = new General();

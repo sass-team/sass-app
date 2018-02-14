@@ -249,41 +249,43 @@ class Mailer
         $setPasswordLink = App::getDomainName() . "/login/set/" . $newUserId . "/" . $getString;
 
         # Now, compose and send the message.
-        $mg->sendMessage($domain,
-            [
-                'from'                => "SASS App admin@" . App::getHostname(),
-                'to'                  => $receiverEmail,
-                'subject'             => 'Welcome',
-                'text'                => 'Your mail does not support html',
-                'html'                => $emailVerificationTemplate,
-                'recipient-variables' => '{"' . $receiverEmail . '": {"id":' . $newUserId . ',"setPasswordLink":"' . $setPasswordLink . '","fullName":"' . $receiverName . '"}}'
-            ]);
+        $mg->sendMessage($domain, [
+            'from'                => "SASS App admin@" . App::getHostname(),
+            'to'                  => $receiverEmail,
+            'subject'             => 'Welcome',
+            'text'                => 'Your mail does not support html',
+            'html'                => $emailVerificationTemplate,
+            'recipient-variables' => '{"' . $receiverEmail . '": {"id":' . $newUserId . ',"setPasswordLink":"' . $setPasswordLink . '","fullName":"' . $receiverName . '"}}'
+        ]);
     }
 
     /** @return ResponseInterface */
     public static function sendRecover($email)
     {
         User::validateExistingEmail($email, UserFetcher::DB_TABLE);
+
         $user = UserFetcher::retrieveUsingEmail($email);
+
         if ($user[UserFetcher::DB_COLUMN_ACTIVE] != 1) {
             throw new Exception("Sorry, you account has been de-activated.");
         }
+
         $userId = $user[UserFetcher::DB_COLUMN_ID];
-        $receiverName = $user[UserFetcher::DB_COLUMN_FIRST_NAME] . " " . $user[UserFetcher::DB_COLUMN_LAST_NAME];
+
+        $receiverName = $user[UserFetcher::DB_COLUMN_FIRST_NAME] . " "
+            . $user[UserFetcher::DB_COLUMN_LAST_NAME];
         $genString = User::generateNewPasswordString($userId);
 
-        # First, instantiate the SDK with your API credentials and define your domain.
-        $mg = new Mailgun(App::getMailgunKey());
-        $domain = App::getMailgunDomain();
 
         // Load mail template
         $emailVerificationTemplate = file_get_contents(ROOT_PATH . 'mail/templates/verify_recovery.html');
         $verifyAccountRecoveryLink = App::getDomainName() . "/login/set/" . $userId . "/" . $genString;
 
         try {
+            $sassMailer = new SassMailer();
+
             # Now, compose and send the message.
-            $mg->sendMessage($domain, [
-                'from'                => App::mailFrom(),
+            $sassMailer->send([
                 'to'                  => $email,
                 'subject'             => 'SASS Account Recovery',
                 'text'                => 'Your mail does not support html',
@@ -291,14 +293,19 @@ class Mailer
                 'recipient-variables' => '{"' . $email . '": {"id":' . $userId . ',"verifyAccountRecoveryLink":"' .
                     $verifyAccountRecoveryLink . '","fullName":"' . $receiverName . '"}}'
             ]);
+
         } catch (Exception $e) {
 
             if (App::env('testing')) throw $e;
 
             Mailer::sendDevelopers($e->getMessage(), __FILE__);
 
-            throw new Exception("Sorry, we could not send your recovery email. Please contact the secretariat at your earliest
-			convenience or submit a bug issue <a href='" . App::getGithubNewIssueUrl() . "' target='_blank'>here</a>.");
+            throw new Exception(
+                "Sorry, we could not send your recovery email. Please " .
+                "contact the secretariat at your earliest convenience or " .
+                "submit a bug issue <a href='" . App::getGithubNewIssueUrl()
+                . "' target='_blank'>here</a>."
+            );
         }
     }
 
@@ -318,16 +325,10 @@ class Mailer
 
             require_once ROOT_PATH . "plugins/PHPMailer/PHPMailerAutoload.php";
 
-            //Create a new PHPMailer instance
             $mail = new PHPMailer();
-            // Set PHPMailer to use the sendmail transport
-            //Set who the message is to be sent from
             $mail->setFrom($senderEmail, self::SASS_APP_AUTOMATIC_SYSTEM);
-            //Set an alternative reply-to address
             $mail->addReplyTo($alternativeEmail, $alternativeName);
-            //Set who the message is to be sent to
             $mail->addAddress($receiverEmail, $receiverName);
-            //Set the subject line
             $mail->Subject = $subject;
 
 

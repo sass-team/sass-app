@@ -229,7 +229,7 @@ class App
 
     public static function mailFrom()
     {
-        return "noreply@" . App::getMailgunDomain();
+        return "noreply@" . App::getDomainName();
     }
 
     /**
@@ -263,5 +263,10 @@ class App
     public static function getReportsListUrl()
     {
         return self::getHostname() . '/appointments/list';
+    }
+
+    public static function getenv($env)
+    {
+        return self::$settings[$env];
     }
 }
