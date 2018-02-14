@@ -292,7 +292,10 @@ class Mailer
                     $verifyAccountRecoveryLink . '","fullName":"' . $receiverName . '"}}'
             ]);
         } catch (Exception $e) {
+
             if (App::env('testing')) throw $e;
+
+            Mailer::sendDevelopers($e->getMessage(), __FILE__);
 
             throw new Exception("Sorry, we could not send your recovery email. Please contact the secretariat at your earliest
 			convenience or submit a bug issue <a href='" . App::getGithubNewIssueUrl() . "' target='_blank'>here</a>.");
