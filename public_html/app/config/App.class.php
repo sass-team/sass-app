@@ -161,8 +161,11 @@ class App
         return self::$settings['PDO_ERROR_MODE'];
     }
 
-    public static function getGithubNewIssueUrl()
+    public static function githubIssue($number)
     {
+        if(!empty($number)){
+            return "https://github.com/sass-team/sass-app/issues/$number";
+        }
         return self::$settings['GITHUB_NEW_ISSUE_URL'];
     }
 

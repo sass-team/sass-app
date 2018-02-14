@@ -303,7 +303,7 @@ class Mailer
             throw new Exception(
                 "Sorry, we could not send your recovery email. Please " .
                 "contact the secretariat at your earliest convenience or " .
-                "submit a bug issue <a href='" . App::getGithubNewIssueUrl()
+                "submit a bug issue <a href='" . App::githubIssue()
                 . "' target='_blank'>here</a>."
             );
         }
