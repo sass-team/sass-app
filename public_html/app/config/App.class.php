@@ -258,9 +258,6 @@ class App
         return "http://" . $_SERVER['SERVER_NAME'];
     }
 
-    /**
-     * @return array
-     */
     public static function isHostnameInSSLList()
     {
         $domainName = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : "cron";
@@ -280,5 +277,10 @@ class App
     public static function environment(array $values)
     {
         return in_array(self::getenv('APP_ENV'), $values);
+    }
+
+    public static function setEnv($value)
+    {
+        self::$settings['APP_ENV'] = $value;
     }
 }
