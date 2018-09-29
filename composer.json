@@ -3,7 +3,6 @@
     "vendor-dir": "public_html/app/vendor"
   },
   "require": {
-    "mailgun/mailgun-php": "~1.7.2",
     "phpmailer/phpmailer": "v5.2.26"
   },
   "require-dev": {

@@ -79,8 +79,8 @@ class App
             return true;
         }
 
-        if ( ! empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' ||
-            ! empty($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] == 'on'
+        if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' ||
+            !empty($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] == 'on'
         ) {
             return true;
         }
@@ -91,9 +91,13 @@ class App
     /**
      * Load App Settings (database, email & ReCaptcha credentials as well as working hours.)
      * @param $settingsFile
+     * @throws Exception
      */
     public static function loadSettings($settingsFile)
     {
+        if (!file_exists($settingsFile)) {
+            throw new \Exception('Env file not found at ' . $settingsFile);
+        }
 
         self::$settings = require $settingsFile;
     }
@@ -163,7 +167,7 @@ class App
 
     public static function githubIssue($number)
     {
-        if(!empty($number)){
+        if (!empty($number)) {
             return "https://github.com/sass-team/sass-app/issues/$number";
         }
         return self::$settings['GITHUB_NEW_ISSUE_URL'];
