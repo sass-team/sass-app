@@ -5,7 +5,6 @@ namespace App\mail;
 use App;
 use PHPMailer;
 
-
 /**
  * @author  Rizart Dokollari <r.dokollari@gmail.com>
  * @since   2/14/18
@@ -14,9 +13,12 @@ class SassMailer
 {
     public function send($data)
     {
-        $phpMailer = new PHPMailer();
-        $phpMailer->setFrom(App::mailFrom());
+        $phpMailer = new PHPMailer(App::environment(['testing', 'local']));
+
+        $phpMailer->setFrom(App::mailFrom(), 'SASS App');
+
         $phpMailer->addAddress($data['to']);
+
         $phpMailer->Subject = $data['subject'];
 
         $html = $data['html'];
@@ -30,13 +32,9 @@ class SassMailer
 
         $phpMailer->msgHTML($html);
 
-        $phpMailer = $this->setupTestingEnv($phpMailer);
+        $phpMailer = $this->setupSmtp($phpMailer);
 
-        if ( ! $phpMailer->send()) {
-            throw new \Exception($phpMailer->ErrorInfo);
-        }
-
-        return true;
+        return $phpMailer->send();
     }
 
     public function replaceRecipientVariables($html, array $variables)
@@ -48,15 +46,15 @@ class SassMailer
         return $html;
     }
 
-    private function setupTestingEnv(PHPMailer $phpMailer)
+    private function setupSmtp(PHPMailer $phpMailer)
     {
-        if ( ! App::env('testing')) {
-            return $phpMailer;
+        $phpMailer->isSMTP();
+
+        if (App::environment(['local', 'testing'])) {
+            $phpMailer->SMTPDebug = 2;
+            $phpMailer->Debugoutput = 'html';
         }
 
-        $phpMailer->isSMTP();
-        $phpMailer->SMTPDebug = 2;
-        $phpMailer->Debugoutput = 'html';
         $phpMailer->Host = 'smtp.gmail.com';
         $phpMailer->Port = 587;
         $phpMailer->SMTPSecure = 'tls';

@@ -236,7 +236,7 @@ class App
 
     public static function mailFrom()
     {
-        return "noreply@" . App::getDomainName();
+        return self::getenv('SMTP_USERNAME');
     }
 
     /**
@@ -275,5 +275,10 @@ class App
     public static function getenv($env)
     {
         return self::$settings[$env];
+    }
+
+    public static function environment(array $values)
+    {
+        return in_array(getenv('APP_ENV'), $values);
     }
 }

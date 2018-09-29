@@ -1,33 +1,10 @@
 <?php
-/**
- * The MIT License (MIT)
- *
- * Copyright (c) <year> <copyright holders>
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
 
 require_once ROOT_PATH . 'config/App.class.php';
 require ROOT_PATH . 'vendor/autoload.php';
+
+use App\mail\EmailNewAccount;
 use App\mail\SassMailer;
-use Mailgun\Mailgun;
-use Psr\Http\Message\ResponseInterface;
 
 /**
  * @author Rizart Dokollari
@@ -47,7 +24,6 @@ class Mailer
     const NO_REPLY_EMAIL_PREFIX = "no-reply@";
     const DATE_FORMAT = "M j Y";
     const HOUR_FORMAT = "g:i A";
-    const EMAIL_MAILGUN = "mg.sass-app.in";
 
     public static $dateTimeLastSentMail;
 
@@ -154,7 +130,6 @@ class Mailer
     {
         require_once ROOT_PATH . "plugins/PHPMailer/PHPMailerAutoload.php";
 
-
         try {
             $appointment = AppointmentFetcher::retrieveSingle($tutorId);
             $appointmentStart = new DateTime($appointment[AppointmentFetcher::DB_COLUMN_START_TIME]);
@@ -175,17 +150,10 @@ class Mailer
             $receiverEmail = $tutorUser[UserFetcher::DB_COLUMN_EMAIL];
             $receiverName = $tutorUser[UserFetcher::DB_COLUMN_FIRST_NAME] . " " . $tutorUser[UserFetcher::DB_COLUMN_LAST_NAME];
 
-
-            //Create a new PHPMailer instance
             $mail = new PHPMailer();
-            // Set PHPMailer to use the sendmail transport
-            //Set who the message is to be sent from
             $mail->setFrom($senderEmail, self::SASS_APP_AUTOMATIC_SYSTEM);
-            //Set an alternative reply-to address
             $mail->addReplyTo($alternativeEmail, $alternativeName);
-            //Set who the message is to be sent to
             $mail->addAddress($receiverEmail, $receiverName);
-            //Set the subject line
             $mail->Subject = $subject;
 
 
@@ -216,17 +184,10 @@ class Mailer
 
             $email_body = $message;
 
-            //Set who the message is to be sent from
             $mail->setFrom($senderEmail, self::SASS_APP_AUTOMATIC_SYSTEM);
-            //Set who the message is to be sent to
             $mail->addAddress($receiverEmail, $receiverName);
-            //Set the subject line
             $mail->Subject = $subject;
-            //Read an HTML message body from an external file, convert referenced images to embedded,
-            //convert HTML into a basic plain-text alternative body
             $mail->msgHTML($email_body);
-            //Attach an image file
-            //$mail->addAttachment('images/phpmailer_mini.gif');
 
             self::safelySendMail($mail);
 
@@ -240,27 +201,13 @@ class Mailer
 
     public static function sendNewAccount($newUserId, $receiverEmail, $receiverName)
     {
-        # First, instantiate the SDK with your API credentials and define your domain.
-        $mg = new Mailgun(App::getMailgunKey());
-        $domain = App::getMailgunDomain();
+        $sassMailer = new SassMailer();
 
-        // Load mail template
-        $emailVerificationTemplate = file_get_contents(ROOT_PATH . 'mail/templates/verify_email.html');
-        $getString = User::generateNewPasswordString($newUserId);
-        $setPasswordLink = App::getDomainName() . "/login/set/" . $newUserId . "/" . $getString;
+        $emailNewAccount = new EmailNewAccount($sassMailer);
 
-        # Now, compose and send the message.
-        $mg->sendMessage($domain, [
-            'from'                => "SASS App admin@" . App::getHostname(),
-            'to'                  => $receiverEmail,
-            'subject'             => 'Welcome',
-            'text'                => 'Your mail does not support html',
-            'html'                => $emailVerificationTemplate,
-            'recipient-variables' => '{"' . $receiverEmail . '": {"id":' . $newUserId . ',"setPasswordLink":"' . $setPasswordLink . '","fullName":"' . $receiverName . '"}}'
-        ]);
+        return $emailNewAccount->handle($newUserId, $receiverEmail, $receiverName);
     }
 
-    /** @return ResponseInterface */
     public static function sendRecover($email)
     {
         User::validateExistingEmail($email, UserFetcher::DB_TABLE);
@@ -357,7 +304,6 @@ class Mailer
 
             $mail->msgHTML($message);
 
-            // no need to safely send mail -- users are created manually
             $mail->send();
 
         } catch (phpmailerException $e) {
@@ -383,7 +329,7 @@ class Mailer
                 'text'                => 'Your mail does not support html',
                 'html'                => $emailVerificationTemplate,
                 'recipient-variables' => '{"' . $receiverEmail . '": {"id":' . $receiverId . ',"btnUrl":"' .
-                    $btnUrl . '","fullName":"' . $fullName . '"}}'
+                    $btnUrl . '","fullName":"' . $fullName . '"}}',
             ]
         );
     }

@@ -10,14 +10,31 @@ use App\mail\SassMailer;
  */
 class SassMailerTest extends \Tests\TestCase
 {
-    /** @test */
-    public function replace_html_variables()
-    {
-        $sassMailer = new SassMailer();
+    /** @var SassMailer */
+    protected $sassMailer;
 
-        $this->assertEquals(
-            'value',
-            $sassMailer->replaceRecipientVariables('%key%', ['key' => 'value'])
-        );
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->sassMailer = new SassMailer();
+    }
+
+    /** @test */
+    public function it_replaces_html_variables()
+    {
+        $actual = $this->sassMailer->replaceRecipientVariables('%key%', [
+            'key' => $expected = 'value',
+        ]);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /** @test */
+    public function it_throws_exception_when_invalida_parameters_provided()
+    {
+        $this->expectExceptionMessage('bla');
+
+        $this->sassMailer->send();
     }
 }
