@@ -3,7 +3,8 @@
     "vendor-dir": "public_html/app/vendor"
   },
   "require": {
-    "phpmailer/phpmailer": "v5.2.26"
+    "phpmailer/phpmailer": "v5.2.26",
+    "rakit/validation": "^0.22.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^5.7"

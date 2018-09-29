@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "97f0b617bfd7f4839c1d83dae97d4caf",
-    "content-hash": "4227efcd6e848780627d53776bdc62a9",
+    "hash": "ae28952fcbf3b2afb46fb15f28b83887",
+    "content-hash": "a337968916035f5512c7689508076761",
     "packages": [
         {
             "name": "phpmailer/phpmailer",
@@ -83,6 +83,46 @@
             ],
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
             "time": "2017-11-04 09:26:05"
+        },
+        {
+            "name": "rakit/validation",
+            "version": "v0.22.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rakit/validation.git",
+                "reference": "81ca951a0595db0a0765f72a28b5792f0d6cd270"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rakit/validation/zipball/81ca951a0595db0a0765f72a28b5792f0d6cd270",
+                "reference": "81ca951a0595db0a0765f72a28b5792f0d6cd270",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=5.5.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Rakit\\Validation\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Muhammad Syifa",
+                    "email": "emsifa@gmail.com"
+                }
+            ],
+            "description": "PHP Laravel like standalone validation library",
+            "time": "2018-09-18 13:40:16"
         }
     ],
     "packages-dev": [

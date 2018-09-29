@@ -4,6 +4,7 @@ namespace App\mail;
 
 use App;
 use PHPMailer;
+use Rakit\Validation\Validator;
 
 /**
  * @author  Rizart Dokollari <r.dokollari@gmail.com>
@@ -13,6 +14,8 @@ class SassMailer
 {
     public function send($data)
     {
+        $this->validate($data);
+
         $phpMailer = new PHPMailer(App::environment(['testing', 'local']));
 
         $phpMailer->setFrom(App::mailFrom(), 'SASS App');
@@ -35,6 +38,25 @@ class SassMailer
         $phpMailer = $this->setupSmtp($phpMailer);
 
         return $phpMailer->send();
+    }
+
+    private function validate($data)
+    {
+        $validator = new Validator;
+
+        $validation = $validator->validate($data, [
+            'to'      => 'required',
+            'subject' => 'required',
+            'html'    => 'required',
+        ]);
+
+        if ($validation->passes()) {
+            return true;
+        }
+
+        $json = json_encode($validation->errors()->toArray());
+
+        throw new SassMailerException($json);
     }
 
     public function replaceRecipientVariables($html, array $variables)

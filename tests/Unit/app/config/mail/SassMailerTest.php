@@ -3,6 +3,7 @@
 namespace Tests\Unit\app\config\mail;
 
 use App\mail\SassMailer;
+use App\mail\SassMailerException;
 
 /**
  * @author  Rizart Dokollari <r.dokollari@gmail.com>
@@ -31,10 +32,21 @@ class SassMailerTest extends \Tests\TestCase
     }
 
     /** @test */
-    public function it_throws_exception_when_invalida_parameters_provided()
+    public function it_throws_exception_about_required_data()
     {
-        $this->expectExceptionMessage('bla');
+        $required = ['to', 'subject', 'html'];
+        $expected = [];
 
-        $this->sassMailer->send();
+        foreach ($required as $key) {
+            $ucFirstKey = ucfirst($key);
+            $expected[$key] = ['required' => "The $ucFirstKey is required"];
+        }
+
+        $expected = json_encode($expected);
+
+        $this->expectExceptionMessage($expected);
+        $this->expectException(SassMailerException::class);
+
+        $this->sassMailer->send([]);
     }
 }
