@@ -4,12 +4,13 @@ namespace Tests\Unit\app\config\mail;
 
 use App\mail\SassMailer;
 use App\mail\SassMailerException;
+use Tests\TestCase;
 
 /**
  * @author  Rizart Dokollari <r.dokollari@gmail.com>
  * @since   2/14/18
  */
-class SassMailerTest extends \Tests\TestCase
+class SassMailerTest extends TestCase
 {
     /** @var SassMailer */
     protected $sassMailer;
@@ -44,8 +45,7 @@ class SassMailerTest extends \Tests\TestCase
 
         $expected = json_encode($expected);
 
-        $this->expectExceptionMessage($expected);
-        $this->expectException(SassMailerException::class);
+        $this->setExpectedException(SassMailerException::class, $expected);
 
         $this->sassMailer->send([]);
     }

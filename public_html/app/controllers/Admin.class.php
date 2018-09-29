@@ -54,24 +54,6 @@ class Admin extends User
         }
     }
 
-    public static function findByEmail($email)
-    {
-        $userInfo = UserFetcher::retrieveUsingEmail($email);
-
-        return new Admin(
-            $userInfo['id'],
-            $userInfo['f_name'],
-            $userInfo['l_name'],
-            $userInfo['email'],
-            $userInfo['mobile'],
-            $userInfo['img_loc'],
-            $userInfo['profile_description'],
-            $userInfo['date'],
-            $userInfo['user_types_id'],
-            $userInfo['active']
-        );
-    }
-
     public function isAdmin()
     {
         return true;

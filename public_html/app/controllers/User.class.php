@@ -4,7 +4,7 @@
  * Class User will contain prototype for staff; tutors, secretary and admin.
  * Log In, Log Out.
  */
-abstract class User extends Person
+class User extends Person
 {
     const ADMIN = 'admin';
     const TUTOR = 'tutor';
@@ -516,6 +516,24 @@ abstract class User extends Person
         return false;
     }
 
+    public static function findByEmail($email)
+    {
+        $userInfo = UserFetcher::retrieveUsingEmail($email);
+
+        return new Admin(
+            $userInfo['id'],
+            $userInfo['f_name'],
+            $userInfo['l_name'],
+            $userInfo['email'],
+            $userInfo['mobile'],
+            $userInfo['img_loc'],
+            $userInfo['profile_description'],
+            $userInfo['date'],
+            $userInfo['user_types_id'],
+            $userInfo['active']
+        );
+    } // end getAllData
+
     public function getAccountActiveStatus()
     {
         return $this->accountActiveStatus;
@@ -524,7 +542,7 @@ abstract class User extends Person
     public function setAccountActiveStatus($accountActiveStatus)
     {
         $this->accountActiveStatus = $accountActiveStatus;
-    } // end getAllData
+    }
 
     public function isActive()
     {
@@ -614,10 +632,5 @@ abstract class User extends Person
             header('Location: ' . BASE_URL . "error-403");
             exit();
         }
-    }
-
-    public function fullName()
-    {
-        return $this->firstName . ' ' . $this->lastName;
     }
 }

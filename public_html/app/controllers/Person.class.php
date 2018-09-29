@@ -2,7 +2,6 @@
 
 abstract class Person
 {
-
     public $id, $firstName, $lastName, $email, $mobileNum;
 
     public function __construct($id, $firstName, $lastName, $email, $mobileNum)
@@ -122,5 +121,10 @@ abstract class Person
     public function getMobileNum()
     {
         return $this->mobileNum;
+    }
+
+    public function fullName()
+    {
+        return $this->firstName . ' ' . $this->lastName;
     }
 }

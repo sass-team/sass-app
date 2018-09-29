@@ -16,7 +16,7 @@ class MailerTest extends TestCase
     {
         $email = 'r.dokollari@gmail.com';
 
-        $user = \Admin::findByEmail($email);
+        $user = \User::findByEmail($email);
 
         Mailer::sendNewAccount($user);
 

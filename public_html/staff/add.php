@@ -34,9 +34,9 @@ if (isSaveBttnPressed()) {
     $termIds = isset($_POST['termIds']) ? $_POST['termIds'] : null;
 
     try {
-        $newUserId = Admin::createUser($first_name, $last_name, $email, $user_type, $userMajorId, $teachingCoursesIds, $termIds);
+        Admin::createUser($first_name, $last_name, $email, $user_type, $userMajorId, $teachingCoursesIds, $termIds);
 
-        $user = User::getSingle($newUserId);
+        $user = User::findByEmail($email);
 
         Mailer::sendNewAccount($user);
     } catch (Exception $e) {
