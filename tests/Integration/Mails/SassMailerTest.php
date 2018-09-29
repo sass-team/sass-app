@@ -3,6 +3,7 @@
 namespace Tests\Integration\Mails;
 
 use App\mail\SassMailer;
+use PHPMailer;
 
 /**
  * @author  Rizart Dokollari <r.dokollari@gmail.com>
@@ -21,6 +22,6 @@ class SassMailerTest extends \Tests\TestCase
             'html'    => 'some-html',
         ]);
 
-        $this->assertTrue($requestSucceeded);
+        $this->assertInstanceOf(PHPMailer::class, $requestSucceeded);
     }
 }

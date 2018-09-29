@@ -79,8 +79,8 @@ class App
             return true;
         }
 
-        if ( ! empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' ||
-            ! empty($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] == 'on'
+        if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' ||
+            !empty($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] == 'on'
         ) {
             return true;
         }
@@ -91,9 +91,13 @@ class App
     /**
      * Load App Settings (database, email & ReCaptcha credentials as well as working hours.)
      * @param $settingsFile
+     * @throws Exception
      */
     public static function loadSettings($settingsFile)
     {
+        if (!file_exists($settingsFile)) {
+            throw new \Exception('Env file not found at ' . $settingsFile);
+        }
 
         self::$settings = require $settingsFile;
     }
@@ -163,7 +167,7 @@ class App
 
     public static function githubIssue($number)
     {
-        if(!empty($number)){
+        if (!empty($number)) {
             return "https://github.com/sass-team/sass-app/issues/$number";
         }
         return self::$settings['GITHUB_NEW_ISSUE_URL'];
@@ -232,7 +236,12 @@ class App
 
     public static function mailFrom()
     {
-        return "noreply@" . App::getDomainName();
+        return self::getenv('SMTP_USERNAME');
+    }
+
+    public static function getenv($env)
+    {
+        return self::$settings[$env];
     }
 
     /**
@@ -249,9 +258,6 @@ class App
         return "http://" . $_SERVER['SERVER_NAME'];
     }
 
-    /**
-     * @return array
-     */
     public static function isHostnameInSSLList()
     {
         $domainName = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : "cron";
@@ -268,8 +274,13 @@ class App
         return self::getHostname() . '/appointments/list';
     }
 
-    public static function getenv($env)
+    public static function environment(array $values)
     {
-        return self::$settings[$env];
+        return in_array(self::getenv('APP_ENV'), $values);
+    }
+
+    public static function setEnv($value)
+    {
+        self::$settings['APP_ENV'] = $value;
     }
 }

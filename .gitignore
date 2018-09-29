@@ -1,3 +1,6 @@
+_output/
+!_output/.gitkeep
+
 # Should contain key for database, mailgun, recaptcha. Check .env.example
 .env.php
 app_errors.log
