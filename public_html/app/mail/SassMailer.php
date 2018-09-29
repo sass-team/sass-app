@@ -16,13 +16,15 @@ class SassMailer
     {
         $this->validate($data);
 
-        $phpMailer = new PHPMailer(App::environment(['testing', 'local']));
+        $enableExceptions = App::environment(['testing', 'local']);
+
+        $phpMailer = new PHPMailer($enableExceptions);
 
         $phpMailer->setFrom(App::mailFrom(), 'SASS App');
-
-        $phpMailer->addAddress($data['to']);
-
         $phpMailer->Subject = $data['subject'];
+
+        $name = array_key_exists('toName', $data) ? $data['toName'] : '';
+        $phpMailer->addAddress($data['to'], $name);
 
         $html = $data['html'];
 
@@ -36,6 +38,14 @@ class SassMailer
         $phpMailer->msgHTML($html);
 
         $phpMailer = $this->setupSmtp($phpMailer);
+
+        if (App::environment(['local', 'testing'])) {
+            $phpMailer->SMTPDebug = 2;
+            $phpMailer->Debugoutput = 'html';
+
+            return $phpMailer;
+        }
+
 
         return $phpMailer->send();
     }
@@ -71,11 +81,6 @@ class SassMailer
     private function setupSmtp(PHPMailer $phpMailer)
     {
         $phpMailer->isSMTP();
-
-        if (App::environment(['local', 'testing'])) {
-            $phpMailer->SMTPDebug = 2;
-            $phpMailer->Debugoutput = 'html';
-        }
 
         $phpMailer->Host = 'smtp.gmail.com';
         $phpMailer->Port = 587;

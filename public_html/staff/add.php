@@ -35,10 +35,10 @@ if (isSaveBttnPressed()) {
 
     try {
         $newUserId = Admin::createUser($first_name, $last_name, $email, $user_type, $userMajorId, $teachingCoursesIds, $termIds);
-        $newUser = User::getSingle($newUserId);
-        Mailer::sendNewAccount($newUserId, $newUser[UserFetcher::DB_COLUMN_EMAIL], $newUser[UserFetcher::DB_COLUMN_FIRST_NAME] . " " .
-            $newUser[UserFetcher::DB_COLUMN_LAST_NAME]);
 
+        $user = User::getSingle($newUserId);
+
+        Mailer::sendNewAccount($user);
     } catch (Exception $e) {
         $errors[] = $e->getMessage();
     }

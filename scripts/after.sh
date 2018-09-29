@@ -13,12 +13,6 @@ sudo timedatectl set-timezone Europe/Athens
 sudo dpkg-reconfigure -f noninteractive tzdata
 
 
-printf "\n${green}Enable Ubuntu Firewall and allow SSH & MySQL Ports.${done}"
-sudo ufw --force enable
-sudo ufw allow 22
-sudo ufw allow 3306
-
-
 printf "\n${green}Install essential packages.${done}"
 sudo apt -y install zsh htop
 
@@ -47,7 +41,6 @@ sudo apt -y install composer
 printf "\n${green}Install Apache.${done}"
 sudo apt install apache2 -y
 sudo apache2ctl configtest
-sudo ufw allow in "Apache Full"
 sudo a2enmod rewrite
 
 

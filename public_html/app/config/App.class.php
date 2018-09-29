@@ -239,6 +239,11 @@ class App
         return self::getenv('SMTP_USERNAME');
     }
 
+    public static function getenv($env)
+    {
+        return self::$settings[$env];
+    }
+
     /**
      * Format App url to ssl
      *
@@ -272,13 +277,8 @@ class App
         return self::getHostname() . '/appointments/list';
     }
 
-    public static function getenv($env)
-    {
-        return self::$settings[$env];
-    }
-
     public static function environment(array $values)
     {
-        return in_array(getenv('APP_ENV'), $values);
+        return in_array(self::getenv('APP_ENV'), $values);
     }
 }

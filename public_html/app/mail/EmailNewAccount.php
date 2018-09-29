@@ -1,10 +1,8 @@
 <?php
-/**
- * @author Rizart Dokollari <r.dokollari@gmail.com>
- * @since 9/29/18
- */
 
 namespace App\mail;
+
+use User;
 
 class EmailNewAccount
 {
@@ -16,28 +14,22 @@ class EmailNewAccount
         $this->sassMailer = $sassMailer;
     }
 
-    public function handle($newUserId, $receiverEmail, $receiverName)
+    public function handle(User $user, $passwordLink)
     {
-        $mg = new Mailgun(App::getMailgunKey());
-        $domain = App::getMailgunDomain();
+        $recipientVariables = [
+            'recipient.fullName'        => $user->fullName(),
+            'recipient.setPasswordLink' => $passwordLink,
+        ];
 
-        // Load mail template
-        $emailVerificationTemplate = file_get_contents(ROOT_PATH . 'mail/templates/verify_email.html');
-        $getString = User::generateNewPasswordString($newUserId);
-        $setPasswordLink = App::getDomainName() . "/login/set/" . $newUserId . "/" . $getString;
-
-        # Now, compose and send the message.
-        $mg->sendMessage($domain, [
-            'from'                => "SASS App admin@" . App::getHostname(),
-            'to'                  => $receiverEmail,
+        $data = [
+            'to'                  => $user->getEmail(),
             'subject'             => 'Welcome',
-            'text'                => 'Your mail does not support html',
-            'html'                => $emailVerificationTemplate,
-            'recipient-variables' => '{"' . $receiverEmail . '": {"id":' . $newUserId . ',"setPasswordLink":"' . $setPasswordLink . '","fullName":"' . $receiverName . '"}}',
-        ]);
+            'toName'              => $user->fullName(),
+            'html'                => file_get_contents(ROOT_PATH . 'mail/templates/verify_email.html'),
+            'text'                => 'Please visit ' . $passwordLink . ' to setup you password.',
+            'recipient-variables' => $recipientVariables,
+        ];
 
-        return true;
-
-        return $this->sassMailer->send()
+        return $this->sassMailer->send($data);
     }
 }

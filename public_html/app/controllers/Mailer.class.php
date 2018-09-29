@@ -199,13 +199,15 @@ class Mailer
         }
     }
 
-    public static function sendNewAccount($newUserId, $receiverEmail, $receiverName)
+    public static function sendNewAccount(User $user)
     {
         $sassMailer = new SassMailer();
 
         $emailNewAccount = new EmailNewAccount($sassMailer);
 
-        return $emailNewAccount->handle($newUserId, $receiverEmail, $receiverName);
+        $setPasswordLink = User::generateSetPasswordLink($user);
+
+        return $emailNewAccount->handle($user, $setPasswordLink);
     }
 
     public static function sendRecover($email)
